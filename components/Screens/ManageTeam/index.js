@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { Text, View, RefreshControl } from "react-native";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
-import { SafeAreaView, ScrollView, NavigationEvents } from "react-navigation";
+import { ScrollView, NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import Header from "../../MiniComponents/Header";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import styles from "./Styles";

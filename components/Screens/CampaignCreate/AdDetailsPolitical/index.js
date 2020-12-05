@@ -13,8 +13,9 @@ import { Content, Row } from "native-base";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../MiniComponents/SideMenu";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
-import ReachBar from "./ReachBar";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import SelectRegions from "../../../MiniComponents/SelectRegions";
 import SelectLanguages from "../../../MiniComponents/SelectLanguages";
 import GenderOptions from "../../../MiniComponents/GenderOptions/GenderOptions";
@@ -56,7 +57,7 @@ import find from "lodash/find";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import SnapchatLocation from "../../../MiniComponents/SnapchatLocation";
 import { globalColors } from "../../../../GlobalStyles";
-import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
+import WalletIcon from "../../../../assets/SVGs/WalletOutline";
 import GradientButton from "../../../MiniComponents/GradientButton";
 import AudienceReach from "./AudienceReach";
 
@@ -1716,6 +1717,29 @@ class AdDetails extends Component {
                       >
                         {translate("Set your daily budget")}
                       </Text>
+                      <View style={styles.lifetimeBudgetView}>
+                        <Text
+                          style={[
+                            styles.subHeadings,
+                            styles.lifetimeBudgetText,
+                          ]}
+                        >
+                          {translate("Lifetime budget")}
+                        </Text>
+                        <Text
+                          style={[
+                            styles.subHeadings,
+                            styles.lifetimeBudgetNumber,
+                          ]}
+                        >
+                          $
+                          {formatNumber(
+                            this.state.duration *
+                              this.state.campaignInfo.lifetime_budget_micro,
+                            true
+                          )}
+                        </Text>
+                      </View>
                     </Row>
                     <BudgetCards
                       value={this.state.value}

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { View, Alert, Text, ScrollView, TouchableOpacity } from "react-native";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { connect } from "react-redux";
 import InputScrollView from "react-native-input-scroll-view";
 import AddTeamIcon from "../../../../assets/SVGs/AddTeam";

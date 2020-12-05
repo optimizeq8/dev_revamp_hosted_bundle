@@ -10,7 +10,9 @@ import {
 } from "react-native";
 import { Transition } from "react-navigation-fluid-transitions";
 import analytics from "@segment/analytics-react-native";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import LowerButton from "../../../MiniComponents/LowerButton";
 import CustomHeader from "../../../MiniComponents/Header";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";

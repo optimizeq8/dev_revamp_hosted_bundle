@@ -97,6 +97,7 @@ export class BudgetCards extends Component {
         bud={bud}
         _handleBudget={_handleBudget}
         budgetOption={budgetOption}
+        translate={translate}
       />
     ));
 

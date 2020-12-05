@@ -40,7 +40,8 @@ import {
   heightPercentageToDP as hp,
   heightPercentageToDP,
 } from "react-native-responsive-screen";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { showMessage } from "react-native-flash-message";
 
 class Menu extends Component {
@@ -409,7 +410,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text style={styles.version}>
                 {translate("Version:")}
-                {Constants.nativeAppVersion}/291/
+                {Constants.nativeAppVersion}/315/
                 {Constants.nativeBuildVersion}
               </Text>
             </ScrollView>

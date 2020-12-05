@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
     height: "85%",
+    paddingTop: 10,
   },
   button: {
     alignSelf: "center",

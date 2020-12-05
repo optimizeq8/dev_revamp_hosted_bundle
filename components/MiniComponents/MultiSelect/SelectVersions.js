@@ -4,7 +4,7 @@ import { Icon } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import LoadingScreen from "../LoadingScreen";
 import { showMessage } from "react-native-flash-message";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
 //Icons
 import PlusCircle from "../../../assets/SVGs/PlusCircle";
 import BackButton from "../../MiniComponents/BackButton";
@@ -166,7 +166,7 @@ class SelectVersions extends Component {
                   headerComponent={
                     <View style={styles.headerComponent}>
                       <BackButton
-                        stroke={"#FFF"}
+                        stroke={globalColors.rum}
                         style={{ top: 0, left: 0 }}
                         navigation={() =>
                           this.VersionSection._cancelSelection()

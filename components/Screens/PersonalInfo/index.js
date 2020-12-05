@@ -1,13 +1,8 @@
 import React, { Component } from "react";
-import {
-  View,
-  TouchableWithoutFeedback,
-  Keyboard,
-  BackHandler,
-  ScrollView,
-} from "react-native";
+import { View, BackHandler, ScrollView } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import InputScrollView from "react-native-input-scroll-view";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
 //Redux

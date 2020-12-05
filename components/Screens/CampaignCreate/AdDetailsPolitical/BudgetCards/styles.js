@@ -40,13 +40,18 @@ export default StyleSheet.create({
   },
   recIcon: {
     position: "absolute",
-    left: "47%",
-    bottom: "70%",
-    backgroundColor: globalColors.orange,
+    left: "61%",
+    top: 4,
+    backgroundColor: globalColors.green,
     borderRadius: 50,
-    width: 30,
-    height: 30,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
     alignItems: "center",
     justifyContent: "center",
+  },
+  recommendText: {
+    fontSize: 9,
+    color: globalColors.white,
+    fontFamily: "montserrat-bold",
   },
 });

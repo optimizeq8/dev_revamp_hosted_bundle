@@ -10,7 +10,9 @@ import {
   Alert,
 } from "react-native";
 
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import MaskedView from "@react-native-community/masked-view";
 import cloneDeep from "lodash/cloneDeep";
 import analytics from "@segment/analytics-react-native";
@@ -79,6 +81,9 @@ export class SnapchatAudience extends Component {
       showRegions: false,
       locationsInfo: [],
       filteredLanguages: this.props.languages,
+      expandLocation: false,
+      expandDemographics: false,
+      expandDevices: false,
     };
     this.editAudience = this.props.navigation.getParam("editAudience", false);
   }
@@ -888,6 +893,21 @@ export class SnapchatAudience extends Component {
       audience_channel: "snapchat",
     });
   };
+  expandLocation = () => {
+    this.setState({
+      expandLocation: !this.state.expandLocation,
+    });
+  };
+  expandDemographics = () => {
+    this.setState({
+      expandDemographics: !this.state.expandDemographics,
+    });
+  };
+  expandDevices = () => {
+    this.setState({
+      expandDevices: !this.state.expandDevices,
+    });
+  };
   render() {
     let { saveAudienceLoading = false, audience } = this.props;
     const { targeting } = audience;
@@ -896,7 +916,7 @@ export class SnapchatAudience extends Component {
     let interests_names = this.getInterestNames();
     let country_names = this.getCountryNames();
     let region_names = this.getRegionNames();
-
+    const { expandLocation, expandDemographics, expandDevices } = this.state;
     let menu;
     switch (this.state.sidemenu) {
       case "gender": {
@@ -1039,7 +1059,7 @@ export class SnapchatAudience extends Component {
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
             iconColor={globalColors.purple}
-            title={`${this.editAudience ? "Edit" : "Create"} Audience`}
+            title={`${this.editAudience ? "Edit" : "New"} Preset`}
             titleStyle={{ color: globalColors.purple }}
             showTopRightButton={true}
             topRightButtonText={translate("Save")}
@@ -1071,7 +1091,7 @@ export class SnapchatAudience extends Component {
               screenProps={this.props.screenProps}
               actionButton={this.goBack}
               iconColor={globalColors.purple}
-              title={`${this.editAudience ? "Edit" : "Create"} Audience`}
+              title={`${this.editAudience ? "Edit" : "New"} Preset`}
               titleStyle={{ color: globalColors.purple }}
               showTopRightButton={true}
               topRightButtonText={translate("Save")}
@@ -1082,7 +1102,7 @@ export class SnapchatAudience extends Component {
             <View style={styles.innerView}>
               <InputField
                 translate={this.props.screenProps.translate}
-                label={"Audience Name"}
+                label={"Preset Name"}
                 stateName1={"audienceName"}
                 placeholder1={"Enter a name for your audience"}
                 setValue={this.setAudienceName}
@@ -1112,230 +1132,323 @@ export class SnapchatAudience extends Component {
                   contentContainerStyle={{ paddingBottom: 100 }}
                   style={[styles.targetList]}
                 >
-                  <TouchableOpacity
-                    disabled={saveAudienceLoading}
-                    onPress={() => this.callFunction("selectors", "countries")}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={globalStyles.row}>
-                      <LocationIcon
-                        width={30}
-                        height={30}
-                        style={styles.icon}
-                        fill={globalColors.purple}
-                      />
-
-                      <View style={globalStyles.column}>
-                        <Text style={styles.menutext}>
-                          {translate("Country")}
-                        </Text>
-                        <Text style={styles.menudetails}>{country_names}</Text>
-                      </View>
-                    </View>
-                    {targeting.geos[0].country_code ? (
-                      <PurpleCheckmarkIcon
-                        width={30}
-                        height={30}
-                        fill={globalColors.purple}
-                      />
-                    ) : (
-                      <PurplePlusIcon width={30} height={30} />
-                    )}
-                  </TouchableOpacity>
-                  {this.state.showRegions ? ( //for campaign creation
+                  <View style={styles.targetTouchableOuter}>
                     <TouchableOpacity
-                      onPress={() => this.callFunction("regions")}
-                      style={styles.targetTouchable}
+                      activeOpacity={0.8}
+                      onPress={this.expandLocation}
+                      style={[styles.header]}
                     >
-                      <View style={[globalStyles.row, styles.flex]}>
-                        <LocationIcon
-                          width={30}
-                          height={30}
-                          style={styles.icon}
-                          fill={globalColors.purple}
-                        />
-                        <View style={[globalStyles.column, styles.flex]}>
-                          <Text
-                            style={[
-                              styles.menutext,
-                              {
-                                paddingLeft:
-                                  Platform.OS === "android" && I18nManager.isRTL
-                                    ? 0
-                                    : 15,
-                                paddingRight:
-                                  Platform.OS === "android" && I18nManager.isRTL
-                                    ? 15
-                                    : 0,
-                              },
-                            ]}
-                          >
+                      <LocationIcon
+                        width={22}
+                        height={25}
+                        style={styles.icon}
+                        fill={globalColors.purple3}
+                      />
+                      <Text style={styles.audienceHeading}>
+                        {translate("Location")}
+                      </Text>
+                      <Icon
+                        name={`ios-arrow-drop${expandLocation ? "up" : "down"}`}
+                        type="MaterialUIIcons"
+                        style={styles.iconDown}
+                        onPress={this.expandLocation}
+                      />
+                    </TouchableOpacity>
+                    {expandLocation && (
+                      <TouchableOpacity
+                        disabled={saveAudienceLoading}
+                        onPress={() =>
+                          this.callFunction("selectors", "countries")
+                        }
+                        style={styles.targetTouchable}
+                      >
+                        <View
+                          style={[
+                            globalStyles.column,
+                            styles.audienceSubHeading,
+                          ]}
+                        >
+                          <Text style={styles.menutext}>
+                            {translate("Country")}
+                          </Text>
+                          <Text style={styles.menudetails}>
+                            {country_names}
+                          </Text>
+                        </View>
+
+                        {targeting.geos[0].country_code ? (
+                          <PurpleCheckmarkIcon
+                            width={22}
+                            height={30}
+                            fill={globalColors.purple}
+                          />
+                        ) : (
+                          <PurplePlusIcon width={22} height={30} />
+                        )}
+                      </TouchableOpacity>
+                    )}
+                    {this.state.showRegions && expandLocation ? ( //for campaign creation
+                      <TouchableOpacity
+                        onPress={() => this.callFunction("regions")}
+                        style={styles.targetTouchable}
+                      >
+                        <View
+                          style={[
+                            globalStyles.column,
+                            styles.flex,
+                            styles.audienceSubHeading,
+                          ]}
+                        >
+                          <Text style={[styles.menutext]}>
                             {translate("Regions")}
                           </Text>
                           <Text style={styles.menudetails} numberOfLines={1}>
                             {region_names}
                           </Text>
                         </View>
-                      </View>
 
-                      {targeting.geos.some(
-                        (geo) => geo.region_id && geo.region_id.length !== 0
-                      ) ? (
-                        <PurpleCheckmarkIcon width={30} height={30} />
-                      ) : (
-                        <PurplePlusIcon width={30} height={30} />
-                      )}
-                    </TouchableOpacity>
-                  ) : null}
-                  <TouchableOpacity
-                    disabled={saveAudienceLoading}
-                    onPress={() => this.callFunction("map")}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={globalStyles.row}>
-                      <LocationIcon
-                        width={30}
-                        height={30}
-                        style={styles.icon}
-                        fill={globalColors.purple}
-                      />
-
-                      <View style={globalStyles.column}>
-                        <Text style={styles.menutext}>{translate("Map")}</Text>
-                        <Text style={styles.menudetails}>
-                          {this.state.locationsInfo &&
-                          this.state.locationsInfo.length > 0
-                            ? this.state.locationsInfo
-                                .map((loc) => translate(loc.countryName))
-                                .join(", ")
-                            : ""}
-                        </Text>
-                      </View>
-                    </View>
-                    {targeting.geos[0].country_code ? (
-                      <PurpleCheckmarkIcon width={30} height={30} />
-                    ) : (
-                      <PurplePlusIcon width={30} height={30} />
-                    )}
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    disabled={saveAudienceLoading}
-                    onPress={() => this.callFunction("gender")}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={globalStyles.row}>
-                      <GenderIcon
-                        width={30}
-                        height={30}
-                        style={styles.icon}
-                        fill={globalColors.purple}
-                      />
-                      <View style={globalStyles.column}>
-                        <Text style={styles.menutext}>
-                          {translate("Gender")}
-                        </Text>
-                        <Text style={styles.menudetails}>
-                          {targeting.demographics &&
-                            targeting.demographics[0].gender &&
-                            translate(
-                              gender.find((r) => {
-                                if (
-                                  r.value === targeting.demographics[0].gender
-                                )
-                                  return r;
-                              }).label
-                            )}
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={globalStyles.column}>
-                      {targeting.demographics &&
-                        (targeting.demographics[0].gender === "" ||
-                        targeting.demographics[0].gender ? (
-                          <PurpleCheckmarkIcon width={30} height={30} />
+                        {targeting.geos.some(
+                          (geo) => geo.region_id && geo.region_id.length !== 0
+                        ) ? (
+                          <PurpleCheckmarkIcon width={22} height={30} />
                         ) : (
-                          <PurplePlusIcon width={30} height={30} />
-                        ))}
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    disabled={saveAudienceLoading}
-                    onPress={() => this.callFunction("age")}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={globalStyles.row}>
-                      <AgeIcon
-                        width={25}
-                        height={25}
-                        style={styles.icon}
-                        fill={globalColors.purple}
-                      />
-                      <View style={globalStyles.column}>
-                        <Text style={styles.menutext}>{translate("Age")}</Text>
-                        <Text style={styles.menudetails}>
-                          {targeting.demographics &&
-                            targeting.demographics[0].min_age}{" "}
-                          -{" "}
-                          {targeting.demographics &&
-                            targeting.demographics[0].max_age +
-                              (targeting.demographics[0].max_age === 50
-                                ? "+"
-                                : "")}
-                        </Text>
-                      </View>
-                    </View>
-
-                    {targeting.demographics &&
-                    targeting.demographics[0].max_age ? (
-                      <PurpleCheckmarkIcon width={30} height={30} />
-                    ) : (
-                      <PurplePlusIcon width={30} height={30} />
+                          <PurplePlusIcon width={22} height={30} />
+                        )}
+                      </TouchableOpacity>
+                    ) : null}
+                    {expandLocation && (
+                      <TouchableOpacity
+                        disabled={saveAudienceLoading}
+                        onPress={() => this.callFunction("map")}
+                        style={styles.targetTouchable}
+                      >
+                        <View
+                          style={[
+                            globalStyles.column,
+                            styles.audienceSubHeading,
+                          ]}
+                        >
+                          <Text style={styles.menutext}>
+                            {translate("Map")}
+                          </Text>
+                          <Text style={styles.menudetails}>
+                            {this.state.locationsInfo &&
+                            this.state.locationsInfo.length > 0
+                              ? this.state.locationsInfo
+                                  .map((loc) => translate(loc.countryName))
+                                  .join(", ")
+                              : ""}
+                          </Text>
+                        </View>
+                        {targeting.geos[0].country_code ? (
+                          <PurpleCheckmarkIcon width={22} height={30} />
+                        ) : (
+                          <PurplePlusIcon width={22} height={30} />
+                        )}
+                      </TouchableOpacity>
                     )}
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    disabled={saveAudienceLoading}
-                    onPress={() => this.callFunction("languages")}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={[globalStyles.row, styles.flex]}>
-                      <LanguageIcon
-                        width={30}
+                  </View>
+                  <View style={styles.targetTouchableOuter}>
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      onPress={this.expandDemographics}
+                      style={[styles.header]}
+                    >
+                      <GenderIcon
+                        width={22}
                         height={30}
                         style={styles.icon}
-                        fill={globalColors.purple}
+                        fill={globalColors.purple3}
                       />
-                      <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>
-                          {translate("Language")}
-                        </Text>
-                        <Text numberOfLines={1} style={styles.menudetails}>
-                          {languages_names}
-                        </Text>
-                      </View>
-                    </View>
-                    {targeting.demographics[0].languages.length !== 0 ? (
-                      <PurpleCheckmarkIcon width={30} height={30} />
-                    ) : (
-                      <PurplePlusIcon width={30} height={30} />
+                      <Text style={styles.audienceHeading}>
+                        {translate("Demographic")}
+                      </Text>
+                      <Icon
+                        name={`ios-arrow-drop${
+                          expandDemographics ? "up" : "down"
+                        }`}
+                        type="MaterialUIIcons"
+                        style={styles.iconDown}
+                        onPress={this.expandDemographics}
+                      />
+                    </TouchableOpacity>
+                    {expandDemographics && (
+                      <TouchableOpacity
+                        disabled={saveAudienceLoading}
+                        // onPress={() => this.callFunction("gender")}
+                        style={styles.targetTouchable}
+                      >
+                        <View
+                          style={[
+                            globalStyles.column,
+                            styles.audienceSubHeading,
+                          ]}
+                        >
+                          <Text style={styles.menutext}>
+                            {translate("Gender")}
+                          </Text>
+                          <View style={styles.genderOuterView}>
+                            {gender.map((g) => (
+                              <TouchableOpacity
+                                style={[
+                                  styles.genderInnerView,
+                                  targeting.demographics[0].gender ===
+                                    g.value && styles.genderInnerActiveView,
+                                ]}
+                                activeOpacity={0.6}
+                                onPress={() => {
+                                  this.onSelectedGenderChange(g.value);
+                                }}
+                              >
+                                <Text
+                                  style={[
+                                    styles.genderRadioText,
+                                    targeting.demographics[0].gender ===
+                                      g.value && styles.genderRadioTextActive,
+                                  ]}
+                                >
+                                  {translate(g.label)}
+                                </Text>
+                              </TouchableOpacity>
+                            ))}
+                          </View>
+                        </View>
+                      </TouchableOpacity>
                     )}
-                  </TouchableOpacity>
+                    {expandDemographics && (
+                      <TouchableOpacity
+                        disabled={saveAudienceLoading}
+                        onPress={() => this.callFunction("age")}
+                        style={styles.targetTouchable}
+                      >
+                        <View
+                          style={[
+                            globalStyles.column,
+                            styles.audienceSubHeading,
+                          ]}
+                        >
+                          <Text style={styles.menutext}>
+                            {translate("Age")}
+                          </Text>
+                          <View style={styles.ageOuterView}>
+                            <TouchableOpacity
+                              style={styles.ageView}
+                              onPress={() => this.callFunction("age")}
+                            >
+                              <Text style={styles.ageText}>
+                                {targeting.demographics[0].min_age}
+                              </Text>
+                            </TouchableOpacity>
+
+                            <Text style={styles.toText}>{translate("To")}</Text>
+                            <TouchableOpacity
+                              style={styles.ageView}
+                              onPress={() => this.callFunction("age")}
+                            >
+                              <Text style={styles.ageText}>
+                                {targeting.demographics[0].max_age +
+                                  (targeting.demographics[0].max_age === 50
+                                    ? "+"
+                                    : "")}
+                              </Text>
+                            </TouchableOpacity>
+
+                            {/* <Text style={styles.menudetails}>
+                    {targeting.demographics[0].min_age} {translate("To")}{" "}
+                    {targeting.demographics[0].max_age +
+                      (targeting.demographics[0].max_age === 50 ? "+" : "")}
+                  </Text> */}
+                          </View>
+
+                          {/* <Text style={styles.menudetails}>
+                            {targeting.demographics &&
+                              targeting.demographics[0].min_age}{" "}
+                            -{" "}
+                            {targeting.demographics &&
+                              targeting.demographics[0].max_age +
+                                (targeting.demographics[0].max_age === 50
+                                  ? "+"
+                                  : "")}
+                          </Text> */}
+                        </View>
+
+                        {/* {targeting.demographics &&
+                        targeting.demographics[0].max_age ? (
+                          <PurpleCheckmarkIcon width={22} height={30} />
+                        ) : (
+                          <PurplePlusIcon width={22} height={30} />
+                        )} */}
+                      </TouchableOpacity>
+                    )}
+                    {expandDemographics && (
+                      <TouchableOpacity
+                        disabled={saveAudienceLoading}
+                        onPress={() => this.callFunction("languages")}
+                        style={styles.targetTouchable}
+                      >
+                        <View
+                          style={[
+                            globalStyles.column,
+
+                            styles.audienceSubHeading,
+                          ]}
+                        >
+                          <Text style={styles.menutext}>
+                            {translate("Language")}
+                          </Text>
+                          {targeting.demographics[0].languages.length !== 0 ? (
+                            <Text style={styles.menudetails}>
+                              {languages_names}
+                            </Text>
+                          ) : (
+                            <View style={styles.selectLanguageButton}>
+                              <Text style={styles.selectLanguageText}>
+                                {translate("Select Languages")}
+                              </Text>
+                              <Icon
+                                name={`keyboard-arrow-${
+                                  I18nManager.isRTL ? "left" : "right"
+                                }`}
+                                type="MaterialIcons"
+                                style={{
+                                  color: globalColors.purple3,
+                                }}
+                              />
+                            </View>
+                          )}
+                        </View>
+
+                        {/* {targeting.demographics[0].languages.length !== 0 ? (
+                          <PurpleCheckmarkIcon width={22} height={30} />
+                        ) : (
+                          <PurplePlusIcon width={22} height={30} />
+                        )} */}
+                      </TouchableOpacity>
+                    )}
+                  </View>
                   <TouchableOpacity
                     disabled={saveAudienceLoading}
                     onPress={() => this.callFunction("selectors", "interests")}
-                    style={styles.targetTouchable}
+                    style={[
+                      styles.targetTouchableOuter,
+                      styles.targetTouchable,
+                    ]}
                   >
                     <View style={[globalStyles.row, styles.flex]}>
                       <InterestsIcon
-                        width={30}
+                        width={22}
                         height={30}
                         style={styles.icon}
-                        fill={globalColors.purple}
+                        fill={globalColors.purple3}
                       />
                       <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>
+                        <Text style={styles.audienceHeading}>
                           {translate("Interests")}
                         </Text>
-                        <Text numberOfLines={1} style={styles.menudetails}>
+                        <Text
+                          numberOfLines={1}
+                          style={[styles.menudetails, { paddingHorizontal: 4 }]}
+                        >
                           {interests_names}
                         </Text>
                       </View>
@@ -1343,125 +1456,146 @@ export class SnapchatAudience extends Component {
                     <View style={globalStyles.column}>
                       {targeting.interests &&
                       targeting.interests[0].category_id.length !== 0 ? (
-                        <PurpleCheckmarkIcon width={30} height={30} />
+                        <PurpleCheckmarkIcon width={22} height={30} />
                       ) : (
-                        <PurplePlusIcon width={30} height={30} />
+                        <PurplePlusIcon width={22} height={30} />
                       )}
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity
-                    disabled={saveAudienceLoading}
-                    onPress={() => this.callFunction("OS")}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={[globalStyles.row, styles.flex]}>
+                  <View style={styles.targetTouchableOuter}>
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      onPress={this.expandDevices}
+                      style={[styles.header]}
+                    >
                       <OperatingSystemIcon
-                        width={25}
+                        width={22}
                         height={25}
-                        fill={globalColors.purple}
+                        fill={globalColors.purple3}
                         style={styles.icon}
                       />
-                      <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>
-                          {translate("Operating System")}
-                        </Text>
-                        <Text style={styles.menudetails}>
-                          {translate(
-                            OSType.find((r) => {
-                              if (
-                                r.value ===
-                                (targeting.devices &&
-                                targeting.devices[0].os_type
-                                  ? targeting.devices[0].os_type
-                                  : "")
-                              )
-                                return r;
-                            }).label
-                          )}
-                        </Text>
-                      </View>
-                    </View>
-
-                    {(targeting.devices &&
-                      targeting.devices[0].os_type === "") ||
-                    (targeting.devices && targeting.devices[0].os_type) ? (
-                      <PurpleCheckmarkIcon width={30} height={30} />
-                    ) : (
-                      <PurplePlusIcon width={30} height={30} />
-                    )}
-                  </TouchableOpacity>
-                  {targeting.devices && targeting.devices[0].os_type !== "" && (
-                    <TouchableOpacity
-                      disabled={saveAudienceLoading}
-                      onPress={() =>
-                        this.callFunction("selectors", "deviceVersions")
-                      }
-                      style={styles.targetTouchable}
-                    >
-                      <View style={[globalStyles.row, styles.flex]}>
-                        <Icon
-                          name="versions"
-                          type="Octicons"
-                          width={25}
-                          height={25}
-                          style={styles.versionIcon}
-                        />
-                        <View style={[globalStyles.column, styles.flex]}>
+                      <Text style={styles.audienceHeading}>
+                        {translate("Devices")}
+                      </Text>
+                      <Icon
+                        name={`ios-arrow-drop${expandDevices ? "up" : "down"}`}
+                        type="MaterialUIIcons"
+                        style={styles.iconDown}
+                        onPress={this.expandDevices}
+                      />
+                    </TouchableOpacity>
+                    {expandDevices && (
+                      <TouchableOpacity
+                        disabled={saveAudienceLoading}
+                        onPress={() => this.callFunction("OS")}
+                        style={styles.targetTouchable}
+                      >
+                        <View
+                          style={[
+                            globalStyles.column,
+                            styles.flex,
+                            styles.audienceSubHeading,
+                          ]}
+                        >
                           <Text style={styles.menutext}>
-                            {translate("OS Versions")}
+                            {translate("Operating System")}
                           </Text>
                           <Text style={styles.menudetails}>
-                            {targeting.devices &&
-                              targeting.devices[0].os_version_min + ", "}
-                            {targeting.devices &&
-                              targeting.devices[0].os_version_max}
+                            {translate(
+                              OSType.find((r) => {
+                                if (
+                                  r.value ===
+                                  (targeting.devices &&
+                                  targeting.devices[0].os_type
+                                    ? targeting.devices[0].os_type
+                                    : "")
+                                )
+                                  return r;
+                              }).label
+                            )}
                           </Text>
                         </View>
-                      </View>
 
-                      {targeting.devices &&
-                      targeting.devices[0].os_version_min !== "" ? (
-                        <PurpleCheckmarkIcon width={30} height={30} />
-                      ) : (
-                        <PurplePlusIcon width={30} height={30} />
-                      )}
-                    </TouchableOpacity>
-                  )}
-                  <TouchableOpacity
-                    disabled={saveAudienceLoading}
-                    onPress={() =>
-                      this.callFunction("selectors", "deviceBrands")
-                    }
-                    style={styles.targetTouchable}
-                  >
-                    <View style={[globalStyles.row, styles.flex]}>
-                      <DeviceMakeIcon
-                        width={25}
-                        height={25}
-                        style={styles.icon}
-                        fill={globalColors.purple}
-                      />
-
-                      <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>
-                          {translate("Device Make")}
-                        </Text>
-                        <Text numberOfLines={1} style={styles.menudetails}>
-                          {targeting.devices &&
-                            targeting.devices[0].marketing_name &&
-                            targeting.devices[0].marketing_name.join(", ")}
-                        </Text>
-                      </View>
-                    </View>
-
-                    {targeting.devices &&
-                    targeting.devices[0].marketing_name &&
-                    targeting.devices[0].marketing_name.length !== 0 ? (
-                      <PurpleCheckmarkIcon width={30} height={30} />
-                    ) : (
-                      <PurplePlusIcon width={30} height={30} />
+                        {(targeting.devices &&
+                          targeting.devices[0].os_type === "") ||
+                        (targeting.devices && targeting.devices[0].os_type) ? (
+                          <PurpleCheckmarkIcon width={22} height={30} />
+                        ) : (
+                          <PurplePlusIcon width={22} height={30} />
+                        )}
+                      </TouchableOpacity>
                     )}
-                  </TouchableOpacity>
+                    {expandDevices &&
+                      targeting.devices &&
+                      targeting.devices[0].os_type !== "" && (
+                        <TouchableOpacity
+                          disabled={saveAudienceLoading}
+                          onPress={() =>
+                            this.callFunction("selectors", "deviceVersions")
+                          }
+                          style={styles.targetTouchable}
+                        >
+                          <View
+                            style={[
+                              globalStyles.column,
+                              styles.flex,
+                              styles.audienceSubHeading,
+                            ]}
+                          >
+                            <Text style={styles.menutext}>
+                              {translate("OS Versions")}
+                            </Text>
+                            <Text style={styles.menudetails}>
+                              {targeting.devices &&
+                                targeting.devices[0].os_version_min + ", "}
+                              {targeting.devices &&
+                                targeting.devices[0].os_version_max}
+                            </Text>
+                          </View>
+
+                          {targeting.devices &&
+                          targeting.devices[0].os_version_min !== "" ? (
+                            <PurpleCheckmarkIcon width={22} height={30} />
+                          ) : (
+                            <PurplePlusIcon width={22} height={30} />
+                          )}
+                        </TouchableOpacity>
+                      )}
+                    {expandDevices && (
+                      <TouchableOpacity
+                        disabled={saveAudienceLoading}
+                        onPress={() =>
+                          this.callFunction("selectors", "deviceBrands")
+                        }
+                        style={styles.targetTouchable}
+                      >
+                        <View
+                          style={[
+                            globalStyles.column,
+                            styles.flex,
+                            styles.audienceSubHeading,
+                          ]}
+                        >
+                          <Text style={styles.menutext}>
+                            {translate("Device Make")}
+                          </Text>
+                          <Text numberOfLines={1} style={styles.menudetails}>
+                            {targeting.devices &&
+                              targeting.devices[0].marketing_name &&
+                              targeting.devices[0].marketing_name.join(", ")}
+                          </Text>
+                        </View>
+
+                        {targeting.devices &&
+                        targeting.devices[0].marketing_name &&
+                        targeting.devices[0].marketing_name.length !== 0 ? (
+                          <PurpleCheckmarkIcon width={22} height={30} />
+                        ) : (
+                          <PurplePlusIcon width={22} height={30} />
+                        )}
+                      </TouchableOpacity>
+                    )}
+                  </View>
                 </ScrollView>
               </MaskedView>
               {this.state.scrollY < heightPercentageToDP(0.8) &&

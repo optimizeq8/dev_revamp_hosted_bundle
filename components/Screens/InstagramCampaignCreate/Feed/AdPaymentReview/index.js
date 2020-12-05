@@ -3,7 +3,9 @@ import { ImageBackground, Text, View, BackHandler } from "react-native";
 import { Content, Container } from "native-base";
 import { Video } from "expo-av";
 import analytics from "@segment/analytics-react-native";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import startCase from "lodash/startCase";
 import lowerCase from "lodash/lowerCase";
 import ReviewItemCard from "../../../../MiniComponents/ReviewItemCard";
@@ -187,7 +189,9 @@ class InstagramAdPaymentReview extends Component {
     this.props.saveCampaignSteps([
       "Dashboard",
       "InstagramFeedAdObjective",
-      "InstagramFeedAdDesign",
+      this.props.data.existingPost === 0
+        ? "InstagramAdDesignExistingPost"
+        : "InstagramFeedAdDesign",
       "InstagramFeedAdTargetting",
       "InstagramAdPaymentReview",
     ]);
@@ -301,14 +305,17 @@ class InstagramAdPaymentReview extends Component {
       let countrySelections = [];
       targeting.geo_locations.countries.forEach((selectedCountry) => {
         countrySelections.push(
-          countries.find((countryData) => countryData.value === selectedCountry)
-            .label
+          translate(
+            countries.find(
+              (countryData) => countryData.value === selectedCountry
+            ).label
+          )
         );
       });
 
       if (targeting.geo_locations.hasOwnProperty("regions")) {
         var regionNames = targeting.geo_locations.regions.map((reg) => {
-          return reg.name;
+          return translate(reg.name);
         });
       } else regionNames = [""];
 

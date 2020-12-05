@@ -14,8 +14,9 @@ import {
   BackHandler,
 } from "react-native";
 import { Container } from "native-base";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
 import { showMessage } from "react-native-flash-message";
+import SafeAreaView from "react-native-safe-area-view";
 
 import Axios from "axios";
 import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";

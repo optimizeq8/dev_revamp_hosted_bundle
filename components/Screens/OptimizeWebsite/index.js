@@ -9,7 +9,8 @@ import {
   I18nManager,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { LinearGradient } from "expo-linear-gradient";
 
 //Redux

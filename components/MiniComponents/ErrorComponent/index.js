@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Image, Text, Linking } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
 
 // Redux
 import { connect } from "react-redux";

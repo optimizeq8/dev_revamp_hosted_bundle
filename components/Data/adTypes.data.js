@@ -140,7 +140,8 @@ export const instagramAds = [
     icon: AdIcons.InstagramFeed,
     channelIcon: Instagram,
     image: InstagramFeedAd,
-    description: " ",
+    description:
+      "Feed Ads show up on the main page of Instagram among posts belonging to users followed accounts, blending in with user created content in a form of a single photo, a single video, or a carousel",
     suitableFor: [
       {
         icon: Mortgage,
@@ -169,7 +170,8 @@ export const instagramAds = [
     icon: AdIcons.InstagramStory,
     channelIcon: Instagram,
     image: InstagramStoryAd,
-    description: " ",
+    description:
+      "Story Ads are full screen images or videos up to 120 seconds long that get shown to users between stories belonging to accounts they follow",
     suitableFor: [
       {
         icon: Mortgage,

@@ -1,20 +1,13 @@
 //Components
 import React, { Component } from "react";
-import {
-  View,
-  TouchableOpacity,
-  BackHandler,
-  Image as RNImage,
-  Platform,
-  Text,
-} from "react-native";
+import { View, TouchableOpacity, BackHandler, Text } from "react-native";
 import { connect } from "react-redux";
 import { Container, Content } from "native-base";
 
 import { Transition } from "react-navigation-fluid-transitions";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import CustomHeader from "../../../../MiniComponents/Header";
-import { Image } from "react-native-expo-image-cache";
 
 //icons
 import Circles from "../../../../../assets/SVGs/StoryAdPerview/circles";

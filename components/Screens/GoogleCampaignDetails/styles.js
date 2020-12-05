@@ -419,6 +419,7 @@ const styles = StyleSheet.create({
     // paddingVertical: 20,
     paddingBottom: 30,
     paddingHorizontal: 20,
+    overflow: "hidden",
   },
   keyword: {
     fontFamily: "montserrat-bold",

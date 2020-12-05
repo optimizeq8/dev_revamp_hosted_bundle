@@ -13,7 +13,9 @@ import {
 import analytics from "@segment/analytics-react-native";
 import { Content, Container } from "native-base";
 import { BlurView } from "@react-native-community/blur";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import * as Animatable from "react-native-animatable";
 import ObjectivesCard from "../../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../../MiniComponents/LowerButton";

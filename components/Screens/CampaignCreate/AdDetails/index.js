@@ -6,13 +6,15 @@ import {
   I18nManager,
   Text,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
-import { Content, Row } from "native-base";
+import { Content, Row, Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../MiniComponents/SideMenu";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
-import ReachBar from "./ReachBar";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import SelectRegions from "../../../MiniComponents/SelectRegions";
 import SelectLanguages from "../../../MiniComponents/SelectLanguages";
 import GenderOptions from "../../../MiniComponents/GenderOptions/GenderOptions";
@@ -21,6 +23,7 @@ import MultiSelectSections from "../../../MiniComponents/MultiSelect/MultiSelect
 import CustomHeader from "../../../MiniComponents/Header";
 import SelectOS from "../../../MiniComponents/SelectOS";
 import { showMessage } from "react-native-flash-message";
+import SnapchatAudienceList from "../../SnapchatCampaignAudienceList";
 // import LocationMap from "../../../MiniComponents/LocationMap";
 let LocationMap = null;
 //Data
@@ -54,8 +57,10 @@ import find from "lodash/find";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import SnapchatLocation from "../../../MiniComponents/SnapchatLocation";
 import { globalColors } from "../../../../GlobalStyles";
-import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
-import GradientButton from "../../../MiniComponents/GradientButton";
+import WalletIcon from "../../../../assets/SVGs/WalletOutline";
+import AudienceIcon from "../../../../assets/SVGs/AudienceOutline";
+import PurplePlusIcon from "../../../../assets/SVGs/PurplePlusIcon";
+
 import AudienceReach from "./AudienceReach";
 
 class AdDetails extends Component {
@@ -74,7 +79,7 @@ class AdDetails extends Component {
             {
               gender: "",
               languages: ["ar", "en"],
-              min_age: 13,
+              min_age: 18,
               max_age: 50,
             },
           ],
@@ -117,6 +122,7 @@ class AdDetails extends Component {
       startEditing: true,
       locationsInfo: [],
       duration: 3,
+      showAudienceList: false,
     };
     this.editCampaign = this.props.navigation.getParam("editCampaign", false);
   }
@@ -1001,13 +1007,14 @@ class AdDetails extends Component {
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
         daily_budget_micro: this.state.campaignInfo.lifetime_budget_micro,
         campaign_id: this.state.campaignInfo.campaign_id,
+        duration: this.state.duration,
       };
 
       let totalReach = {
         demographics: [
           {
             languages: this.props.languages.map((lang) => lang.id),
-            min_age: 13,
+            min_age: 18,
             max_age: "50+",
           },
         ],
@@ -1017,6 +1024,7 @@ class AdDetails extends Component {
       };
       const obj2 = {
         targeting: JSON.stringify(totalReach),
+        duration: this.state.duration,
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
       };
       await this.props.snap_ad_audience_size(obj, obj2);
@@ -1236,10 +1244,123 @@ class AdDetails extends Component {
   };
 
   chooseExistingAudience = () => {
-    this.props.navigation.navigate("SnapchatAudienceList", {
-      source: "ad_targeting",
-      source_action: "a_open_audience_list",
+    // this.props.navigation.navigate("SnapchatAudienceList", {
+    //   source: "ad_targeting",
+    //   source_action: "a_open_audience_list",
+    // });
+    this.setState({
+      showAudienceList: !this.state.showAudienceList,
     });
+  };
+  createNewAudience = () => {
+    this.props.setAudienceDetail({ reset: true });
+    this.props.navigation.navigate("SnapchatAudienceTagetting", {
+      source: "audience_list",
+      source_action: "a_create_audience_detail",
+      audience_channel: "snapchat",
+    });
+  };
+
+  setSelectedAudience = (targeting, coordinates) => {
+    let editedCampaign = cloneDeep(this.state.campaignInfo);
+    let campaignTargeting = targeting;
+    let locationsInfo = coordinates;
+    if (this.editCampaign) {
+      campaignTargeting.geos = editedCampaign.targeting.geos;
+    }
+    editedCampaign.targeting = {
+      ...editedCampaign.targeting,
+      ...campaignTargeting,
+    };
+
+    let editedCountryCodes = editedCampaign.targeting.geos.map(
+      (geo) => geo.country_code
+    );
+    this.props.get_interests(editedCountryCodes.join(","));
+    editedCampaign.targeting.demographics[0].max_age = parseInt(
+      editedCampaign.targeting.demographics[0].max_age
+    );
+    let getCountryName = editedCampaign.targeting.geos.map(
+      (geo, i) =>
+        countries.find(
+          (country) =>
+            country.value === editedCampaign.targeting.geos[i].country_code
+        ).label
+    );
+    let editedRegionNames = editedCampaign.targeting.geos.map((geo, i) =>
+      country_regions.find(
+        (country_region) =>
+          country_region.country_code ===
+          editedCampaign.targeting.geos[i].country_code
+      )
+    );
+    let markers = [];
+    if (locationsInfo) {
+      locationsInfo = cloneDeep(JSON.parse(locationsInfo));
+      markers = cloneDeep(campaignTargeting.locations[0].circles);
+    }
+    // LOCATIONS MAP
+    let stateRegionNames = [];
+    this.setState(
+      {
+        campaignInfo: editedCampaign,
+        // startEditing: false,
+        countryName: getCountryName,
+        regions: editedRegionNames,
+        filteredRegions: editedRegionNames,
+        locationsInfo,
+        markers,
+      },
+      () => {
+        editedCampaign.targeting.geos.forEach(
+          (geo, i) =>
+            editedCampaign.targeting.geos[i].region_id &&
+            editedCampaign.targeting.geos[i].region_id.forEach((id) => {
+              let regN = editedRegionNames[i].regions.find(
+                (region) => region.id === id
+              );
+              regN.country_code = editedCampaign.targeting.geos[i].country_code;
+              stateRegionNames.push(regN);
+            })
+        );
+        let showRegions = this.state.regions.some(
+          (reg) => reg.regions.length > 3
+        );
+
+        if (this.props.data && this.props.data.appChoice) {
+          let navAppChoice =
+            this.props.data.iosApp_name &&
+            this.props.data.iosApp_name !== "" &&
+            this.props.data.androidApp_name &&
+            this.props.data.androidApp_name !== ""
+              ? ""
+              : this.props.data.appChoice;
+          let rep = cloneDeep(this.state.campaignInfo);
+          rep.targeting.devices[0].os_type = navAppChoice;
+          this.setState({
+            campaignInfo: rep,
+          });
+        }
+        this.handleMultipleCountrySelection();
+        this._calcReach();
+        this.setState({
+          regionNames: stateRegionNames,
+          showRegions,
+          showAudienceList: false,
+        });
+        !this.editCampaign &&
+          this.props.save_campaign_info({
+            campaignInfo: editedCampaign,
+            countryName: getCountryName,
+            regions: editedRegionNames,
+            filteredRegions: editedRegionNames,
+            showRegions,
+            regionNames: stateRegionNames,
+            markers,
+            locationsInfo,
+          });
+      }
+    );
   };
 
   handleAdDetailsFocus = () => {
@@ -1255,107 +1376,7 @@ class AdDetails extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    if (this.props.navigation.getParam("audienceSelected", false)) {
-      let editedCampaign = cloneDeep(this.state.campaignInfo);
-      let campaignTargeting = this.props.navigation.getParam(
-        "campaignTargeting",
-        {}
-      );
-      let locationsInfo = this.props.navigation.getParam("coordinates", {});
-      if (this.editCampaign) {
-        campaignTargeting.geos = editedCampaign.targeting.geos;
-      }
-      editedCampaign.targeting = {
-        ...editedCampaign.targeting,
-        ...campaignTargeting,
-      };
 
-      let editedCountryCodes = editedCampaign.targeting.geos.map(
-        (geo) => geo.country_code
-      );
-      this.props.get_interests(editedCountryCodes.join(","));
-      editedCampaign.targeting.demographics[0].max_age = parseInt(
-        editedCampaign.targeting.demographics[0].max_age
-      );
-      let getCountryName = editedCampaign.targeting.geos.map(
-        (geo, i) =>
-          countries.find(
-            (country) =>
-              country.value === editedCampaign.targeting.geos[i].country_code
-          ).label
-      );
-      let editedRegionNames = editedCampaign.targeting.geos.map((geo, i) =>
-        country_regions.find(
-          (country_region) =>
-            country_region.country_code ===
-            editedCampaign.targeting.geos[i].country_code
-        )
-      );
-      let markers = [];
-      if (locationsInfo) {
-        locationsInfo = cloneDeep(JSON.parse(locationsInfo));
-        markers = cloneDeep(campaignTargeting.locations[0].circles);
-      }
-      // LOCATIONS MAP
-      let stateRegionNames = [];
-      this.setState(
-        {
-          campaignInfo: editedCampaign,
-          // startEditing: false,
-          countryName: getCountryName,
-          regions: editedRegionNames,
-          filteredRegions: editedRegionNames,
-          locationsInfo,
-          markers,
-        },
-        () => {
-          editedCampaign.targeting.geos.forEach(
-            (geo, i) =>
-              editedCampaign.targeting.geos[i].region_id &&
-              editedCampaign.targeting.geos[i].region_id.forEach((id) => {
-                let regN = editedRegionNames[i].regions.find(
-                  (region) => region.id === id
-                );
-                regN.country_code =
-                  editedCampaign.targeting.geos[i].country_code;
-                stateRegionNames.push(regN);
-              })
-          );
-          let showRegions = this.state.regions.some(
-            (reg) => reg.regions.length > 3
-          );
-
-          if (this.props.data && this.props.data.appChoice) {
-            let navAppChoice =
-              this.props.data.iosApp_name &&
-              this.props.data.iosApp_name !== "" &&
-              this.props.data.androidApp_name &&
-              this.props.data.androidApp_name !== ""
-                ? ""
-                : this.props.data.appChoice;
-            let rep = cloneDeep(this.state.campaignInfo);
-            rep.targeting.devices[0].os_type = navAppChoice;
-            this.setState({
-              campaignInfo: rep,
-            });
-          }
-          this.handleMultipleCountrySelection();
-          this._calcReach();
-          this.setState({ regionNames: stateRegionNames, showRegions });
-          !this.editCampaign &&
-            this.props.save_campaign_info({
-              campaignInfo: editedCampaign,
-              countryName: getCountryName,
-              regions: editedRegionNames,
-              filteredRegions: editedRegionNames,
-              showRegions,
-              regionNames: stateRegionNames,
-              markers,
-              locationsInfo,
-            });
-        }
-      );
-    }
     const segmentInfo = this.props.data
       ? {
           campaign_channel: "snapchat",
@@ -1402,7 +1423,7 @@ class AdDetails extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-    let { campaignInfo, startEditing } = this.state;
+    let { campaignInfo, startEditing, showAudienceList } = this.state;
     let menu;
     switch (this.state.sidemenu) {
       case "gender": {
@@ -1689,6 +1710,7 @@ class AdDetails extends Component {
                       style={{
                         alignItems: "center",
                         paddingHorizontal: 20,
+                        marginBottom: 4,
                       }}
                     >
                       <WalletIcon
@@ -1698,10 +1720,36 @@ class AdDetails extends Component {
                       />
                       <Text
                         uppercase
-                        style={[styles.subHeadings, { paddingHorizontal: 10 }]}
+                        style={[
+                          styles.subHeadings,
+                          { paddingHorizontal: 10, fontSize: 14, flex: 1 },
+                        ]}
                       >
                         {translate("Set your daily budget")}
                       </Text>
+                      <View style={styles.lifetimeBudgetView}>
+                        <Text
+                          style={[
+                            styles.subHeadings,
+                            styles.lifetimeBudgetText,
+                          ]}
+                        >
+                          {translate("Lifetime budget")}
+                        </Text>
+                        <Text
+                          style={[
+                            styles.subHeadings,
+                            styles.lifetimeBudgetNumber,
+                          ]}
+                        >
+                          $
+                          {formatNumber(
+                            this.state.duration *
+                              this.state.campaignInfo.lifetime_budget_micro,
+                            true
+                          )}
+                        </Text>
+                      </View>
                     </Row>
                     <BudgetCards
                       value={this.state.value}
@@ -1714,40 +1762,6 @@ class AdDetails extends Component {
                       screenProps={this.props.screenProps}
                       data={this.props.data}
                     />
-
-                    {/*---------leave if in case we want to use it again---------*/}
-                    {/* <View style={styles.sliderContainer}>
-                      <View style={styles.budgetSliderText}>
-                        <Text style={globalStyles.whiteTextColor}>
-                          ${this.state.minValueBudget}
-                        </Text>
-                        <Text style={globalStyles.whiteTextColor}>
-                          ${this.state.maxValueBudget}
-                        </Text>
-                      </View>
-
-                      <Slider
-                        thumbTintColor={globalColors.orange}
-                        disabled={this.editCampaign || this.props.loading}
-                        style={styles.slider}
-                        step={10}
-                        minimumValue={this.state.minValueBudget}
-                        maximumValue={this.state.maxValueBudget}
-                        value={
-                          this.state.campaignInfo.lifetime_budget_micro <
-                          90000000000000000000
-                            ? this.state.campaignInfo.lifetime_budget_micro
-                            : 1500
-                        }
-                        onValueChange={debounce(
-                          this.onSelectedBudgetChange,
-                          60
-                        )}
-                        maximumTrackTintColor={globalColors.white}
-                        minimumTrackTintColor={globalColors.purple}
-                      />
-                    </View>
-                  */}
                   </View>
                 ) : (
                   startEditing && (
@@ -1762,60 +1776,96 @@ class AdDetails extends Component {
                 )}
                 {startEditing && (
                   <View style={styles.reachView}>
-                    <Text
-                      style={[
-                        styles.subHeadings,
-                        {
-                          paddingHorizontal: 0,
-                          width:
-                            this.props.audienceList.length > 0 ? "30%" : "60%",
-                          fontSize:
-                            this.props.audienceList.length > 0 ? 13 : 16,
-                        },
-                      ]}
-                    >
-                      {translate("Who would you like to reach?")}
-                    </Text>
-                    {this.props.audienceList.length > 0 ? (
-                      <GradientButton
-                        uppercase={true}
-                        text={translate("Choose Existing Audience")}
-                        onPressAction={this.chooseExistingAudience}
-                        transparent={true}
-                        textStyle={styles.existingButtonText}
-                        height={50}
-                        style={styles.existingButton}
-                        radius={50}
+                    {showAudienceList ? (
+                      <Icon
+                        name={`keyboard-arrow-${
+                          I18nManager.isRTL ? "right" : "left"
+                        }`}
+                        type="MaterialIcons"
+                        style={{
+                          fontSize: 25,
+                          color: globalColors.rum,
+                        }}
+                        onPress={this.chooseExistingAudience}
                       />
+                    ) : (
+                      <AudienceIcon />
+                    )}
+                    <Text
+                      style={[styles.subHeadings, styles.selectAudienceText]}
+                    >
+                      {translate("Select Audience")}
+                    </Text>
+                    {showAudienceList && !this.props.audienceListLoading && (
+                      <TouchableOpacity
+                        style={styles.createView}
+                        onPress={this.createNewAudience}
+                      >
+                        <PurplePlusIcon
+                          width={15}
+                          height={15}
+                          style={styles.iconAdd}
+                        />
+                        <Text style={styles.createText}>
+                          {translate("Create")}
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                    {!showAudienceList && this.props.audienceList.length > 0 ? (
+                      <TouchableOpacity
+                        style={styles.createView}
+                        onPress={this.chooseExistingAudience}
+                      >
+                        <Text style={styles.createText}>
+                          {translate("Choose Preset")}
+                        </Text>
+                        <Icon
+                          name={`keyboard-arrow-${
+                            I18nManager.isRTL ? "left" : "right"
+                          }`}
+                          type="MaterialIcons"
+                          style={styles.iconRight}
+                        />
+                      </TouchableOpacity>
                     ) : (
                       this.props.audienceListLoading && (
                         <ActivityIndicator
                           color={globalColors.purple}
                           size="small"
-                          style={{
-                            right: "100%",
-                          }}
+                          style={styles.iconLoading}
                         />
                       )
                     )}
                   </View>
                 )}
-                <TargetAudience
-                  screenProps={this.props.screenProps}
-                  _renderSideMenu={this._renderSideMenu}
-                  loading={this.props.loading}
-                  gender={gender}
-                  targeting={this.state.campaignInfo.targeting}
-                  regions_names={regions_names}
-                  languages_names={languages_names}
-                  interests_names={interests_names}
-                  OSType={OSType}
-                  mainState={this.state}
-                  translate={translate}
-                  editCampaign={this.editCampaign}
-                  startEditing={startEditing}
-                />
 
+                {!showAudienceList && (
+                  <TargetAudience
+                    screenProps={this.props.screenProps}
+                    _renderSideMenu={this._renderSideMenu}
+                    loading={this.props.loading}
+                    gender={gender}
+                    targeting={this.state.campaignInfo.targeting}
+                    regions_names={regions_names}
+                    languages_names={languages_names}
+                    interests_names={interests_names}
+                    OSType={OSType}
+                    mainState={this.state}
+                    translate={translate}
+                    editCampaign={this.editCampaign}
+                    startEditing={startEditing}
+                    onSelectedGenderChange={this.onSelectedGenderChange}
+                    _handleAge={this._handleAge}
+                  />
+                )}
+                {showAudienceList && (
+                  <SnapchatAudienceList
+                    screenProps={this.props.screenProps}
+                    navigation={this.props.navigation}
+                    chooseExistingAudience={this.chooseExistingAudience}
+                    setSelectedAudience={this.setSelectedAudience}
+                  />
+                )}
                 <AudienceReach
                   loading={this.props.loading}
                   campaignInfo={campaignInfo}
@@ -1880,5 +1930,7 @@ const mapDispatchToProps = (dispatch) => ({
   getAudienceList: () => dispatch(actionCreators.getAudienceList()),
   createAudience: (audience, navigate, locationsInfo) =>
     dispatch(actionCreators.createAudience(audience, navigate, locationsInfo)),
+  setAudienceDetail: (audienceInfo) =>
+    dispatch(actionCreators.setAudienceDetail(audienceInfo)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDetails);

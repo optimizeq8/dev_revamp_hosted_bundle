@@ -11,8 +11,9 @@ import {
 import analytics from "@segment/analytics-react-native";
 import { Content } from "native-base";
 import Sidemenu from "../../../MiniComponents/SideMenu";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
-import CustomHeader from "../../../MiniComponents/Header";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { showMessage } from "react-native-flash-message";
 import SideMenuContainer from "../../../MiniComponents/SideMenuContainer";
 import RadioButtons from "../../../MiniComponents/RadioButtons";
@@ -55,9 +56,10 @@ import isNull from "lodash/isNull";
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
-import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
+import WalletIcon from "../../../../assets/SVGs/WalletOutline";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../../GradiantColors/colors";
+import GradientButton from "../../../MiniComponents/GradientButton";
 
 class GoogleAdTargetting extends Component {
   static navigationOptions = {
@@ -439,6 +441,7 @@ class GoogleAdTargetting extends Component {
       campaign_description2: this.props.campaign.description2,
       campaign_finalurl: this.props.campaign.finalurl,
     };
+
     analytics.track("ad_targeting", {
       timestamp: new Date().getTime(),
       source,
@@ -459,6 +462,15 @@ class GoogleAdTargetting extends Component {
     // );
 
     // Adjust.trackEvent(adjustGoogleAdDetailsTracker);
+  };
+  duration = () => {
+    return this.props.campaign && this.props.campaign.end_time
+      ? Math.ceil(
+          (new Date(this.props.campaign.end_time) -
+            new Date(this.props.campaign.start_time)) /
+            (1000 * 60 * 60 * 24)
+        ) + 1
+      : 1;
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -582,10 +594,23 @@ class GoogleAdTargetting extends Component {
             contentContainerStyle={styles.contentContainer}
           >
             <View style={styles.budgetHeader}>
-              <WalletIcon fill={"#FFF"} />
-              <Text style={[styles.subHeadings, { paddingHorizontal: 10 }]}>
+              <WalletIcon width={30} height={30} fill={"#FFF"} />
+              <Text
+                style={[
+                  styles.subHeadings,
+                  { paddingHorizontal: 10, textTransform: "capitalize" },
+                ]}
+              >
                 {translate("Set your daily budget")}
               </Text>
+              <View style={styles.lifetimeBudgetView}>
+                <Text style={[styles.subHeadings, styles.lifetimeBudgetText]}>
+                  {translate("Lifetime budget")}
+                </Text>
+                <Text style={[styles.subHeadings, styles.lifetimeBudgetNumber]}>
+                  {this.formatNumber(this.duration() * this.state.budget, true)}
+                </Text>
+              </View>
             </View>
 
             <BudgetCards
@@ -618,17 +643,19 @@ class GoogleAdTargetting extends Component {
                 />
               </View>
             ) : (
-              <>
-                <TouchableOpacity
-                  style={styles.keywordsAddButton}
-                  onPress={() => this._renderSideMenu("keywords")}
-                >
-                  <PlusCircle width={35} height={35} />
-                </TouchableOpacity>
-                <Text style={[styles.subHeadings, styles.smallSubHeading]}>
-                  {translate("Add Products and Services")}
-                </Text>
-              </>
+              <GradientButton
+                style={styles.gradientAddProductsServices}
+                screenProps={this.props.screenProps}
+                onPressAction={() => this._renderSideMenu("keywords")}
+              >
+                <View style={styles.gradientAddProductsServices}>
+                  <PlusCircle width={50} height={50} />
+
+                  <Text style={[styles.addProductsText]}>
+                    {translate("Add Products and Services")}
+                  </Text>
+                </View>
+              </GradientButton>
             )}
 
             <Text style={[styles.subHeadings, { width: "60%" }]}>

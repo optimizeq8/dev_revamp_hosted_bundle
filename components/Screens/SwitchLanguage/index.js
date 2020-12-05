@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { View, Image, Text } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import isNull from "lodash/isNull";
@@ -37,7 +38,8 @@ class SwitchLanguage extends Component {
   };
   async componentDidMount() {
     const appLanguage = await AsyncStorage.getItem("appLanguage");
-    if (appLanguage !== this.state.language) {
+
+    if (appLanguage && appLanguage !== this.state.language) {
       // in case the app language is ARABIC to set the button properly
       this.setState({
         language: appLanguage,
@@ -127,7 +129,6 @@ class SwitchLanguage extends Component {
     await AsyncStorage.setItem("languageOpened", "true");
     if (appLanguage !== this.state.language) {
       // if app language not same as the state language then set it as the app language and reloading the app
-      this.props.getLanguageListPOEdit(this.state.language);
       this.props.navigation.navigate("SwitchLanguageLoading", {
         source: "app_language",
         source_action: "a_app_language_select",

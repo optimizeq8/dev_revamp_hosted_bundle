@@ -4,10 +4,11 @@ import styles from "./styles";
 import formatNumber from "../../../../../formatNumber";
 import { Icon } from "native-base";
 import RecomenededIcon from "../../../../../../assets/SVGs/AdDetails/RecomenededIcon.svg";
+import { globalColors } from "../../../../../../GlobalStyles";
 
 export default class BudgetCard extends Component {
   render() {
-    let { bud, _handleBudget, budgetOption } = this.props;
+    let { bud, _handleBudget, budgetOption, translate } = this.props;
 
     return (
       <>
@@ -30,13 +31,9 @@ export default class BudgetCard extends Component {
           </Text>
         </TouchableOpacity>
         {bud.id === 1 && (
-          <View
-            style={[
-              styles.recIcon,
-              { left: I18nManager.isRTL ? "54%" : "73%" },
-            ]}
-          >
-            <RecomenededIcon fill={"#fff"} style={{ right: 1 }} />
+          <View style={[styles.recIcon]}>
+            <Text style={styles.recommendText}>{translate("Recommended")}</Text>
+            {/* <RecomenededIcon fill={"#fff"} style={{ right: 1 }} /> */}
           </View>
         )}
       </>

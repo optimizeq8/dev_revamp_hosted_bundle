@@ -7,9 +7,9 @@ import {
   ActivityIndicator,
   Text,
 } from "react-native";
-import { Button, Item, Input, Icon } from "native-base";
+import { Item, Input } from "native-base";
 import isNull from "lodash/isNull";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
 import SelectDevices from "./SelectDevices";
 import SelectInterests from "./SelectInterests";
 import SelectVersions from "./SelectVersions";
@@ -19,8 +19,6 @@ import GradientButton from "../GradientButton";
 //Icon
 import LocationIcon from "../../../assets/SVGs/Location";
 import PlusCircle from "../../../assets/SVGs/PlusCircle";
-
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 
 //Styles
 import styles from "./styles";

@@ -1,5 +1,6 @@
 import React from "react";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { Text, View } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import RegisterSuccess from "../../../assets/SVGs/RegisterSuccess";

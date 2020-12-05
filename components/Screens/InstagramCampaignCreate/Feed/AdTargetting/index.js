@@ -5,7 +5,9 @@ import { Container, Content, Row } from "native-base";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../../MiniComponents/SideMenu";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import ReachBar from "./ReachBar";
 import SelectRegions from "../../../../MiniComponents/SelectRegionsInstagram";
 import SelectLanguages from "../../../../MiniComponents/SelectLanguages";
@@ -42,7 +44,9 @@ import {
 import { BudgetCards } from "./BudgetCards";
 import { TargetAudience } from "./TargetAudience";
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
-import WalletIcon from "../../../../../assets/SVGs/MenuIcons/Wallet";
+import WalletIcon from "../../../../../assets/SVGs/WalletOutline";
+import AudienceIcon from "../../../../../assets/SVGs/AudienceOutline";
+
 import { globalColors } from "../../../../../GlobalStyles";
 class InstagramFeedAdTargetting extends Component {
   static navigationOptions = {
@@ -68,7 +72,7 @@ class InstagramFeedAdTargetting extends Component {
           os_version_max: "",
           geo_locations: { countries: [], regions: [] },
           age_max: 65,
-          age_min: 13,
+          age_min: 18,
         },
       },
       selectedCountriesAndRegions: [],
@@ -93,6 +97,7 @@ class InstagramFeedAdTargetting extends Component {
       startEditing: true,
       customInterests: [],
       duration: 3,
+      selectedAllRegions: false,
     };
     this.editCampaign = this.props.navigation.getParam("editCampaign", false);
   }
@@ -251,7 +256,7 @@ class InstagramFeedAdTargetting extends Component {
                   targeting: {
                     ...rep.targeting,
                     age_max: rep.targeting.age_max ? rep.targeting.age_max : 65,
-                    age_min: rep.targeting.age_min ? rep.targeting.age_min : 13,
+                    age_min: rep.targeting.age_min ? rep.targeting.age_min : 18,
                   },
                 },
                 value: this.formatNumber(
@@ -472,13 +477,21 @@ class InstagramFeedAdTargetting extends Component {
   onSelectedRegionChange = (selectedItem) => {
     let replace = cloneDeep(this.state.campaignInfo);
     let regionsArray = cloneDeep(replace.targeting.geo_locations.regions);
+    let selectedAllRegions = selectedItem === "all";
     if (selectedItem === "all") {
-      regionsArray = replace.targeting.geo_locations.countries.map((country) =>
-        allRegions.filter((cR) => {
-          if (cR.country === country) return cR;
-        })
-      );
-      regionsArray = regionsArray.flat(1);
+      if (this.state.selectedAllRegions) {
+        regionsArray = [];
+        selectedAllRegions = false;
+      } else {
+        regionsArray = replace.targeting.geo_locations.countries.map(
+          (country) =>
+            allRegions.filter((cR) => {
+              if (cR.country === country) return cR;
+            })
+        );
+        regionsArray = regionsArray.flat(1);
+        selectedAllRegions = true;
+      }
     } else {
       let checkIfInRegionsArray = regionsArray.findIndex(
         (reg) => reg.key === selectedItem.key
@@ -487,7 +500,7 @@ class InstagramFeedAdTargetting extends Component {
       if (checkIfInRegionsArray === -1) {
         regionsArray = [...regionsArray, { ...selectedItem }];
       } else {
-        regionsArray = regionsArray.splice(checkIfInRegionsArray, 1);
+        regionsArray.splice(checkIfInRegionsArray, 1);
       }
     }
 
@@ -496,6 +509,7 @@ class InstagramFeedAdTargetting extends Component {
     this.setState({
       campaignInfo: replace,
       regions: regionsArray,
+      selectedAllRegions: selectedAllRegions,
     });
     !this.editCampaign &&
       this.props.save_campaign_info_instagram({
@@ -585,21 +599,22 @@ class InstagramFeedAdTargetting extends Component {
   };
 
   onSelectedGenderChange = (gender) => {
-    let replace = this.state.campaignInfo;
-    let x = "";
-    switch (gender) {
-      case "MALE":
-        x = "1";
-        break;
-      case "FEMALE":
-        x = "2";
-        break;
-      default:
-        x = "";
-        break;
-    }
-    replace.targeting.genders = [x];
-
+    let replace = cloneDeep(this.state.campaignInfo);
+    // let x = "";
+    // switch (gender) {
+    //   case "MALE":
+    //     x = "1";
+    //     break;
+    //   case "FEMALE":
+    //     x = "2";
+    //     break;
+    //   default:
+    //     x = "";
+    //     break;
+    // }
+    //gender is coming in as 1,2
+    replace.targeting.genders = [gender];
+    console.log("replace.targeting.genders", replace.targeting.genders, gender);
     analytics.track(`a_ad_gender`, {
       source: "ad_targeting",
       source_action: "a_ad_gender",
@@ -608,6 +623,7 @@ class InstagramFeedAdTargetting extends Component {
     this.setState({ campaignInfo: { ...replace }, selectedGender: gender });
     !this.editCampaign &&
       this.props.save_campaign_info_instagram({ campaignInfo: { ...replace } });
+    this._calcReach();
   };
 
   _handleAge = (values) => {
@@ -665,7 +681,6 @@ class InstagramFeedAdTargetting extends Component {
     let totalReach = {
       geo_locations: {
         countries: r.geo_locations.countries,
-        regions: r.geo_locations.regions,
       },
     };
     if (r.geo_locations.countries.length === 0) {
@@ -712,13 +727,12 @@ class InstagramFeedAdTargetting extends Component {
       campaign_id: this.state.campaignInfo.campaign_id,
       daily_budget_micro: this.state.campaignInfo.lifetime_budget_micro,
     };
-
     if (totalReach.geo_locations.countries.length === 0) {
       delete totalReach.geo_locations.countries;
     }
-    if (totalReach.geo_locations.regions.length === 0) {
-      delete totalReach.geo_locations.regions;
-    }
+    // if (totalReach.geo_locations.regions.length === 0) {
+    //   delete totalReach.geo_locations.regions;
+    // }
     if (
       !totalReach.geo_locations.hasOwnProperty("regions") &&
       !totalReach.geo_locations.hasOwnProperty("countries")
@@ -731,7 +745,7 @@ class InstagramFeedAdTargetting extends Component {
       campaign_id: this.state.campaignInfo.campaign_id,
       daily_budget_micro: this.state.campaignInfo.lifetime_budget_micro,
     };
-    // console.log("obj2", obj2);
+    console.log("obj2", JSON.stringify(obj2, null, 2));
 
     await this.props.instagram_ad_audience_size(obj, obj2);
     // }
@@ -1011,7 +1025,7 @@ class InstagramFeedAdTargetting extends Component {
             _handleAge={this._handleAge}
             _handleSideMenuState={this._handleSideMenuState}
             ageValuesRange={[13, 65]}
-            minAge={this.state.campaignInfo.targeting.age_min || 13}
+            minAge={this.state.campaignInfo.targeting.age_min || 18}
             maxAge={this.state.campaignInfo.targeting.age_max || 65}
           />
         );
@@ -1261,7 +1275,9 @@ class InstagramFeedAdTargetting extends Component {
                     this.props.saveCampaignSteps([
                       "Dashboard",
                       "InstagramFeedAdObjective",
-                      "InstagramFeedAdDesign",
+                      this.props.data.existingPost === 0
+                        ? "InstagramAdDesignExistingPost"
+                        : "InstagramFeedAdDesign",
                       "InstagramFeedAdTargetting",
                     ]);
                   }
@@ -1275,29 +1291,44 @@ class InstagramFeedAdTargetting extends Component {
                   >
                     {!this.editCampaign ? (
                       <>
-                        <Row
-                          size={-1}
-                          style={{
-                            alignItems: "center",
-                            paddingHorizontal: 20,
-                          }}
-                        >
-                          <WalletIcon
-                            width={30}
-                            heoght={30}
-                            fill={globalColors.rum}
-                          />
-                          <Text
-                            style={[
-                              styles.subHeadings,
-                              {
-                                paddingHorizontal: 10,
-                                textTransform: "uppercase",
-                              },
-                            ]}
-                          >
-                            {translate("Set your daily budget")}
-                          </Text>
+                        <Row size={-1} style={styles.row}>
+                          <View style={styles.walletTextView}>
+                            <WalletIcon
+                              width={30}
+                              height={30}
+                              fill={globalColors.rum}
+                            />
+                            <Text
+                              style={[
+                                styles.subHeadings,
+                                styles.dailyBudgetText,
+                              ]}
+                            >
+                              {translate("Set your daily budget")}
+                            </Text>
+                          </View>
+                          <View style={styles.lifetimeBudgetView}>
+                            <Text
+                              style={[
+                                styles.subHeadings,
+                                styles.lifetimeBudgetText,
+                              ]}
+                            >
+                              {translate("Lifetime budget")}
+                            </Text>
+                            <Text
+                              style={[
+                                styles.subHeadings,
+                                styles.lifetimeBudgetNumber,
+                              ]}
+                            >
+                              {this.formatNumber(
+                                this.state.duration *
+                                  this.state.campaignInfo.lifetime_budget_micro,
+                                true
+                              )}
+                            </Text>
+                          </View>
                         </Row>
 
                         <BudgetCards
@@ -1358,14 +1389,12 @@ class InstagramFeedAdTargetting extends Component {
                       )
                     )}
                     {startEditing && (
-                      <Text
-                        style={[
-                          styles.subHeadings,
-                          { width: "60%", textTransform: "uppercase" },
-                        ]}
-                      >
-                        {translate("Who would you like to reach?")}
-                      </Text>
+                      <View style={styles.reachView}>
+                        <AudienceIcon />
+                        <Text style={[styles.subHeadings]}>
+                          {translate("Select Audience")}
+                        </Text>
+                      </View>
                     )}
                     <TargetAudience
                       screenProps={this.props.screenProps}
@@ -1382,6 +1411,7 @@ class InstagramFeedAdTargetting extends Component {
                       translate={translate}
                       editCampaign={this.editCampaign}
                       startEditing={startEditing}
+                      onSelectedGenderChange={this.onSelectedGenderChange}
                     />
 
                     <ReachBar

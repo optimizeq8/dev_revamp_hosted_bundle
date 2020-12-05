@@ -11,7 +11,8 @@ import {
 } from "react-native";
 import { Card, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import CustomHeader from "../../MiniComponents/Header";
 import GradientButton from "../../MiniComponents/GradientButton";
 import Input from "../../MiniComponents/InputFieldNew";

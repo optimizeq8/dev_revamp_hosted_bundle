@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { BackHandler } from "react-native";
 import { Modal } from "react-native-paper";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import analytics from "@segment/analytics-react-native";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import BillingAddressCard from "../../MiniComponents/BillingAddressCard";

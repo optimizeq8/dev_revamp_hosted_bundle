@@ -4,6 +4,7 @@ import * as actionTypes from "./actionTypes";
 import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
 import createBaseUrl from "./createBaseUrl";
+import { NavigationActions } from "react-navigation";
 
 export const setCampaignInfoForTransaction = (data) => {
   return (dispatch) => {
@@ -372,7 +373,7 @@ export const removeWalletAmount = (
   };
 };
 
-export const checkoutwithWallet = (campaign_id, retries = 3) => {
+export const checkoutwithWallet = (campaign_id, navigation, retries = 3) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
@@ -405,13 +406,21 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
           analytics.identify(getState().auth.userid, {
             wallet_amount: data.wallet_amount,
           });
-        NavigationService.navigate("SuccessRedirect", {
-          ...data,
-          source: "payment_processing",
-          source_action: "a_payment_processing",
-          payment_mode: "WALLET",
-          checkoutwithWallet: true,
-        });
+        navigation.reset(
+          [
+            NavigationActions.navigate({
+              routeName: "SuccessRedirect",
+              params: {
+                ...data,
+                source: "payment_processing",
+                source_action: "a_payment_processing",
+                payment_mode: "WALLET",
+                checkoutwithWallet: true,
+              },
+            }),
+          ],
+          0
+        );
       })
 
       .then((data) => {

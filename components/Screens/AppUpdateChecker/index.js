@@ -12,7 +12,8 @@ import Modal from "react-native-modal";
 import { Small } from "../../MiniComponents/StyledComponents";
 import GradientButton from "../../MiniComponents/GradientButton";
 import CustomHeader from "../../MiniComponents/Header";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import * as Sentry from "@sentry/react-native";
 import * as Updates from "expo-updates";
 class AppUpdateChecker extends PureComponent {
@@ -123,7 +124,7 @@ class AppUpdateChecker extends PureComponent {
         style={{ margin: 0 }}
         isVisible={this.state.updateIsAvalible || this.state.OTAAvalibe}
       >
-        <SafeAreaView forceInset={{ top: "always" }}>
+        <SafeAreaView forceInset={{ top: "always", bottom: "never" }}>
           <BlurView intensity={70} tint="dark" style={styles.blurStyle}>
             <View style={{ height: "100%" }}>
               {this.state.updateIsAvalible && (

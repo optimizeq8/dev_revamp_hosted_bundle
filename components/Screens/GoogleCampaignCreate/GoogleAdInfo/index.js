@@ -14,7 +14,9 @@ import { Content, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import { BlurView } from "@react-native-community/blur";
 import { Modal } from "react-native-paper";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import * as Animatable from "react-native-animatable";
 import LowerButton from "../../../MiniComponents/LowerButton";
 
@@ -174,12 +176,13 @@ class GoogleAdInfo extends Component {
       source_action: "a_ad_end_date",
       campaign_end_date: date,
     });
+    end_time = end_time.toISOString().split("T")[0];
     this.setState({
-      end_time: end_time.toISOString(),
+      end_time,
     });
 
     this.props.save_google_campaign_data({
-      end_time: end_time.toISOString(),
+      end_time,
       campaignDateChanged: true,
     });
     this._handleSubmission();

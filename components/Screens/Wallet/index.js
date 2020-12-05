@@ -11,7 +11,9 @@ import {
   ActivityIndicator,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { BlurView } from "expo-blur";
 import { Item, Input, Label, Container, Icon } from "native-base";
 import * as Animatable from "react-native-animatable";

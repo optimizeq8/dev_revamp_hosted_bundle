@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   customSearchField: {
     borderRadius: 15,
     borderColor: "#0000",
-    backgroundColor: "rgba(255,255,255,0.1)",
+    backgroundColor: "#0002",
     width: wp(80),
     height: "50%",
     alignSelf: "center",
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     fontSize: 14 / PixelRatio.getFontScale(),
     alignSelf: "center",
     textAlign: I18nManager.isRTL ? "right" : "left",
-    color: "#fff",
+    color: globalColors.rum,
   },
 });
 export default styles;

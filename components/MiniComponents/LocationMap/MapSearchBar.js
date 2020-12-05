@@ -36,7 +36,7 @@ export default class MapSearchBar extends Component {
         // this.props.handleRegionChange(coordinates, bBox);
       })
       .catch((err) => {
-        //  console.log("err", err)}
+        // console.log("err", err);
       });
   };
   handleAutoComplete = (location) => {

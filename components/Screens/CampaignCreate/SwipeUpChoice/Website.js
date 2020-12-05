@@ -285,7 +285,7 @@ class Website extends Component {
           <Picker
             showIcon={true}
             screenProps={this.props.screenProps}
-            searchPlaceholderText={"Search Call To Action"}
+            searchPlaceholderText={translate("Search Call To Action")}
             data={this.state.callactions}
             uniqueKey={"value"}
             displayKey={"label"}
@@ -372,7 +372,7 @@ class Website extends Component {
           </View>
         </InputScrollView>
         {this.props.loadingDestinationURLValid && (
-          <LoadingScreen top={30} withBackground />
+          <LoadingScreen withBackground top={31} />
         )}
       </View>
     );

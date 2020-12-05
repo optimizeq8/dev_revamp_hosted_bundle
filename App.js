@@ -1,8 +1,7 @@
 if (__DEV__) {
   import("./ReactotronConfig");
 }
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React from "react";
 import * as Localization from "expo-localization";
 import i18n from "i18n-js";
 import {
@@ -11,17 +10,13 @@ import {
   StyleSheet,
   View,
   Animated,
-  Image,
   Text as TextReactNative,
   I18nManager,
   AppState,
   ActivityIndicator,
-  Dimensions,
-  Linking,
-  UIManager,
 } from "react-native";
+import Intercom from "react-native-intercom";
 import analytics from "@segment/analytics-react-native";
-// import Mixpanel from "@segment/analytics-react-native-mixpanel";
 import AdjustIntegration from "@segment/analytics-react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
@@ -48,7 +43,6 @@ import * as Updates from "expo-updates";
 import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
-import * as Icon from "@expo/vector-icons";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
 import NavigationService from "./NavigationService";
@@ -59,20 +53,16 @@ import * as actionCreators from "./store/actions";
 
 import AppNavigator from "./components/Navigation";
 import { Provider } from "react-redux";
-import { Icon as BIcon, Root } from "native-base";
+import { Root } from "native-base";
 import isNull from "lodash/isNull";
 
 // console.disableYellowBox = true;
 import store from "./store";
 import FlashMessage from "react-native-flash-message";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 //icons
 import PurpleLogo from "./assets/SVGs/PurpleLogo";
-import { colors } from "./components/GradiantColors/colors";
 import { REHYDRATE } from "redux-persist";
 import { PESDK } from "react-native-photoeditorsdk";
 import { VESDK } from "react-native-videoeditorsdk";
@@ -85,21 +75,25 @@ if (!__DEV__) {
     dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635",
   });
 }
-// import { MixpanelInstance } from "react-native-mixpanel";
+import { MixpanelInstance } from "react-native-mixpanel";
 import AsyncStorage from "@react-native-community/async-storage";
+import LottieView from "lottie-react-native";
 
 //DEV TOKEN FOR MIXPANEL ====> c9ade508d045eb648f95add033dfb017
 //LIVE TOKEN FOR MIXPANEL ====> ef78d7f5f4160b74fda35568224f6cfa
-// const MixpanelSDK = new MixpanelInstance(
-//   "c9ade508d045eb648f95add033dfb017",
-//   false,
-//   false
-// );
-// MixpanelSDK.initialize().then(() => MixpanelSDK.showInAppMessageIfAvailable());
-
+const MixpanelSDK = new MixpanelInstance(
+  "c9ade508d045eb648f95add033dfb017",
+  false,
+  false
+);
+MixpanelSDK.initialize().then(() => MixpanelSDK.showInAppMessageIfAvailable());
+analytics.getAnonymousId().then((id) => MixpanelSDK.identify(id));
 // Sentry.captureException(new Error("Oops!"));
 // crash;
 import { enableScreens } from "react-native-screens";
+import MaskedView from "@react-native-community/masked-view";
+import Logo from "./assets/Logo.svg";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 enableScreens();
 
 const defaultErrorHandler = ErrorUtils.getGlobalHandler();
@@ -154,6 +148,8 @@ class App extends React.Component {
       bootSplashLogoIsLoaded: false,
       notificationData: null,
       mounted: false,
+      loadingProgress: new Animated.Value(0),
+      animDone: false,
       // locale: Localization.locale.includes("ar") ? "ar" : "en"
     };
     this.interval = null;
@@ -199,17 +195,13 @@ class App extends React.Component {
   t = (scope, options) => {
     return i18n.t(scope, { locale: this.state.locale, ...options });
   };
-  componentDidMount() {
+  async componentDidMount() {
     // FOR TEST ORG & PROJ ==> hNRRGVYYOxFiMXboexCvtPK7PSy2NgHp
     // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
     RNAdvertisingId.getAdvertisingId();
-
-    analytics.setup("ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB", {
-      using: [
-        // Mixpanel,
-        AdjustIntegration,
-      ],
+    analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
+      using: [AdjustIntegration],
       // Record screen views automatically!
       recordScreenViews: true,
       // Record certain application events automatically!
@@ -226,9 +218,8 @@ class App extends React.Component {
       },
       debug: true,
     });
-    setTimeout(() => {
-      RNBootSplash.hide();
-    }, 1000);
+    await RNBootSplash.hide();
+
     analytics.getAnonymousId().then((anonId) => {
       this.setState({
         anonymous_userId: anonId,
@@ -238,11 +229,26 @@ class App extends React.Component {
     persistor.dispatch({ type: REHYDRATE });
 
     this._loadAsync();
-    store.dispatch(actionCreators.checkForExpiredToken());
+    store.dispatch(actionCreators.checkForExpiredToken(NavigationService));
     this._notificationSubscription = Notifications.addNotificationResponseReceivedListener(
       this._handleNotification
     );
     AppState.addEventListener("change", this._handleAppStateChange);
+    Platform.OS === "ios" && Intercom.registerForPush();
+
+    Notifications.getDevicePushTokenAsync()
+      .then((token) => {
+        Intercom.sendTokenToIntercom(token.data);
+      })
+      .catch((err) => {});
+
+    Intercom.addEventListener(
+      Intercom.Notifications.UNREAD_COUNT,
+      this._onUnreadChange
+    );
+    Intercom.setInAppMessageVisibility("GONE");
+    this._loadAppLanguage();
+
     this.interval = setInterval(() => {
       store.dispatch(actionCreators.crashAppForSpamUser());
     }, 300000);
@@ -470,11 +476,18 @@ class App extends React.Component {
   };
 
   componentWillUnmount() {
+    Intercom.removeEventListener(
+      Intercom.Notifications.UNREAD_COUNT,
+      this._onUnreadChange
+    );
     clearInterval(this.interval);
     AppState.removeEventListener("change", this._handleAppStateChange);
     // Adjust.componentWillUnmount();
   }
-
+  _onUnreadChange = (data) => {
+    Notifications.setBadgeCountAsync(data.count);
+    store.dispatch(actionCreators.setCounterForUnreadMessage(data.count));
+  };
   getCurrentRouteName = (navigationState) => {
     if (!navigationState) {
       return null;
@@ -497,214 +510,154 @@ class App extends React.Component {
     </View>
   );
 
-  anim = () => {
-    // Animated.stagger(250, [
-    //   Animated.spring(this.state.translateY, {
-    //     useNativeDriver,
-    //     toValue: -50,
-    //   }),
-    //  ,
-    // ]).start();
-    Animated.timing(this.state.translateY, {
-      toValue: heightPercentageToDP(100),
-      useNativeDriver: true,
-      // duration: 1000,
-    }).start(() => {
-      this.setState({ isLoadingComplete: true });
-    });
-  };
   render() {
-    if (!this.state.isLoadingComplete) {
-      return (
-        <>
+    let opacityNeg = {
+      opacity: this.state.loadingProgress.interpolate({
+        inputRange: [0, 25, 50],
+        outputRange: [1, 0, 0],
+        extrapolate: "clamp",
+      }),
+      transform: [
+        {
+          scale: this.state.loadingProgress.interpolate({
+            inputRange: [0, 100],
+            outputRange: [1.1, 1],
+          }),
+        },
+      ],
+    };
+    const prefix = "optimize://";
+    let opacity = {
+      opacity: this.state.loadingProgress.interpolate({
+        inputRange: [0, 25, 50],
+        outputRange: [0, 0, 1],
+        extrapolate: "clamp",
+      }),
+      transform: [
+        {
+          scale: this.state.loadingProgress.interpolate({
+            inputRange: [0, 100],
+            outputRange: [1.1, 1],
+          }),
+        },
+      ],
+    };
+
+    return (
+      <Provider store={store}>
+        <PersistGate persistor={persistor} loading={this.renderLoading()}>
+          <StatusBar
+            barStyle="light-content"
+            translucent={true}
+            style={{
+              backgroundColor: "transparent",
+              marginTop: 0,
+              paddingTop: 0,
+            }}
+          />
           <LinearGradient
             colors={["#9300FF", "#5600CB"]}
             locations={[0, 1]}
             style={styles.gradient}
           />
-          <View style={styles.logoContainer}>
-            <Image
-              source={require("./assets/splash.png")}
-              style={{
-                width: "100%",
-                height: "100%",
-              }}
-              resizeMode="cover"
-            />
-            {/* <Animated.Image
-              source={require("./assets/logo.png")}
-              style={[
-                styles.logo,
-                // {
-                //   transform: [
-                //     {
-                //       translateY: this.state.translateY,
-                //     },
-                //   ],
-                // },
-              ]}
-              fadeDuration={0}
-            /> */}
-          </View>
-        </>
-      );
-    }
-    {
-      const prefix = "optimize://";
-
-      return (
-        <Provider store={store}>
-          <PersistGate persistor={persistor} loading={this.renderLoading()}>
-            <StatusBar
-              barStyle="light-content"
-              translucent={true}
-              style={{
-                backgroundColor: "transparent",
-                marginTop: 0,
-                paddingTop: 0,
-              }}
-            />
-            <LinearGradient
-              colors={["#9300FF", "#5600CB"]}
-              locations={[0, 1]}
-              style={styles.gradient}
-            />
-            <View
-              style={{
-                backgroundColor: "transparent",
-                marginTop: 0,
-                paddingTop: 0,
-              }}
-            />
-            <View
-              onLayout={() => this.setState({ mounted: true })}
-              style={styles.container}
-            >
-              <Root>
-                <AppNavigator
-                  onNavigationStateChange={(prevState, currentState) => {
-                    const currentScreen = this.getCurrentRouteName(
-                      currentState
-                    );
-                    this.setState({ currentScreen });
-                    // console.log("screeen name", currentScreen);
-                  }}
-                  uriPrefix={prefix}
-                  ref={(navigatorRef) => {
-                    this.navigatorRef = navigatorRef;
-                    NavigationService.setTopLevelNavigator(navigatorRef);
-                  }}
-                  screenProps={{
-                    translate: this.t,
-                    locale: this.state.locale,
-                    setLocale: this.setLocale,
-                    device_id: getUniqueId(),
-                    anonymous_userId: this.state.anonymous_userId,
-                    prevAppState: this.state.prevAppState,
-                  }}
-                />
-                <FlashMessage
-                  icon="auto"
-                  duration={4000}
-                  position={"top"}
-                  floating={true}
-                />
-              </Root>
-            </View>
-          </PersistGate>
-          {/* {this._maybeRenderLoadingImage()} */}
-        </Provider>
-      );
-    }
-  }
-  _maybeRenderLoadingImage = () => {
-    if (this.state.splashAnimationComplete) {
-      return null;
-    }
-
-    return (
-      <Animated.View
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: this.state.splashFadeAnimation.interpolate({
-            inputRange: [0, 1],
-            outputRange: [1, 0],
-          }),
-        }}
-      >
-        <Animated.Image
-          source={require("./assets/images/MainSplashempty.png")}
-          style={{
-            width: undefined,
-            height: undefined,
-            position: "absolute",
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-            resizeMode: "cover",
-            // opacity: this.state.splashAnimation.interpolate({
-            //   inputRange: [0, 1],
-            //   outputRange: [0, 1]
-            // })
-          }}
-          onLoadEnd={this._animateOut}
-        />
-        <Animated.View
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            bottom: "61%",
-            right: 0,
-            alignItems: "center",
-            justifyContent: "center",
-            opacity: this.state.splashAnimation.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0, 1],
-            }),
-            transform: [
-              {
-                translateY: this.state.splashAnimation.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [100, 0],
-                }),
-              },
-            ],
-          }}
-        >
-          <PurpleLogo
-            width={heightPercentageToDP(20)}
-            height={heightPercentageToDP(20)}
+          <View
+            style={{
+              backgroundColor: "transparent",
+              marginTop: 0,
+              paddingTop: 0,
+            }}
           />
-        </Animated.View>
-      </Animated.View>
+          {!this.state.animDone && (
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100%",
+                position: "absolute",
+                alignSelf: "center",
+                width: "100%",
+              }}
+            >
+              <Animated.View
+                style={[
+                  {
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "100%",
+                    height: "100%",
+                    alignSelf: "center",
+                  },
+                  opacityNeg,
+                ]}
+              >
+                <LottieView
+                  ref={(animation) => {
+                    this.animation = animation;
+                  }}
+                  resizeMode="contain"
+                  source={require("./assets/animation/LogoAnimation.json")}
+                  onAnimationFinish={() =>
+                    Animated.timing(this.state.loadingProgress, {
+                      toValue: 100,
+                      duration: 1000,
+                      useNativeDriver: true,
+                      delay: 400,
+                    }).start(() => {
+                      this.setState({ animDone: true });
+                    })
+                  }
+                  autoPlay={false}
+                  loop={false}
+                />
+                {/* <Logo width={1000} /> */}
+              </Animated.View>
+            </View>
+          )}
+          <Animated.View
+            onLayout={() => this.setState({ mounted: true })}
+            style={[styles.container, opacity]}
+          >
+            <SafeAreaProvider>
+              {this.state.isLoadingComplete && (
+                <Root>
+                  <AppNavigator
+                    onNavigationStateChange={(prevState, currentState) => {
+                      const currentScreen = this.getCurrentRouteName(
+                        currentState
+                      );
+                      this.setState({ currentScreen });
+                      // console.log("screeen name", currentScreen);
+                    }}
+                    uriPrefix={prefix}
+                    ref={(navigatorRef) => {
+                      this.navigatorRef = navigatorRef;
+                      NavigationService.setTopLevelNavigator(navigatorRef);
+                    }}
+                    screenProps={{
+                      translate: this.t,
+                      locale: this.state.locale,
+                      setLocale: this.setLocale,
+                      device_id: getUniqueId(),
+                      anonymous_userId: this.state.anonymous_userId,
+                      prevAppState: this.state.prevAppState,
+                    }}
+                  />
+                  <FlashMessage
+                    icon="auto"
+                    duration={4000}
+                    position={"top"}
+                    floating={true}
+                  />
+                </Root>
+              )}
+            </SafeAreaProvider>
+          </Animated.View>
+          {/* </MaskedView> */}
+        </PersistGate>
+      </Provider>
     );
-  };
+  }
 
-  _animateOut = () => {
-    // SplashScreen.hide();
-    Animated.sequence([
-      Animated.timing(this.state.splashAnimation, {
-        toValue: 1,
-        duration: 2000,
-        useNativeDriver: true,
-      }),
-      Animated.timing(this.state.splashFadeAnimation, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }),
-    ]).start(() => {
-      this.setState({ splashAnimationComplete: true });
-    });
-  };
   _loadAppLanguage = async () => {
     const mobileLanguage = Localization.locale;
     const appLanguage = await AsyncStorage.getItem("appLanguage");
@@ -739,7 +692,6 @@ class App extends React.Component {
     // };
   };
   _loadResourcesAsync = async () => {
-    await this._loadAppLanguage();
     const images = [require("./assets/images/splash.png")];
     const cacheImages = images.map((image) =>
       Asset.fromModule(image).downloadAsync()
@@ -756,14 +708,9 @@ class App extends React.Component {
       Asset.loadAsync([require("./assets/images/tutorial/tutorial-4.png")]),
       Asset.loadAsync([require("./assets/images/GooglePhoneBG.png")]),
       Asset.loadAsync([require("./assets/images/GoogleSearchBar.png")]),
-      Asset.loadAsync([require("./assets/images/MainSplash.png")]),
 
       Asset.loadAsync([require("./assets/images/knet.png")]),
       Asset.loadAsync([require("./assets/images/mastercard.png")]),
-      Asset.loadAsync([require("./assets/splash.png")]),
-      Asset.loadAsync([require("./assets/images/AdTypes/SnapAd.gif")]),
-      Asset.loadAsync([require("./assets/images/AdTypes/StoryAd.gif")]),
-      Asset.loadAsync([require("./assets/images/AdTypes/CollectionAd.gif")]),
 
       Font.loadAsync({
         "montserrat-regular-arabic": require("./assets/fonts/Arabic/Changa-Regular.ttf"),
@@ -808,6 +755,7 @@ class App extends React.Component {
 
   _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
+    this.animation.play(70, 200);
   };
 }
 

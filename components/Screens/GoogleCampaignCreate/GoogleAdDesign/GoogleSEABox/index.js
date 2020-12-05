@@ -4,7 +4,12 @@ import { View, Text } from "react-native";
 import { Input } from "native-base";
 import GlobalStyles, { globalColors } from "../../../../../GlobalStyles";
 import styles from "./styles";
-
+import WebsiteSVG from "../../../../../assets/SVGs/SwipeUps/Website";
+import Headline1SVG from "../../../../../assets/SVGs/GoogleAdDesign/Headline1";
+import Headline2SVG from "../../../../../assets/SVGs/GoogleAdDesign/Headline2";
+import Headline3SVG from "../../../../../assets/SVGs/GoogleAdDesign/Headline3";
+import Description1SVG from "../../../../../assets/SVGs/GoogleAdDesign/Description1";
+import Description2SVG from "../../../../../assets/SVGs/GoogleAdDesign/Description2";
 const handleHttp = (networkString, setVal) => {
   if (networkString === "https://") {
     setVal({ networkString: "http://" });
@@ -54,42 +59,44 @@ export default GoogleSEABox = (props) => {
 
   return (
     <View style={styles.previewBlock}>
-      <View style={[styles.headersCol, { paddingTop: 5 }]}>
-        <Text
-          uppercase
-          style={[
-            styles.headline,
-            {
-              alignSelf:
-                campaign.language === "1019" ? "flex-end" : "flex-start",
-              paddingRight: 10,
-            },
-            styles.titlePadding,
+      <View style={styles.row}>
+        <WebsiteSVG
+          width={30}
+          height={30}
+          fill={
             inputURL
-              ? GlobalStyles.orangeTextColor
+              ? globalColors.orange
               : finalurlError
-              ? GlobalStyles.redTextColor
-              : GlobalStyles.darkGrayTextColor,
-          ]}
-        >
-          {translate("Website")} {translate("url")}
-        </Text>
-        <View
-          style={[
-            styles.row,
-            {
-              paddingTop: 5,
-              paddingLeft: 20,
-            },
-          ]}
-        >
+              ? globalColors.red
+              : globalColors.twilight
+          }
+        />
+        <View style={[styles.column, { paddingTop: 5, paddingLeft: 10 }]}>
+          <Text
+            uppercase
+            style={[
+              styles.headline,
+              {
+                alignSelf:
+                  campaign.language === "1019" ? "flex-end" : "flex-start",
+                paddingRight: 10,
+                color: inputURL
+                  ? globalColors.orange
+                  : finalurlError
+                  ? globalColors.red
+                  : globalColors.twilight,
+              },
+            ]}
+          >
+            {translate("Website")} {translate("url")}
+          </Text>
           <Input
             autoFocus={!props.parentState.unmounted}
             placeholder={translate("Input landing page url")}
             disabled={disable}
             value={finalurl}
             autoCorrect={false}
-            placeholderTextColor={globalColors.lightGray}
+            placeholderTextColor={globalColors.rum}
             style={[
               styles.input,
               styles.linkText,
@@ -115,12 +122,24 @@ export default GoogleSEABox = (props) => {
       </View>
 
       <View style={styles.headersCol}>
-        <View style={[styles.row]}>
-          <View
-            style={[styles.headlineBlueLine, { borderLeftColor: "#0000" }]}
+        <View
+          style={[
+            styles.row,
+            {
+              backgroundColor: "#F7F7F7",
+            },
+          ]}
+        >
+          <Headline1SVG
+            fill={
+              inputH1
+                ? globalColors.orange
+                : headline1Error
+                ? globalColors.red
+                : "#a5a5a5"
+            }
           />
-
-          <View style={styles.column}>
+          <View style={[styles.column]}>
             <Text
               uppercase
               style={[
@@ -129,12 +148,12 @@ export default GoogleSEABox = (props) => {
                   alignSelf:
                     campaign.language === "1019" ? "flex-end" : "flex-start",
                   paddingRight: 10,
+                  color: inputH1
+                    ? globalColors.orange
+                    : headline1Error
+                    ? globalColors.red
+                    : globalColors.twilight,
                 },
-                inputH1
-                  ? GlobalStyles.orangeTextColor
-                  : headline1Error
-                  ? GlobalStyles.redTextColor
-                  : GlobalStyles.darkGrayTextColor,
               ]}
             >
               {translate("Headline")} {translate("1")}
@@ -145,13 +164,13 @@ export default GoogleSEABox = (props) => {
                     alignSelf:
                       campaign.language === "1019" ? "flex-end" : "flex-start",
                     paddingRight: 10,
+                    color: inputH1
+                      ? globalColors.orange
+                      : headline1Error
+                      ? globalColors.red
+                      : globalColors.twilight,
                   },
                   styles.smallFont,
-                  inputH1
-                    ? GlobalStyles.orangeTextColor
-                    : headline1Error
-                    ? GlobalStyles.redTextColor
-                    : GlobalStyles.darkGrayTextColor,
                 ]}
               >{` (${30 - headline1.length})`}</Text>
             </Text>
@@ -182,7 +201,16 @@ export default GoogleSEABox = (props) => {
           </View>
         </View>
         <View style={[styles.row, { paddingVertical: 5 }]}>
-          <View style={styles.headlineBlueLine} />
+          <Headline2SVG
+            fill={
+              inputH2
+                ? globalColors.orange
+                : headline2Error
+                ? globalColors.red
+                : "#a5a5a5"
+            }
+          />
+
           <View style={[styles.column]}>
             <Text
               uppercase
@@ -192,12 +220,12 @@ export default GoogleSEABox = (props) => {
                   alignSelf:
                     campaign.language === "1019" ? "flex-end" : "flex-start",
                   paddingRight: 10,
+                  color: inputH2
+                    ? globalColors.orange
+                    : headline2Error
+                    ? globalColors.red
+                    : globalColors.twilight,
                 },
-                inputH2
-                  ? GlobalStyles.orangeTextColor
-                  : headline2Error
-                  ? GlobalStyles.redTextColor
-                  : GlobalStyles.darkGrayTextColor,
               ]}
             >
               {translate("Headline")} {translate("2")}
@@ -208,13 +236,13 @@ export default GoogleSEABox = (props) => {
                     alignSelf:
                       campaign.language === "1019" ? "flex-end" : "flex-start",
                     paddingRight: 10,
+                    color: inputH2
+                      ? globalColors.orange
+                      : headline2Error
+                      ? globalColors.red
+                      : globalColors.twilight,
                   },
                   styles.smallFont,
-                  inputH2
-                    ? GlobalStyles.orangeTextColor
-                    : headline2Error
-                    ? GlobalStyles.redTextColor
-                    : GlobalStyles.darkGrayTextColor,
                 ]}
               >{` (${30 - headline2.length})`}</Text>
             </Text>
@@ -244,8 +272,9 @@ export default GoogleSEABox = (props) => {
             />
           </View>
         </View>
-        <View style={[styles.row]}>
-          <View style={styles.headlineBlueLine} />
+        <View style={[styles.row, { backgroundColor: "#F7F7F7" }]}>
+          <Headline3SVG fill={inputH3 ? globalColors.orange : "#a5a5a5"} />
+
           <View style={[styles.column]}>
             <Text
               uppercase
@@ -255,10 +284,8 @@ export default GoogleSEABox = (props) => {
                   alignSelf:
                     campaign.language === "1019" ? "flex-end" : "flex-start",
                   paddingRight: 10,
+                  color: inputH3 ? globalColors.orange : globalColors.twilight,
                 },
-                inputH3
-                  ? GlobalStyles.orangeTextColor
-                  : GlobalStyles.darkGrayTextColor,
               ]}
             >
               {translate("Headline")} {translate("3")}
@@ -269,11 +296,11 @@ export default GoogleSEABox = (props) => {
                     alignSelf:
                       campaign.language === "1019" ? "flex-end" : "flex-start",
                     paddingRight: 10,
+                    color: inputH3
+                      ? globalColors.orange
+                      : globalColors.twilight,
                   },
                   styles.smallFont,
-                  inputH3
-                    ? GlobalStyles.orangeTextColor
-                    : GlobalStyles.darkGrayTextColor,
                 ]}
               >{` (${translate("optional")}) (${30 - headline3.length})`}</Text>
             </Text>
@@ -304,132 +331,144 @@ export default GoogleSEABox = (props) => {
           </View>
         </View>
       </View>
-      <View style={styles.descriptionGrayLine} />
-      <View style={[styles.headersCol, { width: "100%" }]}>
-        <Text
-          uppercase
-          style={[
-            styles.headline,
-            {
-              alignSelf:
-                campaign.language === "1019" ? "flex-end" : "flex-start",
-              paddingRight: 10,
-            },
-            styles.titlePadding,
-            inputD
-              ? GlobalStyles.orangeTextColor
-              : descriptionError
-              ? GlobalStyles.redTextColor
-              : GlobalStyles.darkGrayTextColor,
-          ]}
-        >
-          {translate("Description") + " " + translate("1")}
-          <Text
-            style={[
-              styles.headline,
-              {
-                alignSelf:
-                  campaign.language === "1019" ? "flex-end" : "flex-start",
-                paddingRight: 10,
-              },
-              styles.smallFont,
-              inputD
-                ? GlobalStyles.orangeTextColor
-                : descriptionError
-                ? GlobalStyles.redTextColor
-                : GlobalStyles.darkGrayTextColor,
-            ]}
-          >{` (${90 - description.length})`}</Text>
-        </Text>
-        <Input
-          multiline
-          disabled={disable}
-          value={description}
-          style={[
-            styles.input,
-            styles.textArea,
-            { textAlign: campaign.language === "1019" ? "right" : "left" },
-          ]}
-          placeholderTextColor={globalColors.lightGray}
-          autoCorrect={true}
-          maxLength={90}
-          placeholder={translate("Input Description 1 text")}
-          onChangeText={(value) => {
-            setVal({ description: value });
-          }}
-          onSubmitEditing={() => {
-            submitEditing("inputD2");
-          }}
-          onBlur={() => {
-            blur("description", "inputD");
-          }}
-          blurOnSubmit={true}
-          onFocus={() => focus({ inputD: true }, true)}
-          returnKeyType={"next"}
-          ref={(input) => reference("inputD", input)}
-        />
 
-        <Text
-          uppercase
-          style={[
-            styles.headline,
-            {
-              alignSelf:
-                campaign.language === "1019" ? "flex-end" : "flex-start",
-              paddingRight: 10,
-            },
-            styles.titlePadding,
-            inputD2
-              ? GlobalStyles.orangeTextColor
-              : GlobalStyles.darkGrayTextColor,
-          ]}
-        >
-          {translate("Description") + " " + translate("2")}
+      <View style={[styles.row]}>
+        <Description1SVG
+          fill={
+            inputD
+              ? globalColors.orange
+              : descriptionError
+              ? globalColors.red
+              : "#a5a5a5"
+          }
+        />
+        <View style={[styles.column]}>
           <Text
+            uppercase
             style={[
               styles.headline,
               {
                 alignSelf:
                   campaign.language === "1019" ? "flex-end" : "flex-start",
                 paddingRight: 10,
+                color: inputD
+                  ? globalColors.orange
+                  : descriptionError
+                  ? globalColors.red
+                  : globalColors.twilight,
               },
-              styles.smallFont,
-              inputD2
-                ? GlobalStyles.orangeTextColor
-                : GlobalStyles.darkGrayTextColor,
             ]}
-          >{` (${translate("optional")}) (${90 - description2.length})`}</Text>
-        </Text>
-        <Input
-          multiline
-          disabled={disable}
-          value={description2}
-          style={[
-            styles.input,
-            styles.textArea,
-            { textAlign: campaign.language === "1019" ? "right" : "left" },
-          ]}
-          placeholderTextColor={globalColors.lightGray}
-          autoCorrect={true}
-          maxLength={90}
-          placeholder={translate("Input Description 2 text")}
-          onChangeText={(value) => {
-            setVal({ description2: value });
-          }}
-          onBlur={() => {
-            blur("description2", "inputD2");
-          }}
-          blurOnSubmit={true}
-          onFocus={() => focus({ inputD2: true }, true)}
-          returnKeyType={"done"}
-          ref={(input) => reference("inputD2", input)}
-        />
+          >
+            {translate("Description") + " " + translate("1")}
+            <Text
+              style={[
+                styles.headline,
+                {
+                  alignSelf:
+                    campaign.language === "1019" ? "flex-end" : "flex-start",
+                  paddingRight: 10,
+                  color: inputD
+                    ? globalColors.orange
+                    : descriptionError
+                    ? globalColors.red
+                    : globalColors.twilight,
+                },
+                styles.smallFont,
+              ]}
+            >{` (${90 - description.length})`}</Text>
+          </Text>
+          <Input
+            multiline
+            disabled={disable}
+            value={description}
+            style={[
+              styles.input,
+              styles.textArea,
+              { textAlign: campaign.language === "1019" ? "right" : "left" },
+            ]}
+            placeholderTextColor={globalColors.rum}
+            autoCorrect={true}
+            maxLength={90}
+            placeholder={translate("Input Description 1 text")}
+            onChangeText={(value) => {
+              setVal({ description: value });
+            }}
+            onSubmitEditing={() => {
+              submitEditing("inputD2");
+            }}
+            onBlur={() => {
+              blur("description", "inputD");
+            }}
+            blurOnSubmit={true}
+            onFocus={() => focus({ inputD: true }, true)}
+            returnKeyType={"next"}
+            ref={(input) => reference("inputD", input)}
+          />
+        </View>
+      </View>
+
+      <View style={[styles.row, { backgroundColor: "#F7F7F7" }]}>
+        <Description2SVG fill={inputD2 ? globalColors.orange : "#a5a5a5"} />
+        <View style={[styles.column]}>
+          <Text
+            uppercase
+            style={[
+              styles.headline,
+              {
+                alignSelf:
+                  campaign.language === "1019" ? "flex-end" : "flex-start",
+                paddingRight: 10,
+                color: inputD2 ? globalColors.orange : globalColors.twilight,
+              },
+            ]}
+          >
+            {translate("Description") + " " + translate("2")}
+            <Text
+              style={[
+                styles.headline,
+                {
+                  alignSelf:
+                    campaign.language === "1019" ? "flex-end" : "flex-start",
+                  paddingRight: 10,
+                  color: inputD2 ? globalColors.orange : globalColors.twilight,
+                },
+                styles.smallFont,
+              ]}
+            >{` (${translate("optional")}) (${
+              90 - description2.length
+            })`}</Text>
+          </Text>
+          <Input
+            multiline
+            disabled={disable}
+            value={description2}
+            style={[
+              styles.input,
+              styles.textArea,
+              { textAlign: campaign.language === "1019" ? "right" : "left" },
+            ]}
+            placeholderTextColor={globalColors.rum}
+            autoCorrect={true}
+            maxLength={90}
+            placeholder={translate("Input Description 2 text")}
+            onChangeText={(value) => {
+              setVal({ description2: value });
+            }}
+            onBlur={() => {
+              blur("description2", "inputD2");
+            }}
+            blurOnSubmit={true}
+            onFocus={() => focus({ inputD2: true }, true)}
+            returnKeyType={"done"}
+            ref={(input) => reference("inputD2", input)}
+          />
+        </View>
       </View>
     </View>
   );
 };
 
-GoogleSEAPreview.propTypes = {
+GoogleSEABox.propTypes = {
   screenProps: PropTypes.object.isRequired,
   headline1: PropTypes.string.isRequired,
   headline2: PropTypes.string.isRequired,

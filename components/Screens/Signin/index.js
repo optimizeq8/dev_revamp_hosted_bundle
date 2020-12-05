@@ -7,9 +7,11 @@ import {
   Platform,
   ScrollView,
   Text,
+  NativeModules,
 } from "react-native";
 import { heightPercentageToDP } from "react-native-responsive-screen";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import analytics from "@segment/analytics-react-native";
 import InputScrollView from "react-native-input-scroll-view";
 import { LinearGradient } from "expo-linear-gradient";
@@ -70,6 +72,14 @@ class Signin extends Component {
   };
 
   async componentDidMount() {
+    // const MPTweakHelper = NativeModules.MPTweakHelper;
+    // MPTweakHelper.getCustomTweak(
+    //   await analytics.getAnonymousId(),
+    //   (err, tweakVal) => {
+    //     console.log(tweakVal);
+    //     this.setState({ tweakVal });
+    //   }
+    // );
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState
@@ -350,7 +360,9 @@ class Signin extends Component {
                 <GradientButton
                   text={
                     this.state.activeTab === 0
-                      ? translate("Create Account")
+                      ? //   ? this.state.tweakVal
+                        //     ? ("Get started now!")
+                        translate("Create Account")
                       : translate("Sign in")
                   }
                   uppercase

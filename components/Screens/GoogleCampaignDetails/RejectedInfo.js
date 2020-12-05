@@ -1,11 +1,12 @@
 import React from "react";
 import { View, Text } from "react-native";
+import Intercom from "react-native-intercom";
+import analytics from "@segment/analytics-react-native";
+
 import Rejected from "../../../assets/SVGs/Rejected.svg";
-import Info from "../../../assets/SVGs/Info.svg";
 import CustomButtons from "../../MiniComponents/CustomButtons";
 
 import styles from "./styles";
-import { globalColors } from "../../../GlobalStyles";
 import GradientButton from "../../MiniComponents/GradientButton";
 
 export default RejectedInfo = (props) => {
@@ -42,7 +43,6 @@ export default RejectedInfo = (props) => {
       >
         {e.description}
       </Text>
-      {/* <Info onPress={this.handleSupportPage} style={styles.infoButton} /> */}
     </View>
   ));
   return (
@@ -70,10 +70,18 @@ export default RejectedInfo = (props) => {
           style={styles.contactUsBtn}
           text={translate("Contact Us")}
           onPressAction={() => {
-            props.navigation.navigate("Messenger", {
+            analytics.track(`a_help`, {
               source: "campaign_details",
               source_action: "a_help",
+              support_type: "intercom",
             });
+            // Intercom.displayMessageComposer();
+            Intercom.displayConversationsList();
+
+            // props.navigation.navigate("Messenger", {
+            //   source: "campaign_details",
+            //   source_action: "a_help",
+            // });
           }}
         />
 

@@ -4,7 +4,7 @@ import { Icon } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import LoadingScreen from "../LoadingScreen";
 import { showMessage } from "react-native-flash-message";
-import { SafeAreaView } from "react-navigation";
+
 //Icons
 import PlusCircle from "../../../assets/SVGs/PlusCircle";
 import BackButton from "../../MiniComponents/BackButton";
@@ -20,7 +20,7 @@ import { connect } from "react-redux";
 import compareVersions from "compare-versions";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
-import { upperFirst } from "lodash";
+import upperFirst from "lodash/upperFirst";
 import { globalColors } from "../../../GlobalStyles";
 
 class SelectVersions extends Component {
@@ -165,6 +165,7 @@ class SelectVersions extends Component {
                 headerComponent={
                   <View style={styles.headerComponent}>
                     <BackButton
+                      stroke={globalColors.rum}
                       style={{ top: 0, left: 0 }}
                       navigation={() => this.VersionSection._cancelSelection()}
                     />

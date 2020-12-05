@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { View, Platform, ScrollView, Text } from "react-native";
 import { Modal } from "react-native-paper";
 import { BlurView } from "@react-native-community/blur";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { Video } from "expo-av";
 
 //Redux

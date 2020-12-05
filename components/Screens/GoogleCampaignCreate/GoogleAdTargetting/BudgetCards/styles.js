@@ -35,13 +35,18 @@ export default StyleSheet.create({
   },
   recIcon: {
     position: "absolute",
-    left: I18nManager.isRTL ? "54%" : "73%",
-    bottom: "70%",
+    left: I18nManager.isRTL ? "65%" : "61%",
+    top: I18nManager.isRTL ? 0 : 4,
     backgroundColor: globalColors.green,
     borderRadius: 50,
-    width: 20,
-    height: 20,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
     alignItems: "center",
     justifyContent: "center",
+  },
+  recommendText: {
+    fontSize: 9,
+    color: globalColors.white,
+    fontFamily: "montserrat-bold",
   },
 });

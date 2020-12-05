@@ -3,7 +3,9 @@ import { ImageBackground, View, BackHandler, Text } from "react-native";
 import { Content } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import { Video } from "expo-av";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import startCase from "lodash/startCase";
 import lowerCase from "lodash/lowerCase";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
@@ -23,7 +25,8 @@ import formatNumber from "../../../formatNumber";
 import dateFormat from "dateformat";
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
-import { isUndefined } from "lodash";
+import isUndefined from "lodash/isUndefined";
+
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../../GradiantColors/colors";
 import globalStyles from "../../../../GlobalStyles";

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, ScrollView, ActivityIndicator } from "react-native";
 import { Icon } from "native-base";
-import { SafeAreaView } from "react-navigation";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import isNull from "lodash/isNull";
 
@@ -20,7 +19,7 @@ import SectionStyle, { colors } from "./SectionStyle";
 import styles from "./styles";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
-import { upperFirst } from "lodash";
+import upperFirst from "lodash/upperFirst";
 import { globalColors } from "../../../GlobalStyles";
 
 class SelectDevices extends Component {
@@ -109,6 +108,7 @@ class SelectDevices extends Component {
                 headerComponent={
                   <View style={styles.headerComponent}>
                     <BackButton
+                      stroke={globalColors.rum}
                       style={{ top: 0, left: 0 }}
                       screenname="Select Devices"
                       businessname={this.props.mainBusiness.businessname}

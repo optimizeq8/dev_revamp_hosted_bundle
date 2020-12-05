@@ -6,6 +6,7 @@ import android.net.Uri;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.robinpowered.react.Intercom.IntercomPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import com.segment.analytics.reactnative.integration.adjust.RNAnalyticsIntegration_AdjustPackage;
 import com.reactnativecommunity.checkbox.ReactCheckBoxPackage;
@@ -30,6 +31,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.optimizeapp.optimizeapp.generated.BasePackageList;
+import com.optimizeapp.optimizeapp.CustomTweakHelper;
 
 import org.unimodules.adapters.react.ReactAdapterPackage;
 import org.unimodules.adapters.react.ModuleRegistryAdapter;
@@ -46,6 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nullable;
 
+import io.intercom.android.sdk.Intercom;
 public class MainApplication extends androidx.multidex.MultiDexApplication implements ReactApplication {
   private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(
     new BasePackageList().getPackageList()
@@ -61,6 +64,8 @@ public class MainApplication extends androidx.multidex.MultiDexApplication imple
     protected List<ReactPackage> getPackages() {
       List<ReactPackage> packages = new PackageList(this).getPackages();
       packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
+      packages.add(new CustomTweakHelper()); // <-- Add this line with your package name.
+
       return packages;
     }
 
@@ -97,6 +102,11 @@ public class MainApplication extends androidx.multidex.MultiDexApplication imple
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    /** OptimizeApp LIVE */
+    Intercom.initialize(this, "android_sdk-9b7ba07ad91cc3cc69e3e422f855fb51c9685f53", "k5yqpre9");
+    
+    /** OptimizeApp DEV */
+    // Intercom.initialize(this, "android_sdk-a0d25d6a43b2ab0c505588621d140240a57cef60", "qf7uj8rc");
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
     if (!BuildConfig.DEBUG) {
       UpdatesController.initialize(this);

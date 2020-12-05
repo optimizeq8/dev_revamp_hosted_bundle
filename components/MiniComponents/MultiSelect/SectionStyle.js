@@ -4,12 +4,13 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../GlobalStyles";
 export const colors = {
   subItemBackground: "transparent",
   itemBackground: "transparent",
   chipColor: "#fff",
   primary: "#FF9D00",
-  searchPlaceholderTextColor: "#fff",
+  searchPlaceholderTextColor: globalColors.rum,
   searchSelectionColor: "#fff",
 };
 export default styles = StyleSheet.create({
@@ -27,33 +28,40 @@ export default styles = StyleSheet.create({
   container: {
     marginVertical: 0,
     marginLeft: 0,
-    backgroundColor: "rgba(0,0,0,0.9)",
+    // backgroundColor: "rgba(0,0,0,0.9)",
+    backgroundColor: "#FFF",
     width: "100%",
     height: "105%",
     flex: 0,
   },
   searchBar: {
-    backgroundColor: "rgba(255,255,255,0.1)",
+    backgroundColor: "#F4F4F4",
+    borderColor: globalColors.rum,
     borderRadius: 15,
-    color: "#fff",
+    color: globalColors.rum,
     width: wp(80),
     alignSelf: "center",
   },
   searchTextInput: {
-    color: "#FFF",
+    color: globalColors.rum,
     fontSize: 17 / PixelRatio.getFontScale(),
     textAlign: I18nManager.isRTL ? "right" : "left",
   },
   item: {
     backgroundColor: "rgba(0,0,0,0)",
-    color: "#fff",
+    color: "#000",
   },
-  itemText: { color: "#fff" },
-  selectedItemText: { color: "#fff" },
+  itemText: {
+    color: globalColors.rum,
+    fontFamily: "montserrat-semibold",
+    textAlign: "left",
+  },
+  selectedItemText: { color: globalColors.rum },
   subItemText: {
-    color: "#fff",
+    color: globalColors.rum,
     fontSize: 14,
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-regular",
+    textAlign: "left",
   },
   scrollView: {
     width: wp(80),
@@ -67,4 +75,7 @@ export default styles = StyleSheet.create({
     alignSelf: "center",
   },
   confirmText: { color: "#fff" },
+  chipText: {
+    fontFamily: "montserrat-regular",
+  },
 });

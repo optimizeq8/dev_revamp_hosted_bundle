@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, ScrollView, ActivityIndicator } from "react-native";
 import { Icon } from "native-base";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import isNull from "lodash/isNull";
 
@@ -147,7 +147,7 @@ class SelectDevices extends Component {
                   headerComponent={
                     <View style={styles.headerComponent}>
                       <BackButton
-                        stroke={"#FFF"}
+                        stroke={globalColors.rum}
                         style={{ top: 0, left: 0 }}
                         screenname="Select Devices"
                         businessname={this.props.mainBusiness.businessname}

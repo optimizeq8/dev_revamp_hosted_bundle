@@ -14,7 +14,9 @@ import {
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { Transition } from "react-navigation-fluid-transitions";
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
@@ -431,7 +433,9 @@ class InstagramAdDesignExistingPost extends Component {
     return true;
   };
   onDidFocus = () => {
-    if (!this.props.currentCampaignSteps.includes("InstagramFeedAdDetails")) {
+    if (
+      !this.props.currentCampaignSteps.includes("InstagramFeedAdTargetting")
+    ) {
       this.props.saveCampaignSteps([
         "Dashboard",
         "InstagramFeedAdObjective",

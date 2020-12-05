@@ -98,7 +98,7 @@ imglyConfig {
 
 project.ext.react = [
     entryFile: "index.js",
-    enableHermes: false
+    enableHermes: true
 ]
 
 apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
@@ -141,7 +141,7 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  * on project.ext.react, JavaScript will not be compiled to Hermes Bytecode
  * and the benefits of using Hermes will therefore be sharply reduced.
  */
-def enableHermes = project.ext.react.get("enableHermes", false);
+def enableHermes = project.ext.react.get("enableHermes", true);
 
 android {
     packagingOptions {
@@ -167,8 +167,8 @@ android {
         applicationId 'com.optimizeapp.optimizeapp'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 72
-        versionName "0.4.11"
+        versionCode 66
+        versionName "0.4.20"
         multiDexEnabled true
 
     }
@@ -223,6 +223,10 @@ dependencies {
     // implementation project(':@react-native-community_blur')
     // implementation project(':react-native-mixpanel')
 // implementation project(':@segment_analytics-react-native-mixpanel')
+    // implementation 'io.intercom.android:intercom-sdk-base:6.+'
+    implementation 'io.intercom.android:intercom-sdk:6.+'
+    implementation 'com.google.firebase:firebase-messaging:20.2+'
+    compile project(':react-native-intercom')
     implementation project(':react-native-device-info')
     compile 'com.segment.analytics.android.integrations:adjust:+'
     implementation project(':react-native-advertising-id')

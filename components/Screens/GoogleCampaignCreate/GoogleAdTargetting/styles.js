@@ -1,6 +1,9 @@
 import { StyleSheet, PixelRatio, Platform, I18nManager } from "react-native";
 import { globalColors } from "../../../../GlobalStyles";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -214,6 +217,44 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 25,
+    marginVertical: 4,
+  },
+  lifetimeBudgetView: {
+    backgroundColor: "#FFF",
+    paddingHorizontal: 20,
+    paddingVertical: 2,
+    borderRadius: 30,
+    alignItems: "center",
+  },
+  lifetimeBudgetText: {
+    fontSize: 10,
+    paddingHorizontal: 0,
+    color: globalColors.orange,
+    paddingVertical: 3,
+    textTransform: "capitalize",
+  },
+  lifetimeBudgetNumber: {
+    fontSize: 14,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    color: globalColors.rum,
+    fontFamily: "montserrat-bold-english",
+  },
+  gradientAddProductsServices: {
+    flexDirection: "row",
+    display: "flex",
+    width: widthPercentageToDP(70),
+    alignSelf: "center",
+    alignItems: "center",
+    height: 50,
+    marginHorizontal: 0,
+    justifyContent: "center",
+  },
+  addProductsText: {
+    color: globalColors.white,
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
+    fontSize: 11,
   },
 });
 

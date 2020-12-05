@@ -116,7 +116,7 @@ export const createAudience = (
         if (data.success) {
           dispatch(getAudienceList());
           navigate &&
-            NavigationService.navigate("SnapchatAudienceList", {
+            NavigationService.navigate("AdDetails", {
               source: "audience_detail",
               source_action: "a_create_audience",
             });
@@ -197,7 +197,7 @@ export const updateAudience = (
         });
         if (data.success) {
           dispatch(getAudienceList());
-          NavigationService.navigate("SnapchatAudienceList", {
+          NavigationService.navigate("AdDetails", {
             source: "audience_detail",
             source_action: "a_update_audience",
           });

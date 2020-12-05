@@ -1,22 +1,26 @@
 import React, { Component } from "react";
 import { View, ActivityIndicator, Text } from "react-native";
 import * as Updates from "expo-updates";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+import RNRestart from "react-native-restart";
 import analytics from "@segment/analytics-react-native";
 //Redux
 import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
 
 // Style
 import styles from "./styles";
 import { globalColors } from "../../../GlobalStyles";
+import isStringArabic from "../../isStringArabic";
 
 class SwitchLanguageLoading extends Component {
   componentDidUpdate(prevProps) {
-    if (prevProps.languageChangeLoading && !this.props.languageChangeLoading) {
-      Updates.reloadAsync();
+    if (prevProps.terms !== this.props.terms) {
+      setTimeout(() => RNRestart.Restart(), 3000);
     }
   }
-  onDidFocus = () => {
+  onDidFocus = async () => {
     analytics.track(`switch_language_loading`, {
       source: this.props.navigation.getParam(
         "source",
@@ -27,6 +31,10 @@ class SwitchLanguageLoading extends Component {
         this.props.screenProps.prevAppState
       ),
     });
+    await this.props.getLanguageListPOEdit(
+      this.props.appLanguage === "en" ? "ar" : "en"
+    );
+    this.props.screenProps.setLocale(this.props.appLanguage);
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -38,7 +46,18 @@ class SwitchLanguageLoading extends Component {
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <View style={styles.loadingView}>
           <ActivityIndicator color={globalColors.orange} size="large" />
-          <Text style={styles.loadingText}>
+          <Text
+            style={[
+              styles.loadingText,
+              {
+                fontFamily: isStringArabic(
+                  translate("Switching Language Please wait")
+                )
+                  ? "montserrat-regular-arabic"
+                  : "montserrat-regular-english",
+              },
+            ]}
+          >
             {translate("Switching Language Please wait")} ...
           </Text>
         </View>
@@ -49,6 +68,16 @@ class SwitchLanguageLoading extends Component {
 
 const mapStateToProps = (state) => ({
   languageChangeLoading: state.language.languageChangeLoading,
+  appLanguage: state.language.phoneLanguage,
+  terms: state.language.terms,
 });
 
-export default connect(mapStateToProps, null)(SwitchLanguageLoading);
+const mapDispatchToProps = (dispatch) => ({
+  getLanguageListPOEdit: (language) =>
+    dispatch(actionCreators.getLanguageListPOEdit(language)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SwitchLanguageLoading);

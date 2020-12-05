@@ -11,7 +11,9 @@ import {
   Platform,
   ActivityIndicator,
 } from "react-native";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import CustomHeader from "../../MiniComponents/Header";
 import MessageBubble from "../../MiniComponents/MessageBubble";
 import analytics from "@segment/analytics-react-native";

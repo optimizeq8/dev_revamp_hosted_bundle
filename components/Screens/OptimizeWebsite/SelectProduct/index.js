@@ -27,7 +27,7 @@ import LowerButton from "../../../MiniComponents/LowerButton";
 import Header from "../../../MiniComponents/Header";
 import GradientButton from "../../../MiniComponents/GradientButton";
 
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
 
 class ProductSelect extends React.Component {
   componentDidMount() {

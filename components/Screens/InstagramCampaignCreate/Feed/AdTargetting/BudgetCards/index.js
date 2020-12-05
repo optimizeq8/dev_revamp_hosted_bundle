@@ -67,11 +67,12 @@ export class BudgetCards extends Component {
         bud={bud}
         _handleBudget={_handleBudget}
         budgetOption={budgetOption}
+        translate={translate}
       />
     ));
 
     return (
-      <View style={{ height: "10%" }}>
+      <View>
         <MaskedView
           maskElement={
             <LinearGradient

@@ -1,31 +1,17 @@
 import React, { Component } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Platform,
-  I18nManager,
-} from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
-import MaskedView from "@react-native-community/masked-view";
 
 //icons
 import PurpleCheckmarkIcon from "../../../../assets/SVGs/PurpleCheckmark";
-import LocationIcon from "../../../../assets/SVGs/Location";
-import InterestsIcon from "../../../../assets/SVGs/Interests";
-import GenderIcon from "../../../../assets/SVGs/Gender";
 import PurplePlusIcon from "../../../../assets/SVGs/PurplePlusIcon";
-import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
-import OperatingSystemIcon from "../../../../assets/SVGs/AdDetails/OperatingSystem";
-import LanguageIcon from "../../../../assets/SVGs/Language";
-import DeviceMakeIcon from "../../../../assets/SVGs/DeviceMake";
+
+import LocationIcon from "../../../../assets/SVGs/Location";
 
 import styles from "./styles";
 import { showMessage } from "react-native-flash-message";
 import globalStyles, { globalColors } from "../../../../GlobalStyles";
 import { Icon } from "native-base";
-import { LinearGradient } from "expo-linear-gradient";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { ActivityIndicator } from "react-native-paper";
 export class TargetAudience extends Component {
@@ -153,7 +139,14 @@ export class TargetAudience extends Component {
                           <View style={styles.radioButtonSelected} />
                         )}
                       </View>
-                      <Text style={styles.districtNameText}>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: globalColors.rum,
+                          fontFamily: "montserrat-bold",
+                          marginHorizontal: 5,
+                        }}
+                      >
                         {translate(district.name)}
                       </Text>
                     </TouchableOpacity>

@@ -16,7 +16,6 @@ import { update_user_on_intercom } from "./messengerActions";
 export const changeBusiness = (business) => {
   return (dispatch, getState) => {
     persistor.purge();
-
     analytics.identify(getState().auth.userid, {
       businessname: business.businessname,
       businessid: business.businessid,
@@ -24,10 +23,11 @@ export const changeBusiness = (business) => {
       ltv: business.ltv,
       wallet_amount: business.wallet_amount,
     });
-    return dispatch({
+    dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
       payload: { ...business },
     });
+    dispatch(getBusinessAccounts(true));
   };
 };
 
@@ -1093,5 +1093,27 @@ export const crashAppForSpamUser = () => {
         }
       }
     }
+  };
+};
+
+export const searchForBusinessInBackend = (businessName) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.BUSINESS_SEARCH_LOADING,
+      payload: true,
+    });
+    createBaseUrl()
+      .get(`searchbusinessaccounts/${businessName}`)
+      .then((res) => res.data)
+      .then((data) => {
+        dispatch({
+          type: actionTypes.BUSINESS_SEARCH_FOUND,
+          payload: data.business_accounts,
+        });
+      })
+      .catch((err) => {
+        console.log(JSON.stringify(err, null, 2));
+        errorMessageHandler(err);
+      });
   };
 };

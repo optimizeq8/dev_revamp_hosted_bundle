@@ -22,7 +22,10 @@ class UseWallet extends Component {
   }
   _handleConfirm = () => {
     if (this.props.campaign_balance_amount === "0") {
-      this.props.checkoutwithWallet(this.props.campaign_id);
+      this.props.checkoutwithWallet(
+        this.props.campaign_id,
+        this.props.navigation
+      );
     } else {
       this.props._changeToKnet();
     }
@@ -169,7 +172,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.useWallet(info, setShowWalletModal)),
   removeWalletAmount: (info) =>
     dispatch(actionCreators.removeWalletAmount(info)),
-  checkoutwithWallet: (info) =>
-    dispatch(actionCreators.checkoutwithWallet(info)),
+  checkoutwithWallet: (info, navigation) =>
+    dispatch(actionCreators.checkoutwithWallet(info, navigation)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(UseWallet);

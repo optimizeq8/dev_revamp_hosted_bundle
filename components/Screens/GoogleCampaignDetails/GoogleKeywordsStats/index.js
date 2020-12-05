@@ -9,7 +9,9 @@ import {
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { Text, Item, Input, Container } from "native-base";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { connect } from "react-redux";
 import Header from "../../../MiniComponents/Header";
 import KeywordRow from "./KeywordRow";

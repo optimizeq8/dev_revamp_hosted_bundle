@@ -92,7 +92,7 @@ export default class Picker extends Component {
             ]}
           >
             <BackButton
-              stroke={"#FFF"}
+              stroke={globalColors.rum}
               style={{ top: 0, left: 0 }}
               screenname={this.props.screenName}
               //   businessname={this.props.mainBusiness.businessname}
@@ -106,8 +106,8 @@ export default class Picker extends Component {
                 <SearchIcon stroke={globalColors.orange} />
                 <Input
                   style={styles.customSearchInput}
-                  placeholder={"Search Interesets.."}
-                  placeholderTextColor="white"
+                  placeholder={translate("Search Interests")}
+                  placeholderTextColor={globalColors.rum}
                   autoCapitalize="none"
                   onChangeText={this.props.customSearch}
                 />

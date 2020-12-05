@@ -106,15 +106,16 @@ export const update_app_status_chat_notification = (app_state) => {
   };
 };
 
-export const getBusinessAccounts = () => {
-  return (dispatch, getState) => {
+export const getBusinessAccounts = (businessSeleced) => {
+  return async (dispatch, getState) => {
     dispatch(getBusinessInvites());
     dispatch({
       type: actionTypes.SET_LOADING_BUSINESS_LIST,
       payload: true,
     });
+    let selectedBusinessId = await AsyncStorage.getItem("selectedBusinessId");
     createBaseUrl()
-      .get(`businessaccounts`)
+      .get(`businessaccounts/${selectedBusinessId}`)
       .then((res) => {
         return res.data;
       })
@@ -130,6 +131,7 @@ export const getBusinessAccounts = () => {
               data: data,
               index: value ? value : 0,
               userid: getState().auth.userInfo.userid,
+              businessSeleced,
             },
           });
         });
@@ -200,5 +202,14 @@ export const tutorialLinks = (screenName, appLanguage) => {
           },
         });
       });
+  };
+};
+
+export const setCounterForUnreadMessage = (count) => {
+  return (dispatch) => {
+    return dispatch({
+      type: actionTypes.SET_UNREAD_INTERCOM_MESSAGE_COUNT,
+      payload: count,
+    });
   };
 };

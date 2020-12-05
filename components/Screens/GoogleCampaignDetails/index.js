@@ -11,7 +11,9 @@ import {
 import analytics from "@segment/analytics-react-native";
 import { Container, Icon } from "native-base";
 import Header from "../../MiniComponents/Header";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import CampaignCircleChart from "../../MiniComponents/GoogleCampaignCircleCharts";

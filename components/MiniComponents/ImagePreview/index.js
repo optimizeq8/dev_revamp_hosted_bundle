@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { Container, Content } from "native-base";
 import { Transition } from "react-navigation-fluid-transitions";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
 import ImageViewer from "react-native-image-zoom-viewer";
 import CustomHeader from "../Header";
 import LowerButton from "../LowerButton";

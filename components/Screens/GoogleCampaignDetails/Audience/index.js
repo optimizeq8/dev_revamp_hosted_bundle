@@ -18,7 +18,9 @@ import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
 import CountrySelector from "../../../MiniComponents/CountrySelector";
 import RegionsSelector from "../../../MiniComponents/RegionsSelector";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import CustomHeader from "../../../MiniComponents/Header";
 import SideMenuContainer from "../../../MiniComponents/SideMenuContainer";
 import RadioButtons from "../../../MiniComponents/RadioButtons";

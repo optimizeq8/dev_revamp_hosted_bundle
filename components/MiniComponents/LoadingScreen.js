@@ -18,13 +18,14 @@ class Loading extends React.Component {
   };
 
   render() {
+    let { top = 20 } = this.props;
     return (
       <View
         style={{
           position: "absolute",
           top: this.props.dash
             ? heightPercentageToDP(50)
-            : heightPercentageToDP(this.props.top),
+            : heightPercentageToDP(top),
 
           alignSelf: "center",
           display: "flex",
@@ -40,7 +41,7 @@ class Loading extends React.Component {
             // zIndex: 10,
             alignSelf: "center",
             width: widthPercentageToDP(100),
-            height: widthPercentageToDP(150),
+            height: widthPercentageToDP(160),
             position: "absolute",
             alignContent: "center",
             alignItems: "center",

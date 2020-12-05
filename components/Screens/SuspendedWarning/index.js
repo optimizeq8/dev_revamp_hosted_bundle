@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
+import Intercom from "react-native-intercom";
 import {
-  SafeAreaView,
   NavigationActions,
   StackActions,
   NavigationEvents,
 } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 //Icons
 import Suspended from "../../../assets/SVGs/Suspended";
 import GradientButton from "../../MiniComponents/GradientButton";
@@ -56,20 +58,28 @@ export default class SuspendedWarning extends Component {
             <GradientButton
               style={styles.button}
               onPressAction={() => {
-                let continueRoutes = [
-                  // "Dashboard",
-                  "Messenger",
-                ].map((route) =>
-                  NavigationActions.navigate({
-                    routeName: route,
-                  })
-                );
+                analytics.track(`a_help`, {
+                  source: "suspended_warning",
+                  source_action: "a_help",
+                  support_type: "intercom",
+                });
+                // Intercom.displayMessageComposer();
+                Intercom.displayConversationsList();
+
+                // let continueRoutes = [
+                //   // "Dashboard",
+                //   "Messenger",
+                // ].map((route) =>
+                //   NavigationActions.navigate({
+                //     routeName: route,
+                //   })
+                // );
                 //resets the navigation stack
-                resetAction = StackActions.reset({
+                let resetAction = StackActions.reset({
                   index: 0,
 
                   // continueRoutes.length - 1, //index of the last screen route
-                  actions: continueRoutes,
+                  //   actions: continueRoutes,
                 });
 
                 this.props.navigation.dispatch(resetAction);

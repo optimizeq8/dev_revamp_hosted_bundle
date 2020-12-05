@@ -5,7 +5,9 @@ import { Container, Content, Row } from "native-base";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../../MiniComponents/SideMenu";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import ReachBar from "./ReachBar";
 import SelectRegions from "../../../../MiniComponents/SelectRegionsInstagram";
 import SelectLanguages from "../../../../MiniComponents/SelectLanguages";
@@ -44,7 +46,8 @@ import { TargetAudience } from "./TargetAudience";
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 import { globalColors } from "../../../../../GlobalStyles";
 
-import WalletIcon from "../../../../../assets/SVGs/MenuIcons/Wallet";
+import AudienceIcon from "../../../../../assets/SVGs/AudienceOutline";
+import WalletIcon from "../../../../../assets/SVGs/WalletOutline";
 
 class InstagramStoryAdTargetting extends Component {
   static navigationOptions = {
@@ -70,7 +73,7 @@ class InstagramStoryAdTargetting extends Component {
           os_version_max: "",
           geo_locations: { countries: [], regions: [] },
           age_max: 65,
-          age_min: 13,
+          age_min: 18,
         },
       },
       selectedCountriesAndRegions: [],
@@ -94,6 +97,7 @@ class InstagramStoryAdTargetting extends Component {
       budgetOption: 1,
       startEditing: true,
       customInterests: [],
+      selectedAllRegions: false,
     };
     this.editCampaign = this.props.navigation.getParam("editCampaign", false);
   }
@@ -251,7 +255,7 @@ class InstagramStoryAdTargetting extends Component {
                   targeting: {
                     ...rep.targeting,
                     age_max: rep.targeting.age_max ? rep.targeting.age_max : 65,
-                    age_min: rep.targeting.age_min ? rep.targeting.age_min : 13,
+                    age_min: rep.targeting.age_min ? rep.targeting.age_min : 18,
                   },
                 },
                 value: this.formatNumber(
@@ -488,13 +492,21 @@ class InstagramStoryAdTargetting extends Component {
   onSelectedRegionChange = (selectedItem) => {
     let replace = cloneDeep(this.state.campaignInfo);
     let regionsArray = cloneDeep(replace.targeting.geo_locations.regions);
+    let selectedAllRegions = selectedItem === "all";
     if (selectedItem === "all") {
-      regionsArray = replace.targeting.geo_locations.countries.map((country) =>
-        allRegions.filter((cR) => {
-          if (cR.country === country) return cR;
-        })
-      );
-      regionsArray = regionsArray.flat(1);
+      if (this.state.selectedAllRegions) {
+        regionsArray = [];
+        selectedAllRegions = false;
+      } else {
+        regionsArray = replace.targeting.geo_locations.countries.map(
+          (country) =>
+            allRegions.filter((cR) => {
+              if (cR.country === country) return cR;
+            })
+        );
+        regionsArray = regionsArray.flat(1);
+        selectedAllRegions = true;
+      }
     } else {
       let checkIfInRegionsArray = regionsArray.findIndex(
         (reg) => reg.key === selectedItem.key
@@ -503,7 +515,7 @@ class InstagramStoryAdTargetting extends Component {
       if (checkIfInRegionsArray === -1) {
         regionsArray = [...regionsArray, { ...selectedItem }];
       } else {
-        regionsArray = regionsArray.splice(checkIfInRegionsArray, 1);
+        regionsArray.splice(checkIfInRegionsArray, 1);
       }
     }
 
@@ -512,6 +524,7 @@ class InstagramStoryAdTargetting extends Component {
     this.setState({
       campaignInfo: replace,
       regions: regionsArray,
+      selectedAllRegions: selectedAllRegions,
     });
     !this.editCampaign &&
       this.props.save_campaign_info_instagram({
@@ -601,21 +614,22 @@ class InstagramStoryAdTargetting extends Component {
   };
 
   onSelectedGenderChange = (gender) => {
-    let replace = this.state.campaignInfo;
-    let x = "";
-    switch (gender) {
-      case "MALE":
-        x = "1";
-        break;
-      case "FEMALE":
-        x = "2";
-        break;
-      default:
-        x = "";
-        break;
-    }
-    replace.targeting.genders = [x];
-
+    let replace = cloneDeep(this.state.campaignInfo);
+    // let x = "";
+    // switch (gender) {
+    //   case "MALE":
+    //     x = "1";
+    //     break;
+    //   case "FEMALE":
+    //     x = "2";
+    //     break;
+    //   default:
+    //     x = "";
+    //     break;
+    // }
+    //gender is coming in as 1,2
+    replace.targeting.genders = [gender];
+    console.log("replace.targeting.genders", replace.targeting.genders, gender);
     analytics.track(`a_ad_gender`, {
       source: "ad_targeting",
       source_action: "a_ad_gender",
@@ -624,6 +638,7 @@ class InstagramStoryAdTargetting extends Component {
     this.setState({ campaignInfo: { ...replace }, selectedGender: gender });
     !this.editCampaign &&
       this.props.save_campaign_info_instagram({ campaignInfo: { ...replace } });
+    this._calcReach();
   };
 
   // filterLanguages = value => {
@@ -662,7 +677,6 @@ class InstagramStoryAdTargetting extends Component {
     let totalReach = {
       geo_locations: {
         countries: r.geo_locations.countries,
-        regions: r.geo_locations.regions,
       },
     };
     if (r.geo_locations.countries.length === 0) {
@@ -711,9 +725,9 @@ class InstagramStoryAdTargetting extends Component {
     if (totalReach.geo_locations.countries.length === 0) {
       delete totalReach.geo_locations.countries;
     }
-    if (totalReach.geo_locations.regions.length === 0) {
-      delete totalReach.geo_locations.regions;
-    }
+    // if (totalReach.geo_locations.regions.length === 0) {
+    //   delete totalReach.geo_locations.regions;
+    // }
     if (
       !totalReach.geo_locations.hasOwnProperty("regions") &&
       !totalReach.geo_locations.hasOwnProperty("countries")
@@ -1003,7 +1017,7 @@ class InstagramStoryAdTargetting extends Component {
             _handleAge={this._handleAge}
             _handleSideMenuState={this._handleSideMenuState}
             ageValuesRange={[13, 65]}
-            minAge={this.state.campaignInfo.targeting.age_min || 13}
+            minAge={this.state.campaignInfo.targeting.age_min || 18}
             maxAge={this.state.campaignInfo.targeting.age_max || 65}
           />
         );
@@ -1262,27 +1276,44 @@ class InstagramStoryAdTargetting extends Component {
                   >
                     {!this.editCampaign ? (
                       <>
-                        <Row
-                          size={-1}
-                          style={{
-                            alignItems: "center",
-                            paddingHorizontal: 20,
-                          }}
-                        >
-                          <WalletIcon
-                            width={30}
-                            height={30}
-                            fill={globalColors.rum}
-                          />
-                          <Text
-                            uppercase
-                            style={[
-                              styles.subHeadings,
-                              { paddingHorizontal: 10 },
-                            ]}
-                          >
-                            {translate("Set your daily budget")}
-                          </Text>
+                        <Row size={-1} style={styles.row}>
+                          <View style={styles.walletTextView}>
+                            <WalletIcon
+                              width={30}
+                              height={30}
+                              fill={globalColors.rum}
+                            />
+                            <Text
+                              style={[
+                                styles.subHeadings,
+                                styles.dailyBudgetText,
+                              ]}
+                            >
+                              {translate("Set your daily budget")}
+                            </Text>
+                          </View>
+                          <View style={styles.lifetimeBudgetView}>
+                            <Text
+                              style={[
+                                styles.subHeadings,
+                                styles.lifetimeBudgetText,
+                              ]}
+                            >
+                              {translate("Lifetime budget")}
+                            </Text>
+                            <Text
+                              style={[
+                                styles.subHeadings,
+                                styles.lifetimeBudgetNumber,
+                              ]}
+                            >
+                              {this.formatNumber(
+                                this.state.duration *
+                                  this.state.campaignInfo.lifetime_budget_micro,
+                                true
+                              )}
+                            </Text>
+                          </View>
                         </Row>
                         <BudgetCards
                           value={this.state.value}
@@ -1342,9 +1373,12 @@ class InstagramStoryAdTargetting extends Component {
                       )
                     )}
                     {startEditing && (
-                      <Text style={[styles.subHeadings, { width: "60%" }]}>
-                        {translate("Who would you like to reach?")}
-                      </Text>
+                      <View style={styles.reachView}>
+                        <AudienceIcon />
+                        <Text style={[styles.subHeadings]}>
+                          {translate("Select Audience")}
+                        </Text>
+                      </View>
                     )}
                     <TargetAudience
                       screenProps={this.props.screenProps}
@@ -1361,6 +1395,7 @@ class InstagramStoryAdTargetting extends Component {
                       translate={translate}
                       editCampaign={this.editCampaign}
                       startEditing={startEditing}
+                      onSelectedGenderChange={this.onSelectedGenderChange}
                     />
 
                     <ReachBar

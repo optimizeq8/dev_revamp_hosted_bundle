@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
 import { Input, Item, Icon } from "native-base";
 import styles from "../MultiSelect/styles";
 import LowerButton from "../LowerButton";

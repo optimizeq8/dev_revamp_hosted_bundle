@@ -1,19 +1,27 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import * as actionTypes from "../actions/actionTypes";
-import { getUniqueId } from "react-native-device-info";
 import analytics from "@segment/analytics-react-native";
 import * as Notifications from "expo-notifications";
+import { MixpanelInstance } from "react-native-mixpanel";
 
 const initialState = {
   userid: null,
   userInfo: null,
   loading: false,
   loadingUpdateInfo: false,
+  iosHashIntercom: null,
+  andoidHashIntercom: null,
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_CURRENT_USER:
+      const MixpanelSDK = new MixpanelInstance(
+        "c9ade508d045eb648f95add033dfb017",
+        false,
+        false
+      );
+      MixpanelSDK.initialize().then();
       AsyncStorage.getItem("appLanguage")
         .then((language) => {
           let userTraits = {
@@ -26,14 +34,19 @@ const reducer = (state = initialState, action) => {
             $phone: "+" + action.payload.user.mobile,
             logged_out: false,
           };
-          Notifications.getDevicePushTokenAsync().then((token) => {
-            if (Platform.OS === "android") {
-              userTraits["$android_devices"] = [token.data];
-            } else {
-              userTraits["$ios_devices"] = [token.data];
-            }
-            analytics.identify(action.payload.user.userid, userTraits);
-          });
+          Notifications.getDevicePushTokenAsync()
+            .then((token) => {
+              if (Platform.OS === "android") {
+                userTraits["$android_devices"] = [token.data];
+              } else {
+                userTraits["$ios_devices"] = [token.data];
+              }
+            })
+            .catch((err) => {
+              // console.log(err);
+            });
+          analytics.identify(action.payload.user.userid, userTraits);
+          MixpanelSDK.identify(action.payload.user.userid);
         })
         .catch((error) => {
           analytics.alias(action.payload.user.userid);
@@ -70,6 +83,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loadingUpdateInfo: action.payload,
+      };
+    case actionTypes.SET_HASH_INTERCOM_KEYS:
+      return {
+        ...state,
+        iosHashIntercom: action.payload.ios,
+        andoidHashIntercom: action.payload.android,
       };
     default:
       return state;

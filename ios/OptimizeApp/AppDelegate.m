@@ -18,6 +18,7 @@
 #import "RNBootSplash.h"
 #import "Mixpanel/Mixpanel.h"
 #import <GoogleMaps/GoogleMaps.h>
+#import <Intercom/intercom.h>
 @interface AppDelegate ()
 
 @property (nonatomic, strong) NSDictionary *launchOptions;
@@ -56,6 +57,11 @@ SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWith
 [config use:[SEGAdjustIntegrationFactory instance]];
 
 [SEGAnalytics setupWithConfiguration:config];
+/** LIVE */
+[Intercom setApiKey:@"ios_sdk-345d9b5af6cf6662f16b5d47798d2473c0e0b617" forAppId:@"k5yqpre9"];
+
+/** DEV */
+// [Intercom setApiKey:@"ios_sdk-e2493179152d82a4976b580fd1ec442cf2a1e018" forAppId:@"qf7uj8rc"];
 #ifdef DEBUG
   [self initializeReactNativeApp];
 #else
@@ -78,7 +84,7 @@ SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWith
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  // [RNBootSplash initWithStoryboard:@"SplashScreen" rootView:rootView];
+  [RNBootSplash initWithStoryboard:@"SplashScreen" rootView:rootView];
   return bridge;
 }
 
@@ -101,6 +107,25 @@ SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWith
 - (void)appController:(EXUpdatesAppController *)appController didStartWithSuccess:(BOOL)success
 {
   appController.bridge = [self initializeReactNativeApp];
+}
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
+    [notificationCenter requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+       [application registerForRemoteNotifications];
+    }];
+}
+
+- (void)sceneDidBecomeActive:(UIScene *)scene  API_AVAILABLE(ios(13.0)){
+    UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
+    [notificationCenter requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    }];
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    // Intercom
+    [Intercom setDeviceToken:deviceToken];
+
 }
 
 
