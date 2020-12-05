@@ -600,6 +600,20 @@ class AdDesign extends Component {
       });
       swipeUpError = "Choose A Swipe Up Destination";
     } else if (
+      this.state.campaignInfo.destination === "APP_INSTALL" &&
+      this.state.campaignInfo.attachment &&
+      this.state.campaignInfo.attachment.app_name !== "" &&
+      this.state.campaignInfo.attachment.ios_app_id === "" &&
+      this.state.campaignInfo.attachment.android_app_url === "" &&
+      !mount
+    ) {
+      showMessage({
+        message: translate("Choose A Swipe Up Destination"),
+        position: "top",
+        type: "warning",
+      });
+      swipeUpError = "Choose A Swipe Up Destination";
+    } else if (
       // !this.rejected &&
       this.adType === "SnapAd" &&
       this.props.data.savedObjective !== "POLITICAL_TRAFFIC" &&

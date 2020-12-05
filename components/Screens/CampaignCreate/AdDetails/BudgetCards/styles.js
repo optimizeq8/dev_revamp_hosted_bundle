@@ -16,7 +16,7 @@ export default StyleSheet.create({
     borderColor: globalColors.purple,
     borderWidth: 2.5,
     height: widthPercentageToDP(10),
-    marginHorizontal: 5,
+    marginHorizontal: 3,
     width: widthPercentageToDP(25),
     shadowColor: "#000",
     shadowOffset: { width: 2, height: 0 },
