@@ -82,7 +82,9 @@ import LottieView from "lottie-react-native";
 //DEV TOKEN FOR MIXPANEL ====> c9ade508d045eb648f95add033dfb017
 //LIVE TOKEN FOR MIXPANEL ====> ef78d7f5f4160b74fda35568224f6cfa
 const MixpanelSDK = new MixpanelInstance(
-  "ef78d7f5f4160b74fda35568224f6cfa",
+  __DEV__
+    ? "c9ade508d045eb648f95add033dfb017"
+    : "ef78d7f5f4160b74fda35568224f6cfa",
   false,
   false
 );
@@ -200,24 +202,29 @@ class App extends React.Component {
     // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
     RNAdvertisingId.getAdvertisingId();
-    analytics.setup("ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB", {
-      using: [AdjustIntegration],
-      // Record screen views automatically!
-      recordScreenViews: true,
-      // Record certain application events automatically!
-      trackAppLifecycleEvents: true,
-      trackAttributionData: true,
-      android: {
-        flushInterval: 60,
-        collectDeviceId: true,
-      },
-      ios: {
-        trackAdvertising: true,
-        trackDeepLinks: true,
-        trackPushNotifications: true,
-      },
-      debug: true,
-    });
+    analytics.setup(
+      __DEV__
+        ? "fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh"
+        : "ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB",
+      {
+        using: [AdjustIntegration],
+        // Record screen views automatically!
+        recordScreenViews: true,
+        // Record certain application events automatically!
+        trackAppLifecycleEvents: true,
+        trackAttributionData: true,
+        android: {
+          flushInterval: 60,
+          collectDeviceId: true,
+        },
+        ios: {
+          trackAdvertising: true,
+          trackDeepLinks: true,
+          trackPushNotifications: true,
+        },
+        debug: true,
+      }
+    );
     await RNBootSplash.hide();
 
     analytics.getAnonymousId().then((anonId) => {
