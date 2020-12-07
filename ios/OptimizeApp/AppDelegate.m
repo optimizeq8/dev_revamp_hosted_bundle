@@ -51,14 +51,19 @@
   self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
   self.launchOptions = launchOptions;
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  NSString *const SEGMENT_WRITE_KEY = @"ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB";
+  #ifdef DEBUG
+    NSString *const SEGMENT_WRITE_KEY = @"fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh";
+    [Intercom setApiKey:@"ios_sdk-e2493179152d82a4976b580fd1ec442cf2a1e018" forAppId:@"qf7uj8rc"];
+  #else
+    NSString *const SEGMENT_WRITE_KEY = @"ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB";
+    [Intercom setApiKey:@"ios_sdk-345d9b5af6cf6662f16b5d47798d2473c0e0b617" forAppId:@"k5yqpre9"];
+  #endif
 SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWithWriteKey:SEGMENT_WRITE_KEY];
 
 [config use:[SEGAdjustIntegrationFactory instance]];
 
 [SEGAnalytics setupWithConfiguration:config];
 /** LIVE */
-[Intercom setApiKey:@"ios_sdk-345d9b5af6cf6662f16b5d47798d2473c0e0b617" forAppId:@"k5yqpre9"];
 
 /** DEV */
 // [Intercom setApiKey:@"ios_sdk-e2493179152d82a4976b580fd1ec442cf2a1e018" forAppId:@"qf7uj8rc"];
