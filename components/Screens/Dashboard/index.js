@@ -246,6 +246,10 @@ class Dashboard extends Component {
               ]
             : [],
         });
+        Intercom.getUnreadConversationCount().then((res) => {
+          Notifications.setBadgeCountAsync(res);
+          this.props.setCounterForUnreadMessage(res);
+        });
       });
     }
   }
@@ -479,34 +483,34 @@ class Dashboard extends Component {
 
   onDidFocus = () => {
     // Platform.OS === "android" && BadgeAndroid.setBadge(5);
-    Intercom.registerIdentifiedUser({
-      userId: this.props.userInfo.userid,
-    }).then((res) => {
-      Intercom.setUserHash(
-        Platform.OS === "ios"
-          ? this.props.iosHashIntercom
-          : this.props.andoidHashIntercom
-      );
-      Intercom.updateUser({
-        email: this.props.userInfo.email,
-        name:
-          this.props.userInfo.firstname + " " + this.props.userInfo.lastname,
-        language_override: this.props.appLanguage,
-        phone: this.props.userInfo.mobile,
-        companies: this.props.mainBusiness
-          ? [
-              {
-                company_id: this.props.mainBusiness.businessid,
-                name: this.props.mainBusiness.businessname,
-              },
-            ]
-          : [],
-      });
-      Intercom.getUnreadConversationCount().then((res) => {
-        Notifications.setBadgeCountAsync(res);
-        this.props.setCounterForUnreadMessage(res);
-      });
-    });
+    // Intercom.registerIdentifiedUser({
+    //   userId: this.props.userInfo.userid,
+    // }).then((res) => {
+    //   Intercom.setUserHash(
+    //     Platform.OS === "ios"
+    //       ? this.props.iosHashIntercom
+    //       : this.props.andoidHashIntercom
+    //   );
+    //   Intercom.updateUser({
+    //     email: this.props.userInfo.email,
+    //     name:
+    //       this.props.userInfo.firstname + " " + this.props.userInfo.lastname,
+    //     language_override: this.props.appLanguage,
+    //     phone: this.props.userInfo.mobile,
+    //     companies: this.props.mainBusiness
+    //       ? [
+    //           {
+    //             company_id: this.props.mainBusiness.businessid,
+    //             name: this.props.mainBusiness.businessname,
+    //           },
+    //         ]
+    //       : [],
+    //   });
+    //   Intercom.getUnreadConversationCount().then((res) => {
+    //     Notifications.setBadgeCountAsync(res);
+    //     this.props.setCounterForUnreadMessage(res);
+    //   });
+    // });
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
     const source = this.props.navigation.getParam(

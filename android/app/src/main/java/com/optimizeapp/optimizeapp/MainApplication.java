@@ -3,6 +3,7 @@ package com.optimizeapp.optimizeapp;
 import android.app.Application;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
@@ -42,17 +43,17 @@ import expo.modules.constants.ConstantsPackage;
 import expo.modules.permissions.PermissionsPackage;
 import expo.modules.filesystem.FileSystemPackage;
 import expo.modules.updates.UpdatesController;
-import com.airbnb.android.react.lottie.LottiePackage; 
+import com.airbnb.android.react.lottie.LottiePackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nullable;
 
 import io.intercom.android.sdk.Intercom;
+
 public class MainApplication extends androidx.multidex.MultiDexApplication implements ReactApplication {
   private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(
-    new BasePackageList().getPackageList()
-  );
+      new BasePackageList().getPackageList());
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -102,14 +103,14 @@ public class MainApplication extends androidx.multidex.MultiDexApplication imple
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
-    /** OptimizeApp LIVE */
-    Intercom.initialize(this, "android_sdk-9b7ba07ad91cc3cc69e3e422f855fb51c9685f53", "k5yqpre9");
-    
-    /** OptimizeApp DEV */
-    // Intercom.initialize(this, "android_sdk-a0d25d6a43b2ab0c505588621d140240a57cef60", "qf7uj8rc");
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
     if (!BuildConfig.DEBUG) {
+      /** OptimizeApp LIVE */
+      Intercom.initialize(this, "android_sdk-9b7ba07ad91cc3cc69e3e422f855fb51c9685f53", "k5yqpre9");
       UpdatesController.initialize(this);
+    } else {
+      /** OptimizeApp DEV */
+      Intercom.initialize(this, "android_sdk-a0d25d6a43b2ab0c505588621d140240a57cef60", "qf7uj8rc");
     }
   }
 
@@ -122,9 +123,9 @@ public class MainApplication extends androidx.multidex.MultiDexApplication imple
     if (BuildConfig.DEBUG) {
       try {
         /*
-         We use reflection here to pick up the class that initializes Flipper,
-        since Flipper library is not available in release mode
-        */
+         * We use reflection here to pick up the class that initializes Flipper, since
+         * Flipper library is not available in release mode
+         */
         Class<?> aClass = Class.forName("com.facebook.flipper.ReactNativeFlipper");
         aClass.getMethod("initializeFlipper", Context.class).invoke(null, context);
       } catch (ClassNotFoundException e) {
