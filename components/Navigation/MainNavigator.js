@@ -98,7 +98,9 @@ export default createNativeStackNavigator(
       }),
       path: "dashboard/",
     },
-    // SnapchatCreateAdAcc: SnapchatCreateAdAcc,
+    SnapchatCreateAdAcc: register({
+      require: () => require("../Screens/SnapchatCreateAdAcc"),
+    }),
     CreateBusinessAccount: register({
       require: () => require("../Screens/CreateBusinessAccount"),
     }),
