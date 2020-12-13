@@ -43,6 +43,7 @@ import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../../GradiantColors/colors";
 import globalStyles from "../../../../GlobalStyles";
+
 class GoogleAdDesign extends Component {
   static navigationOptions = {
     header: null,
@@ -80,6 +81,12 @@ class GoogleAdDesign extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
+  chunkString = (s, maxSize) => {
+    return s.match(
+      new RegExp("(?=\\S)([^]{1," + maxSize + "}|[^,;]*)(.$|[,&.;])", "g")
+    );
+  };
+
   componentDidMount() {
     if (this.props.navigation.getParam("rejected", false)) {
       rejectedCampaign = this.props.navigation.getParam("ad", {});
@@ -120,24 +127,58 @@ class GoogleAdDesign extends Component {
           ...data,
         },
         () => {
-          // If finalurl is still emty
-          if (this.state.finalurl === "") {
-            const { websitelink, weburl } = this.props.mainBusiness;
-            //check if the business has websitelink ie(their own website)
-            if (websitelink && websitelink !== "") {
-              this.setState({
-                finalurl: websitelink,
-              });
-            }
-            // if that is also not present check if it has optimizeapp.com business website and set the finalurl to it
-            else if (weburl && weburl !== "") {
-              this.setState({
-                finalurl: weburl.includes("https")
-                  ? weburl
-                  : `https://${weburl}.optimizeapp.com`,
-              });
+          let info = { ...this.state };
+
+          if (info.headline1 === "") {
+            info.headline1 = this.props.instagramDetail.full_name;
+          }
+          if (info.headline2 === "") {
+            if (this.props.instagramDetail.business_category_name) {
+              const headline = this.chunkString(
+                this.props.instagramDetail.business_category_name,
+                30
+              );
+              info.headline2 = headline && headline[0] ? headline[0] : "";
             }
           }
+          if (info.headline3 === "") {
+            info.headline3 = this.props.mainBusiness.country;
+          }
+          if (info.description === "") {
+            if (this.props.instagramDetail.biography) {
+              // split string
+              const desc = this.chunkString(
+                this.props.instagramDetail.biography,
+                90
+              );
+              info.description = desc && desc[0] ? desc[0] : "";
+              info.description2 = desc && desc[1] ? desc[1] : "";
+            }
+          }
+          if (info.finalurl === "") {
+            if (
+              this.props.instagramDetail.external_url &&
+              this.props.instagramDetail.external_url !== ""
+            ) {
+              info.finalurl = this.props.instagramDetail.external_url;
+            } else {
+              // If finalurl is still emty
+              const { websitelink, weburl } = this.props.mainBusiness;
+              //check if the business has websitelink ie(their own website)
+              if (websitelink && websitelink !== "") {
+                info.finalurl = websitelink;
+              }
+              // if that is also not present check if it has optimizeapp.com business website and set the finalurl to it
+              else if (weburl && weburl !== "") {
+                info.finalurl = weburl.includes("https")
+                  ? weburl
+                  : `https://${weburl}.optimizeapp.com`;
+              }
+            }
+          }
+          this.setState({
+            ...info,
+          });
         }
       );
     }
@@ -593,6 +634,7 @@ const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   userInfo: state.auth.userInfo,
   campaign: state.googleAds,
+  instagramDetail: state.googleAds.instagramDetail,
 });
 
 const mapDispatchToProps = (dispatch) => ({
