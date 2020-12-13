@@ -83,7 +83,10 @@ class GoogleAdDesign extends Component {
   }
   chunkString = (s, maxSize) => {
     return s.match(
-      new RegExp("(?=\\S)([^]{1," + maxSize + "}|[^,;]*)(.$|[,&.;])", "g")
+      new RegExp(
+        "(?=\\S)([^]{1," + (maxSize - 1) + "}|[^,;]*)(.$|[,&.\n ;])",
+        "g"
+      )
     );
   };
 
@@ -133,11 +136,12 @@ class GoogleAdDesign extends Component {
             info.headline1 = this.props.instagramDetail.full_name;
           }
           if (info.headline2 === "") {
-            if (this.props.instagramDetail.business_category_name) {
+            if (this.props.instagramDetail.biography) {
               const headline = this.chunkString(
-                this.props.instagramDetail.business_category_name,
+                this.props.instagramDetail.biography,
                 30
               );
+
               info.headline2 = headline && headline[0] ? headline[0] : "";
             }
           }
@@ -146,11 +150,12 @@ class GoogleAdDesign extends Component {
           }
           if (info.description === "") {
             if (this.props.instagramDetail.biography) {
+              // First remove the headline 2 part
+              let biography = this.props.instagramDetail.biography
+                .split(info.headline2)
+                .pop();
               // split string
-              const desc = this.chunkString(
-                this.props.instagramDetail.biography,
-                90
-              );
+              const desc = this.chunkString(biography, 90);
               info.description = desc && desc[0] ? desc[0] : "";
               info.description2 = desc && desc[1] ? desc[1] : "";
             }

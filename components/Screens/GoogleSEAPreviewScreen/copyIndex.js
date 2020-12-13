@@ -1,98 +1,44 @@
 //Components
 import React, { Component } from "react";
-import { View, BackHandler, Image, TouchableOpacity, Text } from "react-native";
+import { View, BackHandler, Image } from "react-native";
 import { Container } from "native-base";
 import SafeAreaView from "react-native-safe-area-view";
+
 import CustomHeader from "../../MiniComponents/Header";
 import GoogleSEAPreview from "../../MiniComponents/GoogleSEAPreview";
-import GradientButton from "../../MiniComponents/GradientButton";
 // Style
 import styles from "./styles";
 //Redux
 import { connect } from "react-redux";
 import { Transition } from "react-navigation-fluid-transitions";
 import { LinearGradient } from "expo-linear-gradient";
-import isEmpty from "lodash/isEmpty";
 import { colors } from "../../GradiantColors/colors";
 import globalStyles from "../../../GlobalStyles";
+
 class GoogleSEAPreviewScreen extends Component {
   static navigationOptions = {
     header: null,
   };
   constructor(props) {
     super(props);
-    this.state = {
-      campaign: this.props.navigation.getParam("campaign", {}),
-    };
+    this.state = {};
   }
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
-  chunkString = (s, maxSize) => {
-    return s.match(
-      new RegExp(
-        "(?=\\S)([^]{1," + (maxSize - 1) + "}|[^,;]*)(.$|[,&.\n ;])",
-        "g"
-      )
-    );
-  };
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-    let info = { ...this.state.campaign };
-    if (isEmpty(info)) {
-      info.headline1 = this.props.instagramDetail.full_name;
-      if (this.props.instagramDetail.biography) {
-        const headline = this.chunkString(
-          this.props.instagramDetail.biography,
-          30
-        );
-        info.headline2 = headline && headline[0] ? headline[0] : "";
-      }
-      info.headline3 = this.props.mainBusiness.country;
-      if (this.props.instagramDetail.biography) {
-        // First remove the headline 2 part
-        let biography = this.props.instagramDetail.biography
-          .split(info.headline2)
-          .pop();
-        // split string
-        const desc = this.chunkString(biography, 90);
-        info.description = desc && desc[0] ? desc[0] : "";
-        info.description2 = desc && desc[1] ? desc[1] : "";
-      }
-      if (
-        this.props.instagramDetail.external_url &&
-        this.props.instagramDetail.external_url !== ""
-      ) {
-        info.finalurl = this.props.instagramDetail.external_url;
-      } else {
-        // If finalurl is still emty
-        const { websitelink, weburl } = this.props.mainBusiness;
-        //check if the business has websitelink ie(their own website)
-        if (websitelink && websitelink !== "") {
-          info.finalurl = websitelink;
-        }
-        // if that is also not present check if it has optimizeapp.com business website and set the finalurl to it
-        else if (weburl && weburl !== "") {
-          info.finalurl = weburl.includes("https")
-            ? weburl
-            : `https://${weburl}.optimizeapp.com`;
-        }
-      }
-      this.setState({
-        campaign: {
-          ...info,
-        },
-      });
-    }
   }
+
   handleBackButton = () => {
     this.props.navigation.goBack();
     return true;
   };
+
   render() {
-    const { translate } = this.props.screenProps;
-    let campaign = this.state.campaign;
+    let campaign = this.props.navigation.getParam("campaign", {});
     let language = this.props.navigation.getParam("language", {});
+
     return (
       <SafeAreaView
         style={styles.safeAreaView}
@@ -116,6 +62,7 @@ class GoogleSEAPreviewScreen extends Component {
             title={"Search Engine Ad Preview"}
             screenProps={this.props.screenProps}
           />
+
           <View style={styles.mainContent}>
             <Transition appear="bottom" zIndex={1}>
               <Image
@@ -156,43 +103,17 @@ class GoogleSEAPreviewScreen extends Component {
                 </Transition>
               </View>
             </View>
-            <View
-              style={{
-                flexDirection: "row",
-                width: "100%",
-                alignItems: "center",
-                justifyContent: "center",
-                marginVertical: 15,
-              }}
-            >
-              <GradientButton
-                transparent
-                onPressAction={() => {
-                  this.props.navigation.navigate("GoogleAdDesign", {
-                    source: "ad_preview",
-                    source_action: "a_edit_design",
-                  });
-                }}
-                text={translate("Edit")}
-                style={styles.editButton}
-                uppercase
-              />
-              <GradientButton
-                style={styles.nextButton}
-                text={translate("Next")}
-                uppercase
-              />
-            </View>
           </View>
         </Container>
       </SafeAreaView>
     );
   }
 }
+
 const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   userInfo: state.auth.userInfo,
   campaign: state.googleAds,
-  instagramDetail: state.googleAds.instagramDetail,
 });
+
 export default connect(mapStateToProps)(GoogleSEAPreviewScreen);

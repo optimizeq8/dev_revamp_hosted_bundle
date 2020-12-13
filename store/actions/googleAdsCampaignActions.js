@@ -922,7 +922,7 @@ export const get_budget = (info, segmentInfo, navigation) => {
             type: actionTypes.SET_BUDGET_RANGE,
             payload: data,
           });
-          navigation.push("GoogleAdDesign", {
+          navigation.push("GoogleSEAPreviewScreen", {
             source: "ad_objective",
             source_action: "a_submit_ad_objective",
           });
