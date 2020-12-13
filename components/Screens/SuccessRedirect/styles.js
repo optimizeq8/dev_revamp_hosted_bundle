@@ -14,11 +14,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000",
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 40,
   },
   view: {
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
+    width: "90%",
   },
 
   media: {
@@ -41,14 +43,13 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 14,
     fontFamily: "montserrat-medium",
-    textAlign: "center",
+    paddingHorizontal: 25,
   },
   details: {
-    marginTop: 10,
     paddingVertical: 10,
-    borderRadius: 15,
+    borderRadius: 20,
     backgroundColor: "rgba(0,0,0,0.3)",
-    width: 250,
+    width: "100%",
   },
   button: {
     marginTop: 25,
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     borderRadius: 35,
   },
   verifyButton: {
-    width: widthPercentageToDP(30),
+    width: widthPercentageToDP(40),
     height: 40,
     alignSelf: "center",
   },
@@ -100,19 +101,26 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   headingText: {
-    textAlign: "center",
     color: globalColors.white,
     fontSize: 14,
-    fontFamily: "montserrat-regular",
-    width: "80%",
-    alignSelf: "center",
-    marginBottom: 24,
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
+    paddingHorizontal: 25,
   },
   detail: {
     fontFamily: "montserrat-regular",
     fontSize: 12,
     color: globalColors.orange,
     textAlign: "center",
+  },
+  header: {
+    textAlign: "center",
+    color: globalColors.rum,
+    fontSize: 16,
+    fontFamily: "montserrat-bold",
+    alignSelf: "center",
+    marginBottom: 20,
+    textTransform: "uppercase",
   },
 });
 
