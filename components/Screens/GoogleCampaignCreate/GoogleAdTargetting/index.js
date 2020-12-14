@@ -692,39 +692,48 @@ class GoogleAdTargetting extends Component {
               </View>
               <TouchableOpacity
                 disabled={this.props.campaign.uploading}
-                onPress={() => {
-                  this._renderSideMenu("age");
-                }}
+                // onPress={() => {
+                //   this._renderSideMenu("age");
+                // }}
                 style={styles.targetTouchable}
+                activeOpacity={1}
               >
                 <View style={globalStyles.row}>
                   <View style={globalStyles.column}>
                     <Text style={styles.menutext}>{translate("Age")}</Text>
-                    <Text style={styles.menudetails}>
-                      {this.state.age[0] === "Undetermined"
-                        ? translate("All")
-                        : this.state.age.join(", ")}
-                    </Text>
+                    <View
+                      style={[styles.genderOuterView, { flexWrap: "wrap" }]}
+                    >
+                      {ageRange.map((g) => (
+                        <TouchableOpacity
+                          style={[
+                            styles.genderInnerView,
+                            this.state.age.includes(g.value) &&
+                              styles.genderInnerActiveView,
+                            {
+                              marginBottom: 5,
+                            },
+                          ]}
+                          activeOpacity={0.6}
+                          onPress={() => {
+                            this._handleAgeSelection(g.value);
+                          }}
+                          //   disabled={loading || !startEditing}
+                        >
+                          <Text
+                            style={[
+                              styles.genderRadioText,
+                              this.state.age.includes(g.value) &&
+                                styles.genderRadioTextActive,
+                            ]}
+                          >
+                            {translate(g.label)}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
                   </View>
                 </View>
-
-                {this.state.age.length !== 0 ? (
-                  <PurpleCheckmarkIcon
-                    width={26}
-                    height={26}
-                    stroke={"#FFF"}
-                    style={{ alignSelf: "center" }}
-                  />
-                ) : (
-                  <View style={styles.addIcon}>
-                    <PlusCircleIcon
-                      stroke={globalColors.purple}
-                      fill={globalColors.purple}
-                      width={26}
-                      height={26}
-                    />
-                  </View>
-                )}
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -732,7 +741,7 @@ class GoogleAdTargetting extends Component {
                 // onPress={() => {
                 //   this._renderSideMenu("gender");
                 // }}
-                style={styles.targetTouchable}
+                style={[styles.targetTouchable, { marginVertical: 0 }]}
                 activeOpacity={1}
               >
                 <View style={globalStyles.row}>
