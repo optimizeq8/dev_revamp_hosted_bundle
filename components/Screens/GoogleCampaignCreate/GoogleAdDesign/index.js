@@ -506,7 +506,13 @@ class GoogleAdDesign extends Component {
           locations={[1, 0.3]}
           style={globalStyles.gradient}
         />
-        <SafeAreaView style={{ backgroundColor: "#FFF" }} />
+        <SafeAreaView
+          style={{ backgroundColor: rejected ? "#0000" : "#FFF" }}
+          forceInset={{
+            top: "always",
+            bottom: "never",
+          }}
+        />
         <NavigationEvents
           onWillBlur={() => {
             this.setState({ unmounted: true });
