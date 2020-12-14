@@ -133,9 +133,9 @@ const styles = StyleSheet.create({
   },
   menudetails: {
     textAlign: "left",
-    color: globalColors.purple3,
+    color: globalColors.purple,
     fontFamily: "montserrat-regular",
-    fontSize: 11,
+    fontSize: 14,
   },
   keywordsColumn: {
     flexDirection: "column",
@@ -275,6 +275,42 @@ const styles = StyleSheet.create({
     width: 130,
     height: 50,
     alignSelf: "flex-end",
+  },
+  addIcon: {
+    width: 26,
+    height: 26,
+    borderColor: globalColors.purple,
+    borderWidth: 2,
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#9300FF30",
+  },
+  genderOuterView: {
+    display: "flex",
+    flexDirection: "row",
+    paddingVertical: 5,
+  },
+  genderInnerView: {
+    borderWidth: 1,
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    // paddingVertical: 5,
+    marginRight: 12,
+    borderColor: globalColors.purple3,
+  },
+  genderRadioText: {
+    color: globalColors.purple3,
+    fontSize: 13,
+    fontFamily: "montserrat-regular",
+    lineHeight: 29,
+  },
+  genderInnerActiveView: {
+    borderColor: globalColors.purple,
+    backgroundColor: globalColors.purpleTran,
+  },
+  genderRadioTextActive: {
+    color: globalColors.purple,
   },
 });
 

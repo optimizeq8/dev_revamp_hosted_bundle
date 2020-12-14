@@ -716,41 +716,64 @@ class GoogleAdTargetting extends Component {
                     style={{ alignSelf: "center" }}
                   />
                 ) : (
-                  <PlusCircleIcon width={30} height={30} />
+                  <View style={styles.addIcon}>
+                    <PlusCircleIcon
+                      stroke={globalColors.purple}
+                      fill={globalColors.purple}
+                      width={26}
+                      height={26}
+                    />
+                  </View>
                 )}
               </TouchableOpacity>
 
               <TouchableOpacity
                 disabled={this.props.campaign.uploading}
-                onPress={() => {
-                  this._renderSideMenu("gender");
-                }}
+                // onPress={() => {
+                //   this._renderSideMenu("gender");
+                // }}
                 style={styles.targetTouchable}
+                activeOpacity={1}
               >
                 <View style={globalStyles.row}>
                   <View style={globalStyles.column}>
                     <Text style={styles.menutext}>{translate("Gender")}</Text>
-                    <Text style={styles.menudetails}>
+                    <View style={styles.genderOuterView}>
+                      {gender.map((g) => (
+                        <TouchableOpacity
+                          style={[
+                            styles.genderInnerView,
+                            this.state.gender === g.value &&
+                              styles.genderInnerActiveView,
+                          ]}
+                          activeOpacity={0.6}
+                          onPress={() => {
+                            this._handleGenderSelection(g.value);
+                          }}
+                          //   disabled={loading || !startEditing}
+                        >
+                          <Text
+                            style={[
+                              styles.genderRadioText,
+                              this.state.gender === g.value &&
+                                styles.genderRadioTextActive,
+                            ]}
+                          >
+                            {translate(g.label)}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+
+                    {/* <Text style={styles.menudetails}>
                       {gender.find((r) => r.value === this.state.gender)
                         ? translate(
                             gender.find((r) => r.value === this.state.gender)
                               .label
                           )
                         : ""}
-                    </Text>
+                    </Text> */}
                   </View>
-                </View>
-                <View style={globalStyles.column}>
-                  {this.state.gender ? (
-                    <PurpleCheckmarkIcon
-                      width={26}
-                      height={26}
-                      stroke={"#FFF"}
-                      style={{ alignSelf: "center" }}
-                    />
-                  ) : (
-                    <PlusCircleIcon width={30} height={30} />
-                  )}
                 </View>
               </TouchableOpacity>
             </View>
