@@ -228,6 +228,8 @@ export {
   setRejectedCarouselAds,
   resetInstagramRejectedCampaignData,
   moveRejectedAdAmountToWalletInstagram,
+  updateInstagramStatus,
+  endInstagramCampaign,
 } from "./instagramCampaignActions";
 
 export {

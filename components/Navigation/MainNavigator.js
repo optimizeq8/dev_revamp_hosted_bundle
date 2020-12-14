@@ -359,6 +359,10 @@ export default createNativeStackNavigator(
       require: () =>
         require("../Screens/OptimizeWebsite/Category/CategoryList"),
     }),
+    VerifyEngagmentNumber: register({
+      require: () =>
+        require("../Screens/SuccessRedirect/VerifyEngagmentNumber"),
+    }),
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }

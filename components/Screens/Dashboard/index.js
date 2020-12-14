@@ -537,6 +537,7 @@ class Dashboard extends Component {
 
     this.props.setCampaignInProgress(false);
     this.props.setCampaignInProgressInstagram(false);
+    this.reloadData();
   };
   onDidBlur = () => {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
