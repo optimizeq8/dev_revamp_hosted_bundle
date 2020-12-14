@@ -10,9 +10,13 @@ import Header from "../../MiniComponents/Header";
 import * as actionCreators from "../../../store/actions";
 
 class VerifyEngagmentNumber extends Component {
-  state = { code: "", country_code: "", phoneNum: "" };
-  componentDidMount() {
-    if (this.props.engagmentPhoneNumber) {
+  state = {
+    code: "",
+    country_code: "",
+    phoneNum: this.props.engagmentPhoneNumber,
+  };
+  componentDidUpdate(prevProps) {
+    if (prevProps.engagmentPhoneNumber !== this.props.engagmentPhoneNumber) {
       let engagmentPhoneNumber = this.props.engagmentPhoneNumber;
       this.setState({
         phoneNum: engagmentPhoneNumber,
@@ -25,7 +29,7 @@ class VerifyEngagmentNumber extends Component {
       this.props.campaign_id,
       this.props.engagementNumberID,
       this.state.code,
-      this.props.handleButton
+      this.props.otpVerified
     );
   };
   resendOTP = () => {
@@ -59,28 +63,14 @@ class VerifyEngagmentNumber extends Component {
     let { screenProps } = this.props;
     let { translate } = screenProps;
     return (
-      <View
-        style={{
-          height: "100%",
-        }}
-      >
-        <Header
-          screenProps={this.props.screenProps}
-          title={"Verify Number"}
-          navigation={this.props.navigation}
-          segment={{
-            source: "otp_verify",
-            source_action: "a_go_back",
-          }}
-          actionButton={() => this.props.handleButton(false, false)}
-          navigation={undefined}
-          // showGoBackButton={false}
-        />
-        <Text style={styles.headingText}>
-          {translate("So that your call campaign can start")}
-        </Text>
-
+      <View>
         <View style={styles.mobileDetailCard}>
+          <Text style={[styles.header]}>{translate("One more step")}</Text>
+          <Text style={styles.codeSentText}>
+            {translate(
+              "To Launch your campaign you need to verify the phone number provided"
+            ) + "\n"}
+          </Text>
           <Text style={styles.codeSentText}>
             {translate("We’ve sent a code to your Mobile number")}
           </Text>
@@ -117,12 +107,12 @@ class VerifyEngagmentNumber extends Component {
           <GradientButton
             style={[styles.verifyButton]}
             uppercase
-            text={translate("Verify")}
+            text={translate("Verify & Launch")}
             disabled={this.state.code === ""}
             onPressAction={this.verifyOTP}
           />
           <TouchableOpacity
-            onPress={() => this.props.handleButton(true, false)}
+            onPress={() => this.props.getEngagmentNumberVerification()}
           >
             <Text style={styles.bottomText}>{translate("Resend Code")}</Text>
           </TouchableOpacity>
@@ -161,14 +151,14 @@ const mapDispatchToProps = (dispatch) => ({
     campaign_id,
     phone_number_id,
     verification_code,
-    handleButton
+    otpVerified
   ) =>
     dispatch(
       actionCreators.verifySnapchatOtp(
         campaign_id,
         phone_number_id,
         verification_code,
-        handleButton
+        otpVerified
       )
     ),
 });
