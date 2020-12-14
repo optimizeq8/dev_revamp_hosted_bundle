@@ -14,6 +14,8 @@ import CampaignCircleChart from "../CampaignCircleCharts";
 import TimeDifferance from "../../Functions/TimeDifferance";
 import isEqual from "react-fast-compare";
 import globalStyles from "../../../GlobalStyles";
+import GradientButton from "../GradientButton";
+import NavigationService from "../../../NavigationService";
 
 whyDidYouRender(React);
 class CampaignCard extends Component {
@@ -172,7 +174,33 @@ class CampaignCard extends Component {
                 {translate("Tap to submit your Ad again")}
               </Text>
             )}
-
+            {campaign.hasOwnProperty("engagement_unverified") &&
+              campaign.hasOwnProperty("engagement_phone_number") &&
+              campaign.engagement_unverified &&
+              campaign.objective === "ENGAGEMENT" && (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    paddingVertical: 5,
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <Text style={[styles.subtext, { width: "50%" }]}>
+                    {"You need to verify the phone number to launch"}
+                  </Text>
+                  <GradientButton
+                    onPressAction={() =>
+                      NavigationService.navigate("VerifyEngagmentNumber", {
+                        dashboard: true,
+                        engagement_phone_number:
+                          campaign.engagement_phone_number,
+                      })
+                    }
+                    style={{ height: "75%", width: "30%" }}
+                    text={"Verify"}
+                  />
+                </View>
+              )}
             {this.review_status.includes("APPROVED") && (
               <View style={styles.chartContainer}>
                 <CampaignCircleChart

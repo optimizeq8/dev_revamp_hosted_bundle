@@ -140,8 +140,8 @@ class InstagramCampaignDetails extends Component {
     });
   };
 
-  updateStatus = () => {
-    this.props.updateStatus(
+  updateInstagramStatus = () => {
+    this.props.updateInstagramStatus(
       {
         campaign_id: this.props.selectedCampaign.campaign_id,
         spends: this.props.selectedCampaign.spends,
@@ -152,7 +152,7 @@ class InstagramCampaignDetails extends Component {
   };
 
   endCampaign = () => {
-    this.props.endCampaign(
+    this.props.endInstagramCampaign(
       {
         campaign_id: this.props.selectedCampaign.campaign_id,
         spends: this.props.selectedCampaign.spends,
@@ -646,7 +646,7 @@ class InstagramCampaignDetails extends Component {
                                             ? this.setState({
                                                 modalVisible: true,
                                               })
-                                            : this.updateStatus();
+                                            : this.updateInstagramStatus();
                                         }}
                                         backgroundColorOff="rgba(255,255,255,0.1)"
                                         backgroundColorOn="rgba(255,255,255,0.1)"
@@ -681,7 +681,7 @@ class InstagramCampaignDetails extends Component {
             <StatusModal
               screenProps={this.props.screenProps}
               selectedCampaign={selectedCampaign}
-              updateStatus={this.updateStatus}
+              updateStatus={this.updateInstagramStatus}
               endCampaign={this.endCampaign}
               modalVisible={this.state.modalVisible}
               showModal={this.showModal}
@@ -723,7 +723,7 @@ class InstagramCampaignDetails extends Component {
 
 const mapStateToProps = (state) => ({
   selectedCampaign: state.dashboard.selectedCampaign,
-  campaignEnded: state.campaignC.campaignEnded,
+  campaignEnded: state.instagramAds.campaignEnded,
   loading: state.dashboard.loadingCampaignDetails,
   loadingCampaignStats: state.dashboard.loadingCampaignStats,
   campaignError: state.dashboard.campaignError,
@@ -733,10 +733,10 @@ const mapStateToProps = (state) => ({
   languagesListError: state.campaignC.languagesListError,
 });
 const mapDispatchToProps = (dispatch) => ({
-  updateStatus: (info, handleToggle) =>
-    dispatch(actionCreators.updateStatus(info, handleToggle)),
-  endCampaign: (info, handleToggle) =>
-    dispatch(actionCreators.endCampaign(info, handleToggle)),
+  updateInstagramStatus: (info, handleToggle) =>
+    dispatch(actionCreators.updateInstagramStatus(info, handleToggle)),
+  endInstagramCampaign: (info, handleToggle) =>
+    dispatch(actionCreators.endInstagramCampaign(info, handleToggle)),
   getInstagraCampaignStats: (info, range) =>
     dispatch(actionCreators.getInstagraCampaignStats(info, range)),
   get_languages: () => dispatch(actionCreators.get_languages()),

@@ -8,6 +8,8 @@ import styles from "./styles";
 import analytics from "@segment/analytics-react-native";
 import Header from "../../MiniComponents/Header";
 import * as actionCreators from "../../../store/actions";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
 
 class VerifyEngagmentNumber extends Component {
   state = {
@@ -15,6 +17,18 @@ class VerifyEngagmentNumber extends Component {
     country_code: "",
     phoneNum: this.props.engagmentPhoneNumber,
   };
+  componentDidMount() {
+    let dashboard = this.props.navigation.getParam("dashboard", false);
+    let engagement_phone_number = this.props.navigation.getParam(
+      "engagement_phone_number",
+      ""
+    );
+    if (dashboard)
+      this.setState({
+        phoneNum: engagement_phone_number,
+        country_code: engagement_phone_number.substring(1, 4),
+      });
+  }
   componentDidUpdate(prevProps) {
     if (prevProps.engagmentPhoneNumber !== this.props.engagmentPhoneNumber) {
       let engagmentPhoneNumber = this.props.engagmentPhoneNumber;
@@ -29,7 +43,7 @@ class VerifyEngagmentNumber extends Component {
       this.props.campaign_id,
       this.props.engagementNumberID,
       this.state.code,
-      this.props.otpVerified
+      this.props.otpVerified || (() => this.props.navigation.goBack())
     );
   };
   resendOTP = () => {
@@ -60,10 +74,26 @@ class VerifyEngagmentNumber extends Component {
     });
   };
   render() {
-    let { screenProps } = this.props;
+    let { screenProps, navigation } = this.props;
+    let dashboard = navigation.getParam("dashboard", false);
     let { translate } = screenProps;
     return (
-      <View>
+      <View style={dashboard ? { height: "100%" } : {}}>
+        {dashboard && (
+          <>
+            <LinearGradient
+              colors={["#9300FF", "#5600CB"]}
+              locations={[0, 1]}
+              style={styles.gradient}
+            />
+            <SafeAreaView forceInset={{ top: "always" }} />
+            <Header
+              title={"Verify Number"}
+              screenProps={screenProps}
+              navigation={this.props.navigation}
+            />
+          </>
+        )}
         <View style={styles.mobileDetailCard}>
           <Text style={[styles.header]}>{translate("One more step")}</Text>
           <Text style={styles.codeSentText}>
