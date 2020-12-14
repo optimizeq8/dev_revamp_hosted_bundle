@@ -61,6 +61,24 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     width: "40%",
   },
+  bottomView: {
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 15,
+  },
+  forwardLoading: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 15,
+  },
+  forwardLoadingMainView: {
+    marginHorizontal: 20,
+    width: wp(6),
+    height: hp(6),
+  },
+  forwardLoadingStyle: { width: wp(6), height: hp(6) },
 });
 
 export default styles;

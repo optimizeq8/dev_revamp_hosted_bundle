@@ -89,7 +89,12 @@ class GoogleAdDesign extends Component {
       )
     );
   };
-
+  removeEmojis = (text) => {
+    return text.replace(
+      /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g,
+      ""
+    );
+  };
   componentDidMount() {
     if (this.props.navigation.getParam("rejected", false)) {
       rejectedCampaign = this.props.navigation.getParam("ad", {});
@@ -137,11 +142,10 @@ class GoogleAdDesign extends Component {
           }
           if (info.headline2 === "") {
             if (this.props.instagramDetail.biography) {
-              const headline = this.chunkString(
-                this.props.instagramDetail.biography,
-                30
+              let headline = this.removeEmojis(
+                this.props.instagramDetail.biography
               );
-
+              headline = this.chunkString(headline, 30);
               info.headline2 = headline && headline[0] ? headline[0] : "";
             }
           }
@@ -154,6 +158,8 @@ class GoogleAdDesign extends Component {
               let biography = this.props.instagramDetail.biography
                 .split(info.headline2)
                 .pop();
+              // Remove any emoji present
+              biography = this.removeEmojis(biography);
               // split string
               const desc = this.chunkString(biography, 90);
               info.description = desc && desc[0] ? desc[0] : "";
