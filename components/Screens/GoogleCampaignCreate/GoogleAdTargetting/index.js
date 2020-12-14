@@ -22,12 +22,14 @@ import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import { BudgetCards } from "./BudgetCards";
 import KeywordsCarousel from "../../../MiniComponents/KeywordsCarousel";
+import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 
 //Data
 import gender from "../../../Data/gender.googleSE.data";
 import ageRange from "../../../Data/ageRange.googleSE.data";
 
 //Icons
+import PurpleCheckmarkIcon from "../../../../assets/SVGs/PurpleCheckmark";
 import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark.svg";
 import GenderIcon from "../../../../assets/SVGs/Gender.svg";
 import PlusCircleIcon from "../../../../assets/SVGs/PlusCircleOutline.svg";
@@ -586,7 +588,7 @@ class GoogleAdTargetting extends Component {
           />
           <NavigationEvents onDidFocus={this.handleGoogleAdDetailsFocus} />
           <Content
-            scrollEnabled={false}
+            scrollEnabled={true}
             contentContainerStyle={styles.contentContainer}
           >
             <View style={styles.budgetHeader}>
@@ -667,11 +669,57 @@ class GoogleAdTargetting extends Component {
               </Text>
             </View>
 
-            <ScrollView
+            <View
               ref={(ref) => (this.scrollView = ref)}
               indicatorStyle="white"
               style={styles.targetList}
             >
+              <View
+                style={[
+                  globalStyles.row,
+                  { alignItems: "center", marginBottom: 7 },
+                ]}
+              >
+                <GenderIcon
+                  width={15}
+                  height={16}
+                  fill={globalColors.purple3}
+                />
+
+                <Text style={[styles.menutextHeading]}>
+                  {translate("Demographic")}
+                </Text>
+              </View>
+              <TouchableOpacity
+                disabled={this.props.campaign.uploading}
+                onPress={() => {
+                  this._renderSideMenu("age");
+                }}
+                style={styles.targetTouchable}
+              >
+                <View style={globalStyles.row}>
+                  <View style={globalStyles.column}>
+                    <Text style={styles.menutext}>{translate("Age")}</Text>
+                    <Text style={styles.menudetails}>
+                      {this.state.age[0] === "Undetermined"
+                        ? translate("All")
+                        : this.state.age.join(", ")}
+                    </Text>
+                  </View>
+                </View>
+
+                {this.state.age.length !== 0 ? (
+                  <PurpleCheckmarkIcon
+                    width={26}
+                    height={26}
+                    stroke={"#FFF"}
+                    style={{ alignSelf: "center" }}
+                  />
+                ) : (
+                  <PlusCircleIcon width={30} height={30} />
+                )}
+              </TouchableOpacity>
+
               <TouchableOpacity
                 disabled={this.props.campaign.uploading}
                 onPress={() => {
@@ -680,8 +728,6 @@ class GoogleAdTargetting extends Component {
                 style={styles.targetTouchable}
               >
                 <View style={globalStyles.row}>
-                  <GenderIcon width={30} height={30} style={styles.icon} />
-
                   <View style={globalStyles.column}>
                     <Text style={styles.menutext}>{translate("Gender")}</Text>
                     <Text style={styles.menudetails}>
@@ -696,58 +742,54 @@ class GoogleAdTargetting extends Component {
                 </View>
                 <View style={globalStyles.column}>
                   {this.state.gender ? (
-                    <GreenCheckmarkIcon width={30} height={30} />
+                    <PurpleCheckmarkIcon
+                      width={26}
+                      height={26}
+                      stroke={"#FFF"}
+                      style={{ alignSelf: "center" }}
+                    />
                   ) : (
                     <PlusCircleIcon width={30} height={30} />
                   )}
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity
-                disabled={this.props.campaign.uploading}
-                onPress={() => {
-                  this._renderSideMenu("age");
-                }}
-                style={styles.targetTouchable}
-              >
-                <View style={globalStyles.row}>
-                  <AgeIcon
-                    fill={globalColors.orange}
-                    width={30}
-                    height={30}
-                    style={styles.icon}
-                  />
-                  <View style={globalStyles.column}>
-                    <Text style={styles.menutext}>{translate("Age")}</Text>
-                    <Text style={styles.menudetails}>
-                      {this.state.age[0] === "Undetermined"
-                        ? translate("All")
-                        : this.state.age.join(", ")}
-                    </Text>
-                  </View>
-                </View>
-
-                {this.state.age.length !== 0 ? (
-                  <GreenCheckmarkIcon width={30} height={30} />
-                ) : (
-                  <PlusCircleIcon width={30} height={30} />
-                )}
-              </TouchableOpacity>
-            </ScrollView>
+            </View>
+          </Content>
+          <View
+            style={{
+              backgroundColor: "#FFFFFF",
+              paddingTop: 10,
+              paddingBottom: 25,
+              paddingHorizontal: 20,
+              justifyContent: "flex-end",
+              borderTopWidth: 1,
+              borderTopColor: "#75647C21",
+            }}
+          >
             {this.props.campaign.uploading ? (
-              <ForwardLoading
-                mainViewStyle={{ width: wp(8), height: hp(8) }}
-                // bottom={hp(25)}
-                style={{ width: wp(8), height: hp(8) }}
+              <AnimatedCircularProgress
+                size={50}
+                width={5}
+                fill={100}
+                rotation={360}
+                lineCap="round"
+                tintColor={globalColors.purple}
+                backgroundColor="rgba(255,255,255,0.3)"
+                adDetails={false}
+                style={{ alignSelf: "flex-end" }}
               />
             ) : (
               <LowerButton
                 screenProps={this.props.screenProps}
-                style={styles.proceedButtonRTL}
-                // bottom={25}
-                function={this._handleSubmission}
+                style={[styles.reachBarLowerButton]}
+                function={() => this._handleSubmission()}
+                purpleViolet
+                text={"Next"}
+                width={15}
+                height={15}
               />
             )}
-          </Content>
+          </View>
         </View>
       </Sidemenu>
     );

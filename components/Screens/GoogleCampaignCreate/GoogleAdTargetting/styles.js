@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    flex: 1,
+    // flex: 1,
   },
   subHeadings: {
     color: globalColors.rum,
@@ -100,30 +100,41 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   targetList: {
-    flexDirection: "column",
-    marginHorizontal: 40,
-    paddingBottom: 50,
+    // flexDirection: "column",
+    marginHorizontal: 20,
+    borderRadius: 20,
+    paddingTop: 11,
+    paddingBottom: 16,
+    paddingHorizontal: 14,
+    // paddingBottom: 50,
+    backgroundColor: "#fff",
   },
   targetTouchable: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginVertical: 8,
+    paddingLeft: 22,
   },
   icon: {},
-  menutext: {
-    paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
-    paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
-    fontSize: 13,
+  menutextHeading: {
+    fontSize: 14,
     fontFamily: "montserrat-bold",
-    color: "#fff",
+    color: globalColors.purple3,
+    textAlign: "left",
+    textTransform: "uppercase",
+    paddingHorizontal: 6,
+  },
+  menutext: {
+    fontSize: 14,
+    fontFamily: "montserrat-semibold",
+    color: globalColors.purple3,
     textAlign: "left",
     textTransform: "uppercase",
   },
   menudetails: {
     textAlign: "left",
-    paddingLeft: 15,
-    color: "#fff",
-    fontFamily: "montserrat-extralight",
+    color: globalColors.purple3,
+    fontFamily: "montserrat-regular",
     fontSize: 11,
   },
   keywordsColumn: {
@@ -206,7 +217,7 @@ const styles = StyleSheet.create({
   proceedButtonRTL: {
     width: 55,
     height: 55,
-
+    alignSelf: "flex-end",
     // padding: 20
   },
   smallSubHeading: {
@@ -259,6 +270,11 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     textTransform: "uppercase",
     fontSize: 11,
+  },
+  reachBarLowerButton: {
+    width: 130,
+    height: 50,
+    alignSelf: "flex-end",
   },
 });
 
