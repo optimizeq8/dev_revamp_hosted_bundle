@@ -11,10 +11,13 @@ export const colors = {
   background2: "#751AFF",
 };
 const styles = StyleSheet.create({
+  selectAudienceText: {
+    paddingHorizontal: 3,
+  },
   safeArea: {
     height: "100%",
     flex: 1,
-    backgroundColor: "#0000",
+    backgroundColor: "#F8F8F8",
   },
   mainContainer: {
     backgroundColor: "#0000",
@@ -30,12 +33,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   subHeadings: {
-    color: "#fff",
+    color: globalColors.rum,
     fontFamily: "montserrat-bold",
-    fontSize: 18,
+    fontSize: 14,
     paddingVertical: 10,
     paddingHorizontal: 30,
-    textTransform: "uppercase",
+    textTransform: "capitalize",
     textAlign: "left",
   },
   moneyInputContainer: {
@@ -225,6 +228,7 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     borderRadius: 30,
     alignItems: "center",
+    marginLeft: "auto",
   },
   lifetimeBudgetText: {
     fontSize: 10,

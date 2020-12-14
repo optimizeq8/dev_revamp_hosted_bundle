@@ -33,6 +33,7 @@ import GenderIcon from "../../../../assets/SVGs/Gender.svg";
 import PlusCircleIcon from "../../../../assets/SVGs/PlusCircleOutline.svg";
 import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
 import PlusCircle from "../../../../assets/SVGs/PlusCircle.svg";
+import AudienceIcon from "../../../../assets/SVGs/AudienceOutline";
 
 //Style
 import styles from "./styles";
@@ -564,11 +565,6 @@ class GoogleAdTargetting extends Component {
         isOpen={this.state.sidemenustate}
       >
         <View style={[styles.safeArea]}>
-          <LinearGradient
-            colors={[colors.background1, colors.background2]}
-            locations={[1, 0.3]}
-            style={globalStyles.gradient}
-          />
           <SafeAreaView style={{ backgroundColor: "#fff" }} />
 
           <TopStepsHeader
@@ -594,7 +590,7 @@ class GoogleAdTargetting extends Component {
             contentContainerStyle={styles.contentContainer}
           >
             <View style={styles.budgetHeader}>
-              <WalletIcon width={30} height={30} fill={"#FFF"} />
+              <WalletIcon width={25} height={25} fill={globalColors.rum} />
               <Text
                 style={[
                   styles.subHeadings,
@@ -657,10 +653,20 @@ class GoogleAdTargetting extends Component {
                 </View>
               </GradientButton>
             )}
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                paddingHorizontal: 30,
+              }}
+            >
+              <AudienceIcon />
+              <Text style={[styles.subHeadings, styles.selectAudienceText]}>
+                {translate("Select Audience")}
+              </Text>
+            </View>
 
-            <Text style={[styles.subHeadings, { width: "60%" }]}>
-              {translate("Who would you like to reach?")}
-            </Text>
             <ScrollView
               ref={(ref) => (this.scrollView = ref)}
               indicatorStyle="white"
