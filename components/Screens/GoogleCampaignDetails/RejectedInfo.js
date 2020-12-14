@@ -104,6 +104,7 @@ export default RejectedInfo = (props) => {
                 error_type: error_type,
                 source: "campaign_detail",
                 source_action: "a_review_ad",
+                campaignDetailScreen: true,
               });
             else if (error_type === 2)
               props.navigation.navigate("GoogleEditKeywords", {

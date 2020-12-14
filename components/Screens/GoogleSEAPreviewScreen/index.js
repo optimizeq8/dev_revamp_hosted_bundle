@@ -309,6 +309,10 @@ class GoogleSEAPreviewScreen extends Component {
     const { translate } = this.props.screenProps;
     let campaign = this.state.campaign;
     let language = this.props.navigation.getParam("language", 1019);
+    let campaignDetailScreen = this.props.navigation.getParam(
+      "campaignDetailScreen",
+      false
+    );
     return (
       <SafeAreaView
         style={styles.safeAreaView}
@@ -372,38 +376,40 @@ class GoogleSEAPreviewScreen extends Component {
                 </Transition>
               </View>
             </View>
-            <View style={styles.bottomView}>
-              <GradientButton
-                transparent
-                onPressAction={() => {
-                  this.props.navigation.navigate("GoogleAdDesign", {
-                    source: "ad_preview",
-                    source_action: "a_edit_design",
-                  });
-                }}
-                text={translate("Edit")}
-                style={styles.editButton}
-                uppercase
-              />
-              {this.props.campaign.uploading ? (
-                <View style={styles.forwardLoading}>
-                  <ForwardLoading
-                    mainViewStyle={styles.forwardLoadingMainView}
-                    bottom={hp(-0.15)}
-                    style={styles.forwardLoadingStyle}
-                  />
-                </View>
-              ) : (
+            {!campaignDetailScreen && (
+              <View style={styles.bottomView}>
                 <GradientButton
-                  style={styles.nextButton}
-                  text={translate("Next")}
-                  uppercase
+                  transparent
                   onPressAction={() => {
-                    this._handleSubmission();
+                    this.props.navigation.navigate("GoogleAdDesign", {
+                      source: "ad_preview",
+                      source_action: "a_edit_design",
+                    });
                   }}
+                  text={translate("Edit")}
+                  style={styles.editButton}
+                  uppercase
                 />
-              )}
-            </View>
+                {this.props.campaign.uploading ? (
+                  <View style={styles.forwardLoading}>
+                    <ForwardLoading
+                      mainViewStyle={styles.forwardLoadingMainView}
+                      bottom={hp(-0.15)}
+                      style={styles.forwardLoadingStyle}
+                    />
+                  </View>
+                ) : (
+                  <GradientButton
+                    style={styles.nextButton}
+                    text={translate("Next")}
+                    uppercase
+                    onPressAction={() => {
+                      this._handleSubmission();
+                    }}
+                  />
+                )}
+              </View>
+            )}
           </View>
         </Container>
       </SafeAreaView>

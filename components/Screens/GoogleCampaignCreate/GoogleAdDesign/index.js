@@ -605,6 +605,7 @@ class GoogleAdDesign extends Component {
                         description2: this.state.description2,
                       },
                       language: this.props.campaign.language,
+                      campaignDetailScreen: true,
                     });
                   }}
                 >
