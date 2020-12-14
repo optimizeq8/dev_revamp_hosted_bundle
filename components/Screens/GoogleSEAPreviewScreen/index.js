@@ -383,7 +383,7 @@ class GoogleSEAPreviewScreen extends Component {
                   onPressAction={() => {
                     this.props.navigation.navigate("GoogleAdDesign", {
                       source: "ad_preview",
-                      source_action: "a_edit_design",
+                      source_action: "a_edit_ad_design",
                     });
                   }}
                   text={translate("Edit")}
