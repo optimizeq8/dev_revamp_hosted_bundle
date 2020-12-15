@@ -194,6 +194,7 @@ class CampaignCard extends Component {
                         dashboard: true,
                         engagement_phone_number:
                           campaign.engagement_phone_number,
+                        campaign_id: campaign.campaign_id,
                       })
                     }
                     style={{ height: "75%", width: "30%" }}

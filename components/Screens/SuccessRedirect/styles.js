@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 40,
+    paddingTop: 20,
   },
   view: {
     flex: 1,
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 20,
     backgroundColor: "rgba(0,0,0,0.3)",
-    width: "100%",
+    width: 350,
   },
   button: {
     marginTop: 25,
@@ -81,10 +81,8 @@ const styles = StyleSheet.create({
   },
   mobileDetailCard: {
     backgroundColor: globalColors.white,
-    paddingLeft: 20,
-    paddingRight: 10,
+    width: 350,
     paddingVertical: 20,
-    marginHorizontal: 20,
     borderRadius: 35,
   },
   verifyButton: {

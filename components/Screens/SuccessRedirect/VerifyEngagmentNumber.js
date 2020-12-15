@@ -16,6 +16,7 @@ class VerifyEngagmentNumber extends Component {
     code: "",
     country_code: "",
     phoneNum: this.props.engagmentPhoneNumber,
+    campaign_id: "",
   };
   componentDidMount() {
     let dashboard = this.props.navigation.getParam("dashboard", false);
@@ -23,6 +24,11 @@ class VerifyEngagmentNumber extends Component {
       "engagement_phone_number",
       ""
     );
+    let campaign_id =
+      this.props.campaign_id ||
+      this.props.navigation.getParam("campaign_id", "");
+    this.props.getEngagmentNumberVerification(campaign_id);
+    this.setState({ campaign_id });
     if (dashboard)
       this.setState({
         phoneNum: engagement_phone_number,
@@ -40,7 +46,7 @@ class VerifyEngagmentNumber extends Component {
   }
   verifyOTP = () => {
     this.props.verifySnapchatOtp(
-      this.props.campaign_id,
+      this.state.campaign_id,
       this.props.engagementNumberID,
       this.state.code,
       this.props.otpVerified || (() => this.props.navigation.goBack())
@@ -78,7 +84,13 @@ class VerifyEngagmentNumber extends Component {
     let dashboard = navigation.getParam("dashboard", false);
     let { translate } = screenProps;
     return (
-      <View style={dashboard ? { height: "100%" } : {}}>
+      <View
+        style={
+          dashboard
+            ? { height: "100%", alignItems: "center" }
+            : { width: "100%", justifyContent: "center" }
+        }
+      >
         {dashboard && (
           <>
             <LinearGradient
@@ -142,7 +154,9 @@ class VerifyEngagmentNumber extends Component {
             onPressAction={this.verifyOTP}
           />
           <TouchableOpacity
-            onPress={() => this.props.getEngagmentNumberVerification()}
+            onPress={() =>
+              this.props.getEngagmentNumberVerification(this.state.campaign_id)
+            }
           >
             <Text style={styles.bottomText}>{translate("Resend Code")}</Text>
           </TouchableOpacity>
@@ -191,6 +205,8 @@ const mapDispatchToProps = (dispatch) => ({
         otpVerified
       )
     ),
+  getEngagmentNumberVerification: (campaign_id) =>
+    dispatch(actionCreators.getEngagmentNumberVerification(campaign_id)),
 });
 export default connect(
   mapStateToProps,

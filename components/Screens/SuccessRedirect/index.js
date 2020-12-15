@@ -191,10 +191,8 @@ class SuccessRedirect extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <SafeAreaView
-        style={styles.container}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <View style={styles.container}>
+        <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
@@ -203,19 +201,16 @@ class SuccessRedirect extends Component {
 
         <View style={styles.view}>
           {this.state.showVerifyEngagment ? (
-            <VerifyEngagmentNumber
-              otpVerified={this.otpVerified}
-              getEngagmentNumberVerification={() =>
-                this.props.getEngagmentNumberVerification(
-                  this.state.campaign_id
-                )
-              }
-              screenProps={this.props.screenProps}
-              navigation={this.props.navigation}
-              engagmentPhoneNumber={this.state.engagmentPhoneNumber}
-              handleButton={this.handleButton}
-              campaign_id={this.state.campaign_id}
-            />
+            <View style={{ zIndex: 2 }}>
+              <VerifyEngagmentNumber
+                otpVerified={this.otpVerified}
+                screenProps={this.props.screenProps}
+                navigation={this.props.navigation}
+                engagmentPhoneNumber={this.state.engagmentPhoneNumber}
+                handleButton={this.handleButton}
+                campaign_id={this.state.campaign_id}
+              />
+            </View>
           ) : (
             <>
               <SuccessIcon width={80} height={80} />
@@ -235,7 +230,7 @@ class SuccessRedirect extends Component {
               this.state.showVerifyEngagment && {
                 paddingTop: 50,
                 bottom: 45,
-                zIndex: -1,
+                zIndex: 1,
               },
             ]}
           >
@@ -274,7 +269,7 @@ class SuccessRedirect extends Component {
             <LoadingScreen dash={true} />
           )}
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 }
