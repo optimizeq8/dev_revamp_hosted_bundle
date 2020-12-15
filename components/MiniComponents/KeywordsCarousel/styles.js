@@ -4,18 +4,18 @@ export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#751AFF",
 };
 const styles = StyleSheet.create({
   keywordsColumn: {
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   keywordScrollView: {
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
   editButton: {
     overflow: "hidden",
@@ -29,17 +29,17 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     paddingRight: 0,
     paddingBottom: 0,
-    borderColor: "#fff",
-    borderWidth: 1
+    borderColor: globalColors.rum,
+    borderWidth: 1,
   },
   editButtonText: {
     marginRight: 0,
     paddingHorizontal: 20,
     fontSize: 12,
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-bold",
     alignSelf: "center",
-    color: "#fff",
-    textAlign: "center"
+    color: globalColors.rum,
+    textAlign: "center",
   },
   keywordButton: {
     overflow: "hidden",
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     margin: 3,
     paddingTop: 0,
     paddingRight: 0,
-    paddingBottom: 0
+    paddingBottom: 0,
   },
   keywordButtonText: {
     marginRight: 0,
@@ -60,13 +60,13 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     alignSelf: "center",
     color: "#fff",
-    textAlign: "center"
+    textAlign: "center",
   },
   xIcon: {
     color: "#fff",
     fontSize: 20,
-    marginRight: 10
-  }
+    marginRight: 10,
+  },
 });
 
 export default styles;

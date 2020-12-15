@@ -31,7 +31,13 @@ const initialState = {
   campaignSteps: [],
   incompleteCampaign: false,
   campaignResumed: false,
-  campaignStatusLoading: false
+  campaignStatusLoading: false,
+  instagramDetail: {
+    biography: "",
+    external_url: "",
+    business_category_name: "",
+    full_name: "",
+  },
 };
 
 const reducer = (state = initialState, action) => {
@@ -39,66 +45,66 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_GOOGLE_LOADING:
       return {
         ...state,
-        loading: action.payload
+        loading: action.payload,
       };
     case actionTypes.SET_GOOGLE_COUNTRY_REGIONS_REACH:
       return {
         ...state,
         locationsFetchedList: action.payload.data,
-        loading: action.payload.loading
+        loading: action.payload.loading,
       };
     case actionTypes.ERROR_SET_GOOGLE_COUNTRY_REGIONS_REACH:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       };
     case actionTypes.SET_GOOGLE_UPLOADING:
       return {
         ...state,
-        uploading: action.payload
+        uploading: action.payload,
       };
     case actionTypes.SET_GOOGLE_CAMPAIGN_INFO:
       return {
         ...state,
         ...action.payload.data,
-        incompleteCampaign: true
+        incompleteCampaign: true,
       };
     case actionTypes.ERROR_SET_GOOGLE_CAMPAIGN_INFO:
       return {
         ...state,
-        uploading: false
+        uploading: false,
       };
     case actionTypes.SET_GOOGLE_CAMPAIGN_AD_DESIGN:
       return {
         ...state,
         ...action.payload.data,
-        uploading: false
+        uploading: false,
       };
     case actionTypes.ERROR_SET_GOOGLE_CAMPAIGN_AD_DESIGN:
       return {
         ...state,
-        uploading: false
+        uploading: false,
       };
     case actionTypes.SET_GOOGLE_CAMPAIGN_AD_TARGETING:
       return {
         ...state,
-        ...action.payload.data
+        ...action.payload.data,
       };
     case actionTypes.ERROR_SET_GOOGLE_CAMPAIGN_AD_TARGETING:
       return {
         ...state,
-        uploading: false
+        uploading: false,
       };
     case actionTypes.SET_GOOGLE_SE_KEYWORDS:
       return {
         ...state,
         fetchedKeywords: action.payload.data,
-        loading: action.payload.loading
+        loading: action.payload.loading,
       };
     case actionTypes.ERROR_SET_GOOGLE_SE_KEYWORDS:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       };
     case actionTypes.SET_BUDGET_RANGE:
       return {
@@ -107,22 +113,22 @@ const reducer = (state = initialState, action) => {
         maxValueBudget: action.payload.max_budget,
         recommendedBudget: action.payload.recommended_budget,
         budget: action.payload.recommended_budget,
-        uploading: false
+        uploading: false,
       };
     case actionTypes.SAVE_GOOGLE_CAMPAIGN_DATA:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       };
     case actionTypes.SAVE_GOOGLE_CAMPAIGN_STEPS:
       return {
         ...state,
-        campaignSteps: action.payload
+        campaignSteps: action.payload,
       };
     case actionTypes.SET_GOOGLE_CAMPAIGN_RESUMED:
       return {
         ...state,
-        campaignResumed: action.payload
+        campaignResumed: action.payload,
       };
     case actionTypes.RESET_GOOGLE_CAMPAIGN:
       return initialState;
@@ -130,7 +136,12 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_GOOGLE_STATUS_LOADING:
       return {
         ...state,
-        campaignStatusLoading: action.payload
+        campaignStatusLoading: action.payload,
+      };
+    case actionTypes.SET_INSTAGRAM_DETAIL:
+      return {
+        ...state,
+        instagramDetail: action.payload,
       };
     default:
       return state;

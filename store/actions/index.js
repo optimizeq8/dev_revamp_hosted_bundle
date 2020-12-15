@@ -177,6 +177,7 @@ export {
   update_google_keywords,
   enable_end_or_pause_google_campaign,
   downloadGoogleCSV,
+  getInstagramNameDescription,
 } from "./googleAdsCampaignActions";
 
 export {
