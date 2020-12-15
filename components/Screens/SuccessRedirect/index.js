@@ -145,7 +145,6 @@ class SuccessRedirect extends Component {
             campaign_id: this.state.campaign_id,
             campaign_engagement_phone_number: this.state.engagmentPhoneNumber,
           });
-          this.props.getEngagmentNumberVerification(this.state.campaign_id);
           this.setState({ showVerifyEngagment: true });
         }
         if (
@@ -294,7 +293,5 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.rest_google_campaign_data()),
   resetCampaignInfoInstagram: () =>
     dispatch(actionCreators.resetCampaignInfoInstagram()),
-  getEngagmentNumberVerification: (campaign_id) =>
-    dispatch(actionCreators.getEngagmentNumberVerification(campaign_id)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SuccessRedirect);
