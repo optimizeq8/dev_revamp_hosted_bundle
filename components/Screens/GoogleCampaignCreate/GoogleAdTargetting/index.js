@@ -650,7 +650,7 @@ class GoogleAdTargetting extends Component {
                   <PlusCircle width={50} height={50} />
 
                   <Text style={[styles.addProductsText]}>
-                    {translate("Add Products and Services")}
+                    {translate("Select your keywords")}
                   </Text>
                 </View>
               </GradientButton>
