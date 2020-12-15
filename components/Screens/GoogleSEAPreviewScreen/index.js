@@ -22,6 +22,7 @@ import { showMessage } from "react-native-flash-message";
 
 import { colors } from "../../GradiantColors/colors";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
+// import isStringArabic from "../../isStringArabic";
 class GoogleSEAPreviewScreen extends Component {
   static navigationOptions = {
     header: null,
@@ -304,7 +305,12 @@ class GoogleSEAPreviewScreen extends Component {
   render() {
     const { translate } = this.props.screenProps;
     let campaign = this.state.campaign;
-    let language = this.props.navigation.getParam("language", 1019);
+    // let language = isStringArabic(campaign.headline2 ? campaign.headline2 : "")
+    //   ? "1019"
+    //   : "1000";
+    let language =
+      this.props.navigation.getParam("language", null) ||
+      this.props.campaign.language;
     let campaignDetailScreen = this.props.navigation.getParam(
       "campaignDetailScreen",
       false
