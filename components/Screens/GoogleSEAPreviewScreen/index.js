@@ -1,12 +1,12 @@
 //Components
 import React, { Component } from "react";
-import { View, BackHandler, Image, TouchableOpacity, Text } from "react-native";
+import { View, BackHandler, Image } from "react-native";
 import { Container } from "native-base";
 import SafeAreaView from "react-native-safe-area-view";
 import CustomHeader from "../../MiniComponents/Header";
 import GoogleSEAPreview from "../../MiniComponents/GoogleSEAPreview";
 import GradientButton from "../../MiniComponents/GradientButton";
-import ForwardLoading from "../../MiniComponents/ForwardLoading";
+import AnimatedCircularProgress from "../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 
 // Style
 import styles from "./styles";
@@ -18,14 +18,10 @@ import { Transition } from "react-navigation-fluid-transitions";
 import { LinearGradient } from "expo-linear-gradient";
 import isEmpty from "lodash/isEmpty";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
 import { showMessage } from "react-native-flash-message";
 
 import { colors } from "../../GradiantColors/colors";
-import globalStyles from "../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 class GoogleSEAPreviewScreen extends Component {
   static navigationOptions = {
     header: null,
@@ -392,10 +388,16 @@ class GoogleSEAPreviewScreen extends Component {
                 />
                 {this.props.campaign.uploading ? (
                   <View style={styles.forwardLoading}>
-                    <ForwardLoading
-                      mainViewStyle={styles.forwardLoadingMainView}
-                      bottom={hp(-0.15)}
-                      style={styles.forwardLoadingStyle}
+                    <AnimatedCircularProgress
+                      size={50}
+                      width={5}
+                      fill={100}
+                      rotation={360}
+                      lineCap="round"
+                      tintColor={globalColors.orange}
+                      backgroundColor="rgba(255,255,255,0.3)"
+                      adDetails={false}
+                      style={{ alignSelf: "flex-end" }}
                     />
                   </View>
                 ) : (

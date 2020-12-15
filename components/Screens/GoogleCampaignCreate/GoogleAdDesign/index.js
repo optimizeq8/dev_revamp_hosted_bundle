@@ -6,16 +6,16 @@ import {
   Keyboard,
   BackHandler,
   ScrollView,
-  TouchableOpacity,
+  Text,
 } from "react-native";
 import { Transition } from "react-navigation-fluid-transitions";
 import analytics from "@segment/analytics-react-native";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
 
-import LowerButton from "../../../MiniComponents/LowerButton";
 import CustomHeader from "../../../MiniComponents/Header";
-import ForwardLoading from "../../../MiniComponents/ForwardLoading";
+import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
+import GradientButton from "../../../MiniComponents/GradientButton";
 import GoogleSEABox from "./GoogleSEABox";
 import EditModal from "../../GoogleCampaignDetails/EditKeywords/EditModal";
 import InputScrollView from "react-native-input-scroll-view";
@@ -42,7 +42,7 @@ import isEqual from "react-fast-compare";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../../GradiantColors/colors";
-import globalStyles from "../../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../../GlobalStyles";
 
 class GoogleAdDesign extends Component {
   static navigationOptions = {
@@ -496,9 +496,31 @@ class GoogleAdDesign extends Component {
     }
     return { correctPathsLength, onlyTwoPaths };
   };
+
+  previewHandler = () => {
+    analytics.track(`a_preview_ad`, {
+      source: "ad_design",
+      source_action: "a_preview_ad",
+      action_status: "success",
+      campaign_channel: "google",
+      campaign_ad_type: "GoogleSEAd",
+    });
+    this.props.navigation.push("GoogleSEAPreviewScreen", {
+      campaign: {
+        headline1: this.state.headline1,
+        headline2: this.state.headline2,
+        headline3: this.state.headline3,
+        finalurl: this.state.finalurl,
+        description: this.state.description,
+        description2: this.state.description2,
+      },
+      language: this.props.campaign.language,
+      campaignDetailScreen: true,
+    });
+  };
   render() {
     const rejected = this.props.navigation.getParam("rejected", false);
-
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.safeAreaView}>
         <LinearGradient
@@ -586,49 +608,42 @@ class GoogleAdDesign extends Component {
               <View
                 style={{
                   flex: 1,
-                  alignSelf: "flex-end",
                   marginHorizontal: 25,
                   flexDirection: "row",
+                  justifyContent: "space-between",
                 }}
               >
-                <TouchableOpacity
+                <GradientButton
+                  text={translate("Preview")}
+                  uppercase
+                  transparent
                   style={styles.button}
-                  onPress={() => {
-                    analytics.track(`a_preview_ad`, {
-                      source: "ad_design",
-                      source_action: "a_preview_ad",
-                      action_status: "success",
-                      campaign_channel: "google",
-                      campaign_ad_type: "GoogleSEAd",
-                    });
-                    this.props.navigation.push("GoogleSEAPreviewScreen", {
-                      campaign: {
-                        headline1: this.state.headline1,
-                        headline2: this.state.headline2,
-                        headline3: this.state.headline3,
-                        finalurl: this.state.finalurl,
-                        description: this.state.description,
-                        description2: this.state.description2,
-                      },
-                      language: this.props.campaign.language,
-                      campaignDetailScreen: true,
-                    });
-                  }}
-                >
-                  <EyeIcon width={hp(10)} height={hp(10)} />
-                </TouchableOpacity>
-                {this.props.campaign.uploading ? (
-                  <ForwardLoading
-                    mainViewStyle={{ width: wp(8), height: hp(8) }}
-                    bottom={hp(3)}
-                    style={{ width: wp(8), height: hp(8) }}
+                  disabledGradientBegin={"rgba(0,0,0,0)"}
+                  disabledGradientEnd={"rgba(0,0,0,0)"}
+                  disabled={this.props.campaign.uploading}
+                  onPressAction={this.previewHandler}
+                />
+                {!this.props.campaign.uploading ? (
+                  <GradientButton
+                    text={translate("Next")}
+                    uppercase
+                    style={styles.proceedButtonRTL}
+                    disabledGradientBegin={"rgba(0,0,0,0)"}
+                    disabledGradientEnd={"rgba(0,0,0,0)"}
+                    disabled={this.props.campaign.uploading}
+                    onPressAction={this._handleSubmission}
                   />
                 ) : (
-                  <LowerButton
-                    screenProps={this.props.screenProps}
-                    style={styles.proceedButtonRTL}
-                    bottom={2}
-                    function={this._handleSubmission}
+                  <AnimatedCircularProgress
+                    size={50}
+                    width={5}
+                    fill={100}
+                    rotation={360}
+                    lineCap="round"
+                    tintColor={globalColors.orange}
+                    backgroundColor="rgba(255,255,255,0.3)"
+                    adDetails={false}
+                    style={{ alignSelf: "flex-end" }}
                   />
                 )}
               </View>
