@@ -168,7 +168,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 74
-        versionName "0.4.24"
+        versionName "0.4.240"
         multiDexEnabled true
 
     }
