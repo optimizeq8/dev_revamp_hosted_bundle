@@ -6,7 +6,6 @@ import {
   Keyboard,
   BackHandler,
   ScrollView,
-  Text,
 } from "react-native";
 import { Transition } from "react-navigation-fluid-transitions";
 import analytics from "@segment/analytics-react-native";
