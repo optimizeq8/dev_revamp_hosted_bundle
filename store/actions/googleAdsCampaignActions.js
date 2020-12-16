@@ -922,7 +922,7 @@ export const get_budget = (info, segmentInfo, navigation) => {
             type: actionTypes.SET_BUDGET_RANGE,
             payload: data,
           });
-          navigation.push("GoogleAdDesign", {
+          navigation.push("GoogleSEAPreviewScreen", {
             source: "ad_objective",
             source_action: "a_submit_ad_objective",
           });
@@ -987,5 +987,54 @@ export const refundGoogleCampaignAmount = (campaign_id) => {
       .catch((err) => {
         errorMessageHandler(err);
       });
+  };
+};
+
+export const getInstagramNameDescription = (insta_handle) => {
+  return async (dispatch) => {
+    try {
+      var response = await axios.get(
+        `https://www.instagram.com/${insta_handle}`
+      );
+      if (response) {
+        var data = response.data;
+        data = data.split("window._sharedData = ");
+        data = data[1].split("</script>");
+        data = data[0];
+        data = data.substr(0, data.length - 1);
+        data = JSON.parse(data);
+        data = data.entry_data.ProfilePage[0].graphql.user;
+        // console.log("data", JSON.stringify(data, null, 2));
+        let info = {
+          biography: data.biography,
+          external_url: data.external_url,
+          business_category_name: data.business_category_name,
+          full_name: data.full_name,
+        };
+        // let info = {
+        //   biography:
+        //     "‎أول تطبيق للدعايات الرقمية\nLaunch Your Ads in Minutes with\nOptimizeApp - iOS & Android📱\nAll Performance, No Hassle\n 👇🏻حمل التطبيق عبر الرابط:",
+        //   external_url: "https://optimizeapp.com/download",
+        //   business_category_name: "Business & Utility Services",
+        //   full_name: "OptimizeApp تطبيق أوبتيمايز",
+        // };
+
+        return dispatch({
+          type: actionTypes.SET_INSTAGRAM_DETAIL,
+          payload: info,
+        });
+      }
+    } catch (err) {
+      // console.log('insta error verify account', err.response || err.message);
+      return dispatch({
+        type: actionTypes.SET_INSTAGRAM_DETAIL,
+        payload: {
+          external_url: "",
+          biography: "",
+          business_category_name: "",
+          full_name: "",
+        },
+      });
+    }
   };
 };

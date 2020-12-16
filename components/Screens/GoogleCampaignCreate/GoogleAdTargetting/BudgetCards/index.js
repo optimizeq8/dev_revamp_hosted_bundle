@@ -102,72 +102,31 @@ export class BudgetCards extends Component {
     ));
 
     return (
-      <View style={{ height: "10%" }}>
-        <MaskedView
-          maskElement={
-            <LinearGradient
-              colors={["black", "transparent"]}
-              start={[0.85, 0]}
-              end={[this.state.scrollX, 0]}
-              style={{ height: "100%", width: "100%" }}
-            />
-          }
+      <View style={{ marginTop: 7 }}>
+        <ScrollView
+          onScroll={this.handleFading}
+          scrollEventThrottle={100}
+          horizontal
+          ref={(ref) => (this.budgetScrollView = ref)}
+          style={styles.budgetCardsStyle}
+          contentContainerStyle={styles.scrollContainerStyle}
+          showsHorizontalScrollIndicator={false}
         >
-          <ScrollView
-            onScroll={this.handleFading}
-            scrollEventThrottle={100}
-            horizontal
-            ref={(ref) => (this.budgetScrollView = ref)}
-            style={styles.budgetCardsStyle}
-            contentContainerStyle={styles.scrollContainerStyle}
-            showsHorizontalScrollIndicator={false}
+          <View
+            style={[
+              styles.budgetCardStyle,
+              budgetOption === 0 ? { borderWidth: 2 } : { borderWidth: 0 },
+            ]}
           >
-            <View
-              style={[
-                styles.budgetCardStyle,
-                budgetOption === 0 ? { borderWidth: 2.5 } : { borderWidth: 0 },
-              ]}
-            >
-              {budgetOption !== 0 ||
-              (value === "$0" && !this.state.placeholder) ? (
-                <TouchableOpacity
-                  disabled={uploading}
-                  style={{ flex: 1, justifyContent: "center" }}
-                  onPress={this.handleCustomBudgetSelect}
-                >
-                  <Text
-                    style={[
-                      styles.budget,
-                      {
-                        fontSize:
-                          budgetOption !== 0 ||
-                          (value === "$0" && !this.state.placeholder)
-                            ? 10
-                            : 20,
-                      },
-                    ]}
-                  >
-                    {translate("Custom Budget")}
-                  </Text>
-                </TouchableOpacity>
-              ) : (
-                <TextInputMask
-                  includeRawValueInChangeText
-                  type={"money"}
-                  selectTextOnFocus={true}
-                  options={{
-                    precision: 0,
-                    delimiter: ",",
-                    unit: "$",
-                  }}
-                  focus={this.state.placeholder}
-                  maxLength={8}
-                  value={this.state.customValue}
-                  onChangeText={(value, rawText) =>
-                    this.handleCustomBudgetChange(value, rawText)
-                  }
-                  onFocus={this.handleCustomBudgetFocus}
-                  onBlur={this.handleCustomBudgetBlur}
+            {budgetOption !== 0 ||
+            (value === "$0" && !this.state.placeholder) ? (
+              <TouchableOpacity
+                disabled={uploading}
+                // style={styles.budget}
+                style={{ paddingVertical: 7 }}
+                onPress={this.handleCustomBudgetSelect}
+              >
+                <Text
                   style={[
                     styles.budget,
                     {
@@ -175,16 +134,48 @@ export class BudgetCards extends Component {
                         budgetOption !== 0 ||
                         (value === "$0" && !this.state.placeholder)
                           ? 10
-                          : 20,
+                          : 14,
                     },
                   ]}
-                  ref={(ref) => (this.moneyField = ref)}
-                />
-              )}
-            </View>
-            {cards}
-          </ScrollView>
-        </MaskedView>
+                >
+                  {translate("Custom Budget")}
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TextInputMask
+                includeRawValueInChangeText
+                type={"money"}
+                selectTextOnFocus={true}
+                options={{
+                  precision: 0,
+                  delimiter: ",",
+                  unit: "$",
+                }}
+                focus={this.state.placeholder}
+                maxLength={8}
+                value={this.state.customValue}
+                onChangeText={(value, rawText) =>
+                  this.handleCustomBudgetChange(value, rawText)
+                }
+                onFocus={this.handleCustomBudgetFocus}
+                onBlur={this.handleCustomBudgetBlur}
+                style={[
+                  styles.budget,
+                  {
+                    fontSize:
+                      budgetOption !== 0 ||
+                      (value === "$0" && !this.state.placeholder)
+                        ? 10
+                        : 16,
+                  },
+                  budgetOption === 0 && styles.activeBudgetTextStyle,
+                ]}
+                ref={(ref) => (this.moneyField = ref)}
+              />
+            )}
+          </View>
+          {cards}
+        </ScrollView>
       </View>
     );
   }

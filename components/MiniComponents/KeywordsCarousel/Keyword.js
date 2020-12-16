@@ -3,7 +3,7 @@ import React from "react";
 import { TouchableOpacity, Text } from "react-native";
 import { Icon } from "native-base";
 import styles from "./styles";
-import globalStyles from "../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 
 export default Keyword = (props) => {
   let { _handler, keyword, type = "Keyword", uploading } = props;
@@ -27,7 +27,10 @@ export default Keyword = (props) => {
       >
         {keyword}
       </Text>
-      <Icon name="close" style={styles.xIcon} />
+      <Icon
+        name="close"
+        style={[styles.xIcon, type === "Edit" && { color: globalColors.rum }]}
+      />
     </TouchableOpacity>
   );
 };

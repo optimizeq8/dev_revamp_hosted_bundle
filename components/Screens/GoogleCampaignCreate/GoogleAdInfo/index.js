@@ -90,6 +90,11 @@ class GoogleAdInfo extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidMount() {
+    if (this.props.mainBusiness.insta_handle) {
+      this.props.getInstagramNameDescription(
+        this.props.mainBusiness.insta_handle
+      );
+    }
     if (!this.props.campaign.incompleteCampaign) {
       this.props.save_google_campaign_steps(["Dashboard", "GoogleAdInfo"]);
     }
@@ -824,5 +829,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.set_google_campaign_resumed(value)),
   save_google_campaign_steps: (value) =>
     dispatch(actionCreators.save_google_campaign_steps(value)),
+  getInstagramNameDescription: (insta_handle) =>
+    dispatch(actionCreators.getInstagramNameDescription(insta_handle)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(GoogleAdInfo);

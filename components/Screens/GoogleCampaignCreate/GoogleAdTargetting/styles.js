@@ -11,10 +11,13 @@ export const colors = {
   background2: "#751AFF",
 };
 const styles = StyleSheet.create({
+  selectAudienceText: {
+    paddingHorizontal: 3,
+  },
   safeArea: {
     height: "100%",
     flex: 1,
-    backgroundColor: "#0000",
+    backgroundColor: "#F8F8F8",
   },
   mainContainer: {
     backgroundColor: "#0000",
@@ -27,15 +30,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    flex: 1,
+    // flex: 1,
   },
   subHeadings: {
-    color: "#fff",
+    color: globalColors.rum,
     fontFamily: "montserrat-bold",
-    fontSize: 18,
+    fontSize: 14,
     paddingVertical: 10,
     paddingHorizontal: 30,
-    textTransform: "uppercase",
+    textTransform: "capitalize",
     textAlign: "left",
   },
   moneyInputContainer: {
@@ -97,31 +100,42 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   targetList: {
-    flexDirection: "column",
-    marginHorizontal: 40,
-    paddingBottom: 50,
+    // flexDirection: "column",
+    marginHorizontal: 20,
+    borderRadius: 20,
+    paddingTop: 11,
+    paddingBottom: 16,
+    paddingHorizontal: 14,
+    // paddingBottom: 50,
+    backgroundColor: "#fff",
   },
   targetTouchable: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginVertical: 8,
+    paddingLeft: 22,
   },
   icon: {},
-  menutext: {
-    paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
-    paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
-    fontSize: 13,
+  menutextHeading: {
+    fontSize: 14,
     fontFamily: "montserrat-bold",
-    color: "#fff",
+    color: globalColors.purple3,
+    textAlign: "left",
+    textTransform: "uppercase",
+    paddingHorizontal: 6,
+  },
+  menutext: {
+    fontSize: 14,
+    fontFamily: "montserrat-semibold",
+    color: globalColors.purple3,
     textAlign: "left",
     textTransform: "uppercase",
   },
   menudetails: {
     textAlign: "left",
-    paddingLeft: 15,
-    color: "#fff",
-    fontFamily: "montserrat-extralight",
-    fontSize: 11,
+    color: globalColors.purple,
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
   },
   keywordsColumn: {
     flexDirection: "column",
@@ -203,7 +217,7 @@ const styles = StyleSheet.create({
   proceedButtonRTL: {
     width: 55,
     height: 55,
-
+    alignSelf: "flex-end",
     // padding: 20
   },
   smallSubHeading: {
@@ -225,6 +239,7 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     borderRadius: 30,
     alignItems: "center",
+    marginLeft: "auto",
   },
   lifetimeBudgetText: {
     fontSize: 10,
@@ -255,6 +270,47 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     textTransform: "uppercase",
     fontSize: 11,
+  },
+  reachBarLowerButton: {
+    width: 130,
+    height: 50,
+    alignSelf: "flex-end",
+  },
+  addIcon: {
+    width: 26,
+    height: 26,
+    borderColor: globalColors.purple,
+    borderWidth: 2,
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#9300FF30",
+  },
+  genderOuterView: {
+    display: "flex",
+    flexDirection: "row",
+    paddingVertical: 5,
+  },
+  genderInnerView: {
+    borderWidth: 1,
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    // paddingVertical: 5,
+    marginRight: 12,
+    borderColor: globalColors.purple3,
+  },
+  genderRadioText: {
+    color: globalColors.purple3,
+    fontSize: 13,
+    fontFamily: "montserrat-regular",
+    lineHeight: 29,
+  },
+  genderInnerActiveView: {
+    borderColor: globalColors.purple,
+    backgroundColor: globalColors.purpleTran,
+  },
+  genderRadioTextActive: {
+    color: globalColors.purple,
   },
 });
 

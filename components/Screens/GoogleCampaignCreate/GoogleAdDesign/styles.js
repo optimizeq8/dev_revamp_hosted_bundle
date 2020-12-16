@@ -4,6 +4,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -86,20 +87,16 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   proceedButtonRTL: {
-    width: 65,
-    height: 65,
+    width: "50%",
+    height: 50,
+    marginHorizontal: 0,
   },
   button: {
-    alignSelf: "center",
-    width: wp(10),
-    height: hp(7.5),
-    bottom: hp(3),
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 3,
-    shadowOpacity: 0.2,
-    marginHorizontal: wp(10),
+    width: "45%",
+    height: 50,
+    borderWidth: 1,
+    borderColor: globalColors.white,
+    marginHorizontal: 0,
   },
 });
 
