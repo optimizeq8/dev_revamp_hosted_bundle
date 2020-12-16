@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "montserrat-medium-english",
     color: globalColors.purple,
+    width: "80%",
   },
   placeHolderStoryAd: {
     // height: hp(44),

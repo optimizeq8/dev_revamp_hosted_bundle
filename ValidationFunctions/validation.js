@@ -53,7 +53,7 @@ const validation = {
   },
   url: {
     // Just to check if it's a valid website independent of social platforms
-    format: /^((https+|http+|ftp|smtp):\/\/){0,1}(www.|m.)?\b[a-z0-9_-]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+(\.[a-z]{2,})*(\\?[?;&a-z\\d%_~+=-]*)?)*\/?$/i,
+    format: /^((https+|http+|ftp|smtp):\/\/){0,1}(www.|m.)?\b[a-z0-9_-]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#?]+(\.[a-z]{2,})*(\\?[?;&a-z\\d%_~+=-]*)?)*\/?$/i,
     presence: { allowEmpty: false },
   },
   deepLink: {

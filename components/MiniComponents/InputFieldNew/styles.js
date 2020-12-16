@@ -27,14 +27,10 @@ export default StyleSheet.create({
   inputText: {
     fontFamily: "montserrat-regular",
     fontSize: 12 / PixelRatio.getFontScale(),
-    alignSelf: "flex-start",
     textAlign: I18nManager.isRTL ? "right" : "left",
     color: "#FFF",
-    marginBottom: 10,
-    paddingLeft: 0,
-    paddingRight: 0,
+    marginBottom: 0,
     height: 20,
-    paddingVertical: 0,
     width: "75%",
   },
   downicon: {

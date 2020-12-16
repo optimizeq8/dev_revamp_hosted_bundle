@@ -264,6 +264,7 @@ class Website extends Component {
           customStyle={{ paddingHorizontal: 0, height: 60 }}
           screenProps={this.props.screenProps}
           website={this.state.campaignInfo.link}
+          ignoreSocialRestriction={true}
           setWebsiteValue={this.setWebsiteValue}
           stateNameError={this.state.urlError}
           getValidInfo={this.validateUrl}
