@@ -21,7 +21,6 @@ import EditModal from "../../GoogleCampaignDetails/EditKeywords/EditModal";
 import InputScrollView from "react-native-input-scroll-view";
 
 //Icons
-import EyeIcon from "../../../../assets/SVGs/Eye";
 
 // Style
 import styles from "./styles";
@@ -32,10 +31,7 @@ import * as actionCreators from "../../../../store/actions";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
+
 import { showMessage } from "react-native-flash-message";
 import isEqual from "react-fast-compare";
 // import { AdjustEvent, Adjust } from "react-native-adjust";
