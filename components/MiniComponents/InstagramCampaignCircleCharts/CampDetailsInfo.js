@@ -20,7 +20,8 @@ export default (props) => {
       ? "ends"
       : "ended"
     : "";
-  let currentDate = new Date().toLocaleDateString();
+  let currentDate = new Date().toISOString();
+
   return (
     <View style={{ alignSelf: "center", top: 10 }}>
       {loading ? (
@@ -50,7 +51,8 @@ export default (props) => {
                 : TimeDifferance(campaign.start_time, currentDate) /
                   (TimeDifferance(campaign.start_time, campaign.end_time) === 0
                     ? 1
-                    : TimeDifferance(campaign.start_time, campaign.end_time))
+                    : TimeDifferance(campaign.start_time, campaign.end_time) +
+                      1)
             }
             borderWidth={0}
             unfilledColor="#0004"
