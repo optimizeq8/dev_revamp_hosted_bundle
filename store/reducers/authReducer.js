@@ -41,11 +41,17 @@ const reducer = (state = initialState, action) => {
               } else {
                 userTraits["$ios_devices"] = [token.data];
               }
+              analytics.identify(action.payload.user.userid, userTraits);
             })
             .catch((err) => {
               // console.log(err);
+              analytics.track(`a_error`, {
+                error_page: "While setting current user",
+                error_description: err.response || err.message,
+              });
+              analytics.identify(action.payload.user.userid, userTraits);
             });
-          analytics.identify(action.payload.user.userid, userTraits);
+
           MixpanelSDK.identify(action.payload.user.userid);
         })
         .catch((error) => {
