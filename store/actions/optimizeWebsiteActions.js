@@ -30,6 +30,9 @@ export const verifyInstagramHandleWebsite = (insta_handle) => {
         data = data[0];
         data = data.substr(0, data.length - 1);
         data = JSON.parse(data);
+        if (!data.entry_data.ProfilePage) {
+          throw "Error fetching Profile page";
+        }
         data = data.entry_data.ProfilePage[0].graphql.user;
         if (data.is_private) {
           return dispatch({
@@ -50,7 +53,14 @@ export const verifyInstagramHandleWebsite = (insta_handle) => {
         }
       }
     } catch (err) {
-      // console.log('insta error verify account', err.response || err.message);
+      //   console.log("insta error verify account", err.message || err.response);
+      analytics.track("a_error", {
+        error_page: "my_website_detail",
+        error_description: err.message || err.response,
+        insta_handle: insta_handle,
+        source: "my_website_detail",
+        source_action: "a_verify_InstagramHandle_Website",
+      });
       return dispatch({
         type: actionTypes.ERROR_GET_INSTAGRAM_POSTS,
         payload: {

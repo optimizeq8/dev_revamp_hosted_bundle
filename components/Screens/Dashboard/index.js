@@ -376,7 +376,11 @@ class Dashboard extends Component {
     } else this.page = this.page + 1;
   };
   loadMoreData = () => {
-    if (!this.props.fetching_from_server && !this.props.isListEnd) {
+    if (
+      !this.props.fetching_from_server &&
+      !this.props.isListEnd &&
+      this.props.mainBusiness
+    ) {
       this.props.updateCampaignList(
         this.props.mainBusiness.businessid,
         this.page,
@@ -537,7 +541,9 @@ class Dashboard extends Component {
 
     this.props.setCampaignInProgress(false);
     this.props.setCampaignInProgressInstagram(false);
-    this.reloadData();
+    if (this.props.mainBusiness) {
+      this.reloadData();
+    }
   };
   onDidBlur = () => {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
