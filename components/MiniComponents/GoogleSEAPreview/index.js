@@ -149,15 +149,7 @@ export default GoogleSEAPreview = (props) => {
               " " +
               translate("1") +
               " "}{" "}
-          {description2
-            ? description2
-            : showEmpty
-            ? translate("Add") +
-              " " +
-              translate("Description") +
-              " " +
-              translate("2")
-            : ""}
+          {description2 ? description2 : showEmpty ? "" : ""}
         </Text>
       </View>
     </View>
