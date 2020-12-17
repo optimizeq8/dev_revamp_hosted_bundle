@@ -541,7 +541,7 @@ class Dashboard extends Component {
 
     this.props.setCampaignInProgress(false);
     this.props.setCampaignInProgressInstagram(false);
-    if (this.props.mainBusiness) {
+    if (this.props.mainBusiness && this.props.mainBusiness.businessid) {
       this.reloadData();
     }
   };
