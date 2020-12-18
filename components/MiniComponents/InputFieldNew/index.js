@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Platform } from "react-native";
 import styles from "./styles";
 import { Item, Input } from "native-base";
 import * as Animatable from "react-native-animatable";
@@ -218,6 +218,7 @@ export default class InputField extends Component {
                 value={this.props.value}
                 style={[
                   styles.inputText,
+                  Platform.OS === "ios" && { height: 20 },
                   stateName2 ? { maxWidth: "45%" } : {},
                   disabled ? { opacity: 0.6 } : {},
                   inputStyle,
