@@ -33,7 +33,7 @@
     },
     "android": {
       "package": "com.optimizeapp.optimizeapp",
-      "versionCode": 56,
+      "versionCode": 57,
       "googleServicesFile": "./google-services.json"
     },
     "hooks": {
