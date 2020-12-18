@@ -1,4 +1,5 @@
 import { StyleSheet, PixelRatio, I18nManager } from "react-native";
+import { globalColors } from "../../../GlobalStyles";
 export default StyleSheet.create({
   input1: {
     backgroundColor: "rgba(0,0,0,0.16)",
@@ -28,10 +29,11 @@ export default StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 12 / PixelRatio.getFontScale(),
     textAlign: I18nManager.isRTL ? "right" : "left",
-    color: "#FFF",
+    color: globalColors.white,
     marginBottom: 0,
-    height: 20,
     width: "75%",
+    paddingLeft: 0,
+    paddingRight: 0,
   },
   downicon: {
     fontSize: 20,
