@@ -22,17 +22,20 @@ import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import { BudgetCards } from "./BudgetCards";
 import KeywordsCarousel from "../../../MiniComponents/KeywordsCarousel";
+import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 
 //Data
 import gender from "../../../Data/gender.googleSE.data";
 import ageRange from "../../../Data/ageRange.googleSE.data";
 
 //Icons
+import PurpleCheckmarkIcon from "../../../../assets/SVGs/PurpleCheckmark";
 import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark.svg";
 import GenderIcon from "../../../../assets/SVGs/Gender.svg";
 import PlusCircleIcon from "../../../../assets/SVGs/PlusCircleOutline.svg";
 import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
 import PlusCircle from "../../../../assets/SVGs/PlusCircle.svg";
+import AudienceIcon from "../../../../assets/SVGs/AudienceOutline";
 
 //Style
 import styles from "./styles";
@@ -564,11 +567,6 @@ class GoogleAdTargetting extends Component {
         isOpen={this.state.sidemenustate}
       >
         <View style={[styles.safeArea]}>
-          <LinearGradient
-            colors={[colors.background1, colors.background2]}
-            locations={[1, 0.3]}
-            style={globalStyles.gradient}
-          />
           <SafeAreaView style={{ backgroundColor: "#fff" }} />
 
           <TopStepsHeader
@@ -590,11 +588,11 @@ class GoogleAdTargetting extends Component {
           />
           <NavigationEvents onDidFocus={this.handleGoogleAdDetailsFocus} />
           <Content
-            scrollEnabled={false}
+            scrollEnabled={true}
             contentContainerStyle={styles.contentContainer}
           >
             <View style={styles.budgetHeader}>
-              <WalletIcon width={30} height={30} fill={"#FFF"} />
+              <WalletIcon width={25} height={25} fill={globalColors.rum} />
               <Text
                 style={[
                   styles.subHeadings,
@@ -652,96 +650,178 @@ class GoogleAdTargetting extends Component {
                   <PlusCircle width={50} height={50} />
 
                   <Text style={[styles.addProductsText]}>
-                    {translate("Add Products and Services")}
+                    {translate("Select your keywords")}
                   </Text>
                 </View>
               </GradientButton>
             )}
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                paddingHorizontal: 30,
+              }}
+            >
+              <AudienceIcon />
+              <Text style={[styles.subHeadings, styles.selectAudienceText]}>
+                {translate("Select Audience")}
+              </Text>
+            </View>
 
-            <Text style={[styles.subHeadings, { width: "60%" }]}>
-              {translate("Who would you like to reach?")}
-            </Text>
-            <ScrollView
+            <View
               ref={(ref) => (this.scrollView = ref)}
               indicatorStyle="white"
               style={styles.targetList}
             >
+              <View
+                style={[
+                  globalStyles.row,
+                  { alignItems: "center", marginBottom: 7 },
+                ]}
+              >
+                <GenderIcon
+                  width={15}
+                  height={16}
+                  fill={globalColors.purple3}
+                />
+
+                <Text style={[styles.menutextHeading]}>
+                  {translate("Demographic")}
+                </Text>
+              </View>
               <TouchableOpacity
                 disabled={this.props.campaign.uploading}
-                onPress={() => {
-                  this._renderSideMenu("gender");
-                }}
+                // onPress={() => {
+                //   this._renderSideMenu("age");
+                // }}
                 style={styles.targetTouchable}
+                activeOpacity={1}
               >
                 <View style={globalStyles.row}>
-                  <GenderIcon width={30} height={30} style={styles.icon} />
+                  <View style={globalStyles.column}>
+                    <Text style={styles.menutext}>{translate("Age")}</Text>
+                    <View
+                      style={[styles.genderOuterView, { flexWrap: "wrap" }]}
+                    >
+                      {ageRange.map((g) => (
+                        <TouchableOpacity
+                          style={[
+                            styles.genderInnerView,
+                            this.state.age.includes(g.value) &&
+                              styles.genderInnerActiveView,
+                            {
+                              marginBottom: 5,
+                            },
+                          ]}
+                          activeOpacity={0.6}
+                          onPress={() => {
+                            this._handleAgeSelection(g.value);
+                          }}
+                          //   disabled={loading || !startEditing}
+                        >
+                          <Text
+                            style={[
+                              styles.genderRadioText,
+                              this.state.age.includes(g.value) &&
+                                styles.genderRadioTextActive,
+                            ]}
+                          >
+                            {translate(g.label)}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  </View>
+                </View>
+              </TouchableOpacity>
 
+              <TouchableOpacity
+                disabled={this.props.campaign.uploading}
+                // onPress={() => {
+                //   this._renderSideMenu("gender");
+                // }}
+                style={[styles.targetTouchable, { marginVertical: 0 }]}
+                activeOpacity={1}
+              >
+                <View style={globalStyles.row}>
                   <View style={globalStyles.column}>
                     <Text style={styles.menutext}>{translate("Gender")}</Text>
-                    <Text style={styles.menudetails}>
+                    <View style={styles.genderOuterView}>
+                      {gender.map((g) => (
+                        <TouchableOpacity
+                          style={[
+                            styles.genderInnerView,
+                            this.state.gender === g.value &&
+                              styles.genderInnerActiveView,
+                          ]}
+                          activeOpacity={0.6}
+                          onPress={() => {
+                            this._handleGenderSelection(g.value);
+                          }}
+                          //   disabled={loading || !startEditing}
+                        >
+                          <Text
+                            style={[
+                              styles.genderRadioText,
+                              this.state.gender === g.value &&
+                                styles.genderRadioTextActive,
+                            ]}
+                          >
+                            {translate(g.label)}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+
+                    {/* <Text style={styles.menudetails}>
                       {gender.find((r) => r.value === this.state.gender)
                         ? translate(
                             gender.find((r) => r.value === this.state.gender)
                               .label
                           )
                         : ""}
-                    </Text>
+                    </Text> */}
                   </View>
                 </View>
-                <View style={globalStyles.column}>
-                  {this.state.gender ? (
-                    <GreenCheckmarkIcon width={30} height={30} />
-                  ) : (
-                    <PlusCircleIcon width={30} height={30} />
-                  )}
-                </View>
               </TouchableOpacity>
-              <TouchableOpacity
-                disabled={this.props.campaign.uploading}
-                onPress={() => {
-                  this._renderSideMenu("age");
-                }}
-                style={styles.targetTouchable}
-              >
-                <View style={globalStyles.row}>
-                  <AgeIcon
-                    fill={globalColors.orange}
-                    width={30}
-                    height={30}
-                    style={styles.icon}
-                  />
-                  <View style={globalStyles.column}>
-                    <Text style={styles.menutext}>{translate("Age")}</Text>
-                    <Text style={styles.menudetails}>
-                      {this.state.age[0] === "Undetermined"
-                        ? translate("All")
-                        : this.state.age.join(", ")}
-                    </Text>
-                  </View>
-                </View>
-
-                {this.state.age.length !== 0 ? (
-                  <GreenCheckmarkIcon width={30} height={30} />
-                ) : (
-                  <PlusCircleIcon width={30} height={30} />
-                )}
-              </TouchableOpacity>
-            </ScrollView>
+            </View>
+          </Content>
+          <View
+            style={{
+              backgroundColor: "#FFFFFF",
+              paddingTop: 10,
+              paddingBottom: 25,
+              paddingHorizontal: 20,
+              justifyContent: "flex-end",
+              borderTopWidth: 1,
+              borderTopColor: "#75647C21",
+            }}
+          >
             {this.props.campaign.uploading ? (
-              <ForwardLoading
-                mainViewStyle={{ width: wp(8), height: hp(8) }}
-                // bottom={hp(25)}
-                style={{ width: wp(8), height: hp(8) }}
+              <AnimatedCircularProgress
+                size={50}
+                width={5}
+                fill={100}
+                rotation={360}
+                lineCap="round"
+                tintColor={globalColors.purple}
+                backgroundColor="rgba(255,255,255,0.3)"
+                adDetails={false}
+                style={{ alignSelf: "flex-end" }}
               />
             ) : (
               <LowerButton
                 screenProps={this.props.screenProps}
-                style={styles.proceedButtonRTL}
-                // bottom={25}
-                function={this._handleSubmission}
+                style={[styles.reachBarLowerButton]}
+                function={() => this._handleSubmission()}
+                purpleViolet
+                text={"Next"}
+                width={15}
+                height={15}
               />
             )}
-          </Content>
+          </View>
         </View>
       </Sidemenu>
     );

@@ -13,7 +13,7 @@ import {
 import analytics from "@segment/analytics-react-native";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
-
+import { TextInputMask } from "react-native-masked-text";
 import { BlurView } from "expo-blur";
 import { Item, Input, Label, Container, Icon } from "native-base";
 import * as Animatable from "react-native-animatable";
@@ -49,7 +49,8 @@ class Wallet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      amount: "",
+      amount: 0,
+      placeholder: 0.0,
       topUp: false,
       inputA: false,
       amountError: "",
@@ -70,7 +71,10 @@ class Wallet extends Component {
     return true;
   };
   _handleSubmission = () => {
-    const amountError = validateWrapper("Budget", this.state.amount);
+    let amountError = validateWrapper("Budget", this.state.amount);
+    if (this.state.amount === 0) {
+      amountError = true;
+    }
     this.setState({ amountError });
     if (!amountError) {
       this.setState(
@@ -297,21 +301,24 @@ class Wallet extends Component {
                         //   : globalStyles.lightGrayBorderColor
                       ]}
                     >
-                      <Label style={[styles.labeltext]}>$</Label>
-                      <Input
-                        placeholder="0.00"
-                        placeholderTextColor="#fff"
-                        maxLength={6}
-                        keyboardType="number-pad"
-                        style={styles.inputtext}
-                        value={`${
-                          isNaN(this.state.amount) ? "" : this.state.amount
-                        }`}
-                        onChangeText={(amount) =>
+                      <TextInputMask
+                        includeRawValueInChangeText
+                        type={"money"}
+                        selectTextOnFocus={true}
+                        options={{
+                          precision: 2,
+                          separator: ".",
+                          delimiter: ",",
+                          unit: "$",
+                        }}
+                        focus={this.state.inputA}
+                        maxLength={10}
+                        value={this.state.amount}
+                        onChangeText={(text, rawValue) => {
                           this.setState({
-                            amount: parseFloat(amount),
-                          })
-                        }
+                            amount: rawValue,
+                          });
+                        }}
                         onFocus={() => this.setState({ inputA: true })}
                         onBlur={() =>
                           this.setState({
@@ -322,6 +329,7 @@ class Wallet extends Component {
                             ),
                           })
                         }
+                        style={styles.inputtext}
                       />
                     </Item>
                   </Animatable.View>

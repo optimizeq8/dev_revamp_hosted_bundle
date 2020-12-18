@@ -1740,7 +1740,7 @@ export const verifySnapchatOtp = (
   campaign_id,
   phone_number_id,
   verification_code,
-  handleButton
+  otpVerified
 ) => {
   return (dispatch) => {
     dispatch({
@@ -1774,7 +1774,7 @@ export const verifySnapchatOtp = (
             type: actionTypes.VERIFY_ENGAGMENT_NUMBER_OTP,
             payload: data.success,
           });
-          handleButton(false, true);
+          otpVerified();
         }
       })
       .catch((err) => {

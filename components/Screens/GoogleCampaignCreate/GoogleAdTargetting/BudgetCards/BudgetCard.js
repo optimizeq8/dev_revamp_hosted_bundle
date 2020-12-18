@@ -9,7 +9,7 @@ export default class BudgetCard extends Component {
     let { bud, _handleBudget, budgetOption, uploading, translate } = this.props;
 
     return (
-      <>
+      <View style={{ position: "relative" }}>
         <TouchableOpacity
           disabled={uploading}
           onPress={() => {
@@ -22,10 +22,15 @@ export default class BudgetCard extends Component {
           }}
           style={[
             styles.budgetCardStyle,
-            budgetOption == bud.id ? { borderWidth: 2.5 } : { borderWidth: 0 },
+            budgetOption == bud.id ? { borderWidth: 2 } : { borderWidth: 0 },
           ]}
         >
-          <Text style={styles.budgetTextStyle}>
+          <Text
+            style={[
+              styles.budgetTextStyle,
+              budgetOption == bud.id && styles.activeBudgetTextStyle,
+            ]}
+          >
             {formatNumber(bud.recBudget)}
           </Text>
         </TouchableOpacity>
@@ -39,7 +44,7 @@ export default class BudgetCard extends Component {
             /> */}
           </View>
         )}
-      </>
+      </View>
     );
   }
 }

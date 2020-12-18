@@ -558,6 +558,11 @@ const reducer = (state = initialState, action) => {
         movingAmountToWallet: action.payload,
       };
     }
+    case actionTypes.END_INSTAGRAM_CAMPAIGN:
+      return {
+        ...state,
+        campaignEnded: action.payload,
+      };
     default:
       return state;
   }

@@ -545,7 +545,7 @@ export const getInstagramCampaignDetails = (id, navigation) => {
           payload: { loading: false, data: data.data },
         });
         dispatch({
-          type: actionTypes.END_CAMPAIGN,
+          type: actionTypes.END_INSTAGRAM_CAMPAIGN,
           payload: data.data.campaign_end === "1",
         });
 
@@ -967,6 +967,66 @@ export const moveRejectedAdAmountToWalletInstagram = (campaign_id) => {
       })
       .catch((err) => {
         // console.log("moveAmountToWallet", err.response || err.message);
+      });
+  };
+};
+
+export const updateInstagramStatus = (info, handleToggle) => {
+  return (dispatch, getState) => {
+    InstagramBackendURL()
+      .put(`updateCampaignStatus`, info)
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        analytics.track(`a_update_campaign_status`, {
+          campaign_id: info.campaign_id,
+          campaign_spend: info.spend,
+          campaign_status: data.status,
+          action_status: data.success ? "sucsess" : "failure",
+          source: "campaign_detail",
+          source_action: "a_update_campaign_status",
+        });
+        handleToggle(data.status);
+        if (data.message) {
+          showMessage({ message: data.message, type: "info", position: "top" });
+        }
+      })
+      .catch((err) => {
+        errorMessageHandler(err);
+        // console.log(err.message || err.response);
+      });
+  };
+};
+
+export const endInstagramCampaign = (info, handleToggle) => {
+  return (dispatch) => {
+    InstagramBackendURL()
+      .put(`endCampaign`, info)
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        handleToggle(data.status);
+        analytics.track(`a_update_campaign_status`, {
+          campaign_id: info.campaign_id,
+          campaign_spend: info.spend,
+          campaign_status: data.status,
+          action_status: data.success ? "sucsess" : "failure",
+          source: "campaign_detail",
+          source_action: "a_update_campaign_status",
+        });
+        if (data.message) {
+          showMessage({ message: data.message, type: "info", position: "top" });
+        }
+        return dispatch({
+          type: actionTypes.END_INSTAGRAM_CAMPAIGN,
+          payload: data.success,
+        });
+      })
+      .catch((err) => {
+        errorMessageHandler(err);
+        // console.log(err.message || err.response);
       });
   };
 };

@@ -160,12 +160,13 @@ export class BudgetCards extends Component {
                   includeRawValueInChangeText
                   type={"money"}
                   options={{
-                    precision: 0,
+                    precision: 2,
+                    separator: ".",
                     delimiter: ",",
                     unit: "$",
                   }}
                   selectTextOnFocus={true}
-                  maxLength={8}
+                  maxLength={11}
                   value={this.state.customValue}
                   onChangeText={(value, rawText) =>
                     this.handleCustomBudgetChange(value, rawText)

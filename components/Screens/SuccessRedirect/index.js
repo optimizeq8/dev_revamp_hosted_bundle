@@ -127,16 +127,26 @@ class SuccessRedirect extends Component {
     this.setState(
       {
         ...this.props.navigation.state.params,
-        objective: !!this.props.data ? this.props.data.objective : "",
-        campaign_id: !!this.props.data ? this.props.data.campaign_id : "",
-        engagmentPhoneNumber: !!this.props.data
-          ? this.props.data.attachment.phone_number_id
-          : "",
-        engagmentNumberVerified: !!this.props.data
-          ? this.props.data.verifiedEngagementNumber
-          : "",
+        objective: this.props.data && this.props.data.objective,
+        campaign_id: this.props.data && this.props.data.campaign_id,
+        engagmentPhoneNumber:
+          this.props.data && this.props.data.attachment.phone_number_id,
+        engagmentNumberVerified:
+          this.props.data && this.props.data.verifiedEngagementNumber,
       },
       () => {
+        if (
+          this.state.objective === "ENGAGEMENT" &&
+          !this.state.engagmentNumberVerified
+        ) {
+          analytics.track(`a_verify_phone_number_engagement`, {
+            source: "payment_end",
+            source_action: "a_verify_phone_number_engagement",
+            campaign_id: this.state.campaign_id,
+            campaign_engagement_phone_number: this.state.engagmentPhoneNumber,
+          });
+          this.setState({ showVerifyEngagment: true });
+        }
         if (
           this.props.channel === "" ||
           (this.props.channel &&
@@ -158,137 +168,107 @@ class SuccessRedirect extends Component {
     // this.animation.play();
   };
   handleButton = (show = false, navigateToDashboard = false) => {
-    if (
-      this.state.objective === "ENGAGEMENT" &&
-      !this.state.engagmentNumberVerified &&
-      show &&
-      !navigateToDashboard
-    ) {
-      analytics.track(`a_verify_phone_number_engagement`, {
-        source: "payment_end",
-        source_action: "a_verify_phone_number_engagement",
-        campaign_id: this.state.campaign_id,
-        campaign_engagement_phone_number: this.state.engagmentPhoneNumber,
-      });
-      this.props.getEngagmentNumberVerification(this.state.campaign_id, () =>
-        this.setState({ showVerifyEngagment: show })
-      );
-    } else if (!show && !navigateToDashboard) {
-      this.setState({ showVerifyEngagment: show });
-    } else {
-      analytics.track(`a_go_to_dashboard`, {
-        source: "payment_end",
-        source_action: "a_go_to_dashboard",
-        campaign_id: this.state.campaign_id,
-      });
-      this.props.navigation.reset(
-        [
-          NavigationActions.navigate({
-            routeName: "Dashboard",
-            params: {
-              source: "payment_end",
-              source_action: "a_go_to_home",
-            },
-          }),
-        ],
-        0
-      );
-    }
+    analytics.track(`a_go_to_dashboard`, {
+      source: "payment_end",
+      source_action: "a_go_to_dashboard",
+      campaign_id: this.state.campaign_id,
+    });
+    this.props.navigation.reset(
+      [
+        NavigationActions.navigate({
+          routeName: "Dashboard",
+          params: {
+            source: "payment_end",
+            source_action: "a_go_to_home",
+          },
+        }),
+      ],
+      0
+    );
   };
+  otpVerified = () => this.setState({ showVerifyEngagment: false });
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <SafeAreaView
-        style={styles.container}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <View style={styles.container}>
+        <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={styles.gradient}
         />
 
-        {!this.state.showVerifyEngagment && (
-          <Image
-            style={styles.media}
-            source={this.state.media}
-            resizeMode="contain"
-          />
-        )}
-        {this.state.showVerifyEngagment ? (
-          <VerifyEngagmentNumber
-            screenProps={this.props.screenProps}
-            navigation={this.props.navigation}
-            engagmentPhoneNumber={this.state.engagmentPhoneNumber}
-            handleButton={this.handleButton}
-            campaign_id={this.state.campaign_id}
-          />
-        ) : (
-          <View style={styles.view}>
-            <SuccessIcon width={80} height={80} />
-            <Text uppercase style={styles.title}>
-              {translate("Success!")}
-            </Text>
-            <Text style={styles.errortext}>
-              {this.state.isWallet !== "1"
-                ? translate("Your Ad is now being processed")
-                : translate("Your wallet has been topped up!")}
-            </Text>
-
-            <View style={styles.details}>
-              <Text style={styles.text}>
-                {translate("Payment ID:")} {this.state.paymentId}
-              </Text>
-              <Text style={styles.text}>
-                {translate("Track ID:")} {this.state.trackID}
-              </Text>
-              <Text style={styles.text}>
-                {translate("Amount:")} {this.state.kdamount} KWD
-              </Text>
-              <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                <Text style={[styles.text]}>{translate("Date:")} </Text>
-                <Text style={[{ writingDirection: "ltr" }, styles.text]}>
-                  {this.state.date}
-                </Text>
-              </View>
-              <Text style={styles.text}>
-                {translate("Status:")} {this.state.status}
-              </Text>
+        <View style={styles.view}>
+          {this.state.showVerifyEngagment ? (
+            <View style={{ zIndex: 2 }}>
+              <VerifyEngagmentNumber
+                otpVerified={this.otpVerified}
+                screenProps={this.props.screenProps}
+                navigation={this.props.navigation}
+                engagmentPhoneNumber={this.state.engagmentPhoneNumber}
+                handleButton={this.handleButton}
+                campaign_id={this.state.campaign_id}
+              />
             </View>
-            {this.state.objective === "ENGAGEMENT" &&
-              !this.state.engagmentNumberVerified && (
-                <View style={{ width: "60%" }}>
-                  <Text
-                    style={[
-                      styles.errortext,
-                      { fontFamily: "montserrat-bold-english" },
-                    ]}
-                  >
-                    {translate(
-                      "But first, you need to verify the mobile number used in the call campaign with Snapchat"
-                    )}
-                  </Text>
-                </View>
-              )}
+          ) : (
+            <>
+              <SuccessIcon width={80} height={80} />
+              <Text uppercase style={styles.title}>
+                {translate("Success!")}
+              </Text>
+              <Text style={styles.errortext}>
+                {this.state.isWallet !== "1"
+                  ? translate("Your Ad is now being processed")
+                  : translate("Your wallet has been topped up!")}
+              </Text>
+            </>
+          )}
+          <View
+            style={[
+              styles.details,
+              this.state.showVerifyEngagment && {
+                paddingTop: 50,
+                bottom: 45,
+                zIndex: 1,
+              },
+            ]}
+          >
+            <Text style={styles.headingText}>
+              {translate("Payment approved:")}
+            </Text>
+            <Text style={styles.text}>{translate("Here's your receipt:")}</Text>
+            <Text style={styles.headingText}>{translate("Payment ID:")}</Text>
+            <Text style={styles.text}>{this.state.paymentId}</Text>
 
+            <Text style={styles.headingText}>{translate("Track ID:")}</Text>
+            <Text style={styles.text}>{this.state.trackID}</Text>
+
+            <Text style={styles.headingText}>{translate("Amount:")}</Text>
+            <Text style={styles.text}>{this.state.kdamount} KWD</Text>
+
+            <Text style={[styles.headingText]}>{translate("Date:")} </Text>
+            <Text style={[{ writingDirection: "ltr" }, styles.text]}>
+              {this.state.date}
+            </Text>
+
+            <Text style={styles.headingText}>{translate("Status:")}</Text>
+            <Text style={styles.text}>{this.state.status}</Text>
+          </View>
+
+          {!this.state.showVerifyEngagment && (
             <GradientButton
               style={styles.button}
               onPressAction={() => this.handleButton(true, false)}
               textStyle={styles.buttontext}
-              text={
-                this.state.objective === "ENGAGEMENT" &&
-                !this.state.engagmentNumberVerified
-                  ? translate("Verify")
-                  : translate("Home")
-              }
+              text={translate("Home")}
               uppercase={true}
             />
-            {this.props.engagementNumberOTPLoading && (
-              <LoadingScreen dash={false} />
-            )}
-          </View>
-        )}
-      </SafeAreaView>
+          )}
+          {this.props.engagementNumberOTPLoading && (
+            <LoadingScreen dash={true} />
+          )}
+        </View>
+      </View>
     );
   }
 }
@@ -313,9 +293,5 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.rest_google_campaign_data()),
   resetCampaignInfoInstagram: () =>
     dispatch(actionCreators.resetCampaignInfoInstagram()),
-  getEngagmentNumberVerification: (campaign_id, showCodeInput) =>
-    dispatch(
-      actionCreators.getEngagmentNumberVerification(campaign_id, showCodeInput)
-    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SuccessRedirect);

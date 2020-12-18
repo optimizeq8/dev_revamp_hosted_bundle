@@ -6,22 +6,20 @@ import {
   Keyboard,
   BackHandler,
   ScrollView,
-  TouchableOpacity,
 } from "react-native";
 import { Transition } from "react-navigation-fluid-transitions";
 import analytics from "@segment/analytics-react-native";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
 
-import LowerButton from "../../../MiniComponents/LowerButton";
 import CustomHeader from "../../../MiniComponents/Header";
-import ForwardLoading from "../../../MiniComponents/ForwardLoading";
+import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
+import GradientButton from "../../../MiniComponents/GradientButton";
 import GoogleSEABox from "./GoogleSEABox";
 import EditModal from "../../GoogleCampaignDetails/EditKeywords/EditModal";
 import InputScrollView from "react-native-input-scroll-view";
 
 //Icons
-import EyeIcon from "../../../../assets/SVGs/Eye";
 
 // Style
 import styles from "./styles";
@@ -32,17 +30,15 @@ import * as actionCreators from "../../../../store/actions";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
+
 import { showMessage } from "react-native-flash-message";
 import isEqual from "react-fast-compare";
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../../GradiantColors/colors";
-import globalStyles from "../../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../../GlobalStyles";
+
 class GoogleAdDesign extends Component {
   static navigationOptions = {
     header: null,
@@ -80,6 +76,20 @@ class GoogleAdDesign extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
+  chunkString = (s, maxSize) => {
+    return s.match(
+      new RegExp(
+        "(?=\\S)([^]{1," + (maxSize - 1) + "}|[^,;]*)(.$|[,&.\n ;])",
+        "g"
+      )
+    );
+  };
+  removeEmojis = (text) => {
+    return text.replace(
+      /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g,
+      ""
+    );
+  };
   componentDidMount() {
     if (this.props.navigation.getParam("rejected", false)) {
       rejectedCampaign = this.props.navigation.getParam("ad", {});
@@ -120,24 +130,61 @@ class GoogleAdDesign extends Component {
           ...data,
         },
         () => {
-          // If finalurl is still emty
-          if (this.state.finalurl === "") {
-            const { websitelink, weburl } = this.props.mainBusiness;
-            //check if the business has websitelink ie(their own website)
-            if (websitelink && websitelink !== "") {
-              this.setState({
-                finalurl: websitelink,
-              });
-            }
-            // if that is also not present check if it has optimizeapp.com business website and set the finalurl to it
-            else if (weburl && weburl !== "") {
-              this.setState({
-                finalurl: weburl.includes("https")
-                  ? weburl
-                  : `https://${weburl}.optimizeapp.com`,
-              });
+          let info = { ...this.state };
+
+          if (info.headline1 === "") {
+            info.headline1 = this.props.instagramDetail.full_name;
+          }
+          if (info.headline2 === "") {
+            if (this.props.instagramDetail.biography) {
+              let headline = this.removeEmojis(
+                this.props.instagramDetail.biography
+              );
+              headline = this.chunkString(headline, 30);
+              info.headline2 = headline && headline[0] ? headline[0] : "";
             }
           }
+          if (info.headline3 === "") {
+            info.headline3 = this.props.mainBusiness.country;
+          }
+          if (info.description === "") {
+            if (this.props.instagramDetail.biography) {
+              // First remove the headline 2 part
+              let biography = this.props.instagramDetail.biography
+                .split(info.headline2)
+                .pop();
+              // Remove any emoji present
+              biography = this.removeEmojis(biography);
+              // split string
+              const desc = this.chunkString(biography, 90);
+              info.description = desc && desc[0] ? desc[0] : "";
+              info.description2 = desc && desc[1] ? desc[1] : "";
+            }
+          }
+          if (info.finalurl === "") {
+            if (
+              this.props.instagramDetail.external_url &&
+              this.props.instagramDetail.external_url !== ""
+            ) {
+              info.finalurl = this.props.instagramDetail.external_url;
+            } else {
+              // If finalurl is still emty
+              const { websitelink, weburl } = this.props.mainBusiness;
+              //check if the business has websitelink ie(their own website)
+              if (websitelink && websitelink !== "") {
+                info.finalurl = websitelink;
+              }
+              // if that is also not present check if it has optimizeapp.com business website and set the finalurl to it
+              else if (weburl && weburl !== "") {
+                info.finalurl = weburl.includes("https")
+                  ? weburl
+                  : `https://${weburl}.optimizeapp.com`;
+              }
+            }
+          }
+          this.setState({
+            ...info,
+          });
         }
       );
     }
@@ -444,9 +491,31 @@ class GoogleAdDesign extends Component {
     }
     return { correctPathsLength, onlyTwoPaths };
   };
+
+  previewHandler = () => {
+    analytics.track(`a_preview_ad`, {
+      source: "ad_design",
+      source_action: "a_preview_ad",
+      action_status: "success",
+      campaign_channel: "google",
+      campaign_ad_type: "GoogleSEAd",
+    });
+    this.props.navigation.push("GoogleSEAPreviewScreen", {
+      campaign: {
+        headline1: this.state.headline1,
+        headline2: this.state.headline2,
+        headline3: this.state.headline3,
+        finalurl: this.state.finalurl,
+        description: this.state.description,
+        description2: this.state.description2,
+      },
+      language: this.props.campaign.language,
+      campaignDetailScreen: true,
+    });
+  };
   render() {
     const rejected = this.props.navigation.getParam("rejected", false);
-
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.safeAreaView}>
         <LinearGradient
@@ -454,7 +523,13 @@ class GoogleAdDesign extends Component {
           locations={[1, 0.3]}
           style={globalStyles.gradient}
         />
-        <SafeAreaView style={{ backgroundColor: "#FFF" }} />
+        <SafeAreaView
+          style={{ backgroundColor: rejected ? "#0000" : "#FFF" }}
+          forceInset={{
+            top: "always",
+            bottom: "never",
+          }}
+        />
         <NavigationEvents
           onWillBlur={() => {
             this.setState({ unmounted: true });
@@ -528,48 +603,42 @@ class GoogleAdDesign extends Component {
               <View
                 style={{
                   flex: 1,
-                  alignSelf: "flex-end",
                   marginHorizontal: 25,
                   flexDirection: "row",
+                  justifyContent: "space-between",
                 }}
               >
-                <TouchableOpacity
+                <GradientButton
+                  text={translate("Preview")}
+                  uppercase
+                  transparent
                   style={styles.button}
-                  onPress={() => {
-                    analytics.track(`a_preview_ad`, {
-                      source: "ad_design",
-                      source_action: "a_preview_ad",
-                      action_status: "success",
-                      campaign_channel: "google",
-                      campaign_ad_type: "GoogleSEAd",
-                    });
-                    this.props.navigation.push("GoogleSEAPreviewScreen", {
-                      campaign: {
-                        headline1: this.state.headline1,
-                        headline2: this.state.headline2,
-                        headline3: this.state.headline3,
-                        finalurl: this.state.finalurl,
-                        description: this.state.description,
-                        description2: this.state.description2,
-                      },
-                      language: this.props.campaign.language,
-                    });
-                  }}
-                >
-                  <EyeIcon width={hp(10)} height={hp(10)} />
-                </TouchableOpacity>
-                {this.props.campaign.uploading ? (
-                  <ForwardLoading
-                    mainViewStyle={{ width: wp(8), height: hp(8) }}
-                    bottom={hp(3)}
-                    style={{ width: wp(8), height: hp(8) }}
+                  disabledGradientBegin={"rgba(0,0,0,0)"}
+                  disabledGradientEnd={"rgba(0,0,0,0)"}
+                  disabled={this.props.campaign.uploading}
+                  onPressAction={this.previewHandler}
+                />
+                {!this.props.campaign.uploading ? (
+                  <GradientButton
+                    text={translate("Next")}
+                    uppercase
+                    style={styles.proceedButtonRTL}
+                    disabledGradientBegin={"rgba(0,0,0,0)"}
+                    disabledGradientEnd={"rgba(0,0,0,0)"}
+                    disabled={this.props.campaign.uploading}
+                    onPressAction={this._handleSubmission}
                   />
                 ) : (
-                  <LowerButton
-                    screenProps={this.props.screenProps}
-                    style={styles.proceedButtonRTL}
-                    bottom={2}
-                    function={this._handleSubmission}
+                  <AnimatedCircularProgress
+                    size={50}
+                    width={5}
+                    fill={100}
+                    rotation={360}
+                    lineCap="round"
+                    tintColor={globalColors.orange}
+                    backgroundColor="rgba(255,255,255,0.3)"
+                    adDetails={false}
+                    style={{ alignSelf: "flex-end" }}
                   />
                 )}
               </View>
@@ -593,6 +662,7 @@ const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   userInfo: state.auth.userInfo,
   campaign: state.googleAds,
+  instagramDetail: state.googleAds.instagramDetail,
 });
 
 const mapDispatchToProps = (dispatch) => ({

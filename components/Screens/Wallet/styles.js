@@ -109,6 +109,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.3)",
     borderRadius: 25,
     alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
     paddingVertical: 10,
     width: 230,

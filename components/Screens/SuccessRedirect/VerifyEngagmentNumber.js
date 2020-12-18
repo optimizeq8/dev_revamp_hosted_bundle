@@ -8,11 +8,35 @@ import styles from "./styles";
 import analytics from "@segment/analytics-react-native";
 import Header from "../../MiniComponents/Header";
 import * as actionCreators from "../../../store/actions";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
 
 class VerifyEngagmentNumber extends Component {
-  state = { code: "", country_code: "", phoneNum: "" };
+  state = {
+    code: "",
+    country_code: "",
+    phoneNum: this.props.engagmentPhoneNumber,
+    campaign_id: "",
+  };
   componentDidMount() {
-    if (this.props.engagmentPhoneNumber) {
+    let dashboard = this.props.navigation.getParam("dashboard", false);
+    let engagement_phone_number = this.props.navigation.getParam(
+      "engagement_phone_number",
+      ""
+    );
+    let campaign_id =
+      this.props.campaign_id ||
+      this.props.navigation.getParam("campaign_id", "");
+    this.props.getEngagmentNumberVerification(campaign_id);
+    this.setState({ campaign_id });
+    if (dashboard)
+      this.setState({
+        phoneNum: engagement_phone_number,
+        country_code: engagement_phone_number.substring(1, 4),
+      });
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.engagmentPhoneNumber !== this.props.engagmentPhoneNumber) {
       let engagmentPhoneNumber = this.props.engagmentPhoneNumber;
       this.setState({
         phoneNum: engagmentPhoneNumber,
@@ -22,10 +46,10 @@ class VerifyEngagmentNumber extends Component {
   }
   verifyOTP = () => {
     this.props.verifySnapchatOtp(
-      this.props.campaign_id,
+      this.state.campaign_id,
       this.props.engagementNumberID,
       this.state.code,
-      this.props.handleButton
+      this.props.otpVerified || (() => this.props.navigation.goBack())
     );
   };
   resendOTP = () => {
@@ -56,31 +80,39 @@ class VerifyEngagmentNumber extends Component {
     });
   };
   render() {
-    let { screenProps } = this.props;
+    let { screenProps, navigation } = this.props;
+    let dashboard = navigation.getParam("dashboard", false);
     let { translate } = screenProps;
     return (
       <View
-        style={{
-          height: "100%",
-        }}
+        style={
+          dashboard
+            ? { height: "100%", alignItems: "center" }
+            : { width: "100%", justifyContent: "center" }
+        }
       >
-        <Header
-          screenProps={this.props.screenProps}
-          title={"Verify Number"}
-          navigation={this.props.navigation}
-          segment={{
-            source: "otp_verify",
-            source_action: "a_go_back",
-          }}
-          actionButton={() => this.props.handleButton(false, false)}
-          navigation={undefined}
-          // showGoBackButton={false}
-        />
-        <Text style={styles.headingText}>
-          {translate("So that your call campaign can start")}
-        </Text>
-
+        {dashboard && (
+          <>
+            <LinearGradient
+              colors={["#9300FF", "#5600CB"]}
+              locations={[0, 1]}
+              style={styles.gradient}
+            />
+            <SafeAreaView forceInset={{ top: "always" }} />
+            <Header
+              title={"Verify Number"}
+              screenProps={screenProps}
+              navigation={this.props.navigation}
+            />
+          </>
+        )}
         <View style={styles.mobileDetailCard}>
+          <Text style={[styles.header]}>{translate("One more step")}</Text>
+          <Text style={styles.codeSentText}>
+            {translate(
+              "To Launch your campaign you need to verify the phone number provided"
+            ) + "\n"}
+          </Text>
           <Text style={styles.codeSentText}>
             {translate("We’ve sent a code to your Mobile number")}
           </Text>
@@ -117,12 +149,14 @@ class VerifyEngagmentNumber extends Component {
           <GradientButton
             style={[styles.verifyButton]}
             uppercase
-            text={translate("Verify")}
+            text={translate("Verify & Launch")}
             disabled={this.state.code === ""}
             onPressAction={this.verifyOTP}
           />
           <TouchableOpacity
-            onPress={() => this.props.handleButton(true, false)}
+            onPress={() =>
+              this.props.getEngagmentNumberVerification(this.state.campaign_id)
+            }
           >
             <Text style={styles.bottomText}>{translate("Resend Code")}</Text>
           </TouchableOpacity>
@@ -161,16 +195,18 @@ const mapDispatchToProps = (dispatch) => ({
     campaign_id,
     phone_number_id,
     verification_code,
-    handleButton
+    otpVerified
   ) =>
     dispatch(
       actionCreators.verifySnapchatOtp(
         campaign_id,
         phone_number_id,
         verification_code,
-        handleButton
+        otpVerified
       )
     ),
+  getEngagmentNumberVerification: (campaign_id) =>
+    dispatch(actionCreators.getEngagmentNumberVerification(campaign_id)),
 });
 export default connect(
   mapStateToProps,

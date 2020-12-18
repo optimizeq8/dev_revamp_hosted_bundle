@@ -177,6 +177,7 @@ export {
   update_google_keywords,
   enable_end_or_pause_google_campaign,
   downloadGoogleCSV,
+  getInstagramNameDescription,
 } from "./googleAdsCampaignActions";
 
 export {
@@ -227,6 +228,8 @@ export {
   setRejectedCarouselAds,
   resetInstagramRejectedCampaignData,
   moveRejectedAdAmountToWalletInstagram,
+  updateInstagramStatus,
+  endInstagramCampaign,
 } from "./instagramCampaignActions";
 
 export {

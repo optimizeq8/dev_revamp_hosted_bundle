@@ -234,7 +234,7 @@ const reducer = (state = initialState, action) => {
       let mainBusiness = state.mainBusiness;
       //if the business that was deleted is the mainBusiness then reset mainBusiness to the first business in the lsit
       if (mainBusiness.businessid === action.payload) {
-        AsyncStorage.setItem("indexOfMainBusiness", 0);
+        AsyncStorage.setItem("indexOfMainBusiness", "0");
         mainBusiness =
           newBusinessAccounts.length > 0 ? newBusinessAccounts[0] : {};
       }

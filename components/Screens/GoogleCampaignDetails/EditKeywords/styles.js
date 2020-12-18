@@ -10,7 +10,7 @@ export default StyleSheet.create({
   modalView: {
     justifyContent: "center",
     alignSelf: "center",
-    height: "100%",
+    height: "90%",
   },
   pauseIcon: { alignSelf: "center", marginBottom: 20 },
   gradient: {
@@ -19,7 +19,6 @@ export default StyleSheet.create({
   safeAreaView: {
     backgroundColor: "#0000",
     flex: 1,
-    // height: "100%",
   },
   container: {
     backgroundColor: "#000",

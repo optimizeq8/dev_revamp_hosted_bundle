@@ -86,11 +86,9 @@ class BusinessCard extends Component {
       changeState.color = "#FF790A";
       changeState.textColor = "#FF790A";
     }
-    let BusinessIcon = this.businessCategory ? (
-      this.businessCategory.icon
-    ) : (
-      <View />
-    );
+    let BusinessIcon = this.businessCategory
+      ? this.businessCategory.icon
+      : businessList[0].icon;
     return (
       <Swipeout
         autoClose={true}

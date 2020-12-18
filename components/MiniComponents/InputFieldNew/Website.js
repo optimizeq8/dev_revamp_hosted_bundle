@@ -25,7 +25,7 @@ export default class WebsiteComponent extends React.Component {
     );
     this.props.getValidInfo &&
       this.props.getValidInfo(stateName + "Error", urlError);
-    if (urlError && this.props.website) {
+    if (urlError && this.props.website && !this.props.ignoreSocialRestriction) {
       const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me|api.whatsapp.)/g;
 
       showMessage({

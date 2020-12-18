@@ -601,6 +601,7 @@ class GoogleCampaignDetails extends Component {
                           this.props.navigation.push("GoogleSEAPreviewScreen", {
                             campaign: selectedCampaign.ad,
                             language: selectedCampaign.campaign.language,
+                            campaignDetailScreen: true,
                           })
                         }
                       >
