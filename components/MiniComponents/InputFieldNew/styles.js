@@ -23,7 +23,7 @@ export default StyleSheet.create({
     textAlign: I18nManager.isRTL ? "right" : "left",
     // marginBottom: -20,
     textTransform: "uppercase",
-    marginTop: 10,
+    marginTop: 5,
   },
   inputText: {
     fontFamily: "montserrat-regular",
