@@ -373,7 +373,7 @@ export const _pickImage = async (
               let newSize = await FileSystem.getInfoAsync(actualUri);
               let process = { rc: 0 }; //RNFFmpeg.execute is not cancelled it returns {rc:0}
               if (
-                newResult.width < 500 &&
+                (newResult.width < 500 || newResult.height < 500) &&
                 newResult.duration <= 120 &&
                 newResult.duration >= 1.0
               ) {
