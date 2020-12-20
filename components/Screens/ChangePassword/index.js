@@ -5,6 +5,7 @@ import { showMessage } from "react-native-flash-message";
 import InputScrollView from "react-native-input-scroll-view";
 import analytics from "@segment/analytics-react-native";
 import SafeAreaView from "react-native-safe-area-view";
+import { NavigationActions } from "react-navigation";
 
 import CustomHeader from "../../MiniComponents/Header";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
@@ -72,7 +73,12 @@ class ChangePassword extends Component {
   }
   componentDidUpdate(prevProps) {}
   handleBackPress = () => {
-    this.props.navigation.goBack();
+    let temp_pwd = this.props.navigation.getParam("temp_pwd", 0);
+    if (temp_pwd) {
+      this.props.logout(this.props.navigation);
+    } else {
+      this.props.navigation.goBack();
+    }
     return true;
   };
   _passwordVarification = () => {
@@ -225,7 +231,8 @@ class ChangePassword extends Component {
         <CustomHeader
           screenProps={this.props.screenProps}
           title={"Change Password"}
-          navigation={this.props.navigation}
+          //   navigation={this.props.navigation}
+          actionButton={this.handleBackPress}
           segment={{
             source: "change_password",
             source_action: "a_go_back",
