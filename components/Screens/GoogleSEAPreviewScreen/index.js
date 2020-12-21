@@ -247,7 +247,7 @@ class GoogleSEAPreviewScreen extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     let info = { ...this.state.campaign };
     if (isEmpty(info)) {
-      info.headline1 = this.props.instagramDetail.full_name;
+      info.headline1 = this.removeEmojis(this.props.instagramDetail.full_name);
       if (this.props.instagramDetail.biography) {
         let headline = this.removeEmojis(this.props.instagramDetail.biography);
         headline = this.chunkString(headline, 30);
@@ -256,11 +256,11 @@ class GoogleSEAPreviewScreen extends Component {
       info.headline3 = this.props.mainBusiness.country;
       if (this.props.instagramDetail.biography) {
         // First remove the headline 2 part
-        let biography = this.props.instagramDetail.biography
+        let biography = this.removeEmojis(this.props.instagramDetail.biography)
           .split(info.headline2)
           .pop();
         // Remove any emoji present
-        biography = this.removeEmojis(biography);
+        // biography = this.removeEmojis(biography);
         // split string
         const desc = this.chunkString(biography, 90);
         info.description = desc && desc[0] ? desc[0] : "";
@@ -297,10 +297,11 @@ class GoogleSEAPreviewScreen extends Component {
     return true;
   };
   removeEmojis = (text) => {
-    return text.replace(
-      /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g,
-      ""
-    );
+    // return text.replace(
+    //   /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g,
+    //   ""
+    // );
+    return text.replace(/[^a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/g, " ");
   };
   render() {
     const { translate } = this.props.screenProps;

@@ -264,6 +264,12 @@ class Menu extends Component {
                       source: "open_hamburger",
                       source_action: "a_open_my_website",
                     });
+                    // this.props.navigation.navigate("WebView", {
+                    //   url: "http://192.168.8.112:3000/mywebsite",
+                    //   title: "My Website",
+                    //   source: "open_hamburger",
+                    //   source_action: "a_open_my_website",
+                    // });
                   } else {
                     this.props.navigation.navigate("TutorialWeb", {
                       source: "open_hamburger",
