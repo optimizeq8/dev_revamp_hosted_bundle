@@ -1016,7 +1016,7 @@ class InstagramStoryAdTargetting extends Component {
             state={this.state.campaignInfo}
             _handleAge={this._handleAge}
             _handleSideMenuState={this._handleSideMenuState}
-            ageValuesRange={[13, 65]}
+            ageValuesRange={[18, 65]}
             minAge={this.state.campaignInfo.targeting.age_min || 18}
             maxAge={this.state.campaignInfo.targeting.age_max || 65}
           />
