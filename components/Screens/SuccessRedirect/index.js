@@ -77,6 +77,7 @@ class SuccessRedirect extends Component {
           this.props.navigation.getParam("campaign_revenue", "null")
         ),
         type: "Campaign",
+        revenue: parseFloat(this.props.navigation.getParam("amount", "$0.00")),
       };
     }
     analytics.track(`payment_end`, {
