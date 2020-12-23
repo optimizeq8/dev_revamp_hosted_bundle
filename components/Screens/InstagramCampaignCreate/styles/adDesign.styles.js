@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
   swipeUpSubText: {
     fontSize: 12,
-    textAlign: "center",
+    textAlign: "left",
     fontFamily: "montserrat-medium-english",
     color: globalColors.purple,
     width: "80%",
