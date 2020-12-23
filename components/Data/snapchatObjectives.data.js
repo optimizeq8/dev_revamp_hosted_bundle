@@ -70,7 +70,7 @@ export default {
     //   color: "#332BEF",
     // },
     {
-      label: "Engagement",
+      label: "Call",
       value: "ENGAGEMENT",
       info: "Get more Snapchatters to Engage with your Ad",
       color: "#EF6C57",
