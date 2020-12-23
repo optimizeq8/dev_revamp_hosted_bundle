@@ -7,7 +7,9 @@ import {
   Image,
   ScrollView,
   I18nManager,
+  Platform,
 } from "react-native";
+import WebView from "react-native-webview";
 import analytics from "@segment/analytics-react-native";
 import SafeAreaView from "react-native-safe-area-view";
 
@@ -107,10 +109,13 @@ class OptimizeWebsite extends Component {
       });
     }
   }
-
+  hideLoader = () => {
+    this.setState({ viewLoader: false });
+  };
   render() {
     const { translate } = this.props.screenProps;
     const { activeStep } = this.state;
+    const { mainBusiness } = this.props;
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}
@@ -175,66 +180,89 @@ class OptimizeWebsite extends Component {
             </Text>
           </View>
         )}
-        <ScrollView
-          contentContainerStyle={[
-            activeStep === 1 && styles.outerView,
-            // activeStep === 2 && styles.step2OuterView
-          ]}
-        >
-          {activeStep === 1 && (
-            <LinearGradient
-              colors={["#9300FF", "#5600CB"]}
-              locations={[0, 0.75]}
-              style={styles.gradient}
-            />
-          )}
-
-          {activeStep === 2 && (
-            <View style={styles.previewOuterView}>
+        {Platform.OS === "ios" && (
+          <ScrollView
+            contentContainerStyle={[
+              activeStep === 1 && styles.outerView,
+              // activeStep === 2 && styles.step2OuterView
+            ]}
+          >
+            {activeStep === 1 && (
               <LinearGradient
                 colors={["#9300FF", "#5600CB"]}
                 locations={[0, 0.75]}
                 style={styles.gradient}
               />
-              <Image
-                style={styles.profileIcon}
-                source={{
-                  uri: this.props.businessLogo,
-                }}
-              />
-              <Text style={styles.bsnNameText}>
-                {this.props.mainBusiness.businessname}
-              </Text>
-              <View style={styles.socialMediaView}>
-                <PhoneIcon width={40} styles={styles.socialMediaIcon} />
+            )}
 
-                <InstagramIcon width={40} styles={styles.socialMediaIcon} />
+            {activeStep === 2 && (
+              <View style={styles.previewOuterView}>
+                <LinearGradient
+                  colors={["#9300FF", "#5600CB"]}
+                  locations={[0, 0.75]}
+                  style={styles.gradient}
+                />
+                <Image
+                  style={styles.profileIcon}
+                  source={{
+                    uri: this.props.businessLogo,
+                  }}
+                />
+                <Text style={styles.bsnNameText}>
+                  {this.props.mainBusiness.businessname}
+                </Text>
+                <View style={styles.socialMediaView}>
+                  <PhoneIcon width={40} styles={styles.socialMediaIcon} />
 
-                <WhatsApp width={40} styles={styles.socialMediaIcon} />
+                  <InstagramIcon width={40} styles={styles.socialMediaIcon} />
+
+                  <WhatsApp width={40} styles={styles.socialMediaIcon} />
+                </View>
               </View>
-            </View>
-          )}
-          {activeStep === 1 && (
-            <Text style={styles.createWebsiteText}>
-              {translate(
-                "We’ll create a mini website for your business Just fill in the info below"
-              )}
-            </Text>
-          )}
-          {activeStep === 1 && (
-            <RegisterForm
-              screenProps={this.props.screenProps}
-              submitNextStep={this.submitNextStep}
-            />
-          )}
-          {activeStep === 2 && (
-            <ProductSelect
-              source={"my_website_products"}
-              navigation={this.props.navigation}
-              screenProps={this.props.screenProps}
-            />
-          )}
-        </ScrollView>
+            )}
+            {activeStep === 1 && (
+              <Text style={styles.createWebsiteText}>
+                {translate(
+                  "We’ll create a mini website for your business Just fill in the info below"
+                )}
+              </Text>
+            )}
+            {activeStep === 1 && Platform.OS === "ios" && (
+              <RegisterForm
+                screenProps={this.props.screenProps}
+                submitNextStep={this.submitNextStep}
+              />
+            )}
+            {activeStep === 2 && Platform.OS === "ios" && (
+              <ProductSelect
+                source={"my_website_products"}
+                navigation={this.props.navigation}
+                screenProps={this.props.screenProps}
+              />
+            )}
+          </ScrollView>
+        )}
+        {activeStep === 1 && Platform.OS === "android" && (
+          <WebView
+            onLoad={() => this.hideLoader()}
+            androidHardwareAccelerationDisabled={true}
+            style={{
+              backgroundColor: "#0000",
+
+              height: "100%",
+              flex: 1,
+            }}
+            contentContainerStyle={{
+              backgroundColor: "#0000",
+            }}
+            ref={(ref) => (this.webview = ref)}
+            source={{
+              uri: `http://192.168.8.112:3000/mywebsite?business_id=${mainBusiness.businessid}&insta_handle=${mainBusiness.insta_handle}&snapchat_handle=${mainBusiness.snapchat_handle}&callnumber=${mainBusiness.callnumber}&whatsappnumber=${mainBusiness.whatsappnumber}&googlemaplink=${mainBusiness.googlemaplink}&businessname=${mainBusiness.businessname}`,
+            }}
+            cacheEnabled={false}
+            incognito={true}
+          />
+        )}
       </SafeAreaView>
     );
   }
