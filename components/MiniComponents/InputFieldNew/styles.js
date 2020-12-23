@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio, I18nManager } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager, Platform } from "react-native";
 import { globalColors } from "../../../GlobalStyles";
 export default StyleSheet.create({
   input1: {
@@ -10,6 +10,8 @@ export default StyleSheet.create({
     width: "100%",
     borderWidth: 0,
     // height: 54,
+    // height: Platform.OS === "android" ? 60 : 54,
+
     // paddingHorizontal: 18,
     display: "flex",
     alignItems: "center",
@@ -69,7 +71,7 @@ export default StyleSheet.create({
     alignSelf: "center",
     marginLeft: 13,
     width: "100%",
-    height: 54,
+    height: Platform.OS === "ios" ? 54 : 60,
   },
   rowView: {
     flexDirection: "row",

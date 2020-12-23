@@ -10,18 +10,18 @@ export default {
       color: "#4BD6C6",
     },
     {
-      label: "Awareness",
-      value: "BRAND_AWARENESS",
-      info: "INFORM PEOPLE ABOUT MY BRAND",
-      icon: ObjIcons.Awareness,
-      color: "#EF6C57",
-    },
-    {
       label: "Lead Generation",
       value: "LEAD_GENERATION",
       info: "I WANT TO KNOW MY CUSTOMERS",
       icon: ObjIcons.Group,
       color: "#AA22DD",
+    },
+    {
+      label: "Awareness",
+      value: "BRAND_AWARENESS",
+      info: "INFORM PEOPLE ABOUT MY BRAND",
+      icon: ObjIcons.Awareness,
+      color: "#EF6C57",
     },
   ],
   StoryAd: [
@@ -33,18 +33,18 @@ export default {
       color: "#AA22DD",
     },
     {
-      label: "Awareness",
-      value: "BRAND_AWARENESS",
-      info: "INFORM PEOPLE ABOUT MY BRAND",
-      icon: ObjIcons.Awareness,
-      color: "#EF6C57",
-    },
-    {
       label: "App Installs",
       value: "APP_INSTALLS",
       info: "INCREASE APP DOWNLOADS",
       icon: ObjIcons.Download,
       color: "#FF7A09",
+    },
+    {
+      label: "Awareness",
+      value: "BRAND_AWARENESS",
+      info: "INFORM PEOPLE ABOUT MY BRAND",
+      icon: ObjIcons.Awareness,
+      color: "#EF6C57",
     },
 
     // {
@@ -70,7 +70,7 @@ export default {
     //   color: "#332BEF",
     // },
     {
-      label: "Engagement",
+      label: "Call",
       value: "ENGAGEMENT",
       info: "Get more Snapchatters to Engage with your Ad",
       color: "#EF6C57",

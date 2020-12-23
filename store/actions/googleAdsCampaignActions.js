@@ -1013,6 +1013,14 @@ export const getInstagramNameDescription = (insta_handle) => {
         };
         // let info = {
         //   biography:
+        //     "We are not standard ! ! ( U n i q u e )\n🔥  Streetwear meets Aesthetic.\n🛒  Shop now | 𝙊𝙣𝙡𝙞𝙣𝙚 𝙨𝙩𝙤𝙧𝙚\n‎📱 ORDER THROUGH WEBSITE ⇩\n🌏  WORLDWIDE SHIPPING",
+        //   external_url: "http://upay.to/standardgoodskw/",
+        //   business_category_name: "Food & Personal Goods",
+        //   full_name: "STANDARD GOODS® | 𝐊𝐮𝐰𝐚𝐢𝐭",
+        // };
+
+        // let info = {
+        //   biography:
         //     "‎أول تطبيق للدعايات الرقمية\nLaunch Your Ads in Minutes with\nOptimizeApp - iOS & Android📱\nAll Performance, No Hassle\n 👇🏻حمل التطبيق عبر الرابط:",
         //   external_url: "https://optimizeapp.com/download",
         //   business_category_name: "Business & Utility Services",
@@ -1025,7 +1033,10 @@ export const getInstagramNameDescription = (insta_handle) => {
         });
       }
     } catch (err) {
-      // console.log('insta error verify account', err.response || err.message);
+      //   console.log(
+      //     "getInstagramNameDescription account",
+      //     err.response || err.message
+      //   );
       return dispatch({
         type: actionTypes.SET_INSTAGRAM_DETAIL,
         payload: {
@@ -1035,6 +1046,16 @@ export const getInstagramNameDescription = (insta_handle) => {
           full_name: "",
         },
       });
+      //   return dispatch({
+      //     type: actionTypes.SET_INSTAGRAM_DETAIL,
+      //     payload: {
+      //       biography:
+      //         "We are not standard ! ! ( U n i q u e )\n🔥  Streetwear meets Aesthetic.\n🛒  Shop now | 𝙊𝙣𝙡𝙞𝙣𝙚 𝙨𝙩𝙤𝙧𝙚\n‎📱 ORDER THROUGH WEBSITE ⇩\n🌏  WORLDWIDE SHIPPING",
+      //       external_url: "http://upay.to/standardgoodskw/",
+      //       business_category_name: "Food & Personal Goods",
+      //       full_name: "STANDARD GOODS® | 𝐊𝐮𝐰𝐚𝐢𝐭",
+      //     },
+      //   });
     }
   };
 };

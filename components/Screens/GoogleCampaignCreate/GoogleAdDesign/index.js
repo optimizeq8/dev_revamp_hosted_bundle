@@ -85,10 +85,11 @@ class GoogleAdDesign extends Component {
     );
   };
   removeEmojis = (text) => {
-    return text.replace(
-      /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g,
-      ""
-    );
+    // return text.replace(
+    //   /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g,
+    //   ""
+    // );
+    return text.replace(/[^a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/g, " ");
   };
   componentDidMount() {
     if (this.props.navigation.getParam("rejected", false)) {
@@ -133,7 +134,9 @@ class GoogleAdDesign extends Component {
           let info = { ...this.state };
 
           if (info.headline1 === "") {
-            info.headline1 = this.props.instagramDetail.full_name;
+            info.headline1 = this.removeEmojis(
+              this.props.instagramDetail.full_name
+            );
           }
           if (info.headline2 === "") {
             if (this.props.instagramDetail.biography) {
@@ -150,11 +153,13 @@ class GoogleAdDesign extends Component {
           if (info.description === "") {
             if (this.props.instagramDetail.biography) {
               // First remove the headline 2 part
-              let biography = this.props.instagramDetail.biography
+              let biography = this.removeEmojis(
+                this.props.instagramDetail.biography
+              )
                 .split(info.headline2)
                 .pop();
               // Remove any emoji present
-              biography = this.removeEmojis(biography);
+              //   biography = this.removeEmojis(biography);
               // split string
               const desc = this.chunkString(biography, 90);
               info.description = desc && desc[0] ? desc[0] : "";

@@ -10,13 +10,6 @@ export const instagramAdObjectives = {
       color: "#4BD6C6",
     },
     {
-      label: "Brand Awareness",
-      value: "BRAND_AWARENESS",
-      info: "INFORM PEOPLE ABOUT MY BRAND",
-      icon: ObjIcons.Awareness,
-      color: "#EF6C57",
-    },
-    {
       label: "App Installs",
       value: "APP_INSTALLS",
       info: "INCREASE APP DOWNLOADS",
@@ -30,7 +23,13 @@ export const instagramAdObjectives = {
       icon: ObjIcons.Video,
       color: "#9325FF",
     },
-
+    {
+      label: "Brand Awareness",
+      value: "BRAND_AWARENESS",
+      info: "INFORM PEOPLE ABOUT MY BRAND",
+      icon: ObjIcons.Awareness,
+      color: "#EF6C57",
+    },
     // {
     //   label: "Lead Generation",
     //   value: "LEAD_GENERATION",
@@ -60,13 +59,6 @@ export const instagramAdObjectives = {
       color: "#4BD6C6",
     },
     {
-      label: "Brand Awareness",
-      value: "BRAND_AWARENESS",
-      info: "INFORM PEOPLE ABOUT MY BRAND",
-      icon: ObjIcons.Awareness,
-      color: "#EF6C57",
-    },
-    {
       label: "App Installs",
       value: "APP_INSTALLS",
       info: "INCREASE APP DOWNLOADS",
@@ -79,6 +71,13 @@ export const instagramAdObjectives = {
       info: "GET MORE VIEWS ON MY VIDEO",
       icon: ObjIcons.Video,
       color: "#9325FF",
+    },
+    {
+      label: "Brand Awareness",
+      value: "BRAND_AWARENESS",
+      info: "INFORM PEOPLE ABOUT MY BRAND",
+      icon: ObjIcons.Awareness,
+      color: "#EF6C57",
     },
   ],
 };

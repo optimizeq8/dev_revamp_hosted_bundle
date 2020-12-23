@@ -186,7 +186,7 @@ class CampaignCard extends Component {
                   }}
                 >
                   <Text style={[styles.subtext, { width: "50%" }]}>
-                    {"You need to verify the phone number to launch"}
+                    {translate("You need to verify the phone number to launch")}
                   </Text>
                   <GradientButton
                     onPressAction={() =>
@@ -195,10 +195,12 @@ class CampaignCard extends Component {
                         engagement_phone_number:
                           campaign.engagement_phone_number,
                         campaign_id: campaign.campaign_id,
+                        source: "dashboard",
+                        source_action: "a_verify_engagement_number",
                       })
                     }
                     style={{ height: "75%", width: "30%" }}
-                    text={"Verify"}
+                    text={translate("Verify")}
                   />
                 </View>
               )}
