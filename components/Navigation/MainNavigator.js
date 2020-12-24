@@ -258,12 +258,14 @@ export default createNativeStackNavigator(
     }),
     WebsiteRegistartionSuccess: register({
       require: () => require("../Screens/OptimizeWebsite/RegistrationSuccess"),
+      path: "websiteRegistartionSuccess/",
     }),
     WebsiteSetting: register({
       require: () => require("../Screens/OptimizeWebsite/WebsiteSetting"),
     }),
     MyWebsite: register({
       require: () => require("../Screens/OptimizeWebsite/MyWebsite"),
+      path: "mywebsite/",
     }),
     TutorialWeb: register({
       require: () => require("../Screens/OptimizeWebsite/Tutorial"),

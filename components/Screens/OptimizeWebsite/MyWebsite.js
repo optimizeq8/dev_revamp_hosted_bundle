@@ -93,7 +93,7 @@ class MyWebsite extends Component {
     }
     if (Platform.OS === "android") {
       this.props.navigation.navigate("WebView", {
-        url: `http://192.168.8.112:3000/mywebsite?edit=true&business_id=${mainBusiness.businessid}&insta_handle=${mainBusiness.insta_handle}&snapchat_handle=${mainBusiness.snapchat_handle}&callnumber=${mainBusiness.callnumber}&whatsappnumber=${mainBusiness.whatsappnumber}&googlemaplink=${mainBusiness.googlemaplink}&businessname=${mainBusiness.businessname}`,
+        url: `https://www.optimizeapp.com/mywebsite?edit=true&businessid=${mainBusiness.businessid}&insta_handle=${mainBusiness.insta_handle}&snapchat_handle=${mainBusiness.snapchat_handle}&callnumber=${mainBusiness.callnumber}&whatsappnumber=${mainBusiness.whatsappnumber}&googlemaplink=${mainBusiness.googlemaplink}&businessname=${mainBusiness.businessname}`,
         title: "My Website",
         source: "open_my_website",
         source_action: "a_open_my_website_detail",
@@ -130,7 +130,33 @@ class MyWebsite extends Component {
   onToggleModal = (visibile) => {
     this.setState({ isVisible: visibile });
   };
-
+  componentDidUpdate(prevProps) {
+    const { mainBusiness } = this.props;
+    // check if navigation params contain updated info then update locally
+    const updateInfoLocally =
+      !prevProps.navigation.getParam("updateInfo", false) &&
+      this.props.navigation.getParam("updateInfo", false);
+    if (updateInfoLocally) {
+      this.props.updateBusinessInfoLocally({
+        insta_handle: this.props.navigation.getParam(
+          "insta_handle",
+          mainBusiness.insta_handle
+        ),
+        callnumber: this.props.navigation.getParam(
+          "callnumber",
+          mainBusiness.callnumber
+        ),
+        whatsappnumber: this.props.navigation.getParam(
+          "whatsappnumber",
+          mainBusiness.whatsappnumber
+        ),
+        googlemaplink: this.props.navigation.getParam(
+          "googlemaplink",
+          mainBusiness.googlemaplink
+        ),
+      });
+    }
+  }
   render() {
     const { translate } = this.props.screenProps;
     const { mainBusiness } = this.props;
@@ -219,51 +245,42 @@ class MyWebsite extends Component {
               </Text>
             </View> */}
         </View>
-        {/* {Platform.OS === "ios" && (
-            <ProductSelect
-              source={"open_my_website"}
-              edit={true}
-              screenProps={this.props.screenProps}
-            />
-          )} */}
+        {Platform.OS === "ios" && (
+          <ProductSelect
+            source={"open_my_website"}
+            edit={true}
+            screenProps={this.props.screenProps}
+          />
+        )}
 
-        <WebView
-          // startInLoadingState={true}
-          onLoad={() => this.hideLoader()}
-          androidHardwareAccelerationDisabled={true}
-          // renderLoading={() => (
-          //   <View style={{ height: "100%", backgroundColor: "#0000" }}>
-          //     <Loading top={40} />
-          //   </View>
-          // )}
-          style={{
-            backgroundColor: "#0000",
-
-            height: "100%",
-            flex: 1,
-          }}
-          contentContainerStyle={{
-            backgroundColor: "#0000",
-            //   borderWidth: 1,
-            //   borderColor: "red",
-            //   maxHeight: "100%",
-          }}
-          ref={(ref) => (this.webview = ref)}
-          source={{
-            uri: `http://192.168.8.112:3000/selectposts?edit=${true}business_id=${
-              mainBusiness.businessid
-            }&insta_handle=${mainBusiness.insta_handle}&snapchat_handle=${
-              mainBusiness.snapchat_handle
-            }&callnumber=${mainBusiness.callnumber}&whatsappnumber=${
-              mainBusiness.whatsappnumber
-            }&googlemaplink=${mainBusiness.googlemaplink}&businessname=${
-              mainBusiness.businessname
-            }`,
-            // uri: "https://www.optimizeapp.com",
-          }}
-          cacheEnabled={false}
-          incognito={true}
-        />
+        {Platform.OS === "android" && (
+          <WebView
+            onLoad={() => this.hideLoader()}
+            androidHardwareAccelerationDisabled={true}
+            style={{
+              backgroundColor: "#0000",
+              height: "100%",
+              flex: 1,
+            }}
+            contentContainerStyle={{
+              backgroundColor: "#0000",
+            }}
+            ref={(ref) => (this.webview = ref)}
+            source={{
+              uri: `https://www.optimizeapp.com/selectposts?edit=${true}businessid=${
+                mainBusiness.businessid
+              }&insta_handle=${mainBusiness.insta_handle}&snapchat_handle=${
+                mainBusiness.snapchat_handle
+              }&callnumber=${mainBusiness.callnumber}&whatsappnumber=${
+                mainBusiness.whatsappnumber
+              }&googlemaplink=${mainBusiness.googlemaplink}&businessname=${
+                mainBusiness.businessname
+              }`,
+            }}
+            cacheEnabled={false}
+            incognito={true}
+          />
+        )}
         {this.state.viewLoader && (
           <View
             style={{
@@ -307,5 +324,7 @@ const mapDispatchToProps = (dispatch) => ({
         onToggleModal
       )
     ),
+  updateBusinessInfoLocally: (data) =>
+    dispatch(actionCreators.updateBusinessConnectedToFacebook(data)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MyWebsite);
