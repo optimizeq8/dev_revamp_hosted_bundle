@@ -121,7 +121,7 @@ export default class MapSearchBar extends Component {
           query={{
             key: "AIzaSyCPCME2BWXM3bRzNdvrGHAvnOxB3np3c_Q",
             language: "en",
-            components: "country:sa|country:ae|country:om",
+            // components: "country:sa|country:ae|country:om",
           }}
           renderLeftButton={() => (
             <Icon name="search" type="Fontisto" style={{ fontSize: 20 }} />
