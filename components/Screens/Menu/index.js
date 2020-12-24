@@ -218,36 +218,6 @@ class Menu extends Component {
             <ScrollView contentContainerStyle={styles.scrollViewContainer}>
               <TouchableOpacity
                 style={styles.options}
-                onPress={() =>
-                  this.handleNavigation("PersonalInfo", false, {
-                    source: "open_hamburger",
-                    source_action: "a_open_personal_info",
-                  })
-                }
-              >
-                <Icons.PersonalInfo style={styles.icons} />
-                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
-                  {translate("Personal Info")}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.options}
-                onPress={() => {
-                  // this.props.navigation.navigate("BusinessInfo")
-                  this.props.navigation.navigate("CreateBusinessAccount", {
-                    editBusinessInfo: true,
-                    source: "open_hamburger",
-                    source_action: "a_open_business_info",
-                  });
-                }}
-              >
-                <Icons.BusinessIcon style={styles.icons} />
-                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
-                  {translate("Business Info")}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.options}
                 disabled={
                   this.props.mainBusiness &&
                   this.props.mainBusiness.hasOwnProperty("user_role") &&
@@ -312,6 +282,48 @@ class Menu extends Component {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() => this.handleNavigation("ManageTeam", true, {})}
+                style={styles.options}
+              >
+                <Icons.GroupIcon style={styles.icons} />
+                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
+                  {translate("Manage Team")}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.options}
+                onPress={() => {
+                  // this.props.navigation.navigate("BusinessInfo")
+                  this.props.navigation.navigate("CreateBusinessAccount", {
+                    editBusinessInfo: true,
+                    source: "open_hamburger",
+                    source_action: "a_open_business_info",
+                  });
+                }}
+              >
+                <Icons.BusinessIcon style={styles.icons} />
+                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
+                  {translate("Business Info")}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.options}
+                onPress={() =>
+                  this.handleNavigation("PersonalInfo", false, {
+                    source: "open_hamburger",
+                    source_action: "a_open_personal_info",
+                  })
+                }
+              >
+                <Icons.PersonalInfo style={styles.icons} />
+                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
+                  {translate("Personal Info")}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
                 onPress={() =>
                   this.handleNavigation("ChangePassword", false, {
                     source: "open_hamburger",
@@ -342,12 +354,26 @@ class Menu extends Component {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => this.handleNavigation("ManageTeam", true, {})}
                 style={styles.options}
+                onPress={() =>
+                  this.props.navigation.navigate("WebView", {
+                    url: "https://www.optimizeapp.com/terms_conditions",
+                    title: "Terms & Conditions",
+                    source: "app_TNC",
+                    source_action: "a_open_app_TNC",
+                  })
+                }
               >
-                <Icons.GroupIcon style={styles.icons} />
+                <Icon
+                  name="file-document-box"
+                  type="MaterialCommunityIcons"
+                  style={[
+                    styles.icons,
+                    // { top: heightPercentageToDP(5) < 30 ? 0 : 2 }
+                  ]}
+                />
                 <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
-                  {translate("Manage Team")}
+                  {translate("Terms & Conditions")}
                 </Text>
               </TouchableOpacity>
 
@@ -369,30 +395,6 @@ class Menu extends Component {
                 />
                 <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
                   {translate("Privacy Policy")}
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.options}
-                onPress={() =>
-                  this.props.navigation.navigate("WebView", {
-                    url: "https://www.optimizeapp.com/terms_conditions",
-                    title: "Terms & Conditions",
-                    source: "app_TNC",
-                    source_action: "a_open_app_TNC",
-                  })
-                }
-              >
-                <Icon
-                  name="file-document-box"
-                  type="MaterialCommunityIcons"
-                  style={[
-                    styles.icons,
-                    // { top: heightPercentageToDP(5) < 30 ? 0 : 2 }
-                  ]}
-                />
-                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
-                  {translate("Terms & Conditions")}
                 </Text>
               </TouchableOpacity>
 
