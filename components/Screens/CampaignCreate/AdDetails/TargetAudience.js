@@ -207,7 +207,7 @@ export class TargetAudience extends Component {
                   ))}
               </TouchableOpacity>
             ) : null}
-            {expandLocation && mainState.showRegions && (
+            {expandLocation && (
               <TouchableOpacity
                 disabled={loading}
                 onPress={() => this.callFunction("map")}
