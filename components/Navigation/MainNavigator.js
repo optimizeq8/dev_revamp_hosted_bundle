@@ -256,10 +256,13 @@ export default createNativeStackNavigator(
     OptimizeWebsite: register({
       require: () => require("../Screens/OptimizeWebsite"),
     }),
-    WebsiteRegistartionSuccess: register({
-      require: () => require("../Screens/OptimizeWebsite/RegistrationSuccess"),
-      path: "websiteRegistartionSuccess/",
-    }),
+    WebsiteRegistartionSuccess: {
+      screen: register({
+        require: () =>
+          require("../Screens/OptimizeWebsite/RegistrationSuccess"),
+      }),
+      path: "website_registration_success",
+    },
     WebsiteSetting: register({
       require: () => require("../Screens/OptimizeWebsite/WebsiteSetting"),
     }),
