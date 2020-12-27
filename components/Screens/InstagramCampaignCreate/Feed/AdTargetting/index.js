@@ -518,7 +518,13 @@ class InstagramFeedAdTargetting extends Component {
   };
 
   formatNumber = (num) => {
-    return "$" + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    return (
+      "$" +
+      parseFloat(num)
+        .toFixed(2)
+        .toString()
+        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    );
   };
   _handleBudget = (value, rawValue, onBlur, budgetOption) => {
     const { translate } = this.props.screenProps;
