@@ -257,7 +257,7 @@ class OptimizeWebsite extends Component {
             }}
             ref={(ref) => (this.webview = ref)}
             source={{
-              uri: `https://www.optimizeapp.com/mywebsite?edit=false&business_id=${mainBusiness.businessid}&insta_handle=${mainBusiness.insta_handle}&snapchat_handle=${mainBusiness.snapchat_handle}&callnumber=${mainBusiness.callnumber}&whatsappnumber=${mainBusiness.whatsappnumber}&googlemaplink=${mainBusiness.googlemaplink}&businessname=${mainBusiness.businessname}`,
+              uri: `https://www.optimizeapp.com/mywebsite?edit=false&businessid=${mainBusiness.businessid}&insta_handle=${mainBusiness.insta_handle}&snapchat_handle=${mainBusiness.snapchat_handle}&callnumber=${mainBusiness.callnumber}&whatsappnumber=${mainBusiness.whatsappnumber}&googlemaplink=${mainBusiness.googlemaplink}&businessname=${mainBusiness.businessname}`,
             }}
             cacheEnabled={false}
             incognito={true}

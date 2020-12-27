@@ -267,7 +267,7 @@ class MyWebsite extends Component {
             }}
             ref={(ref) => (this.webview = ref)}
             source={{
-              uri: `https://www.optimizeapp.com/selectposts?edit=${true}businessid=${
+              uri: `https://www.optimizeapp.com/selectposts?edit=${true}&businessid=${
                 mainBusiness.businessid
               }&insta_handle=${mainBusiness.insta_handle}&snapchat_handle=${
                 mainBusiness.snapchat_handle
