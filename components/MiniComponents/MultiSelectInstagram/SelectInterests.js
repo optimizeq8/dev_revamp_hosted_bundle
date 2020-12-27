@@ -19,6 +19,7 @@ import { globalColors } from "../../../GlobalStyles";
 
 class SelectInterests extends Component {
   state = { interests: null, customInterests: null, open: false };
+  timeout = 0;
   componentDidMount() {
     this.props.get_interests_instagram();
 
@@ -128,7 +129,10 @@ class SelectInterests extends Component {
     this.props._handleSideMenuState(false);
   };
   handleCustomInterests = (event) => {
-    this.props.get_custom_interests_instagram(event.replace(" ", "_"));
+    if (this.timeout) clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      this.props.get_custom_interests_instagram(event.replace(" ", "_"));
+    }, 200);
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -218,6 +222,7 @@ class SelectInterests extends Component {
                 subKey="subcat"
                 selectChildren={true}
                 open={this.state.open2}
+                customInterestsLoading={this.props.customInterestsLoading}
                 onSelectedItemsChange={this.props.onSelectedItemsChange}
                 onSelectedItemObjectsChange={
                   this.props.onSelectedItemObjectsChange
@@ -255,6 +260,7 @@ const mapStateToProps = (state) => ({
   interests: state.instagramAds.interests,
   customInterests: state.instagramAds.customInterests,
   data: state.instagramAds.data,
+  customInterestsLoading: state.instagramAds.customInterestsLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({

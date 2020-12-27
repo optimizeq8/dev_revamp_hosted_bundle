@@ -278,6 +278,10 @@ export const get_interests_instagram = () => {
  */
 export const get_custom_interests_instagram = (keyword) => {
   return (dispatch) => {
+    dispatch({
+      type: actionTypes.CUSTOM_INSTAGRAM_INTERESTS_LOADING,
+      payload: true,
+    });
     if (keyword)
       InstagramBackendURL()
         .get(`categorizedcustominterests/${keyword}`)
