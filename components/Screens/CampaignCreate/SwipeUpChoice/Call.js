@@ -207,6 +207,9 @@ class Call extends Component {
     this.setState({ inputCallToAction: true });
   };
   changePhoneNo = (number, country_code, numbertype, valid) => {
+    if (!number.includes("+") && country_code) {
+      number = "+" + country_code + number;
+    }
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
