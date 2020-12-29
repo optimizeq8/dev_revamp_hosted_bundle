@@ -95,7 +95,10 @@ class Menu extends Component {
   handleNavigation = (route, checkForBusinessId = false, params) => {
     const { translate } = this.props.screenProps;
     if (checkForBusinessId) {
-      if (this.props.mainBusiness.hasOwnProperty("businessid")) {
+      if (
+        this.props.mainBusiness &&
+        this.props.mainBusiness.hasOwnProperty("businessid")
+      ) {
         this.props.navigation.navigate(route, params);
       } else {
         showMessage({
