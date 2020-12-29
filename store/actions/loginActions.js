@@ -321,25 +321,31 @@ export const forgotPassword = (email, navigation) => {
           action_status: response.data.success ? "success" : "failure",
         });
         showMessage({
-          message: response.data.success
-            ? "An email with a random generated password has been sent to your email account."
-            : "No account exists with the provided email.",
+          message: response.data.message,
           type: response.data.success ? "success" : "warning",
           position: "top",
         });
-        if (response.data.success) {
-          analytics.track(`a_go_back`, {
-            source: "forget_password",
-            source_action: "a_go_back",
-          });
-          navigation.goBack();
-        }
-        // return dispatch({
-        //   type: actionTypes.CHANGE_PASSWORD,
-        //   payload: response.data
-        // });
+
+        dispatch({
+          type: actionTypes.FORGOT_PASSWORD,
+          payload: response.data,
+        });
+        // if (response.data.success) {
+        //   analytics.track(`a_go_back`, {
+        //     source: "forget_password",
+        //     source_action: "a_go_back",
+        //   });
+        //   navigation.goBack();
+        // }
       })
       .catch((err) => {
+        return dispatch({
+          type: actionTypes.FORGOT_PASSWORD,
+          payload: {
+            success: false,
+            message: err.response || err.message,
+          },
+        });
         // console.log("forgotPassword error", err.message || err.response);
       });
   };
