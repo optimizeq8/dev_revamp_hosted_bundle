@@ -66,13 +66,24 @@ const styles = StyleSheet.create({
     width: 65,
     height: 65,
   },
-  forgotPasswordMessageView: { marginVertical: 50, marginHorizontal: 30 },
+  forgotPasswordMessageView: { marginVertical: 10, marginHorizontal: 30 },
   forgotPasswordMessage: {
     textAlign: "center",
     color: "#FFFFFF",
     fontSize: 14,
     textDecorationLine: "underline",
     fontFamily: "montserrat-bold",
+  },
+  messageView: {
+    alignItems: "center",
+    marginVertical: 30,
+  },
+  exclamation: {
+    alignItems: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    backgroundColor: globalColors.red,
+    borderRadius: 30,
   },
 });
 

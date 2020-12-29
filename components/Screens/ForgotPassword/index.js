@@ -31,6 +31,7 @@ import globalStyles from "../../../GlobalStyles";
 
 //icons
 import Logo from "../../../assets/SVGs/Optimize";
+import Exclamation from "../../../assets/SVGs/ExclamationMarkTransparent.svg";
 
 class ForgotPassword extends Component {
   static navigationOptions = {
@@ -159,14 +160,19 @@ class ForgotPassword extends Component {
               />
             </Item>
             {temp_exist ? (
-              <TouchableOpacity
-                style={styles.forgotPasswordMessageView}
-                onPress={this.openSupport}
-              >
-                <Text style={styles.forgotPasswordMessage}>
-                  {forgotPasswordMessage}
-                </Text>
-              </TouchableOpacity>
+              <View style={styles.messageView}>
+                <View style={styles.exclamation}>
+                  <Exclamation height={20} fill={"#FFFFFF"} />
+                </View>
+                <TouchableOpacity
+                  style={styles.forgotPasswordMessageView}
+                  onPress={this.openSupport}
+                >
+                  <Text style={styles.forgotPasswordMessage}>
+                    {translate(forgotPasswordMessage)}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             ) : null}
             <LowerButton
               screenProps={this.props.screenProps}
