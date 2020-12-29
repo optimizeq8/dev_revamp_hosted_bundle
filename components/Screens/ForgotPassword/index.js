@@ -1,10 +1,17 @@
 //// components
 import React, { Component } from "react";
-import { View, TouchableWithoutFeedback, Keyboard, Text } from "react-native";
+import {
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { Item, Input } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import SafeAreaView from "react-native-safe-area-view";
+import Intercom from "react-native-intercom";
 
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import LowerButton from "../../MiniComponents/LowerButton";
@@ -112,56 +119,66 @@ class ForgotPassword extends Component {
               />
               <Text style={styles.logoText}>Optimize</Text>
             </View>
-            <KeyboardShift>
-              {() => (
-                <>
-                  <Text style={styles.text}>{translate("Password Reset")}</Text>
 
-                  <Text style={styles.link}>
-                    {translate("Please enter your email address")}
-                  </Text>
+            <Text style={styles.text}>{translate("Password Reset")}</Text>
 
-                  <View style={styles.mainView}>
-                    <Item
-                      rounded
-                      style={[
-                        styles.input,
-                        this.state.emailError
-                          ? globalStyles.redBorderColor
-                          : globalStyles.transparentBorderColor,
-                      ]}
-                    >
-                      <Input
-                        placeholderTextColor="#fff"
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        style={styles.inputText}
-                        onChangeText={(value) => {
-                          this.setState({
-                            email: value,
-                          });
-                        }}
-                        onBlur={() => {
-                          this.setState({
-                            emailError: validateWrapper(
-                              "email",
-                              this.state.email
-                            ),
-                          });
-                        }}
-                        placeholder={translate("Email")}
-                      />
-                    </Item>
-                  </View>
-                  <LowerButton
-                    screenProps={this.props.screenProps}
-                    style={styles.proceedButtonRTL}
-                    function={() => this._handleSubmission()}
-                    bottom={-heightPercentageToDP(1.8)}
-                  />
-                </>
-              )}
-            </KeyboardShift>
+            <Text style={styles.link}>
+              {translate("Please enter your email address")}
+            </Text>
+
+            <Item
+              rounded
+              style={[
+                styles.input,
+                this.state.emailError
+                  ? globalStyles.redBorderColor
+                  : globalStyles.transparentBorderColor,
+              ]}
+            >
+              <Input
+                placeholderTextColor="#fff"
+                autoCorrect={false}
+                autoCapitalize="none"
+                style={styles.inputText}
+                onChangeText={(value) => {
+                  this.setState({
+                    email: value,
+                  });
+                }}
+                onBlur={() => {
+                  this.setState({
+                    emailError: validateWrapper("email", this.state.email),
+                  });
+                }}
+                placeholder={translate("Email")}
+              />
+            </Item>
+
+            <TouchableOpacity
+              style={{ marginVertical: 50 }}
+              onPress={() => {
+                Intercom.registerUnidentifiedUser()
+                  .then(() => {
+                    console.log("registered unidentified");
+                    Intercom.displayMessageComposer();
+                  })
+                  .catch((err) => {
+                    console.log("error registering");
+                  });
+              }}
+            >
+              <Text
+                style={{ textAlign: "center", color: "#FFFFFF", fontSize: 14 }}
+              >
+                Live Chat
+              </Text>
+            </TouchableOpacity>
+            <LowerButton
+              screenProps={this.props.screenProps}
+              style={styles.proceedButtonRTL}
+              function={() => this._handleSubmission()}
+              //   bottom={-heightPercentageToDP(1.8)}
+            />
           </View>
         </TouchableWithoutFeedback>
       </SafeAreaView>
