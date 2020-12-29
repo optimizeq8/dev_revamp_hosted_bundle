@@ -226,7 +226,8 @@ export class TargetAudience extends Component {
                 </View>
 
                 {startEditing &&
-                  (targeting.locations[0].circles.length > 0 ? (
+                  (mainState.locationsInfo &&
+                  mainState.locationsInfo.length > 0 ? (
                     <PurpleCheckmarkIcon width={22} height={30} />
                   ) : (
                     <PurplePlusIcon width={22} height={30} />
