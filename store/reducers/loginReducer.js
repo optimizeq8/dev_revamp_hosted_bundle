@@ -4,6 +4,9 @@ const initialState = {
   admin: false,
   clearTokenLoading: false,
   checkingForToken: false,
+  forgotPasswordSuccess: null,
+  forgotPasswordMessage: "",
+  temp_exist: 0,
 };
 
 const reducer = (state = initialState, action) => {
@@ -42,6 +45,13 @@ const reducer = (state = initialState, action) => {
         ...state,
         checkingForTokenEroor: action.payload,
         checkingForToken: false,
+      };
+    case actionTypes.FORGOT_PASSWORD:
+      return {
+        ...state,
+        forgotPasswordSuccess: action.payload.success,
+        forgotPasswordMessage: action.payload.message,
+        temp_exist: action.payload.temp_exist,
       };
     default:
       return state;

@@ -45,10 +45,12 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 10,
     backgroundColor: "rgba(0, 0, 0, 0.16)",
-    paddingHorizontal: 50,
+    paddingHorizontal: 20,
     borderRadius: 30,
     alignSelf: "center",
-    width: 275,
+    // width: 275,
+    marginLeft: 30,
+    marginRight: 30,
     height: 50,
   },
   link: {
@@ -63,6 +65,14 @@ const styles = StyleSheet.create({
   proceedButtonRTL: {
     width: 65,
     height: 65,
+  },
+  forgotPasswordMessageView: { marginVertical: 50, marginHorizontal: 30 },
+  forgotPasswordMessage: {
+    textAlign: "center",
+    color: "#FFFFFF",
+    fontSize: 14,
+    textDecorationLine: "underline",
+    fontFamily: "montserrat-bold",
   },
 });
 

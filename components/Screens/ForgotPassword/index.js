@@ -15,7 +15,6 @@ import Intercom from "react-native-intercom";
 
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import LowerButton from "../../MiniComponents/LowerButton";
-import KeyboardShift from "../../MiniComponents/KeyboardShift";
 import CustomHeader from "../../MiniComponents/Header";
 
 // Redux
@@ -58,20 +57,6 @@ class ForgotPassword extends Component {
       ),
     });
   }
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.message !== this.props.message) {
-  //     this.setState({
-  //       emailError:
-  //         this.props.message.includes("Email") && this.props.message
-  //           ? "Invalid Email"
-  //           : "",
-  //       passwordError:
-  //         this.props.message.includes("Password") && this.props.message
-  //           ? "Invalid Password "
-  //           : ""
-  //     });
-  //   }
-  // }
 
   _handleSubmission = () => {
     const emailError = validateWrapper("email", this.state.email);
@@ -90,9 +75,29 @@ class ForgotPassword extends Component {
       });
     }
   };
-
+  openSupport = () => {
+    Intercom.registerUnidentifiedUser()
+      .then(() => {
+        analytics.track(`a_help`, {
+          source: "forgot_password",
+          source_action: "a_help",
+          support_type: "intercom",
+          action_status: "success",
+        });
+        Intercom.displayMessageComposer();
+      })
+      .catch((err) => {
+        analytics.track(`a_help`, {
+          source: "forgot_password",
+          source_action: "a_help",
+          support_type: "intercom",
+          action_status: "failure",
+        });
+      });
+  };
   render() {
     const { translate } = this.props.screenProps;
+    const { forgotPasswordMessage, temp_exist } = this.props;
     return (
       <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
         <LinearGradient
@@ -153,26 +158,16 @@ class ForgotPassword extends Component {
                 placeholder={translate("Email")}
               />
             </Item>
-
-            <TouchableOpacity
-              style={{ marginVertical: 50 }}
-              onPress={() => {
-                Intercom.registerUnidentifiedUser()
-                  .then(() => {
-                    console.log("registered unidentified");
-                    Intercom.displayMessageComposer();
-                  })
-                  .catch((err) => {
-                    console.log("error registering");
-                  });
-              }}
-            >
-              <Text
-                style={{ textAlign: "center", color: "#FFFFFF", fontSize: 14 }}
+            {temp_exist ? (
+              <TouchableOpacity
+                style={styles.forgotPasswordMessageView}
+                onPress={this.openSupport}
               >
-                Live Chat
-              </Text>
-            </TouchableOpacity>
+                <Text style={styles.forgotPasswordMessage}>
+                  {forgotPasswordMessage}
+                </Text>
+              </TouchableOpacity>
+            ) : null}
             <LowerButton
               screenProps={this.props.screenProps}
               style={styles.proceedButtonRTL}
@@ -186,7 +181,11 @@ class ForgotPassword extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  forgotPasswordMessage: state.login.forgotPasswordMessage,
+  forgotPasswordSuccess: state.login.forgotPasswordSuccess,
+  temp_exist: state.login.temp_exist,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   forgotPassword: (email, navigation) =>
