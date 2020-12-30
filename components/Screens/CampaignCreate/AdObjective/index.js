@@ -643,9 +643,11 @@ class AdObjective extends Component {
           />
         </>
       );
-    } else if (!this.state.isReady) {
-      return <ActivityIndicator size="large" color={"#fff"} />;
-    } else
+    }
+    // else if (!this.state.isReady) {
+    //   return <ActivityIndicator size="large" color={"#fff"} />;
+    // }
+    else
       return (
         <View style={{ height: "100%", backgroundColor: "#0000" }}>
           <StatusBar barStyle="dark-content" backgroundColor="#fff" />

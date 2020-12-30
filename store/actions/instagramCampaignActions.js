@@ -322,8 +322,7 @@ export const getOSVersion = (osType) => {
           data.osversion.hasOwnProperty("description")
         ) {
           let osVersionArray = data.osversion.description.split(";");
-
-          if (osType === "Android") {
+          if (osType.toLowerCase() === "android") {
             return dispatch({
               type: actionTypes.SET_INSTAGRAM_OS_VERSIONS,
               payload: {
@@ -332,7 +331,7 @@ export const getOSVersion = (osType) => {
               },
             });
           }
-          if (osType === "iOS") {
+          if (osType.toLowerCase() === "ios") {
             return dispatch({
               type: actionTypes.SET_INSTAGRAM_OS_VERSIONS,
               payload: {
