@@ -146,9 +146,10 @@ class AdPaymentReview extends Component {
     let start_time = new Date(this.props.data.start_time || "01-01-1970");
     end_time = dateFormat(end_time, "d mmm yyyy");
     start_time = dateFormat(start_time, "d mmm yyyy");
-    let gender = targeting.demographics[0].gender
-      ? startCase(lowerCase(targeting.demographics[0].gender))
-      : "All";
+    let gender =
+      targeting && targeting.demographics[0] && targeting.demographics[0].gender
+        ? startCase(lowerCase(targeting.demographics[0].gender))
+        : "All";
     let countryName = this.props.countryName.map((country) =>
       translate(country)
     );

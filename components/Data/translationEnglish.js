@@ -1712,7 +1712,7 @@ const strings = {
   "Search Regions": "Search Regions",
   "Set your daily budget": "Set your daily budget",
   "Get more Snapchatters to Engage with your Ad":
-    "Get more Snapchatters to Engage with your Ad",
+    "Get more Snapchatters to Call with your Ad",
   Engagement: "Engagement",
   "no of Countries": "no. of Countries",
   avg: "avg",
@@ -1783,5 +1783,29 @@ const strings = {
   "Lifetime budget": "Lifetime budget",
   "Choose Preset": "Choose Preset",
   Recommended: "Recommended",
+  "(Daily)": "(Daily)",
+  Snaps: "snaps",
+  "Feed Ads show up on the main page of Instagram among posts belonging to users followed accounts, blending in with user created content in a form of a single photo, a single video, or a carousel":
+    "Feed Ads show up on the main page of Instagram among posts belonging to users followed accounts, blending in with user created content in a form of a single photo, a single video, or a carousel",
+  "Story Ads are full screen images or videos up to 120 seconds long that get shown to users between stories belonging to accounts they follow":
+    "Story Ads are full screen images or videos up to 120 seconds long that get shown to users between stories belonging to accounts they follow",
+  "To Launch your campaign you need to verify the phone number provided":
+    "To Launch your campaign you need to verify the phone number provided",
+  "One more step": "ONE MORE STEP!",
+  "Payment approved:": "Payment approved:",
+  "Here's your receipt:": "Here's your receipt:",
+  "Verify & Launch": "Verify & Launch",
+  "Select your keywords": "Select your keywords",
+  "Add Keywords so your Ad reaches the right audience":
+    "Add Keywords so your Ad reaches the right audience",
+  "You need to verify the phone number to launch":
+    "You need to verify the phone number to launch",
+  "Snapchat doesn't allow redirection to social media sites":
+    "Snapchat doesn't allow redirection to social media sites",
+  "Try creating a free website from the menu in our app":
+    "Try creating a free website from the menu in our app!",
+  "Having Trouble? Please Contact Us": "Having Trouble? Please Contact Us",
+  "Map Targeting": "Map Targeting",
 };
+
 export default strings;
