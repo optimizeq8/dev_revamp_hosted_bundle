@@ -957,6 +957,7 @@ class Dashboard extends Component {
                             }}
                             strokeColor={"#909090"}
                             renderSearchBar={this.renderSearchBar}
+                            source={"dashboard"}
                           />
                         </View>
                         <TouchableOpacity

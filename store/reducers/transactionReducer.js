@@ -123,24 +123,25 @@ const reducer = (state = initialState, action) => {
         errorTransactionList: false,
       };
     case actionTypes.FILTER_TRANSACTION:
-      let filtered = state.transactionList
-        ? state.transactionList.filter(
-            (transaction) =>
-              (transaction.campaign_name &&
-                transaction.campaign_name
+      let filtered =
+        state.transactionList && action.payload && action.payload.value
+          ? state.transactionList.filter(
+              (transaction) =>
+                (transaction.campaign_name &&
+                  transaction.campaign_name
+                    .toLowerCase()
+                    .includes(action.payload.value.toLowerCase())) ||
+                transaction.reference_id
                   .toLowerCase()
-                  .includes(action.payload.value.toLowerCase())) ||
-              transaction.reference_id
-                .toLowerCase()
-                .includes(action.payload.value.toLowerCase()) ||
-              transaction.payment_type
-                .toLowerCase()
-                .includes(action.payload.value.toLowerCase()) ||
-              transaction.total_amount
-                .toLowerCase()
-                .includes(action.payload.value.toLowerCase())
-          )
-        : [];
+                  .includes(action.payload.value.toLowerCase()) ||
+                transaction.payment_type
+                  .toLowerCase()
+                  .includes(action.payload.value.toLowerCase()) ||
+                transaction.total_amount
+                  .toLowerCase()
+                  .includes(action.payload.value.toLowerCase())
+            )
+          : [];
       let startSearch = "";
       let endSearch = "";
       if (action.payload.dateRange && action.payload.dateRange[0] !== "") {

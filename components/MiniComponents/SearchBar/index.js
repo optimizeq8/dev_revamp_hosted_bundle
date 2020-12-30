@@ -24,27 +24,31 @@ class SearchBar extends Component {
       data: [
         {
           label: "All",
-          value: "A"
+          value: "A",
         },
         {
           label: "Paused",
-          value: "PAUSED"
+          value: "PAUSED",
         },
         {
           label: "Active",
-          value: "ACTIVE"
-        }
-      ]
+          value: "ACTIVE",
+        },
+      ],
     };
   }
 
   _handleSubmit = (reset = false) => {
     if (this.props.transactionSearch) {
       if (reset) this.setState({ value: "" });
-      this.props.filterTransactions({
-        value: reset ? "" : this.state.value,
-        dateRange: [this.props.tranStartSearch, this.props.tranEndSearch]
-      });
+      this.props.filterTransactions(
+        {
+          value: reset ? "" : this.state.value,
+          dateRange: [this.props.tranStartSearch, this.props.tranEndSearch],
+        },
+        this.props.source,
+        "a_search"
+      );
     } else if (this.props.businessList) {
       if (reset) this.setState({ value: "" });
       this.props.filterBusinesses(reset ? "" : this.state.value);
@@ -55,8 +59,8 @@ class SearchBar extends Component {
         selected: this.props.filterStatus ? this.props.filterStatus : "A",
         dateRange: [
           this.props.campaignStartSearch,
-          this.props.campaignEndSearch
-        ]
+          this.props.campaignEndSearch,
+        ],
       });
     }
   };
@@ -67,7 +71,7 @@ class SearchBar extends Component {
       transactionSearch,
       customInputStyle,
       strokeColor,
-      customSearchBarStyle
+      customSearchBarStyle,
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
@@ -75,7 +79,7 @@ class SearchBar extends Component {
         style={[
           styles.searchBarView,
           customSearchBarStyle,
-          { height: height ? height : "70%" }
+          { height: height ? height : "70%" },
         ]}
       >
         <Item rounded style={[styles.searchBarItem, customInputStyle]}>
@@ -93,7 +97,7 @@ class SearchBar extends Component {
                 !isStringArabic(
                   translate(`Search ads`)
                     ? {
-                        fontFamily: "montserrat-regular-english"
+                        fontFamily: "montserrat-regular-english",
                       }
                     : {}
                 ),
@@ -102,8 +106,8 @@ class SearchBar extends Component {
                   ? "#FFF"
                   : !businessList
                   ? "#000"
-                  : "#000"
-              }
+                  : "#000",
+              },
             ]}
             placeholder={translate(
               `Search ${
@@ -122,7 +126,7 @@ class SearchBar extends Component {
                 : "#000"
             }
             value={this.state.value}
-            onChangeText={value => {
+            onChangeText={(value) => {
               this.setState({ value: value }, () => this._handleSubmit());
             }}
           />
@@ -146,18 +150,18 @@ class SearchBar extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaignList: state.dashboard.campaignList,
   filterStatus: state.dashboard.filterStatus,
   campaignStartSearch: state.dashboard.campaignStartSearch,
   campaignEndSearch: state.dashboard.campaignEndSearch,
   tranStartSearch: state.transA.tranStartSearch,
-  tranEndSearch: state.transA.tranEndSearch
+  tranEndSearch: state.transA.tranEndSearch,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onSearch: query => dispatch(actionCreators.filterCampaigns(query)),
-  filterTransactions: query =>
-    dispatch(actionCreators.filterTransactions(query))
+const mapDispatchToProps = (dispatch) => ({
+  onSearch: (query) => dispatch(actionCreators.filterCampaigns(query)),
+  filterTransactions: (query, source, source_action) =>
+    dispatch(actionCreators.filterTransactions(query, source, source_action)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

@@ -51,10 +51,14 @@ class FilterMenu extends Component {
         dateRange: [this.state.start_time, this.state.end_time],
       });
     } else {
-      this.props.filterTransactions({
-        value: this.props.transactionValue,
-        dateRange: [this.state.start_time, this.state.end_time],
-      });
+      this.props.filterTransactions(
+        {
+          value: this.props.transactionValue,
+          dateRange: [this.state.start_time, this.state.end_time],
+        },
+        this.props.transactionFilter ? "transaction" : "dashboard",
+        "a_filter"
+      );
     }
     !statusSelected && this.props._handleSideMenuState(false);
   };
@@ -216,7 +220,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onSearch: (query) => dispatch(actionCreators.filterCampaigns(query)),
-  filterTransactions: (query) =>
-    dispatch(actionCreators.filterTransactions(query)),
+  filterTransactions: (query, source, source_action) =>
+    dispatch(actionCreators.filterTransactions(query, source, source_action)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(FilterMenu);
