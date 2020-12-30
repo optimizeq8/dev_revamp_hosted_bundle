@@ -164,6 +164,12 @@ class AdDetails extends Component {
       return false;
     }
     if (this.state.sidemenustate) {
+      if (
+        this.state.sidemenu === "map" &&
+        this.state.locationsInfo.length === 0
+      ) {
+        this.onSelectedMapChange([], true, []);
+      }
       this._handleSideMenuState(false);
     } else this.props.navigation.goBack();
     return true;

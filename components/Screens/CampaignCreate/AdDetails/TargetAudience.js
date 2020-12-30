@@ -214,7 +214,9 @@ export class TargetAudience extends Component {
                 style={styles.targetTouchable}
               >
                 <View style={[globalStyles.column, styles.subAudienceHeading]}>
-                  <Text style={styles.menutext}>{translate("Map")}</Text>
+                  <Text style={styles.menutext}>
+                    {translate("Map Targeting")}
+                  </Text>
                   <Text style={styles.menudetails}>
                     {mainState.locationsInfo &&
                     mainState.locationsInfo.length > 0
