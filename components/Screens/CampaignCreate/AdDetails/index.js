@@ -1042,6 +1042,7 @@ class AdDetails extends Component {
       "mandatory",
       this.state.campaignInfo.targeting.geos[0].country_code
     );
+
     if (countryError) {
       showMessage({
         message: translate("Please choose a country"),
@@ -1098,7 +1099,6 @@ class AdDetails extends Component {
       if (rep.targeting.demographics[0].gender === "") {
         delete rep.targeting.demographics[0].gender;
       }
-
       // TODO: Region_id can be for multiple geos, not sure if need to clean/delete that too before sending to save target
       if (
         rep.targeting.geos[0].hasOwnProperty("region_id") &&
@@ -1112,7 +1112,12 @@ class AdDetails extends Component {
       ) {
         delete rep.targeting.interests;
       }
-      if (rep.targeting.devices[0].marketing_name.length === 0) {
+      if (
+        rep.targeting.devices[0] &&
+        (!rep.targeting.devices[0].marketing_name ||
+          (rep.targeting.devices[0].marketing_name &&
+            rep.targeting.devices[0].marketing_name.length === 0))
+      ) {
         delete rep.targeting.devices[0].marketing_name;
       }
       if (rep.targeting.devices[0] && rep.targeting.devices[0].os_type === "") {
