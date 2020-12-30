@@ -473,7 +473,12 @@ export const checkoutwithWallet = (campaign_id, navigation, retries = 3) => {
       });
   };
 };
-export const filterTransactions = (query) => {
+export const filterTransactions = (query, source, source_action) => {
+  analytics.track(`a_filter`, {
+    source,
+    source_action,
+    query,
+  });
   return (dispatch) =>
     dispatch({
       type: actionTypes.FILTER_TRANSACTION,

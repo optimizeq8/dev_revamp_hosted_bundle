@@ -202,6 +202,7 @@ class BusinessList extends Component {
               height={"7%"}
               strokeColor={"#a0a0a0"}
               placeholderColor={globalStyles.lightGrayTextColor.color}
+              source={"open_hamburger"}
             />
           )}
           <View style={styles.flatlistWrapper}>
