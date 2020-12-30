@@ -40,7 +40,7 @@ export default class Duration extends Component {
         ]}
         onPress={() => {
           this.props.dismissKeyboard && this.props.dismissKeyboard();
-          this.props.dateField.showModal();
+          this.props.dateField && this.props.dateField.showModal();
         }}
       >
         <View style={styles.dateContainer}>

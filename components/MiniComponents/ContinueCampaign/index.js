@@ -137,7 +137,7 @@ class ContinueCampaign extends Component {
       this.handleSubmition(false, false);
       setTimeout(() => {
         //to fix issue with date field not opening when the resume modal is open
-        this.props.dateField.showModal();
+        this.props.dateField && this.props.dateField.showModal();
       }, 500);
     } else {
       this.setState({ resumeLoading: true });
