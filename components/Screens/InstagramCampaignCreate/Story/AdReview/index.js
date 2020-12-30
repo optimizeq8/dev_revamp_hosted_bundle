@@ -190,7 +190,8 @@ class AdStoryDesignReview extends React.Component {
                 bottom: 0,
               }}
             >
-              {(call_to_action.value || call_to_action) !== "BLANK" && (
+              {(call_to_action || (call_to_action && call_to_action.value)) !==
+                "BLANK" && (
                 <View
                   style={[
                     styles.swipeUpView,
