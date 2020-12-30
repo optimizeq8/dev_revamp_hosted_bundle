@@ -3,11 +3,8 @@ import { View, Text, Image } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 
 import { Transition } from "react-navigation-fluid-transitions";
-import Carousel, { Pagination } from "react-native-snap-carousel";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP,
-} from "react-native-responsive-screen";
+import Carousel from "react-native-snap-carousel";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 import { ProgressBar, Colors } from "react-native-paper";
 
 import VideoPlayer from "../../../../MiniComponents/VideoPlayer";
@@ -21,17 +18,10 @@ import { connect } from "react-redux";
 import styles from "../../styles/adFeedReview.styles";
 
 //icons
-import ArchiveOutline from "../../../../../assets/SVGs/ArchiveOutline";
 import ArrowUp from "../../../../../assets/SVGs/ArrowUp";
 import Close from "../../../../../assets/SVGs/Close";
 
-import CommentOutline from "../../../../../assets/SVGs/CommentOutline";
-import SendArrowOutline from "../../../../../assets/SVGs/SendArrowOutline";
-import HeartOutline from "../../../../../assets/SVGs/HeartOutline";
-import HeartFilled from "../../../../../assets/SVGs/HeartFilled";
-import ArrowBlueForward from "../../../../../assets/SVGs/ArrowBlueForward";
 import globalStyles, { globalColors } from "../../../../../GlobalStyles";
-import CloseButton from "../../../../MiniComponents/BackButton";
 
 class AdStoryDesignReview extends React.Component {
   state = {
@@ -119,10 +109,10 @@ class AdStoryDesignReview extends React.Component {
     }
 
     return (
-      <Transition style={{ height: "100%" }} shared="image">
+      <Transition style={styles.transitionView} shared="image">
         <View>
           <SafeAreaView
-            style={{ flex: 1 }}
+            style={styles.safeareaView}
             forceInset={{ top: "always", bottom: "never" }}
           />
           <CustomHeader
@@ -136,29 +126,16 @@ class AdStoryDesignReview extends React.Component {
             }}
           />
 
-          <View
-            style={[
-              styles.container,
-              {
-                paddingTop: 0,
-                paddingBottom: 0,
-
-                height: heightPercentageToDP(85),
-                width: widthPercentageToDP(90),
-                marginHorizontal: 0,
-                alignSelf: "center",
-              },
-            ]}
-          >
+          <View style={[styles.container, styles.storyContainer]}>
             <ProgressBar
               progress={0.3}
               color={"#FFF"}
               indeterminate
-              style={{ marginHorizontal: 10 }}
+              style={styles.progressBar}
             />
             <View style={styles.profilePicView}>
               <Image
-                style={{ borderRadius: 20 }}
+                style={styles.profileImage}
                 width={32}
                 height={32}
                 source={{
@@ -166,53 +143,33 @@ class AdStoryDesignReview extends React.Component {
                 }}
               />
               <View style={styles.detailProfileView}>
-                <Text style={[styles.instagramBusinessName, { color: "#fff" }]}>
+                <Text
+                  style={[
+                    styles.instagramBusinessName,
+                    globalStyles.whiteTextColor,
+                  ]}
+                >
                   {instagram_business_name}
                 </Text>
-                <Text style={[styles.sponsoredText, { color: "#fff" }]}>
+                <Text
+                  style={[styles.sponsoredText, globalStyles.whiteTextColor]}
+                >
                   {translate("Sponsored")}
                 </Text>
               </View>
-              <Close
-                width={15}
-                height={15}
-                style={{ alignSelf: "center", marginLeft: "auto" }}
-              />
+              <Close width={15} height={15} style={styles.closeIcon} />
             </View>
             <View style={styles.mediaView2}>{mediaView}</View>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                paddingHorizontal: 10,
-                position: "absolute",
-                bottom: 0,
-              }}
-            >
+            <View style={styles.callToActionView}>
               {(call_to_action || (call_to_action && call_to_action.value)) !==
                 "BLANK" && (
-                <View
-                  style={[
-                    styles.swipeUpView,
-                    {
-                      flexDirection: "column",
-                      borderBottomWidth: 0,
-                      alignSelf: "center",
-                      flex: 1,
-                    },
-                  ]}
-                >
-                  <ArrowUp stroke={"#FFFF"} style={{}} />
+                <View style={[styles.swipeUpView, styles.swipeUpViewStory]}>
+                  <ArrowUp stroke={"#FFFF"} />
 
                   <Text
                     style={[
                       styles.callToActionText,
-                      {
-                        color: "#FFF",
-                        fontFamily: "montserrat-regular",
-                        lineHeight: 17,
-                      },
+                      styles.callToActionTextStory,
                     ]}
                   >
                     {call_to_action.hasOwnProperty("label")
