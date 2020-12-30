@@ -1,14 +1,20 @@
 //// components
 import React, { Component } from "react";
-import { View, TouchableWithoutFeedback, Keyboard, Text } from "react-native";
+import {
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { Item, Input } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import SafeAreaView from "react-native-safe-area-view";
+import Intercom from "react-native-intercom";
 
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import LowerButton from "../../MiniComponents/LowerButton";
-import KeyboardShift from "../../MiniComponents/KeyboardShift";
 import CustomHeader from "../../MiniComponents/Header";
 
 // Redux
@@ -25,6 +31,7 @@ import globalStyles from "../../../GlobalStyles";
 
 //icons
 import Logo from "../../../assets/SVGs/Optimize";
+import Exclamation from "../../../assets/SVGs/ExclamationMarkTransparent.svg";
 
 class ForgotPassword extends Component {
   static navigationOptions = {
@@ -51,20 +58,6 @@ class ForgotPassword extends Component {
       ),
     });
   }
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.message !== this.props.message) {
-  //     this.setState({
-  //       emailError:
-  //         this.props.message.includes("Email") && this.props.message
-  //           ? "Invalid Email"
-  //           : "",
-  //       passwordError:
-  //         this.props.message.includes("Password") && this.props.message
-  //           ? "Invalid Password "
-  //           : ""
-  //     });
-  //   }
-  // }
 
   _handleSubmission = () => {
     const emailError = validateWrapper("email", this.state.email);
@@ -83,9 +76,29 @@ class ForgotPassword extends Component {
       });
     }
   };
-
+  openSupport = () => {
+    Intercom.registerUnidentifiedUser()
+      .then(() => {
+        analytics.track(`a_help`, {
+          source: "forgot_password",
+          source_action: "a_help",
+          support_type: "intercom",
+          action_status: "success",
+        });
+        Intercom.displayMessageComposer();
+      })
+      .catch((err) => {
+        analytics.track(`a_help`, {
+          source: "forgot_password",
+          source_action: "a_help",
+          support_type: "intercom",
+          action_status: "failure",
+        });
+      });
+  };
   render() {
     const { translate } = this.props.screenProps;
+    const { forgotPasswordMessage, temp_exist } = this.props;
     return (
       <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
         <LinearGradient
@@ -112,56 +125,61 @@ class ForgotPassword extends Component {
               />
               <Text style={styles.logoText}>Optimize</Text>
             </View>
-            <KeyboardShift>
-              {() => (
-                <>
-                  <Text style={styles.text}>{translate("Password Reset")}</Text>
 
-                  <Text style={styles.link}>
-                    {translate("Please enter your email address")}
+            <Text style={styles.text}>{translate("Password Reset")}</Text>
+
+            <Text style={styles.link}>
+              {translate("Please enter your email address")}
+            </Text>
+
+            <Item
+              rounded
+              style={[
+                styles.input,
+                this.state.emailError
+                  ? globalStyles.redBorderColor
+                  : globalStyles.transparentBorderColor,
+              ]}
+            >
+              <Input
+                placeholderTextColor="#fff"
+                autoCorrect={false}
+                autoCapitalize="none"
+                style={styles.inputText}
+                onChangeText={(value) => {
+                  this.setState({
+                    email: value,
+                  });
+                }}
+                onBlur={() => {
+                  this.setState({
+                    emailError: validateWrapper("email", this.state.email),
+                  });
+                }}
+                placeholder={translate("Email")}
+              />
+            </Item>
+            {temp_exist ? (
+              <View style={styles.messageView}>
+                <View style={styles.exclamation}>
+                  <Exclamation height={20} fill={"#FFFFFF"} />
+                </View>
+                <TouchableOpacity
+                  style={styles.forgotPasswordMessageView}
+                  onPress={this.openSupport}
+                >
+                  <Text style={styles.forgotPasswordMessage}>
+                    {translate(forgotPasswordMessage)}
                   </Text>
-
-                  <View style={styles.mainView}>
-                    <Item
-                      rounded
-                      style={[
-                        styles.input,
-                        this.state.emailError
-                          ? globalStyles.redBorderColor
-                          : globalStyles.transparentBorderColor,
-                      ]}
-                    >
-                      <Input
-                        placeholderTextColor="#fff"
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        style={styles.inputText}
-                        onChangeText={(value) => {
-                          this.setState({
-                            email: value,
-                          });
-                        }}
-                        onBlur={() => {
-                          this.setState({
-                            emailError: validateWrapper(
-                              "email",
-                              this.state.email
-                            ),
-                          });
-                        }}
-                        placeholder={translate("Email")}
-                      />
-                    </Item>
-                  </View>
-                  <LowerButton
-                    screenProps={this.props.screenProps}
-                    style={styles.proceedButtonRTL}
-                    function={() => this._handleSubmission()}
-                    bottom={-heightPercentageToDP(1.8)}
-                  />
-                </>
-              )}
-            </KeyboardShift>
+                </TouchableOpacity>
+              </View>
+            ) : null}
+            <LowerButton
+              screenProps={this.props.screenProps}
+              style={styles.proceedButtonRTL}
+              function={() => this._handleSubmission()}
+              //   bottom={-heightPercentageToDP(1.8)}
+            />
           </View>
         </TouchableWithoutFeedback>
       </SafeAreaView>
@@ -169,7 +187,11 @@ class ForgotPassword extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  forgotPasswordMessage: state.login.forgotPasswordMessage,
+  forgotPasswordSuccess: state.login.forgotPasswordSuccess,
+  temp_exist: state.login.temp_exist,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   forgotPassword: (email, navigation) =>

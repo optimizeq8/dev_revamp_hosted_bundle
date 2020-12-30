@@ -155,5 +155,37 @@ const styles = StyleSheet.create({
     // marginHorizontal: "-20%",
     width: 6,
   },
+  callToActionView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    position: "absolute",
+    bottom: 0,
+  },
+  callToActionTextStory: {
+    color: "#FFF",
+    fontFamily: "montserrat-regular",
+    lineHeight: 17,
+  },
+  swipeUpViewStory: {
+    flexDirection: "column",
+    borderBottomWidth: 0,
+    alignSelf: "center",
+    flex: 1,
+  },
+  closeIcon: { alignSelf: "center", marginLeft: "auto" },
+  safeareaView: { flex: 1 },
+  transitionView: { height: "100%" },
+  storyContainer: {
+    paddingTop: 0,
+    paddingBottom: 0,
+    height: hp(85),
+    width: wp(90),
+    marginHorizontal: 0,
+    alignSelf: "center",
+  },
+  progressBar: { marginHorizontal: 10 },
+  profileImage: { borderRadius: 20 },
 });
 export default styles;
