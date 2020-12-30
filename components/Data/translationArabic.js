@@ -310,7 +310,7 @@ const strings = {
   Media: "الملفات",
   Headline: "العنوان الرئيسي",
   Audience: "الفئة المستهدفة",
-  Location: "العنوان",
+  Location: "الدولة",
   "Age group": "الفئة العمرية",
   Devices: "الأجهزة",
   "OS Type": "نظام التشغيل",
@@ -1737,6 +1737,66 @@ const strings = {
     "لقد قمت بطلب استرجاع المبلغ للمحفظة",
   "File does not exist": "الملف غير متاح",
   resend: "إعادة إرسال",
+  "Paying Advertiser Name": "يرجى إدخال اسم المعلن",
+  "Please enter paying advertiser name": "يرجى إدخال اسم المعلن",
+  "Will you use this ad account for political and advocacy?":
+    "هل سوف تستخدم هذا الحساب للإعلانات ذات الصلة بالسياسة والحملات الانتخابية؟",
+  No: "لا",
+  "Please confirm if your ad account will be used for political and advocacy or not":
+    "يرجى التأكيد عما سوف يستخدم هذا الحساب للإعلانات ذات الصلة بالسياسية أو الحملات الإنتخابية أم لا",
+  "Explore Ad": "Explore Ad",
+  "Aspect Ratio 9:16": "نسبة العرض إلى الارتفاع 9:16",
+  "Majlis 2020": "مجلس 2020",
+  "Choose District": "اختر الدائرة",
+  "District 1": "الدائرة الأولى",
+  "District 2": "الدائرة الثانية",
+  "District 3": "الدائرة الثالثة",
+  "District 4": "الدائرة الرابعة",
+  "District 5": "الدائرة الخامسة",
+  "Kuwait City": "مدينة الكويت",
+  Hawally: "حولي",
+  "Jahra Governate": "محافظة الجهراء",
+  "Farwaniyah Governate": "محافظة الفروانية",
+  "Ahmadi Governate": "محافظة الأحمدي",
+  "Mubarak Al Kabeer Governate": "محافظة مبارك الكبير",
+  "Reach people your district": "للوصول الى الأشخاص في دائرتك",
+  "Minimum Duration is 1 day": "أقل مدة هي يوم واحد",
+  to: "إلى",
+  "Verify Number": "التحقق من الرقم",
+  "So that your call campaign can start": "حتى تبدأ حملة الإتصال",
+  "But first, you need to verify the mobile number used in the call campaign with Snapchat":
+    "يجب التحقق من الرقم المستخدم لهذه الحملة مع سناب شات",
+  "Preset Name": "اسم الشريحة المستهدفه",
+  Demographic: "معلومات الشريحة المستهدفة",
+  "New Preset": "شريحة مستهدفة جديد",
+  "Edit Preset": "التعديل على الشريحة المستهدفة",
+  "Select Audience": "اختر الشريحة المستهدفه",
+  "Lifetime budget": "ميزانية مدى الحياة",
+  "Choose Preset": "شريحة مستهدفة مسبقة",
+  Recommended: "الموصى به",
+  "(Daily)": "يومي",
+  Snaps: "snaps",
+  "Feed Ads show up on the main page of Instagram among posts belonging to users followed accounts, blending in with user created content in a form of a single photo, a single video, or a carousel":
+    "تظهر اعلانات الموجز على الصفحة الرئيسية بين منشورات الحسابات المتبوعة، ويندمج مع المحتوى الذي أنشأه المستخدم في شكل صورة واحدة أو مقطع فيديو واحد أو مجموعة صور و مقاطع.",
+  "Story Ads are full screen images or videos up to 120 seconds long that get shown to users between stories belonging to accounts they follow":
+    "تستغل ميزة اعلانات الستوري شاشة الهاتف المحمول بالكامل سواء كان صورة أو مقطع فيديو يصل الى 120 دقيقة، وتظهر للمستخدمين بين قصص الحسابات التي يتابعونها.",
+  "To Launch your campaign you need to verify the phone number provided":
+    "يرجى التحقق من رقم الهاتف حتى يمكنك إطلاق الحملة",
+  "One more step": "خطوة أخيرة",
+  "Payment approved:": "تم قبول عملية الدفع:",
+  "Here's your receipt:": "الوصل:",
+  "Verify & Launch": "التحقق & الإطلاق",
+  "Select your keywords": "اختر الكلمات المفتاحية",
+  "Add Keywords so your Ad reaches the right audience":
+    "قم بإضافة كلمات مفتاحية حتى يمكنك الوصول للشريحة المناسبة",
+  "You need to verify the phone number to launch":
+    "يرجى التحقق من رقم الهاتف حتى يمكنك إطلاق الحملة",
+  "Snapchat doesn't allow redirection to social media sites":
+    "لا يسمح Snapchat بإعادة التوجيه لمواقع التواصل الاجتماعي",
+  "Try creating a free website from the menu in our app":
+    "جرّب إنشاء موقع الكتروني مجاني من القائمة في التطبيق",
+  "Having Trouble? Please Contact Us": "",
+  "Map Targeting": "",
 };
 
 export default strings;
