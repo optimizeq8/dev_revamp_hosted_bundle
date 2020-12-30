@@ -212,7 +212,9 @@ export default class LocaionMap extends Component {
   handlePin = () => {
     this.state.dropped
       ? this.handleRemoveCir()
-      : this.handleAddCir({
+      : !!this.state.latitude &&
+        !!this.state.longitude &&
+        this.handleAddCir({
           nativeEvent: {
             coordinate: {
               latitude: this.state.latitude,
