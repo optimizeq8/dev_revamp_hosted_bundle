@@ -285,7 +285,7 @@ class AdObjective extends Component {
       objectiveLabel: choice.label,
       savedObjective: choice.value,
       reset: true,
-      end_time: end_time.toISOString(),
+      end_time: end_time.toISOString().split("T")[0],
       duration,
       campaignDateChanged: true,
     });
