@@ -43,11 +43,11 @@ export const getCampaignDetails = (id, navigation) => {
         analytics.track(`a_open_campaign_details`, {
           source: "dashboard",
           source_action: "a_open_campaign_details",
-          action_status: data.sucess ? "success" : "failure",
+          action_status: data.success ? "success" : "failure",
           campaign_id: id,
           campaign_type: "snapchat",
           campaign_ad_type: data.data && data.data.campaign_type,
-          error_description: !data.sucess && data.message,
+          error_description: !data.success && data.message,
         });
         dispatch({
           type: actionTypes.SET_CAMPAIGN,
