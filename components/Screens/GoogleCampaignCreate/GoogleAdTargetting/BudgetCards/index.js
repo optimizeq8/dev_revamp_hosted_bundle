@@ -195,7 +195,7 @@ export class BudgetCards extends Component {
                       //   paddingLeft: 10,
                     },
                   ]}
-                  placeholder={"0.0"}
+                  placeholder={"0.00"}
                   placeholderTextColor={globalColors.purple}
                   //   ref={(ref) => (this.moneyField = ref)}
                 />
