@@ -130,7 +130,11 @@ class Wallet extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-
+    let customValue = this.state.amount
+      .toString()
+      .split(".")
+      .map((el, i) => (i ? el.split("").slice(0, 2).join("") : el))
+      .join(".");
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
@@ -317,7 +321,7 @@ class Wallet extends Component {
                         // }}
                         focus={this.state.inputA}
                         maxLength={10}
-                        value={this.state.amount}
+                        value={customValue}
                         onChangeText={(text, rawValue) => {
                           //   let amount = formatNumber(text, false, true);
                           //   amount = parseFloat(amount);

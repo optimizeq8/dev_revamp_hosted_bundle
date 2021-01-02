@@ -119,7 +119,11 @@ export class BudgetCards extends Component {
         translate={translate}
       />
     ));
-
+    let customValue = this.state.customValue
+      .toString()
+      .split(".")
+      .map((el, i) => (i ? el.split("").slice(0, 2).join("") : el))
+      .join(".");
     return (
       <View>
         <MaskedView
@@ -194,7 +198,7 @@ export class BudgetCards extends Component {
                     keyboardType={"decimal-pad"}
                     focus={this.state.placeholder}
                     maxLength={11}
-                    value={this.state.customValue}
+                    value={customValue}
                     onChangeText={this.handleCustomBudgetChange}
                     onFocus={() => {
                       this.setState({ placeholder: true });
