@@ -31,7 +31,7 @@ export default StyleSheet.create({
   },
   budget: {
     alignSelf: "center",
-    color: globalColors.purple3,
+    color: globalColors.purple,
     fontSize: 14 / PixelRatio.getFontScale(),
     fontFamily: "montserrat-bold",
     textAlign: "center",
