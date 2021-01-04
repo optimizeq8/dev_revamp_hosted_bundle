@@ -126,7 +126,10 @@ class Website extends Component {
 
   validateUrl = () => {
     const { translate } = this.props.screenProps;
-    const urlError = validateWrapper("url", this.state.campaignInfo.link);
+    const urlError = validateWrapper(
+      "websiteInstagram",
+      this.state.campaignInfo.link
+    );
     this.setState({
       urlError,
     });
