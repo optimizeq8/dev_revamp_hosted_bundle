@@ -41,8 +41,8 @@ export default StyleSheet.create({
   },
   recIcon: {
     position: "absolute",
-    left: I18nManager.isRTL ? "65%" : "15%",
-    marginTop: I18nManager.isRTL ? 0 : -4,
+    left: I18nManager.isRTL ? "52%" : "15%",
+    marginTop: I18nManager.isRTL ? -4 : -4,
     backgroundColor: globalColors.green,
     borderRadius: 50,
     paddingHorizontal: 5,
