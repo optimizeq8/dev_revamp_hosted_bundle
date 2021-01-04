@@ -63,7 +63,6 @@ export class BudgetCards extends Component {
       budgetOption,
     } = this.props;
     const { translate } = this.props.screenProps;
-    console.log("customValue", this.state.customValue);
     recBudget = parseFloat(recBudget);
     let cards = [
       { recBudget, id: 2 },
@@ -78,11 +77,14 @@ export class BudgetCards extends Component {
         translate={translate}
       />
     ));
-    let customValue = this.state.customValue
-      .toString()
-      .split(".")
-      .map((el, i) => (i ? el.split("").slice(0, 2).join("") : el))
-      .join(".");
+    let customValue =
+      this.state.customValue !== 0
+        ? this.state.customValue
+            .toString()
+            .split(".")
+            .map((el, i) => (i ? el.split("").slice(0, 2).join("") : el))
+            .join(".")
+        : "";
     return (
       <View>
         <MaskedView
