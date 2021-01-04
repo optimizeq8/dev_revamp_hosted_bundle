@@ -245,9 +245,6 @@ class App extends React.Component {
 
     Notifications.getDevicePushTokenAsync()
       .then((token) => {
-        analytics.track("a_set_device_token_app", {
-          device_token: token.data,
-        });
         Intercom.sendTokenToIntercom(token.data);
       })
       .catch((err) => {});
