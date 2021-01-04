@@ -21,52 +21,79 @@ const reducer = (state = initialState, action) => {
         false,
         false
       );
-      MixpanelSDK.initialize().then();
-      AsyncStorage.getItem("appLanguage")
-        .then((language) => {
-          let userTraits = {
-            ...action.payload.user,
-            $name:
-              action.payload.user.firstname +
-              " " +
-              action.payload.user.lastname,
-            selected_language: language,
-            $phone: "+" + action.payload.user.mobile,
-            logged_out: false,
-          };
-          Notifications.getDevicePushTokenAsync()
-            .then((token) => {
-              if (Platform.OS === "android") {
-                userTraits["$android_devices"] = [token.data];
-              } else {
-                userTraits["$ios_devices"] = [token.data];
-              }
-              analytics.identify(action.payload.user.userid, userTraits);
+      analytics.track(`a_set_current_user`, {
+        ...action.payload.user,
+      });
+      console.log("set current user");
+      MixpanelSDK.initialize()
+        .then(() => {
+          console.log("mixpanel iniatizalized");
+          analytics.track(`mixpanel initizalized`);
+          AsyncStorage.getItem("appLanguage")
+            .then((language) => {
+              console.log("language app", language);
+              analytics.track("a_set_app_langauge", {
+                selected_language: language,
+              });
+              let userTraits = {
+                ...action.payload.user,
+                $name:
+                  action.payload.user.firstname +
+                  " " +
+                  action.payload.user.lastname,
+                selected_language: language,
+                $phone: "+" + action.payload.user.mobile,
+                logged_out: false,
+              };
+              Notifications.getDevicePushTokenAsync()
+                .then((token) => {
+                  console.log("token", token);
+                  analytics.track("a_set_device_token", {
+                    device_token: token.data,
+                  });
+                  if (Platform.OS === "android") {
+                    userTraits["$android_devices"] = [token.data];
+                  } else {
+                    userTraits["$ios_devices"] = [token.data];
+                  }
+                  analytics.identify(action.payload.user.userid, userTraits);
+                })
+                .catch((err) => {
+                  console.log("a_error_token");
+                  // console.log(err);
+                  analytics.track(`a_error`, {
+                    error_page: "a_error_token",
+                    error_description: err.response || err.message,
+                  });
+                  analytics.identify(action.payload.user.userid, userTraits);
+                });
+
+              MixpanelSDK.identify(action.payload.user.userid);
             })
-            .catch((err) => {
-              // console.log(err);
+            .catch((error) => {
+              console.log("a_error_app_language");
               analytics.track(`a_error`, {
-                error_page: "While setting current user",
+                error_page: "a_error_app_language",
                 error_description: err.response || err.message,
               });
-              analytics.identify(action.payload.user.userid, userTraits);
+              analytics.alias(action.payload.user.userid);
+              analytics.identify(action.payload.user.userid, {
+                ...action.payload.user,
+                $name:
+                  action.payload.user.firstname +
+                  " " +
+                  action.payload.user.lastname,
+                $phone: "+" + action.payload.user.mobile,
+                logged_out: false,
+              });
             });
-
-          MixpanelSDK.identify(action.payload.user.userid);
         })
-        .catch((error) => {
-          analytics.alias(action.payload.user.userid);
-          analytics.identify(action.payload.user.userid, {
-            ...action.payload.user,
-            $name:
-              action.payload.user.firstname +
-              " " +
-              action.payload.user.lastname,
-            $phone: "+" + action.payload.user.mobile,
-            logged_out: false,
+        .catch((err) => {
+          console.log("a_error_mixpanel");
+          analytics.track(`a_error`, {
+            error_page: "a_error_mixpanel",
           });
         });
-
       return {
         ...state,
         userid: action.payload.user.userid,
