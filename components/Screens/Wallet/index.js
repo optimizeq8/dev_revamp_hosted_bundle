@@ -51,7 +51,7 @@ class Wallet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      amount: 0,
+      amount: "",
       placeholder: 0.0,
       topUp: false,
       inputA: false,
