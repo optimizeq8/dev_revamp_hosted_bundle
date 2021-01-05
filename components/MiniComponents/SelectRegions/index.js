@@ -88,35 +88,35 @@ class SelectRegions extends Component {
               <Text style={[styles.optionsTextContainer, { paddingLeft: 0 }]}>
                 {countryName}
               </Text>
-              {coReg.map((c) => (
-                <TouchableOpacity
-                  key={c.id}
-                  style={styles.languageRowConatiner}
-                  onPress={() => this.checkForLocations(c, fReg)}
-                >
-                  <Icon
-                    type="MaterialCommunityIcons"
-                    name={
-                      this.props.region_id[coRegIndex].region_id.find(
-                        (r) => r === c.id
-                      )
-                        ? "circle"
-                        : "circle-outline"
-                    }
-                    style={[
-                      this.props.region_id[coRegIndex].region_id.find(
-                        (r) => r === c.id
-                      )
-                        ? styles.activetext
-                        : styles.inactivetext,
-                      styles.optionsIconSize,
-                    ]}
-                  />
-                  <Text style={styles.optionsTextContainer}>
-                    {translate(c.name)}
-                  </Text>
-                </TouchableOpacity>
-              ))}
+              {coReg.map((c) => {
+                let activeRegion =
+                  this.props.region_id &&
+                  this.props.region_id[coRegIndex] &&
+                  this.props.region_id[coRegIndex].region_id &&
+                  this.props.region_id[coRegIndex].region_id.find(
+                    (r) => r === c.id
+                  );
+
+                return (
+                  <TouchableOpacity
+                    key={c.id}
+                    style={styles.languageRowConatiner}
+                    onPress={() => this.checkForLocations(c, fReg)}
+                  >
+                    <Icon
+                      type="MaterialCommunityIcons"
+                      name={activeRegion ? "circle" : "circle-outline"}
+                      style={[
+                        activeRegion ? styles.activetext : styles.inactivetext,
+                        styles.optionsIconSize,
+                      ]}
+                    />
+                    <Text style={styles.optionsTextContainer}>
+                      {translate(c.name)}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
             </View>
           );
       });

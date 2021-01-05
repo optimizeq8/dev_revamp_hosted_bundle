@@ -221,7 +221,7 @@ class Call extends Component {
       valid: valid,
       country_code,
     });
-    if (valid) {
+    if (valid && this.props.data) {
       this.props.verifySnapchatNumber(this.props.data.ad_account_id, number);
     }
   };

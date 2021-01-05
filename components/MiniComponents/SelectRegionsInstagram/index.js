@@ -48,32 +48,31 @@ class SelectRegions extends Component {
           <Text style={[styles.optionsTextContainer, { paddingLeft: 0 }]}>
             {translate(countryName)}
           </Text>
-          {coReg.map((c) => (
-            <TouchableOpacity
-              key={c.key}
-              style={styles.languageRowConatiner}
-              // onPress={() => this.checkForLocations(c, fReg)}
-              onPress={() => this.handleRegionSelection(c)}
-            >
-              <Icon
-                type="MaterialCommunityIcons"
-                name={
-                  this.props.region_id.find((reg) => reg.key === c.key)
-                    ? "circle"
-                    : "circle-outline"
-                }
-                style={[
-                  this.props.region_id.find((reg) => reg.key === c.key)
-                    ? styles.activetext
-                    : styles.inactivetext,
-                  styles.optionsIconSize,
-                ]}
-              />
-              <Text style={[styles.optionsTextContainer]}>
-                {translate(c.name)}
-              </Text>
-            </TouchableOpacity>
-          ))}
+          {coReg.map((c) => {
+            let activeRegion =
+              this.props.region_id &&
+              this.props.region_id.find((reg) => reg.key === c.key);
+            return (
+              <TouchableOpacity
+                key={c.key}
+                style={styles.languageRowConatiner}
+                // onPress={() => this.checkForLocations(c, fReg)}
+                onPress={() => this.handleRegionSelection(c)}
+              >
+                <Icon
+                  type="MaterialCommunityIcons"
+                  name={activeRegion ? "circle" : "circle-outline"}
+                  style={[
+                    activeRegion ? styles.activetext : styles.inactivetext,
+                    styles.optionsIconSize,
+                  ]}
+                />
+                <Text style={[styles.optionsTextContainer]}>
+                  {translate(c.name)}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
         </View>
       );
     });
