@@ -302,9 +302,9 @@ export default class LocaionMap extends Component {
           >
             <Icon type="FontAwesome" name="circle-thin" />
             <View>
-              <Text style={styles.mapTitle}>Range</Text>
+              <Text style={styles.mapTitle}>{translate("Range")}</Text>
               <Text style={styles.rangeStyle}>
-                {(this.state.radius / 1000).toFixed(2)} KM
+                {(this.state.radius / 1000).toFixed(2)} {translate("KM")}
               </Text>
             </View>
           </View>
