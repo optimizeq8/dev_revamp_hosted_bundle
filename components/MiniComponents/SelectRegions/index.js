@@ -9,12 +9,14 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { Input, Item, Icon } from "native-base";
+import SafeAreaView from "react-native-safe-area-view";
 import * as actionCreators from "../../../store/actions";
 import styles from "../MultiSelect/styles";
 
 import LocationIcon from "../../../assets/SVGs/Location";
 import LowerButton from "../LowerButton";
 import { globalColors } from "../../../GlobalStyles";
+import Header from "../Header";
 
 class SelectRegions extends Component {
   state = { selectedAll: false };
@@ -122,6 +124,16 @@ class SelectRegions extends Component {
       });
     return (
       <View style={styles.container}>
+        <SafeAreaView />
+        {this.props.showBackButton && (
+          <Header
+            screenProps={this.props.screenProps}
+            iconColor={globalColors.purple}
+            actionButton={() => {
+              this.props._handleSideMenuState(false);
+            }}
+          />
+        )}
         <View style={[styles.dataContainer]}>
           <LocationIcon
             width={70}

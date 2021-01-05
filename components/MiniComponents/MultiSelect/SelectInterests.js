@@ -15,6 +15,8 @@ import * as actionCreators from "../../../store/actions";
 import Picker from "../Picker";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
+import Header from "../Header";
+
 import { globalColors } from "../../../GlobalStyles";
 
 class SelectInterests extends Component {
@@ -68,6 +70,13 @@ class SelectInterests extends Component {
         forceInset={{ top: "always", bottom: "never" }}
         style={styles.safeAreaContainer}
       >
+        {this.props.showBackButton && (
+          <Header
+            screenProps={this.props.screenProps}
+            iconColor={globalColors.purple}
+            actionButton={this.handleSideMenu}
+          />
+        )}
         <View style={styles.container}>
           <View style={styles.dataContainer}>
             <InterestsIcon width={100} height={100} fill={globalColors.rum} />
