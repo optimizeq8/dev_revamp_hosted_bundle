@@ -7,6 +7,7 @@ import OperatingSystemIcon from "../../../assets/SVGs/AdDetails/OperatingSystem"
 import { globalColors } from "../../../GlobalStyles";
 import isStringArabic from "../../isStringArabic";
 import LowerButton from "../LowerButton";
+import Header from "../Header";
 export default class SelectOS extends Component {
   render() {
     let devices = this.props.campaignInfo.targeting.hasOwnProperty("devices")
@@ -20,6 +21,15 @@ export default class SelectOS extends Component {
         forceInset={{ top: "always", bottom: "never" }}
         style={styles.safeAreaContainer}
       >
+        {this.props.showBackButton && (
+          <Header
+            screenProps={this.props.screenProps}
+            iconColor={globalColors.purple}
+            actionButton={() => {
+              this.props._handleSideMenuState(false);
+            }}
+          />
+        )}
         <View style={styles.container}>
           <View style={styles.dataContainer}>
             <OperatingSystemIcon

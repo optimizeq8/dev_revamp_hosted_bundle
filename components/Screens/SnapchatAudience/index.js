@@ -985,6 +985,7 @@ export class SnapchatAudience extends Component {
             onSelectedCountryChange={this.onSelectedCountryChange}
             _handleSideMenuState={this._handleSideMenuState}
             showBackButton={true}
+            c
           />
         );
         break;
@@ -999,6 +1000,7 @@ export class SnapchatAudience extends Component {
             languages={this.props.languages}
             demographics={this.props.audience.targeting.demographics}
             filterLanguages={this.filterLanguages}
+            showBackButton={true}
           />
         );
 
@@ -1012,6 +1014,7 @@ export class SnapchatAudience extends Component {
             onSelectedOSChange={this.onSelectedOSChange}
             data={OSType}
             _handleSideMenuState={this._handleSideMenuState}
+            showBackButton={true}
           />
         );
         break;
