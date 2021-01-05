@@ -9,10 +9,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     backgroundColor: "#0000",
     marginLeft: 0,
-    paddingTop: 10,
+    // paddingTop: 10,
   },
   dataContainer: {
     paddingTop: 30,
