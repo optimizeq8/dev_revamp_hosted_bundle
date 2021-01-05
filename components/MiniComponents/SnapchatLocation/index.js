@@ -16,7 +16,7 @@ import LocationRow from "./LocationRow";
 import LocationList from "./LocationList";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
-
+import Header from "../Header";
 export default class SnapchatLocation extends Component {
   state = {
     mapModal: false,
@@ -161,6 +161,15 @@ export default class SnapchatLocation extends Component {
     const { translate } = props.screenProps;
     return (
       <View style={styles.locationContainer}>
+        {props.showBackButton && (
+          <Header
+            screenProps={props.screenProps}
+            iconColor={globalColors.purple}
+            actionButton={() => {
+              props._handleSideMenuState(false);
+            }}
+          />
+        )}
         <LocationIcon
           fill={globalColors.gray}
           width={60}
