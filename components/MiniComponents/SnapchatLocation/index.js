@@ -53,6 +53,7 @@ export default class SnapchatLocation extends Component {
         id={item.place_id + index}
         locationInfo={item}
         index={index}
+        screenProps={this.props.screenProps}
       />
     );
   };
