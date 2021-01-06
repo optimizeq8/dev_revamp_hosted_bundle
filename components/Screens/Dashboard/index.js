@@ -10,7 +10,6 @@ import {
   Linking,
   ActivityIndicator,
   Text,
-  NativeModules,
   RefreshControl,
 } from "react-native";
 import * as Notifications from "expo-notifications";
