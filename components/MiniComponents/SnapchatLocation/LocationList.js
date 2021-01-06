@@ -11,6 +11,7 @@ export default class LocationList extends Component {
     this.setState({ results: list });
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.locationSearchContainer}>
         <View
@@ -22,7 +23,7 @@ export default class LocationList extends Component {
             type="FontAwesome"
             style={{ fontSize: 20, marginHorizontal: 10 }}
           />
-          <Text style={styles.title}>Add Country</Text>
+          <Text style={styles.title}>{translate("Add Country")}</Text>
         </View>
         <MapSearchBar
           handleAutoFeatures={this.handleAutoFeatures}

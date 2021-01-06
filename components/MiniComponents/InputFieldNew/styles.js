@@ -71,7 +71,7 @@ export default StyleSheet.create({
     alignSelf: "center",
     marginLeft: 13,
     width: "100%",
-    height: Platform.OS === "ios" ? 54 : 60,
+    height: Platform.OS === "ios" ? 54 : I18nManager.isRTL ? 70 : 60,
   },
   rowView: {
     flexDirection: "row",

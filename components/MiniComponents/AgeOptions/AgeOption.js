@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 import { Container } from "native-base";
+import SafeAreaView from "react-native-safe-area-view";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import RangeMarkers from "./RangeMarkers";
 
@@ -13,6 +14,7 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 //Icon
 import AgeIcon from "../../../assets/SVGs/AdDetails/AgeIcon";
 import LowerButton from "../LowerButton";
+import Header from "../Header";
 import { globalColors } from "../../../GlobalStyles";
 
 export default class AgeOption extends Component {
@@ -35,7 +37,17 @@ export default class AgeOption extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <Container style={styles.container}>
+      <View style={styles.container}>
+        <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
+        {this.props.showBackButton && (
+          <Header
+            screenProps={this.props.screenProps}
+            iconColor={globalColors.purple}
+            actionButton={() => {
+              this.props._handleSideMenuState(false);
+            }}
+          />
+        )}
         <View style={styles.dataContainer}>
           <AgeIcon fill={globalColors.rum} style={styles.icon} />
           <Text style={styles.title}>{translate("Age")}</Text>
@@ -63,16 +75,16 @@ export default class AgeOption extends Component {
               trackStyle={styles.track}
             />
           </View>
+          <LowerButton
+            screenProps={this.props.screenProps}
+            style={styles.button}
+            checkmark={true}
+            bottom={-15}
+            purpleViolet
+            function={() => this.props._handleSideMenuState(false)}
+          />
         </View>
-        <LowerButton
-          screenProps={this.props.screenProps}
-          style={styles.button}
-          checkmark={true}
-          bottom={20}
-          purpleViolet
-          function={() => this.props._handleSideMenuState(false)}
-        />
-      </Container>
+      </View>
     );
   }
 }

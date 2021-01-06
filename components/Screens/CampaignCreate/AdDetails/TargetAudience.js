@@ -93,6 +93,14 @@ export class TargetAudience extends Component {
     } = this.props;
     const { translate } = this.props.screenProps;
     const { expandLocation, expandDemographics, expandDevices } = this.state;
+
+    let OsType = targeting.devices[0]
+      ? OSType.find((r) => r.value === targeting.devices[0].os_type)
+      : null;
+
+    if (OsType) {
+      OsType = translate(OsType.label);
+    }
     return (
       <View
         style={{
@@ -207,14 +215,16 @@ export class TargetAudience extends Component {
                   ))}
               </TouchableOpacity>
             ) : null}
-            {expandLocation && mainState.showRegions && (
+            {expandLocation && (
               <TouchableOpacity
                 disabled={loading}
                 onPress={() => this.callFunction("map")}
                 style={styles.targetTouchable}
               >
                 <View style={[globalStyles.column, styles.subAudienceHeading]}>
-                  <Text style={styles.menutext}>{translate("Map")}</Text>
+                  <Text style={styles.menutext}>
+                    {translate("Map Targeting")}
+                  </Text>
                   <Text style={styles.menudetails}>
                     {mainState.locationsInfo &&
                     mainState.locationsInfo.length > 0
@@ -226,7 +236,8 @@ export class TargetAudience extends Component {
                 </View>
 
                 {startEditing &&
-                  (targeting.locations[0].circles.length > 0 ? (
+                  (mainState.locationsInfo &&
+                  mainState.locationsInfo.length > 0 ? (
                     <PurpleCheckmarkIcon width={22} height={30} />
                   ) : (
                     <PurplePlusIcon width={22} height={30} />
@@ -479,15 +490,7 @@ export class TargetAudience extends Component {
                   <Text style={styles.menutext}>
                     {translate("Operating System")}
                   </Text>
-                  <Text style={styles.menudetails}>
-                    {targeting.devices[0] &&
-                      translate(
-                        OSType.find((r) => {
-                          if (r.value === targeting.devices[0].os_type)
-                            return r;
-                        }).label
-                      )}
-                  </Text>
+                  <Text style={styles.menudetails}>{OsType}</Text>
                 </View>
 
                 {startEditing &&

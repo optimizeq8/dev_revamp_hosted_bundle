@@ -15,7 +15,8 @@ import { Icon } from "native-base";
 import LocationRow from "./LocationRow";
 import LocationList from "./LocationList";
 import LowerButton from "../LowerButton";
-
+import GradientButton from "../GradientButton";
+import Header from "../Header";
 export default class SnapchatLocation extends Component {
   state = {
     mapModal: false,
@@ -25,7 +26,11 @@ export default class SnapchatLocation extends Component {
     selectedLocation: {},
   };
   componentDidMount() {
-    if (this.props.data && this.props.data.hasOwnProperty("markers")) {
+    if (
+      this.props.data &&
+      this.props.data.hasOwnProperty("markers") &&
+      this.props.data.markers.length > 0
+    ) {
       this.setState({
         markers: this.props.data.markers,
         locationsInfo: this.props.data.locationsInfo,
@@ -35,6 +40,9 @@ export default class SnapchatLocation extends Component {
         markers: this.props.circles,
         locationsInfo: this.props.locationsInfo,
       });
+      setTimeout(() => {
+        this.handleLocationSearchModal(true);
+      }, 200);
     }
   }
   handleLocationRows = ({ item, index }) => {
@@ -45,6 +53,7 @@ export default class SnapchatLocation extends Component {
         id={item.place_id + index}
         locationInfo={item}
         index={index}
+        screenProps={this.props.screenProps}
       />
     );
   };
@@ -153,6 +162,15 @@ export default class SnapchatLocation extends Component {
     const { translate } = props.screenProps;
     return (
       <View style={styles.locationContainer}>
+        {props.showBackButton && (
+          <Header
+            screenProps={props.screenProps}
+            iconColor={globalColors.purple}
+            actionButton={() => {
+              props._handleSideMenuState(false);
+            }}
+          />
+        )}
         <LocationIcon
           fill={globalColors.gray}
           width={60}
@@ -175,13 +193,16 @@ export default class SnapchatLocation extends Component {
           style={{ width: "80%", height: "40%" }}
           showsVerticalScrollIndicator={false}
         />
-        <LowerButton
-          checkmark
-          screenProps={this.props.screenProps}
-          purpleViolet
-          style={{ alignSelf: "flex-end", right: 30 }}
-          function={this.checkForRegions}
-        />
+        {this.state.markers.length > 0 && (
+          <GradientButton
+            radius={50}
+            purpleViolet
+            style={styles.proceedButton}
+            onPressAction={this.checkForRegions}
+            text={translate("Save")}
+            uppercase={true}
+          />
+        )}
         <Modal
           visible={this.state.mapModal}
           transparent

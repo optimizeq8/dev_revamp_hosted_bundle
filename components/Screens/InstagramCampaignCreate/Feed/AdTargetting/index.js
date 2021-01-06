@@ -518,7 +518,13 @@ class InstagramFeedAdTargetting extends Component {
   };
 
   formatNumber = (num) => {
-    return "$" + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    return (
+      "$" +
+      parseFloat(num)
+        .toFixed(2)
+        .toString()
+        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    );
   };
   _handleBudget = (value, rawValue, onBlur, budgetOption) => {
     const { translate } = this.props.screenProps;
@@ -1266,6 +1272,42 @@ class InstagramFeedAdTargetting extends Component {
             <View style={[styles.safeArea]}>
               <NavigationEvents
                 onDidFocus={() => {
+                  const source = this.props.navigation.getParam(
+                    "source",
+                    this.props.screenProps.prevAppState
+                  );
+                  const source_action = this.props.navigation.getParam(
+                    "source_action",
+                    this.props.screenProps.prevAppState
+                  );
+
+                  const segmentInfo = this.props.data
+                    ? {
+                        source,
+                        source_action,
+                        campaign_channel: "instagram",
+                        campaign_ad_type: "InstagramFeedAd",
+                        campaign_existing_post:
+                          this.props.data.existingPost === 0 ? true : false,
+                        campaign_name: this.props.data.name,
+                        campaign_id: this.props.data.campaign_id,
+                        campaign_message: this.props.data.message,
+                        campaign_attachment: this.props.data.attachment,
+                        campaign_swipe_up_CTA: this.props.data.call_to_action,
+                        campaign_swipe_up_destination: this.props.data
+                          .destination,
+                        campaign_media: this.props.data.media,
+                        campaign_media_type: this.props.data.media_type,
+                        campaign_appChoice: this.props.data.appChoice,
+                        campaign_objective: this.props.data.objective,
+                      }
+                    : {};
+                  analytics.track("ad_targeting", {
+                    timestamp: new Date().getTime(),
+                    source,
+                    source_action,
+                    ...segmentInfo,
+                  });
                   if (
                     !this.props.currentCampaignSteps.includes(
                       "InstagramAdPaymentReview"

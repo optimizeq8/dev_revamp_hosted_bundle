@@ -26,18 +26,22 @@ export default class WebsiteComponent extends React.Component {
     this.props.getValidInfo &&
       this.props.getValidInfo(stateName + "Error", urlError);
     if (urlError && this.props.website && !this.props.ignoreSocialRestriction) {
-      const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me|api.whatsapp.)/g;
+      const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me|api.whatsapp.|twitter.)/g;
 
       showMessage({
         message: deepLink
           ? translate("Invalid deep link URL")
           : !this.props.website.match(regex)
-          ? "Please enter a valid url"
-          : "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media",
+          ? translate("Please enter a valid URL")
+          : translate(
+              "Snapchat doesn't allow redirection to social media sites"
+            ),
         description: deepLink
           ? translate(
               "A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://urlcom'"
             )
+          : this.props.website.match(regex)
+          ? translate("Try creating a free website from the menu in our app")
           : "",
         type: "warning",
         position: "top",

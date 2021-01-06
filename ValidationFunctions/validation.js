@@ -48,7 +48,17 @@ const validation = {
     //   allowLocal: true
     // },
     // format: /^((https+|http+|ftp|smtp):\/\/)+(www.)?[a-z0-9]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+\/?)*$/i,
-    format: /^((https+|http+|ftp|smtp):\/\/){0,1}(?!(www\.)?(snapchat\.?|instagram\.?|youtube\.?|youtu.be|facebook\.?|fb.me|whatsapp\.?|wa.me|api.whatsapp\.?))(www\.)?[a-z0-9_-]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+(\.[a-z]{2,})*(\\?[?;&a-z\\d%_~+=-]*)?)*\/?$/i,
+    format: /^((https+|http+|ftp|smtp):\/\/){0,1}(?!(www\.)?(twitter\.?|snapchat\.?|instagram\.?|youtube\.?|youtu.be|facebook\.?|fb.me|whatsapp\.?|wa.me|api.whatsapp\.?))(www\.)?[a-z0-9_-]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+(\.[a-z]{2,})*(\\?[?;&a-z\\d%_~+=-]*)?)*\/?$/i,
+    presence: { allowEmpty: false },
+  },
+  websiteInstagram: {
+    // Website instagram should not allow to enter a domain called https://instagram.com/username
+    // url: {
+    //   // schemes: ["ftp", "http", "https"],
+    //   allowLocal: true
+    // },
+    // format: /^((https+|http+|ftp|smtp):\/\/)+(www.)?[a-z0-9]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+\/?)*$/i,
+    format: /^((https+|http+|ftp|smtp):\/\/){0,1}(?!(www\.)?(instagram\.?))(www\.)?[a-z0-9_-]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+(\.[a-z]{2,})*(\\?[?;&a-z\\d%_~+=-]*)?)*\/?$/i,
     presence: { allowEmpty: false },
   },
   url: {

@@ -933,6 +933,7 @@ export class SnapchatAudience extends Component {
       case "age": {
         menu = (
           <AgeOption
+            showBackButton={true}
             screenProps={this.props.screenProps}
             state={this.props.audience.targeting.demographics[0]}
             _handleSideMenuState={this._handleSideMenuState}
@@ -959,6 +960,7 @@ export class SnapchatAudience extends Component {
               this.props.audience.targeting.locations[0].circles.length > 0
             }
             onSelectedMapChange={this.onSelectedMapChange}
+            showBackButton={true}
           />
         );
 
@@ -982,6 +984,8 @@ export class SnapchatAudience extends Component {
             onSelectedRegionChange={this.onSelectedRegionChange}
             onSelectedCountryChange={this.onSelectedCountryChange}
             _handleSideMenuState={this._handleSideMenuState}
+            showBackButton={true}
+            c
           />
         );
         break;
@@ -996,6 +1000,7 @@ export class SnapchatAudience extends Component {
             languages={this.props.languages}
             demographics={this.props.audience.targeting.demographics}
             filterLanguages={this.filterLanguages}
+            showBackButton={true}
           />
         );
 
@@ -1009,6 +1014,7 @@ export class SnapchatAudience extends Component {
             onSelectedOSChange={this.onSelectedOSChange}
             data={OSType}
             _handleSideMenuState={this._handleSideMenuState}
+            showBackButton={true}
           />
         );
         break;
@@ -1044,6 +1050,7 @@ export class SnapchatAudience extends Component {
             OSType={this.props.audience.targeting.devices[0].os_type}
             option={this.state.selectionOption}
             editAudience={this.editAudience}
+            showBackButton={true}
           />
         );
         break;

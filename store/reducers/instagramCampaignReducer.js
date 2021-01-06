@@ -104,6 +104,7 @@ const initialState = {
   postsLoading: false,
   instaRejCampaign: {},
   movingAmountToWallet: false,
+  customInterestsLoading: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -339,6 +340,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         customInterests: action.payload,
+        customInterestsLoading: false,
+      };
+    case actionTypes.CUSTOM_INSTAGRAM_INTERESTS_LOADING:
+      return {
+        ...state,
+        customInterestsLoading: action.payload,
       };
     case actionTypes.SET_INSTAGRAM_OS_VERSIONS:
       return {

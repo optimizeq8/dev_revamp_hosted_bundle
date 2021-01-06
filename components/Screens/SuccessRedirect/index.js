@@ -131,7 +131,9 @@ class SuccessRedirect extends Component {
         objective: this.props.data && this.props.data.objective,
         campaign_id: this.props.data && this.props.data.campaign_id,
         engagmentPhoneNumber:
-          this.props.data && this.props.data.attachment.phone_number_id,
+          this.props.data &&
+          this.props.data.attachment &&
+          this.props.data.attachment.phone_number_id,
         engagmentNumberVerified:
           this.props.data && this.props.data.verifiedEngagementNumber,
       },

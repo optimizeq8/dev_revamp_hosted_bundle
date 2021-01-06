@@ -606,7 +606,10 @@ class GoogleAdTargetting extends Component {
                   {translate("Lifetime budget")}
                 </Text>
                 <Text style={[styles.subHeadings, styles.lifetimeBudgetNumber]}>
-                  {this.formatNumber(this.duration() * this.state.budget, true)}
+                  {this.formatNumber(
+                    parseFloat(this.duration() * this.state.budget).toFixed(2),
+                    true
+                  )}
                 </Text>
               </View>
             </View>

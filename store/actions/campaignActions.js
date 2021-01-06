@@ -845,16 +845,19 @@ export const save_collection_media = (
           type: data.success ? "success" : "danger",
           position: "top",
         });
-        return dispatch({
-          type: actionTypes.SET_AD_COLLECTION_MEDIA,
-          payload: { ...data.data, localUri },
-        });
-      })
-      .then(() => {
         onToggleModal(false);
-      })
-      .then(() => {
-        navigation.navigate("AdDesign");
+        if (data.success) {
+          navigation.navigate("AdDesign");
+          return dispatch({
+            type: actionTypes.SET_AD_COLLECTION_MEDIA,
+            payload: { ...data.data, localUri },
+          });
+        } else {
+          dispatch({
+            type: actionTypes.SET_AD_LOADING_COLLECTION_MEDIA,
+            payload: false,
+          });
+        }
       })
       .catch((err) => {
         loading(0);

@@ -7,7 +7,6 @@ import {
   Platform,
   ScrollView,
   Text,
-  NativeModules,
 } from "react-native";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import SafeAreaView from "react-native-safe-area-view";

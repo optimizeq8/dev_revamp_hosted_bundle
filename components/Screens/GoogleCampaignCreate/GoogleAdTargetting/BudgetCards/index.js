@@ -1,10 +1,17 @@
 import React, { Component } from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import styles from "./styles";
 import BudgetCard from "./BudgetCard";
 import { TextInputMask } from "react-native-masked-text";
 import { LinearGradient } from "expo-linear-gradient";
 import MaskedView from "@react-native-community/masked-view";
+import { globalColors } from "../../../../../GlobalStyles";
 export class BudgetCards extends Component {
   state = {
     placeholder: false,
@@ -36,15 +43,15 @@ export class BudgetCards extends Component {
           ? this.props.recBudget
           : this.state.customValue,
     });
-    setTimeout(() => {
-      //wait untill moenyField is mounted becuase it's conditionally rendered
-      this.moneyField.getElement().focus();
-    }, 10);
+    // setTimeout(() => {
+    //   //wait untill moenyField is mounted becuase it's conditionally rendered
+    //   this.moneyField.getElement().focus();
+    // }, 10);
   };
   handleCustomBudgetChange = (value, rawText) => {
-    if (!isNaN(rawText)) {
-      this.props._handleBudget(value, rawText, false, 0);
-      this.setState({ customValue: rawText });
+    if (!isNaN(value)) {
+      this.props._handleBudget(value, value, false, 0);
+      this.setState({ customValue: value });
     } else {
       this.props._handleBudget(
         this.state.customValue,
@@ -100,7 +107,11 @@ export class BudgetCards extends Component {
         translate={translate}
       />
     ));
-
+    let customValue = this.state.customValue
+      .toString()
+      .split(".")
+      .map((el, i) => (i ? el.split("").slice(0, 2).join("") : el))
+      .join(".");
     return (
       <View style={{ marginTop: 7 }}>
         <ScrollView
@@ -116,6 +127,7 @@ export class BudgetCards extends Component {
             style={[
               styles.budgetCardStyle,
               budgetOption === 0 ? { borderWidth: 2 } : { borderWidth: 0 },
+              { paddingHorizontal: 10 },
             ]}
           >
             {budgetOption !== 0 ||
@@ -142,37 +154,56 @@ export class BudgetCards extends Component {
                 </Text>
               </TouchableOpacity>
             ) : (
-              <TextInputMask
-                includeRawValueInChangeText
-                type={"money"}
-                selectTextOnFocus={true}
-                options={{
-                  precision: 2,
-                  separator: ".",
-                  delimiter: ",",
-                  unit: "$",
+              <View
+                style={{
+                  //   display: "flex",
+                  flexDirection: "row",
+                  //   position: "relative",
+                  //   alignItems: "center",
+                  width: 70,
+                  paddingHorizontal: 2,
+                  //   justifyContent: "flex-start",
                 }}
-                focus={this.state.placeholder}
-                maxLength={11}
-                value={this.state.customValue}
-                onChangeText={(value, rawText) =>
-                  this.handleCustomBudgetChange(value, rawText)
-                }
-                onFocus={this.handleCustomBudgetFocus}
-                onBlur={this.handleCustomBudgetBlur}
-                style={[
-                  styles.budget,
-                  {
-                    fontSize:
-                      budgetOption !== 0 ||
-                      (value === "$0" && !this.state.placeholder)
-                        ? 10
-                        : 16,
-                  },
-                  budgetOption === 0 && styles.activeBudgetTextStyle,
-                ]}
-                ref={(ref) => (this.moneyField = ref)}
-              />
+              >
+                <Text
+                  style={[
+                    {
+                      fontSize: 15,
+                      color: globalColors.purple,
+                      marginLeft: 0,
+                      fontFamily: "montserrat-bold",
+                    },
+                  ]}
+                >
+                  $
+                </Text>
+                <TextInput
+                  keyboardType={"decimal-pad"}
+                  focus={this.state.placeholder}
+                  maxLength={11}
+                  value={customValue}
+                  onChangeText={(value, rawText) =>
+                    this.handleCustomBudgetChange(value, rawText)
+                  }
+                  onFocus={this.handleCustomBudgetFocus}
+                  onBlur={this.handleCustomBudgetBlur}
+                  style={[
+                    styles.budget,
+                    {
+                      fontSize:
+                        budgetOption !== 0 ||
+                        (value === "$0" && !this.state.placeholder)
+                          ? 10
+                          : 15,
+
+                      //   paddingLeft: 10,
+                    },
+                  ]}
+                  placeholder={"0.00"}
+                  placeholderTextColor={globalColors.purple}
+                  //   ref={(ref) => (this.moneyField = ref)}
+                />
+              </View>
             )}
           </View>
           {cards}
@@ -183,3 +214,34 @@ export class BudgetCards extends Component {
 }
 
 export default BudgetCards;
+//  <TextInputMask
+//                 includeRawValueInChangeText
+//                 type={"money"}
+//                 selectTextOnFocus={true}
+//                 options={{
+//                   precision: 2,
+//                   separator: ".",
+//                   delimiter: ",",
+//                   unit: "$",
+//                 }}
+//                 focus={this.state.placeholder}
+//                 maxLength={11}
+//                 value={this.state.customValue}
+//                 onChangeText={(value, rawText) =>
+//                   this.handleCustomBudgetChange(value, rawText)
+//                 }
+//                 onFocus={this.handleCustomBudgetFocus}
+//                 onBlur={this.handleCustomBudgetBlur}
+//                 style={[
+//                   styles.budget,
+//                   {
+//                     fontSize:
+//                       budgetOption !== 0 ||
+//                       (value === "$0" && !this.state.placeholder)
+//                         ? 10
+//                         : 16,
+//                   },
+//                   budgetOption === 0 && styles.activeBudgetTextStyle,
+//                 ]}
+//                 ref={(ref) => (this.moneyField = ref)}
+//               />

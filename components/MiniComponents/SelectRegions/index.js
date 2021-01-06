@@ -9,12 +9,14 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { Input, Item, Icon } from "native-base";
+import SafeAreaView from "react-native-safe-area-view";
 import * as actionCreators from "../../../store/actions";
 import styles from "../MultiSelect/styles";
 
 import LocationIcon from "../../../assets/SVGs/Location";
 import LowerButton from "../LowerButton";
 import { globalColors } from "../../../GlobalStyles";
+import Header from "../Header";
 
 class SelectRegions extends Component {
   state = { selectedAll: false };
@@ -70,56 +72,68 @@ class SelectRegions extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-    let regionlist = this.props.filteredRegions.map((fReg) => {
-      let countryName = fReg.country_name;
-      let coRegIndex = this.props.region_id.findIndex(
-        (coR) => coR.country_code === fReg.country_code
-      );
-      let coReg = fReg.regions;
-      if (
-        this.props.addressForm ||
-        ((fReg.country_code === "ae" || fReg.country_code === "sa") &&
-          coReg.length > 0)
-      )
-        return (
-          <View key={countryName}>
-            <Text style={[styles.optionsTextContainer, { paddingLeft: 0 }]}>
-              {countryName}
-            </Text>
-            {coReg.map((c) => (
-              <TouchableOpacity
-                key={c.id}
-                style={styles.languageRowConatiner}
-                onPress={() => this.checkForLocations(c, fReg)}
-              >
-                <Icon
-                  type="MaterialCommunityIcons"
-                  name={
-                    this.props.region_id[coRegIndex].region_id.find(
-                      (r) => r === c.id
-                    )
-                      ? "circle"
-                      : "circle-outline"
-                  }
-                  style={[
-                    this.props.region_id[coRegIndex].region_id.find(
-                      (r) => r === c.id
-                    )
-                      ? styles.activetext
-                      : styles.inactivetext,
-                    styles.optionsIconSize,
-                  ]}
-                />
-                <Text style={styles.optionsTextContainer}>
-                  {translate(c.name)}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+    let regionlist =
+      this.props.filteredRegions &&
+      this.props.filteredRegions.map((fReg) => {
+        let countryName = fReg.country_name;
+        let coRegIndex = this.props.region_id.findIndex(
+          (coR) => coR.country_code === fReg.country_code
         );
-    });
+        let coReg = fReg.regions;
+        if (
+          this.props.addressForm ||
+          ((fReg.country_code === "ae" || fReg.country_code === "sa") &&
+            coReg.length > 0)
+        )
+          return (
+            <View key={countryName}>
+              <Text style={[styles.optionsTextContainer, { paddingLeft: 0 }]}>
+                {countryName}
+              </Text>
+              {coReg.map((c) => {
+                let activeRegion =
+                  this.props.region_id &&
+                  this.props.region_id[coRegIndex] &&
+                  this.props.region_id[coRegIndex].region_id &&
+                  this.props.region_id[coRegIndex].region_id.find(
+                    (r) => r === c.id
+                  );
+
+                return (
+                  <TouchableOpacity
+                    key={c.id}
+                    style={styles.languageRowConatiner}
+                    onPress={() => this.checkForLocations(c, fReg)}
+                  >
+                    <Icon
+                      type="MaterialCommunityIcons"
+                      name={activeRegion ? "circle" : "circle-outline"}
+                      style={[
+                        activeRegion ? styles.activetext : styles.inactivetext,
+                        styles.optionsIconSize,
+                      ]}
+                    />
+                    <Text style={styles.optionsTextContainer}>
+                      {translate(c.name)}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          );
+      });
     return (
       <View style={styles.container}>
+        <SafeAreaView />
+        {this.props.showBackButton && (
+          <Header
+            screenProps={this.props.screenProps}
+            iconColor={globalColors.purple}
+            actionButton={() => {
+              this.props._handleSideMenuState(false);
+            }}
+          />
+        )}
         <View style={[styles.dataContainer]}>
           <LocationIcon
             width={70}

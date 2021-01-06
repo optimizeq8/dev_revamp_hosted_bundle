@@ -23,6 +23,7 @@ import rtlStyles from "./rtlStyles";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 import LowerButton from "../LowerButton";
+import Header from "../Header";
 import { globalColors } from "../../../GlobalStyles";
 
 class MultiSelectList extends Component {
@@ -148,6 +149,13 @@ class MultiSelectList extends Component {
         forceInset={{ top: "always", bottom: "never" }}
         style={styles.safeAreaContainer}
       >
+        {this.props.showBackButton && (
+          <Header
+            screenProps={this.props.screenProps}
+            iconColor={globalColors.purple}
+            actionButton={() => this.props._handleSideMenuState(false)}
+          />
+        )}
         <View style={styles.container}>
           <View style={styles.dataContainer}>
             <LocationIcon width={70} height={70} fill={globalColors.rum} />
@@ -206,6 +214,7 @@ class MultiSelectList extends Component {
             selectedItems={this.state.selectedItems}
             _handleSideMenuState={this.props._handleSideMenuState}
             country_code={this.props.country_code}
+            showBackButton={this.props.showBackButton}
           />
         );
         break;
@@ -217,6 +226,7 @@ class MultiSelectList extends Component {
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={this.state.selectedDevices}
             _handleSideMenuState={this.props._handleSideMenuState}
+            showBackButton={this.props.showBackButton}
           />
         );
         break;
@@ -228,6 +238,7 @@ class MultiSelectList extends Component {
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={this.state.selectedVersions}
             _handleSideMenuState={this.props._handleSideMenuState}
+            showBackButton={this.props.showBackButton}
           />
         );
         break;

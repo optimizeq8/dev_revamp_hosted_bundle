@@ -10,7 +10,6 @@ import {
   Linking,
   ActivityIndicator,
   Text,
-  NativeModules,
   RefreshControl,
 } from "react-native";
 import * as Notifications from "expo-notifications";
@@ -141,7 +140,10 @@ class Dashboard extends Component {
         });
       }
       // this.props.getWalletAmount();
-      if (!this.props.campaignList || this.props.campaignList.length === 0) {
+      if (
+        (!this.props.campaignList || this.props.campaignList.length === 0) &&
+        this.props.mainBusiness
+      ) {
         this.props.getCampaignList(
           this.props.mainBusiness.businessid,
           this.increasePage,
@@ -202,11 +204,13 @@ class Dashboard extends Component {
       // this.props.userInfo &&
       //   this.props.connect_user_to_intercom(this.props.userInfo.userid);
       // this.props.set_as_seen(false);
-      this.props.getCampaignList(
-        this.props.mainBusiness.businessid,
-        this.increasePage,
-        this.signal.token
-      );
+      if (this.props.mainBusiness) {
+        this.props.getCampaignList(
+          this.props.mainBusiness.businessid,
+          this.increasePage,
+          this.signal.token
+        );
+      }
     }
     if (
       this.state.open &&
@@ -409,11 +413,13 @@ class Dashboard extends Component {
     });
     // this.props.connect_user_to_intercom(this.props.userInfo.userid);
     // this.props.set_as_seen(false);
-    this.props.getCampaignList(
-      this.props.mainBusiness.businessid,
-      this.increasePage,
-      this.signal.token
-    );
+    if (this.props.mainBusiness) {
+      this.props.getCampaignList(
+        this.props.mainBusiness.businessid,
+        this.increasePage,
+        this.signal.token
+      );
+    }
   };
 
   renderCampaignCards = ({ item, index }) => {
@@ -531,7 +537,10 @@ class Dashboard extends Component {
       timestamp: new Date().getTime(),
       device_id: this.props.screenProps.device_id,
     });
-    if (source_action === "a_move_amount_to_wallet") {
+    if (
+      source_action === "a_move_amount_to_wallet" &&
+      this.props.mainBusiness
+    ) {
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
         this.increasePage,
@@ -947,6 +956,7 @@ class Dashboard extends Component {
                             }}
                             strokeColor={"#909090"}
                             renderSearchBar={this.renderSearchBar}
+                            source={"dashboard"}
                           />
                         </View>
                         <TouchableOpacity

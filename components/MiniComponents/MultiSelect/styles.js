@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     alignItems: "center",
     flexDirection: "column",
-    height: "85%",
+    // height: "85%",
   },
   dataContainer: {
     alignItems: "center",

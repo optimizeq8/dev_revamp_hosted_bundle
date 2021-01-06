@@ -65,21 +65,19 @@ export default class SuspendedWarning extends Component {
                 });
                 // Intercom.displayMessageComposer();
                 Intercom.displayConversationsList();
-
-                // let continueRoutes = [
-                //   // "Dashboard",
-                //   "Messenger",
-                // ].map((route) =>
-                //   NavigationActions.navigate({
-                //     routeName: route,
-                //   })
-                // );
+                let source = this.props.navigation.getParam("source", "");
+                let continueRoutes = (source !== "app_crash"
+                  ? ["Dashboard"]
+                  : ["SuspendedWarning"]
+                ).map((route) =>
+                  NavigationActions.navigate({
+                    routeName: route,
+                  })
+                );
                 //resets the navigation stack
                 let resetAction = StackActions.reset({
-                  index: 0,
-
-                  // continueRoutes.length - 1, //index of the last screen route
-                  //   actions: continueRoutes,
+                  index: continueRoutes.length - 1, //index of the last screen route
+                  actions: continueRoutes,
                 });
 
                 this.props.navigation.dispatch(resetAction);

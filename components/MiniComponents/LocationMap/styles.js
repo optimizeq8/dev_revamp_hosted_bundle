@@ -71,6 +71,11 @@ export default StyleSheet.create({
     // borderColor: "#9304FF",
     justifyContent: "center",
   }),
+  pinTwoButtons: {
+    width: "40%",
+    height: 60,
+    alignSelf: "center",
+  },
   pinButton: {
     position: "absolute",
     width: "50%",
@@ -131,5 +136,14 @@ export default StyleSheet.create({
     },
     shadowOpacity: 0.15,
     shadowRadius: 1,
+  },
+  mapButtonsContainer: {
+    flexDirection: "row",
+    alignSelf: "center",
+    bottom: "15%",
+    width: "100%",
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

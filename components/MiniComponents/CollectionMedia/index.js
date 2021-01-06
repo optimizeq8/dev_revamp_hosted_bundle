@@ -24,6 +24,7 @@ import { showMessage } from "react-native-flash-message";
 import CustomHeader from "../Header";
 import KeyboardShift from "../KeyboardShift";
 import * as IntentLauncher from "expo-intent-launcher";
+import WebsiteField from "../InputFieldNew/Website";
 
 //Redux
 import { connect } from "react-redux";
@@ -244,7 +245,7 @@ class CollectionMedia extends Component {
       urlError,
     });
     if (urlError) {
-      const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me)/g;
+      const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me|api.whatsapp.|twitter.)/g;
 
       showMessage({
         message: translate(
@@ -683,7 +684,37 @@ class CollectionMedia extends Component {
     // let adjustAdCoverTracker = new AdjustEvent("s62u9o");
     // Adjust.trackEvent(adjustAdCoverTracker);
   };
+  setStateValue = (value) => {
+    this.setState({
+      collection: {
+        ...this.state.collection,
+        collection_attachment: value,
+      },
+    });
+  };
+  getValidInfo = (stateError, error) => {
+    if (stateError === "deep_link_uriError" && error) {
+      analytics.track("a_deep_link_uri", {
+        source: "ad_swipe_up_destination",
+        source_action: "a_deep_link_uri",
+        campaign_deep_link_url: this.state.deep_link_uri,
+      });
+
+      if (error) {
+        analytics.track("a_error_form", {
+          source: "ad_swipe_up_destination",
+          error_page: "ad_swipe_up_destination",
+          source_action: "a_deep_link_uri",
+          error_description: this.state.deep_link_uriError,
+        });
+      }
+    }
+    this.setState({
+      [stateError]: error,
+    });
+  };
   render() {
+    console.log(this.props.loading, this.state.isVisible);
     const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
@@ -775,14 +806,7 @@ class CollectionMedia extends Component {
                           placeholderTextColor="white"
                           autoCorrect={false}
                           autoCapitalize="none"
-                          onChangeText={(value) => {
-                            this.setState({
-                              collection: {
-                                ...this.state.collection,
-                                collection_attachment: value,
-                              },
-                            });
-                          }}
+                          onChangeText={this.setStateValue}
                         />
                       </Item>
                     </Animatable.View>
@@ -790,77 +814,24 @@ class CollectionMedia extends Component {
                     <View style={styles.topContainer}>
                       <View style={styles.inputContainer}>
                         <View style={styles.websiteView}>
-                          <View style={[styles.websiteLabelView]}>
-                            <Text uppercase style={[styles.inputLabel]}>
-                              {translate("Website")}
-                            </Text>
-                          </View>
-                          <Item
-                            style={[
-                              styles.input,
-                              // this.state.urlError
-                              //     ? GlobalStyles.redBorderColor
-                              //     : GlobalStyles.transparentBorderColor
-                            ]}
-                          >
-                            {/* <TouchableOpacity
-                              style={[
-                                GlobalStyles.orangeBacksgroundColor,
-                                {
-                                  borderRadius: 30,
-                                  width: 54,
-                                  height: 54,
-                                  alignItems: "center",
-                                  justifyContent: "center"
-                                }
-                              ]}
-                              onPress={() => {
-                                if (this.state.networkString === "https://") {
-                                 
-                                  this.setState({
-                                    networkString: "http://"
-                                  });
-                                } else {
-                                  
-                                  this.setState({
-                                    networkString: "https://"
-                                  });
-                                }
-                              }}
-                            >
-                              <Text uppercase style={styles.networkLabel}>
-                                {this.state.networkString === "https://"
-                                  ? "https"
-                                  : "http"}
-                              </Text>
-                              <Text uppercase style={styles.networkLabel}>
-                                {`< >`}
-                              </Text>
-                            </TouchableOpacity>
-                           */}
-                            <Input
-                              disabled={this.props.loading}
-                              style={[styles.inputtext]}
-                              placeholder={translate(
-                                "Enter your website's URL"
-                              )}
-                              placeholderTextColor={globalColors.white}
-                              value={
-                                this.state.collection.collection_attachment
-                              }
-                              autoCorrect={false}
-                              autoCapitalize="none"
-                              onChangeText={(value) =>
-                                this.setState({
-                                  collection: {
-                                    ...this.state.collection,
-                                    collection_attachment: value,
-                                  },
-                                  rejectionColUpload: true,
-                                })
-                              }
-                            />
-                          </Item>
+                          <WebsiteField
+                            setWebsiteValue={this.setStateValue}
+                            stateName="collection_attachment"
+                            screenProps={this.props.screenProps}
+                            label="Website"
+                            website={
+                              this.state.collection.collection_attachment
+                            }
+                            stateNameError={
+                              this.state.collection_attachmentError
+                            }
+                            placeholder={"Enter your website's URL"}
+                            getValidInfo={this.getValidInfo}
+                            customStyle={styles.inputtext}
+                            iconFill={globalColors.white}
+                            customTextStyle={{ color: globalColors.white }}
+                            labelColor={globalColors.white}
+                          />
                         </View>
                       </View>
                     </View>

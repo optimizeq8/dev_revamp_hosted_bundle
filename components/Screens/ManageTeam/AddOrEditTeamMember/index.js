@@ -127,8 +127,8 @@ class AddOrEditTeamMember extends Component {
       !userRoleError
     ) {
       if (userRole === 3) {
-        let adjustClientTracker = new AdjustEvent("2eqii1");
-        Adjust.trackEvent(adjustClientTracker);
+        // let adjustClientTracker = new AdjustEvent("2eqii1");
+        // Adjust.trackEvent(adjustClientTracker);
       }
       this.props.inviteTeamMember(
         {

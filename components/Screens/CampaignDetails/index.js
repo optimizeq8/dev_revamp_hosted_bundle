@@ -650,7 +650,7 @@ class CampaignDetails extends Component {
                 ) : (
                   <TouchableOpacity
                     onLayout={this.onLayout}
-                    disabled={this.state.expand}
+                    disabled={this.state.expand || loading}
                     onPress={this.handleChartToggle}
                   >
                     {this.state.expand && (

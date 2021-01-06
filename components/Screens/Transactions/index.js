@@ -143,6 +143,7 @@ class Transactions extends Component {
                     customInputStyle={{
                       backgroundColor: "#0004",
                     }}
+                    source={"open_transactions"}
                   />
                 </View>
                 {this.props.filteredTransactions.length !== 0 && (

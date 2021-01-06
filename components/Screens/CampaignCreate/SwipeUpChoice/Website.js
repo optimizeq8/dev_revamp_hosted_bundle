@@ -144,15 +144,18 @@ class Website extends Component {
     });
 
     if (urlError) {
-      const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me)/g;
+      const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me|api.whatsapp.|twitter.)/g;
       showMessage({
         message: translate(
           `${
             !this.state.campaignInfo.attachment.match(regex)
-              ? "Please enter a valid URL"
-              : "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media"
+              ? "Please enter a valid url"
+              : "Snapchat doesn't allow redirection to social media sites"
           }`
         ),
+        description: this.state.campaignInfo.attachment.match(regex)
+          ? translate("Try creating a free website from the menu in our app")
+          : "",
         type: "warning",
         position: "top",
         duration: 7000,

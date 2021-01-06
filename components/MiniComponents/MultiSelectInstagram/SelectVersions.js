@@ -39,7 +39,7 @@ class SelectVersions extends Component {
   }
   componentDidUpdate(prevProps) {
     if (
-      this.props.OSType === "iOS" &&
+      this.props.OSType.toLowerCase() === "ios" &&
       prevProps.isoVersions !== this.props.isoVersions &&
       this.props.isoVersions.length > 0
     ) {
@@ -52,7 +52,7 @@ class SelectVersions extends Component {
         versions: [{ name: "Versions", id: 0, children }],
       });
     } else if (
-      this.props.OSType === "ANDROID" &&
+      this.props.OSType.toLowerCase() === "android" &&
       prevProps.androidVersions !== this.props.androidVersions &&
       this.props.androidVersions.length > 0
     ) {
@@ -94,7 +94,6 @@ class SelectVersions extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-
     return (
       <View style={styles.container}>
         <View style={[styles.dataContainer]}>

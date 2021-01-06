@@ -9,6 +9,7 @@ import {
   I18nManager,
   Text,
   ActivityIndicator,
+  TextInput,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { NavigationEvents } from "react-navigation";
@@ -41,6 +42,7 @@ import GradientButton from "../../MiniComponents/GradientButton";
 import WalletCard from "../../MiniComponents/WalletTopUpCard";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";
+import { isNaN } from "lodash";
 
 class Wallet extends Component {
   static navigationOptions = {
@@ -49,7 +51,7 @@ class Wallet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      amount: 0,
+      amount: "",
       placeholder: 0.0,
       topUp: false,
       inputA: false,
@@ -128,7 +130,11 @@ class Wallet extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-
+    let customValue = this.state.amount
+      .toString()
+      .split(".")
+      .map((el, i) => (i ? el.split("").slice(0, 2).join("") : el))
+      .join(".");
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
@@ -301,23 +307,28 @@ class Wallet extends Component {
                         //   : globalStyles.lightGrayBorderColor
                       ]}
                     >
-                      <TextInputMask
-                        includeRawValueInChangeText
-                        type={"money"}
-                        selectTextOnFocus={true}
-                        options={{
-                          precision: 2,
-                          separator: ".",
-                          delimiter: ",",
-                          unit: "$",
-                        }}
+                      <Text style={styles.inputtext}>$</Text>
+                      <TextInput
+                        placeholderTextColor={globalColors.darkOrange}
+                        // includeRawValueInChangeText
+                        // type={"money"}
+                        keyboardType={"decimal-pad"} // selectTextOnFocus={true}
+                        // options={{
+                        //   precision: 2,
+                        //   separator: ".",
+                        //   delimiter: ",",
+                        //   unit: "$",
+                        // }}
                         focus={this.state.inputA}
                         maxLength={10}
-                        value={this.state.amount}
+                        value={customValue}
                         onChangeText={(text, rawValue) => {
-                          this.setState({
-                            amount: rawValue,
-                          });
+                          //   let amount = formatNumber(text, false, true);
+                          //   amount = parseFloat(amount);
+                          if (!isNaN(text))
+                            this.setState({
+                              amount: text,
+                            });
                         }}
                         onFocus={() => this.setState({ inputA: true })}
                         onBlur={() =>
@@ -329,6 +340,7 @@ class Wallet extends Component {
                             ),
                           })
                         }
+                        placeholder={"0.00"}
                         style={styles.inputtext}
                       />
                     </Item>

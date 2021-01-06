@@ -83,4 +83,10 @@ export default StyleSheet.create({
     borderTopEndRadius: 40,
     borderTopStartRadius: 40,
   },
+  proceedButton: {
+    width: "20%",
+    height: "10%",
+    alignSelf: "flex-end",
+    right: 30,
+  },
 });

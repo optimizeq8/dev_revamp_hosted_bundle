@@ -20,6 +20,7 @@ import SectionStyle, { colors } from "./SectionStyle";
 import styles from "./styles";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
+import Header from "../Header";
 import { globalColors } from "../../../GlobalStyles";
 
 class SelectDevices extends Component {
@@ -68,6 +69,15 @@ class SelectDevices extends Component {
         forceInset={{ top: "always", bottom: "never" }}
         style={styles.safeAreaContainer}
       >
+        {this.props.showBackButton && (
+          <Header
+            screenProps={this.props.screenProps}
+            iconColor={globalColors.purple}
+            actionButton={() => {
+              this.props._handleSideMenuState(false);
+            }}
+          />
+        )}
         <View style={styles.container}>
           <View style={styles.dataContainer}>
             <Icon

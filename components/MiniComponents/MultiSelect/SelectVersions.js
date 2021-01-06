@@ -21,6 +21,7 @@ import compareVersions from "compare-versions";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
 import { globalColors } from "../../../GlobalStyles";
+import Header from "../Header";
 
 class SelectVersions extends Component {
   state = {
@@ -96,6 +97,15 @@ class SelectVersions extends Component {
         forceInset={{ top: "always", bottom: "never" }}
         style={styles.safeAreaContainer}
       >
+        {this.props.showBackButton && (
+          <Header
+            screenProps={this.props.screenProps}
+            iconColor={globalColors.purple}
+            actionButton={() => {
+              this.props._handleSideMenuState(false);
+            }}
+          />
+        )}
         <View style={styles.container}>
           <View style={[styles.dataContainer]}>
             <Icon

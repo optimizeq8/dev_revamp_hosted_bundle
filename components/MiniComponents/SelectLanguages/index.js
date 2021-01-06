@@ -5,6 +5,7 @@ import { Input, Item, Icon } from "native-base";
 import styles from "../MultiSelect/styles";
 import LowerButton from "../LowerButton";
 import { globalColors } from "../../../GlobalStyles";
+import Header from "../Header";
 
 export default class SelectLanguages extends Component {
   render() {
@@ -39,6 +40,15 @@ export default class SelectLanguages extends Component {
         forceInset={{ top: "always", bottom: "never" }}
         style={styles.safeAreaContainer}
       >
+        {this.props.showBackButton && (
+          <Header
+            screenProps={this.props.screenProps}
+            iconColor={globalColors.purple}
+            actionButton={() => {
+              this.props._handleSideMenuState(false);
+            }}
+          />
+        )}
         <View style={styles.container}>
           <View style={[styles.dataContainer]}>
             <Icon name="language" type="MaterialIcons" style={styles.icon} />

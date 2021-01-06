@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import { Icon, Input, Item } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import isNull from "lodash/isNull";
@@ -111,6 +111,7 @@ export default class Picker extends Component {
                   autoCapitalize="none"
                   onChangeText={this.props.customSearch}
                 />
+                {this.props.customInterestsLoading && <ActivityIndicator />}
               </Item>
             )}
           </View>

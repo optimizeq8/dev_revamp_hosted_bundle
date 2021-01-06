@@ -10,6 +10,8 @@ export default class LocationRow extends Component {
   };
   render() {
     let { locationInfo, index, handleMapModal, result } = this.props;
+    const { translate } = this.props.screenProps;
+
     return (
       <View style={styles.locationRow}>
         <Text style={styles.locationName}>
@@ -17,7 +19,7 @@ export default class LocationRow extends Component {
         </Text>
         <View style={styles.buttonsContainer}>
           {result ? (
-            <Text style={styles.buttonText}>Add</Text>
+            <Text style={styles.buttonText}>{translate("Add")}</Text>
           ) : (
             <>
               <TouchableOpacity
@@ -29,7 +31,7 @@ export default class LocationRow extends Component {
                   name="my-location"
                   type="MaterialIcons"
                 ></Icon>
-                <Text>Map</Text>
+                <Text>{translate("Map")}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => this.handleDeletion(locationInfo)}
