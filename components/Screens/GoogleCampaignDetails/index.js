@@ -230,8 +230,11 @@ class GoogleCampaignDetails extends Component {
         campaign_channel: "google",
       });
     }
-
-    if (!this.props.loading && this.props.selectedCampaign) {
+    if (
+      !this.props.loading &&
+      this.props.selectedCampaign &&
+      this.props.selectedCampaign.campaign
+    ) {
       analytics.track(`campaign_detail`, {
         source,
         source_action,
