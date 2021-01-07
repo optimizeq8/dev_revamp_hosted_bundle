@@ -24,7 +24,7 @@
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" tools:node="remove" />
   <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" tools:node="remove" />
   <application android:usesCleartextTraffic="true" android:name=".MainApplication" android:requestLegacyExternalStorage="true" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme">
-    <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://optimizeq8.github.io/optimizeapp_staging_hosted_bundle/android-index.json" />
+    <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://optimizeq8.github.io/optimizeapp_live_hosted_bundle/android-index.json" />
     <meta-data android:name="expo.modules.updates.EXPO_SDK_VERSION" android:value="39.0.0" />
     <meta-data android:name="expo.modules.updates.EXPO_RELEASE_CHANNEL" android:value="development" />
     <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_stat_group_11" />
