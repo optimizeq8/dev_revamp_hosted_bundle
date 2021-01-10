@@ -1275,7 +1275,7 @@ class AdDetails extends Component {
   setSelectedAudience = (targeting, coordinates) => {
     let editedCampaign = cloneDeep(this.state.campaignInfo);
     let campaignTargeting = targeting;
-    let locationsInfo = coordinates;
+    let locationsInfo = coordinates || [];
     if (this.editCampaign) {
       campaignTargeting.geos = editedCampaign.targeting.geos;
     }
@@ -1306,7 +1306,7 @@ class AdDetails extends Component {
       )
     );
     let markers = [];
-    if (locationsInfo) {
+    if (locationsInfo && locationsInfo.length > 0) {
       locationsInfo = cloneDeep(JSON.parse(locationsInfo));
       markers = cloneDeep(campaignTargeting.locations[0].circles);
     }
