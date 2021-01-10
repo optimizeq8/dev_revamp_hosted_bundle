@@ -1474,6 +1474,10 @@ class AdDetails extends Component {
             region_id={this.state.campaignInfo.targeting.geos}
             filterRegions={this.filterRegions}
             locationsSelected={
+              campaignInfo.targeting &&
+              campaignInfo.targeting.locations &&
+              campaignInfo.targeting.locations[0] &&
+              campaignInfo.targeting.locations[0].circles &&
               campaignInfo.targeting.locations[0].circles.length > 0
             }
             onSelectedMapChange={this.onSelectedMapChange}
