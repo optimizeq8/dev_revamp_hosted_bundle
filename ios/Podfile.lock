@@ -299,8 +299,8 @@ PODS:
     - React
   - react-native-maps (0.27.1):
     - React
-  - react-native-mixpanel (1.2.0):
-    - Mixpanel (~> 3.6.1)
+  - react-native-mixpanel (1.2.5):
+    - Mixpanel (~> 3.6.0)
     - React
   - react-native-restart (0.0.17):
     - React
@@ -784,7 +784,7 @@ SPEC CHECKSUMS:
   react-native-google-maps: 0a989abda71059db2caa98b9dacca7a8f38a47d0
   react-native-intercom: c48e0e15877bf96ff4d461f7aa9b833d11188139
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
-  react-native-mixpanel: a9709c486fa9def958d482174bb8fe4f349bd21e
+  react-native-mixpanel: 5d0bcea791fd938c35138be2d00e50e19b9de601
   react-native-restart: d19a0f8d053d065fe64cd2baebb6487111c77149
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-webview: 6edf4d6f71b9161fc3e96083726a538ee395304d
@@ -834,4 +834,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 58f989adae71d51139f23b90860ae21b5cea8ccb
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.8.4
