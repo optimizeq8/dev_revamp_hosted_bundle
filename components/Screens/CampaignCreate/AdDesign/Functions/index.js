@@ -187,7 +187,8 @@ export const formatMedia = (
     body.append("source", campaignInfo.source);
     body.append("googlemaplink", campaignInfo.googlemaplink);
   }
-  if (data.is_political) {
+  if (data && data.is_political) {
+    // throws error for rjected without data null check
     body.append("is_political", 1);
   }
   body.append("ad_account_id", mainBusiness.snap_ad_account_id);
