@@ -151,13 +151,6 @@ class AdDetails extends Component {
     ) {
       this.handleMultipleCountrySelection();
     }
-    if (
-      JSON.stringify(this.state.campaignInfo) !==
-      JSON.stringify(prevState.campaignInfo)
-    ) {
-      //to not set the audince again from navigation when AdDetails is focused
-      this.props.navigation.setParams({ audienceSelected: false });
-    }
   }
   handleBackButton = () => {
     if (!this.props.navigation.isFocused()) {

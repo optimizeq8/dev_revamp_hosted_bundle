@@ -149,7 +149,9 @@ class AdObjective extends Component {
       this.handleAdOnjectiveFocus(); //track the change of adType if user creates a new ad instead of resuming
     }
   }
-
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.data === this.props.data || this.state !== nextState;
+  }
   /**
    * Sets the state to what ever is in this.props.data
    */
@@ -508,7 +510,7 @@ class AdObjective extends Component {
   };
   setValue = (stateName, value) => {
     let state = {};
-    value = value.replace(/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi, "");
+    // value = value.replace(/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi, "");
     state[stateName] = value;
     analytics.track(`a_ad_name`, {
       source: "ad_objective",

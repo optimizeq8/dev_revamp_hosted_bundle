@@ -132,6 +132,9 @@ class AdDesign extends Component {
       : this.props.data;
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.data === this.props.data || this.state !== nextState;
+  }
   componentWillUnmount() {
     //Switched handleBackButton to toggleAdSelection
     BackHandler.removeEventListener(
