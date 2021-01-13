@@ -197,6 +197,7 @@ export {
   addCategory,
   editCategory,
   uploadCategoryImage,
+  getInstagramPostInitialWebsiteBackend,
 } from "./optimizeWebsiteActions";
 
 export {

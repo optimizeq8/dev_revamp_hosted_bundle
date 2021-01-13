@@ -361,7 +361,9 @@ const styles = StyleSheet.create({
     // flexGrow: 1,
     // justifyContent: "space-around",
     alignItems: "center",
-    // marginBottom: 40
+    paddingBottom: 20,
+    // flex: 1,
+    // marginBottom: 40,
   },
   submitProducts: {
     width: "70%",
@@ -495,7 +497,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   lowerBtn: {
-    marginBottom: 20,
+    marginBottom: 30,
   },
   eachItem: {
     width: 65,

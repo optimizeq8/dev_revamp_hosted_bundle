@@ -253,9 +253,12 @@ export default createNativeStackNavigator(
       }),
       path: "verify_account/",
     },
-    OptimizeWebsite: register({
-      require: () => require("../Screens/OptimizeWebsite"),
-    }),
+    OptimizeWebsite: {
+      screen: register({
+        require: () => require("../Screens/OptimizeWebsite"),
+      }),
+      path: "optimize_website_client",
+    },
     WebsiteRegistartionSuccess: {
       screen: register({
         require: () =>

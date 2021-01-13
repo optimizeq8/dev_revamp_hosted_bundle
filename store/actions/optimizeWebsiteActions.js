@@ -894,3 +894,41 @@ export const uploadCategoryImage = (
       });
   };
 };
+
+export const getInstagramPostInitialWebsiteBackend = (businessid) => {
+  return async (dispatch) => {
+    dispatch({
+      type: actionTypes.GET_INSTAGRAM_POST_LOADING,
+      payload: true,
+    });
+    axios
+      .get(
+        `https://www.optimizeapp.com/optimize/instagram/instaFeedWebProducts/${businessid}`
+      )
+      .then((res) => res.data)
+      .then((data) => {
+        return dispatch({
+          type: actionTypes.GET_INSTAGRAM_POST,
+          payload: {
+            businessLogo: data.businessLogo,
+            imagesList: data.success ? data.data : [],
+            instaHandleId: null,
+            instaHasNextPage: false,
+            instaEndCursor: null,
+          },
+        });
+      })
+      .catch((error) => {
+        return dispatch({
+          type: actionTypes.GET_INSTAGRAM_POST,
+          payload: {
+            businessLogo: null,
+            imagesList: [],
+            instaHandleId: null,
+            instaHasNextPage: false,
+            instaEndCursor: null,
+          },
+        });
+      });
+  };
+};
