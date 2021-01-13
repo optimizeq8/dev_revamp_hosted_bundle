@@ -7,7 +7,7 @@ import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: "#0000",
   },
   onlineStoreHomeIcon: {

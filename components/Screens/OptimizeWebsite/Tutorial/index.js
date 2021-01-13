@@ -159,12 +159,21 @@ class TutorialWeb extends React.Component {
     });
   };
   getStartWebsiteReg = () => {
+    const { fb_connected, businessid } = this.props.mainBusiness;
+    // First check if the acccount is verfied or not
     if (
       this.props.userInfo &&
       this.props.userInfo.hasOwnProperty("verified_account") &&
       !this.props.userInfo.verified_account
     ) {
       this.props.navigation.navigate("VerifyAccount", {
+        source: "my_website_tutorial",
+        source_action: "a_open_my_website_detail",
+      });
+    } else if (fb_connected === "0") {
+      this.props.navigation.navigate("WebView", {
+        url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${businessid}&screenName=tutorial`,
+        title: "Instagram",
         source: "my_website_tutorial",
         source_action: "a_open_my_website_detail",
       });
@@ -254,6 +263,7 @@ class TutorialWeb extends React.Component {
 
 const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
+  mainBusiness: state.account.mainBusiness,
 });
 
 export default connect(mapStateToProps, null)(TutorialWeb);

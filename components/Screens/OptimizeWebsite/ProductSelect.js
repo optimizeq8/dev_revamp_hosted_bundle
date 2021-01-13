@@ -27,8 +27,11 @@ import LowerButton from "../../MiniComponents/LowerButton";
 
 class ProductSelect extends React.Component {
   componentDidMount() {
-    this.props.getInstagramPostInitialWebsite(
-      this.props.mainBusiness.insta_handle
+    // this.props.getInstagramPostInitialWebsite(
+    //   this.props.mainBusiness.insta_handle
+    // );
+    this.props.getInstagramPostInitialWebsiteBackend(
+      this.props.mainBusiness.businessid
     );
     // if (this.props.edit) {
     this.props.getWebProductsToHide(this.props.mainBusiness.businessid);
@@ -59,8 +62,11 @@ class ProductSelect extends React.Component {
       prevProps.mainBusiness.insta_handle !==
       this.props.mainBusiness.insta_handle
     ) {
-      this.props.getInstagramPostInitialWebsite(
-        this.props.mainBusiness.insta_handle
+      //   this.props.getInstagramPostInitialWebsite(
+      //     this.props.mainBusiness.insta_handle
+      //   );
+      this.props.getInstagramPostInitialWebsiteBackend(
+        this.props.mainBusiness.businessid
       );
     }
     if (
@@ -259,6 +265,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  getInstagramPostInitialWebsiteBackend: (businessid) =>
+    dispatch(actionCreators.getInstagramPostInitialWebsiteBackend(businessid)),
   getInstagramPostInitialWebsite: (insta_handle) =>
     dispatch(actionCreators.getInstagramPostInitialWebsite(insta_handle)),
   loadMoreInstagramPostWebsite: (instaHandleId, instaEndCursor) =>

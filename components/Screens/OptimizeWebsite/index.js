@@ -9,9 +9,11 @@ import {
   I18nManager,
   Platform,
 } from "react-native";
-import WebView from "react-native-webview";
+// import WebView from "react-native-webview";
 import analytics from "@segment/analytics-react-native";
 import SafeAreaView from "react-native-safe-area-view";
+import { NavigationEvents } from "react-navigation";
+import { showMessage } from "react-native-flash-message";
 
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -112,6 +114,52 @@ class OptimizeWebsite extends Component {
   hideLoader = () => {
     this.setState({ viewLoader: false });
   };
+  onDidFocus = () => {
+    const { translate } = this.props.screenProps;
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+
+    analytics.track(`my_website_detail`, {
+      source,
+      source_action,
+    });
+    const changeFbConnectStatus = this.props.navigation.getParam(
+      "success",
+      false
+    );
+    console.log("changeFbConnectStatus", changeFbConnectStatus);
+    const fb_ad_account_id = this.props.navigation.getParam(
+      "fb_ad_account_id",
+      null
+    );
+    if (changeFbConnectStatus && changeFbConnectStatus.includes("true")) {
+      const instagram_username = this.props.navigation.getParam(
+        "instagram_username",
+        ""
+      );
+      showMessage({
+        type: "success",
+        message: translate(
+          `Your Instagram Business Account {{instagram_username}} has been connected successfully!`,
+          {
+            instagram_username: instagram_username,
+          }
+        ),
+        duration: 5000,
+      });
+      this.props.updateBusinessConnectedToFacebook({
+        fb_connected: "1",
+        fb_ad_account_id: fb_ad_account_id,
+        insta_handle: instagram_username,
+      });
+    }
+  };
   render() {
     const { translate } = this.props.screenProps;
     const { activeStep } = this.state;
@@ -121,6 +169,7 @@ class OptimizeWebsite extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <NavigationEvents onDidFocus={this.onDidFocus} />
         <View style={styles.headerCardView}>
           <TouchableOpacity
             style={[
@@ -180,69 +229,69 @@ class OptimizeWebsite extends Component {
             </Text>
           </View>
         )}
-        {Platform.OS === "ios" && (
-          <ScrollView
-            contentContainerStyle={[
-              activeStep === 1 && styles.outerView,
-              // activeStep === 2 && styles.step2OuterView
-            ]}
-          >
-            {activeStep === 1 && (
+        {/* {Platform.OS === "ios" && ( */}
+        <ScrollView
+          contentContainerStyle={[
+            activeStep === 1 && styles.outerView,
+            // activeStep === 2 && styles.step2OuterView
+          ]}
+        >
+          {activeStep === 1 && (
+            <LinearGradient
+              colors={["#9300FF", "#5600CB"]}
+              locations={[0, 0.75]}
+              style={styles.gradient}
+            />
+          )}
+
+          {activeStep === 2 && (
+            <View style={styles.previewOuterView}>
               <LinearGradient
                 colors={["#9300FF", "#5600CB"]}
                 locations={[0, 0.75]}
                 style={styles.gradient}
               />
-            )}
-
-            {activeStep === 2 && (
-              <View style={styles.previewOuterView}>
-                <LinearGradient
-                  colors={["#9300FF", "#5600CB"]}
-                  locations={[0, 0.75]}
-                  style={styles.gradient}
-                />
-                <Image
-                  style={styles.profileIcon}
-                  source={{
-                    uri: this.props.businessLogo,
-                  }}
-                />
-                <Text style={styles.bsnNameText}>
-                  {this.props.mainBusiness.businessname}
-                </Text>
-                <View style={styles.socialMediaView}>
-                  <PhoneIcon width={40} styles={styles.socialMediaIcon} />
-
-                  <InstagramIcon width={40} styles={styles.socialMediaIcon} />
-
-                  <WhatsApp width={40} styles={styles.socialMediaIcon} />
-                </View>
-              </View>
-            )}
-            {activeStep === 1 && (
-              <Text style={styles.createWebsiteText}>
-                {translate(
-                  "We’ll create a mini website for your business Just fill in the info below"
-                )}
+              <Image
+                style={styles.profileIcon}
+                source={{
+                  uri: this.props.businessLogo,
+                }}
+              />
+              <Text style={styles.bsnNameText}>
+                {this.props.mainBusiness.businessname}
               </Text>
-            )}
-            {activeStep === 1 && Platform.OS === "ios" && (
-              <RegisterForm
-                screenProps={this.props.screenProps}
-                submitNextStep={this.submitNextStep}
-              />
-            )}
-            {activeStep === 2 && Platform.OS === "ios" && (
-              <ProductSelect
-                source={"my_website_products"}
-                navigation={this.props.navigation}
-                screenProps={this.props.screenProps}
-              />
-            )}
-          </ScrollView>
-        )}
-        {activeStep === 1 && Platform.OS === "android" && (
+              <View style={styles.socialMediaView}>
+                <PhoneIcon width={40} styles={styles.socialMediaIcon} />
+
+                <InstagramIcon width={40} styles={styles.socialMediaIcon} />
+
+                <WhatsApp width={40} styles={styles.socialMediaIcon} />
+              </View>
+            </View>
+          )}
+          {activeStep === 1 && (
+            <Text style={styles.createWebsiteText}>
+              {translate(
+                "We’ll create a mini website for your business Just fill in the info below"
+              )}
+            </Text>
+          )}
+          {activeStep === 1 && (
+            <RegisterForm
+              screenProps={this.props.screenProps}
+              submitNextStep={this.submitNextStep}
+            />
+          )}
+          {activeStep === 2 && (
+            <ProductSelect
+              source={"my_website_products"}
+              navigation={this.props.navigation}
+              screenProps={this.props.screenProps}
+            />
+          )}
+        </ScrollView>
+        {/* )} */}
+        {/* {activeStep === 1 && Platform.OS === "android" && (
           <WebView
             onLoad={() => this.hideLoader()}
             androidHardwareAccelerationDisabled={true}
@@ -262,7 +311,7 @@ class OptimizeWebsite extends Component {
             cacheEnabled={false}
             incognito={true}
           />
-        )}
+        )} */}
       </SafeAreaView>
     );
   }
@@ -273,5 +322,8 @@ const mapStateToProps = (state) => ({
   businessLogo: state.website.businessLogo,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  updateBusinessConnectedToFacebook: (data) =>
+    dispatch(actionCreators.updateBusinessConnectedToFacebook(data)),
+});
 export default connect(mapStateToProps, mapDispatchToProps)(OptimizeWebsite);
