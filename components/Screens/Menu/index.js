@@ -227,7 +227,15 @@ class Menu extends Component {
                   this.props.mainBusiness.user_role === "3"
                 }
                 onPress={() => {
-                  if (
+                  //First check if the business is not connected to fb force the user to login
+                  if (this.props.mainBusiness.fb_connected === "0") {
+                    this.props.navigation.navigate("WebView", {
+                      url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}&screenName=menu`,
+                      title: "Instagram",
+                      source: "open_hamburger",
+                      source_action: "a_open_my_website",
+                    });
+                  } else if (
                     mainBusiness.hasOwnProperty("weburl") &&
                     mainBusiness.weburl &&
                     mainBusiness.weburl !== ""
