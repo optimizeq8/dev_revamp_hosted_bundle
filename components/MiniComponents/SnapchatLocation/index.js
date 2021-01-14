@@ -17,6 +17,7 @@ import LocationList from "./LocationList";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
 import Header from "../Header";
+import cloneDeep from "lodash/cloneDeep";
 export default class SnapchatLocation extends Component {
   state = {
     mapModal: false,
@@ -28,7 +29,7 @@ export default class SnapchatLocation extends Component {
   componentDidMount() {
     if (
       this.props.data &&
-      this.props.data.hasOwnProperty("markers") &&
+      this.props.data.markers &&
       this.props.data.markers.length > 0
     ) {
       this.setState({
@@ -100,7 +101,7 @@ export default class SnapchatLocation extends Component {
     let loc = locationsInfo[index];
     loc.coordinates = location.coordinates;
     loc.saved = true;
-    let markers = this.state.markers;
+    let markers = cloneDeep(this.state.markers);
     let marker = markers[index];
     marker.latitude = location.coordinates.latitude;
     marker.longitude = location.coordinates.longitude;

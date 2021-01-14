@@ -89,7 +89,7 @@ const MixpanelSDK = new MixpanelInstance(
   false
 );
 MixpanelSDK.initialize().then(() => MixpanelSDK.showInAppMessageIfAvailable());
-analytics.getAnonymousId().then((id) => MixpanelSDK.identify(id));
+// analytics.getAnonymousId().then((id) => MixpanelSDK.identify(id));
 // Sentry.captureException(new Error("Oops!"));
 // crash;
 import { enableScreens } from "react-native-screens";

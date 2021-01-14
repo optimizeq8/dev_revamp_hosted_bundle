@@ -70,7 +70,7 @@ class AppChoice extends Component {
   }
 
   handleBackButton = () => {
-    this.props.navigation.goBack();
+    this.props.navigation && this.props.navigation.goBack();
     return true;
   };
 

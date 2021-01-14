@@ -285,6 +285,7 @@ export class TargetAudience extends Component {
                   <View style={styles.genderOuterView}>
                     {genders.map((g) => (
                       <TouchableOpacity
+                        key={g.value}
                         style={[
                           styles.genderInnerView,
                           targeting.demographics[0].gender === g.value &&

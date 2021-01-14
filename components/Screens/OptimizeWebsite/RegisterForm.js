@@ -107,11 +107,14 @@ class RegisterForm extends Component {
     // }
   };
   _handleSubmissionRegister = async () => {
-    const error = await this.props.verifyInstagramHandle(
-      this.state.insta_handle
-    );
+    // const error = await this.props.verifyInstagramHandle(
+    //   this.state.insta_handle
+    // );
     const valid = this.validate();
-    if (valid && !this.props.errorInstaHandle) {
+    if (
+      valid
+      // && !this.props.errorInstaHandle
+    ) {
       const callnumber =
         this.state.callnumber && this.state.callnumber.length > 0
           ? this.state.callnumber.replace("+", "")
@@ -123,7 +126,7 @@ class RegisterForm extends Component {
       const info = {
         businessid: this.props.mainBusiness.businessid,
         whatsappnumber,
-        insta_handle: this.state.insta_handle,
+        insta_handle: this.props.mainBusiness.insta_handle,
         callnumber,
         googlemaplink: this.state.googlemaplink ? this.state.googlemaplink : "",
         snapchat_handle: this.state.snapchat_handle,
@@ -146,12 +149,15 @@ class RegisterForm extends Component {
   };
 
   _handleSubmissionUpdate = async () => {
-    const error = await this.props.verifyInstagramHandle(
-      this.state.insta_handle
-    );
+    // const error = await this.props.verifyInstagramHandle(
+    //   this.state.insta_handle
+    // );
     const { translate } = this.props.screenProps;
     const valid = this.validate();
-    if (!valid || this.props.errorInstaHandle) {
+    if (
+      !valid
+      // || this.props.errorInstaHandle
+    ) {
       analytics.track(`a_error_form`, {
         source: "my_website_detail",
         error_page: "my_website_detail",
@@ -163,7 +169,10 @@ class RegisterForm extends Component {
           this.state.insta_handleError ||
           this.state.googleMapLinkError,
       });
-    } else if (valid && !this.props.errorInstaHandle) {
+    } else if (
+      valid
+      // && !this.props.errorInstaHandle
+    ) {
       const whatsappnumber =
         this.props.mainBusiness.whatsappnumber &&
         this.props.mainBusiness.whatsappnumber.length > 0
@@ -183,7 +192,7 @@ class RegisterForm extends Component {
           ? this.state.callnumber
           : "";
       const changedInfo =
-        this.state.insta_handle !== this.props.mainBusiness.insta_handle ||
+        // this.state.insta_handle !== this.props.mainBusiness.insta_handle ||
         this.state.googlemaplink !== this.props.mainBusiness.googlemaplink ||
         this.state.snapchat_handle !==
           this.props.mainBusiness.snapchat_handle ||
@@ -203,14 +212,14 @@ class RegisterForm extends Component {
         const info = {
           businessid: this.props.mainBusiness.businessid,
           whatsappnumber,
-          insta_handle: this.state.insta_handle,
+          insta_handle: this.props.mainBusiness.insta_handle,
           callnumber,
           googlemaplink: this.state.googlemaplink
             ? this.state.googlemaplink
             : "",
           snapchat_handle: this.state.snapchat_handle,
         };
-
+        // console.log("updateWebInfoForBusiness", JSON.stringify(info, null, 2));
         this.props.updateWebInfoForBusiness(info, false);
       } else {
         analytics.track(`a_error_form`, {
@@ -302,10 +311,10 @@ class RegisterForm extends Component {
   };
   validate = () => {
     const { translate } = this.props.screenProps;
-    const insta_handleError = validateWrapper(
-      "mandatory",
-      this.state.insta_handle
-    );
+    // const insta_handleError = validateWrapper(
+    //   "mandatory",
+    //   this.state.insta_handle
+    // );
 
     if (this.state.googlemaplink && this.state.googlemaplink.length > 0) {
       var googleMapLinkError = validateWrapper(
@@ -315,16 +324,21 @@ class RegisterForm extends Component {
     }
 
     this.setState({
-      insta_handleError,
+      //   insta_handleError,
       googleMapLinkError,
     });
-    if (insta_handleError || googleMapLinkError) {
+    if (
+      // insta_handleError ||
+      googleMapLinkError
+    ) {
       showMessage({
-        message: insta_handleError
-          ? translate("Please provide an instagram handle")
-          : googleMapLinkError
-          ? translate("Please provide a valid location link")
-          : "",
+        message:
+          // insta_handleError
+          //   ? translate("Please provide an instagram handle")
+          //   :
+          googleMapLinkError
+            ? translate("Please provide a valid location link")
+            : "",
         type: "warning",
         position: "top",
         duration: 2000,
@@ -357,17 +371,17 @@ class RegisterForm extends Component {
         new: this.props.edit ? false : true,
         insta_handle: this.state.insta_handle,
       });
-      await this.props.verifyInstagramHandle(this.state.insta_handle);
-      if (this.props.errorInstaHandle) {
-        analytics.track(`a_error_form`, {
-          error_page: "my_website_detail",
-          source: "my_website_detail",
-          source_action: "a_business_insta_handle",
-          new: this.props.edit ? false : true,
-          insta_handle: this.state.insta_handle,
-          error_description: this.props.errorInstaHandleMessage,
-        });
-      }
+      //   await this.props.verifyInstagramHandle(this.state.insta_handle);
+      //   if (this.props.errorInstaHandle) {
+      //     analytics.track(`a_error_form`, {
+      //       error_page: "my_website_detail",
+      //       source: "my_website_detail",
+      //       source_action: "a_business_insta_handle",
+      //       new: this.props.edit ? false : true,
+      //       insta_handle: this.state.insta_handle,
+      //       error_description: this.props.errorInstaHandleMessage,
+      //     });
+      //   }
     }
     if (stateError === "snapchat_handleError") {
       analytics.track(`a_business_snapchat_handle`, {
@@ -409,16 +423,17 @@ class RegisterForm extends Component {
           stateName1="insta_handle"
           label="instagram"
           placeholder1="Handle"
-          value={this.state.insta_handle}
+          value={this.props.mainBusiness.insta_handle}
           valueError1={this.state.insta_handleError}
           icon={InstagramIcon}
           setValue={this.setValue}
           getValidInfo={this.getValidInfo}
           key={"insta_handle"}
           compulsory={true}
+          disabled={true}
         />
 
-        {this.props.errorInstaHandle && (
+        {/* {this.props.errorInstaHandle && (
           <ErrorIcon
             width={25}
             height={25}
@@ -428,8 +443,8 @@ class RegisterForm extends Component {
         )}
         {!this.props.errorInstaHandle && (
           <SuccessIcon width={25} height={25} style={styles.errorIcon} />
-        )}
-        {this.props.errorInstaHandleMessage && (
+        )} */}
+        {/* {this.props.errorInstaHandleMessage && (
           <Text style={styles.instagramErrorText}>
             {translate(
               `{{insta_handle}} ${this.props.errorInstaHandleMessage.substr(
@@ -438,7 +453,7 @@ class RegisterForm extends Component {
               { insta_handle: this.state.insta_handle }
             )}
           </Text>
-        )}
+        )} */}
 
         <View style={styles.marginVertical}>
           <PhoneNoField

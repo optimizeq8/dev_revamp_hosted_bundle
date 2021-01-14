@@ -37,6 +37,7 @@ import LoadingModal from "../CampaignCreate/AdDesign/LoadingModal";
 import Loading from "../../MiniComponents/LoadingScreen";
 
 import { _pickImage } from "./PickImage";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 class MyWebsite extends Component {
   constructor(props) {
@@ -165,10 +166,11 @@ class MyWebsite extends Component {
       website = `https://${mainBusiness.weburl}.optimizeapp.com`;
     }
     return (
-      <SafeAreaView
-        style={myWebsiteStyles.safeAreaViewContainer}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <View>
+        <SafeAreaView
+          style={myWebsiteStyles.safeAreaViewContainer}
+          forceInset={{ bottom: "never", top: "always" }}
+        />
         <LinearGradient
           colors={["#9300FF", "#5600CB"]}
           locations={[0, 0.35]}
@@ -189,109 +191,66 @@ class MyWebsite extends Component {
           topRightButtonFunction={this.topRightButtonFunction}
           title={"My Website"}
         />
-        {/* <ScrollView> */}
-        <View style={styles.businesslogoView}>
-          <Image
-            style={{
-              width: 95,
-              height: 95,
-            }}
-            source={{
-              uri: mainBusiness.businesslogo || this.props.businessLogo,
-            }}
-          />
-        </View>
-        <Text style={styles.bsnNameText}>
-          {this.props.mainBusiness.businessname}
-        </Text>
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            alignSelf: "center",
-            alignItems: "center",
-            marginBottom: 13,
-          }}
-          onPress={this.uploadPhoto}
+        <ScrollView
+          contentContainerStyle={{ paddingBottom: heightPercentageToDP(15) }}
         >
-          <Pen width={15} fill={globalColors.orange} />
-          <Text style={styles.changeLogoText}>{translate("Change Logo")}</Text>
-        </TouchableOpacity>
-        <View style={styles.weburlView}>
-          <Website
-            website={website}
-            disabled={true}
-            screenProps={this.props.screenProps}
-            iconFill={globalColors.white}
-            labelColor={globalColors.white}
-          />
+          <View style={styles.businesslogoView}>
+            <Image
+              style={{
+                width: 95,
+                height: 95,
+              }}
+              source={{
+                uri: mainBusiness.businesslogo || this.props.businessLogo,
+              }}
+            />
+          </View>
+          <Text style={styles.bsnNameText}>
+            {this.props.mainBusiness.businessname}
+          </Text>
           <TouchableOpacity
-            style={styles.copyIcon2}
-            onPress={() => {
-              analytics.track(`a_copy_my_website_url`, {
-                source: "open_my_website",
-                source_action: "a_copy_my_website_url",
-                weburl: website,
-              });
-              Clipboard.setString(website);
+            style={{
+              flexDirection: "row",
+              alignSelf: "center",
+              alignItems: "center",
+              marginBottom: 13,
             }}
+            onPress={this.uploadPhoto}
           >
-            <CopyIcon fill={"#FFF"} style={styles.copyIcon} />
+            <Pen width={15} fill={globalColors.orange} />
+            <Text style={styles.changeLogoText}>
+              {translate("Change Logo")}
+            </Text>
           </TouchableOpacity>
+          <View style={styles.weburlView}>
+            <Website
+              website={website}
+              disabled={true}
+              screenProps={this.props.screenProps}
+              iconFill={globalColors.white}
+              labelColor={globalColors.white}
+            />
+            <TouchableOpacity
+              style={styles.copyIcon2}
+              onPress={() => {
+                analytics.track(`a_copy_my_website_url`, {
+                  source: "open_my_website",
+                  source_action: "a_copy_my_website_url",
+                  weburl: website,
+                });
+                Clipboard.setString(website);
+              }}
+            >
+              <CopyIcon fill={"#FFF"} style={styles.copyIcon} />
+            </TouchableOpacity>
+          </View>
 
-          {/* <View style={styles.colView}>
-              <Text style={styles.yourUrlText}>{translate("Your URL")}</Text>
-              <Text selectable style={styles.weburl}>
-                {website}
-              </Text>
-            </View> */}
-        </View>
-        {Platform.OS === "ios" && (
           <ProductSelect
             source={"open_my_website"}
             edit={true}
             screenProps={this.props.screenProps}
           />
-        )}
-
-        {Platform.OS === "android" && (
-          <WebView
-            onLoad={() => this.hideLoader()}
-            androidHardwareAccelerationDisabled={true}
-            style={{
-              backgroundColor: "#0000",
-              height: "100%",
-              flex: 1,
-            }}
-            contentContainerStyle={{
-              backgroundColor: "#0000",
-            }}
-            ref={(ref) => (this.webview = ref)}
-            source={{
-              uri: `https://www.optimizeapp.com/selectposts?edit=${true}&businessid=${
-                mainBusiness.businessid
-              }&insta_handle=${mainBusiness.insta_handle}&snapchat_handle=${
-                mainBusiness.snapchat_handle
-              }&callnumber=${mainBusiness.callnumber}&whatsappnumber=${
-                mainBusiness.whatsappnumber
-              }&googlemaplink=${mainBusiness.googlemaplink}&businessname=${
-                mainBusiness.businessname
-              }`,
-            }}
-            cacheEnabled={false}
-            incognito={true}
-          />
-        )}
-        {this.state.viewLoader && (
-          <View
-            style={{
-              height: "100%",
-              backgroundColor: "#0000",
-            }}
-          >
-            <Loading top={0} />
-          </View>
-        )}
-        {/* </ScrollView> */}
+        </ScrollView>
 
         <LoadingModal
           videoUrlLoading={false}
@@ -302,7 +261,7 @@ class MyWebsite extends Component {
           loaded={this.state.loaded}
           screenProps={this.props.screenProps}
         />
-      </SafeAreaView>
+      </View>
     );
   }
 }

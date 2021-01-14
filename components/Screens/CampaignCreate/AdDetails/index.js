@@ -151,13 +151,6 @@ class AdDetails extends Component {
     ) {
       this.handleMultipleCountrySelection();
     }
-    if (
-      JSON.stringify(this.state.campaignInfo) !==
-      JSON.stringify(prevState.campaignInfo)
-    ) {
-      //to not set the audince again from navigation when AdDetails is focused
-      this.props.navigation.setParams({ audienceSelected: false });
-    }
   }
   handleBackButton = () => {
     if (!this.props.navigation.isFocused()) {
@@ -910,9 +903,9 @@ class AdDetails extends Component {
             error_page: "ad_targeting",
             source_action: "a_change_campaign_custom_budget",
             error_description:
-              validateWrapper("Budget", rawValue) +
-              " $" +
-              this.props.campaign.minValueBudget,
+              validateWrapper("Budget", rawValue) + " $" + this.props.campaign
+                ? this.props.campaign.minValueBudget
+                : "error",
           });
         }
         showMessage({
@@ -1275,7 +1268,7 @@ class AdDetails extends Component {
   setSelectedAudience = (targeting, coordinates) => {
     let editedCampaign = cloneDeep(this.state.campaignInfo);
     let campaignTargeting = targeting;
-    let locationsInfo = coordinates;
+    let locationsInfo = coordinates || [];
     if (this.editCampaign) {
       campaignTargeting.geos = editedCampaign.targeting.geos;
     }
@@ -1306,7 +1299,7 @@ class AdDetails extends Component {
       )
     );
     let markers = [];
-    if (locationsInfo) {
+    if (locationsInfo && locationsInfo.length > 0) {
       locationsInfo = cloneDeep(JSON.parse(locationsInfo));
       markers = cloneDeep(campaignTargeting.locations[0].circles);
     }
@@ -1474,6 +1467,10 @@ class AdDetails extends Component {
             region_id={this.state.campaignInfo.targeting.geos}
             filterRegions={this.filterRegions}
             locationsSelected={
+              campaignInfo.targeting &&
+              campaignInfo.targeting.locations &&
+              campaignInfo.targeting.locations[0] &&
+              campaignInfo.targeting.locations[0].circles &&
               campaignInfo.targeting.locations[0].circles.length > 0
             }
             onSelectedMapChange={this.onSelectedMapChange}

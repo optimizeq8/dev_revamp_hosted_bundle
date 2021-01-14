@@ -16,64 +16,62 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_CURRENT_USER:
-      const MixpanelSDK = new MixpanelInstance(
-        "c9ade508d045eb648f95add033dfb017",
-        false,
-        false
-      );
+      // const MixpanelSDK = new MixpanelInstance(
+      //   "ef78d7f5f4160b74fda35568224f6cfa",
+      //   false,
+      //   false
+      // );
 
-      MixpanelSDK.initialize()
-        .then(() => {
-          AsyncStorage.getItem("appLanguage")
-            .then((language) => {
-              let userTraits = {
-                ...action.payload.user,
-                $name:
-                  action.payload.user.firstname +
-                  " " +
-                  action.payload.user.lastname,
-                selected_language: language,
-                $phone: "+" + action.payload.user.mobile,
-                logged_out: false,
-              };
-              // NOTE: expo-notification not working for iOS
-              Notifications.getDevicePushTokenAsync()
-                .then((token) => {
-                  if (Platform.OS === "android") {
-                    userTraits["$android_devices"] = [token.data];
-                  } else {
-                    userTraits["$ios_devices"] = [token.data];
-                  }
-                  analytics.identify(action.payload.user.userid, userTraits);
-                })
-                .catch((err) => {
-                  // console.log(err);
-                  analytics.track(`a_error`, {
-                    error_page: "a_error_token",
-                    error_description: err.response || err.message,
-                  });
-                  analytics.identify(action.payload.user.userid, userTraits);
-                });
-
-              MixpanelSDK.identify(action.payload.user.userid);
+      // MixpanelSDK.initialize()
+      //   .then(() => {
+      AsyncStorage.getItem("appLanguage")
+        .then((language) => {
+          let userTraits = {
+            ...action.payload.user,
+            $name:
+              action.payload.user.firstname +
+              " " +
+              action.payload.user.lastname,
+            selected_language: language,
+            $phone: "+" + action.payload.user.mobile,
+            logged_out: false,
+          };
+          // NOTE: expo-notification not working for iOS
+          Notifications.getDevicePushTokenAsync()
+            .then((token) => {
+              if (Platform.OS === "android") {
+                userTraits["$android_devices"] = [token.data];
+              } else {
+                userTraits["$ios_devices"] = [token.data];
+              }
+              analytics.identify(action.payload.user.userid, userTraits);
             })
-            .catch((error) => {
+            .catch((err) => {
+              // console.log(err);
               analytics.track(`a_error`, {
-                error_page: "a_error_app_language",
+                error_page: "a_error_token",
                 error_description: err.response || err.message,
               });
-              analytics.alias(action.payload.user.userid);
-              analytics.identify(action.payload.user.userid, {
-                ...action.payload.user,
-                $name:
-                  action.payload.user.firstname +
-                  " " +
-                  action.payload.user.lastname,
-                $phone: "+" + action.payload.user.mobile,
-                logged_out: false,
-              });
+              analytics.identify(action.payload.user.userid, userTraits);
             });
-          MixpanelSDK.identify(action.payload.user.userid);
+          // MixpanelSDK.identify(action.payload.user.userid);
+        })
+        .catch((error) => {
+          analytics.track(`a_error`, {
+            error_page: "a_error_app_language",
+            error_description: err.response || err.message,
+          });
+          // Catch never gets called
+          // analytics.alias(action.payload.user.userid);
+          // analytics.identify(action.payload.user.userid, {
+          //   ...action.payload.user,
+          //   $name:
+          //     action.payload.user.firstname +
+          //     " " +
+          //     action.payload.user.lastname,
+          //   $phone: "+" + action.payload.user.mobile,
+          //   logged_out: false,
+          // });
         })
         .catch((err) => {
           analytics.track(`a_error`, {
