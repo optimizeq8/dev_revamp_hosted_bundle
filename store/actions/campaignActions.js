@@ -1540,9 +1540,16 @@ export const verifyDestinationUrl = (url, submit, translate) => {
       },
     });
     createBaseUrl()
-      .post(`checkDestinationURL`, {
-        url,
-      })
+      .post(
+        `checkDestinationURL`,
+        {
+          url,
+        },
+        {
+          timeout: 5000,
+          timeoutErrorMessage: "Something went wrong, please try again.",
+        }
+      )
       .then((res) => res.data)
       .then((data) => {
         analytics.track(`a_verify_destination_url`, {
@@ -1575,6 +1582,7 @@ export const verifyDestinationUrl = (url, submit, translate) => {
         });
       })
       .catch((error) => {
+        errorMessageHandler(error);
         return dispatch({
           type: actionTypes.VERIFY_DESTINATION_URL,
           payload: { success: false, loading: false },
