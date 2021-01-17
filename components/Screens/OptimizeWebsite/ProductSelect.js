@@ -211,6 +211,8 @@ class ProductSelect extends React.Component {
           )}
           {!this.props.instagramPostLoading && this.props.instagramPostList && (
             <FlatList
+              scrollEnabled={false}
+              scrollEventThrottle={1.5}
               contentContainerStyle={styles.list}
               initialNumToRender={12}
               numColumns={4}
