@@ -904,7 +904,7 @@ class AdDetails extends Component {
             source_action: "a_change_campaign_custom_budget",
             error_description:
               validateWrapper("Budget", rawValue) + " $" + this.props.campaign
-                ? this.props.campaign.minValueBudget
+                ? this.props.campaign && this.props.campaign.minValueBudget
                 : "error",
           });
         }
