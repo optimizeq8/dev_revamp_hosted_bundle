@@ -115,6 +115,7 @@ export {
   reset_transaction_reducer,
   getWalletTransactionsHistory,
   getPaymentMethods,
+  payment_request_payment_method,
 } from "./transactionActions";
 
 export {

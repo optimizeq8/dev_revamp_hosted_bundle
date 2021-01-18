@@ -132,6 +132,10 @@ class PaymentForm extends Component {
   };
   _openWebBrowserAsync = async () => {
     try {
+      console.log(
+        "this.props.payment_data_wallet",
+        this.props.payment_data_wallet
+      );
       analytics.track(`payment_processing`, {
         source: "payment_mode",
         source_action: "a_payment_processing",
@@ -139,7 +143,10 @@ class PaymentForm extends Component {
         mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
         campaign_id: this.props.campaign_id,
       });
-      if (this.state.choice === 2) {
+      if (
+        this.state.choice === 2 &&
+        this.props.mainBusiness.country === "Kuwait"
+      ) {
         this.props.navigation.navigate("WebView", {
           url: this.state.addingCredits
             ? this.props.payment_data_wallet.knet_payment_url
@@ -149,7 +156,20 @@ class PaymentForm extends Component {
           source_action: "a_payment_processing",
         });
       }
-      if (this.state.choice === 3) {
+      if (
+        this.state.choice === 2 &&
+        this.props.mainBusiness.country !== "Kuwait"
+      ) {
+        this.props.navigation.navigate("WebView", {
+          url: this.state.addingCredits
+            ? this.props.payment_data_wallet.knet_payment_url
+            : this.props.payment_data.knet_payment_url,
+          title: "Knet Payment",
+          source: "payment_processing",
+          source_action: "a_payment_processing",
+        });
+      }
+      if (this.state.choice !== 1 || this.state.choice !== 2) {
         this.props.navigation.navigate("WebView", {
           url: this.state.addingCredits
             ? this.props.payment_data_wallet.cc_payment_url
@@ -230,19 +250,27 @@ class PaymentForm extends Component {
         this.state.choice === 2 &&
         this.props.mainBusiness.country !== "Kuwait"
       ) {
-        this.props.payment_request_knet(
+        this.props.payment_request_payment_method(
           this.props.campaign_id,
+          this.props.paymentMethods[this.state.choice - 2].PaymentMethodId,
           this._openWebBrowserAsync,
           this.props.navigation,
           this.closeBrowserLoading
         );
       } else if (this.state.choice === 3) {
-        this.props.payment_request_credit_card(
+        this.props.payment_request_payment_method(
           this.props.campaign_id,
+          this.props.paymentMethods[this.state.choice - 2].PaymentMethodId,
           this._openWebBrowserAsync,
           this.props.navigation,
           this.closeBrowserLoading
         );
+        // this.props.payment_request_credit_card(
+        //   this.props.campaign_id,
+        //   this._openWebBrowserAsync,
+        //   this.props.navigation,
+        //   this.closeBrowserLoading
+        // );
       }
     }
   };
@@ -447,21 +475,24 @@ class PaymentForm extends Component {
               uppercase={true}
             />
           )}
-          {this.props.paymentMethods.map((method, index) => (
-            <GradientButton
-              key={method.PaymentMethodEn}
-              radius={35}
-              transparent={this.state.choice !== index + 2}
-              style={[styles.whitebutton2]}
-              textStyle={[
-                styles.whitebuttontext,
-                this.state.choice === index + 2 && globalStyles.whiteTextColor,
-              ]}
-              onPressAction={() => this._handleChoice(index + 2)}
-              text={translate(method.PaymentMethodEn)}
-              uppercase={true}
-            />
-          ))}
+          {this.props.paymentMethods &&
+            this.props.paymentMethods.length > 0 &&
+            this.props.paymentMethods.map((method, index) => (
+              <GradientButton
+                key={method.PaymentMethodEn}
+                radius={35}
+                transparent={this.state.choice !== index + 2}
+                style={[styles.whitebutton2]}
+                textStyle={[
+                  styles.whitebuttontext,
+                  this.state.choice === index + 2 &&
+                    globalStyles.whiteTextColor,
+                ]}
+                onPressAction={() => this._handleChoice(index + 2)}
+                text={translate(method.PaymentMethodEn)}
+                uppercase={true}
+              />
+            ))}
           {/* {this.showKnet && (
             <GradientButton
               radius={35}
@@ -792,7 +823,22 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
-
+  payment_request_payment_method: (
+    campaign_id,
+    PaymentMethodId,
+    openBrowser,
+    navigation,
+    closeBrowserLoading
+  ) =>
+    dispatch(
+      actionCreators.payment_request_payment_method(
+        campaign_id,
+        PaymentMethodId,
+        openBrowser,
+        navigation,
+        closeBrowserLoading
+      )
+    ),
   payment_request_knet: (
     campaign_id,
     openBrowser,

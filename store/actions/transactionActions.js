@@ -714,3 +714,83 @@ export const getPaymentMethods = (businessCountry, amount) => {
       });
   };
 };
+
+export const payment_request_payment_method = (
+  campaign_id,
+  PaymentMethodId,
+  openBrowser,
+  navigation,
+  closeBrowserLoading
+) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING,
+      payload: true,
+    });
+    console.log("PaymentMethodId", PaymentMethodId);
+    var url =
+      getState().transA.channel === ""
+        ? `makemfpayment/${campaign_id}`
+        : `makemfpayment/${campaign_id}/${getState().transA.channel}`;
+
+    createBaseUrl()
+      .post(url, {
+        PaymentMethodId: PaymentMethodId,
+      })
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        console.log("data", JSON.stringify(data, null, 2));
+        if (data.mf_payment_url) {
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data,
+          });
+        } else {
+          analytics.track(`payment_processing`, {
+            source: "payment_mode",
+            source_action: "a_payment_processing",
+            mode_of_payment: "CREDIT CARD",
+            amount: data.amount,
+            campaign_id,
+            action_status: data.success ? "success" : "failure",
+            error_description: !data.success ? data.status : null,
+          });
+          navigation.navigate("SuccessRedirect", {
+            ...data,
+            source: "payment_processing",
+            source_action: "a_payment_processing",
+            payment_mode: "CREDIT CARD",
+          });
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data,
+          });
+        }
+      })
+      .then(() => {
+        if (getState().transA.campaign_payment_data.cc_payment_url) {
+          openBrowser();
+        }
+      })
+      .catch((err) => {
+        // console.log("payment_request_cc", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top",
+        });
+        closeBrowserLoading();
+        return dispatch({
+          type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
+          payload: {
+            loading: false,
+          },
+        });
+      });
+  };
+};
