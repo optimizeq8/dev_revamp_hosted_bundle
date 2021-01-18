@@ -69,6 +69,8 @@ import { persistor } from "../../../../store";
 import { copilot, walkthroughable, CopilotStep } from "react-native-copilot";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import AsyncStorage from "@react-native-community/async-storage";
+import CopilotTooltip from "../../../MiniComponents/CopilotTooltip";
+import CopilotStepNumber from "../../../MiniComponents/CopilotTooltip/CopilotStepNumber";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -1349,7 +1351,7 @@ class AdDesign extends Component {
                       />
                     ) : (
                       <CopilotStep
-                        text="This is a hello world example!"
+                        text="Add your media here, It can be a video or an image. Make sure your ad looks professional so that it can attract a lot of people!"
                         order={3}
                         name="media"
                       >
@@ -1407,7 +1409,7 @@ class AdDesign extends Component {
                     )}
                   </View>
                   <CopilotStep
-                    text="This is a hello world example!"
+                    text={`You need to add a swipe up destination to send your audince to and select a call to action to push your audince into taking action.`}
                     order={4}
                     name="swipeup"
                   >
@@ -1826,12 +1828,48 @@ const circleSvgPath = ({ position, size, canvasSize, step }): string => {
     )} ${position.y._value}Z`;
 };
 
+const TooltipComponent = ({
+  isFirstStep,
+  isLastStep,
+  handleNext,
+  handlePrev,
+  handleStop,
+  currentStep,
+  labels,
+}) => (
+  <CopilotTooltip
+    isFirstStep={isFirstStep}
+    isLastStep={isLastStep}
+    handleNext={handleNext}
+    handlePrev={handlePrev}
+    handleStop={handleStop}
+    currentStep={currentStep}
+    labels={labels}
+  />
+);
+
+const StepNumberComponent = ({
+  isFirstStep,
+  isLastStep,
+  currentStep,
+  currentStepNumber,
+}) => (
+  <CopilotStepNumber
+    isFirstStep={isFirstStep}
+    isLastStep={isLastStep}
+    currentStep={currentStep}
+    currentStepNumber={currentStepNumber}
+  />
+);
 export default copilot({
   overlay: "svg", // or 'view'
   animated: true,
+  tooltipComponent: TooltipComponent,
   svgMaskPath: circleSvgPath,
+  stepNumberComponent: StepNumberComponent,
+  arrowColor: globalColors.twilight,
   tooltipStyle: {
-    backgroundColor: globalColors.white,
+    backgroundColor: globalColors.twilight,
     borderRadius: 15,
   },
 })(connect(mapStateToProps, mapDispatchToProps)(AdDesign));
