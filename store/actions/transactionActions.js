@@ -676,3 +676,30 @@ export const getWalletTransactionsHistory = () => {
       });
   };
 };
+
+export const getPaymentMethods = (businessCountry) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.PAYMENT_MODES,
+      payload: { data: [], loading: true },
+    });
+
+    createBaseUrl()
+      .get(`/paymentMethod/${businessCountry}`)
+      .then((data) => {
+        data.data;
+      })
+      .then((data) => {
+        return dispatch({
+          type: actionTypes.PAYMENT_MODES,
+          payload: { data: data, data, loading: false },
+        });
+      })
+      .catch((error) => {
+        return dispatch({
+          type: actionTypes.PAYMENT_MODES,
+          payload: { data: [], loading: false },
+        });
+      });
+  };
+};
