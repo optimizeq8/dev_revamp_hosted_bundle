@@ -677,7 +677,12 @@ export const getWalletTransactionsHistory = () => {
   };
 };
 
-export const getPaymentMethods = (businessCountry) => {
+/**
+ * Method: POST
+ * @param {*} businessCountry  to fetch the payment method based on the business country
+ * @param {*} amount in USD
+ */
+export const getPaymentMethods = (businessCountry, amount) => {
   return (dispatch) => {
     dispatch({
       type: actionTypes.PAYMENT_MODES,
@@ -685,7 +690,10 @@ export const getPaymentMethods = (businessCountry) => {
     });
 
     createBaseUrl()
-      .get(`/paymentMethod/${businessCountry}`)
+      .post(`/paymentMethod`, {
+        businessCountry,
+        amount,
+      })
       .then((data) => {
         data.data;
       })
