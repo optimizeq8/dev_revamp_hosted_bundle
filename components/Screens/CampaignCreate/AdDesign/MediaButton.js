@@ -21,55 +21,65 @@ export default class MediaButton extends Component {
       disabled,
       navigateToCover,
       rejected,
+      copilot,
     } = this.props;
     const { translate } = this.props.screenProps;
-
     if (media && media !== "//") {
       return (
-        <Button
-          disabled={disabled}
-          transparent
-          onPress={() => {
-            if (navigateToCover) {
-              NavigationService.navigate("AdCover", { rejected });
-            } else {
-              snapAdCard
-                ? _handleStoryAdCards({
-                    index: snapCardInfo.index,
-                    ...snapCardInfo.item,
-                  })
-                : cover
-                ? _pickImage("Images")
-                : setMediaModalVisible(true);
-            }
-          }}
-          style={[
-            styles.inputMiddleButton2,
-            snapAdCard
-              ? {
-                  width: "100%",
-                  height: 40,
-                  top: "30%",
-                }
-              : {},
-          ]}
-        >
-          <EditCameraIcon width={"100%"} height={"100%"} />
-          <Text
+        <View {...copilot}>
+          <Button
+            disabled={disabled}
+            transparent
+            onPress={() => {
+              if (navigateToCover) {
+                NavigationService.navigate("AdCover", { rejected });
+              } else {
+                snapAdCard
+                  ? _handleStoryAdCards({
+                      index: snapCardInfo.index,
+                      ...snapCardInfo.item,
+                    })
+                  : cover
+                  ? _pickImage("Images")
+                  : setMediaModalVisible(true);
+              }
+            }}
             style={[
-              styles.mediaButtonMsgEdit,
-              snapAdCard ? {} : { width: 150 },
+              styles.inputMiddleButton2,
+              snapAdCard
+                ? {
+                    width: "100%",
+                    height: 40,
+                    top: "30%",
+                  }
+                : {},
             ]}
           >
-            {type === "cover"
-              ? translate("Edit Cover Image")
-              : translate("Edit Media")}
-          </Text>
-        </Button>
+            <EditCameraIcon width={"100%"} height={"100%"} />
+            <Text
+              style={[
+                styles.mediaButtonMsgEdit,
+                snapAdCard ? {} : { width: 150 },
+              ]}
+            >
+              {type === "cover"
+                ? translate("Edit Cover Image")
+                : translate("Edit Media")}
+            </Text>
+          </Button>
+        </View>
       );
     } else {
       return (
-        <>
+        <View
+          {...copilot}
+          style={{
+            alignSelf: "center",
+            position: "absolute",
+            width: 90,
+            height: 90,
+          }}
+        >
           <Button
             disabled={disabled}
             style={[
@@ -106,7 +116,7 @@ export default class MediaButton extends Component {
                 : !snapAdCard && translate("Add Media")}
             </Text>
           </Button>
-        </>
+        </View>
       );
     }
   }
