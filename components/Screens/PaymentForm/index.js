@@ -216,7 +216,20 @@ class PaymentForm extends Component {
           this._openWebBrowserAsync,
           this.state.choice === 2 ? "KNET" : "CREDIT CARD"
         );
-      } else if (this.state.choice === 2) {
+      } else if (
+        this.state.choice === 2 &&
+        this.props.mainBusiness.country === "Kuwait"
+      ) {
+        this.props.payment_request_knet(
+          this.props.campaign_id,
+          this._openWebBrowserAsync,
+          this.props.navigation,
+          this.closeBrowserLoading
+        );
+      } else if (
+        this.state.choice === 2 &&
+        this.props.mainBusiness.country !== "Kuwait"
+      ) {
         this.props.payment_request_knet(
           this.props.campaign_id,
           this._openWebBrowserAsync,
@@ -434,8 +447,22 @@ class PaymentForm extends Component {
               uppercase={true}
             />
           )}
-
-          {this.showKnet && (
+          {this.props.paymentMethods.map((method, index) => (
+            <GradientButton
+              key={method.PaymentMethodEn}
+              radius={35}
+              transparent={this.state.choice !== index + 2}
+              style={[styles.whitebutton2]}
+              textStyle={[
+                styles.whitebuttontext,
+                this.state.choice === index + 2 && globalStyles.whiteTextColor,
+              ]}
+              onPressAction={() => this._handleChoice(index + 2)}
+              text={translate(method.PaymentMethodEn)}
+              uppercase={true}
+            />
+          ))}
+          {/* {this.showKnet && (
             <GradientButton
               radius={35}
               transparent={this.state.choice !== 2}
@@ -460,7 +487,7 @@ class PaymentForm extends Component {
             onPressAction={() => this._handleChoice(3)}
             text={translate("Credit Card")}
             uppercase={true}
-          />
+          /> */}
         </View>
         {this.state.choice === 1 && (
           <UseWallet
@@ -472,22 +499,27 @@ class PaymentForm extends Component {
             navigation={this.props.navigation}
           />
         )}
-        {this.state.choice === 2 && (
-          <View style={styles.knetContainer}>
-            <Image
-              style={styles.media}
-              source={require("../../../assets/images/knet.png")}
-              resizeMode="contain"
-            />
-            <Text style={styles.errortext}>
-              {translate("You will be redirected to")}
-              {"\n"}
-              {translate("payment gateway for the")} {"\n"}
-              {translate("payment process")}
-            </Text>
-          </View>
-        )}
-        {this.state.choice === 3 && (
+        {this.state.choice !== 1 &&
+          this.props.paymentMethods &&
+          this.props.paymentMethods.length > 0 && (
+            <View style={styles.knetContainer}>
+              <Image
+                style={styles.media}
+                source={{
+                  uri: this.props.paymentMethods[this.state.choice - 2]
+                    .ImageUrl,
+                }}
+                resizeMode="contain"
+              />
+              <Text style={styles.errortext}>
+                {translate("You will be redirected to")}
+                {"\n"}
+                {translate("payment gateway for the")} {"\n"}
+                {translate("payment process")}
+              </Text>
+            </View>
+          )}
+        {/* {this.state.choice === 3 && (
           <View style={styles.mastercardContainer}>
             <Image
               style={[styles.media, styles.mastercardImage]}
@@ -500,7 +532,7 @@ class PaymentForm extends Component {
               {translate("payment process")}
             </Text>
           </View>
-        )}
+        )} */}
       </Content>
     );
   };

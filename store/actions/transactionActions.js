@@ -683,9 +683,6 @@ export const getWalletTransactionsHistory = () => {
  * @param {*} amount in USD
  */
 export const getPaymentMethods = (businessCountry, amount) => {
-  console.log("getPaymentMethods amount", amount);
-  console.log("getPaymentMethods businessCountry", businessCountry);
-
   return (dispatch) => {
     dispatch({
       type: actionTypes.PAYMENT_MODES,
@@ -693,23 +690,26 @@ export const getPaymentMethods = (businessCountry, amount) => {
     });
 
     createBaseUrl()
-      .post(`/paymentMethod`, {
-        businessCountry,
+      .post(`/availablePaymentMethods`, {
+        country: businessCountry,
         amount,
       })
-      .then((data) => {
-        data.data;
+      .then((response) => {
+        return response.data;
       })
       .then((data) => {
         return dispatch({
           type: actionTypes.PAYMENT_MODES,
-          payload: { data: data, data, loading: false },
+          payload: { data: data.data, loading: false },
         });
       })
       .catch((error) => {
         return dispatch({
           type: actionTypes.PAYMENT_MODES,
-          payload: { data: [], loading: false },
+          payload: {
+            data: [],
+            loading: false,
+          },
         });
       });
   };

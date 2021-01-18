@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
     justifyContent: "center",
     height: 70,
-    width: 100,
+    // width: 100,
   },
   whitebutton3: {
     marginHorizontal: 0,
