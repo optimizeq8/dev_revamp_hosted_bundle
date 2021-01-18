@@ -141,6 +141,18 @@ class InstagramFeedAdTargetting extends Component {
         { arrayMerge: overwriteMerge }
       );
 
+      // Make lifetime_budget_micro as ( lifetime_budget_micro / duration) coz while calling the updateInstagramCampaign it used to update the value as duration * lifetime_budget_micro
+      let duration = Math.round(
+        Math.abs(
+          (new Date(editedCampaign.start_time).getTime() -
+            new Date(editedCampaign.end_time).getTime()) /
+            86400000
+        )
+      );
+      editedCampaign.lifetime_budget_micro = Math.round(
+        editedCampaign.lifetime_budget_micro / duration
+      );
+
       getCountryName = editedCampaign.targeting.geo_locations.countries.map(
         (country) =>
           countries.find((count) => country.toLowerCase() === count.value)
@@ -205,6 +217,7 @@ class InstagramFeedAdTargetting extends Component {
           campaignInfo: editedCampaign,
           startEditing: false,
           selectedGender,
+          duration,
         },
         () => this._calcReach()
       );
