@@ -633,7 +633,6 @@ class InstagramFeedAdTargetting extends Component {
     // }
     //gender is coming in as 1,2
     replace.targeting.genders = [gender];
-    console.log("replace.targeting.genders", replace.targeting.genders, gender);
     analytics.track(`a_ad_gender`, {
       source: "ad_targeting",
       source_action: "a_ad_gender",
