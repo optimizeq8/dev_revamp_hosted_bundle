@@ -84,10 +84,6 @@ class Wallet extends Component {
           modalVisible: false,
         },
         () => {
-          this.props.getPaymentMethods(
-            this.props.mainBusiness.country,
-            this.state.amount
-          );
           this.props.getWalletAmountInKwd(this.state.amount);
           this.props.navigation.navigate("PaymentForm", {
             amount: this.state.amount,
@@ -384,7 +380,6 @@ const mapStateToProps = (state) => ({
   loading: state.transA.loading,
   walletTransactionList: state.transA.walletTransactionList,
   walletTransactionListLoading: state.transA.walletTransactionListLoading,
-  mainBusiness: state.account.mainBusiness,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -393,8 +388,6 @@ const mapDispatchToProps = (dispatch) => ({
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
   getWalletTransactionsHistory: () =>
     dispatch(actionCreators.getWalletTransactionsHistory()),
-  getPaymentMethods: (businessCountry, amount) =>
-    dispatch(actionCreators.getPaymentMethods(businessCountry, amount)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

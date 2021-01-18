@@ -683,6 +683,9 @@ export const getWalletTransactionsHistory = () => {
  * @param {*} amount in USD
  */
 export const getPaymentMethods = (businessCountry, amount) => {
+  console.log("getPaymentMethods amount", amount);
+  console.log("getPaymentMethods businessCountry", businessCountry);
+
   return (dispatch) => {
     dispatch({
       type: actionTypes.PAYMENT_MODES,

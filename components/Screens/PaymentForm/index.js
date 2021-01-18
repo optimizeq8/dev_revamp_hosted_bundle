@@ -67,7 +67,15 @@ class PaymentForm extends Component {
       browserLoading: false,
     });
     this.props.getWalletAmount();
-
+    let amount =
+      this.props.navigation.getParam("addingCredits", false) ||
+      this.props.navigation.getParam("refundAmountToWallet", false)
+        ? this.props.navigation.getParam("amount", 0)
+        : this.props.walletUsed
+        ? this.props.campaign_balance_amount
+        : this.props.campaign_budget && this.props.campaign_budget;
+    // This is just to fetch the payment methods based on country
+    this.props.getPaymentMethods(this.props.mainBusiness.country, amount);
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidUpdate(prevProps, prevState) {
@@ -603,7 +611,9 @@ class PaymentForm extends Component {
                     styles.mainCard,
                     // { opacity: this.props.loadingTrans ? 0.5 : 1 }
                   ]}
-                  disabled={this.props.loadingTrans}
+                  disabled={
+                    this.props.loadingTrans || this.props.loadingPaymentMethods
+                  }
                 >
                   <View style={styles.flexBoxRow}>
                     <Text
@@ -616,7 +626,8 @@ class PaymentForm extends Component {
                         ? translate("Top Up Now")
                         : translate("Pay Now")}
                     </Text>
-                    {this.props.loadingTrans && (
+                    {(this.props.loadingTrans ||
+                      this.props.loadingPaymentMethods) && (
                       <ActivityIndicator
                         color={globalColors.red}
                         style={{ right: 10, position: "absolute" }}
@@ -744,6 +755,8 @@ const mapStateToProps = (state) => ({
   adType: state.campaignC.adType,
   movingAmountToWallet: state.campaignC.movingAmountToWallet,
   movingAmountToWalletInstagram: state.instagramAds.movingAmountToWallet,
+  paymentMethods: state.transA.paymentMethods,
+  loadingPaymentMethods: state.transA.loadingPaymentMethods,
 });
 const mapDispatchToProps = (dispatch) => ({
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
@@ -787,5 +800,7 @@ const mapDispatchToProps = (dispatch) => ({
 
   moveRejectedAdAmountToWalletInstagram: (campaign_id) =>
     dispatch(actionCreators.moveRejectedAdAmountToWalletInstagram(campaign_id)),
+  getPaymentMethods: (businessCCountry, amount) =>
+    dispatch(actionCreators.getPaymentMethods(businessCCountry, amount)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentForm);
