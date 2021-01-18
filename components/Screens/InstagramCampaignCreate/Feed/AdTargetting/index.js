@@ -30,7 +30,7 @@ import { connect } from "react-redux";
 
 //Functions
 import validateWrapper from "../../../../../ValidationFunctions/ValidateWrapper";
-import combineMerge from "./combineMerge";
+import combineMerge, { overwriteMerge } from "./combineMerge";
 import deepmerge from "deepmerge";
 import cloneDeep from "lodash/cloneDeep";
 import isEqual from "lodash/isEqual";
@@ -138,7 +138,7 @@ class InstagramFeedAdTargetting extends Component {
       let editedCampaign = deepmerge(
         this.state.campaignInfo,
         this.props.navigation.getParam("campaign", {}),
-        { arrayMerge: combineMerge }
+        { arrayMerge: overwriteMerge }
       );
 
       getCountryName = editedCampaign.targeting.geo_locations.countries.map(
@@ -191,10 +191,10 @@ class InstagramFeedAdTargetting extends Component {
       let selectedGender = "";
       switch (editedCampaign.targeting.genders[0]) {
         case "1":
-          selectedGender = "MALE";
+          selectedGender = "1";
           break;
         case "2":
-          selectedGender = "FEMALE";
+          selectedGender = "2";
           break;
         default:
           selectedGender = "";
