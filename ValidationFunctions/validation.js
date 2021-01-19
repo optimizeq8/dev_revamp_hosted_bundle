@@ -48,7 +48,7 @@ const validation = {
     //   allowLocal: true
     // },
     // format: /^((https+|http+|ftp|smtp):\/\/)+(www.)?[a-z0-9]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+\/?)*$/i,
-    format: /^((https+|http+|ftp|smtp):\/\/){0,1}(?!(www\.)?(twitter\.?|snapchat\.?|instagram\.?|youtube\.?|youtu.be|facebook\.?|fb.me|whatsapp\.?|wa.me|api.whatsapp\.?))(www\.)?[a-z0-9_-]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+(\.[a-z]{2,})*)*(\\?[?;&a-z0-9\\d%_~+=-]*)?\/?$/i,
+    format: /^((https+|http+|ftp|smtp):\/\/){0,1}(?!(www\.)?(twitter\.?|snapchat\.?|instagram\.?|youtube\.?|youtu.be|facebook\.?|fb.me|whatsapp\.?|wa.me|api.whatsapp\.?))(www\.)?[/\u0600-\u06FF/a-z0-9_-]{1,63}\.[/\u0600-\u06FF/a-z]{2,}(\/?[/\u0600-\u06FF/a-zA-Z0-9#]+(\.[/\u0600-\u06FF/a-z]{2,})*)*(\\?[?;&/\u0600-\u06FF/a-z0-9\\d%_.~+=-]*)?\/?$/i,
     presence: { allowEmpty: false },
   },
   websiteInstagram: {
@@ -58,12 +58,12 @@ const validation = {
     //   allowLocal: true
     // },
     // format: /^((https+|http+|ftp|smtp):\/\/)+(www.)?[a-z0-9]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+\/?)*$/i,
-    format: /^((https+|http+|ftp|smtp):\/\/){0,1}(?!(www\.)?(instagram\.?))(www\.)?[a-z0-9_-]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+(\.[a-z]{2,})*)*(\\?[?;&a-z0-9\\d%_~+=-]*)?\/?$/i,
+    format: /^((https+|http+|ftp|smtp):\/\/){0,1}(?!(www\.)?(instagram\.?))(www\.)?[/\u0600-\u06FF/a-z0-9_-]{1,63}\.[/\u0600-\u06FF/a-z]{2,}(\/?[/\u0600-\u06FF/a-zA-Z0-9#]+(\.[/\u0600-\u06FF/a-z]{2,})*)*(\\?[?;&/\u0600-\u06FF/a-z0-9\\d%_.~+=-]*)?\/?$/i,
     presence: { allowEmpty: false },
   },
   url: {
     // Just to check if it's a valid website independent of social platforms
-    format: /^((https+|http+|ftp|smtp):\/\/){0,1}(www.|m.)?\b[a-z0-9_-]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#?]+(\.[a-z]{2,})*(\\?[?;&a-z\\d%_~+=-]*)?)*\/?$/i,
+    format: /^((https+|http+|ftp|smtp):\/\/){0,1}(www.|m.)?\b[/\u0600-\u06FF/a-z0-9_-]{1,63}\.[/\u0600-\u06FF/a-z]{2,}(\/?[/\u0600-\u06FF/a-zA-Z0-9#?]+(\.[/\u0600-\u06FF/a-z]{2,})*(\\?[?;&/\u0600-\u06FF/a-z\\d%_~+=-]*)?)*\/?$/i,
     presence: { allowEmpty: false },
   },
   deepLink: {
@@ -86,5 +86,4 @@ const validation = {
     },
   },
 };
-
 export default validation;
