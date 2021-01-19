@@ -44,7 +44,7 @@ import { colors } from "../../../GradiantColors/colors";
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import isNull from "lodash/isNull";
-import PenIconBrand from "./PenIconBrand";
+import CreativeHeadline from "./CreativeHeadline";
 import MediaButton from "../AdDesign/MediaButton";
 import globalStyles, { globalColors } from "../../../../GlobalStyles";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
@@ -950,7 +950,7 @@ class AdCover extends Component {
                 />
               </View>
 
-              <PenIconBrand
+              <CreativeHeadline
                 disabled={this.props.coverLoading}
                 data={this.selectedCampaign}
                 coverHeadlineError={coverHeadlineError}

@@ -178,6 +178,7 @@ export default class SwipeUpComponent extends Component {
     const { translate } = this.props.screenProps;
     return (
       <TouchableOpacity
+        {...this.props.copilot}
         onLayout={this.setMinHeight}
         disabled={disabled || this.state.expanded}
         style={[
