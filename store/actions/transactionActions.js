@@ -770,7 +770,7 @@ export const payment_request_payment_method = (
         }
       })
       .then(() => {
-        if (getState().transA.campaign_payment_data.cc_payment_url) {
+        if (getState().transA.campaign_payment_data.mf_payment_url) {
           openBrowser();
         }
       })
