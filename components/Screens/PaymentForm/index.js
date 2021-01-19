@@ -136,20 +136,17 @@ class PaymentForm extends Component {
   };
   _openWebBrowserAsync = async () => {
     try {
-      console.log(
-        "this.props.payment_data_wallet",
-        this.props.payment_data_wallet
-      );
       analytics.track(`payment_processing`, {
         source: "payment_mode",
         source_action: "a_payment_processing",
         amount: this.props.navigation.getParam("amount", 0),
-        mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
+        // mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
+        mode_of_payment: this.props.paymentMethods[this.state.choice - 2]
+          .PaymentMethodEn,
         campaign_id: this.props.campaign_id,
       });
       if (
-        this.state.choice === 2 &&
-        this.props.mainBusiness.country === "Kuwait"
+        this.props.paymentMethods[this.state.choice - 2].payment_type === "1"
       ) {
         this.props.navigation.navigate("WebView", {
           url: this.state.addingCredits
@@ -161,8 +158,7 @@ class PaymentForm extends Component {
           backgroundColor: "transparent",
         });
       } else if (
-        this.state.choice === 2 &&
-        this.props.mainBusiness.country !== "Kuwait"
+        this.props.paymentMethods[this.state.choice - 2].payment_type === "3"
       ) {
         this.props.navigation.navigate("WebView", {
           url: this.state.addingCredits
@@ -173,11 +169,13 @@ class PaymentForm extends Component {
           source_action: "a_payment_processing",
           backgroundColor: "#F4F4F4",
         });
-      } else if (this.state.choice !== 1 || this.state.choice !== 2) {
+      } else if (
+        this.props.paymentMethods[this.state.choice - 2].payment_type === "2"
+      ) {
         this.props.navigation.navigate("WebView", {
           url: this.state.addingCredits
-            ? this.props.payment_data_wallet.mf_payment_url
-            : this.props.payment_data.mf_payment_url,
+            ? this.props.payment_data_wallet.cc_payment_url
+            : this.props.payment_data.cc_payment_url,
           title: "Payment",
           source: "payment_processing",
           source_action: "a_payment_processing",
@@ -189,7 +187,9 @@ class PaymentForm extends Component {
       analytics.track(`payment_processing`, {
         source: "payment_mode",
         source_action: "a_payment_processing",
-        mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
+        // mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
+        mode_of_payment: this.props.paymentMethods[this.state.choice - 2]
+          .PaymentMethodEn,
         action_status: "failure",
         error_description: "Something went wrong",
         campaign_id: this.props.campaign_id,
@@ -233,26 +233,22 @@ class PaymentForm extends Component {
       this.setState({ browserLoading: true });
       if (this.state.browserLoading) return;
       if (this.state.addingCredits) {
-        console.log("i called add credit, payment_type", this.state.choice);
         this.props.addWalletAmount(
           {
             amount: this.state.amount,
-            payment_type: this.state.choice === 2 && this.showKnet ? 1 : 3,
+            payment_type: this.props.paymentMethods[this.state.choice - 2]
+              .payment_type,
             PaymentMethodId: this.props.paymentMethods[this.state.choice - 2]
               .PaymentMethodId,
           },
           this._openWebBrowserAsync,
-          this.state.choice === 2 && this.showKnet
+          this.props.paymentMethods[this.state.choice - 2].payment_type === 1
             ? "KNET"
-            : this.state.choice === 2 && !this.showKnet
-            ? "CREDIT CARD"
             : "CREDIT CARD"
         );
       } else if (
-        this.state.choice === 2 &&
-        this.props.mainBusiness.country === "Kuwait"
+        this.props.paymentMethods[this.state.choice - 2].payment_type === "1"
       ) {
-        console.log("i called");
         this.props.payment_request_knet(
           this.props.campaign_id,
           this._openWebBrowserAsync,
@@ -260,8 +256,7 @@ class PaymentForm extends Component {
           this.closeBrowserLoading
         );
       } else if (
-        this.state.choice === 2 &&
-        this.props.mainBusiness.country !== "Kuwait"
+        this.props.paymentMethods[this.state.choice - 2].payment_type === "3"
       ) {
         this.props.payment_request_payment_method(
           this.props.campaign_id,
@@ -270,20 +265,15 @@ class PaymentForm extends Component {
           this.props.navigation,
           this.closeBrowserLoading
         );
-      } else if (this.state.choice === 3) {
-        this.props.payment_request_payment_method(
+      } else if (
+        this.props.paymentMethods[this.state.choice - 2].payment_type === "2"
+      ) {
+        this.props.payment_request_credit_card(
           this.props.campaign_id,
-          this.props.paymentMethods[this.state.choice - 2].PaymentMethodId,
           this._openWebBrowserAsync,
           this.props.navigation,
           this.closeBrowserLoading
         );
-        // this.props.payment_request_credit_card(
-        //   this.props.campaign_id,
-        //   this._openWebBrowserAsync,
-        //   this.props.navigation,
-        //   this.closeBrowserLoading
-        // );
       }
     }
   };
