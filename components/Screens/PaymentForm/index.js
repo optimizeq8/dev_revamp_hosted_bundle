@@ -54,7 +54,7 @@ class PaymentForm extends Component {
       ),
       selectedCampaign: this.props.navigation.getParam("selectedCampaign", {}),
       amount: this.props.navigation.getParam("amount", 0),
-      payment_type: this.showKnet ? 1 : 2,
+      payment_type: this.showKnet ? 1 : 3,
       choice: this.showKnet ? 2 : 3,
       showModal: false,
       browserLoading: false,
@@ -162,8 +162,8 @@ class PaymentForm extends Component {
       ) {
         this.props.navigation.navigate("WebView", {
           url: this.state.addingCredits
-            ? this.props.payment_data_wallet.knet_payment_url
-            : this.props.payment_data.knet_payment_url,
+            ? this.props.payment_data_wallet.mf_payment_url
+            : this.props.payment_data.mf_payment_url,
           title: "Knet Payment",
           source: "payment_processing",
           source_action: "a_payment_processing",
@@ -172,8 +172,8 @@ class PaymentForm extends Component {
       if (this.state.choice !== 1 || this.state.choice !== 2) {
         this.props.navigation.navigate("WebView", {
           url: this.state.addingCredits
-            ? this.props.payment_data_wallet.cc_payment_url
-            : this.props.payment_data.cc_payment_url,
+            ? this.props.payment_data_wallet.mf_payment_url
+            : this.props.payment_data.mf_payment_url,
           title: "Credit Card Payment",
           source: "payment_processing",
           source_action: "a_payment_processing",
@@ -231,7 +231,9 @@ class PaymentForm extends Component {
         this.props.addWalletAmount(
           {
             amount: this.state.amount,
-            payment_type: this.state.payment_type,
+            payment_type: 3,
+            PaymentMethodId: this.props.paymentMethods[this.state.choice - 2]
+              .PaymentMethodId,
           },
           this._openWebBrowserAsync,
           this.state.choice === 2 ? "KNET" : "CREDIT CARD"
@@ -331,7 +333,7 @@ class PaymentForm extends Component {
     });
     this.setState({
       choice,
-      payment_type: choice === 3 ? 2 : 1,
+      payment_type: choice === 3 ? 3 : 1,
     });
   };
   _handleAgencyFee = () => {
@@ -461,7 +463,7 @@ class PaymentForm extends Component {
         contentContainerStyle={styles.contentStyle}
       >
         <View style={styles.buttonGroupBlock}>
-          {!this.state.addingCredits && (
+          {/* {!this.state.addingCredits && (
             <GradientButton
               radius={35}
               transparent={this.state.choice !== 1}
@@ -474,8 +476,8 @@ class PaymentForm extends Component {
               text={translate("Wallet")}
               uppercase={true}
             />
-          )}
-          {this.props.paymentMethods &&
+          )} */}
+          {/* {this.props.paymentMethods &&
             this.props.paymentMethods.length > 0 &&
             this.props.paymentMethods.map((method, index) => (
               <GradientButton
@@ -492,7 +494,7 @@ class PaymentForm extends Component {
                 text={translate(method.PaymentMethodEn)}
                 uppercase={true}
               />
-            ))}
+            ))} */}
           {/* {this.showKnet && (
             <GradientButton
               radius={35}
@@ -550,6 +552,109 @@ class PaymentForm extends Component {
               </Text>
             </View>
           )}
+
+        <View>
+          {this.props.paymentMethods &&
+            this.props.paymentMethods.length > 0 &&
+            this.props.paymentMethods.map((method, index) => (
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => this._handleChoice(index + 2)}
+                style={styles.paymentMethodView}
+              >
+                <View>
+                  <Text style={styles.paymentMethodText}>
+                    {translate(method.PaymentMethodEn)}
+                  </Text>
+                  <Text style={styles.paymentMethodSubText}>
+                    {translate("Pay with")} {translate(method.PaymentMethodEn)}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    width: 30,
+                    height: 30,
+                    borderRadius: 30,
+                    backgroundColor: "rgba(0,0,0,0.26)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {this.state.choice === index + 2 && (
+                    <View
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: 22,
+                        backgroundColor: "#FF9D00",
+                      }}
+                    />
+                  )}
+                </View>
+              </TouchableOpacity>
+            ))}
+          {!this.state.addingCredits && (
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => this._handleChoice(1)}
+              style={{
+                backgroundColor: "rgba(0,0,0,0.15)",
+                paddingHorizontal: 15,
+                paddingVertical: 10,
+                borderRadius: 25,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: 15,
+              }}
+            >
+              <View>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: "montserrat-bold",
+                    color: "#FFF",
+                  }}
+                >
+                  {translate("Wallet")}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: "montserrat-regular",
+                    color: "#FFF",
+                  }}
+                >
+                  {translate("Pay with")} {translate("Wallet")}
+                </Text>
+              </View>
+              <View
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 30,
+                  backgroundColor: "rgba(0,0,0,0.26)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {this.state.choice === 1 && (
+                  <View
+                    style={{
+                      width: 22,
+                      height: 22,
+                      borderRadius: 22,
+                      backgroundColor: "#FF9D00",
+                    }}
+                  />
+                )}
+              </View>
+            </TouchableOpacity>
+          )}
+        </View>
         {/* {this.state.choice === 3 && (
           <View style={styles.mastercardContainer}>
             <Image

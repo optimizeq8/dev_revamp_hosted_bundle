@@ -116,6 +116,7 @@ export const addWalletAmount = (
       type: actionTypes.SET_TRAN_LOADING,
       payload: true,
     });
+    console.log("info", info);
     createBaseUrl()
       .post(
         `purchaseBusinessWalletAmount`,
@@ -129,6 +130,7 @@ export const addWalletAmount = (
         return res.data;
       })
       .then((data) => {
+        console.log("data", data);
         analytics.track(`a_top_up_wallet`, {
           source: "payment_mode",
           source_action: "a_top_up_wallet",

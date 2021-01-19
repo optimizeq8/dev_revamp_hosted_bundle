@@ -34,7 +34,10 @@ export default class index extends Component {
   render() {
     let url = this.props.navigation.getParam("url", "");
     let title = this.props.navigation.getParam("title", "");
-
+    let backgroundColor = this.props.navigation.getParam(
+      "backgroundColor",
+      "transparent"
+    );
     return (
       <SafeAreaView
         // style={styles.mainSafeArea}
@@ -76,8 +79,8 @@ export default class index extends Component {
             //     <Loading top={40} />
             //   </View>
             // )}
-            style={{ backgroundColor: "transparent" }}
-            contentContainerStyle={{ backgroundColor: "transparent" }}
+            style={{ backgroundColor: "#F4F4F4" }}
+            contentContainerStyle={{ backgroundColor: "#F4F4F4" }}
             ref={(ref) => (this.webview = ref)}
             source={{ uri: url }}
             cacheEnabled={false}
