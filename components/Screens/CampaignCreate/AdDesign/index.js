@@ -316,15 +316,15 @@ class AdDesign extends Component {
         type: this.adType !== "StoryAd" ? this.props.data.type : "",
       });
     }
-    AsyncStorage.getItem("AdDesignTutorialOpened").then((value) => {
-      if (!value) {
-        this.props.start();
-      }
-    });
-    this.props.copilotEvents.on("stop", () => {
-      AsyncStorage.setItem("AdDesignTutorialOpened", "true");
-      // Copilot tutorial finished!
-    });
+    // AsyncStorage.getItem("AdDesignTutorialOpened").then((value) => {
+    //   if (!value) {
+    //     this.props.start();
+    //   }
+    // });
+    // this.props.copilotEvents.on("stop", () => {
+    //   AsyncStorage.setItem("AdDesignTutorialOpened", "true");
+    //   // Copilot tutorial finished!
+    // });
     this.validator(true);
     //----keep for later---//
 

@@ -79,8 +79,8 @@ export default class index extends Component {
             //     <Loading top={40} />
             //   </View>
             // )}
-            style={{ backgroundColor: "#F4F4F4" }}
-            contentContainerStyle={{ backgroundColor: "#F4F4F4" }}
+            style={{ backgroundColor: backgroundColor }}
+            contentContainerStyle={{ backgroundColor: backgroundColor }}
             ref={(ref) => (this.webview = ref)}
             source={{ uri: url }}
             cacheEnabled={false}

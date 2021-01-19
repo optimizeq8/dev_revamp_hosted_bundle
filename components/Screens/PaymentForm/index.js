@@ -75,7 +75,11 @@ class PaymentForm extends Component {
         ? this.props.campaign_balance_amount
         : this.props.campaign_budget && this.props.campaign_budget;
     // This is just to fetch the payment methods based on country
-    this.props.getPaymentMethods(this.props.mainBusiness.country, amount);
+    this.props.getPaymentMethods(
+      this.props.mainBusiness.country,
+      this.props.mainBusiness.businessid,
+      amount
+    );
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidUpdate(prevProps, prevState) {
@@ -154,6 +158,7 @@ class PaymentForm extends Component {
           title: "Knet Payment",
           source: "payment_processing",
           source_action: "a_payment_processing",
+          backgroundColor: "#F4F4F4",
         });
       }
       if (
@@ -164,9 +169,10 @@ class PaymentForm extends Component {
           url: this.state.addingCredits
             ? this.props.payment_data_wallet.mf_payment_url
             : this.props.payment_data.mf_payment_url,
-          title: "Knet Payment",
+          title: "Payment",
           source: "payment_processing",
           source_action: "a_payment_processing",
+          backgroundColor: "#F4F4F4",
         });
       }
       if (this.state.choice !== 1 || this.state.choice !== 2) {
@@ -174,9 +180,10 @@ class PaymentForm extends Component {
           url: this.state.addingCredits
             ? this.props.payment_data_wallet.mf_payment_url
             : this.props.payment_data.mf_payment_url,
-          title: "Credit Card Payment",
+          title: "Payment",
           source: "payment_processing",
           source_action: "a_payment_processing",
+          backgroundColor: "#F4F4F4",
         });
       }
       this.closeBrowserLoading();
@@ -983,7 +990,9 @@ const mapDispatchToProps = (dispatch) => ({
 
   moveRejectedAdAmountToWalletInstagram: (campaign_id) =>
     dispatch(actionCreators.moveRejectedAdAmountToWalletInstagram(campaign_id)),
-  getPaymentMethods: (businessCCountry, amount) =>
-    dispatch(actionCreators.getPaymentMethods(businessCCountry, amount)),
+  getPaymentMethods: (businessCCountry, businessid, amount) =>
+    dispatch(
+      actionCreators.getPaymentMethods(businessCCountry, businessid, amount)
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentForm);
