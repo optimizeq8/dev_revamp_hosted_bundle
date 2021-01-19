@@ -15,20 +15,17 @@ const Tooltip = ({
   labels,
 }) => (
   <View style={styles.tooltipContainer}>
-    {!isLastStep ? (
+    <View style={styles.tooltipTextContainer}>
+      <Text style={styles.tooltipHeaderText}>{currentStep.name}</Text>
       <TouchableOpacity
         style={[styles.tooltipCloseButton]}
         onPress={handleStop}
       >
         <Text>{labels.skip || <Icon type="AntDesign" name="close" />}</Text>
       </TouchableOpacity>
-    ) : null}
-    <View style={styles.tooltipTextContainer}>
-      <Text testID="stepDescription" style={styles.tooltipText}>
-        {currentStep.text}
-      </Text>
     </View>
 
+    <Text style={styles.tooltipText}>{currentStep.text}</Text>
     <View style={[styles.bottomBar]}>
       {!isFirstStep ? (
         <TouchableOpacity

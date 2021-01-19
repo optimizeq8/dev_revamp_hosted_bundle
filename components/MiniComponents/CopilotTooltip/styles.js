@@ -3,6 +3,11 @@ import { globalColors } from "../../../GlobalStyles";
 
 export default StyleSheet.create({
   tooltipContainer: { width: "100%" },
+  tooltipHeaderText: {
+    fontFamily: "montserrat-bold",
+    color: globalColors.purple,
+    textTransform: "uppercase",
+  },
   tooltipText: {
     fontFamily: "montserrat-regular",
     color: globalColors.rum,
@@ -11,6 +16,10 @@ export default StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 8,
+  },
+  tooltipTextContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   tooltipButton: {
     backgroundColor: globalColors.darkOrange,

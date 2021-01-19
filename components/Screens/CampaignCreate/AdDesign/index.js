@@ -1353,7 +1353,7 @@ class AdDesign extends Component {
                       <CopilotStep
                         text="Add your media here, It can be a video or an image. Make sure your ad looks professional so that it can attract a lot of people!"
                         order={3}
-                        name="media"
+                        name="Media"
                       >
                         {!videoIsLoading && (
                           <MediaButton
@@ -1411,7 +1411,7 @@ class AdDesign extends Component {
                   <CopilotStep
                     text={`You need to add a swipe up destination to send your audince to and select a call to action to push your audince into taking action.`}
                     order={4}
-                    name="swipeup"
+                    name="Swipe up destination"
                   >
                     <SwipeCompCondition
                       swipeUpExpanded={this.state.swipeUpExpanded}
@@ -1807,25 +1807,21 @@ const mapDispatchToProps = (dispatch) => ({
   verifyDestinationUrl: (url, submit, translate) =>
     dispatch(actionCreators.verifyDestinationUrl(url, submit, translate)),
 });
-const circleSvgPath = ({ position, size, canvasSize, step }): string => {
-  if (step && step.name === "media")
+const circleSvgPath = ({ position, size, canvasSize, step }) => {
+  if (step && step.name === "Media")
     return `M0,0H${canvasSize.x}V${canvasSize.y}H0V0ZM${
       position.x._value - widthPercentageToDP(0.5)
     },${position.y._value * 1.1}Za50 50 0 1 0 100 0 50 50 0 1 0-100 0`;
   else
-    return `M0,0H${canvasSize.x}V${canvasSize.y}H0V0ZM${position.x._value},${
+    return `M0 0H${canvasSize.x}V${canvasSize.y}H0V0ZM${position.x._value},${
       position.y._value
-    }H${position.x._value + size.x._value * 0.9}C ${widthPercentageToDP(100)} ${
+    }H${widthPercentageToDP(85)}C${canvasSize.x} ${position.y._value} ${
+      canvasSize.x
+    } ${position.y._value + size.y._value} ${widthPercentageToDP(85)} ${
+      position.y._value + size.y._value
+    }H${widthPercentageToDP(15)}C0 ${position.y._value + size.y._value} 0 ${
       position.y._value
-    } ${widthPercentageToDP(100)} ${
-      position.y._value + size.y._value
-    } ${widthPercentageToDP(88)} ${position.y._value + size.y._value}H${
-      position.x._value * 1.3
-    }C  ${widthPercentageToDP(1)} ${
-      position.y._value + size.y._value
-    } ${widthPercentageToDP(-1)} ${position.y._value} ${widthPercentageToDP(
-      15
-    )} ${position.y._value}Z`;
+    } ${widthPercentageToDP(15)} ${position.y._value}Z`;
 };
 
 const TooltipComponent = ({
@@ -1870,6 +1866,7 @@ export default copilot({
   arrowColor: globalColors.twilight,
   tooltipStyle: {
     backgroundColor: globalColors.twilight,
-    borderRadius: 15,
+    borderRadius: 30,
+    padding: 8,
   },
 })(connect(mapStateToProps, mapDispatchToProps)(AdDesign));

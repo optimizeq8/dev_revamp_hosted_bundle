@@ -1,0 +1,19 @@
+diff --git a/node_modules/react-native-copilot/src/components/CopilotModal.js b/node_modules/react-native-copilot/src/components/CopilotModal.js
+index 2a82439..4932c74 100644
+--- a/node_modules/react-native-copilot/src/components/CopilotModal.js
++++ b/node_modules/react-native-copilot/src/components/CopilotModal.js
+@@ -152,12 +152,12 @@ class CopilotModal extends Component<Props, State> {
+       tooltip.right = Math.max(layout.width - (obj.left + obj.width), 0);
+       tooltip.right = tooltip.right === 0 ? tooltip.right + MARGIN : tooltip.right;
+       tooltip.maxWidth = layout.width - tooltip.right - MARGIN;
+-      arrow.right = tooltip.right + MARGIN;
++      arrow.right = tooltip.right + 30;
+     } else {
+       tooltip.left = Math.max(obj.left, 0);
+       tooltip.left = tooltip.left === 0 ? tooltip.left + MARGIN : tooltip.left;
+       tooltip.maxWidth = layout.width - tooltip.left - MARGIN;
+-      arrow.left = tooltip.left + MARGIN;
++      arrow.left = tooltip.left + 30;
+     }
+ 
+     const animate = {
