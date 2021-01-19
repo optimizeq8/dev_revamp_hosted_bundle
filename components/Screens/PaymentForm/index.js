@@ -55,7 +55,7 @@ class PaymentForm extends Component {
       selectedCampaign: this.props.navigation.getParam("selectedCampaign", {}),
       amount: this.props.navigation.getParam("amount", 0),
       payment_type: this.showKnet ? 1 : 3,
-      choice: this.showKnet ? 2 : 3,
+      choice: 2,
       showModal: false,
       browserLoading: false,
       showWalletModal: false,
@@ -158,10 +158,9 @@ class PaymentForm extends Component {
           title: "Knet Payment",
           source: "payment_processing",
           source_action: "a_payment_processing",
-          backgroundColor: "#F4F4F4",
+          backgroundColor: "transparent",
         });
-      }
-      if (
+      } else if (
         this.state.choice === 2 &&
         this.props.mainBusiness.country !== "Kuwait"
       ) {
@@ -174,8 +173,7 @@ class PaymentForm extends Component {
           source_action: "a_payment_processing",
           backgroundColor: "#F4F4F4",
         });
-      }
-      if (this.state.choice !== 1 || this.state.choice !== 2) {
+      } else if (this.state.choice !== 1 || this.state.choice !== 2) {
         this.props.navigation.navigate("WebView", {
           url: this.state.addingCredits
             ? this.props.payment_data_wallet.mf_payment_url
@@ -235,20 +233,26 @@ class PaymentForm extends Component {
       this.setState({ browserLoading: true });
       if (this.state.browserLoading) return;
       if (this.state.addingCredits) {
+        console.log("i called add credit, payment_type", this.state.choice);
         this.props.addWalletAmount(
           {
             amount: this.state.amount,
-            payment_type: 3,
+            payment_type: this.state.choice === 2 && this.showKnet ? 1 : 3,
             PaymentMethodId: this.props.paymentMethods[this.state.choice - 2]
               .PaymentMethodId,
           },
           this._openWebBrowserAsync,
-          this.state.choice === 2 ? "KNET" : "CREDIT CARD"
+          this.state.choice === 2 && this.showKnet
+            ? "KNET"
+            : this.state.choice === 2 && !this.showKnet
+            ? "CREDIT CARD"
+            : "CREDIT CARD"
         );
       } else if (
         this.state.choice === 2 &&
         this.props.mainBusiness.country === "Kuwait"
       ) {
+        console.log("i called");
         this.props.payment_request_knet(
           this.props.campaign_id,
           this._openWebBrowserAsync,
@@ -336,11 +340,17 @@ class PaymentForm extends Component {
       source: "payment_mode",
       source_action: "a_select_payment_mode",
       payment_mode_type:
-        choice === 1 ? "WALLET" : choice === 2 ? "KNET" : "CREDIT CARD",
+        choice === 1
+          ? "WALLET"
+          : choice === 2 && this.showKnet
+          ? "KNET"
+          : choice === 2 && !this.showKnet
+          ? "DEBIT CARD"
+          : "CREDIT CARD",
     });
     this.setState({
       choice,
-      payment_type: choice === 3 ? 3 : 1,
+      payment_type: choice === 2 && this.showKnet ? 2 : 3, // Condition for KNET
     });
   };
   _handleAgencyFee = () => {
@@ -685,6 +695,7 @@ class PaymentForm extends Component {
       "campaign_channel",
       null
     );
+
     return (
       <View style={styles.safeAreaViewContainer}>
         <LinearGradient
