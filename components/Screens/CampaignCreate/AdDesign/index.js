@@ -317,7 +317,7 @@ class AdDesign extends Component {
       });
     }
     AsyncStorage.getItem("AdDesignTutorialOpened").then((value) => {
-      if (!value) {
+      if (!value || true) {
         this.props.start();
       }
     });
@@ -1207,7 +1207,7 @@ class AdDesign extends Component {
       {
         title: "Promotional Message",
         description:
-          "Here you need to add a promotional message related to what you're advertising eg. 'New products on sale now!'",
+          "Here you need to add a promotional message related to what you're advertising eg New products on sale now",
       },
     ].map((field, i) => (
       <CopilotStep
@@ -1351,7 +1351,7 @@ class AdDesign extends Component {
                       />
                     ) : (
                       <CopilotStep
-                        text="Add your media here, It can be a video or an image. Make sure your ad looks professional so that it can attract a lot of people!"
+                        text="Add your media here, It can be a video or an image Make sure your ad looks professional so that it can attract a lot of people"
                         order={3}
                         name="Media"
                       >
@@ -1409,9 +1409,10 @@ class AdDesign extends Component {
                     )}
                   </View>
                   <CopilotStep
-                    text={`You need to add a swipe up destination to send your audince to and select a call to action to push your audince into taking action.`}
+                    text={`You need to add a swipe up destination to send your audience to and select a call to action to push your audience into taking action`}
                     order={4}
-                    name="Swipe up destination"
+                    name="Swipe Up destination"
+                    active={this.state.objective !== "BRAND_AWARENESS"}
                   >
                     <SwipeCompCondition
                       swipeUpExpanded={this.state.swipeUpExpanded}
@@ -1810,8 +1811,8 @@ const mapDispatchToProps = (dispatch) => ({
 const circleSvgPath = ({ position, size, canvasSize, step }) => {
   if (step && step.name === "Media")
     return `M0,0H${canvasSize.x}V${canvasSize.y}H0V0ZM${
-      position.x._value - widthPercentageToDP(0.5)
-    },${position.y._value * 1.1}Za50 50 0 1 0 100 0 50 50 0 1 0-100 0`;
+      position.x._value - 3
+    },${position.y._value + 47}Za50 50 0 1 0 100 0 50 50 0 1 0-100 0`;
   else
     return `M0 0H${canvasSize.x}V${canvasSize.y}H0V0ZM${position.x._value},${
       position.y._value
@@ -1849,14 +1850,7 @@ const StepNumberComponent = ({
   isLastStep,
   currentStep,
   currentStepNumber,
-}) => (
-  <CopilotStepNumber
-    isFirstStep={isFirstStep}
-    isLastStep={isLastStep}
-    currentStep={currentStep}
-    currentStepNumber={currentStepNumber}
-  />
-);
+}) => <View />;
 export default copilot({
   overlay: "svg", // or 'view'
   animated: true,
@@ -1865,7 +1859,7 @@ export default copilot({
   stepNumberComponent: StepNumberComponent,
   arrowColor: globalColors.twilight,
   tooltipStyle: {
-    backgroundColor: globalColors.twilight,
+    backgroundColor: globalColors.white,
     borderRadius: 30,
     padding: 8,
   },
