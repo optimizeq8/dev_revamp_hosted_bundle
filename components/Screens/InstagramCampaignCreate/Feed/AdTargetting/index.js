@@ -30,7 +30,7 @@ import { connect } from "react-redux";
 
 //Functions
 import validateWrapper from "../../../../../ValidationFunctions/ValidateWrapper";
-import combineMerge from "./combineMerge";
+import combineMerge, { overwriteMerge } from "./combineMerge";
 import deepmerge from "deepmerge";
 import cloneDeep from "lodash/cloneDeep";
 import isEqual from "lodash/isEqual";
@@ -138,7 +138,19 @@ class InstagramFeedAdTargetting extends Component {
       let editedCampaign = deepmerge(
         this.state.campaignInfo,
         this.props.navigation.getParam("campaign", {}),
-        { arrayMerge: combineMerge }
+        { arrayMerge: overwriteMerge }
+      );
+
+      // Make lifetime_budget_micro as ( lifetime_budget_micro / duration) coz while calling the updateInstagramCampaign it used to update the value as duration * lifetime_budget_micro
+      let duration = Math.round(
+        Math.abs(
+          (new Date(editedCampaign.start_time).getTime() -
+            new Date(editedCampaign.end_time).getTime()) /
+            86400000
+        )
+      );
+      editedCampaign.lifetime_budget_micro = Math.round(
+        editedCampaign.lifetime_budget_micro / duration
       );
 
       getCountryName = editedCampaign.targeting.geo_locations.countries.map(
@@ -191,10 +203,10 @@ class InstagramFeedAdTargetting extends Component {
       let selectedGender = "";
       switch (editedCampaign.targeting.genders[0]) {
         case "1":
-          selectedGender = "MALE";
+          selectedGender = "1";
           break;
         case "2":
-          selectedGender = "FEMALE";
+          selectedGender = "2";
           break;
         default:
           selectedGender = "";
@@ -205,6 +217,7 @@ class InstagramFeedAdTargetting extends Component {
           campaignInfo: editedCampaign,
           startEditing: false,
           selectedGender,
+          duration,
         },
         () => this._calcReach()
       );
@@ -620,7 +633,6 @@ class InstagramFeedAdTargetting extends Component {
     // }
     //gender is coming in as 1,2
     replace.targeting.genders = [gender];
-    console.log("replace.targeting.genders", replace.targeting.genders, gender);
     analytics.track(`a_ad_gender`, {
       source: "ad_targeting",
       source_action: "a_ad_gender",

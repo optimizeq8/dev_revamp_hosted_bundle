@@ -1,6 +1,6 @@
 import deepmerge from "deepmerge";
 
-const emptyTarget = value => (Array.isArray(value) ? [] : {});
+const emptyTarget = (value) => (Array.isArray(value) ? [] : {});
 const clone = (value, options) => deepmerge(emptyTarget(value), value, options);
 export default function combineMerge(target, source, options) {
   const destination = target.slice();
@@ -17,3 +17,5 @@ export default function combineMerge(target, source, options) {
   });
   return destination;
 }
+export const overwriteMerge = (destinationArray, sourceArray, options) =>
+  sourceArray;

@@ -85,21 +85,21 @@ class MyWebsite extends Component {
     this.props.navigation.navigate("ManageProducts");
   };
   topRightButtonFunction = () => {
-    const { mainBusiness } = this.props;
-    if (Platform.OS === "ios") {
-      this.props.navigation.navigate("WebsiteSetting", {
-        source: "open_my_website",
-        source_action: "a_open_my_website_detail",
-      });
-    }
-    if (Platform.OS === "android") {
-      this.props.navigation.navigate("WebView", {
-        url: `https://www.optimizeapp.com/mywebsite?edit=true&businessid=${mainBusiness.businessid}&insta_handle=${mainBusiness.insta_handle}&snapchat_handle=${mainBusiness.snapchat_handle}&callnumber=${mainBusiness.callnumber}&whatsappnumber=${mainBusiness.whatsappnumber}&googlemaplink=${mainBusiness.googlemaplink}&businessname=${mainBusiness.businessname}`,
-        title: "My Website",
-        source: "open_my_website",
-        source_action: "a_open_my_website_detail",
-      });
-    }
+    // const { mainBusiness } = this.props;
+    // if (Platform.OS === "ios") {
+    this.props.navigation.navigate("WebsiteSetting", {
+      source: "open_my_website",
+      source_action: "a_open_my_website_detail",
+    });
+    // }
+    // if (Platform.OS === "android") {
+    //   this.props.navigation.navigate("WebView", {
+    //     url: `https://www.optimizeapp.com/mywebsite?edit=true&businessid=${mainBusiness.businessid}&insta_handle=${mainBusiness.insta_handle}&snapchat_handle=${mainBusiness.snapchat_handle}&callnumber=${mainBusiness.callnumber}&whatsappnumber=${mainBusiness.whatsappnumber}&googlemaplink=${mainBusiness.googlemaplink}&businessname=${mainBusiness.businessname}`,
+    //     title: "My Website",
+    //     source: "open_my_website",
+    //     source_action: "a_open_my_website_detail",
+    //   });
+    // }
   };
   goBack = () => {
     this.props.navigation.navigate("Dashboard", {

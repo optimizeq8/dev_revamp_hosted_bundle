@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { Text, View, ScrollView, ActivityIndicator } from "react-native";
+import {
+  Text,
+  View,
+  ScrollView,
+  ActivityIndicator,
+  I18nManager,
+} from "react-native";
 import { Icon } from "native-base";
 import isNull from "lodash/isNull";
 //Icons
@@ -16,12 +22,25 @@ import Picker from "../Picker";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
 import { globalColors } from "../../../GlobalStyles";
+import {
+  PowerTranslator,
+  ProviderTypes,
+  TranslatorConfiguration,
+  TranslatorFactory,
+} from "react-native-power-translator";
 
+TranslatorConfiguration.setConfig(
+  ProviderTypes.Google,
+  "AIzaSyCPCME2BWXM3bRzNdvrGHAvnOxB3np3c_Q",
+  "en"
+);
+const translator = TranslatorFactory.createTranslator();
 class SelectInterests extends Component {
   state = { interests: null, customInterests: null, open: false };
   timeout = 0;
-  componentDidMount() {
+  async componentDidMount() {
     this.props.get_interests_instagram();
+    const { translate } = this.props.screenProps;
 
     if (this.props.interests) {
       let interests = [];
@@ -69,6 +88,52 @@ class SelectInterests extends Component {
         }
         this.setState({ customInterests });
       }
+      //    else {
+      //     TranslatorConfiguration.setConfig(
+      //       ProviderTypes.Google,
+      //       "AIzaSyCPCME2BWXM3bRzNdvrGHAvnOxB3np3c_Q",
+      //       I18nManager.isRTL ? "ar" : "en"
+      //     );
+      //     let translator2 = TranslatorFactory.createTranslator();
+
+      //     customInterests =
+      //       this.props.customInterests &&
+      //       //Had to use Promise.all because the translation function returns a promise and
+      //       // using an async function in a .map() returns a promise so I had wrap both loops in Promise.all
+      //       (await Promise.all(
+      //         Object.keys(this.props.customInterests).map(async (interest) => {
+      //           let interestsInArabic = await Promise.all(
+      //             this.props.customInterests[interest] // only showing 25 interests to not overuse the translation api
+      //               .slice(
+      //                 0,
+      //                 this.props.customInterests[interest].length >= 25
+      //                   ? 25
+      //                   : this.props.customInterests[interest].length - 1
+      //               )
+      //               .map(async (inter) => {
+      //                 let arabicInter = await translator2.translate(inter.name);
+      //                 inter = { ...inter, name: arabicInter };
+      //                 return inter;
+      //               })
+      //           );
+      //           return {
+      //             id: interest,
+      //             name: translate(interest),
+      //             subcat: [...interestsInArabic],
+      //           };
+      //         })
+      //       ));
+      //     if (
+      //       this.props.data &&
+      //       this.props.data.hasOwnProperty("customInterestObjects") &&
+      //       this.props.data.customInterestObjects
+      //     ) {
+      //       customInterests[0].subcat = customInterests[0].subcat.concat(
+      //         this.props.data.customInterestObjects
+      //       );
+      //     }
+      //     this.setState({ customInterests });
+      //   }
     }
     this.setState({
       filteredCountreis: this.props.countries,
@@ -76,7 +141,7 @@ class SelectInterests extends Component {
       selectedDevices: this.props.selectedDevices,
     });
   }
-  componentDidUpdate(prevProps) {
+  async componentDidUpdate(prevProps) {
     const { translate } = this.props.screenProps;
 
     if (this.props.interests && prevProps.interests !== this.props.interests) {
@@ -127,16 +192,63 @@ class SelectInterests extends Component {
         }
         this.setState({ customInterests });
       }
+
+      //   else {
+      //     TranslatorConfiguration.setConfig(
+      //       ProviderTypes.Google,
+      //       "AIzaSyCPCME2BWXM3bRzNdvrGHAvnOxB3np3c_Q",
+      //       I18nManager.isRTL ? "ar" : "en"
+      //     );
+      //     let translator2 = TranslatorFactory.createTranslator();
+
+      //     customInterests =
+      //       this.props.customInterests &&
+      //       (await Promise.all(
+      //         Object.keys(this.props.customInterests).map(async (interest) => {
+      //           let interestsInArabic = await Promise.all(
+      //             this.props.customInterests[interest]
+      //               .slice(
+      //                 0,
+      //                 this.props.customInterests[interest].length >= 25
+      //                   ? 25
+      //                   : this.props.customInterests[interest].length - 1
+      //               )
+      //               .map(async (inter) => {
+      //                 let arabicInter = await translator2.translate(inter.name);
+      //                 inter = { ...inter, name: arabicInter };
+      //                 return inter;
+      //               })
+      //           );
+      //           return {
+      //             id: interest,
+      //             name: translate(interest),
+      //             subcat: [...interestsInArabic],
+      //           };
+      //         })
+      //       ));
+      //     if (
+      //       this.props.data &&
+      //       this.props.data.hasOwnProperty("customInterestObjects")
+      //     ) {
+      //       customInterests[0].subcat = customInterests[0].subcat.concat(
+      //         this.props.data.customInterestObjects
+      //       );
+      //     }
+      //     this.setState({ customInterests });
+      //   }
     }
   }
   handleSideMenu = () => {
     this.props._handleSideMenuState(false);
   };
   handleCustomInterests = (event) => {
+    // translator.translate(event).then((translated) => {
+    //Do something with the translated text
     if (this.timeout) clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       this.props.get_custom_interests_instagram(event.replace(" ", "_"));
     }, 200);
+    // });
   };
   render() {
     const { translate } = this.props.screenProps;

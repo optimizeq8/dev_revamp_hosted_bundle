@@ -13,24 +13,19 @@ class WalletCard extends Component {
         <Text style={styles.paymentDate}>{transaction.payment_date}</Text>
         <View style={styles.flexBox}>
           <View>
-            {transaction.payment_type === "KNET" && (
-              <View>
-                <Text style={styles.subHeading}>
-                  {translate("Payment Method")}
-                </Text>
-                <Text style={styles.subText}>{transaction.payment_type}</Text>
-              </View>
-            )}
-            {transaction.payment_type === "MASTERCARD" && (
-              <View>
-                <Text style={styles.subHeading}>
-                  {transaction.payment_type}
-                </Text>
-                <Text style={styles.subText}>
-                  xxxx xxxx xxxx {transaction.card_ending_with}
-                </Text>
-              </View>
-            )}
+            <View>
+              <Text style={styles.subHeading}>
+                {transaction.card_ending_with
+                  ? translate(transaction.payment_type)
+                  : translate("Payment Method")}
+              </Text>
+              <Text style={styles.subText}>
+                {transaction.card_ending_with
+                  ? `xxxx xxxx xxxx ${transaction.card_ending_with}`
+                  : translate(transaction.payment_type)}
+              </Text>
+            </View>
+
             <View style={styles.transactionView}>
               <Text style={styles.subHeading}>
                 {translate("Transaction ID")}

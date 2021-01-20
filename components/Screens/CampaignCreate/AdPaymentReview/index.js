@@ -135,9 +135,10 @@ class AdPaymentReview extends Component {
   };
   formatAttributes = () => {
     const { translate } = this.props.screenProps;
-    let targeting = !isUndefined(this.props.data.campaignInfo)
-      ? this.props.data.campaignInfo.targeting
-      : {};
+    let targeting =
+      this.props.data && !isUndefined(this.props.data.campaignInfo)
+        ? this.props.data.campaignInfo.targeting
+        : {};
     let interestNames = [];
     if (this.props.interestNames.length > 0) {
       interestNames = this.props.interestNames.map((interest) => interest.name);
