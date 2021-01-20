@@ -320,7 +320,7 @@ class AdDesign extends Component {
       });
     }
     AsyncStorage.getItem("AdDesignTutorialOpened").then((value) => {
-      if (!value || true) {
+      if (!value) {
         this.props.start();
       }
     });
@@ -1823,7 +1823,7 @@ export default copilot({
   animated: true,
   tooltipComponent: CopilotTooltipFunction,
   svgMaskPath: circleSvgPath,
-  stepNumberComponent: StepNumberComponent,
+  stepNumberComponent: () => <View />,
   arrowColor: globalColors.twilight,
   tooltipStyle: {
     backgroundColor: globalColors.white,

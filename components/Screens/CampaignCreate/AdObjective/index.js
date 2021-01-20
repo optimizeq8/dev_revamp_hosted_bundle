@@ -141,7 +141,7 @@ class AdObjective extends Component {
           : snapchatObjectivesData[this.props.adType || "SnapAd"][0].label,
     });
     AsyncStorage.getItem("AdObjectiveTutorialOpened").then((value) => {
-      if (!value || true) {
+      if (!value) {
         this.props.start();
       }
     });
