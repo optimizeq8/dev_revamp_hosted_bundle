@@ -15,7 +15,11 @@ const Tooltip = ({
   currentStep,
   labels,
 }) => {
-  let { translate } = currentStep.target.props.children.props.screenProps;
+  let { translate } = currentStep.target.props.children.props.hasOwnProperty(
+    "screenProps"
+  )
+    ? currentStep.target.props.children.props.screenProps
+    : currentStep.target.props.children.props;
   return (
     <View style={styles.tooltipContainer}>
       <View style={styles.tooltipTextContainer}>
