@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Dimensions } from "react-native";
 import WebView from "react-native-webview";
 import analytics from "@segment/analytics-react-native";
 import CustomHeader from "../Header";
@@ -12,6 +12,7 @@ import styles from "./styles";
 import Loading from "../LoadingScreen";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import globalStyles from "../../../GlobalStyles";
+const screen = Dimensions.get("window");
 export default class index extends Component {
   componentDidMount() {
     const source = this.props.navigation.getParam(
@@ -42,7 +43,7 @@ export default class index extends Component {
       "backgroundColor",
       "transparent"
     );
-
+    console.log("screen", screen);
     let showLogo = this.props.navigation.getParam("showLogo", false);
     let scrollEnabled = this.props.navigation.getParam("scrollEnabled", true);
     let showCompanyName = this.props.navigation.getParam(
@@ -117,7 +118,7 @@ export default class index extends Component {
             // )}
             style={{
               //   backgroundColor: backgroundColor,
-              marginTop: -200,
+              marginTop: screen.height < 750 ? -169 : -200,
               height: "100%",
             }}
             contentContainerStyle={{
