@@ -116,7 +116,6 @@ export const addWalletAmount = (
       type: actionTypes.SET_TRAN_LOADING,
       payload: true,
     });
-    console.log("info", info);
     createBaseUrl()
       .post(
         `purchaseBusinessWalletAmount`,
@@ -130,7 +129,6 @@ export const addWalletAmount = (
         return res.data;
       })
       .then((data) => {
-        console.log("data", data);
         analytics.track(`a_top_up_wallet`, {
           source: "payment_mode",
           source_action: "a_top_up_wallet",
@@ -730,7 +728,6 @@ export const payment_request_payment_method = (
       type: actionTypes.SET_AD_LOADING,
       payload: true,
     });
-    console.log("PaymentMethodId", PaymentMethodId);
     var url =
       getState().transA.channel === ""
         ? `makemfpayment/${campaign_id}`
@@ -744,7 +741,6 @@ export const payment_request_payment_method = (
         return res.data;
       })
       .then((data) => {
-        console.log("data", JSON.stringify(data, null, 2));
         if (data.mf_payment_url) {
           return dispatch({
             type: actionTypes.PAYMENT_REQUEST_URL,

@@ -7,6 +7,7 @@ import {
   BackHandler,
   Text,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
 import { Container, Content, Footer } from "native-base";
 import analytics from "@segment/analytics-react-native";
@@ -37,6 +38,7 @@ import { showMessage } from "react-native-flash-message";
 import TopStepsHeader from "../../MiniComponents/TopStepsHeader";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";
+const screen = Dimensions.get("screen");
 
 class PaymentForm extends Component {
   static navigationOptions = {
@@ -167,7 +169,11 @@ class PaymentForm extends Component {
           title: "Payment",
           source: "payment_processing",
           source_action: "a_payment_processing",
-          backgroundColor: "#F4F4F4",
+          backgroundColor: "#FFFFFF",
+          marginTop: "-55%",
+          showLogo: screen.height > 600,
+          scrollEnabled: screen.height < 600,
+          showCompanyName: true,
         });
       } else if (
         this.props.paymentMethods[this.state.choice - 2].payment_type === "2"
@@ -179,7 +185,6 @@ class PaymentForm extends Component {
           title: "Payment",
           source: "payment_processing",
           source_action: "a_payment_processing",
-          backgroundColor: "#F4F4F4",
         });
       }
       this.closeBrowserLoading();
