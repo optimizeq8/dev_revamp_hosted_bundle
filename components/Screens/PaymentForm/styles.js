@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   errortext: {
     color: "#fff",
     fontSize: 14,
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-regular",
     textAlign: "center",
     lineHeight: 18,
   },
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
     justifyContent: "center",
     height: 70,
-    width: 100,
+    // width: 100,
   },
   whitebutton3: {
     marginHorizontal: 0,
@@ -194,7 +194,8 @@ const styles = StyleSheet.create({
     width: 250,
   },
   walletPaymentModalContainer: {
-    height: "100%",
+    // height: "100%",
+    // flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -237,6 +238,27 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     textAlign: "center",
     fontFamily: "montserrat-bold",
+  },
+  paymentMethodView: {
+    backgroundColor: "rgba(0,0,0,0.15)",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 25,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 15,
+  },
+  paymentMethodText: {
+    fontSize: 12,
+    fontFamily: "montserrat-bold",
+    color: "#FFF",
+  },
+  paymentMethodSubText: {
+    fontSize: 12,
+    fontFamily: "montserrat-regular",
+    color: "#FFF",
   },
 });
 

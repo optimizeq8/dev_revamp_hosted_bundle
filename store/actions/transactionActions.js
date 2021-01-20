@@ -116,6 +116,7 @@ export const addWalletAmount = (
       type: actionTypes.SET_TRAN_LOADING,
       payload: true,
     });
+    console.log("info", JSON.stringify(info, null, 2));
     createBaseUrl()
       .post(
         `purchaseBusinessWalletAmount`,
@@ -129,6 +130,7 @@ export const addWalletAmount = (
         return res.data;
       })
       .then((data) => {
+        console.log("data", data);
         analytics.track(`a_top_up_wallet`, {
           source: "payment_mode",
           source_action: "a_top_up_wallet",
@@ -672,6 +674,123 @@ export const getWalletTransactionsHistory = () => {
         });
         return dispatch({
           type: actionTypes.ERROR_SET_WALLET_TRANSACTION_LIST,
+        });
+      });
+  };
+};
+
+/**
+ * Method: POST
+ * @param {*} businessCountry  to fetch the payment method based on the business country
+ * @param {*} amount in USD
+ */
+export const getPaymentMethods = (businessCountry, businessid, amount) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.PAYMENT_MODES,
+      payload: { data: [], loading: true },
+    });
+
+    createBaseUrl()
+      .post(`/availablePaymentMethods`, {
+        country: businessCountry,
+        businessid: businessid,
+        amount,
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .then((data) => {
+        return dispatch({
+          type: actionTypes.PAYMENT_MODES,
+          payload: { data: data.data, loading: false },
+        });
+      })
+      .catch((error) => {
+        return dispatch({
+          type: actionTypes.PAYMENT_MODES,
+          payload: {
+            data: [],
+            loading: false,
+          },
+        });
+      });
+  };
+};
+
+export const payment_request_payment_method = (
+  campaign_id,
+  PaymentMethodId,
+  openBrowser,
+  navigation,
+  closeBrowserLoading
+) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING,
+      payload: true,
+    });
+    var url =
+      getState().transA.channel === ""
+        ? `makemfpayment/${campaign_id}`
+        : `makemfpayment/${campaign_id}/${getState().transA.channel}`;
+
+    createBaseUrl()
+      .post(url, {
+        PaymentMethodId: PaymentMethodId,
+      })
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        if (data.mf_payment_url) {
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data,
+          });
+        } else {
+          analytics.track(`payment_processing`, {
+            source: "payment_mode",
+            source_action: "a_payment_processing",
+            mode_of_payment: "CREDIT CARD",
+            amount: data.amount,
+            campaign_id,
+            action_status: data.success ? "success" : "failure",
+            error_description: !data.success ? data.status : null,
+          });
+          navigation.navigate("SuccessRedirect", {
+            ...data,
+            source: "payment_processing",
+            source_action: "a_payment_processing",
+            payment_mode: "CREDIT CARD",
+          });
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data,
+          });
+        }
+      })
+      .then(() => {
+        if (getState().transA.campaign_payment_data.mf_payment_url) {
+          openBrowser();
+        }
+      })
+      .catch((err) => {
+        // console.log("payment_request_cc", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top",
+        });
+        closeBrowserLoading();
+        return dispatch({
+          type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
+          payload: {
+            loading: false,
+          },
         });
       });
   };

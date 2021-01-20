@@ -25,6 +25,8 @@ const initialState = {
   errorTransactionList: false,
   walletTransactionList: [],
   walletTransactionListLoading: false,
+  paymentMethods: [],
+  loadingPaymentMethods: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -226,6 +228,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         walletTransactionListLoading: action.payload,
         errorTransactionList: false,
+      };
+    case actionTypes.PAYMENT_MODES:
+      return {
+        ...state,
+        paymentMethods: action.payload.data,
+        loadingPaymentMethods: action.payload.loading,
       };
     default:
       return state;

@@ -194,6 +194,10 @@ export default createNativeStackNavigator(
       path: "Messenger/",
     },
     WebView: register({ require: () => require("../MiniComponents/Webview") }),
+    WebViewPayment: register({
+      require: () => require("../MiniComponents/Webview/WebView"),
+    }),
+
     ManageTeam: register({ require: () => require("../Screens/ManageTeam") }),
     AddOrEditTeamMember: register({
       require: () => require("../Screens/ManageTeam/AddOrEditTeamMember"),

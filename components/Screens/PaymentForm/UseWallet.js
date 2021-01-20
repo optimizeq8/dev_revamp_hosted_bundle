@@ -53,7 +53,17 @@ class UseWallet extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <View style={[styles.walletPaymentModalContainer]}>
+      <View
+        style={[
+          styles.walletPaymentModalContainer,
+          this.props.choice === 1 && {
+            height: "100%",
+          },
+          this.props.choice !== 1 && {
+            flex: 1,
+          },
+        ]}
+      >
         <WalletIcon
           width={heightPercentageToDP(10)}
           height={heightPercentageToDP(10)}
@@ -93,7 +103,9 @@ class UseWallet extends Component {
               blurAmount={20}
               reducedTransparencyFallbackColor="black"
             >
-              <View style={styles.walletPaymentModalContainer}>
+              <View
+                style={[styles.walletPaymentModalContainer, { height: "100%" }]}
+              >
                 {this.props.loading ? (
                   <>
                     <Text style={styles.warningLoadmessage}>
