@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     textTransform: "uppercase",
     color: globalColors.rum,
+    marginVertical: 10,
   },
 });
 

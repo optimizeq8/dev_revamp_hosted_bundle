@@ -38,6 +38,7 @@ import { showMessage } from "react-native-flash-message";
 import TopStepsHeader from "../../MiniComponents/TopStepsHeader";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 const screen = Dimensions.get("screen");
 
 class PaymentForm extends Component {
@@ -162,7 +163,7 @@ class PaymentForm extends Component {
       } else if (
         this.props.paymentMethods[this.state.choice - 2].payment_type === "3"
       ) {
-        this.props.navigation.navigate("WebView", {
+        this.props.navigation.navigate("WebViewPayment", {
           url: this.state.addingCredits
             ? this.props.payment_data_wallet.mf_payment_url
             : this.props.payment_data.mf_payment_url,
@@ -170,7 +171,6 @@ class PaymentForm extends Component {
           source: "payment_processing",
           source_action: "a_payment_processing",
           backgroundColor: "#FFFFFF",
-          marginTop: "-55%",
           showLogo: screen.height > 600,
           scrollEnabled: screen.height < 600,
           showCompanyName: true,
@@ -570,6 +570,7 @@ class PaymentForm extends Component {
             this.props.paymentMethods.length > 0 &&
             this.props.paymentMethods.map((method, index) => (
               <TouchableOpacity
+                key={method.PaymentMethodEn}
                 activeOpacity={0.8}
                 onPress={() => this._handleChoice(index + 2)}
                 style={styles.paymentMethodView}
