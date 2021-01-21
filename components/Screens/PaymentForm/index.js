@@ -7,6 +7,7 @@ import {
   BackHandler,
   Text,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
 import { Container, Content, Footer } from "native-base";
 import analytics from "@segment/analytics-react-native";
@@ -37,6 +38,8 @@ import { showMessage } from "react-native-flash-message";
 import TopStepsHeader from "../../MiniComponents/TopStepsHeader";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";
+import { heightPercentageToDP } from "react-native-responsive-screen";
+const screen = Dimensions.get("screen");
 
 class PaymentForm extends Component {
   static navigationOptions = {
@@ -54,8 +57,8 @@ class PaymentForm extends Component {
       ),
       selectedCampaign: this.props.navigation.getParam("selectedCampaign", {}),
       amount: this.props.navigation.getParam("amount", 0),
-      payment_type: this.showKnet ? 1 : 2,
-      choice: this.showKnet ? 2 : 3,
+      payment_type: this.showKnet ? 1 : 3,
+      choice: 2,
       showModal: false,
       browserLoading: false,
       showWalletModal: false,
@@ -67,7 +70,19 @@ class PaymentForm extends Component {
       browserLoading: false,
     });
     this.props.getWalletAmount();
-
+    let amount =
+      this.props.navigation.getParam("addingCredits", false) ||
+      this.props.navigation.getParam("refundAmountToWallet", false)
+        ? this.props.navigation.getParam("amount", 0)
+        : this.props.walletUsed
+        ? this.props.campaign_balance_amount
+        : this.props.campaign_budget && this.props.campaign_budget;
+    // This is just to fetch the payment methods based on country
+    this.props.getPaymentMethods(
+      this.props.mainBusiness.country,
+      this.props.mainBusiness.businessid,
+      amount
+    );
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidUpdate(prevProps, prevState) {
@@ -128,10 +143,14 @@ class PaymentForm extends Component {
         source: "payment_mode",
         source_action: "a_payment_processing",
         amount: this.props.navigation.getParam("amount", 0),
-        mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
+        // mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
+        mode_of_payment: this.props.paymentMethods[this.state.choice - 2]
+          .PaymentMethodEn,
         campaign_id: this.props.campaign_id,
       });
-      if (this.state.choice === 2) {
+      if (
+        this.props.paymentMethods[this.state.choice - 2].payment_type === "1"
+      ) {
         this.props.navigation.navigate("WebView", {
           url: this.state.addingCredits
             ? this.props.payment_data_wallet.knet_payment_url
@@ -139,14 +158,31 @@ class PaymentForm extends Component {
           title: "Knet Payment",
           source: "payment_processing",
           source_action: "a_payment_processing",
+          backgroundColor: "transparent",
         });
-      }
-      if (this.state.choice === 3) {
+      } else if (
+        this.props.paymentMethods[this.state.choice - 2].payment_type === "3"
+      ) {
+        this.props.navigation.navigate("WebViewPayment", {
+          url: this.state.addingCredits
+            ? this.props.payment_data_wallet.mf_payment_url
+            : this.props.payment_data.mf_payment_url,
+          title: "Payment",
+          source: "payment_processing",
+          source_action: "a_payment_processing",
+          backgroundColor: "#FFFFFF",
+          showLogo: screen.height > 600,
+          scrollEnabled: screen.height < 600,
+          showCompanyName: true,
+        });
+      } else if (
+        this.props.paymentMethods[this.state.choice - 2].payment_type === "2"
+      ) {
         this.props.navigation.navigate("WebView", {
           url: this.state.addingCredits
             ? this.props.payment_data_wallet.cc_payment_url
             : this.props.payment_data.cc_payment_url,
-          title: "Credit Card Payment",
+          title: "Payment",
           source: "payment_processing",
           source_action: "a_payment_processing",
         });
@@ -156,7 +192,9 @@ class PaymentForm extends Component {
       analytics.track(`payment_processing`, {
         source: "payment_mode",
         source_action: "a_payment_processing",
-        mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
+        // mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
+        mode_of_payment: this.props.paymentMethods[this.state.choice - 2]
+          .PaymentMethodEn,
         action_status: "failure",
         error_description: "Something went wrong",
         campaign_id: this.props.campaign_id,
@@ -203,19 +241,38 @@ class PaymentForm extends Component {
         this.props.addWalletAmount(
           {
             amount: this.state.amount,
-            payment_type: this.state.payment_type,
+            payment_type: this.props.paymentMethods[this.state.choice - 2]
+              .payment_type,
+            PaymentMethodId: this.props.paymentMethods[this.state.choice - 2]
+              .PaymentMethodId,
           },
           this._openWebBrowserAsync,
-          this.state.choice === 2 ? "KNET" : "CREDIT CARD"
+          this.props.paymentMethods[this.state.choice - 2].payment_type === 1
+            ? "KNET"
+            : "CREDIT CARD"
         );
-      } else if (this.state.choice === 2) {
+      } else if (
+        this.props.paymentMethods[this.state.choice - 2].payment_type === "1"
+      ) {
         this.props.payment_request_knet(
           this.props.campaign_id,
           this._openWebBrowserAsync,
           this.props.navigation,
           this.closeBrowserLoading
         );
-      } else if (this.state.choice === 3) {
+      } else if (
+        this.props.paymentMethods[this.state.choice - 2].payment_type === "3"
+      ) {
+        this.props.payment_request_payment_method(
+          this.props.campaign_id,
+          this.props.paymentMethods[this.state.choice - 2].PaymentMethodId,
+          this._openWebBrowserAsync,
+          this.props.navigation,
+          this.closeBrowserLoading
+        );
+      } else if (
+        this.props.paymentMethods[this.state.choice - 2].payment_type === "2"
+      ) {
         this.props.payment_request_credit_card(
           this.props.campaign_id,
           this._openWebBrowserAsync,
@@ -278,11 +335,17 @@ class PaymentForm extends Component {
       source: "payment_mode",
       source_action: "a_select_payment_mode",
       payment_mode_type:
-        choice === 1 ? "WALLET" : choice === 2 ? "KNET" : "CREDIT CARD",
+        choice === 1
+          ? "WALLET"
+          : choice === 2 && this.showKnet
+          ? "KNET"
+          : choice === 2 && !this.showKnet
+          ? "DEBIT CARD"
+          : "CREDIT CARD",
     });
     this.setState({
       choice,
-      payment_type: choice === 3 ? 2 : 1,
+      payment_type: choice === 2 && this.showKnet ? 2 : 3, // Condition for KNET
     });
   };
   _handleAgencyFee = () => {
@@ -412,7 +475,7 @@ class PaymentForm extends Component {
         contentContainerStyle={styles.contentStyle}
       >
         <View style={styles.buttonGroupBlock}>
-          {!this.state.addingCredits && (
+          {/* {!this.state.addingCredits && (
             <GradientButton
               radius={35}
               transparent={this.state.choice !== 1}
@@ -425,9 +488,26 @@ class PaymentForm extends Component {
               text={translate("Wallet")}
               uppercase={true}
             />
-          )}
-
-          {this.showKnet && (
+          )} */}
+          {/* {this.props.paymentMethods &&
+            this.props.paymentMethods.length > 0 &&
+            this.props.paymentMethods.map((method, index) => (
+              <GradientButton
+                key={method.PaymentMethodEn}
+                radius={35}
+                transparent={this.state.choice !== index + 2}
+                style={[styles.whitebutton2]}
+                textStyle={[
+                  styles.whitebuttontext,
+                  this.state.choice === index + 2 &&
+                    globalStyles.whiteTextColor,
+                ]}
+                onPressAction={() => this._handleChoice(index + 2)}
+                text={translate(method.PaymentMethodEn)}
+                uppercase={true}
+              />
+            ))} */}
+          {/* {this.showKnet && (
             <GradientButton
               radius={35}
               transparent={this.state.choice !== 2}
@@ -452,7 +532,7 @@ class PaymentForm extends Component {
             onPressAction={() => this._handleChoice(3)}
             text={translate("Credit Card")}
             uppercase={true}
-          />
+          /> */}
         </View>
         {this.state.choice === 1 && (
           <UseWallet
@@ -464,22 +544,131 @@ class PaymentForm extends Component {
             navigation={this.props.navigation}
           />
         )}
-        {this.state.choice === 2 && (
-          <View style={styles.knetContainer}>
-            <Image
-              style={styles.media}
-              source={require("../../../assets/images/knet.png")}
-              resizeMode="contain"
-            />
-            <Text style={styles.errortext}>
-              {translate("You will be redirected to")}
-              {"\n"}
-              {translate("payment gateway for the")} {"\n"}
-              {translate("payment process")}
-            </Text>
-          </View>
-        )}
-        {this.state.choice === 3 && (
+        {this.state.choice !== 1 &&
+          this.props.paymentMethods &&
+          this.props.paymentMethods.length > 0 && (
+            <View style={styles.knetContainer}>
+              <Image
+                style={styles.media}
+                source={{
+                  uri: this.props.paymentMethods[this.state.choice - 2]
+                    .ImageUrl,
+                }}
+                resizeMode="contain"
+              />
+              <Text style={styles.errortext}>
+                {translate("You will be redirected to")}
+                {"\n"}
+                {translate("payment gateway for the")} {"\n"}
+                {translate("payment process")}
+              </Text>
+            </View>
+          )}
+
+        <View>
+          {this.props.paymentMethods &&
+            this.props.paymentMethods.length > 0 &&
+            this.props.paymentMethods.map((method, index) => (
+              <TouchableOpacity
+                key={method.PaymentMethodEn}
+                activeOpacity={0.8}
+                onPress={() => this._handleChoice(index + 2)}
+                style={styles.paymentMethodView}
+              >
+                <View>
+                  <Text style={styles.paymentMethodText}>
+                    {translate(method.PaymentMethodEn)}
+                  </Text>
+                  <Text style={styles.paymentMethodSubText}>
+                    {translate("Pay with")} {translate(method.PaymentMethodEn)}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    width: 30,
+                    height: 30,
+                    borderRadius: 30,
+                    backgroundColor: "rgba(0,0,0,0.26)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {this.state.choice === index + 2 && (
+                    <View
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: 22,
+                        backgroundColor: "#FF9D00",
+                      }}
+                    />
+                  )}
+                </View>
+              </TouchableOpacity>
+            ))}
+          {!this.state.addingCredits && (
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => this._handleChoice(1)}
+              style={{
+                backgroundColor: "rgba(0,0,0,0.15)",
+                paddingHorizontal: 15,
+                paddingVertical: 10,
+                borderRadius: 25,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: 15,
+              }}
+            >
+              <View>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: "montserrat-bold",
+                    color: "#FFF",
+                  }}
+                >
+                  {translate("Wallet")}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: "montserrat-regular",
+                    color: "#FFF",
+                  }}
+                >
+                  {translate("Pay with")} {translate("Wallet")}
+                </Text>
+              </View>
+              <View
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 30,
+                  backgroundColor: "rgba(0,0,0,0.26)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {this.state.choice === 1 && (
+                  <View
+                    style={{
+                      width: 22,
+                      height: 22,
+                      borderRadius: 22,
+                      backgroundColor: "#FF9D00",
+                    }}
+                  />
+                )}
+              </View>
+            </TouchableOpacity>
+          )}
+        </View>
+        {/* {this.state.choice === 3 && (
           <View style={styles.mastercardContainer}>
             <Image
               style={[styles.media, styles.mastercardImage]}
@@ -492,7 +681,7 @@ class PaymentForm extends Component {
               {translate("payment process")}
             </Text>
           </View>
-        )}
+        )} */}
       </Content>
     );
   };
@@ -502,6 +691,7 @@ class PaymentForm extends Component {
       "campaign_channel",
       null
     );
+
     return (
       <View style={styles.safeAreaViewContainer}>
         <LinearGradient
@@ -603,27 +793,40 @@ class PaymentForm extends Component {
                     styles.mainCard,
                     // { opacity: this.props.loadingTrans ? 0.5 : 1 }
                   ]}
-                  disabled={this.props.loadingTrans}
+                  disabled={
+                    this.props.loadingTrans || this.props.loadingPaymentMethods
+                  }
+                  text={
+                    this.state.refundAmountToWallet
+                      ? translate("Refund Now")
+                      : this.state.addingCredits
+                      ? translate("Top Up Now")
+                      : translate("Pay Now")
+                  }
+                  uppercase={this.state.addingCredits}
+                />
+                {/* <TouchableOpacity
+                  onPress={this._handleSubmission}
+                  style={styles.flexBoxRow}
                 >
-                  <View style={styles.flexBoxRow}>
-                    <Text
-                      uppercase={this.state.addingCredits}
-                      style={styles.payNowText}
-                    >
-                      {this.state.refundAmountToWallet
-                        ? translate("Refund Now")
-                        : this.state.addingCredits
-                        ? translate("Top Up Now")
-                        : translate("Pay Now")}
-                    </Text>
-                    {this.props.loadingTrans && (
-                      <ActivityIndicator
-                        color={globalColors.red}
-                        style={{ right: 10, position: "absolute" }}
-                      />
-                    )}
-                  </View>
-                </GradientButton>
+                  <Text
+                    uppercase={this.state.addingCredits}
+                    style={styles.payNowText}
+                  >
+                    {this.state.refundAmountToWallet
+                      ? translate("Refund Now")
+                      : this.state.addingCredits
+                      ? translate("Top Up Now")
+                      : translate("Pay Now")}
+                  </Text>
+                  {(this.props.loadingTrans ||
+                    this.props.loadingPaymentMethods) && (
+                    <ActivityIndicator
+                      color={globalColors.red}
+                      style={{ right: 10, position: "absolute" }}
+                    />
+                  )}
+                </TouchableOpacity> */}
               </View>
               <View style={{ height: 40 }}></View>
             </Footer>
@@ -744,10 +947,27 @@ const mapStateToProps = (state) => ({
   adType: state.campaignC.adType,
   movingAmountToWallet: state.campaignC.movingAmountToWallet,
   movingAmountToWalletInstagram: state.instagramAds.movingAmountToWallet,
+  paymentMethods: state.transA.paymentMethods,
+  loadingPaymentMethods: state.transA.loadingPaymentMethods,
 });
 const mapDispatchToProps = (dispatch) => ({
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
-
+  payment_request_payment_method: (
+    campaign_id,
+    PaymentMethodId,
+    openBrowser,
+    navigation,
+    closeBrowserLoading
+  ) =>
+    dispatch(
+      actionCreators.payment_request_payment_method(
+        campaign_id,
+        PaymentMethodId,
+        openBrowser,
+        navigation,
+        closeBrowserLoading
+      )
+    ),
   payment_request_knet: (
     campaign_id,
     openBrowser,
@@ -787,5 +1007,9 @@ const mapDispatchToProps = (dispatch) => ({
 
   moveRejectedAdAmountToWalletInstagram: (campaign_id) =>
     dispatch(actionCreators.moveRejectedAdAmountToWalletInstagram(campaign_id)),
+  getPaymentMethods: (businessCCountry, businessid, amount) =>
+    dispatch(
+      actionCreators.getPaymentMethods(businessCCountry, businessid, amount)
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentForm);

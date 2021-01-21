@@ -193,7 +193,7 @@ class AdFeedDesignReview extends React.Component {
             {(call_to_action.value || call_to_action) !== "BLANK" && (
               <View style={styles.swipeUpView}>
                 <Text style={styles.callToActionText}>
-                  {call_to_action.hasOwnProperty("label")
+                  {call_to_action && call_to_action.hasOwnProperty("label")
                     ? translate(call_to_action.label)
                     : translate(call_to_action.replace(/_/gi, " "))}
                 </Text>

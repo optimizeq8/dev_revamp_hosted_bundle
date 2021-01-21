@@ -111,7 +111,9 @@ export default class Picker extends Component {
                   autoCapitalize="none"
                   onChangeText={this.props.customSearch}
                 />
-                {this.props.customInterestsLoading && <ActivityIndicator />}
+                {this.props.customInterestsLoading && (
+                  <ActivityIndicator color={globalColors.orange} />
+                )}
               </Item>
             )}
           </View>

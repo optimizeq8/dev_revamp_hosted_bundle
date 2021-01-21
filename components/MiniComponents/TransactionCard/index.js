@@ -61,21 +61,18 @@ class TransactionCard extends Component {
         </View>
         <View style={styles.mainView}>
           <View>
-            {(transaction.payment_type === "KNET" ||
-              transaction.payment_type === "Wallet") && (
-              <View>
-                <Text style={styles.text}>{translate("Payment Method")}</Text>
-                <Text style={styles.subText}>{transaction.payment_type}</Text>
-              </View>
-            )}
-            {transaction.payment_type === "MASTERCARD" && (
-              <View>
-                <Text style={styles.text}>{transaction.payment_type}</Text>
-                <Text style={styles.subText}>
-                  xxxx xxxx xxxx {transaction.card_ending_with}
-                </Text>
-              </View>
-            )}
+            <View>
+              <Text style={styles.text}>
+                {transaction.card_ending_with
+                  ? transaction.payment_type
+                  : translate("Payment Method")}
+              </Text>
+              <Text style={styles.subText}>
+                {transaction.card_ending_with
+                  ? `xxxx xxxx xxxx ${transaction.card_ending_with}`
+                  : transaction.payment_type}
+              </Text>
+            </View>
 
             <Text style={[styles.text, styles.transactionText]}>
               {translate("Transaction ID")}
