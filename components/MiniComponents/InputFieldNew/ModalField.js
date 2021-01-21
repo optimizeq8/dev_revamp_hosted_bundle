@@ -53,67 +53,74 @@ export default class ModalField extends Component {
       customStyle,
       customIconColor,
       customTextStyle,
+      copilot,
     } = this.props;
     let FieldIcon = icon ? icon : null;
     return (
-      <Animatable.View
-        onAnimationEnd={this.handleAnimationEnd}
-        duration={200}
-        easing={"ease"}
-        animation={valueError ? "shake" : ""}
-      >
-        <Item
-          onPress={() => !disabled && setModalVisible(true)}
-          style={[styles.input1, customStyle]}
+      <View {...copilot}>
+        <Animatable.View
+          onAnimationEnd={this.handleAnimationEnd}
+          duration={200}
+          easing={"ease"}
+          animation={valueError ? "shake" : ""}
         >
-          {FieldIcon && (
-            <FieldIcon
-              style={[styles.iconSize, styles.icon]}
-              fill={
-                isVisible
-                  ? customIconColor
+          <Item
+            onPress={() => !disabled && setModalVisible(true)}
+            style={[styles.input1, customStyle]}
+          >
+            {FieldIcon && (
+              <FieldIcon
+                style={[styles.iconSize, styles.icon]}
+                fill={
+                  isVisible
                     ? customIconColor
-                    : globalColors.orange
-                  : globalColors.white
-              }
-              // stroke={
-              //   isVisible
-              //     ? customIconColor
-              //       ? customIconColor
-              //       : globalColors.orange
-              //     : globalColors.white
-              // }
-            />
-          )}
-          <View style={[styles.colView, !FieldIcon && { marginLeft: 20 }]}>
-            <Text
-              style={[
-                styles.inputLabel,
-                GlobalStyles.whiteTextColor,
-                customTextStyle,
-              ]}
-            >
-              {translate(label)}
-            </Text>
-            <Text
-              style={[styles.inputText, { textAlign: "left" }, customTextStyle]}
-            >
-              {stateName === "businesscategory" || stateName === "area"
-                ? valueText
-                : translate(valueText)}
-            </Text>
-          </View>
+                      ? customIconColor
+                      : globalColors.orange
+                    : globalColors.white
+                }
+                // stroke={
+                //   isVisible
+                //     ? customIconColor
+                //       ? customIconColor
+                //       : globalColors.orange
+                //     : globalColors.white
+                // }
+              />
+            )}
+            <View style={[styles.colView, !FieldIcon && { marginLeft: 20 }]}>
+              <Text
+                style={[
+                  styles.inputLabel,
+                  GlobalStyles.whiteTextColor,
+                  customTextStyle,
+                ]}
+              >
+                {translate(label)}
+              </Text>
+              <Text
+                style={[
+                  styles.inputText,
+                  { textAlign: "left" },
+                  customTextStyle,
+                ]}
+              >
+                {stateName === "businesscategory" || stateName === "area"
+                  ? valueText
+                  : translate(valueText)}
+              </Text>
+            </View>
 
-          <Icon
-            type="AntDesign"
-            name="down"
-            style={[
-              styles.downiconEnd,
-              customIconColor && { color: customIconColor },
-            ]}
-          />
-        </Item>
-      </Animatable.View>
+            <Icon
+              type="AntDesign"
+              name="down"
+              style={[
+                styles.downiconEnd,
+                customIconColor && { color: customIconColor },
+              ]}
+            />
+          </Item>
+        </Animatable.View>
+      </View>
     );
   }
 }

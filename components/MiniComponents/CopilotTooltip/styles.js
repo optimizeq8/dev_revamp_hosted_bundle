@@ -3,6 +3,12 @@ import { globalColors } from "../../../GlobalStyles";
 
 export default StyleSheet.create({
   tooltipContainer: { width: "100%" },
+  tooltipHeaderText: {
+    fontFamily: "montserrat-bold",
+    color: globalColors.purple,
+    textTransform: "uppercase",
+    marginHorizontal: 8,
+  },
   tooltipText: {
     fontFamily: "montserrat-regular",
     color: globalColors.rum,
@@ -12,12 +18,16 @@ export default StyleSheet.create({
     justifyContent: "space-between",
     padding: 8,
   },
+  tooltipTextContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   tooltipButton: {
-    backgroundColor: globalColors.darkOrange,
+    backgroundColor: globalColors.purple,
     justifyContent: "center",
     borderRadius: 20,
     width: "45%",
-    height: 30,
+    height: 40,
     alignItems: "center",
   },
   tooltipCloseButton: {
@@ -34,7 +44,7 @@ export default StyleSheet.create({
     fontSize: 11,
   },
   stepContainer: {
-    backgroundColor: globalColors.green,
+    backgroundColor: globalColors.orange,
     borderRadius: 50,
     width: 25,
     height: 25,
@@ -43,7 +53,7 @@ export default StyleSheet.create({
   },
   stepNumberText: {
     fontFamily: "montserrat-bold",
-    fontSize: 11,
+    fontSize: 14,
     color: "#fff",
   },
 });

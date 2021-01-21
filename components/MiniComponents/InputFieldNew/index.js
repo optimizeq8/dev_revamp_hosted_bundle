@@ -170,101 +170,110 @@ export default class InputField extends Component {
       inputStyle,
       placeholderColor = "#FFF",
       labelColor = globalColors.white,
+      copilot,
     } = this.props;
 
     let FieldIcon = icon ? icon : null;
     return (
-      <Animatable.View
-        onAnimationEnd={this.handleAnimationEnd}
-        duration={200}
-        easing={"ease"}
-        style={[{ width: "100%" }, animateCustomStyle]}
-        animation={valueError1 || valueError2 ? "shake" : ""}
-      >
-        <Item
-          style={[styles.input1, customStyles]}
-          onPress={this.bringFieldToFocus}
+      <View {...copilot}>
+        <Animatable.View
+          onAnimationEnd={this.handleAnimationEnd}
+          duration={200}
+          easing={"ease"}
+          style={[{ width: "100%" }, animateCustomStyle]}
+          animation={valueError1 || valueError2 ? "shake" : ""}
         >
-          {FieldIcon && (
-            <FieldIcon
-              style={[styles.iconSize, styles.icon]}
-              fill={
-                this.state.highlight ? globalColors.orange : globalColors.white
-              }
-              stroke={
-                this.state.highlight ? globalColors.orange : globalColors.white
-              }
-            />
-          )}
-
-          <View style={[styles.colView, !FieldIcon && { marginLeft: 20 }]}>
-            <Text
-              style={[
-                styles.inputLabel,
-                this.state.highlight
-                  ? [GlobalStyles.orangeTextColor]
-                  : { color: labelColor },
-              ]}
-            >
-              {translate(label)}
-              {compulsory && "*"}
-            </Text>
-            <View style={[styles.rowView]}>
-              <Input
-                ref={"inputField"}
-                placeholderTextColor={placeholderColor}
-                editable={!this.props.loading || !disabled}
-                placeholder={placeholder1 && translate(placeholder1)}
-                value={this.props.value}
-                style={[
-                  styles.inputText,
-                  Platform.OS === "ios" && { height: 20 },
-                  stateName2 ? { maxWidth: "45%" } : {},
-                  disabled ? { opacity: 0.6 } : {},
-                  inputStyle,
-                ]}
-                secureTextEntry={secureTextEntry}
-                autoCorrect={false}
-                maxLength={maxLength ? maxLength : 34}
-                autoFocus={autoFocus}
-                autoCapitalize="none"
-                onChangeText={(value) => this.handleTextChange(value)}
-                onFocus={this.focusFeild}
-                onBlur={() => this.handleBlur(false)}
+          <Item
+            style={[styles.input1, customStyles]}
+            onPress={this.bringFieldToFocus}
+          >
+            {FieldIcon && (
+              <FieldIcon
+                style={[styles.iconSize, styles.icon]}
+                fill={
+                  this.state.highlight
+                    ? globalColors.orange
+                    : globalColors.white
+                }
+                stroke={
+                  this.state.highlight
+                    ? globalColors.orange
+                    : globalColors.white
+                }
               />
-              {stateName2 && (
-                <View
-                  style={{
-                    width: 1,
-                    height: "90%",
-                    backgroundColor: "#fff5",
-                  }}
-                />
-              )}
-              {stateName2 && (
+            )}
+
+            <View style={[styles.colView, !FieldIcon && { marginLeft: 20 }]}>
+              <Text
+                style={[
+                  styles.inputLabel,
+                  this.state.highlight
+                    ? [GlobalStyles.orangeTextColor]
+                    : { color: labelColor },
+                ]}
+              >
+                {translate(label)}
+                {compulsory && "*"}
+              </Text>
+              <View style={[styles.rowView]}>
                 <Input
+                  ref={"inputField"}
                   placeholderTextColor={placeholderColor}
                   editable={!this.props.loading || !disabled}
-                  placeholder={placeholder2 && translate(placeholder2)}
-                  value={this.props.value2}
+                  placeholder={placeholder1 && translate(placeholder1)}
+                  value={this.props.value}
                   style={[
                     styles.inputText,
-                    { marginLeft: 8 },
+                    Platform.OS === "ios" && { height: 20 },
                     stateName2 ? { maxWidth: "45%" } : {},
                     disabled ? { opacity: 0.6 } : {},
+                    inputStyle,
                   ]}
+                  secureTextEntry={secureTextEntry}
                   autoCorrect={false}
                   maxLength={maxLength ? maxLength : 34}
+                  autoFocus={autoFocus}
                   autoCapitalize="none"
-                  onChangeText={(value2) => this.handleTextChange(value2, true)}
+                  onChangeText={(value) => this.handleTextChange(value)}
                   onFocus={this.focusFeild}
-                  onBlur={() => this.handleBlur(true)}
+                  onBlur={() => this.handleBlur(false)}
                 />
-              )}
+                {stateName2 && (
+                  <View
+                    style={{
+                      width: 1,
+                      height: "90%",
+                      backgroundColor: "#fff5",
+                    }}
+                  />
+                )}
+                {stateName2 && (
+                  <Input
+                    placeholderTextColor={placeholderColor}
+                    editable={!this.props.loading || !disabled}
+                    placeholder={placeholder2 && translate(placeholder2)}
+                    value={this.props.value2}
+                    style={[
+                      styles.inputText,
+                      { marginLeft: 8 },
+                      stateName2 ? { maxWidth: "45%" } : {},
+                      disabled ? { opacity: 0.6 } : {},
+                    ]}
+                    autoCorrect={false}
+                    maxLength={maxLength ? maxLength : 34}
+                    autoCapitalize="none"
+                    onChangeText={(value2) =>
+                      this.handleTextChange(value2, true)
+                    }
+                    onFocus={this.focusFeild}
+                    onBlur={() => this.handleBlur(true)}
+                  />
+                )}
+              </View>
             </View>
-          </View>
-        </Item>
-      </Animatable.View>
+          </Item>
+        </Animatable.View>
+      </View>
     );
   }
 }

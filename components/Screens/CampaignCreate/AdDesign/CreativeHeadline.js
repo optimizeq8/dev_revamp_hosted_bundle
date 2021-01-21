@@ -62,95 +62,95 @@ export default class CreativeHeadline extends Component {
   };
   render() {
     let {
-			brand_name,
-			brand_nameError,
-			field,
-			headline,
-			data,
-			changeBusinessName,
-			changeHeadline,
-			storyAdSelected,
-			disabled,
-			headlineError,
-			setTheState,
-			copilot,
-		} = this.props;
+      brand_name,
+      brand_nameError,
+      field,
+      headline,
+      data,
+      changeBusinessName,
+      changeHeadline,
+      storyAdSelected,
+      disabled,
+      headlineError,
+      setTheState,
+      copilot,
+    } = this.props;
     const { translate } = this.props.screenProps;
     return (
-			<View {...copilot}>
-				<Item style={[styles.inputBrand]}>
-					<PenIcon
-						fill={
-							this.state.input
-								? "#FF9D00"
-								: (field === "Business Name" &&
-										(brand_nameError || this.state.brand_nameError)) ||
-								  (field === "Promotional Message" &&
-										(headlineError || this.state.headlineError))
-								? "red"
-								: "#fff"
-						}
-					/>
-					<View
-						style={[
-							{ flexDirection: "column", width: "90%", alignSelf: "center" },
-							storyAdSelected || disabled ? { opacity: 0.5 } : { opacity: 1 },
-						]}
-					>
-						<Text style={[styles.inputText, styles.subtitleHeading]}>
-							{translate(field)}
-						</Text>
-						<Input
-							disabled={storyAdSelected || disabled}
-							style={[styles.inputText, { width: "100%" }]}
-							maxLength={field === "Business Name" ? 25 : 34}
-							placeholder={
-								field === "Business Name"
-									? translate("Enter your business name")
-									: translate("Shop Our Latest Collection")
-							}
-							value={
-								field === "Business Name"
-									? brand_name && brand_name.length <= 25
-										? brand_name.replace(
-												/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
-												""
-										  )
-										: ""
-									: headline
-									? headline.replace(
-											/[^ a-zA-Z0-9\.\!\%\@\u0621-\u064A\u0660-\u0669]/gi,
-											""
-									  )
-									: ""
-							}
-							placeholderLabel={styles.inputText}
-							placeholderTextColor="#fff9"
-							autoCorrect={false}
-							autoCapitalize="none"
-							onChangeText={(value) => {
-								value =
-									field === "Business Name"
-										? value.replace(
-												/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
-												""
-										  )
-										: value.replace(
-												/[^ a-zA-Z0-9\.\!\%\@\u0621-\u064A\u0660-\u0669]/gi,
-												""
-										  );
-								field === "Business Name"
-									? changeBusinessName(value)
-									: changeHeadline(value);
-							}}
-							onFocus={() => {
-								this.setState({ input: true });
-							}}
-							onBlur={this.handleBlur}
-						/>
-					</View>
-				</Item>
-			</View>
-		);
+      <View {...copilot}>
+        <Item style={[styles.inputBrand]}>
+          <PenIcon
+            fill={
+              this.state.input
+                ? "#FF9D00"
+                : (field === "Business Name" &&
+                    (brand_nameError || this.state.brand_nameError)) ||
+                  (field === "Promotional Message" &&
+                    (headlineError || this.state.headlineError))
+                ? "red"
+                : "#fff"
+            }
+          />
+          <View
+            style={[
+              { flexDirection: "column", width: "90%", alignSelf: "center" },
+              storyAdSelected || disabled ? { opacity: 0.5 } : { opacity: 1 },
+            ]}
+          >
+            <Text style={[styles.inputText, styles.subtitleHeading]}>
+              {translate(field)}
+            </Text>
+            <Input
+              disabled={storyAdSelected || disabled}
+              style={[styles.inputText, { width: "100%" }]}
+              maxLength={field === "Business Name" ? 25 : 34}
+              placeholder={
+                field === "Business Name"
+                  ? translate("Enter your business name")
+                  : translate("Shop Our Latest Collection")
+              }
+              value={
+                field === "Business Name"
+                  ? brand_name && brand_name.length <= 25
+                    ? brand_name.replace(
+                        /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+                        ""
+                      )
+                    : ""
+                  : headline
+                  ? headline.replace(
+                      /[^ a-zA-Z0-9\.\!\%\@\u0621-\u064A\u0660-\u0669]/gi,
+                      ""
+                    )
+                  : ""
+              }
+              placeholderLabel={styles.inputText}
+              placeholderTextColor="#fff9"
+              autoCorrect={false}
+              autoCapitalize="none"
+              onChangeText={(value) => {
+                value =
+                  field === "Business Name"
+                    ? value.replace(
+                        /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+                        ""
+                      )
+                    : value.replace(
+                        /[^ a-zA-Z0-9\.\!\%\@\u0621-\u064A\u0660-\u0669]/gi,
+                        ""
+                      );
+                field === "Business Name"
+                  ? changeBusinessName(value)
+                  : changeHeadline(value);
+              }}
+              onFocus={() => {
+                this.setState({ input: true });
+              }}
+              onBlur={this.handleBlur}
+            />
+          </View>
+        </Item>
+      </View>
+    );
   }
 }

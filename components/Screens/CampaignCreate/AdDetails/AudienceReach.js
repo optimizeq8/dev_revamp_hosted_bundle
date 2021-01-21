@@ -20,10 +20,11 @@ class ReachBar extends Component {
   state = { showMetrics: false };
   render() {
     const { translate } = this.props.screenProps;
-    let { startEditing, editCampaign, campaignInfo } = this.props;
+    let { startEditing, editCampaign, campaignInfo, copilot } = this.props;
 
     return (
       <View
+        {...copilot}
         style={[
           styles.bottom,
           startEditing &&
