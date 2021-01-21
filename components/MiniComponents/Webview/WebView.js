@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, Text, ScrollView, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Dimensions,
+  ActivityIndicator,
+} from "react-native";
 import WebView from "react-native-webview";
 import analytics from "@segment/analytics-react-native";
 import CustomHeader from "../Header";
@@ -11,7 +17,7 @@ import { colors } from "../../GradiantColors/colors";
 import styles from "./styles";
 import Loading from "../LoadingScreen";
 import { heightPercentageToDP } from "react-native-responsive-screen";
-import globalStyles from "../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 const screen = Dimensions.get("window");
 export default class index extends Component {
   componentDidMount() {
@@ -33,9 +39,21 @@ export default class index extends Component {
 
   hideLoader = () => {
     console.log("load ended");
-    this.setState({ viewLoader: false });
+    setTimeout(() => this.setState({ viewLoader: false }), 1750);
   };
+  onMessage = () => {};
   render() {
+    const runFirst = `
+     var logo = document.getElementsByClassName("logo");
+     var vendorName = document.getElementsByClassName("vendorName");
+        if(logo) {
+            logo[0].style.display = 'none';
+        }
+        if(vendorName) {
+            vendorName[0].style.display = 'none';
+        }
+      true; // note: this is required, or you'll sometimes get silent failures
+    `;
     const { translate } = this.props.screenProps;
     let url = this.props.navigation.getParam("url", "");
     let title = this.props.navigation.getParam("title", "");
@@ -110,22 +128,11 @@ export default class index extends Component {
               console.log("loading started");
             }}
             onLoad={() => this.hideLoader()}
+            startInLoadingState={true}
             androidHardwareAccelerationDisabled={true}
-            // renderLoading={() => (
-            //   <View style={{ height: "100%", backgroundColor: "#0000" }}>
-            //     <Loading top={40} />
-            //   </View>
-            // )}
             style={{
-              //   backgroundColor: backgroundColor,
-              marginTop: screen.height < 750 ? -169 : -200,
+              //   marginTop: -((screen.width / screen.height) * 315),
               height: "100%",
-            }}
-            contentContainerStyle={{
-              //   backgroundColor: backgroundColor,
-              //   height: "100%",
-              borderWidth: 5,
-              marginHorizontal: 2,
             }}
             ref={(ref) => (this.webview = ref)}
             source={{
@@ -134,15 +141,34 @@ export default class index extends Component {
             cacheEnabled={false}
             incognito={true}
             scrollEnabled={scrollEnabled}
+            injectedJavaScript={runFirst}
+            onMessage={this.onMessage}
+            // renderLoading={() => (
+            //   <View
+            //     style={{
+            //       height: "100%",
+            //       backgroundColor: "red",
+            //     }}
+            //   >
+            //     <Loading top={40} />
+            //   </View>
+            // )}
           />
           {this.state.viewLoader && (
             <View
               style={{
                 height: "100%",
                 backgroundColor: backgroundColor,
+                marginTop: "20%",
               }}
             >
-              <Loading top={40} />
+              <ActivityIndicator
+                color={globalColors.purple}
+                // size={75}
+                style={{
+                  transform: [{ scale: 3 }],
+                }}
+              />
             </View>
           )}
           {/* </Content> */}

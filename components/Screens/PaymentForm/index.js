@@ -796,27 +796,37 @@ class PaymentForm extends Component {
                   disabled={
                     this.props.loadingTrans || this.props.loadingPaymentMethods
                   }
+                  text={
+                    this.state.refundAmountToWallet
+                      ? translate("Refund Now")
+                      : this.state.addingCredits
+                      ? translate("Top Up Now")
+                      : translate("Pay Now")
+                  }
+                  uppercase={this.state.addingCredits}
+                />
+                {/* <TouchableOpacity
+                  onPress={this._handleSubmission}
+                  style={styles.flexBoxRow}
                 >
-                  <View style={styles.flexBoxRow}>
-                    <Text
-                      uppercase={this.state.addingCredits}
-                      style={styles.payNowText}
-                    >
-                      {this.state.refundAmountToWallet
-                        ? translate("Refund Now")
-                        : this.state.addingCredits
-                        ? translate("Top Up Now")
-                        : translate("Pay Now")}
-                    </Text>
-                    {(this.props.loadingTrans ||
-                      this.props.loadingPaymentMethods) && (
-                      <ActivityIndicator
-                        color={globalColors.red}
-                        style={{ right: 10, position: "absolute" }}
-                      />
-                    )}
-                  </View>
-                </GradientButton>
+                  <Text
+                    uppercase={this.state.addingCredits}
+                    style={styles.payNowText}
+                  >
+                    {this.state.refundAmountToWallet
+                      ? translate("Refund Now")
+                      : this.state.addingCredits
+                      ? translate("Top Up Now")
+                      : translate("Pay Now")}
+                  </Text>
+                  {(this.props.loadingTrans ||
+                    this.props.loadingPaymentMethods) && (
+                    <ActivityIndicator
+                      color={globalColors.red}
+                      style={{ right: 10, position: "absolute" }}
+                    />
+                  )}
+                </TouchableOpacity> */}
               </View>
               <View style={{ height: 40 }}></View>
             </Footer>
