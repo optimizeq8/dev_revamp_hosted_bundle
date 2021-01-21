@@ -1417,9 +1417,8 @@ class AdDetails extends Component {
           : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
       );
     }
-    console.log("Focused");
     AsyncStorage.getItem("AdDetailTutorialOpened").then((value) => {
-      if (!value || true) {
+      if (!value && this.props.campaignList.length === 0) {
         this.props.start();
       }
     });
@@ -1960,6 +1959,7 @@ const mapStateToProps = (state) => ({
   campaignDateChanged: state.campaignC.campaignDateChanged,
   audienceList: state.audience.audienceList,
   audienceListLoading: state.audience.audienceListLoading,
+  campaignList: state.dashboard.campaignList,
 });
 
 const mapDispatchToProps = (dispatch) => ({

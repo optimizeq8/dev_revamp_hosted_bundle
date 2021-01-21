@@ -1135,7 +1135,7 @@ class AdDesign extends Component {
         : this.props.data.campaign_collectionAdLinkForm,
     });
     AsyncStorage.getItem("AdDesignTutorialOpened").then((value) => {
-      if (!value) {
+      if (!value && this.props.campaignList.length === 0) {
         this.props.start();
       }
     });
@@ -1743,6 +1743,7 @@ const mapStateToProps = (state) => ({
   ad_tutorial_type: state.generic.ad_tutorial_type,
   ad_tutorial_link: state.generic.ad_tutorial_link,
   ad_tutorial_media_type: state.generic.ad_tutorial_media_type,
+  campaignList: state.dashboard.campaignList,
 });
 
 const mapDispatchToProps = (dispatch) => ({

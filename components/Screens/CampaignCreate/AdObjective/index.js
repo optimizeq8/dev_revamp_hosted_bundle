@@ -572,7 +572,7 @@ class AdObjective extends Component {
       campaign_ad_type: this.props.adType,
     });
     AsyncStorage.getItem("AdObjectiveTutorialOpened").then((value) => {
-      if (!value) {
+      if (!value && this.props.campaignList.length === 0) {
         this.props.start();
       }
     });
@@ -981,6 +981,7 @@ const mapStateToProps = (state) => ({
   currentCampaignSteps: state.campaignC.currentCampaignSteps,
   incompleteCampaign: state.campaignC.incompleteCampaign,
   campaignProgressStarted: state.campaignC.campaignProgressStarted,
+  campaignList: state.dashboard.campaignList,
 });
 
 const mapDispatchToProps = (dispatch) => ({
