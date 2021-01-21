@@ -140,15 +140,6 @@ class AdObjective extends Component {
           ? this.props.data.objectiveLabel
           : snapchatObjectivesData[this.props.adType || "SnapAd"][0].label,
     });
-    AsyncStorage.getItem("AdObjectiveTutorialOpened").then((value) => {
-      if (!value) {
-        this.props.start();
-      }
-    });
-    this.props.copilotEvents.on("stop", () => {
-      AsyncStorage.setItem("AdObjectiveTutorialOpened", "true");
-      // Copilot tutorial finished!
-    });
   }
 
   componentDidUpdate(prevProps) {
@@ -579,6 +570,15 @@ class AdObjective extends Component {
       source_action,
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
+    });
+    AsyncStorage.getItem("AdObjectiveTutorialOpened").then((value) => {
+      if (!value) {
+        this.props.start();
+      }
+    });
+    this.props.copilotEvents.on("stop", () => {
+      AsyncStorage.setItem("AdObjectiveTutorialOpened", "true");
+      // Copilot tutorial finished!
     });
     // let adjustAdObjectiveTracker = new AdjustEvent("va71pj");
     // adjustAdObjectiveTracker.addPartnerParameter(

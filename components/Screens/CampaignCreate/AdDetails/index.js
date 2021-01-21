@@ -418,15 +418,6 @@ class AdDetails extends Component {
         }
       );
     }
-    AsyncStorage.getItem("AdDetailTutorialOpened").then((value) => {
-      if (!value) {
-        this.props.start();
-      }
-    });
-    this.props.copilotEvents.on("stop", () => {
-      AsyncStorage.setItem("AdDetailTutorialOpened", "true");
-      // Copilot tutorial finished!
-    });
   }
 
   _handleAge = (values) => {
@@ -1426,6 +1417,16 @@ class AdDetails extends Component {
           : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
       );
     }
+    console.log("Focused");
+    AsyncStorage.getItem("AdDetailTutorialOpened").then((value) => {
+      if (!value || true) {
+        this.props.start();
+      }
+    });
+    this.props.copilotEvents.on("stop", () => {
+      AsyncStorage.setItem("AdDetailTutorialOpened", "true");
+      // Copilot tutorial finished!
+    });
     // let adjustAdDetailsTracker = new AdjustEvent("1mtblg");
     // adjustAdDetailsTracker.addPartnerParameter(
     //   `Snap_${this.props.adType}`,
