@@ -1264,7 +1264,7 @@ class AdDesign extends Component {
     return (
       <View style={styles.mainSafeArea}>
         <NavigationEvents
-          ={this.handleAdDesignFocus}
+          onDidFocus={this.handleAdDesignFocus}
           onDidBlur={this.handleAdDesignBlur}
         />
         <LinearGradient
