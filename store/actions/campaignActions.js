@@ -131,6 +131,7 @@ export const ad_objective = (info, navigation, segmentInfo, objective) => {
           action_status: data.success ? "success" : "failure",
           source_action: "a_submit_ad_objective",
           timestamp: new Date().getTime(),
+          campaign_error: !data.success && data.message,
           device_id: getUniqueId(),
           ...segmentInfo,
         });

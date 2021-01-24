@@ -37,6 +37,7 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
           campaign_channel: "instagram",
           action_status: data.success ? "success" : "failure",
           source_action: "a_submit_ad_objective",
+          campaign_error: !data.success && data.message,
           ...segmentInfo,
         });
         data.success

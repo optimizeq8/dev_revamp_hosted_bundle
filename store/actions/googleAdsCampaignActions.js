@@ -189,6 +189,7 @@ export const create_google_SE_campaign_info = (
           action_status: !data.error ? "success" : "failure",
           source_action: "a_submit_ad_objective",
           timestamp: new Date().getTime(),
+          campaign_error: data.error,
           device_id: getUniqueId(),
           ...segmentInfo,
         });
