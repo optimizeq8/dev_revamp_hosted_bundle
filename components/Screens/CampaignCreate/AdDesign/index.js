@@ -1210,32 +1210,33 @@ class AdDesign extends Component {
           "Here you need to add a promotional message related to what you're advertising eg. 'New products on sale now!'",
       },
     ].map((field, i) => (
-      <CopilotStep
+      //   <CopilotStep
+      //     key={field.title}
+      //     text={field.description}
+      //     order={i + 1}
+      //     name={field.title}
+      //   >
+      <CreativeHeadline
         key={field.title}
-        text={field.description}
-        order={i + 1}
-        name={field.title}
-      >
-        <CreativeHeadline
-          disabled={
-            this.props.loading ||
-            (this.props.loadingStoryAdsArray.length > 0 &&
-              this.props.loadingStoryAdsArray.includes(true))
-          }
-          data={this.props.data}
-          changeBusinessName={this.changeBusinessName}
-          changeHeadline={this.changeHeadline}
-          brand_name={brand_name}
-          headline={headline}
-          storyAdSelected={storyAdCards.storyAdSelected}
-          field={field.title}
-          mainBusiness={this.props.mainBusiness}
-          screenProps={this.props.screenProps}
-          brand_nameError={this.state.brand_nameError}
-          headlineError={this.state.headlineError}
-          setTheState={this.setTheState}
-        />
-      </CopilotStep>
+        disabled={
+          this.props.loading ||
+          (this.props.loadingStoryAdsArray.length > 0 &&
+            this.props.loadingStoryAdsArray.includes(true))
+        }
+        data={this.props.data}
+        changeBusinessName={this.changeBusinessName}
+        changeHeadline={this.changeHeadline}
+        brand_name={brand_name}
+        headline={headline}
+        storyAdSelected={storyAdCards.storyAdSelected}
+        field={field.title}
+        mainBusiness={this.props.mainBusiness}
+        screenProps={this.props.screenProps}
+        brand_nameError={this.state.brand_nameError}
+        headlineError={this.state.headlineError}
+        setTheState={this.setTheState}
+      />
+      //   </CopilotStep>
     ));
 
     let collection = [0, 1, 2, 3].map((collIdx) => (
@@ -1350,29 +1351,29 @@ class AdDesign extends Component {
                         navigation={this.props.navigation}
                       />
                     ) : (
-                      <CopilotStep
-                        text="Add your media here, It can be a video or an image. Make sure your ad looks professional so that it can attract a lot of people!"
-                        order={3}
-                        name="media"
-                      >
-                        {!videoIsLoading && (
-                          <MediaButton
-                            disabled={
-                              this.props.loading ||
-                              (this.props.loadingStoryAdsArray.length > 0 &&
-                                this.props.loadingStoryAdsArray.includes(true))
-                            }
-                            screenProps={this.props.screenProps}
-                            type={"media"}
-                            setMediaModalVisible={this.setMediaModalVisible}
-                            media={
-                              media !== "//"
-                                ? media
-                                : storyAdCards.selectedStoryAd.media
-                            }
-                          />
-                        )}
-                      </CopilotStep>
+                      //   <CopilotStep
+                      //     text="Add your media here, It can be a video or an image. Make sure your ad looks professional so that it can attract a lot of people!"
+                      //     order={3}
+                      //     name="media"
+                      //   >
+                      !videoIsLoading && (
+                        <MediaButton
+                          disabled={
+                            this.props.loading ||
+                            (this.props.loadingStoryAdsArray.length > 0 &&
+                              this.props.loadingStoryAdsArray.includes(true))
+                          }
+                          screenProps={this.props.screenProps}
+                          type={"media"}
+                          setMediaModalVisible={this.setMediaModalVisible}
+                          media={
+                            media !== "//"
+                              ? media
+                              : storyAdCards.selectedStoryAd.media
+                          }
+                        />
+                      )
+                      //   </CopilotStep>
                     )}
                     {videoIsLoading ? (
                       <VideoProcessingLoader
@@ -1408,51 +1409,51 @@ class AdDesign extends Component {
                       <View style={styles.collectionView}>{collection}</View>
                     )}
                   </View>
-                  <CopilotStep
+                  {/* <CopilotStep
                     text={`You need to add a swipe up destination to send your audince to and select a call to action to push your audince into taking action.`}
                     order={4}
                     name="swipeup"
-                  >
-                    <SwipeCompCondition
-                      swipeUpExpanded={this.state.swipeUpExpanded}
-                      screenProps={this.props.screenProps}
-                      swipeUpMaxHeight={this.state.swipeUpMaxHeight}
-                      setTheState={this.setTheState}
-                      _changeDestination={(
+                  > */}
+                  <SwipeCompCondition
+                    swipeUpExpanded={this.state.swipeUpExpanded}
+                    screenProps={this.props.screenProps}
+                    swipeUpMaxHeight={this.state.swipeUpMaxHeight}
+                    setTheState={this.setTheState}
+                    _changeDestination={(
+                      destination,
+                      call_to_action,
+                      attachment,
+                      appChoice = null,
+                      whatsAppCampaign
+                    ) =>
+                      _changeDestination(
                         destination,
                         call_to_action,
                         attachment,
-                        appChoice = null,
-                        whatsAppCampaign
-                      ) =>
-                        _changeDestination(
-                          destination,
-                          call_to_action,
-                          attachment,
-                          appChoice,
-                          whatsAppCampaign,
-                          this.adType,
-                          this.props.setStoryAdAttachment,
-                          this.state.campaignInfo,
-                          this.props.save_campaign_info,
-                          this.setTheState
-                        )
-                      }
-                      navigation={this.props.navigation}
-                      objective={objective}
-                      destination={destination}
-                      attachment={attachment}
-                      storyAdCards={storyAdCards}
-                      adType={this.adType}
-                      media={media}
-                      call_to_action={call_to_action}
-                      disabled={
-                        this.props.loading ||
-                        (this.props.loadingStoryAdsArray.length > 0 &&
-                          this.props.loadingStoryAdsArray.includes(true))
-                      }
-                    />
-                  </CopilotStep>
+                        appChoice,
+                        whatsAppCampaign,
+                        this.adType,
+                        this.props.setStoryAdAttachment,
+                        this.state.campaignInfo,
+                        this.props.save_campaign_info,
+                        this.setTheState
+                      )
+                    }
+                    navigation={this.props.navigation}
+                    objective={objective}
+                    destination={destination}
+                    attachment={attachment}
+                    storyAdCards={storyAdCards}
+                    adType={this.adType}
+                    media={media}
+                    call_to_action={call_to_action}
+                    disabled={
+                      this.props.loading ||
+                      (this.props.loadingStoryAdsArray.length > 0 &&
+                        this.props.loadingStoryAdsArray.includes(true))
+                    }
+                  />
+                  {/* </CopilotStep> */}
                 </View>
               </View>
             )}
