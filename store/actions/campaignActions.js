@@ -203,6 +203,7 @@ export const ad_design = (
           source_action: "a_submit_ad_design",
           resubmit: rejected,
           action_status: data.success ? "success" : "failure",
+          campaign_error: !data.success && data.message,
           ...segmentInfo,
         });
         rejected &&
@@ -626,6 +627,7 @@ export const ad_details = (
           timestamp: new Date().getTime(),
           action_status: data.success ? "success" : "failure",
           campaign_budget: data.data.lifetime_budget_micro,
+          campaign_error: !data.success && data.message,
           ...segmentInfo,
         });
         navigation.navigate("AdPaymentReview", {

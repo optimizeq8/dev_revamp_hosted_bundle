@@ -467,6 +467,7 @@ export const ad_details_instagram = (info, navigation, segmentInfo) => {
           source_action: "a_submit_ad_targeting",
           action_status: data.success ? "success" : "failure",
           campaign_budget: data.data.lifetime_budget_micro,
+          campaign_error: !data.success && data.message,
           ...segmentInfo,
         });
         showMessage({
@@ -878,6 +879,7 @@ export const saveInstgramExistpost = (
           source: "ad_design",
           source_action: "a_submit_ad_design",
           action_status: data.success ? "success" : "failure",
+          campaign_error: !data.success && data.message,
           ...segmentInfo,
         });
         if (data.success) {

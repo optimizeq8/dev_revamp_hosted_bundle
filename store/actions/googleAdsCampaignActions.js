@@ -425,6 +425,7 @@ export const create_google_SE_campaign_ad_targeting = (info, segmentInfo) => {
         analytics.track(`a_submit_ad_targeting`, {
           ...segmentInfo,
           action_status: data.error ? "failure" : "success",
+          campaign_error: data.error,
         });
         if (!data.error) {
           dispatch({
