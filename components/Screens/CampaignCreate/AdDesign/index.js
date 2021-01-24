@@ -1357,23 +1357,21 @@ class AdDesign extends Component {
                         order={3}
                         name="Media"
                       >
-                        {!videoIsLoading && (
-                          <MediaButton
-                            disabled={
-                              this.props.loading ||
-                              (this.props.loadingStoryAdsArray.length > 0 &&
-                                this.props.loadingStoryAdsArray.includes(true))
-                            }
-                            screenProps={this.props.screenProps}
-                            type={"media"}
-                            setMediaModalVisible={this.setMediaModalVisible}
-                            media={
-                              media !== "//"
-                                ? media
-                                : storyAdCards.selectedStoryAd.media
-                            }
-                          />
-                        )}
+                        <MediaButton
+                          disabled={
+                            this.props.loading ||
+                            (this.props.loadingStoryAdsArray.length > 0 &&
+                              this.props.loadingStoryAdsArray.includes(true))
+                          }
+                          screenProps={this.props.screenProps}
+                          type={"media"}
+                          setMediaModalVisible={this.setMediaModalVisible}
+                          media={
+                            media !== "//"
+                              ? media
+                              : storyAdCards.selectedStoryAd.media
+                          }
+                        />
                       </CopilotStep>
                     )}
                     {videoIsLoading ? (

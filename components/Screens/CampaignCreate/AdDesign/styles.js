@@ -661,6 +661,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     textAlign: "center",
   },
+  buttonContainer: {
+    alignSelf: "center",
+    position: "absolute",
+    width: 90,
+    height: 90,
+  },
 });
 
 export default styles;
