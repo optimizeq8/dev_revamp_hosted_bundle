@@ -76,9 +76,10 @@ export default class SnapchatLocation extends Component {
   handleMarkers = (marker, locInfo, remove = false) => {
     let markers = this.state.markers;
     let locationsInfo = this.state.locationsInfo;
-    let index = locationsInfo.findIndex(
-      (loc) => loc.place_id === locInfo.place_id
-    );
+    let index =
+      locationsInfo &&
+      locationsInfo.length > 0 &&
+      locationsInfo.findIndex((loc) => loc.place_id === locInfo.place_id);
     if (!remove) locInfo.index = locationsInfo.length;
     if (index > -1 && remove) {
       locationsInfo.splice(index, 1);
