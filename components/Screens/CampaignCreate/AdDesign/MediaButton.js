@@ -26,7 +26,7 @@ export default class MediaButton extends Component {
     const { translate } = this.props.screenProps;
     if (media && media !== "//") {
       return (
-        <View {...copilot}>
+        <View {...copilot} style={styles.buttonContainer}>
           <Button
             disabled={disabled}
             transparent
@@ -71,15 +71,7 @@ export default class MediaButton extends Component {
       );
     } else {
       return (
-        <View
-          {...copilot}
-          style={{
-            alignSelf: "center",
-            position: "absolute",
-            width: 90,
-            height: 90,
-          }}
-        >
+        <View {...copilot} style={styles.buttonContainer}>
           <Button
             disabled={disabled}
             style={[
