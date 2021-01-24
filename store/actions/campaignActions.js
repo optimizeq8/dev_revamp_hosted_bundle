@@ -670,6 +670,7 @@ export const updateCampaign = (
           source_action: "a_submit_ad_targeting",
           ...segmentInfo,
           action_status: data.success ? "success" : "failure",
+          campaign_error: !data.success && data.message,
         });
         showMessage({
           type: data.success ? "success" : "warning",
@@ -708,6 +709,7 @@ export const updateStatus = (info, handleToggle) => {
           campaign_spend: info.spend,
           campaign_status: data.status,
           action_status: data.success ? "sucsess" : "failure",
+          campaign_error: !data.success && data.message,
           source: "campaign_detail",
           source_action: "a_update_campaign_status",
         });
@@ -741,6 +743,7 @@ export const endCampaign = (info, handleToggle) => {
           campaign_spend: info.spend,
           campaign_status: data.status,
           action_status: data.success ? "sucsess" : "failure",
+          campaign_error: !data.success && data.message,
           source: "campaign_detail",
           source_action: "a_update_campaign_status",
         });
@@ -1657,6 +1660,7 @@ export const moveRejectedAdAmountToWallet = (campaign_id) => {
           camapign_channel: "snapchat",
           campaign_id: campaign_id,
           action_status: data.success ? "success" : "failure",
+          campaign_error: !data.success && data.message,
         });
         dispatch({
           type: actionTypes.MOVING_AMOUNT_TO_WALLET,
@@ -1778,6 +1782,7 @@ export const verifySnapchatOtp = (
           campaign_id,
           campaign_phone_number_id: phone_number_id,
           campaign_verification_code: verification_code,
+          campaign_error: !data.success && data.message,
         });
         showMessage({
           message: data.message,
