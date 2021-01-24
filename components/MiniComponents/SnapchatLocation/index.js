@@ -194,7 +194,7 @@ export default class SnapchatLocation extends Component {
           style={{ width: "80%", height: "40%" }}
           showsVerticalScrollIndicator={false}
         />
-        {this.state.markers.length > 0 && (
+        {this.state.markers && this.state.markers.length > 0 && (
           <GradientButton
             radius={50}
             purpleViolet
