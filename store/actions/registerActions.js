@@ -154,7 +154,7 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
       })
       .then(() => {
         if (getState().auth.userInfo) {
-          analytics.alias(getState().auth.userInfo.userid);
+          //   analytics.alias(getState().auth.userInfo.userid);
           // MixpanelSDK.createAlias(getState().auth.userInfo.userid);
           // MixpanelSDK.identify(getState().auth.userInfo.userid);
           analytics.identify(getState().auth.userInfo.userid, {
@@ -640,7 +640,7 @@ export const registerGuestUser = (
           ) {
             dispatch(chanege_base_url(true));
           }
-          analytics.alias(decodedUser.user.userid);
+          //   analytics.alias(decodedUser.user.userid);
           // MixpanelSDK.identify(decodedUser.user.userid);
 
           dispatch(setCurrentUser(decodedUser));
