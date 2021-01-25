@@ -165,6 +165,7 @@ class AdDetails extends Component {
     if (this.state.sidemenustate) {
       if (
         this.state.sidemenu === "map" &&
+        this.state.locationsInfo &&
         this.state.locationsInfo.length === 0
       ) {
         this.onSelectedMapChange([], true, []);
@@ -1147,6 +1148,7 @@ class AdDetails extends Component {
 
       if (
         rep.targeting.locations &&
+        rep.targeting.locations[0] &&
         rep.targeting.locations[0].circles &&
         rep.targeting.locations[0].circles.length === 0
       ) {
