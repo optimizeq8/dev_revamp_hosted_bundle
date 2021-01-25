@@ -428,8 +428,8 @@ const strings = {
   "Please try again later": "Please try again later.",
   "The dimensions are too large, please choose a different image":
     "The dimensions are too large, please choose a different image",
-  "Maximum video duration is 10 seconds":
-    "Maximum video duration is 10 seconds.",
+  "Maximum video duration is 30 seconds":
+    "Maximum video duration is 30 seconds.",
   "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920":
     "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920",
   "Video has been selected successfully":
@@ -2042,7 +2042,61 @@ const strings = {
   KM: "KM",
   "Add Country": "Add Country",
   "Please enter a valid url": "Please enter a valid URL",
-  "An email has been sent to your email. Still Having Trouble? Please Contact Us":
-    "An email has been sent to your email. Still Having Trouble? Please Contact Us",
+  "An email has been sent to your email Still Having Trouble? Please Contact Us":
+    "We just sent you an email. Still Having Trouble? Please Contact Us",
+  Sadad: "Sadad",
+  "STC Pay": "STC Pay",
+  MADA: "MADA",
+  "Qatar Debit Cards": "Qatar Debit Cards",
+  Benefit: "Benefit",
+  AMEX: "AMEX",
+  Kfast: "Kfast",
+  "Apple Pay": "Apple Pay",
+  AFS: "AFS",
+  "CREDIT CARD": "CREDIT CARD",
+  "Pay with": "Pay with",
+  "VISA/MASTER Oman": "VISA/MASTER Oman",
+  "VISA/MASTER": "VISA/MASTER",
+  MASTERCARD: "MASTERCARD",
+  "Optimize Advertising & Marketing Company Wll":
+    "Optimize Advertising & Marketing Company Wll",
+  "This is where you should put your business name that your advertising":
+    "This is where you should put your business name that your advertising.",
+  "Here you need to add a promotional message related to what you're advertising eg New products on sale now":
+    "Here you need to add a promotional message related to what you're advertising eg. 'New products on sale now!'",
+  "Add your media here, It can be a video or an image Make sure your ad looks professional so that it can attract a lot of people":
+    "Add your media here, It can be a video or an image. Make sure your ad looks professional so that it can attract a lot of people!",
+  "You need to add a swipe up destination to send your audience to and select a call to action to push your audience into taking action":
+    "You need to add a swipe up destination to send your audience to and select a call to action to push your audience into taking action.",
+  Previous: "Previous",
+  "Enter your campaign's name Make sure you name it something descriptive so you can keep track of all your campaigns":
+    "Enter your campaign's name here. Make sure you name it something descriptive so you can keep track of all your campaigns.",
+  "Select your campaign's objective to choose what your audience should do eg download your app or visit your website etc":
+    "Select your campaign's objective to choose what your audience should do eg. download your app or visit your website etc.",
+  "Select your campaign's duration and start date The longer the campaign’s duration is, the better the results":
+    "Select your campaign's duration and start date. The longer the campaign’s duration is, the better the results.",
+  "Here you can create or select an audience preset for faster selection If you proceed without creating an audience you can find it here the next time you create a new campaign":
+    "Here you can create or select an audience preset for faster selection. If you proceed without creating an audience you can find it here the next time you create a new campaign",
+  "Setting a good daily budget is very crucial to how successful your campaign will be The higher the budget the more people will see your ad":
+    "Setting a good daily budget is very crucial to how successful your campaign will be. The higher the budget the more people will see your ad.",
+  "You can choose who your ad gets shown to by selecting different combinations of options You can experiment with different combinations and see what best suits your business":
+    "You can choose who your ad gets shown to by selecting different combinations of options. You can experiment with different combinations and see what best suits your business.",
+  "You can see the potential results of the ad based on the targeting options you select and how high your daily budget is":
+    "Here you can see the potential results of the ad. This is based on the targeting options you select and how high your daily budget is.",
+  "Daily budget": "Daily budget",
+  "Audience preset": "Audience preset",
+  "Audience targeting": "Audience targeting",
+  "Audience reach": "Audience reach",
+  "Live chat unavailable": "Live chat unavailable",
+  "Please note that we are currently out of office and will get back to you as soon as possible":
+    "Please note that we are currently out of office and will get back to you as soon as possible",
+  "Working hours": "Working hours:",
+  "Sun - Thu": "Sun - Thu",
+  "10 am - 6 pm": "10 am - 6 pm",
+  Saturday: {
+    Sat: "Sat",
+  },
+  "Debit Cards UAE": "Debit Cards UAE",
+  "12 am - 6 pm": "12 am - 6 pm",
 };
 export default strings;
