@@ -66,10 +66,12 @@ import AppUpdateChecker from "../AppUpdateChecker";
 import GradientButton from "../../MiniComponents/GradientButton";
 import LowerButton from "../../MiniComponents/LowerButton";
 import PlaceHolderLine from "../../MiniComponents/PlaceholderLine";
+import * as moment from "moment-timezone";
 
 // import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import isNull from "lodash/isNull";
 import { Platform } from "react-native";
+import AlertModal from "../../MiniComponents/AlertModal";
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
 
@@ -95,6 +97,7 @@ class Dashboard extends Component {
       adButtons: [...snapAds, ...googleAds],
       showButton: true,
       count: 0,
+      showAlertModal: false,
     };
 
     //Logs/gives warnign if a component has any functions that take a while to render
@@ -613,6 +616,33 @@ class Dashboard extends Component {
     // );
     // this.props.screenProps.setLocale(this.props.appLanguage);
   };
+  handleIntercom = () => {
+    let userCurrentTime = new Date(
+      moment.utc(new Date()).tz("Asia/Kuwait").format("YYYY-MM-DDTHH:mm:ss")
+    );
+    if (
+      userCurrentTime.getDay() < 0 ||
+      userCurrentTime.getDay() > 5 ||
+      userCurrentTime.getHours() < 10 ||
+      userCurrentTime.getHours() >= 18
+    ) {
+      this.setState({ showAlertModal: true });
+    } else {
+      this.openIntercom();
+    }
+  };
+  openIntercom = () => {
+    this.setState({ showAlertModal: false });
+    analytics.track(`a_help`, {
+      source: "dashboard",
+      source_action: "a_help",
+      support_type: "intercom",
+    });
+    Intercom.displayConversationsList();
+  };
+  resetAlertModal = () => {
+    this.setState({ showAlertModal: false });
+  };
   render() {
     const { translate } = this.props.screenProps;
     const mySlideInUp = {
@@ -722,19 +752,7 @@ class Dashboard extends Component {
               {!this.state.open ? (
                 <>
                   <TouchableOpacity
-                    onPress={() => {
-                      analytics.track(`a_help`, {
-                        source: "dashboard",
-                        source_action: "a_help",
-                        support_type: "intercom",
-                      });
-                      Intercom.displayConversationsList();
-
-                      //   this.props.navigation.push("Messenger", {
-                      //     source: "dashboard",
-                      //     source_action: "a_help",
-                      //   });
-                    }}
+                    onPress={this.handleIntercom}
                     style={[styles.headerIcons]}
                   >
                     {
@@ -1042,6 +1060,12 @@ class Dashboard extends Component {
               ) : null}
             </Animatable.View>
           </>
+          <AlertModal
+            showAlertModal={this.state.showAlertModal}
+            screenProps={this.props.screenProps}
+            openIntercom={this.openIntercom}
+            resetAlertModal={this.resetAlertModal}
+          ></AlertModal>
           <AppUpdateChecker screenProps={this.props.screenProps} />
         </SafeAreaView>
       );

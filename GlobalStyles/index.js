@@ -24,6 +24,7 @@ export const globalColors = {
   gray: "#75647C",
   twilight: "#D2C6D8",
   mist: "#9E93A3",
+  offWhite: "#F8F8F8",
 };
 const globalStyles = StyleSheet.create({
   linearGradientBackground1: {
