@@ -57,7 +57,7 @@ export default StyleSheet.create({
     // shadowRadius: 5,
   },
   alertGradientButton: {
-    height: 40,
+    height: 55,
     width: "80%",
     alignSelf: "center",
   },
