@@ -172,7 +172,8 @@ class PaymentForm extends Component {
           source_action: "a_payment_processing",
           backgroundColor: "#FFFFFF",
           showLogo: screen.height > 600,
-          scrollEnabled: screen.height < 600,
+          //   scrollEnabled: screen.height < 600,
+          ImageUrl: this.props.paymentMethods[this.state.choice - 2].ImageUrl,
           showCompanyName: true,
         });
       } else if (
