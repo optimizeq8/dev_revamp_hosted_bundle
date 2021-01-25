@@ -167,7 +167,7 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
           navigation.navigate("RegistrationSuccess");
           dispatch(send_push_notification());
           dispatch(getBusinessAccounts());
-          dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
+          // dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
           AsyncStorage.setItem("registeredWithInvite", "true");
         }
       })
@@ -658,7 +658,7 @@ export const registerGuestUser = (
           });
           dispatch(send_push_notification());
           dispatch(getBusinessAccounts());
-          dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
+          // dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
           AsyncStorage.setItem("registeredWithInvite", "true");
         }
       })
