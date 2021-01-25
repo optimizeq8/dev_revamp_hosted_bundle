@@ -5,6 +5,7 @@ import {
   ScrollView,
   Dimensions,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import WebView from "react-native-webview";
 import analytics from "@segment/analytics-react-native";
@@ -38,7 +39,6 @@ export default class index extends Component {
   state = { viewLoader: true };
 
   hideLoader = () => {
-    console.log("load ended");
     setTimeout(() => this.setState({ viewLoader: false }), 1750);
   };
   onMessage = () => {};
@@ -68,8 +68,8 @@ export default class index extends Component {
       "showCompanyName",
       false
     );
+    let ImageUrl = this.props.navigation.getParam("ImageUrl", "");
 
-    console.log("url", url);
     return (
       <View>
         <SafeAreaView
@@ -98,15 +98,23 @@ export default class index extends Component {
         <ScrollView
           contentContainerStyle={{
             backgroundColor: backgroundColor,
-            height: scrollEnabled ? "150%" : "100%",
+            height: scrollEnabled ? "100%" : "100%",
           }}
         >
           {showLogo && (
-            <View style={globalStyles.whiteBackgroundColor}>
+            <View style={[globalStyles.whiteBackgroundColor, styles.logoView]}>
               <Logo
-                style={{ alignSelf: "center", marginVertical: 10 }}
+                style={styles.logo}
                 width={heightPercentageToDP(10)}
                 height={heightPercentageToDP(10)}
+              />
+              <Image
+                source={{ uri: ImageUrl }}
+                style={{
+                  width: heightPercentageToDP(10),
+                  height: heightPercentageToDP(10),
+                }}
+                resizeMode="contain"
               />
             </View>
           )}
