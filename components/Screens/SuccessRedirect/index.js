@@ -79,6 +79,19 @@ class SuccessRedirect extends Component {
         type: "Campaign",
         revenue: parseFloat(this.props.navigation.getParam("amount", "$0.00")),
       };
+      if (
+        this.props.navigation.getParam("payment_mode").toLowerCase() !==
+        "wallet"
+      )
+        analytics.track(`payment_end_for_adjust`, {
+          source,
+          source_action,
+          timestamp: new Date().getTime(),
+          businessid: this.props.mainBusiness.businessid,
+          businessname: this.props.mainBusiness.businessname,
+          ...segmentInfo,
+          payment_mode: this.props.navigation.getParam("payment_mode"),
+        });
     }
     analytics.track(`payment_end`, {
       source,
