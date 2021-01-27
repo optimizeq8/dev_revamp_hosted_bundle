@@ -1172,7 +1172,7 @@ class AdDetails extends Component {
         this.state.interestNames.map((inter) => inter.name);
       const segmentInfo = {
         campaign_id: this.props.campaign_id,
-
+        campaign_ad_type: this.props.adType,
         business_name: this.props.mainBusiness.businessname,
         campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
         campaign_gender:
