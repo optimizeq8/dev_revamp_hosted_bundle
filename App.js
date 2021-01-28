@@ -208,7 +208,7 @@ class App extends React.Component {
         ? "fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh"
         : "ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB",
       {
-        using: [AdjustIntegration],
+        // using: [AdjustIntegration],
         // Record screen views automatically!
         recordScreenViews: true,
         // Record certain application events automatically!

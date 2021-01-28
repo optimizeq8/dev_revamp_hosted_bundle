@@ -1134,15 +1134,15 @@ class AdDesign extends Component {
         ? this.selectedCampaign.campaign_collectionAdLinkForm
         : this.props.data.campaign_collectionAdLinkForm,
     });
-    AsyncStorage.getItem("AdDesignTutorialOpened").then((value) => {
-      if (!value && this.props.campaignList.length === 0) {
-        this.props.start();
-      }
-    });
-    this.props.copilotEvents.on("stop", () => {
-      AsyncStorage.setItem("AdDesignTutorialOpened", "true");
-      // Copilot tutorial finished!
-    });
+    // AsyncStorage.getItem("AdDesignTutorialOpened").then((value) => {
+    //   if (!value && this.props.campaignList.length === 0) {
+    //     this.props.start();
+    //   }
+    // });
+    // this.props.copilotEvents.on("stop", () => {
+    //   AsyncStorage.setItem("AdDesignTutorialOpened", "true");
+    //   // Copilot tutorial finished!
+    // });
     // let adjustAdDesignTracker = new AdjustEvent("o7pn8g");
     // adjustAdDesignTracker.addPartnerParameter(
     //   `Snap_${this.adType}`,

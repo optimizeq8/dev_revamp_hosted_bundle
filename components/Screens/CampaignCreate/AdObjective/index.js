@@ -571,15 +571,15 @@ class AdObjective extends Component {
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
     });
-    AsyncStorage.getItem("AdObjectiveTutorialOpened").then((value) => {
-      if (!value && this.props.campaignList.length === 0) {
-        this.props.start();
-      }
-    });
-    this.props.copilotEvents.on("stop", () => {
-      AsyncStorage.setItem("AdObjectiveTutorialOpened", "true");
-      // Copilot tutorial finished!
-    });
+    // AsyncStorage.getItem("AdObjectiveTutorialOpened").then((value) => {
+    //   if (!value && this.props.campaignList.length === 0) {
+    //     this.props.start();
+    //   }
+    // });
+    // this.props.copilotEvents.on("stop", () => {
+    //   AsyncStorage.setItem("AdObjectiveTutorialOpened", "true");
+    //   // Copilot tutorial finished!
+    // });
     // let adjustAdObjectiveTracker = new AdjustEvent("va71pj");
     // adjustAdObjectiveTracker.addPartnerParameter(
     //   `snap_${
