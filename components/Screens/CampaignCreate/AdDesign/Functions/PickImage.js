@@ -258,14 +258,6 @@ export const _pickImage = async (
                 serialization: result.serialization,
               });
 
-              analytics.track(`a_error`, {
-                campaign_channel: "snapchat",
-                campaign_ad_type: adType,
-                error_page: "ad_design",
-                error_description:
-                  "Image's aspect ratio must be 9:16 with a minimum size of 1080px x 1920px",
-              });
-
               onToggleModal(false);
               showMessage({
                 message: translate("Image has been selected successfully"),
@@ -295,7 +287,7 @@ export const _pickImage = async (
             }
           })
           .catch((error) => {
-            // console.log(error);
+            // console.log("error", error);
 
             onToggleModal(false);
 
@@ -305,14 +297,17 @@ export const _pickImage = async (
               error_page: "ad_design",
               error_description: error.wrongAspect
                 ? error.message
-                : error ||
+                : error.message
+                ? error.message
+                : (typeof error === "string" && error) ||
                   "The dimensions are too large, please choose a different image",
             });
             showMessage({
               message: error.wrongAspect
                 ? translate(error.message)
-                : translate(error.message) ||
-                  translate(error) ||
+                : error.message
+                ? translate(error.message)
+                : (typeof error === "string" && translate(error)) ||
                   translate(
                     "The dimensions are too large, please choose a different image"
                   ),
@@ -693,7 +688,7 @@ export const _pickImage = async (
             return;
           })
           .catch((err) => {
-            // console.log(err);
+            // console.log("err", err);
             analytics.track(`a_error`, {
               error_page: "ad_design",
               error_description: err,

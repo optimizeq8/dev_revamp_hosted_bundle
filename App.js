@@ -48,6 +48,7 @@ import { Asset } from "expo-asset";
 import NavigationService from "./NavigationService";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor } from "./store";
+import "react-native-gesture-handler";
 
 import * as actionCreators from "./store/actions";
 
