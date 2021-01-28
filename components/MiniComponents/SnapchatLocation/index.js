@@ -76,9 +76,10 @@ export default class SnapchatLocation extends Component {
   handleMarkers = (marker, locInfo, remove = false) => {
     let markers = this.state.markers;
     let locationsInfo = this.state.locationsInfo;
-    let index = locationsInfo.findIndex(
-      (loc) => loc.place_id === locInfo.place_id
-    );
+    let index =
+      locationsInfo &&
+      locationsInfo.length > 0 &&
+      locationsInfo.findIndex((loc) => loc.place_id === locInfo.place_id);
     if (!remove) locInfo.index = locationsInfo.length;
     if (index > -1 && remove) {
       locationsInfo.splice(index, 1);
@@ -194,7 +195,7 @@ export default class SnapchatLocation extends Component {
           style={{ width: "80%", height: "40%" }}
           showsVerticalScrollIndicator={false}
         />
-        {this.state.markers.length > 0 && (
+        {this.state.markers && this.state.markers.length > 0 && (
           <GradientButton
             radius={50}
             purpleViolet

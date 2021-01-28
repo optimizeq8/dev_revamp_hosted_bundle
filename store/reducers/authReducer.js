@@ -24,6 +24,8 @@ const reducer = (state = initialState, action) => {
 
       // MixpanelSDK.initialize()
       //   .then(() => {
+      // NOTE: Added to solve issue for undefined profiles
+      analytics.alias(action.payload.user.userid);
       AsyncStorage.getItem("appLanguage")
         .then((language) => {
           let userTraits = {

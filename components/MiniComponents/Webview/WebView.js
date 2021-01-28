@@ -5,6 +5,9 @@ import {
   ScrollView,
   Dimensions,
   ActivityIndicator,
+  Image,
+  AppState,
+  Platform,
 } from "react-native";
 import WebView from "react-native-webview";
 import analytics from "@segment/analytics-react-native";
@@ -20,6 +23,10 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 const screen = Dimensions.get("window");
 export default class index extends Component {
+  state = {
+    appState: AppState.currentState,
+    viewLoader: true,
+  };
   componentDidMount() {
     const source = this.props.navigation.getParam(
       "source",
@@ -34,11 +41,16 @@ export default class index extends Component {
       source_action,
       timestamp: new Date().getTime(),
     });
+    AppState.addEventListener("change", this._handleAppStateChange);
   }
-  state = { viewLoader: true };
 
+  componentWillUnmount() {
+    AppState.removeEventListener("change", this._handleAppStateChange);
+  }
+  _handleAppStateChange = (nextAppState) => {
+    this.setState({ appState: nextAppState });
+  };
   hideLoader = () => {
-    console.log("load ended");
     setTimeout(() => this.setState({ viewLoader: false }), 1750);
   };
   onMessage = () => {};
@@ -61,15 +73,15 @@ export default class index extends Component {
       "backgroundColor",
       "transparent"
     );
-    console.log("screen", screen);
+
     let showLogo = this.props.navigation.getParam("showLogo", false);
     let scrollEnabled = this.props.navigation.getParam("scrollEnabled", true);
     let showCompanyName = this.props.navigation.getParam(
       "showCompanyName",
       false
     );
+    let ImageUrl = this.props.navigation.getParam("ImageUrl", "");
 
-    console.log("url", url);
     return (
       <View>
         <SafeAreaView
@@ -98,15 +110,23 @@ export default class index extends Component {
         <ScrollView
           contentContainerStyle={{
             backgroundColor: backgroundColor,
-            height: scrollEnabled ? "150%" : "100%",
+            height: scrollEnabled ? "100%" : "100%",
           }}
         >
           {showLogo && (
-            <View style={globalStyles.whiteBackgroundColor}>
+            <View style={[globalStyles.whiteBackgroundColor, styles.logoView]}>
               <Logo
-                style={{ alignSelf: "center", marginVertical: 10 }}
+                style={styles.logo}
                 width={heightPercentageToDP(10)}
                 height={heightPercentageToDP(10)}
+              />
+              <Image
+                source={{ uri: ImageUrl }}
+                style={{
+                  width: heightPercentageToDP(10),
+                  height: heightPercentageToDP(10),
+                }}
+                resizeMode="contain"
               />
             </View>
           )}
@@ -124,9 +144,7 @@ export default class index extends Component {
           > */}
           <WebView
             // startInLoadingState={true}
-            onLoadStart={() => {
-              console.log("loading started");
-            }}
+
             onLoad={() => this.hideLoader()}
             startInLoadingState={true}
             androidHardwareAccelerationDisabled={true}
@@ -143,6 +161,28 @@ export default class index extends Component {
             scrollEnabled={scrollEnabled}
             injectedJavaScript={runFirst}
             onMessage={this.onMessage}
+            onNavigationStateChange={(navState) => {
+              if (
+                Platform.OS === "ios" &&
+                (this.state.appState === "background" ||
+                  this.state.appState === "inactive") &&
+                (navState.url.includes("successpayment?result") ||
+                  navState.url.includes("errorpayment?result"))
+              ) {
+                let decodeURi = decodeURIComponent(navState.url);
+                decodeURi = decodeURi.substring(decodeURi.indexOf("?"));
+                decodeURi = decodeURi.split("?result=");
+                decodeURi = decodeURi[1];
+                decodeURi = JSON.parse(decodeURi);
+                //For redirection To Success or Error
+                this.props.navigation.navigate(
+                  navState.url.includes("successpayment?result")
+                    ? "SuccessRedirect"
+                    : "ErrorRedirect",
+                  decodeURi
+                );
+              }
+            }}
             // renderLoading={() => (
             //   <View
             //     style={{

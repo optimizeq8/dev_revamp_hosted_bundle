@@ -37,6 +37,7 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
           campaign_channel: "instagram",
           action_status: data.success ? "success" : "failure",
           source_action: "a_submit_ad_objective",
+          campaign_error: !data.success && data.message,
           ...segmentInfo,
         });
         data.success
@@ -202,6 +203,7 @@ export const saveBrandMediaInstagram = (
           source: "ad_design",
           source_action: `a_submit_ad_design${rejected ? "_rejection" : ""}`,
           action_status: data.success ? "success" : "failure",
+          campaign_error: !data.success && data.message,
           ...segmentInfo,
         });
         if (data.success) {
@@ -465,7 +467,9 @@ export const ad_details_instagram = (info, navigation, segmentInfo) => {
           source: "ad_targeting",
           source_action: "a_submit_ad_targeting",
           action_status: data.success ? "success" : "failure",
+          campaign_error: !data.success && data.message,
           campaign_budget: data.data.lifetime_budget_micro,
+          campaign_error: !data.success && data.message,
           ...segmentInfo,
         });
         showMessage({
@@ -615,6 +619,7 @@ export const updateInstagramCampaign = (
           source_action: "a_submit_ad_targeting",
           ...segmentInfo,
           action_status: data.success ? "success" : "failure",
+          campaign_error: !data.success && data.message,
         });
         showMessage({
           type: data.success ? "success" : "warning",
@@ -877,6 +882,7 @@ export const saveInstgramExistpost = (
           source: "ad_design",
           source_action: "a_submit_ad_design",
           action_status: data.success ? "success" : "failure",
+          campaign_error: !data.success && data.message,
           ...segmentInfo,
         });
         if (data.success) {
@@ -952,6 +958,7 @@ export const moveRejectedAdAmountToWalletInstagram = (campaign_id) => {
           camapign_channel: "instagram",
           campaign_id: campaign_id,
           action_status: data.success ? "success" : "failure",
+          campaign_error: !data.success && data.message,
         });
         dispatch({
           type: actionTypes.MOVING_AMOUNT_TO_WALLET_INSTAGRAM,
@@ -987,6 +994,7 @@ export const updateInstagramStatus = (info, handleToggle) => {
           campaign_spend: info.spend,
           campaign_status: data.status,
           action_status: data.success ? "sucsess" : "failure",
+          campaign_error: !data.success && data.message,
           source: "campaign_detail",
           source_action: "a_update_campaign_status",
         });
@@ -1016,6 +1024,7 @@ export const endInstagramCampaign = (info, handleToggle) => {
           campaign_spend: info.spend,
           campaign_status: data.status,
           action_status: data.success ? "sucsess" : "failure",
+          campaign_error: !data.success && data.message,
           source: "campaign_detail",
           source_action: "a_update_campaign_status",
         });

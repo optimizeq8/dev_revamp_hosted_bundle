@@ -17,7 +17,7 @@
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
-		<string>0.4.29</string>
+		<string>0.4.290</string>
 		<key>CFBundleSignature</key>
 		<string>????</string>
 		<key>CFBundleURLTypes</key>
@@ -65,11 +65,11 @@
 		<key>NSMicrophoneUsageDescription</key>
 		<string>Allow OptimizeApp to access your microphone</string>
 		<key>NSMotionUsageDescription</key>
-		<string>Allow OptimizeApp to access your device's accelerometer</string>
+		<string>Allow OptimizeApp to access your device&apos;s accelerometer</string>
 		<key>NSPhotoLibraryAddUsageDescription</key>
-		<string>OptimizeApp let's you save edited media to your gallery</string>
+		<string>OptimizeApp let&apos;s you save edited media to your gallery</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>OptimizeApp let's you choose your media files that you wish to use for campaigns or to share with our support team</string>
+		<string>OptimizeApp let&apos;s you choose your media files that you wish to use for campaigns or to share with our support team</string>
 		<key>NSRemindersUsageDescription</key>
 		<string>Allow OptimizeApp to access your reminders</string>
 		<key>UIAppFonts</key>
@@ -111,5 +111,7 @@
 		<false/>
 		<key>ITSAppUsesNonExemptEncryption</key>
 		<false/>
+		<key>NSUserTrackingUsageDescription</key>
+		<string>Your data will be used to provide you a better and more personalized experience</string>
 	</dict>
 </plist>

@@ -26,6 +26,7 @@ import { widthPercentageToDP } from "react-native-responsive-screen";
 import { showMessage } from "react-native-flash-message";
 
 import isEmpty from "lodash/isEmpty";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 class PersonalInfo extends Component {
   constructor(props) {
     super(props);
@@ -506,16 +507,14 @@ class PersonalInfo extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <InputScrollView
-        showsVerticalScrollIndicator={false}
-        {...ScrollView.props}
+      <KeyboardAwareScrollView
         contentContainerStyle={[
           {
-            paddingBottom: "55%",
-            paddingTop: 20,
+            paddingBottom: "25%",
             paddingHorizontal: 26,
           },
         ]}
+        extraScrollHeight={90}
       >
         {this.props.businessInvite !== "0" && (
           <BusinessAccount
@@ -704,7 +703,7 @@ class PersonalInfo extends Component {
           text={translate("Create Account")}
           onPressAction={this._handleSubmission}
         />
-      </InputScrollView>
+      </KeyboardAwareScrollView>
     );
   }
 }

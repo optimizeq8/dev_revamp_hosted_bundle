@@ -3,7 +3,7 @@ import { globalColors } from "../../../GlobalStyles";
 export default StyleSheet.create({
   input1: {
     backgroundColor: "rgba(0,0,0,0.16)",
-    // paddingHorizontal: 10,
+    paddingRight: 15,
     borderRadius: 150,
     borderColor: "rgba(0,0,0,0)",
     alignSelf: "center",

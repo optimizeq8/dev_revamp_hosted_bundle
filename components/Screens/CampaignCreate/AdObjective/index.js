@@ -30,7 +30,7 @@ import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
-import GlobalStyles from "../../../../GlobalStyles";
+import { globalColors } from "../../../../GlobalStyles";
 //Data
 import snapchatObjectivesData from "../../../Data/snapchatObjectives.data";
 
@@ -54,6 +54,11 @@ import CampaignDuration from "../../../MiniComponents/CampaignDurationField";
 import GradientButton from "../../../MiniComponents/GradientButton";
 import { LinearGradient } from "expo-linear-gradient";
 import globalStyles from "../../../../GlobalStyles";
+import { copilot, CopilotStep, walkthroughable } from "react-native-copilot";
+import AsyncStorage from "@react-native-community/async-storage";
+import CopilotTooltipFunction, {
+  circleSvgPath,
+} from "../../../MiniComponents/CopilotTooltip/CopilotTooltipFunction";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -89,6 +94,7 @@ class AdObjective extends Component {
     };
   }
   componentWillUnmount() {
+    this.props.copilotEvents.off("stop");
     BackHandler.removeEventListener(
       "hardwareBackPressAdObjective",
       this.handleBackButton
@@ -565,6 +571,15 @@ class AdObjective extends Component {
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
     });
+    // AsyncStorage.getItem("AdObjectiveTutorialOpened").then((value) => {
+    //   if (!value && this.props.campaignList.length === 0) {
+    //     this.props.start();
+    //   }
+    // });
+    // this.props.copilotEvents.on("stop", () => {
+    //   AsyncStorage.setItem("AdObjectiveTutorialOpened", "true");
+    //   // Copilot tutorial finished!
+    // });
     // let adjustAdObjectiveTracker = new AdjustEvent("va71pj");
     // adjustAdObjectiveTracker.addPartnerParameter(
     //   `snap_${
@@ -631,6 +646,7 @@ class AdObjective extends Component {
       />
     ));
     const { translate } = this.props.screenProps;
+    const CopilotView = walkthroughable(View);
     if (!this.props.userInfo) {
       return (
         <>
@@ -702,85 +718,105 @@ class AdObjective extends Component {
                 scrollEnabled={true}
                 style={styles.scrollViewStyle}
               >
-                <InputField
-                  label={"Ad Name"}
-                  setValue={this.setValue}
-                  getValidInfo={this.getValidInfo}
-                  disabled={this.props.loading}
-                  stateName1={"name"}
-                  value={this.state.campaignInfo.name}
-                  placeholder1={"Enter Your campaign’s name"}
-                  valueError1={this.state.nameError}
-                  maxLength={34}
-                  autoFocus={false}
-                  incomplete={this.state.incomplete}
-                  valueText={this.state.campaignInfo.name}
-                  translate={this.props.screenProps.translate}
-                />
-                <ModalField
-                  stateName={"objective"}
-                  setModalVisible={this.setModalVisible}
-                  modal={true}
-                  label={"Objective"}
-                  valueError={this.state.objectiveError}
-                  getValidInfo={this.getValidInfo}
-                  disabled={this.props.loading}
-                  valueText={this.state.objectiveLabel}
-                  value={this.state.campaignInfo.objective}
-                  incomplete={this.state.incomplete}
-                  translate={this.props.screenProps.translate}
-                />
-                <CampaignDuration
-                  stopTimer={this.stopTimer}
-                  handleDuration={this.handleDuration}
-                  duration={this.state.duration}
-                  screenProps={this.props.screenProps}
-                  disabled={this.state.duration === minimumDuration}
-                />
-                {this.state.duration === minimumDuration && (
-                  <Text style={styles.minDurationText}>
-                    {minimumDuration === 1
-                      ? translate("Minimum Duration is 1 day", {
-                          n: 1,
-                        })
-                      : translate("Minimum Duration is {{n}} days", {
-                          n: minimumDuration,
-                        })}
-                  </Text>
-                )}
-                <Animatable.View
-                  onAnimationEnd={() =>
-                    this.setState({
-                      start_timeError: null,
-                      end_timeError: null,
-                    })
-                  }
-                  duration={200}
-                  easing={"ease"}
-                  animation={
-                    !this.state.start_timeError || !this.state.end_timeError
-                      ? ""
-                      : "shake"
-                  }
+                <CopilotStep
+                  text="Enter your campaign's name Make sure you name it something descriptive so you can keep track of all your campaigns"
+                  order={1}
+                  name="Ad Name"
                 >
-                  {/* <View style={[styles.dateTextLabel]}>
+                  <InputField
+                    label={"Ad Name"}
+                    setValue={this.setValue}
+                    getValidInfo={this.getValidInfo}
+                    disabled={this.props.loading}
+                    stateName1={"name"}
+                    value={this.state.campaignInfo.name}
+                    placeholder1={"Enter Your campaign’s name"}
+                    valueError1={this.state.nameError}
+                    maxLength={34}
+                    autoFocus={false}
+                    incomplete={this.state.incomplete}
+                    valueText={this.state.campaignInfo.name}
+                    translate={this.props.screenProps.translate}
+                  />
+                </CopilotStep>
+                <CopilotStep
+                  text="Select your campaign's objective to choose what your audience should do eg download your app or visit your website etc"
+                  order={2}
+                  name="Campaign Objective"
+                >
+                  <ModalField
+                    stateName={"objective"}
+                    setModalVisible={this.setModalVisible}
+                    modal={true}
+                    label={"Objective"}
+                    valueError={this.state.objectiveError}
+                    getValidInfo={this.getValidInfo}
+                    disabled={this.props.loading}
+                    valueText={this.state.objectiveLabel}
+                    value={this.state.campaignInfo.objective}
+                    incomplete={this.state.incomplete}
+                    translate={this.props.screenProps.translate}
+                  />
+                </CopilotStep>
+
+                <CopilotStep
+                  text="Select your campaign's duration and start date The longer the campaign’s duration is, the better the results"
+                  order={3}
+                  name="Campaign Duration"
+                >
+                  <CopilotView screenProps={this.props.screenProps}>
+                    <CampaignDuration
+                      stopTimer={this.stopTimer}
+                      handleDuration={this.handleDuration}
+                      duration={this.state.duration}
+                      screenProps={this.props.screenProps}
+                      disabled={this.state.duration === minimumDuration}
+                    />
+                    {this.state.duration === minimumDuration && (
+                      <Text style={styles.minDurationText}>
+                        {minimumDuration === 1
+                          ? translate("Minimum Duration is 1 day", {
+                              n: 1,
+                            })
+                          : translate("Minimum Duration is {{n}} days", {
+                              n: minimumDuration,
+                            })}
+                      </Text>
+                    )}
+                    <Animatable.View
+                      onAnimationEnd={() =>
+                        this.setState({
+                          start_timeError: null,
+                          end_timeError: null,
+                        })
+                      }
+                      duration={200}
+                      easing={"ease"}
+                      animation={
+                        !this.state.start_timeError || !this.state.end_timeError
+                          ? ""
+                          : "shake"
+                      }
+                    >
+                      {/* <View style={[styles.dateTextLabel]}>
                     <Text uppercase style={[styles.inputLabel]}>
                       {translate("Date")}
                     </Text>
                   </View> */}
-                  <Duration
-                    label={"Start Date"}
-                    screenProps={this.props.screenProps}
-                    loading={this.props.loading}
-                    dismissKeyboard={Keyboard.dismiss}
-                    start_time={this.state.campaignInfo.start_time}
-                    end_time={this.state.campaignInfo.end_time}
-                    start_timeError={this.state.start_timeError}
-                    end_timeError={this.state.end_timeError}
-                    dateField={this.dateField}
-                  />
-                </Animatable.View>
-
+                      <Duration
+                        label={"Start Date"}
+                        screenProps={this.props.screenProps}
+                        loading={this.props.loading}
+                        dismissKeyboard={Keyboard.dismiss}
+                        start_time={this.state.campaignInfo.start_time}
+                        end_time={this.state.campaignInfo.end_time}
+                        start_timeError={this.state.start_timeError}
+                        end_timeError={this.state.end_timeError}
+                        dateField={this.dateField}
+                      />
+                    </Animatable.View>
+                  </CopilotView>
+                </CopilotStep>
                 {this.props.adType === "CollectionAd" && (
                   <View style={styles.collectionAdView}>
                     <Text style={styles.collectionAdText}>
@@ -945,6 +981,7 @@ const mapStateToProps = (state) => ({
   currentCampaignSteps: state.campaignC.currentCampaignSteps,
   incompleteCampaign: state.campaignC.incompleteCampaign,
   campaignProgressStarted: state.campaignC.campaignProgressStarted,
+  campaignList: state.dashboard.campaignList,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -965,4 +1002,16 @@ const mapDispatchToProps = (dispatch) => ({
 
   set_adType: (value) => dispatch(actionCreators.set_adType(value)),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(AdObjective);
+export default copilot({
+  overlay: "svg", // or 'view'
+  animated: true,
+  tooltipComponent: CopilotTooltipFunction,
+  svgMaskPath: circleSvgPath,
+  stepNumberComponent: () => <View />,
+  arrowColor: globalColors.twilight,
+  tooltipStyle: {
+    backgroundColor: globalColors.white,
+    borderRadius: 30,
+    padding: 8,
+  },
+})(connect(mapStateToProps, mapDispatchToProps)(AdObjective));

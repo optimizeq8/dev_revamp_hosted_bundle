@@ -357,7 +357,7 @@ class InstagramStoryAdTargetting extends Component {
     let interestArray =
       selectedItems.length > 0
         ? selectedItems.map((item) => {
-            return { name: item.name, id: item.id };
+            if (item) return { name: item.name, id: item.id };
           })
         : [];
     if (!custom) {

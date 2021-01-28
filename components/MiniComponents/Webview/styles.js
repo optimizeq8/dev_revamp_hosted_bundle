@@ -28,6 +28,15 @@ const styles = StyleSheet.create({
     color: globalColors.rum,
     marginVertical: 10,
   },
+  logoView: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
+  logo: {
+    alignSelf: "center",
+    marginVertical: 10,
+  },
 });
 
 export default styles;

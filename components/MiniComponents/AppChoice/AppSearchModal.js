@@ -17,7 +17,7 @@ import LowerButton from "../LowerButton";
 import { Input, Item, Icon } from "native-base";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import AppCard from "./AppCard";
-import globalStyles from "../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 import Axios from "axios";
 import FlashMessage from "react-native-flash-message";
 const appsToRemove = [
@@ -60,9 +60,10 @@ class AppSearchModal extends Component {
   _searchAndroidApps = () => {
     const { translate } = this.props.screenProps;
     this.props.setTheState({ loading: true });
-    Axios.get(
-      `https://graph.facebook.com/v7.0/act_${this.props.FBAdAccountIDForAppSearch}/matched_search_applications?app_store=GOOGLE_PLAY&query_term=${this.props.mainState.appValue}&access_token=${this.props.FBAccessTokenForAppSearch}`
-    )
+    Axios.post(`https://optimizeapp.com/optimize/instagram/appSearch`, {
+      query_term: this.props.mainState.appValue,
+      app_store: "GOOGLE_PLAY",
+    })
       .then((res) => {
         return res.data;
       })
@@ -112,9 +113,10 @@ class AppSearchModal extends Component {
   _searchIosApps = () => {
     const { translate } = this.props.screenProps;
     this.props.setTheState({ loading: true });
-    Axios.get(
-      `https://graph.facebook.com/v7.0/act_${this.props.FBAdAccountIDForAppSearch}/matched_search_applications?app_store=ITUNES&query_term=${this.props.mainState.appValue}&access_token=${this.props.FBAccessTokenForAppSearch}`
-    )
+    Axios.post(`https://optimizeapp.com/optimize/instagram/appSearch`, {
+      query_term: this.props.mainState.appValue,
+      app_store: "ITUNES",
+    })
       .then((res) => {
         return res.data;
       })
@@ -236,7 +238,11 @@ class AppSearchModal extends Component {
                       uppercase
                       style={[
                         appConfirmStyles.appStoreButtonsText,
-                        { fontSize: 14, maxWidth: 100 },
+                        {
+                          fontSize: 14,
+                          maxWidth: 100,
+                          color: globalColors.white,
+                        },
                       ]}
                     >
                       {translate(`apple\napp store`)}
@@ -253,7 +259,11 @@ class AppSearchModal extends Component {
                       uppercase
                       style={[
                         appConfirmStyles.appStoreButtonsText,
-                        { fontSize: 14, maxWidth: 100 },
+                        {
+                          fontSize: 14,
+                          maxWidth: 100,
+                          color: globalColors.white,
+                        },
                       ]}
                     >
                       {translate(`google\nplay store`)}

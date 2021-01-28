@@ -423,7 +423,7 @@ const strings = {
   "Please try again later": "الرجاء المحاولة لاحقا",
   "The dimensions are too large, please choose a different image":
     "الأبعاد كبيرة جدًا ، الرجاء إختيار صورة مختلفة",
-  "Maximum video duration is 10 seconds": "الحد الأقصى لمدة الفيديو 10 ثواني",
+  "Maximum video duration is 30 seconds": "الحد الأقصى لمدة الفيديو 10 ثواني",
   "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920":
     "يجب أن تكون نسبة العرض إلى الإرتفاع 9:16\nبحد أدنى 1080 × 1920",
   "Video has been selected successfully": "تم إختيار الفيديو بنجاح",
@@ -868,7 +868,7 @@ const strings = {
   "Al Wakrah Municipality": "بلدية الوكرة",
   "Hamad International Airport": "مطار حمد الدولي",
   "Umm Salal Municipality": "بلدية أم صلال\n",
-  "Al Daayen": "الضعاين",
+  "Al Daayen": "الضعاين‎",
   "Al Khor": "الخور",
   "Madinat ash Shamal": "مدينة الشمال",
   "Muscat Governorate": "محافظة مسقط",
@@ -2034,8 +2034,60 @@ const strings = {
   KM: "كيلومتر",
   "Add Country": "إضافة دولة",
   "Please enter a valid url": "الرجاء إدخال الرابط",
-  "An email has been sent to your email. Still Having Trouble? Please Contact Us":
-    "واجهتك مشكلة؟ يرجى التواصل معنا",
+  "An email has been sent to your email Still Having Trouble? Please Contact Us":
+    "تم بعث رسالة لبريدك الالكتروني. يرجى التواصل معنا إن واجهتك مشكلة",
+  Sadad: "سداد",
+  "STC Pay": "STC Pay",
+  MADA: "مدى",
+  "Qatar Debit Cards": "البطاقات المدينة - قطر",
+  Benefit: "بنفت",
+  AMEX: "اميكس",
+  Kfast: "كي فاست",
+  "Apple Pay": "أبل الدفع",
+  AFS: "AFS",
+  "CREDIT CARD": "بطاقة الإئتمان",
+  "Pay with": "",
+  "VISA/MASTER Oman": "",
+  "VISA/MASTER": "",
+  MASTERCARD: "",
+  "Optimize Advertising & Marketing Company Wll": "",
+  "This is where you should put your business name that your advertising": "",
+  "Here you need to add a promotional message related to what you're advertising eg New products on sale now":
+    "",
+  "Add your media here, It can be a video or an image Make sure your ad looks professional so that it can attract a lot of people":
+    "",
+  "You need to add a swipe up destination to send your audience to and select a call to action to push your audience into taking action":
+    "",
+  Previous: "",
+  "Enter your campaign's name Make sure you name it something descriptive so you can keep track of all your campaigns":
+    "",
+  "Select your campaign's objective to choose what your audience should do eg download your app or visit your website etc":
+    "",
+  "Select your campaign's duration and start date The longer the campaign’s duration is, the better the results":
+    "",
+  "Here you can create or select an audience preset for faster selection If you proceed without creating an audience you can find it here the next time you create a new campaign":
+    "",
+  "Setting a good daily budget is very crucial to how successful your campaign will be The higher the budget the more people will see your ad":
+    "",
+  "You can choose who your ad gets shown to by selecting different combinations of options You can experiment with different combinations and see what best suits your business":
+    "",
+  "You can see the potential results of the ad based on the targeting options you select and how high your daily budget is":
+    "",
+  "Daily budget": "ميزانيتك اليومية",
+  "Audience preset": "",
+  "Audience targeting": "",
+  "Audience reach": "",
+  "Live chat unavailable": "",
+  "Please note that we are currently out of office and will get back to you as soon as possible":
+    "",
+  "Working hours": "",
+  "Sun - Thu": "",
+  "10 am - 6 pm": "",
+  Saturday: {
+    Sat: "",
+  },
+  "Debit Cards UAE": "",
+  "12 am - 6 pm": "",
 };
 
 export default strings;

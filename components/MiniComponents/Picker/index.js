@@ -109,9 +109,11 @@ export default class Picker extends Component {
                   placeholder={translate("Search Interests")}
                   placeholderTextColor={globalColors.rum}
                   autoCapitalize="none"
-                  onChangeText={this.props.customSearch}
+                  onEndEditing={this.props.customSearch}
                 />
-                {this.props.customInterestsLoading && <ActivityIndicator />}
+                {this.props.customInterestsLoading && (
+                  <ActivityIndicator color={globalColors.orange} />
+                )}
               </Item>
             )}
           </View>

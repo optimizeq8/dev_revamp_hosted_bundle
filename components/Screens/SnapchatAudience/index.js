@@ -801,11 +801,15 @@ export class SnapchatAudience extends Component {
         return country_regions &&
           country_regions.length > 0 &&
           country_code.country_code !== ""
-          ? translate(
-              country_regions.find(
-                (country) => country.country_code == country_code.country_code
-              ).country_name
+          ? country_regions.find(
+              (country) => country.country_code == country_code.country_code
             )
+            ? translate(
+                country_regions.find(
+                  (country) => country.country_code == country_code.country_code
+                ).country_name
+              )
+            : ""
           : "";
       });
     return countryNames && countryNames.length > 0

@@ -66,11 +66,13 @@ import AdCover from "../AdCover";
 import { RNFFmpeg } from "react-native-ffmpeg";
 import VideoProcessingLoader from "../../../MiniComponents/VideoProcessingLoader";
 import { persistor } from "../../../../store";
-import { copilot, walkthroughable, CopilotStep } from "react-native-copilot";
+import { copilot, CopilotStep } from "react-native-copilot";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import AsyncStorage from "@react-native-community/async-storage";
 import CopilotTooltip from "../../../MiniComponents/CopilotTooltip";
-import CopilotStepNumber from "../../../MiniComponents/CopilotTooltip/CopilotStepNumber";
+import CopilotTooltipFunction, {
+  circleSvgPath,
+} from "../../../MiniComponents/CopilotTooltip/CopilotTooltipFunction";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -143,6 +145,7 @@ class AdDesign extends Component {
   }
   componentWillUnmount() {
     //Switched handleBackButton to toggleAdSelection
+    this.props.copilotEvents.off("stop");
     BackHandler.removeEventListener(
       "hardwareBackPress",
       this.toggleAdSelection
@@ -316,15 +319,6 @@ class AdDesign extends Component {
         type: this.adType !== "StoryAd" ? this.props.data.type : "",
       });
     }
-    // AsyncStorage.getItem("AdDesignTutorialOpened").then((value) => {
-    //   if (!value) {
-    //     this.props.start();
-    //   }
-    // });
-    // this.props.copilotEvents.on("stop", () => {
-    //   AsyncStorage.setItem("AdDesignTutorialOpened", "true");
-    //   // Copilot tutorial finished!
-    // });
     this.validator(true);
     //----keep for later---//
 
@@ -1140,7 +1134,15 @@ class AdDesign extends Component {
         ? this.selectedCampaign.campaign_collectionAdLinkForm
         : this.props.data.campaign_collectionAdLinkForm,
     });
-
+    // AsyncStorage.getItem("AdDesignTutorialOpened").then((value) => {
+    //   if (!value && this.props.campaignList.length === 0) {
+    //     this.props.start();
+    //   }
+    // });
+    // this.props.copilotEvents.on("stop", () => {
+    //   AsyncStorage.setItem("AdDesignTutorialOpened", "true");
+    //   // Copilot tutorial finished!
+    // });
     // let adjustAdDesignTracker = new AdjustEvent("o7pn8g");
     // adjustAdDesignTracker.addPartnerParameter(
     //   `Snap_${this.adType}`,
@@ -1207,7 +1209,7 @@ class AdDesign extends Component {
       {
         title: "Promotional Message",
         description:
-          "Here you need to add a promotional message related to what you're advertising eg. 'New products on sale now!'",
+          "Here you need to add a promotional message related to what you're advertising eg New products on sale now",
       },
     ].map((field, i) => (
       //   <CopilotStep
@@ -1351,12 +1353,11 @@ class AdDesign extends Component {
                         navigation={this.props.navigation}
                       />
                     ) : (
-                      //   <CopilotStep
-                      //     text="Add your media here, It can be a video or an image. Make sure your ad looks professional so that it can attract a lot of people!"
-                      //     order={3}
-                      //     name="media"
-                      //   >
-                      !videoIsLoading && (
+                      <CopilotStep
+                        text="Add your media here, It can be a video or an image Make sure your ad looks professional so that it can attract a lot of people"
+                        order={3}
+                        name="Media"
+                      >
                         <MediaButton
                           disabled={
                             this.props.loading ||
@@ -1372,8 +1373,7 @@ class AdDesign extends Component {
                               : storyAdCards.selectedStoryAd.media
                           }
                         />
-                      )
-                      //   </CopilotStep>
+                      </CopilotStep>
                     )}
                     {videoIsLoading ? (
                       <VideoProcessingLoader
@@ -1409,25 +1409,19 @@ class AdDesign extends Component {
                       <View style={styles.collectionView}>{collection}</View>
                     )}
                   </View>
-                  {/* <CopilotStep
-                    text={`You need to add a swipe up destination to send your audince to and select a call to action to push your audince into taking action.`}
+                  <CopilotStep
+                    text={`You need to add a swipe up destination to send your audience to and select a call to action to push your audience into taking action`}
                     order={4}
-                    name="swipeup"
-                  > */}
-                  <SwipeCompCondition
-                    swipeUpExpanded={this.state.swipeUpExpanded}
-                    screenProps={this.props.screenProps}
-                    swipeUpMaxHeight={this.state.swipeUpMaxHeight}
-                    setTheState={this.setTheState}
-                    _changeDestination={(
-                      destination,
-                      call_to_action,
-                      attachment,
-                      appChoice = null,
-                      whatsAppCampaign
-                    ) =>
-                      _changeDestination(
-                        destination,
+                    name="Swipe Up destination"
+                    active={this.state.objective !== "BRAND_AWARENESS"}
+                  >
+                    <SwipeCompCondition
+                      swipeUpExpanded={this.state.swipeUpExpanded}
+                      screenProps={this.props.screenProps}
+                      swipeUpMaxHeight={this.state.swipeUpMaxHeight}
+                      setTheState={this.setTheState}
+                      _changeDestination={
+                        (destination,
                         call_to_action,
                         attachment,
                         appChoice,
@@ -1436,24 +1430,23 @@ class AdDesign extends Component {
                         this.props.setStoryAdAttachment,
                         this.state.campaignInfo,
                         this.props.save_campaign_info,
-                        this.setTheState
-                      )
-                    }
-                    navigation={this.props.navigation}
-                    objective={objective}
-                    destination={destination}
-                    attachment={attachment}
-                    storyAdCards={storyAdCards}
-                    adType={this.adType}
-                    media={media}
-                    call_to_action={call_to_action}
-                    disabled={
-                      this.props.loading ||
-                      (this.props.loadingStoryAdsArray.length > 0 &&
-                        this.props.loadingStoryAdsArray.includes(true))
-                    }
-                  />
-                  {/* </CopilotStep> */}
+                        this.setTheState)
+                      }
+                      navigation={this.props.navigation}
+                      objective={objective}
+                      destination={destination}
+                      attachment={attachment}
+                      storyAdCards={storyAdCards}
+                      adType={this.adType}
+                      media={media}
+                      call_to_action={call_to_action}
+                      disabled={
+                        this.props.loading ||
+                        (this.props.loadingStoryAdsArray.length > 0 &&
+                          this.props.loadingStoryAdsArray.includes(true))
+                      }
+                    />
+                  </CopilotStep>
                 </View>
               </View>
             )}
@@ -1741,6 +1734,7 @@ const mapStateToProps = (state) => ({
   ad_tutorial_type: state.generic.ad_tutorial_type,
   ad_tutorial_link: state.generic.ad_tutorial_link,
   ad_tutorial_media_type: state.generic.ad_tutorial_media_type,
+  campaignList: state.dashboard.campaignList,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1808,69 +1802,23 @@ const mapDispatchToProps = (dispatch) => ({
   verifyDestinationUrl: (url, submit, translate) =>
     dispatch(actionCreators.verifyDestinationUrl(url, submit, translate)),
 });
-const circleSvgPath = ({ position, size, canvasSize, step }): string => {
-  if (step && step.name === "media")
-    return `M0,0H${canvasSize.x}V${canvasSize.y}H0V0ZM${
-      position.x._value - widthPercentageToDP(0.5)
-    },${position.y._value * 1.1}Za50 50 0 1 0 100 0 50 50 0 1 0-100 0`;
-  else
-    return `M0,0H${canvasSize.x}V${canvasSize.y}H0V0ZM${position.x._value},${
-      position.y._value
-    }H${position.x._value + size.x._value * 0.9}C ${widthPercentageToDP(100)} ${
-      position.y._value
-    } ${widthPercentageToDP(100)} ${
-      position.y._value + size.y._value
-    } ${widthPercentageToDP(88)} ${position.y._value + size.y._value}H${
-      position.x._value * 1.3
-    }C  ${widthPercentageToDP(1)} ${
-      position.y._value + size.y._value
-    } ${widthPercentageToDP(-1)} ${position.y._value} ${widthPercentageToDP(
-      15
-    )} ${position.y._value}Z`;
-};
-
-const TooltipComponent = ({
-  isFirstStep,
-  isLastStep,
-  handleNext,
-  handlePrev,
-  handleStop,
-  currentStep,
-  labels,
-}) => (
-  <CopilotTooltip
-    isFirstStep={isFirstStep}
-    isLastStep={isLastStep}
-    handleNext={handleNext}
-    handlePrev={handlePrev}
-    handleStop={handleStop}
-    currentStep={currentStep}
-    labels={labels}
-  />
-);
 
 const StepNumberComponent = ({
   isFirstStep,
   isLastStep,
   currentStep,
   currentStepNumber,
-}) => (
-  <CopilotStepNumber
-    isFirstStep={isFirstStep}
-    isLastStep={isLastStep}
-    currentStep={currentStep}
-    currentStepNumber={currentStepNumber}
-  />
-);
+}) => <View />;
 export default copilot({
   overlay: "svg", // or 'view'
   animated: true,
-  tooltipComponent: TooltipComponent,
+  tooltipComponent: CopilotTooltipFunction,
   svgMaskPath: circleSvgPath,
-  stepNumberComponent: StepNumberComponent,
+  stepNumberComponent: () => <View />,
   arrowColor: globalColors.twilight,
   tooltipStyle: {
-    backgroundColor: globalColors.twilight,
-    borderRadius: 15,
+    backgroundColor: globalColors.white,
+    borderRadius: 30,
+    padding: 8,
   },
 })(connect(mapStateToProps, mapDispatchToProps)(AdDesign));

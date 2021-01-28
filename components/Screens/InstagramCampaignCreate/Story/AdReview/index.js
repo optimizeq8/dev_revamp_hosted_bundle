@@ -172,7 +172,7 @@ class AdStoryDesignReview extends React.Component {
                       styles.callToActionTextStory,
                     ]}
                   >
-                    {call_to_action && call_to_action.hasOwnProperty("label")
+                    {call_to_action && call_to_action.label
                       ? call_to_action.label
                       : call_to_action.replace(/_/gi, " ")}
                   </Text>

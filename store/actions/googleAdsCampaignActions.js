@@ -189,6 +189,7 @@ export const create_google_SE_campaign_info = (
           action_status: !data.error ? "success" : "failure",
           source_action: "a_submit_ad_objective",
           timestamp: new Date().getTime(),
+          campaign_error: data.error,
           device_id: getUniqueId(),
           ...segmentInfo,
         });
@@ -424,6 +425,7 @@ export const create_google_SE_campaign_ad_targeting = (info, segmentInfo) => {
         analytics.track(`a_submit_ad_targeting`, {
           ...segmentInfo,
           action_status: data.error ? "failure" : "success",
+          campaign_error: data.error,
         });
         if (!data.error) {
           dispatch({
@@ -797,6 +799,7 @@ export const create_google_keywords = (info, segmentInfo) => {
         analytics.track(`a_ad_keywords`, {
           timestamp: new Date().getTime(),
           action_status: data.error ? "failure" : "success",
+          campaign_error: data.error,
           ...segmentInfo,
         });
         if (!data.error) {
@@ -875,6 +878,7 @@ export const enable_end_or_pause_google_campaign = (
           action_status: !data.error ? "sucsess" : "failure",
           source: "campaign_detail",
           source_action: "a_update_campaign_status",
+          campaign_error: data.error,
         });
         dispatch({
           type: actionTypes.UPDATE_GOOGLE_CAMPAIGN_STATUS,
@@ -916,6 +920,7 @@ export const get_budget = (info, segmentInfo, navigation) => {
           source: "ad_objective",
           source_action: "a_get_budget",
           timestamp: new Date().getTime(),
+          campaign_error: data.error,
         });
         if (!data.error) {
           dispatch({
@@ -965,6 +970,7 @@ export const downloadGoogleCSV = (campaign_id, email, showModalMessage) => {
           source_action: "a_share_csv",
           campaign_channel: "google",
           action_status: data.message ? "success" : "failure",
+          campaign_error: data.error,
         });
         if (data.message) showModalMessage(data.message, "success");
       })

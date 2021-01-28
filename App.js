@@ -15,9 +15,11 @@ import {
   AppState,
   ActivityIndicator,
 } from "react-native";
+import RNRestart from "react-native-restart";
+
 import Intercom from "react-native-intercom";
 import analytics from "@segment/analytics-react-native";
-import AdjustIntegration from "@segment/analytics-react-native-adjust";
+// import AdjustIntegration from "@segment/analytics-react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
 TextReactNative.defaultProps.allowFontScaling = false;
@@ -39,7 +41,6 @@ TextInputMask.defaultProps = TextInputMask.defaultProps || {};
 TextInputMask.defaultProps.allowFontScaling = false;
 import { showMessage } from "react-native-flash-message";
 
-import * as Updates from "expo-updates";
 import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
@@ -48,6 +49,7 @@ import { Asset } from "expo-asset";
 import NavigationService from "./NavigationService";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor } from "./store";
+import "react-native-gesture-handler";
 
 import * as actionCreators from "./store/actions";
 
@@ -59,14 +61,13 @@ import isNull from "lodash/isNull";
 // console.disableYellowBox = true;
 import store from "./store";
 import FlashMessage from "react-native-flash-message";
-import { heightPercentageToDP } from "react-native-responsive-screen";
 
 //icons
-import PurpleLogo from "./assets/SVGs/PurpleLogo";
+// import PurpleLogo from "./assets/SVGs/PurpleLogo";
 import { REHYDRATE } from "redux-persist";
 import { PESDK } from "react-native-photoeditorsdk";
 import { VESDK } from "react-native-videoeditorsdk";
-// // import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
+import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import RNBootSplash from "react-native-bootsplash";
 
 import * as Sentry from "@sentry/react-native";
@@ -157,18 +158,45 @@ class App extends React.Component {
     this.interval = null;
     // Instruct SplashScreen not to hide yet
     // SplashScreen.preventAutoHide();
-    // const adjustConfig = new AdjustConfig(
-    //   "c698tyk65u68",
-    //   !__DEV__
-    //     ? AdjustConfig.EnvironmentProduction
-    //     : AdjustConfig.EnvironmentSandbox
-    // );
-    // adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
-    // Adjust.getAdid((adid) => {
-    //   console.log("Adid = " + adid);
-    // });
+    const adjustConfig = new AdjustConfig(
+      "c698tyk65u68",
+      !__DEV__
+        ? AdjustConfig.EnvironmentProduction
+        : AdjustConfig.EnvironmentSandbox
+    );
+    adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
 
-    // Adjust.create(adjustConfig);
+    // Adjust.requestTrackingAuthorizationWithCompletionHandler((status) => {
+    //   console.log("Authorization status update", status);
+    //   switch (status) {
+    //     case 0:
+    //       // ATTrackingManagerAuthorizationStatusNotDetermined case
+    //       console.log(
+    //         "Authorization status: ATTrackingManagerAuthorizationStatusNotDetermined"
+    //       );
+    //       break;
+    //     case 1:
+    //       // ATTrackingManagerAuthorizationStatusRestricted case
+    //       console.log(
+    //         "Authorization status: ATTrackingManagerAuthorizationStatusRestricted"
+    //       );
+    //       break;
+    //     case 2:
+    //       // ATTrackingManagerAuthorizationStatusDenied case
+    //       console.log(
+    //         "Authorization status: ATTrackingManagerAuthorizationStatusDenied"
+    //       );
+    //       break;
+    //     case 3:
+    //       // ATTrackingManagerAuthorizationStatusAuthorized case
+    //       console.log(
+    //         "Authorization status: ATTrackingManagerAuthorizationStatusAuthorized"
+    //       );
+    //       break;
+    //   }
+    // });
+    Adjust.create(adjustConfig);
+
     // if (Platform.OS === "android") {
     //   if (UIManager.setLayoutAnimationEnabledExperimental) {
     //     UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -197,7 +225,7 @@ class App extends React.Component {
   t = (scope, options) => {
     return i18n.t(scope, { locale: this.state.locale, ...options });
   };
-  async componentDidMount() {
+  componentDidMount() {
     // FOR TEST ORG & PROJ ==> hNRRGVYYOxFiMXboexCvtPK7PSy2NgHp
     // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
@@ -207,7 +235,7 @@ class App extends React.Component {
         ? "fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh"
         : "ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB",
       {
-        using: [AdjustIntegration],
+        // using: [AdjustIntegration],
         // Record screen views automatically!
         recordScreenViews: true,
         // Record certain application events automatically!
@@ -225,7 +253,7 @@ class App extends React.Component {
         debug: true,
       }
     );
-    await RNBootSplash.hide();
+    RNBootSplash.hide();
 
     analytics.getAnonymousId().then((anonId) => {
       this.setState({
@@ -651,14 +679,19 @@ class App extends React.Component {
   _loadAppLanguage = async () => {
     const mobileLanguage = Localization.locale;
     const appLanguage = await AsyncStorage.getItem("appLanguage");
+    console.log("mobileLanguage", mobileLanguage);
+
     if (isNull(appLanguage)) {
       if (mobileLanguage.includes("ar")) {
         await store.dispatch(actionCreators.getLanguageListPOEdit("ar"));
+        AsyncStorage.setItem("appLanguage", "ar").then(() => {
+          RNRestart.Restart();
+        });
         this.setState({
           locale: "ar",
         });
+
         // for proper RTL direction
-        Updates.reload();
       } else {
         await store.dispatch(actionCreators.getLanguageListPOEdit("en"));
         this.setState({
