@@ -13,6 +13,7 @@ import { Small } from "../../MiniComponents/StyledComponents";
 import GradientButton from "../../MiniComponents/GradientButton";
 import CustomHeader from "../../MiniComponents/Header";
 import SafeAreaView from "react-native-safe-area-view";
+import analytics from "@segment/analytics-react-native";
 
 import * as Sentry from "@sentry/react-native";
 import * as Updates from "expo-updates";
@@ -49,6 +50,10 @@ class AppUpdateChecker extends PureComponent {
       this.props.actualVersion !== Constants.nativeAppVersion &&
       this.props.actualVersion
     ) {
+      analytics.track("app_update_checker", {
+        source: "app_update_available",
+        source_action: "app_update_checker",
+      });
       this.setState({ updateIsAvalible: true });
     }
   }
@@ -62,6 +67,10 @@ class AppUpdateChecker extends PureComponent {
       });
       const update = await Updates.checkForUpdateAsync();
       if (update.isAvailable) {
+        analytics.track("app_update_checker", {
+          source: "ota_available",
+          source_action: "app_update_checker",
+        });
         this.setState({
           status: translate("New update found"),
           OTAAvalibe: true,
