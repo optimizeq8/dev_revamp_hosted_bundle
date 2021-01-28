@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, AppState, Platform } from "react-native";
 import WebView from "react-native-webview";
 import analytics from "@segment/analytics-react-native";
 import CustomHeader from "../Header";
@@ -25,8 +25,19 @@ export default class index extends Component {
       source_action,
       timestamp: new Date().getTime(),
     });
+
+    AppState.addEventListener("change", this._handleAppStateChange);
   }
-  state = { viewLoader: true };
+  componentWillUnmount() {
+    AppState.removeEventListener("change", this._handleAppStateChange);
+  }
+  _handleAppStateChange = (nextAppState) => {
+    this.setState({ appState: nextAppState });
+  };
+  state = {
+    appState: AppState.currentState,
+    viewLoader: true,
+  };
 
   hideLoader = () => {
     this.setState({ viewLoader: false });
@@ -82,6 +93,28 @@ export default class index extends Component {
             source={{ uri: url }}
             cacheEnabled={false}
             incognito={true}
+            onNavigationStateChange={(navState) => {
+              if (
+                Platform.OS === "ios" &&
+                (this.state.appState === "background" ||
+                  this.state.appState === "inactive") &&
+                (navState.url.includes("successpayment?result") ||
+                  navState.url.includes("errorpayment?result"))
+              ) {
+                let decodeURi = decodeURIComponent(navState.url);
+                decodeURi = decodeURi.substring(decodeURi.indexOf("?"));
+                decodeURi = decodeURi.split("?result=");
+                decodeURi = decodeURi[1];
+                decodeURi = JSON.parse(decodeURi);
+                //For redirection To Success or Error
+                this.props.navigation.navigate(
+                  navState.url.includes("successpayment?result")
+                    ? "SuccessRedirect"
+                    : "ErrorRedirect",
+                  decodeURi
+                );
+              }
+            }}
           />
           {this.state.viewLoader && (
             <View
