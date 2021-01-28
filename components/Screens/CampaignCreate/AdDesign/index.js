@@ -1134,15 +1134,15 @@ class AdDesign extends Component {
         ? this.selectedCampaign.campaign_collectionAdLinkForm
         : this.props.data.campaign_collectionAdLinkForm,
     });
-    AsyncStorage.getItem("AdDesignTutorialOpened").then((value) => {
-      if (!value && this.props.campaignList.length === 0) {
-        this.props.start();
-      }
-    });
-    this.props.copilotEvents.on("stop", () => {
-      AsyncStorage.setItem("AdDesignTutorialOpened", "true");
-      // Copilot tutorial finished!
-    });
+    // AsyncStorage.getItem("AdDesignTutorialOpened").then((value) => {
+    //   if (!value && this.props.campaignList.length === 0) {
+    //     this.props.start();
+    //   }
+    // });
+    // this.props.copilotEvents.on("stop", () => {
+    //   AsyncStorage.setItem("AdDesignTutorialOpened", "true");
+    //   // Copilot tutorial finished!
+    // });
     // let adjustAdDesignTracker = new AdjustEvent("o7pn8g");
     // adjustAdDesignTracker.addPartnerParameter(
     //   `Snap_${this.adType}`,
@@ -1212,32 +1212,33 @@ class AdDesign extends Component {
           "Here you need to add a promotional message related to what you're advertising eg New products on sale now",
       },
     ].map((field, i) => (
-      <CopilotStep
+      //   <CopilotStep
+      //     key={field.title}
+      //     text={field.description}
+      //     order={i + 1}
+      //     name={field.title}
+      //   >
+      <CreativeHeadline
         key={field.title}
-        text={field.description}
-        order={i + 1}
-        name={field.title}
-      >
-        <CreativeHeadline
-          disabled={
-            this.props.loading ||
-            (this.props.loadingStoryAdsArray.length > 0 &&
-              this.props.loadingStoryAdsArray.includes(true))
-          }
-          data={this.props.data}
-          changeBusinessName={this.changeBusinessName}
-          changeHeadline={this.changeHeadline}
-          brand_name={brand_name}
-          headline={headline}
-          storyAdSelected={storyAdCards.storyAdSelected}
-          field={field.title}
-          mainBusiness={this.props.mainBusiness}
-          screenProps={this.props.screenProps}
-          brand_nameError={this.state.brand_nameError}
-          headlineError={this.state.headlineError}
-          setTheState={this.setTheState}
-        />
-      </CopilotStep>
+        disabled={
+          this.props.loading ||
+          (this.props.loadingStoryAdsArray.length > 0 &&
+            this.props.loadingStoryAdsArray.includes(true))
+        }
+        data={this.props.data}
+        changeBusinessName={this.changeBusinessName}
+        changeHeadline={this.changeHeadline}
+        brand_name={brand_name}
+        headline={headline}
+        storyAdSelected={storyAdCards.storyAdSelected}
+        field={field.title}
+        mainBusiness={this.props.mainBusiness}
+        screenProps={this.props.screenProps}
+        brand_nameError={this.state.brand_nameError}
+        headlineError={this.state.headlineError}
+        setTheState={this.setTheState}
+      />
+      //   </CopilotStep>
     ));
 
     let collection = [0, 1, 2, 3].map((collIdx) => (
@@ -1419,25 +1420,17 @@ class AdDesign extends Component {
                       screenProps={this.props.screenProps}
                       swipeUpMaxHeight={this.state.swipeUpMaxHeight}
                       setTheState={this.setTheState}
-                      _changeDestination={(
-                        destination,
+                      _changeDestination={
+                        (destination,
                         call_to_action,
                         attachment,
-                        appChoice = null,
-                        whatsAppCampaign
-                      ) =>
-                        _changeDestination(
-                          destination,
-                          call_to_action,
-                          attachment,
-                          appChoice,
-                          whatsAppCampaign,
-                          this.adType,
-                          this.props.setStoryAdAttachment,
-                          this.state.campaignInfo,
-                          this.props.save_campaign_info,
-                          this.setTheState
-                        )
+                        appChoice,
+                        whatsAppCampaign,
+                        this.adType,
+                        this.props.setStoryAdAttachment,
+                        this.state.campaignInfo,
+                        this.props.save_campaign_info,
+                        this.setTheState)
                       }
                       navigation={this.props.navigation}
                       objective={objective}

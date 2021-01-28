@@ -339,23 +339,6 @@ class App extends React.Component {
       analytics.identify(null, { logged_out: false });
       Platform.OS === "ios" && Notifications.setBadgeCountAsync(0);
       // console.log("App has come to the foreground!");
-      if (
-        store.getState().auth.userInfo &&
-        store.getState().messenger.unread_converstaion === 0
-      ) {
-        store.dispatch(
-          actionCreators.connect_user_to_intercom(
-            store.getState().auth.userInfo.userid
-          )
-        );
-        store.dispatch(
-          actionCreators.update_app_status_chat_notification(true)
-        );
-      }
-    } else {
-      // console.log("App has come to the background!");
-
-      store.dispatch(actionCreators.update_app_status_chat_notification(false));
     }
     this.setState({
       prevAppState: this.state.appState,

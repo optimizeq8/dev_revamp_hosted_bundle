@@ -1419,15 +1419,15 @@ class AdDetails extends Component {
           : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
       );
     }
-    AsyncStorage.getItem("AdDetailTutorialOpened").then((value) => {
-      if (!value && this.props.campaignList.length === 0) {
-        this.props.start();
-      }
-    });
-    this.props.copilotEvents.on("stop", () => {
-      AsyncStorage.setItem("AdDetailTutorialOpened", "true");
-      // Copilot tutorial finished!
-    });
+    // AsyncStorage.getItem("AdDetailTutorialOpened").then((value) => {
+    //   if (!value && this.props.campaignList.length === 0) {
+    //     this.props.start();
+    //   }
+    // });
+    // this.props.copilotEvents.on("stop", () => {
+    //   AsyncStorage.setItem("AdDetailTutorialOpened", "true");
+    //   // Copilot tutorial finished!
+    // });
     // let adjustAdDetailsTracker = new AdjustEvent("1mtblg");
     // adjustAdDetailsTracker.addPartnerParameter(
     //   `Snap_${this.props.adType}`,
