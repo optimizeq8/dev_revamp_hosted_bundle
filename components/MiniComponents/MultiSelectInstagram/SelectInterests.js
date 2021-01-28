@@ -201,13 +201,22 @@ class SelectInterests extends Component {
   };
   handleCustomInterests = (event) => {
     event = event.nativeEvent.text;
-    translator.translate(event).then((translated) => {
-      //Do something with the translated text
+    if (!/^[a-zA-Z]+$/.test(event)) {
+      translator.translate(event).then((translated) => {
+        //Do something with the translated text
+        if (this.timeout) clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+          this.props.get_custom_interests_instagram(
+            translated.replace(" ", "_")
+          );
+        }, 200);
+      });
+    } else {
       if (this.timeout) clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
-        this.props.get_custom_interests_instagram(translated.replace(" ", "_"));
+        this.props.get_custom_interests_instagram(event.replace(" ", "_"));
       }, 200);
-    });
+    }
   };
   render() {
     const { translate } = this.props.screenProps;
