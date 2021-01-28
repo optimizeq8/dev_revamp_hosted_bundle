@@ -165,42 +165,36 @@ class App extends React.Component {
         : AdjustConfig.EnvironmentSandbox
     );
     adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
-    Adjust.getAdid((adid) => {
-      console.log("Adid = " + adid);
-    });
-    Adjust.getSdkVersion(function (sdkVersion) {
-      console.log("Adjust SDK version: " + sdkVersion);
-    });
 
-    Adjust.requestTrackingAuthorizationWithCompletionHandler((status) => {
-      console.log("Authorization status update", status);
-      switch (status) {
-        case 0:
-          // ATTrackingManagerAuthorizationStatusNotDetermined case
-          console.log(
-            "Authorization status: ATTrackingManagerAuthorizationStatusNotDetermined"
-          );
-          break;
-        case 1:
-          // ATTrackingManagerAuthorizationStatusRestricted case
-          console.log(
-            "Authorization status: ATTrackingManagerAuthorizationStatusRestricted"
-          );
-          break;
-        case 2:
-          // ATTrackingManagerAuthorizationStatusDenied case
-          console.log(
-            "Authorization status: ATTrackingManagerAuthorizationStatusDenied"
-          );
-          break;
-        case 3:
-          // ATTrackingManagerAuthorizationStatusAuthorized case
-          console.log(
-            "Authorization status: ATTrackingManagerAuthorizationStatusAuthorized"
-          );
-          break;
-      }
-    });
+    // Adjust.requestTrackingAuthorizationWithCompletionHandler((status) => {
+    //   console.log("Authorization status update", status);
+    //   switch (status) {
+    //     case 0:
+    //       // ATTrackingManagerAuthorizationStatusNotDetermined case
+    //       console.log(
+    //         "Authorization status: ATTrackingManagerAuthorizationStatusNotDetermined"
+    //       );
+    //       break;
+    //     case 1:
+    //       // ATTrackingManagerAuthorizationStatusRestricted case
+    //       console.log(
+    //         "Authorization status: ATTrackingManagerAuthorizationStatusRestricted"
+    //       );
+    //       break;
+    //     case 2:
+    //       // ATTrackingManagerAuthorizationStatusDenied case
+    //       console.log(
+    //         "Authorization status: ATTrackingManagerAuthorizationStatusDenied"
+    //       );
+    //       break;
+    //     case 3:
+    //       // ATTrackingManagerAuthorizationStatusAuthorized case
+    //       console.log(
+    //         "Authorization status: ATTrackingManagerAuthorizationStatusAuthorized"
+    //       );
+    //       break;
+    //   }
+    // });
     Adjust.create(adjustConfig);
 
     // if (Platform.OS === "android") {
