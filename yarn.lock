@@ -8404,11 +8404,6 @@ react-native-easy-grid@0.2.2:
   dependencies:
     lodash "^4.17.15"
 
-react-native-exception-handler@^2.10.9:
-  version "2.10.9"
-  resolved "https://registry.yarnpkg.com/react-native-exception-handler/-/react-native-exception-handler-2.10.9.tgz#4935a9e106b02ebecc729bfaac8ac8e6b0340781"
-  integrity sha512-V1SJWHzhGUnFWTQKK5dk9yz+Ybkl1wSFWgY6saPkZomYiB9120FdeejJ5NdAio1sH75+op9RpC1w9KbHg+1zFA==
-
 react-native-expo-image-cache@^4.0.8:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/react-native-expo-image-cache/-/react-native-expo-image-cache-4.1.0.tgz#649cbe9786249134d3eafed5baba50bbfa80c029"
@@ -8546,10 +8541,10 @@ react-native-phone-input@^0.2.4:
     lodash "^4.17.4"
     prop-types "^15.5.10"
 
-react-native-photoeditorsdk@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/react-native-photoeditorsdk/-/react-native-photoeditorsdk-2.5.0.tgz#60124c48330e9c782cb1024684a90c0b9def5416"
-  integrity sha512-cfEsKVRkaVU7Cqcr0miLsX9gzrJnXQSdo3Q1IwL4paTN/7Utw0h33g7hzp+N9y7YmlRshoZSxdd/FcpXb0PdXA==
+react-native-photoeditorsdk@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/react-native-photoeditorsdk/-/react-native-photoeditorsdk-2.6.1.tgz#2443390d95748ffd8ea5300a896e5b0e076bddfe"
+  integrity sha512-kWwRPqYoKzOz/PaJD3OKxSW5XBiAGog54elLROJbAI2L3y7yhJlPIaa5lJLkXuVRPmrQUeIFsgsvhhCXWdHNEw==
 
 react-native-power-translator@^1.1.1:
   version "1.1.1"
@@ -8709,10 +8704,10 @@ react-native-vector-icons@^7.0.0:
     prop-types "^15.7.2"
     yargs "^15.0.2"
 
-react-native-videoeditorsdk@^2.4.2:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/react-native-videoeditorsdk/-/react-native-videoeditorsdk-2.5.0.tgz#599b063f723e89d144a73dae26a3c4be547d0d31"
-  integrity sha512-cIslNJ6jOhokp6u3fitEi4Iw8OysdaPrmL+LsRXWBPlZ8EMvaFHmPmLj0i5YHLp61ATQlFl+E2FlWi/Ag1tgfw==
+react-native-videoeditorsdk@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/react-native-videoeditorsdk/-/react-native-videoeditorsdk-2.6.1.tgz#6ba638154f707e7c313300569cf8ee8a6f657b9a"
+  integrity sha512-Tgybnl+MmTMtn64m+6/vvFZbkJ0FnQTTA/gH8+RihTpxMEBHvFajdjIepMh6m6IUxUwVIE4CPdRuyFsxMBuHZw==
 
 react-native-webview@10.7.0:
   version "10.7.0"
