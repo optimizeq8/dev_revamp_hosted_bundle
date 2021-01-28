@@ -14,6 +14,9 @@
 		3DE4DAD41476765101945408 /* libPods-OptimizeApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D43FF9D506E70904424FA7E9 /* libPods-OptimizeApp.a */; };
 		99EC63CFB4B549BBAF093D10 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3ABB89D1E68496EB7D95742 /* SplashScreen.storyboard */; };
 		F755EFAC255144980005D6F4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F755EFAB255144980005D6F4 /* UIKit.framework */; };
+		F7656E0F25C0186D00D27984 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7656E0E25C0186D00D27984 /* AppTrackingTransparency.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F7656E1125C0188C00D27984 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7656E1025C0188C00D27984 /* StoreKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F7656E1325C0189B00D27984 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7656E1225C0189B00D27984 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F7ECA56E247E98B1000976BB /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7ECA56D247E98B1000976BB /* File.swift */; };
 		F7FF7A612547FE2800050E9C /* MPTweakHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F7FF7A602547FE2800050E9C /* MPTweakHelper.m */; };
 /* End PBXBuildFile section */
@@ -69,6 +72,9 @@
 		F2C5FD341214471BAB08960E /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
 		F680670523A0453A8B21A4D8 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/native-base/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		F755EFAB255144980005D6F4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		F7656E0E25C0186D00D27984 /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
+		F7656E1025C0188C00D27984 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		F7656E1225C0189B00D27984 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		F7ECA56C247E98B1000976BB /* OptimizeApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OptimizeApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		F7ECA56D247E98B1000976BB /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		F7FF7A5F2547FDF200050E9C /* MPTweakHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPTweakHelper.h; sourceTree = "<group>"; };
@@ -81,6 +87,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7656E1325C0189B00D27984 /* AdSupport.framework in Frameworks */,
+				F7656E1125C0188C00D27984 /* StoreKit.framework in Frameworks */,
+				F7656E0F25C0186D00D27984 /* AppTrackingTransparency.framework in Frameworks */,
 				F755EFAC255144980005D6F4 /* UIKit.framework in Frameworks */,
 				3DE4DAD41476765101945408 /* libPods-OptimizeApp.a in Frameworks */,
 			);
@@ -109,6 +118,9 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F7656E1225C0189B00D27984 /* AdSupport.framework */,
+				F7656E1025C0188C00D27984 /* StoreKit.framework */,
+				F7656E0E25C0186D00D27984 /* AppTrackingTransparency.framework */,
 				F755EFAB255144980005D6F4 /* UIKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,

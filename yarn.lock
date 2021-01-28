@@ -2300,11 +2300,6 @@
     hoist-non-react-statics "^3.3.2"
     react-native-safe-area-view "^0.14.9"
 
-"@segment/analytics-react-native-adjust@^1.3.1":
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-adjust/-/analytics-react-native-adjust-1.3.2.tgz#ef32b44ed222d7634b41755b9f60bda54348e05f"
-  integrity sha512-s1apHxI27BWWgJbUQ8zgtpIbqTENKJBWKjwl9dJSYiXWSbkVKpd3xDJg6G4jKTQPF8+sY60crf3f9MlJQHIIxA==
-
 "@segment/analytics-react-native-mixpanel@^1.1.1-beta.5":
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-mixpanel/-/analytics-react-native-mixpanel-1.3.2.tgz#bd2cdab239e220353901766094f54cf858fbd74f"
@@ -8326,6 +8321,11 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-native-adjust@^4.23.1:
+  version "4.23.1"
+  resolved "https://registry.yarnpkg.com/react-native-adjust/-/react-native-adjust-4.23.1.tgz#b4ec1b19bf7e175f139aa0c4f5197df58501c75c"
+  integrity sha512-GJ75hQEYjSApgNT3lbtYsLZZqCpTXso6cvC7aaqf0HA8ypiExgNfNI70gOjh0MbMhmQ/+BAGutFw8tf5DIQfQQ==
+
 react-native-advertising-id@^1.0.11:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/react-native-advertising-id/-/react-native-advertising-id-1.0.11.tgz#205bc6f788295866fcfeea70344e8d304971de5e"
@@ -8403,6 +8403,11 @@ react-native-easy-grid@0.2.2:
   integrity sha512-MlYrNIldnEMKn6TVatQN1P64GoVlwGIuz+8ncdfJ0Wq/xtzUkQwlil8Uksyp7MhKfENE09MQnGNcba6Mx3oSAA==
   dependencies:
     lodash "^4.17.15"
+
+react-native-exception-handler@^2.10.9:
+  version "2.10.9"
+  resolved "https://registry.yarnpkg.com/react-native-exception-handler/-/react-native-exception-handler-2.10.9.tgz#4935a9e106b02ebecc729bfaac8ac8e6b0340781"
+  integrity sha512-V1SJWHzhGUnFWTQKK5dk9yz+Ybkl1wSFWgY6saPkZomYiB9120FdeejJ5NdAio1sH75+op9RpC1w9KbHg+1zFA==
 
 react-native-expo-image-cache@^4.0.8:
   version "4.1.0"

@@ -283,6 +283,9 @@ PODS:
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
   - React-jsinspector (0.63.3)
+  - react-native-adjust (4.23.1):
+    - Adjust (= 4.23.2)
+    - React
   - react-native-advertising-id (1.0.11):
     - React
   - react-native-blur (0.8.0):
@@ -483,6 +486,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-adjust (from `../node_modules/react-native-adjust`)
   - react-native-advertising-id (from `../node_modules/react-native-advertising-id`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-ffmpeg/https-gpl-lts (from `../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec`)
@@ -629,6 +633,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-adjust:
+    :path: "../node_modules/react-native-adjust"
   react-native-advertising-id:
     :path: "../node_modules/react-native-advertising-id"
   react-native-blur:
@@ -778,6 +784,7 @@ SPEC CHECKSUMS:
   React-jsi: df07aa95b39c5be3e41199921509bfa929ed2b9d
   React-jsiexecutor: b56c03e61c0dd5f5801255f2160a815f4a53d451
   React-jsinspector: 8e68ffbfe23880d3ee9bafa8be2777f60b25cbe2
+  react-native-adjust: d8b1aa02957057007fede6188a32b76c19b692e7
   react-native-advertising-id: 91e0e65f5a1dd0667ce4b6e667ca7338e3c3414a
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-ffmpeg: f9a60452aaa5d478aac205b248224994f3bde416

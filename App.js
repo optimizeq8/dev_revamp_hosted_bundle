@@ -17,7 +17,7 @@ import {
 } from "react-native";
 import Intercom from "react-native-intercom";
 import analytics from "@segment/analytics-react-native";
-import AdjustIntegration from "@segment/analytics-react-native-adjust";
+// import AdjustIntegration from "@segment/analytics-react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
 TextReactNative.defaultProps.allowFontScaling = false;
@@ -66,7 +66,7 @@ import PurpleLogo from "./assets/SVGs/PurpleLogo";
 import { REHYDRATE } from "redux-persist";
 import { PESDK } from "react-native-photoeditorsdk";
 import { VESDK } from "react-native-videoeditorsdk";
-// // import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
+import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import RNBootSplash from "react-native-bootsplash";
 
 import * as Sentry from "@sentry/react-native";
@@ -157,18 +157,51 @@ class App extends React.Component {
     this.interval = null;
     // Instruct SplashScreen not to hide yet
     // SplashScreen.preventAutoHide();
-    // const adjustConfig = new AdjustConfig(
-    //   "c698tyk65u68",
-    //   !__DEV__
-    //     ? AdjustConfig.EnvironmentProduction
-    //     : AdjustConfig.EnvironmentSandbox
-    // );
-    // adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
-    // Adjust.getAdid((adid) => {
-    //   console.log("Adid = " + adid);
-    // });
+    const adjustConfig = new AdjustConfig(
+      "c698tyk65u68",
+      !__DEV__
+        ? AdjustConfig.EnvironmentProduction
+        : AdjustConfig.EnvironmentSandbox
+    );
+    adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
+    Adjust.getAdid((adid) => {
+      console.log("Adid = " + adid);
+    });
+    Adjust.getSdkVersion(function (sdkVersion) {
+      console.log("Adjust SDK version: " + sdkVersion);
+    });
 
-    // Adjust.create(adjustConfig);
+    Adjust.requestTrackingAuthorizationWithCompletionHandler((status) => {
+      console.log("Authorization status update", status);
+      switch (status) {
+        case 0:
+          // ATTrackingManagerAuthorizationStatusNotDetermined case
+          console.log(
+            "Authorization status: ATTrackingManagerAuthorizationStatusNotDetermined"
+          );
+          break;
+        case 1:
+          // ATTrackingManagerAuthorizationStatusRestricted case
+          console.log(
+            "Authorization status: ATTrackingManagerAuthorizationStatusRestricted"
+          );
+          break;
+        case 2:
+          // ATTrackingManagerAuthorizationStatusDenied case
+          console.log(
+            "Authorization status: ATTrackingManagerAuthorizationStatusDenied"
+          );
+          break;
+        case 3:
+          // ATTrackingManagerAuthorizationStatusAuthorized case
+          console.log(
+            "Authorization status: ATTrackingManagerAuthorizationStatusAuthorized"
+          );
+          break;
+      }
+    });
+    Adjust.create(adjustConfig);
+
     // if (Platform.OS === "android") {
     //   if (UIManager.setLayoutAnimationEnabledExperimental) {
     //     UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -207,7 +240,7 @@ class App extends React.Component {
         ? "fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh"
         : "ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB",
       {
-        using: [AdjustIntegration],
+        // using: [AdjustIntegration],
         // Record screen views automatically!
         recordScreenViews: true,
         // Record certain application events automatically!
