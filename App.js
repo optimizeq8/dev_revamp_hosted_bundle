@@ -15,6 +15,8 @@ import {
   AppState,
   ActivityIndicator,
 } from "react-native";
+import RNRestart from "react-native-restart";
+
 import Intercom from "react-native-intercom";
 import analytics from "@segment/analytics-react-native";
 import AdjustIntegration from "@segment/analytics-react-native-adjust";
@@ -39,7 +41,6 @@ TextInputMask.defaultProps = TextInputMask.defaultProps || {};
 TextInputMask.defaultProps.allowFontScaling = false;
 import { showMessage } from "react-native-flash-message";
 
-import * as Updates from "expo-updates";
 import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
@@ -60,10 +61,9 @@ import isNull from "lodash/isNull";
 // console.disableYellowBox = true;
 import store from "./store";
 import FlashMessage from "react-native-flash-message";
-import { heightPercentageToDP } from "react-native-responsive-screen";
 
 //icons
-import PurpleLogo from "./assets/SVGs/PurpleLogo";
+// import PurpleLogo from "./assets/SVGs/PurpleLogo";
 import { REHYDRATE } from "redux-persist";
 import { PESDK } from "react-native-photoeditorsdk";
 import { VESDK } from "react-native-videoeditorsdk";
@@ -198,7 +198,7 @@ class App extends React.Component {
   t = (scope, options) => {
     return i18n.t(scope, { locale: this.state.locale, ...options });
   };
-  async componentDidMount() {
+  componentDidMount() {
     // FOR TEST ORG & PROJ ==> hNRRGVYYOxFiMXboexCvtPK7PSy2NgHp
     // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
@@ -226,7 +226,7 @@ class App extends React.Component {
         debug: true,
       }
     );
-    await RNBootSplash.hide();
+    RNBootSplash.hide();
 
     analytics.getAnonymousId().then((anonId) => {
       this.setState({
@@ -669,14 +669,19 @@ class App extends React.Component {
   _loadAppLanguage = async () => {
     const mobileLanguage = Localization.locale;
     const appLanguage = await AsyncStorage.getItem("appLanguage");
+    console.log("mobileLanguage", mobileLanguage);
+
     if (isNull(appLanguage)) {
       if (mobileLanguage.includes("ar")) {
         await store.dispatch(actionCreators.getLanguageListPOEdit("ar"));
+        AsyncStorage.setItem("appLanguage", "ar").then(() => {
+          RNRestart.Restart();
+        });
         this.setState({
           locale: "ar",
         });
+
         // for proper RTL direction
-        Updates.reload();
       } else {
         await store.dispatch(actionCreators.getLanguageListPOEdit("en"));
         this.setState({
