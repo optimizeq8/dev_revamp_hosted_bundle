@@ -679,7 +679,6 @@ class App extends React.Component {
   _loadAppLanguage = async () => {
     const mobileLanguage = Localization.locale;
     const appLanguage = await AsyncStorage.getItem("appLanguage");
-    console.log("mobileLanguage", mobileLanguage);
 
     if (isNull(appLanguage)) {
       if (mobileLanguage.includes("ar")) {
