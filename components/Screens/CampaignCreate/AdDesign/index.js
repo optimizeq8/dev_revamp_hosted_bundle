@@ -1420,17 +1420,25 @@ class AdDesign extends Component {
                       screenProps={this.props.screenProps}
                       swipeUpMaxHeight={this.state.swipeUpMaxHeight}
                       setTheState={this.setTheState}
-                      _changeDestination={
-                        (destination,
+                      _changeDestination={(
+                        destination,
                         call_to_action,
                         attachment,
-                        appChoice,
-                        whatsAppCampaign,
-                        this.adType,
-                        this.props.setStoryAdAttachment,
-                        this.state.campaignInfo,
-                        this.props.save_campaign_info,
-                        this.setTheState)
+                        appChoice = null,
+                        whatsAppCampaign
+                      ) =>
+                        _changeDestination(
+                          destination,
+                          call_to_action,
+                          attachment,
+                          appChoice,
+                          whatsAppCampaign,
+                          this.adType,
+                          this.props.setStoryAdAttachment,
+                          this.state.campaignInfo,
+                          this.props.save_campaign_info,
+                          this.setTheState
+                        )
                       }
                       navigation={this.props.navigation}
                       objective={objective}
