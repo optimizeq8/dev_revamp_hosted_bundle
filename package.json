@@ -83,7 +83,7 @@
     "react-native-restart": "^0.0.17",
     "react-native-safe-area-context": "^3.1.9",
     "react-native-safe-area-view": "^1.1.1",
-    "react-native-screens": "~2.10.1",
+    "react-native-screens": "^2.17.1",
     "react-native-sectioned-multi-select": "https://github.com/optimizeq8/react-native-sectioned-multi-select.git",
     "react-native-shimmer-placeholder": "^2.0.6",
     "react-native-slowlog": "^1.0.2",

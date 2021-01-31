@@ -97,7 +97,6 @@ import { enableScreens } from "react-native-screens";
 import MaskedView from "@react-native-community/masked-view";
 import Logo from "./assets/Logo.svg";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-enableScreens();
 
 const defaultErrorHandler = ErrorUtils.getGlobalHandler();
 
@@ -226,6 +225,8 @@ class App extends React.Component {
     return i18n.t(scope, { locale: this.state.locale, ...options });
   };
   componentDidMount() {
+    enableScreens();
+
     // FOR TEST ORG & PROJ ==> hNRRGVYYOxFiMXboexCvtPK7PSy2NgHp
     // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
