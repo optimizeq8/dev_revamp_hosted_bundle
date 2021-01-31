@@ -244,6 +244,7 @@ class SelectInterests extends Component {
   handleCustomInterests = (event) => {
     // translator.translate(event).then((translated) => {
     //Do something with the translated text
+    event = event.nativeEvent.text;
     if (this.timeout) clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       this.props.get_custom_interests_instagram(event.replace(" ", "_"));
