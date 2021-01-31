@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View, Text, I18nManager } from "react-native";
 import styles from "./styles";
 import { Item, Icon } from "native-base";
 import GlobalStyles, { globalColors } from "../../../GlobalStyles";
@@ -100,7 +100,7 @@ export default class ModalField extends Component {
               <Text
                 style={[
                   styles.inputText,
-                  { textAlign: "left" },
+                  { textAlign: "left", marginTop: I18nManager.isRTL ? 0 : 5 },
                   customTextStyle,
                 ]}
               >
