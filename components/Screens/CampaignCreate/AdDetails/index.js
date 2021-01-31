@@ -1735,7 +1735,8 @@ class AdDetails extends Component {
                     order={1}
                     name="Daily budget"
                   >
-                    <CopilotView
+                    {/* <CopilotView>*/}
+                    <View
                       screenProps={this.props.screenProps}
                       style={{ marginTop: 5 }}
                     >
@@ -1796,7 +1797,7 @@ class AdDetails extends Component {
                         screenProps={this.props.screenProps}
                         data={this.props.data}
                       />
-                    </CopilotView>
+                    </View>
                   </CopilotStep>
                 ) : (
                   startEditing && (
