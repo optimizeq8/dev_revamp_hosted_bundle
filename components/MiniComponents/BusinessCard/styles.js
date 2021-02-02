@@ -1,21 +1,23 @@
 import { StyleSheet } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   subtext: {
     fontFamily: "montserrat-regular",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#fff",
   },
   businessButton: {
     flexDirection: "row",
-    paddingVertical: 15,
-    bottom: 15,
+    paddingVertical: RFValue(7.5, 414),
+    bottom: RFValue(7.5, 414),
+    alignItems: "center",
   },
   businessIconStyle: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
+    width: RFValue(25, 414),
+    height: RFValue(25, 414),
+    borderRadius: RFValue(25, 414),
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#c6c6c6",
@@ -24,13 +26,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
-    paddingHorizontal: 7,
+    paddingHorizontal: RFValue(3.5, 414),
   },
   titletext: {
     textAlign: "left",
-    paddingTop: 5,
+    paddingTop: RFValue(2.5, 414),
     fontFamily: "montserrat-bold",
-    fontSize: 18,
+    fontSize: RFValue(9, 414),
     paddingVertical: 0,
     textTransform: "uppercase",
     color: globalColors.rum,
