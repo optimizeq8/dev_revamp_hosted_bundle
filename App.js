@@ -331,7 +331,7 @@ class App extends React.Component {
         },
         timestamp: new Date().getTime(),
       });
-      analytics.identify(null, { logged_out: false });
+      //   analytics.identify(null, { logged_out: false }); // To avoid creating user profile
       Platform.OS === "ios" && Notifications.setBadgeCountAsync(0);
       // console.log("App has come to the foreground!");
     }
