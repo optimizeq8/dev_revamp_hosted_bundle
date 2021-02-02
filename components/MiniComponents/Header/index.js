@@ -98,11 +98,11 @@ export default class Header extends Component {
           </View>
         )}
         {icon === "instagram" && (
-          <View style={{ paddingHorizontal: 0 }}>
+          <View style={{ paddingHorizontal: 5 }}>
             <InstagramIcon
-              style={styles.instaIcon}
-              width={50}
-              height={40}
+              //   style={styles.instaIcon}
+              width={30}
+              height={30}
               fill="#fff"
             />
           </View>

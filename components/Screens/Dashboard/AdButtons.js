@@ -30,16 +30,33 @@ export default class AdButtons extends Component {
           />
           {ChannelIcon && (
             <ChannelIcon
-              width={RFValue(30, 414)}
-              height={RFValue(30, 414)}
+              width={
+                ad.mediaType === "instagram"
+                  ? RFValue(13.5, 414)
+                  : RFValue(30, 414)
+              }
+              height={
+                ad.mediaType === "instagram"
+                  ? RFValue(13.5, 414)
+                  : RFValue(30, 414)
+              }
               style={[
                 styles.channelIcon,
                 I18nManager.isRTL
                   ? {
+                      top:
+                        ad.mediaType === "instagram"
+                          ? RFValue(-5, 414)
+                          : RFValue(-11, 414),
                       right: -20,
                     }
                   : {
-                      left: -20,
+                      top:
+                        ad.mediaType === "instagram"
+                          ? RFValue(-5, 414)
+                          : RFValue(-11, 414),
+
+                      left: ad.mediaType === "instagram" ? -10 : -20,
                     },
               ]}
               fill={ad.mediaType === "google" ? "#0000" : "#000"}

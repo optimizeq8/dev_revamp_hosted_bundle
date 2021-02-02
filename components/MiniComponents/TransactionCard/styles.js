@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-
+import { RFValue } from "react-native-responsive-fontsize";
 const styles = StyleSheet.create({
   mainView: {
     flexDirection: "row",
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     color: "#FFFF",
-    fontSize: 35,
+    fontSize: RFValue(17.5, 414),
   },
   transactionText: {
     marginTop: 7,

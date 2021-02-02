@@ -1,4 +1,5 @@
 import { StyleSheet, PixelRatio } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
   },
   metricText: {
     color: "#fff",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     textAlign: "left",
     textTransform: "uppercase",
   },
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     color: "#FF9D00",
     fontFamily: "montserrat-bold-english",
-    fontSize: 16 / PixelRatio.getFontScale(),
+    fontSize: RFValue(8, 414),
     textAlign: "left",
   },
   metricRow: {

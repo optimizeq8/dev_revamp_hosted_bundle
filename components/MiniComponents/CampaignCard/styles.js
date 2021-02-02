@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
   },
   campaignButton: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingVertical: Platform.OS === "ios" ? 20 : 15,
+    paddingHorizontal: RFValue(10, 414),
+    paddingVertical: RFValue(10, 414),
   },
   chart: {
     paddingHorizontal: 5,

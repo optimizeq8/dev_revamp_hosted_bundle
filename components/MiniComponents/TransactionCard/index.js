@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, I18nManager, Text } from "react-native";
 import { Icon } from "native-base";
-
+import { RFValue } from "react-native-responsive-fontsize";
 // styles
 import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
@@ -30,15 +30,19 @@ class TransactionCard extends Component {
         <View style={styles.header}>
           {transaction.channel === "instagram" ? (
             <InstagramIcon
-              width={75}
-              height={75}
+              width={RFValue(17.5, 414)}
+              height={RFValue(17.5, 414)}
               fill={"#FFF"}
-              style={styles.instagramIcon}
+              //   style={styles.instagramIcon}
             />
           ) : transaction.channel === "snapchat" ? (
-            <SnapGhostIcon fill={"#000"} width={35} height={35} />
+            <SnapGhostIcon
+              fill={"#000"}
+              width={RFValue(17.5, 414)}
+              height={RFValue(17.5, 414)}
+            />
           ) : transaction.channel === "google" ? (
-            <GoogleSE width={35} height={35} />
+            <GoogleSE width={RFValue(17.5, 414)} height={RFValue(17.5, 414)} />
           ) : (
             <WalletIcon fill="#FFF" style={[styles.icon]} />
           )}
