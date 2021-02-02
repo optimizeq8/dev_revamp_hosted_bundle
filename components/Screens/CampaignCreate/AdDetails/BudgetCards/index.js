@@ -102,6 +102,7 @@ export class BudgetCards extends Component {
       recBudget,
       budgetOption,
       lifetime_budget_micro,
+      copilot,
     } = this.props;
     const { translate } = this.props.screenProps;
     recBudget = parseFloat(recBudget);
@@ -125,7 +126,7 @@ export class BudgetCards extends Component {
       .map((el, i) => (i ? el.split("").slice(0, 2).join("") : el))
       .join(".");
     return (
-      <View>
+      <View {...copilot}>
         <MaskedView
           maskElement={
             <LinearGradient
