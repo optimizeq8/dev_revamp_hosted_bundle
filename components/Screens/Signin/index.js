@@ -8,6 +8,7 @@ import {
   ScrollView,
   Text,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import SafeAreaView from "react-native-safe-area-view";
 
@@ -247,8 +248,8 @@ class Signin extends Component {
                 <View style={styles.logoContainer}>
                   <Logo
                     style={styles.logo}
-                    width={heightPercentageToDP(9)}
-                    height={heightPercentageToDP(9)}
+                    width={RFValue(39, 414)}
+                    height={RFValue(39, 414)}
                   />
                   <View style={styles.signTextContainer}>
                     <TouchableOpacity
