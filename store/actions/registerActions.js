@@ -640,7 +640,8 @@ export const registerGuestUser = (
           ) {
             dispatch(chanege_base_url(true));
           }
-          //   analytics.alias(decodedUser.user.userid);
+          analytics.alias(decodedUser.user.userid);
+          analytics.flush();
           // MixpanelSDK.identify(decodedUser.user.userid);
 
           dispatch(setCurrentUser(decodedUser));
