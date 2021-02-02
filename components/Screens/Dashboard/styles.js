@@ -4,6 +4,7 @@ import {
   widthPercentageToDP,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
+import { RFValue } from "react-native-responsive-fontsize";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -70,7 +71,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: globalColors.white,
     fontFamily: "montserrat-regular",
-    fontSize: 10 / PixelRatio.getFontScale(),
+    // fontSize: 10 / PixelRatio.getFontScale(),
+    fontSize: RFValue(5, 414),
     paddingTop: 4,
     // top: 20
   },
@@ -117,7 +119,8 @@ const styles = StyleSheet.create({
     textAlign: "left",
     color: globalColors.white,
     fontFamily: "montserrat-bold",
-    fontSize: 20,
+    // fontSize: 20,
+    fontSize: RFValue(10, 414),
     textTransform: "uppercase",
     // top: 4
   },
@@ -126,7 +129,8 @@ const styles = StyleSheet.create({
     maxWidth: "80%",
     color: globalColors.white,
     fontFamily: "montserrat-regular",
-    fontSize: 14,
+    // fontSize: 14,
+    fontSize: RFValue(7, 414),
     textTransform: "uppercase",
   },
   nameStyle: {
@@ -158,8 +162,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: globalColors.orange,
-    width: 60,
-    height: 60,
+    width: RFValue(30, 414),
+    height: RFValue(30, 414),
     borderRadius: 50,
     elevation: 0,
     top: I18nManager.isRTL ? 5 : 0,
@@ -235,9 +239,9 @@ const styles = StyleSheet.create({
   activebutton: {
     backgroundColor: "#0000",
     justifyContent: "center",
-    width: 55,
-    height: 55,
-    borderRadius: 33,
+    width: RFValue(27.5, 414),
+    height: RFValue(27.5, 414),
+    borderRadius: RFValue(16.5, 414),
     alignItems: "center",
     elevation: 0,
   },
@@ -273,7 +277,7 @@ const styles = StyleSheet.create({
   headerIcons: {
     alignItems: "center",
     justifyContent: "center",
-    width: "10%",
+    width: RFValue(23, 414),
     height: "100%",
   },
   placeHolderCardsStyle: {
@@ -294,8 +298,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#0003",
     marginHorizontal: 10,
-    width: 50,
-    height: 50,
+    width: RFValue(25, 414),
+    height: RFValue(25, 414),
     borderRadius: 50,
     elevation: 0,
     alignItems: "center",
@@ -312,13 +316,13 @@ const styles = StyleSheet.create({
   },
   searchbarContainer: {
     flexDirection: "row",
-    height: 60,
+    height: RFValue(30, 414),
     alignItems: "center",
     alignSelf: "center",
   },
   channelIcon: {
     position: "absolute",
-    top: -22,
+    top: RFValue(-11, 414),
   },
   adButtonView: {
     flexDirection: "column",

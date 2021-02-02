@@ -1,10 +1,6 @@
 import { StyleSheet, PixelRatio } from "react-native";
 
-import { widthPercentageToDP } from "react-native-responsive-screen";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 
 export const colors = {
@@ -31,7 +27,8 @@ const styles = StyleSheet.create({
   },
   subtext: {
     fontFamily: "montserrat-regular",
-    fontSize: 12,
+    // fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#fff",
     textTransform: "uppercase",
     textAlign: "left",
@@ -72,13 +69,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     color: "#FF9D00",
     fontFamily: "montserrat-bold-english",
-    fontSize: 15 / PixelRatio.getFontScale(),
+    // fontSize: 15 / PixelRatio.getFontScale(),
+    fontSize: RFValue(7.5, 414),
     textAlign: "left",
     // paddingHorizontal: 10
   },
   campaignNumbersDetail: {
     fontFamily: "montserrat-regular-english",
-    fontSize: 16 / PixelRatio.getFontScale(),
+    // fontSize: 16 / PixelRatio.getFontScale(),
+    fontSize: RFValue(8, 414),
   },
   campaignInfo: {
     flexDirection: "column",

@@ -1,12 +1,11 @@
 import { StyleSheet, PixelRatio } from "react-native";
 
-import { widthPercentageToDP } from "react-native-responsive-screen";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
-
+import { RFValue } from "react-native-responsive-fontsize";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -32,7 +31,8 @@ const styles = StyleSheet.create({
   },
   subtext: {
     fontFamily: "montserrat-regular",
-    fontSize: 12,
+    // fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#fff",
     textTransform: "uppercase",
     textAlign: "left",
@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     color: "#FF9D00",
     fontFamily: "montserrat-bold-english",
     fontSize: 15 / PixelRatio.getFontScale(),
+    fontSize: RFValue(7.5, 414),
     textAlign: "left",
     // paddingHorizontal: 10
   },

@@ -1,16 +1,17 @@
-import { StyleSheet, I18nManager } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 import { Dimensions } from "react-native";
 import {
   widthPercentageToDP,
   heightPercentageToDP,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
+import { RFValue } from "react-native-responsive-fontsize";
 
 const styles = StyleSheet.create({
   cardStyle: {
-    marginHorizontal: 20,
+    marginHorizontal: RFValue(10, 414),
     borderRadius: 30,
-    marginVertical: 8,
+    marginVertical: RFValue(4, 414),
     shadowOpacity: 0.5,
     shadowRadius: 3,
     shadowColor: "#6268FF",
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
   titleText: {
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     // left: 5,
     textAlign: "left",
   },
@@ -45,8 +46,8 @@ const styles = StyleSheet.create({
   },
   campaignButton: {
     flex: 1,
-    padding: 20,
-    paddingVertical: 20,
+    paddingHorizontal: 20,
+    paddingVertical: RFValue(10, 414),
   },
   chart: {
     paddingHorizontal: 5,
@@ -86,7 +87,8 @@ const styles = StyleSheet.create({
   reviewText: {
     fontFamily: "montserrat-bold",
     textAlign: "left",
-    fontSize: 13,
+    // fontSize: 13,
+    fontSize: RFValue(6.6, 414),
     paddingHorizontal: 5,
     color: "#fff",
     textTransform: "uppercase",
@@ -146,7 +148,8 @@ const styles = StyleSheet.create({
   cardText: {
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 12,
+    // fontSize: 12,
+    fontSize: RFValue(6, 414),
     textAlign: "center",
     textTransform: "uppercase",
   },

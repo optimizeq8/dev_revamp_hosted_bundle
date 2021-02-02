@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import * as Notifications from "expo-notifications";
 import Intercom from "react-native-intercom";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
 import { Container, Icon } from "native-base";
@@ -758,7 +758,10 @@ class Dashboard extends Component {
                     {
                       // !this.props.unread_converstaion || this.props.unread_converstaion === 0
                       !this.props.count || this.props.count === 0 ? (
-                        <IntercomIcon width={24} height={24} />
+                        <IntercomIcon
+                          width={RFValue(12, 414)}
+                          height={RFValue(12, 414)}
+                        />
                       ) : (
                         <>
                           <View style={styles.unreadTextView}>
@@ -892,7 +895,7 @@ class Dashboard extends Component {
                             >
                               <GradientButton
                                 style={styles.button}
-                                radius={30}
+                                radius={RFValue(15, 414)}
                                 onPressAction={this.handleNewCampaign}
                               >
                                 <Icon
@@ -987,7 +990,11 @@ class Dashboard extends Component {
                             this._handleSideMenuState(true);
                           }}
                         >
-                          <FilterIcon width={30} height={30} fill="#909090" />
+                          <FilterIcon
+                            width={RFValue(15, 414)}
+                            height={RFValue(15, 414)}
+                            fill="#909090"
+                          />
                         </TouchableOpacity>
                       </View>
 

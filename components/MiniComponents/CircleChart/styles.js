@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 export default StyleSheet.create({
   chart: {
@@ -15,7 +16,8 @@ export default StyleSheet.create({
   },
   chartSubtext: {
     textTransform: "uppercase",
-    fontSize: 12,
+    // fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#fff",
     fontFamily: "montserrat-bold",
     textAlign: "center",
