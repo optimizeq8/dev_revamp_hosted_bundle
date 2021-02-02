@@ -9,6 +9,7 @@ import {
   Text,
 } from "react-native";
 import { Container, Icon } from "native-base";
+import { RFValue } from "react-native-responsive-fontsize";
 import analytics from "@segment/analytics-react-native";
 import SlidingUpPanel from "rn-sliding-up-panel";
 // import BusinessList from "../BusinessList";
