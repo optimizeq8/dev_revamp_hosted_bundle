@@ -1735,7 +1735,7 @@ class AdDetails extends Component {
                 contentContainerStyle={styles.contentContainer}
               >
                 {!this.editCampaign ? (
-                  <>
+                  <View style={{ marginTop: 5 }}>
                     {/* // <CopilotStep
                   //   text="Setting a good daily budget is very crucial to how successful your campaign will be The higher the budget the more people will see your ad"
                   //   order={1}
@@ -1804,7 +1804,7 @@ class AdDetails extends Component {
                     />
                     {/* </CopilotView> */}
                     {/* </CopilotStep> */}
-                  </>
+                  </View>
                 ) : (
                   startEditing && (
                     <View style={styles.sliderPlaceHolder}>
