@@ -6,6 +6,7 @@ import {
   I18nManager,
   TouchableOpacity,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import analytics from "@segment/analytics-react-native";
 import { NavigationEvents, FlatList } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
@@ -153,7 +154,11 @@ class Transactions extends Component {
                       this._handleSideMenuState(true);
                     }}
                   >
-                    <FilterIcon width={30} height={30} fill="#FFF" />
+                    <FilterIcon
+                      width={RFValue(15, 414)}
+                      height={RFValue(15, 414)}
+                      fill="#FFF"
+                    />
                   </TouchableOpacity>
                 )}
               </View>
