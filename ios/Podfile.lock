@@ -395,8 +395,8 @@ PODS:
     - PhotoEditorSDK (~> 10.18)
     - React
     - React-RCTImage
-  - RNScreens (2.10.1):
-    - React
+  - RNScreens (2.17.1):
+    - React-Core
   - RNSentry (1.9.0):
     - React-Core
     - Sentry (~> 5.2.0)
@@ -806,7 +806,7 @@ SPEC CHECKSUMS:
   RNDeviceInfo: c5f8f3a456adcbba405ace475254b08febc4c095
   RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
   RNPhotoEditorSDK: 19b264ecab792963aa63d244e33d6d25844fd0dc
-  RNScreens: b748efec66e095134c7166ca333b628cd7e6f3e2
+  RNScreens: b6c9607e6fe47c1b6e2f1910d2acd46dd7ecea3a
   RNSentry: 1adaa43b01c6a3ab5091d4d1add66b7c58558898
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: 368d6d8b8301224e5ffb6254191f4f8876c2be0d
