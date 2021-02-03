@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   text: {
     color: "#FFF",
     textTransform: "uppercase",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     fontFamily: "montserrat-bold",
     // flex: 1,
   },

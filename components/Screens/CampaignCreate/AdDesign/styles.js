@@ -5,6 +5,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
   },
   percentage: {
-    fontSize: 8,
+    fontSize: RFValue(4, 414),
     color: "#FFF",
     fontFamily: "montserrat-bold-english",
   },
@@ -105,19 +106,19 @@ const styles = StyleSheet.create({
   mediaButtonMsgEdit: {
     textAlign: "center",
     fontFamily: "montserrat-medium",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     // width: 150,
     color: globalColors.orange,
-    paddingTop: 5,
+    paddingTop: RFValue(2.5, 414),
   },
   mediaButtonMsg: {
     // position: "absolute",
     width: 150,
     textAlign: "center",
     fontFamily: "montserrat-medium",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     color: globalColors.orange,
-    top: 23,
+    top: RFValue(11.5, 414),
   },
   icon: {
     color: "#fff",
@@ -131,8 +132,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: globalColors.transparent,
     alignSelf: "center",
-    width: 90,
-    height: 90,
+    width: RFValue(45, 414),
+    height: RFValue(45, 414),
     borderRadius: 45,
     borderColor: "transparent",
     // top: "50%",
@@ -152,8 +153,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     // backgroundColor: '#FF9D00',
     alignSelf: "center",
-    width: 100,
-    height: 100,
+    width: RFValue(45, 414),
+    height: RFValue(45, 414),
     borderRadius: 45,
     borderColor: "transparent",
     // top: "50%",
@@ -180,8 +181,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#0004",
     width: "100%",
     borderRadius: 50,
-    paddingHorizontal: 10,
-    marginVertical: 5,
+    paddingHorizontal: RFValue(5, 414),
+    marginVertical: RFValue(2.5, 414),
     paddingVertical: 0,
     alignItems: "center",
     display: "flex",
@@ -193,8 +194,8 @@ const styles = StyleSheet.create({
   inputText: {
     fontFamily: "montserrat-bold",
     fontSize: I18nManager.isRTL
-      ? 10 / PixelRatio.getFontScale()
-      : 12 / PixelRatio.getFontScale(),
+      ? RFValue(5 / PixelRatio.getFontScale(), 414)
+      : RFValue(6 / PixelRatio.getFontScale(), 414),
     textAlign: I18nManager.isRTL ? "right" : "left",
     color: "#fff",
     marginLeft: 8,
@@ -210,11 +211,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     // justifyContent: "center",
     borderRadius: 30,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: RFValue(5, 414),
+    paddingHorizontal: RFValue(10, 414),
     zIndex: 10,
     // bottom: 0,
-    marginTop: 5,
+    marginTop: RFValue(2.5, 414),
     overflow: "hidden",
   },
   swipeUpView: {
@@ -222,7 +223,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    paddingHorizontal: 10,
+    paddingHorizontal: RFValue(5, 414),
     // width: wp(60),
     // marginHorizontal: 100,
   },
@@ -230,27 +231,27 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     color: globalColors.rum,
     fontFamily: "montserrat-bold",
-    fontSize: 15,
+    fontSize: RFValue(7.5, 414),
     textTransform: "uppercase",
   },
   buttonN: {
     minHeight: 300,
     flex: 1,
     backgroundColor: "#0004",
-    borderRadius: 35,
+    borderRadius: RFValue(17.5, 414),
     width: "90%",
     // paddingTop: 20,
   },
   placeholder: {
-    borderRadius: 25,
+    borderRadius: RFValue(12.5, 414),
     overflow: "hidden",
     alignSelf: "center",
     width: "90%",
     // height: "63%",
     backgroundColor: "rgba(0,0,0,0.2)",
     justifyContent: "center",
-    marginTop: 15,
-    marginBottom: 10,
+    marginTop: RFValue(7.5, 414),
+    marginBottom: RFValue(5, 414),
     flex: 1,
   },
   placeholderDownloadMedia: {
@@ -265,7 +266,7 @@ const styles = StyleSheet.create({
   },
   placeholder1: {
     opacity: 0.55,
-    borderRadius: 30,
+    borderRadius: RFValue(15, 414),
     overflow: "hidden",
     alignSelf: "center",
     width: "100%",
@@ -278,7 +279,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: globalColors.white,
     width: "45%",
-    height: 50,
+    height: RFValue(25, 414),
     marginHorizontal: 0,
   },
   gradient: {
@@ -305,7 +306,7 @@ const styles = StyleSheet.create({
   },
   subtitleHeading: {
     textAlign: "left",
-    fontSize: 10,
+    fontSize: RFValue(5, 414),
     marginBottom: heightPercentageToDP(-1.4),
     marginTop: heightPercentageToDP(0.8),
     fontFamily: "montserrat-regular",
@@ -343,7 +344,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   swipeUpSubText: {
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     textAlign: "center",
     fontFamily: "montserrat-medium-english",
     color: globalColors.purple,
@@ -603,7 +604,7 @@ const styles = StyleSheet.create({
   proceedButtonRTL: {
     // marginHorizontal: 0,
     width: "100%",
-    height: 50,
+    height: RFValue(25, 414),
   },
   holdToDeleteText: {
     color: globalColors.white,
@@ -614,7 +615,7 @@ const styles = StyleSheet.create({
   uplaodPercentageText: {
     position: "absolute",
     fontFamily: "montserrat-bold-english",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     lineHeight: 16,
     color: "#FFF",
     top: heightPercentageToDP(1.75),
@@ -624,23 +625,23 @@ const styles = StyleSheet.create({
   },
   uploadingText: {
     fontFamily: "montserrat-bold",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     color: "#FFF",
     textTransform: "uppercase",
-    marginHorizontal: 3,
+    marginHorizontal: RFValue(1.5, 414),
   },
   penIconBranContainer: {
     width: "90%",
     height: "20%",
     justifyContent: "space-evenly",
     alignSelf: "center",
-    top: 10,
+    top: RFValue(5, 414),
   },
   swipeUpTitle: {
     fontFamily: "montserrat-bold",
     color: globalColors.purple,
     textTransform: "uppercase",
-    fontSize: 13,
+    fontSize: RFValue(6.5, 414),
   },
   animatedLoaderContainer: {
     width: "100%",

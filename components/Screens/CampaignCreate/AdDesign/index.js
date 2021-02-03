@@ -13,6 +13,7 @@ import {
   ScrollView,
   BackHandler,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { Container } from "native-base";
 import { NavigationEvents } from "react-navigation";
 import { showMessage } from "react-native-flash-message";
@@ -1521,8 +1522,8 @@ class AdDesign extends Component {
                       </Text>
                       <View>
                         <AnimatedCircularProgress
-                          size={50}
-                          width={5}
+                          size={RFValue(25, 414)}
+                          width={RFValue(2.5, 414)}
                           fill={Math.round(this.state.loaded)}
                           rotation={360}
                           lineCap="round"

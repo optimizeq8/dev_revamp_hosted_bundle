@@ -3,6 +3,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
@@ -38,9 +39,9 @@ const styles = StyleSheet.create({
   titletext: {
     textAlign: "center",
     color: globalColors.purple,
-    paddingTop: 10,
+    paddingTop: RFValue(5, 414),
     fontFamily: "montserrat-bold",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     paddingVertical: 0,
     textTransform: "uppercase",
   },
@@ -77,12 +78,12 @@ const styles = StyleSheet.create({
   subtext: {
     bottom: 5,
     alignSelf: "center",
-    width: 300,
+    width: RFValue(150, 414),
     fontFamily: "montserrat-regular",
-    fontSize: 14,
-    paddingTop: 5,
+    fontSize: RFValue(7, 414),
+    paddingTop: RFValue(2.5, 414),
     color: globalColors.purple,
-    paddingHorizontal: 20,
+    paddingHorizontal: RFValue(10, 414),
     textAlign: "center",
   },
   subtextReach: {
@@ -136,8 +137,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 10,
     fontFamily: "montserrat-bold",
-    fontSize: 13,
-    marginBottom: 10,
+    fontSize: RFValue(6.5, 414),
+    marginBottom: RFValue(5, 414),
   },
   listText: {
     fontFamily: "montserrat-regular",
