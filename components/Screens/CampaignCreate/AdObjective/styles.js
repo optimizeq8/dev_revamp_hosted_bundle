@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontFamily: "montserrat-bold",
-    fontSize: 12 / PixelRatio.getFontScale(),
+    fontSize: RFValue(6, 414) / PixelRatio.getFontScale(),
     color: "#fff",
     alignSelf: "flex-start",
     textAlign: I18nManager.isRTL ? "right" : "left",
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   minBudget: {
     color: "#fff",
     alignSelf: "center",
-    fontSize: 11,
+    fontSize: RFValue(5.5, 414),
     fontFamily: "montserrat-regular",
   },
   title: {
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     color: globalColors.orange,
     flexDirection: "column",
     fontFamily: "montserrat-light",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     // paddingHorizontal: 10
   },
   date: {
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     paddingVertical: 10,
-    width: 300,
+    width: RFValue(150, 414),
     flexDirection: "row",
     alignSelf: "center",
     // shadowOffset: { width: 1, height: 1 },
@@ -198,30 +198,30 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "rgba(0,0,0,0.2)",
-    width: 150,
-    height: 70,
+    width: RFValue(75, 414),
+    height: RFValue(35, 414),
     justifyContent: "center",
     flexDirection: "column",
     marginHorizontal: 0,
   },
   activeButton: {
     // backgroundColor: "#FF9D00",
-    height: 70,
-    width: 150,
+    height: RFValue(35, 414),
+    width: RFValue(75, 414),
     justifyContent: "center",
     flexDirection: "column",
     marginHorizontal: 0,
   },
   inactiveText: {
     fontFamily: "montserrat-bold",
-    fontSize: 11,
+    fontSize: RFValue(5.5, 414),
     color: "rgba(255,255,255,0.4)",
     textAlign: "center",
     textTransform: "uppercase",
   },
   activeText: {
     fontFamily: "montserrat-bold",
-    fontSize: 11,
+    fontSize: RFValue(5.5, 414),
     color: "#fff",
     textAlign: "center",
     textTransform: "uppercase",
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
   buttonSubText: {
     fontFamily: "montserrat-regular",
     paddingTop: 2,
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     textTransform: "none",
   },
   dateTextLabel: {
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     paddingTop: 8,
-    width: 150,
+    width: RFValue(75, 414),
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
     height: 15,
@@ -251,18 +251,18 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     paddingTop: 8,
-    width: 150,
+    width: RFValue(75, 414),
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
     height: 15,
     zIndex: 1,
   },
   collectionAdView: {
-    paddingTop: 10,
+    paddingTop: RFValue(5, 414),
   },
   collectionAdText: {
     color: "#FFFFFF",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     fontFamily: "montserrat-bold",
     textAlign: "center",
     textTransform: "uppercase",
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
     marginTop: -20,
     marginBottom: 15,
     fontFamily: "montserrat-regular",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
   },
   statusBar: {
     height: STATUSBAR_HEIGHT,

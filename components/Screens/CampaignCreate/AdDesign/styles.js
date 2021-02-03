@@ -369,9 +369,9 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.5)",
     borderColor: globalColors.orange,
     borderWidth: 2,
-    borderRadius: 20,
-    height: 71,
-    width: 67,
+    borderRadius: RFValue(10, 414),
+    height: RFValue(35.5, 414),
+    width: RFValue(33.5, 414),
     margin: 10,
   },
   addButtonStyle: {
@@ -608,7 +608,7 @@ const styles = StyleSheet.create({
   },
   holdToDeleteText: {
     color: globalColors.white,
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     textAlign: "center",
     fontFamily: "montserrat-regular",
   },

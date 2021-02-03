@@ -6,6 +6,7 @@ import {
   Image as RNImage,
   TouchableOpacity,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { Video } from "expo-av";
 import styles from "../styles";
 import MediaButton from "../MediaButton";
@@ -96,11 +97,12 @@ class SnapCard extends Component {
         </View>
         <TouchableOpacity
           style={{
-            width: snapCardInfo.item.id === -1 ? 50 : 24,
-            height: 24,
+            width:
+              snapCardInfo.item.id === -1 ? RFValue(25, 414) : RFValue(12, 414),
+            height: RFValue(12, 414),
             alignItems: "center",
             justifyContent: "center",
-            borderRadius: 50,
+            borderRadius: RFValue(25, 414),
             backgroundColor: globalColors.orange,
             bottom: "20%",
           }}
@@ -110,7 +112,13 @@ class SnapCard extends Component {
           }}
           onPress={this.handleDeletion}
         >
-          <Text style={{ color: "#fff", fontFamily: "montserrat-regular" }}>
+          <Text
+            style={{
+              color: "#fff",
+              fontFamily: "montserrat-regular",
+              fontSize: RFValue(5, 414),
+            }}
+          >
             {this.state.showDelete
               ? "X"
               : snapCardInfo.item.id === -1
