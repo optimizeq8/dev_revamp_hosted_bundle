@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Image, I18nManager, Text } from "react-native";
 import { Icon } from "native-base";
+import { RFValue } from "react-native-responsive-fontsize";
 import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import BackIcon from "../../../assets/SVGs/BackButton";
@@ -81,10 +82,18 @@ export default class Header extends Component {
             backButton === "messenger" ? (
               <MSGBackIcon width={40} height={40} />
             ) : (
-              <CloseIcon width={20} height={20} stroke={iconColor} />
+              <CloseIcon
+                width={RFValue(10, 414)}
+                height={RFValue(10, 414)}
+                stroke={iconColor}
+              />
             )
           ) : (
-            <BackIcon width={24} height={24} stroke={iconColor} />
+            <BackIcon
+              width={RFValue(12, 414)}
+              height={RFValue(12, 414)}
+              stroke={iconColor}
+            />
           )}
         </TouchableOpacity>
         {icon === "snapchat" && (

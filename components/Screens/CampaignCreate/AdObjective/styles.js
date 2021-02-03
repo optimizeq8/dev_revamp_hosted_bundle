@@ -5,6 +5,7 @@ import {
   Platform,
   StatusBar,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -267,8 +268,8 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   proceedButtonRTL: {
-    width: 65,
-    height: 65,
+    width: RFValue(32.5, 414),
+    height: RFValue(32.5, 414),
     // padding: 20
   },
   objectiveModal: {
