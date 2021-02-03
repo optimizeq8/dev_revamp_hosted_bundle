@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
     // paddingTop: 10,
   },
   dataContainer: {
-    paddingTop: 30,
+    paddingTop: RFValue(15, 414),
   },
   icon: {
     alignSelf: "center",
@@ -23,22 +24,22 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     color: globalColors.rum,
-    paddingTop: 20,
+    paddingTop: RFValue(10, 414),
     alignSelf: "center",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     fontFamily: "montserrat-bold",
   },
   subtitle: {
     textAlign: "center",
     color: globalColors.rum,
     fontFamily: "montserrat-regular",
-    fontSize: 14,
-    width: 250,
-    paddingTop: 20,
+    fontSize: RFValue(7, 414),
+    width: RFValue(125, 414),
+    paddingTop: RFValue(10, 414),
     alignSelf: "center",
   },
   multiSliderContainer: {
-    marginTop: 20,
+    marginTop: RFValue(10, 414),
     alignSelf: "center",
   },
   selected: {
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
   button: {
     alignSelf: "center",
     justifyContent: "center",
-    marginBottom: 40,
+    marginBottom: RFValue(20, 414),
   },
   rangeMakerContainer: {
     flexDirection: "column",

@@ -217,7 +217,10 @@ export class TargetAudience extends Component {
                       height={RFValue(15, 414)}
                     />
                   ) : (
-                    <PurplePlusIcon width={20} height={RFValue(15, 414)} />
+                    <PurplePlusIcon
+                      width={RFValue(10, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ))}
               </TouchableOpacity>
             ) : null}

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
-import { Container } from "native-base";
+import { RFValue } from "react-native-responsive-fontsize";
 import SafeAreaView from "react-native-safe-area-view";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import RangeMarkers from "./RangeMarkers";

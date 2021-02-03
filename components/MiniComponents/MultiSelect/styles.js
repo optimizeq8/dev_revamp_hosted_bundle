@@ -3,6 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
   dataContainer: {
     alignItems: "center",
     width: "100%",
-    marginTop: 20,
+    marginTop: RFValue(10, 414),
     // flex: 1,
     justifyContent: "space-between",
     height: "75%",
@@ -36,27 +37,27 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: globalColors.rum,
     fontFamily: "montserrat-bold",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     // width: 150,
-    paddingTop: 20,
+    paddingTop: RFValue(10, 414),
     alignSelf: "center",
   },
   subHeadings: {
     textAlign: "center",
     color: globalColors.rum,
     fontFamily: "montserrat-regular",
-    fontSize: 14,
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+    fontSize: RFValue(7, 414),
+    paddingVertical: RFValue(10, 414),
+    paddingHorizontal: RFValue(10, 414),
   },
   slidercontainer: {
-    paddingHorizontal: 40,
+    paddingHorizontal: RFValue(20, 414),
     width: "100%",
     flex: 1,
   },
   toggleSelectorButton: {
-    height: 50,
-    width: 50,
+    height: RFValue(25, 414),
+    width: RFValue(25, 414),
     justifyContent: "center",
     alignSelf: "center",
   },
@@ -83,8 +84,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   button: {
-    marginTop: 10,
-    marginBottom: 40,
+    marginTop: RFValue(5, 414),
+    marginBottom: RFValue(20, 414),
     position: "relative",
   },
   stickyFooterButton: {
@@ -127,15 +128,15 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   countryScrollContainer: {
-    height: 180,
+    height: RFValue(90, 414),
   },
   searchInputText: {
     fontFamily: "montserrat-regular",
     color: globalColors.rum,
-    fontSize: 14 / PixelRatio.getFontScale(),
+    fontSize: RFValue(7 / PixelRatio.getFontScale(), 414),
   },
   selectTextContainer: {
-    paddingVertical: 20,
+    paddingVertical: RFValue(8, 414),
     flexDirection: "row",
   },
   errorText: {
@@ -146,36 +147,36 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   languageRowConatiner: {
-    paddingVertical: 10,
-    marginVertical: 10,
+    paddingVertical: RFValue(5, 414),
+    marginVertical: RFValue(5, 414),
     flexDirection: "row",
     alignItems: "center",
   },
 
   optionsIconSize: {
-    fontSize: 25,
+    fontSize: RFValue(12.5, 414),
   },
   optionsTextContainer: {
     fontFamily: "montserrat-bold",
     color: globalColors.rum,
-    fontSize: 14,
-    paddingLeft: 20,
+    fontSize: RFValue(7, 414),
+    paddingLeft: RFValue(10, 414),
     textAlign: "left",
   },
   inactivetext: {
     fontFamily: "montserrat-bold",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     color: globalColors.rum,
   },
   activetext: {
     fontFamily: "montserrat-bold",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     color: globalColors.orange,
   },
   optionsRowContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingBottom: 20,
+    paddingBottom: RFValue(10, 414),
   },
   optionsContainer: {
     flex: 1,
