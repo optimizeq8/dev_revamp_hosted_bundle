@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Content, Row, Icon } from "native-base";
+import { RFValue } from "react-native-responsive-fontsize";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../MiniComponents/SideMenu";
@@ -1748,16 +1749,13 @@ class AdDetails extends Component {
                         }}
                       >
                         <WalletIcon
-                          width={30}
-                          height={30}
+                          width={RFValue(15, 414)}
+                          height={RFValue(15, 414)}
                           fill={globalColors.rum}
                         />
                         <Text
                           uppercase
-                          style={[
-                            styles.subHeadings,
-                            { paddingHorizontal: 10, fontSize: 14, flex: 1 },
-                          ]}
+                          style={[styles.subHeadings, styles.setBudgetText]}
                         >
                           {translate("Set your daily budget")}
                         </Text>

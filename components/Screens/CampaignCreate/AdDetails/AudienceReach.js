@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
@@ -21,7 +22,7 @@ class ReachBar extends Component {
   render() {
     const { translate } = this.props.screenProps;
     let { startEditing, editCampaign, campaignInfo, copilot } = this.props;
-
+    console.log("heightPercentageToDP(5)", heightPercentageToDP(5));
     return (
       <View
         {...copilot}
@@ -29,7 +30,10 @@ class ReachBar extends Component {
           styles.bottom,
           startEditing &&
             !editCampaign && {
-              bottom: heightPercentageToDP(7),
+              bottom:
+                heightPercentageToDP(5) < 30
+                  ? heightPercentageToDP(12)
+                  : heightPercentageToDP(7),
             },
         ]}
       >
@@ -39,7 +43,11 @@ class ReachBar extends Component {
           </Text>
           <View style={styles.chartItems}>
             <View style={styles.reachPeopleView}>
-              <SwipeUpsIcon fill="#9300FF" width={27} height={30} />
+              <SwipeUpsIcon
+                fill="#9300FF"
+                width={RFValue(13.5, 414)}
+                height={RFValue(15, 414)}
+              />
               <View style={styles.reachInnerView}>
                 <View style={styles.swipesView}>
                   <Text
@@ -72,7 +80,11 @@ class ReachBar extends Component {
             </View>
 
             <View style={styles.reachPeopleView}>
-              <ImpressionsIcon fill="#9300FF" width={30} height={30} />
+              <ImpressionsIcon
+                fill="#9300FF"
+                width={RFValue(15, 414)}
+                height={RFValue(15, 414)}
+              />
               <View style={styles.reachInnerView}>
                 <View style={styles.impressionsView}>
                   <Text
@@ -133,8 +145,8 @@ class ReachBar extends Component {
                 function={() => this.props._handleSubmission()}
                 purpleViolet
                 text={"Next"}
-                width={15}
-                height={15}
+                width={RFValue(7.5, 414)}
+                height={RFValue(7.5, 414)}
               />
             ))}
         </View>

@@ -1,8 +1,5 @@
 import { StyleSheet, Platform, PixelRatio, I18nManager } from "react-native";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
@@ -51,10 +48,15 @@ const styles = StyleSheet.create({
   subHeadings: {
     color: globalColors.gray,
     fontFamily: "montserrat-bold",
-    fontSize: 16,
-    paddingVertical: 5,
-    paddingHorizontal: 30,
+    fontSize: RFValue(8, 414),
+    paddingVertical: RFValue(2.5, 414),
+    paddingHorizontal: RFValue(15, 414),
     textAlign: "left",
+  },
+  setBudgetText: {
+    paddingHorizontal: RFValue(5, 414),
+    fontSize: RFValue(7, 414),
+    flex: 1,
   },
   moneyInputContainer: {
     flexDirection: "column",
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
     height: 20,
   },
   sliderPlaceHolder: {
-    height: 75,
+    height: RFValue(37.5, 414),
     justifyContent: "center",
   },
   targetList: {
@@ -152,7 +154,7 @@ const styles = StyleSheet.create({
     backgroundColor: globalColors.white,
     borderTopWidth: 1,
     borderTopColor: "#75647C21",
-    paddingVertical: 20,
+    paddingVertical: RFValue(10, 414),
   },
   chartText: {
     textTransform: "uppercase",
@@ -174,8 +176,8 @@ const styles = StyleSheet.create({
     // flex: 1,
   },
   reachBarLowerButton: {
-    width: 100,
-    height: 50,
+    width: RFValue(50, 414),
+    height: RFValue(25, 414),
   },
   reachPeopleView: {
     flexDirection: "row",
@@ -228,23 +230,23 @@ const styles = StyleSheet.create({
     color: globalColors.purple3,
     textTransform: "uppercase",
     fontFamily: "montserrat-bold",
-    fontSize: 10 / PixelRatio.getFontScale(),
+    fontSize: RFValue(5 / PixelRatio.getFontScale(), 414),
   },
   reachTextNum: {
     color: globalColors.purple3,
     fontFamily: "montserrat-regular-english",
-    fontSize: 10 / PixelRatio.getFontScale(),
+    fontSize: RFValue(5 / PixelRatio.getFontScale(), 414),
     textAlign: "left",
     width: "100%",
     textTransform: "uppercase",
   },
   expectedResultText: {
     color: globalColors.rum,
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     fontFamily: "montserrat-bold",
     textTransform: "uppercase",
-    marginVertical: 5,
-    marginHorizontal: 20,
+    marginVertical: RFValue(2.5, 414),
+    marginHorizontal: RFValue(10, 414),
     textAlign: "left",
   },
   reachInnerView: {
@@ -280,31 +282,31 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   lifetimeBudgetText: {
-    fontSize: 10,
+    fontSize: RFValue(5, 414),
     paddingHorizontal: 0,
     color: globalColors.orange,
   },
   lifetimeBudgetNumber: {
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     paddingHorizontal: 0,
     paddingVertical: 0,
     fontFamily: "montserrat-bold-english",
   },
   selectAudienceText: {
-    paddingHorizontal: 10,
+    paddingHorizontal: RFValue(5, 414),
     width: "60%",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     textAlign: "left",
     flex: 1,
   },
   createView: { flexDirection: "row", alignItems: "center" },
   createText: {
     fontFamily: "montserrat-regular",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#9325FF",
   },
   iconRight: {
-    fontSize: 20,
+    fontSize: RFValue(10, 414),
     color: globalColors.purple,
   },
   iconLoading: {
