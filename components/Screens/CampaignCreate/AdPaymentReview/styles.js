@@ -15,6 +15,13 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.6)",
     // marginHorizontal: 20
   },
+  contentContainerStyle2: {
+    flex: 1,
+    marginVertical: RFValue(10, 414),
+  },
+  contentStyle2: {
+    marginHorizontal: RFValue(10, 414),
+  },
   videoView: {
     height: "100%",
   },
@@ -36,7 +43,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 12,
+    paddingTop: RFValue(6, 414),
   },
   budgetText: {
     fontFamily: "montserrat-bold",
@@ -59,10 +66,10 @@ const styles = StyleSheet.create({
     fontSize: RFValue(12, 414),
   },
   contentContainerStyle: {
-    paddingHorizontal: 5,
+    paddingHorizontal: RFValue(2.5, 414),
   },
   footerBlock: {
-    paddingBottom: 10,
+    paddingBottom: RFValue(5, 414),
     margin: 0,
     borderTopWidth: 0,
     // height: 100,
@@ -122,11 +129,11 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
     color: "#fff",
-    paddingBottom: 10,
+    paddingBottom: RFValue(5, 414),
     fontFamily: "montserrat-medium",
     fontSize: RFValue(7, 414),
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+    paddingHorizontal: RFValue(5, 414),
+    paddingVertical: RFValue(5, 414),
   },
 
   backgroundViewWrapper: {
@@ -137,13 +144,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     width: "100%",
-    paddingRight: 40,
-    paddingLeft: 55,
-    paddingTop: 15,
+    paddingRight: RFValue(20, 414),
+    paddingLeft: RFValue(27.5, 414),
+    paddingTop: RFValue(7.5, 414),
     backgroundColor: "#FFF",
-    borderTopLeftRadius: 35,
-    borderTopRightRadius: 35,
-    paddingBottom: 20,
+    borderTopLeftRadius: RFValue(17.5, 414),
+    borderTopRightRadius: RFValue(17.5, 414),
+    paddingBottom: RFValue(10, 414),
   },
   dollarAmountContainer: {
     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",

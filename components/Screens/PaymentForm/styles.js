@@ -59,11 +59,11 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
     color: "#fff",
-    paddingBottom: 10,
+    paddingBottom: RFValue(5, 414),
     fontFamily: "montserrat-regular",
-    fontSize: 13,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+    fontSize: RFValue(6.5, 414),
+    paddingHorizontal: RFValue(5, 414),
+    paddingVertical: RFValue(5, 414),
   },
   link: {
     textAlign: "left",
@@ -75,9 +75,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-regular",
-    fontSize: 15,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    fontSize: RFValue(7.5, 414),
+    paddingHorizontal: RFValue(5, 414),
+    paddingVertical: RFValue(2.5, 414),
   },
   bottomCard: {
     // display: "flex",
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     elevation: 0,
     width: "100%",
-    paddingHorizontal: 20,
+    paddingHorizontal: RFValue(10, 414),
   },
   bottomCardBlock1: {
     display: "flex",
@@ -106,39 +106,39 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   walletButton: {
-    marginTop: 15,
+    marginTop: RFValue(7.5, 414),
 
-    width: 250,
-    height: 50,
+    width: RFValue(125, 414),
+    height: RFValue(25, 414),
     alignSelf: "center",
     justifyContent: "center",
   },
   buttontext: {
     color: "#fff",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     fontFamily: "montserrat-bold",
   },
   whitebutton: {
     marginHorizontal: 0,
     alignSelf: "center",
     justifyContent: "center",
-    height: 70,
+    height: RFValue(35, 414),
   },
   whitebutton2: {
     marginHorizontal: 0,
     justifyContent: "center",
-    height: 70,
+    height: RFValue(35, 414),
     // width: 100,
   },
   whitebutton3: {
     marginHorizontal: 0,
     alignSelf: "center",
     justifyContent: "center",
-    height: 70,
+    height: RFValue(35, 414),
   },
   whitebuttontext: {
     color: "rgba(255,255,255,0.6)",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     fontFamily: "montserrat-bold",
     textAlign: "center",
     paddingHorizontal: 20,
@@ -152,7 +152,10 @@ const styles = StyleSheet.create({
     fontSize: RFValue(11.5, 414),
     fontFamily: "montserrat-bold-english",
   },
-  optimizeFeesTextContainer: { flexDirection: "row", paddingTop: 10 },
+  optimizeFeesTextContainer: {
+    flexDirection: "row",
+    paddingTop: RFValue(5, 414),
+  },
   optimizeFeesText: {
     color: "#C6C6C6",
     fontSize: RFValue(6, 414),
@@ -162,7 +165,7 @@ const styles = StyleSheet.create({
   payNowText: {
     color: "#FFF",
     textAlign: "center",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     fontFamily: "montserrat-bold",
   },
   tNcText: {
@@ -174,7 +177,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   dollarAmountText: {
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     paddingRight: 2,
   },
   kdAmountContainer: {
@@ -200,24 +203,24 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   reviewPurchaseText: {
-    fontSize: 20,
+    fontSize: RFValue(10, 414),
     fontFamily: "montserrat-bold",
   },
   useWalletText: {
-    fontSize: 20,
+    fontSize: RFValue(10, 414),
     fontFamily: "montserrat-bold",
   },
   colorWhite: {
     fontFamily: "montserrat-regular",
     color: "#FFFF",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
   },
   walltetAmountText: {
-    fontSize: 25,
+    fontSize: RFValue(12.5, 414),
   },
   optimizeFeesAmountText: {
     color: "#C6C6C6",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     fontFamily: "montserrat-bold",
     paddingRight: 2,
   },
@@ -233,7 +236,7 @@ const styles = StyleSheet.create({
   },
   warningLoadmessage: {
     color: globalColors.white,
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     lineHeight: 18,
     textTransform: "uppercase",
     textAlign: "center",
