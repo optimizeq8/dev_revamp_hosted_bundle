@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     marginTop: hp(1),
   },
   icon: {
-    fontSize: 70,
+    fontSize: RFValue(35, 414),
     color: globalColors.rum,
     paddingLeft: 5,
     alignSelf: "center",
@@ -121,11 +121,11 @@ const styles = StyleSheet.create({
   },
   inputtext: {
     fontFamily: "montserrat-light",
-    fontSize: 17 / PixelRatio.getFontScale(),
+    fontSize: RFValue(8.5 / PixelRatio.getFontScale(), 414),
     color: globalColors.rum,
     alignSelf: "center",
     textAlign: "center",
-    paddingTop: 10,
+    paddingTop: RFValue(5, 414),
   },
   countryScrollContainer: {
     height: RFValue(90, 414),
