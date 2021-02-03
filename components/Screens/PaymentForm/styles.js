@@ -1,7 +1,7 @@
 import { StyleSheet, PixelRatio } from "react-native";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
-
+import { RFValue } from "react-native-responsive-fontsize";
 const styles = StyleSheet.create({
   safeAreaViewContainer: { flex: 1, backgroundColor: "#0000" },
   contentStyle: { flex: 1, backgroundColor: "#0000" },
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   errortext: {
     color: "#fff",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     fontFamily: "montserrat-regular",
     textAlign: "center",
     lineHeight: 18,
@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
   mainCard: {
     shadowRadius: 5,
     shadowOpacity: 0.2,
-    height: 50,
-    width: 130,
+    height: RFValue(25, 414),
+    width: RFValue(65, 414),
     marginHorizontal: 0,
     borderRadius: 30,
     justifyContent: "center",
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   link: {
     textAlign: "left",
     fontFamily: "montserrat-light",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     lineHeight: 20,
   },
   walletInfo: {
@@ -149,13 +149,13 @@ const styles = StyleSheet.create({
   money: {
     color: "#C6C6C6",
     textAlign: "center",
-    fontSize: 21,
+    fontSize: RFValue(11.5, 414),
     fontFamily: "montserrat-bold-english",
   },
   optimizeFeesTextContainer: { flexDirection: "row", paddingTop: 10 },
   optimizeFeesText: {
     color: "#C6C6C6",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     fontFamily: "montserrat-regular",
     textAlign: "left",
   },
@@ -182,12 +182,12 @@ const styles = StyleSheet.create({
     paddingTop: 2,
   },
   kdText: {
-    fontSize: 9,
+    fontSize: RFValue(4.5, 414),
     fontFamily: "montserrat-bold-english",
     paddingRight: 2,
   },
   kdAmountText: {
-    fontSize: 13,
+    fontSize: RFValue(6.5, 414),
     fontFamily: "montserrat-bold-english",
   },
   mastercardImage: {
@@ -241,24 +241,39 @@ const styles = StyleSheet.create({
   },
   paymentMethodView: {
     backgroundColor: "rgba(0,0,0,0.15)",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 25,
+    paddingHorizontal: RFValue(7.5, 414),
+    paddingVertical: RFValue(5, 414),
+    borderRadius: RFValue(12.5, 414),
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 15,
+    marginBottom: RFValue(7.5, 414),
   },
   paymentMethodText: {
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     fontFamily: "montserrat-bold",
     color: "#FFF",
   },
   paymentMethodSubText: {
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     fontFamily: "montserrat-regular",
     color: "#FFF",
+  },
+  radioButtonOuterView: {
+    width: RFValue(15, 414),
+    height: RFValue(15, 414),
+    borderRadius: RFValue(15, 414),
+    backgroundColor: "rgba(0,0,0,0.26)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  radioButtonInnerView: {
+    width: RFValue(11, 414),
+    height: RFValue(11, 414),
+    borderRadius: RFValue(11, 414),
+    backgroundColor: "#FF9D00",
   },
 });
 

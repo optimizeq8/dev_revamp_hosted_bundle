@@ -584,26 +584,9 @@ class PaymentForm extends Component {
                     {translate("Pay with")} {translate(method.PaymentMethodEn)}
                   </Text>
                 </View>
-                <View
-                  style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: 30,
-                    backgroundColor: "rgba(0,0,0,0.26)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
+                <View style={styles.radioButtonOuterView}>
                   {this.state.choice === index + 2 && (
-                    <View
-                      style={{
-                        width: 22,
-                        height: 22,
-                        borderRadius: 22,
-                        backgroundColor: "#FF9D00",
-                      }}
-                    />
+                    <View style={styles.radioButtonInnerView} />
                   )}
                 </View>
               </TouchableOpacity>
@@ -612,58 +595,19 @@ class PaymentForm extends Component {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => this._handleChoice(1)}
-              style={{
-                backgroundColor: "rgba(0,0,0,0.15)",
-                paddingHorizontal: 15,
-                paddingVertical: 10,
-                borderRadius: 25,
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: 15,
-              }}
+              style={styles.paymentMethodView}
             >
               <View>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontFamily: "montserrat-bold",
-                    color: "#FFF",
-                  }}
-                >
+                <Text style={styles.paymentMethodText}>
                   {translate("Wallet")}
                 </Text>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontFamily: "montserrat-regular",
-                    color: "#FFF",
-                  }}
-                >
+                <Text style={styles.paymentMethodSubText}>
                   {translate("Pay with")} {translate("Wallet")}
                 </Text>
               </View>
-              <View
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 30,
-                  backgroundColor: "rgba(0,0,0,0.26)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
+              <View style={styles.radioButtonOuterView}>
                 {this.state.choice === 1 && (
-                  <View
-                    style={{
-                      width: 22,
-                      height: 22,
-                      borderRadius: 22,
-                      backgroundColor: "#FF9D00",
-                    }}
-                  />
+                  <View style={styles.radioButtonInnerView} />
                 )}
               </View>
             </TouchableOpacity>
