@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, Platform } from "react-native";
-
+import { RFValue } from "react-native-responsive-fontsize";
 //icons
 import CameraIcon from "../../../../assets/SVGs/CameraOption";
 import VideoIcon from "../../../../assets/SVGs/SwipeUps/Video";
@@ -33,14 +33,18 @@ export default class MediaOptions extends Component {
     let imageIcon = null;
     if (title === "Image") {
       imageIcon = (
-        <CameraIcon width={30} height={25} fill={globalColors.orange} />
+        <CameraIcon
+          width={RFValue(15, 414)}
+          height={RFValue(12.5, 414)}
+          fill={globalColors.orange}
+        />
       );
     } else {
       imageIcon = (
         <Icon
           name="square-edit-outline"
           type="MaterialCommunityIcons"
-          style={{ color: globalColors.orange, fontSize: 35 }}
+          style={{ color: globalColors.orange, fontSize: RFValue(17.5, 414) }}
         />
       );
     }

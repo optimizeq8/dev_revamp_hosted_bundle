@@ -65,7 +65,7 @@ class SnapCard extends Component {
           style={{
             height: "100%",
             width: "100%",
-            borderRadius: 20,
+            borderRadius: RFValue(10, 414),
             overflow: "hidden",
             opacity: 0.5,
             position: "absolute",
