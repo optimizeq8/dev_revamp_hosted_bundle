@@ -22,7 +22,6 @@ class ReachBar extends Component {
   render() {
     const { translate } = this.props.screenProps;
     let { startEditing, editCampaign, campaignInfo, copilot } = this.props;
-    console.log("heightPercentageToDP(5)", heightPercentageToDP(5));
     return (
       <View
         {...copilot}
