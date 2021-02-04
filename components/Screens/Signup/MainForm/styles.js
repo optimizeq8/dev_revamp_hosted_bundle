@@ -3,6 +3,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -65,37 +66,37 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlignVertical: "center",
     color: "#FFF",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     fontFamily: "montserrat-bold",
   },
   dash: {
     alignSelf: "center",
-    width: 30,
+    width: RFValue(15, 414),
 
-    marginBottom: 10,
+    marginBottom: RFValue(5, 414),
     // marginHorizontal: 5,
     borderBottomColor: "#C6C6C6",
     borderBottomWidth: 2,
   },
   dashActive: {
-    marginLeft: -5,
+    marginLeft: RFValue(-2.5, 414),
   },
   badgeText: {
     color: "#C6C6C6",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     fontFamily: "montserrat-light",
   },
   activeTitleText: {
     fontFamily: "montserrat-bold",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#6C63FF",
     textTransform: "uppercase",
   },
   titleText: {
     fontFamily: "montserrat-regular",
-    fontSize: 8,
+    fontSize: RFValue(4, 414),
     color: "#C6C6C6",
-    paddingTop: 3,
+    paddingTop: RFValue(1.5, 414),
   },
   badgeView: {
     display: "flex",
@@ -108,9 +109,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     flexDirection: "row",
     justifyContent: "space-around",
-    paddingVertical: 30,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
+    paddingVertical: RFValue(15, 414),
+    borderBottomLeftRadius: RFValue(15, 414),
+    borderBottomRightRadius: RFValue(15, 414),
   },
   getStartedBtn: {
     height: 54,
@@ -125,13 +126,13 @@ const styles = StyleSheet.create({
   },
   successText: {
     fontFamily: "montserrat-regular",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     color: "#FFF",
     textAlign: "left",
   },
   registerCompleteText: {
     fontFamily: "montserrat-bold",
-    fontSize: 27,
+    fontSize: RFValue(13.5, 414),
     color: "#FFF",
     textAlign: "left",
     paddingTop: 10,
@@ -143,10 +144,10 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   getStartedText: {
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
   },
   registerationText: {
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     color: "#6C63FF",
     textTransform: "uppercase",
     fontFamily: "montserrat-bold",

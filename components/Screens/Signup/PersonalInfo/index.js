@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { View, ScrollView, Text } from "react-native";
 import { Item, Input } from "native-base";
 import analytics from "@segment/analytics-react-native";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import InputFeild from "../../../MiniComponents/InputFieldNew";
 import PhoneNoField from "../PhoneNo/PhoneNoFieldNew";
 import BusinessAccount from "../../CreateBusinessAccount";

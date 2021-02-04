@@ -1,10 +1,11 @@
 import { StyleSheet, PixelRatio, I18nManager, Platform } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 export default StyleSheet.create({
   input1: {
     backgroundColor: "rgba(0,0,0,0.16)",
-    paddingRight: 15,
-    borderRadius: 150,
+    paddingRight: RFValue(7.5, 414),
+    borderRadius: RFValue(75, 414),
     borderColor: "rgba(0,0,0,0)",
     alignSelf: "center",
     width: "100%",
@@ -15,21 +16,21 @@ export default StyleSheet.create({
     // paddingHorizontal: 18,
     display: "flex",
     alignItems: "center",
-    marginVertical: 15,
+    marginVertical: RFValue(7.5, 414),
   },
   inputLabel: {
     fontFamily: "montserrat-bold",
-    fontSize: 12 / PixelRatio.getFontScale(),
+    fontSize: RFValue(6 / PixelRatio.getFontScale(), 414),
     color: "#fff",
     alignSelf: "flex-start",
     textAlign: I18nManager.isRTL ? "right" : "left",
     // marginBottom: -20,
     textTransform: "uppercase",
-    marginTop: 5,
+    marginTop: RFValue(2.5, 414),
   },
   inputText: {
     fontFamily: "montserrat-regular",
-    fontSize: 12 / PixelRatio.getFontScale(),
+    fontSize: RFValue(6 / PixelRatio.getFontScale(), 414),
     textAlign: I18nManager.isRTL ? "right" : "left",
     color: globalColors.white,
     marginBottom: 0,
@@ -43,9 +44,9 @@ export default StyleSheet.create({
     marginLeft: -20,
   },
   downiconEnd: {
-    fontSize: 20,
+    fontSize: RFValue(10, 414),
     color: "#fff",
-    marginLeft: -80,
+    marginLeft: RFValue(-40, 414),
   },
   modalBar: {
     flexDirection: "row",
@@ -71,7 +72,12 @@ export default StyleSheet.create({
     alignSelf: "center",
     marginLeft: 13,
     width: "100%",
-    height: Platform.OS === "ios" ? 54 : I18nManager.isRTL ? 70 : 60,
+    height:
+      Platform.OS === "ios"
+        ? RFValue(27, 414)
+        : I18nManager.isRTL
+        ? RFValue(35, 414)
+        : RFValue(30, 414),
   },
   rowView: {
     flexDirection: "row",
@@ -80,10 +86,10 @@ export default StyleSheet.create({
     alignItems: "center",
   },
   iconSize: {
-    fontSize: 16 / PixelRatio.getFontScale(),
+    fontSize: RFValue(8 / PixelRatio.getFontScale(), 414),
   },
   icon: {
-    marginLeft: 15,
+    marginLeft: RFValue(7.5, 414),
   },
   inputScrollViewStyle: {
     display: "flex",
@@ -93,9 +99,9 @@ export default StyleSheet.create({
   },
   uploadText: {
     fontFamily: "montserrat-bold",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     color: "#75647C",
-    marginHorizontal: 5,
+    marginHorizontal: RFValue(2.5, 414),
     textTransform: "uppercase",
   },
 });
