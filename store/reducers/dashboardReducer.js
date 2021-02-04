@@ -114,6 +114,10 @@ const reducer = (state = initialState, action) => {
               "location_clicks",
               "whatsapp_clicks",
               "youtube_clicks",
+              "snapchat_clicks",
+              "website_clicks",
+              "twitter_clicks",
+              "linkedin_clicks",
               "total_installs",
               "timeseries_stats",
             ].includes(metric)
@@ -130,6 +134,10 @@ const reducer = (state = initialState, action) => {
               "location_clicks",
               "whatsapp_clicks",
               "youtube_clicks",
+              "snapchat_clicks",
+              "website_clicks",
+              "twitter_clicks",
+              "linkedin_clicks",
             ].includes(metric)
           ) {
             smeMetrics.push({
