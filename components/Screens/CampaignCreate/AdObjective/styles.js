@@ -291,8 +291,8 @@ const styles = StyleSheet.create({
   minDurationText: {
     color: "#FFF",
     textAlign: "center",
-    marginTop: -20,
-    marginBottom: 15,
+    marginTop: RFValue(-10, 414),
+    marginBottom: RFValue(7.5, 414),
     fontFamily: "montserrat-regular",
     fontSize: RFValue(6, 414),
   },
