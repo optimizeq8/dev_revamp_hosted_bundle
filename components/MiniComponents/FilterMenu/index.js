@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, TouchableHighlight, I18nManager } from "react-native";
 import dateFormat from "dateformat";
+import { RFValue } from "react-native-responsive-fontsize";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 // Redux
@@ -103,7 +104,7 @@ class FilterMenu extends Component {
             style={[
               styles.container,
               I18nManager.isRTL && this.props.transactionFilter
-                ? { marginLeft: 40, marginRight: 0 }
+                ? { marginLeft: RFValue(20, 414), marginRight: 0 }
                 : {},
             ]}
           >
