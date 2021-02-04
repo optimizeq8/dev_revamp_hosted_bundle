@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Text, View, Dimensions, TouchableOpacity } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Circle, Marker } from "react-native-maps";
+import { RFValue } from "react-native-responsive-fontsize";
 import { Icon } from "native-base";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 import styles from "./styles";
@@ -270,17 +271,20 @@ export default class LocaionMap extends Component {
               onPress={this.closeMap}
               name="close"
               type="FontAwesome"
-              style={{ fontSize: 20, marginHorizontal: 10 }}
+              style={{
+                fontSize: RFValue(10, 414),
+                marginHorizontal: RFValue(5, 414),
+              }}
             />
             <View>
-              <Text style={[styles.mapTitle, { fontSize: 17 }]}>
+              <Text style={[styles.mapTitle, { fontSize: RFValue(8.5, 414) }]}>
                 {translate("Precise Location")}
               </Text>
               <Text
                 style={[
                   styles.mapTitle,
                   {
-                    fontSize: 12,
+                    fontSize: RFValue(6, 414),
                     fontFamily: "montserrat-regular",
                   },
                 ]}
