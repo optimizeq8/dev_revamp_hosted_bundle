@@ -1,8 +1,5 @@
 import { StyleSheet } from "react-native";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 
 const styles = StyleSheet.create({
   container: {
@@ -49,11 +46,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 17,
+    fontSize: RFValue(8.5, 414),
     alignSelf: "center",
   },
   slidTitle: {
-    fontSize: 19,
+    fontSize: RFValue(9.5, 414),
     color: "#fff",
     textAlign: "center",
     paddingTop: 15,
