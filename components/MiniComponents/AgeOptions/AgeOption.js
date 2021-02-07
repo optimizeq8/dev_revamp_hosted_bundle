@@ -62,7 +62,12 @@ export default class AgeOption extends Component {
               customMarkerLeft={(e) => (
                 <RangeMarkers value={e.currentValue} down={true} />
               )}
-              customMarkerRight={(e) => <RangeMarkers value={e.currentValue} />}
+              customMarkerRight={(e) => (
+                <RangeMarkers
+                  showPlusIcon={this.props.showPlusIcon}
+                  value={e.currentValue}
+                />
+              )}
               onValuesChange={this.multiSliderValuesChange}
               min={this.props.ageValuesRange[0]}
               max={this.props.ageValuesRange[1]}

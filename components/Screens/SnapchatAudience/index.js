@@ -937,6 +937,7 @@ export class SnapchatAudience extends Component {
       case "age": {
         menu = (
           <AgeOption
+            showPlusIcon={true}
             showBackButton={true}
             screenProps={this.props.screenProps}
             state={this.props.audience.targeting.demographics[0]}

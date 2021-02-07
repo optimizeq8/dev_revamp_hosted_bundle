@@ -1462,6 +1462,7 @@ class AdDetails extends Component {
       case "age": {
         menu = (
           <AgeOption
+            showPlusIcon={true}
             screenProps={this.props.screenProps}
             state={this.state.campaignInfo.targeting.demographics[0]}
             _handleAge={this._handleAge}
