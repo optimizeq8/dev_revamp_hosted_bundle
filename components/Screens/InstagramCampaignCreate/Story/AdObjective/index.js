@@ -599,6 +599,10 @@ class AdObjective extends Component {
           screenProps={this.props.screenProps}
           handleClosingContinueModal={this.handleClosingContinueModal}
           setCampaignInfo={this.setCampaignInfo}
+          resumingFromOtherAdTypeWithWrongDates={this.props.navigation.getParam(
+            "resumingFromOtherAdTypeWithWrongDates",
+            false
+          )}
         />
         <Modal
           animationType={"slide"}
