@@ -60,6 +60,7 @@ import CopilotTooltipFunction, {
   circleSvgPath,
 } from "../../../MiniComponents/CopilotTooltip/CopilotTooltipFunction";
 import CampaignDurationContainer from "./CampaignDurationContainer";
+import { showMessage } from "react-native-flash-message";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -385,6 +386,7 @@ class AdObjective extends Component {
   };
 
   _handleSubmission = async () => {
+    let { translate } = this.props.screenProps;
     let { campaignInfo } = this.state;
     let dateErrors = this.dateField.getErrors();
     let objectiveError = validateWrapper("mandatory", campaignInfo.objective);
@@ -396,6 +398,19 @@ class AdObjective extends Component {
       objectiveError,
       nameError,
     });
+    if (
+      new Date(this.state.campaignInfo.start_time) < new Date() ||
+      new Date(this.state.campaignInfo.end_time) < new Date()
+    ) {
+      showMessage({
+        message: translate("The dates are no longer applicable"),
+        description: translate("Please choose new dates"),
+        type: "warning",
+      });
+
+      this.dateField && this.dateField.showModal();
+      return;
+    }
     // In case error in any field keep track
     if (
       nameError ||
