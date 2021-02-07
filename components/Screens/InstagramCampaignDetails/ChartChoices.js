@@ -22,7 +22,7 @@ export default class ChartChoices extends Component {
         : "Clicks",
     ];
     if (selectedCampaign && selectedCampaign.web_interaction)
-      choices.push("website interactions");
+      choices.splice(0, 0, "website interactions");
     choices = choices.map((choice) => (
       <GradientButton
         activeOpacity={1}
