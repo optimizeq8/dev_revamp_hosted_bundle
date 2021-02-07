@@ -61,6 +61,7 @@ import AudienceOverview from "../../MiniComponents/AudienceOverview";
 import { LinearGradient } from "expo-linear-gradient";
 import CSVModal from "../CampaignDetails/CSVModal";
 import { Transition } from "react-navigation-fluid-transitions";
+import { RFValue } from "react-native-responsive-fontsize";
 
 class GoogleCampaignDetails extends Component {
   static navigationOptions = {
@@ -321,7 +322,13 @@ class GoogleCampaignDetails extends Component {
 
           audienceOverviewData.push({
             heading: "Gender",
-            icon: <GenderIcon width={31} height={31} fill={"#FF790A"} />,
+            icon: (
+              <GenderIcon
+                width={RFValue(15.5, 414)}
+                height={RFValue(15.5, 414)}
+                fill={"#FF790A"}
+              />
+            ),
             content: translate(gender),
           });
 
@@ -339,7 +346,13 @@ class GoogleCampaignDetails extends Component {
 
           audienceOverviewData.push({
             heading: "Location",
-            icon: <LocationIcon width={31} height={31} fill={"#FF790A"} />,
+            icon: (
+              <LocationIcon
+                width={RFValue(15.5, 414)}
+                height={RFValue(15.5, 414)}
+                fill={"#FF790A"}
+              />
+            ),
             content: location,
           });
         }

@@ -30,6 +30,7 @@ import CTRIcon from "../../../../assets/SVGs/Performance/CTR";
 import SpendIcon from "../../../../assets/SVGs/Performance/Spend";
 import SearchIcon from "../../../../assets/SVGs/Search.svg";
 import isUndefined from "lodash/isUndefined";
+import { RFValue } from "react-native-responsive-fontsize";
 
 class GoogleKeywordsStats extends Component {
   static navigationOptions = {
@@ -147,8 +148,8 @@ class GoogleKeywordsStats extends Component {
               }}
               titleStyle={{
                 textAlign: "left",
-                fontSize: 15,
-                paddingTop: 3,
+                fontSize: RFValue(7.5, 414),
+                paddingTop: RFValue(1.5, 414),
                 alignSelf: "center",
                 justifyContent: "center",
                 flex: 1,
@@ -174,16 +175,21 @@ class GoogleKeywordsStats extends Component {
             <View style={styles.slidercontainer}>
               <Item
                 style={{
-                  marginBottom: 10,
+                  marginBottom: RFValue(5, 414),
                   alignSelf: "center",
-                  width: 300,
+                  width: RFValue(150, 414),
                   borderColor: "#0000",
                   backgroundColor: "rgba(0,0,0,0.15)",
-                  borderRadius: 30,
-                  paddingHorizontal: 15,
+                  borderRadius: RFValue(15, 414),
+                  paddingHorizontal: RFValue(7.5, 414),
                 }}
               >
-                <SearchIcon width={18} height={18} stroke="#fff" style={{}} />
+                <SearchIcon
+                  width={RFValue(9, 414)}
+                  height={RFValue(9, 414)}
+                  stroke="#fff"
+                  style={{}}
+                />
 
                 <Input
                   placeholder={translate("Search Keyword") + "..."}
@@ -204,7 +210,7 @@ class GoogleKeywordsStats extends Component {
                   justifyContent: "space-between",
                   alignItems: "center",
                   alignContent: "center",
-                  paddingHorizontal: 10,
+                  paddingHorizontal: RFValue(5, 414),
                 }}
               >
                 <Text
@@ -229,18 +235,18 @@ class GoogleKeywordsStats extends Component {
                   }}
                 >
                   <SpendIcon
-                    width={26}
+                    width={RFValue(13, 414)}
                     fill={"#fff"}
                     style={{ flex: 1, alignSelf: "center" }}
                   />
                   <ClicksIcon
-                    height={24}
+                    height={RFValue(12, 414)}
                     fill={"#fff"}
                     style={{ flex: 1, alignSelf: "center" }}
                   />
                   <CTRIcon
-                    width={27}
-                    height={27}
+                    width={RFValue(13.5, 414)}
+                    height={RFValue(13.5, 414)}
                     fill={"#fff"}
                     style={{ flex: 1, alignSelf: "center" }}
                   />

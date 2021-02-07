@@ -345,7 +345,7 @@ const styles = StyleSheet.create({
   },
   unreadText: {
     fontFamily: "montserrat-bold-english",
-    fontSize: 10,
+    fontSize: RFValue(5, 414),
     color: globalColors.white,
 
     textAlign: "center",
