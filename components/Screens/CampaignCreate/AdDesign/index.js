@@ -1209,7 +1209,7 @@ class AdDesign extends Component {
       {
         title: "Promotional Message",
         description:
-          "Here you need to add a promotional message related to what you're advertising eg New products on sale now",
+          "Here you need to add a promotional message related to what you're advertising eg New products now on sale",
       },
     ].map((field, i) => (
       <CopilotStep
@@ -1237,6 +1237,7 @@ class AdDesign extends Component {
           brand_nameError={this.state.brand_nameError}
           headlineError={this.state.headlineError}
           setTheState={this.setTheState}
+          copilotStart={this.props.start}
         />
       </CopilotStep>
     ));

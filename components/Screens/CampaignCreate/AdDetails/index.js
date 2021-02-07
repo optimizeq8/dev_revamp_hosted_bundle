@@ -67,6 +67,7 @@ import CopilotTooltipFunction, {
   circleSvgPath,
 } from "../../../MiniComponents/CopilotTooltip/CopilotTooltipFunction";
 import AsyncStorage from "@react-native-community/async-storage";
+import QuestionComponent from "../../../MiniComponents/QuestionComponent";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -1828,7 +1829,18 @@ class AdDetails extends Component {
                     >
                       {translate("Select Audience")}
                     </Text>
-
+                    {!this.editCampaign && !showAudienceList && (
+                      <QuestionComponent
+                        style={{
+                          position: "absolute",
+                          left: "55%",
+                          borderWidth: 0.7,
+                        }}
+                        width={25}
+                        height={25}
+                        onPressFunction={() => this.props.start()}
+                      ></QuestionComponent>
+                    )}
                     {(this.props.audienceList.length === 0 ||
                       showAudienceList) &&
                       !this.props.audienceListLoading && (
@@ -1847,9 +1859,9 @@ class AdDetails extends Component {
                         </TouchableOpacity>
                       )}
                     <CopilotStep
-                      text="Here you can create or select an audience preset for faster selection If you proceed without creating an audience you can find it here the next time you create a new campaign"
+                      text="Here you can create or select a saved audience for faster selection If you proceed without creating an audience you can find it here the next time you create a new campaign"
                       order={3}
-                      name="Audience preset"
+                      name="Saved Audiences"
                     >
                       <CopilotView screenProps={this.props.screenProps}>
                         {!showAudienceList &&

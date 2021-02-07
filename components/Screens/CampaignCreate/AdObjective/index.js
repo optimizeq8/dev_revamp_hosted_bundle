@@ -10,7 +10,6 @@ import {
   Modal,
   Text,
   InteractionManager,
-  ActivityIndicator,
 } from "react-native";
 import { Content, Container } from "native-base";
 // import { Modal } from "react-native-paper";
@@ -61,6 +60,7 @@ import CopilotTooltipFunction, {
 } from "../../../MiniComponents/CopilotTooltip/CopilotTooltipFunction";
 import CampaignDurationContainer from "./CampaignDurationContainer";
 import { showMessage } from "react-native-flash-message";
+import QuestionComponent from "../../../MiniComponents/QuestionComponent";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -884,6 +884,10 @@ class AdObjective extends Component {
                   />
                 )}
               </ScrollView>
+              <QuestionComponent
+                style={styles.questionIconContainer}
+                onPressFunction={() => this.props.start()}
+              />
             </Container>
           </TouchableWithoutFeedback>
           <DateFields
