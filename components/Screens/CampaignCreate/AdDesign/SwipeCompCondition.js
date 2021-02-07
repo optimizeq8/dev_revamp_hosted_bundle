@@ -25,9 +25,7 @@ class SwipeCompCondition extends Component {
           collectionAdLinkForm={this.props.collectionAdLinkForm}
           adType={this.props.adType}
           media={this.props.media}
-          call_to_action_label={
-            this.props.call_to_action ? this.props.call_to_action.label : ""
-          }
+          call_to_action_label={this.props.call_to_action.label}
           disabled={this.props.disabled}
           savedObjective={this.savedObjective}
           swipeUpExpanded={this.props.swipeUpExpanded}
@@ -46,9 +44,7 @@ class SwipeCompCondition extends Component {
         attachment={this.props.attachment}
         collectionAdLinkForm={this.props.collectionAdLinkForm}
         adType={this.props.adType}
-        call_to_action_label={
-          this.props.call_to_action ? this.props.call_to_action.label : ""
-        }
+        call_to_action_label={this.props.call_to_action.label}
         disabled={this.props.disabled}
         swipeUpExpanded={this.props.swipeUpExpanded}
         savedObjective={this.savedObjective}
