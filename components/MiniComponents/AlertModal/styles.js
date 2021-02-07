@@ -32,14 +32,14 @@ export default StyleSheet.create({
   alertText: {
     fontFamily: "montserrat-regular",
     color: globalColors.rum,
-    fontSize: 13,
+    fontSize: 15,
     textAlign: "center",
     padding: 8,
   },
   alertExtraText: {
     fontFamily: "montserrat-regular",
     color: globalColors.rum,
-    fontSize: 11,
+    fontSize: 14,
     textAlign: "center",
   },
 
@@ -60,5 +60,11 @@ export default StyleSheet.create({
     height: 55,
     width: "80%",
     alignSelf: "center",
+    marginVertical: 8,
+  },
+  alertGradientButtonBorder: {
+    borderWidth: 1,
+    borderColor: globalColors.rum,
+    color: globalColors.rum,
   },
 });

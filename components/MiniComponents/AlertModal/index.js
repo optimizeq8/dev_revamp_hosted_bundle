@@ -64,27 +64,51 @@ export default class AlertModal extends PureComponent {
               <Text style={styles.alertTitle}>
                 {translate("Working hours")}
               </Text>
-              <Text style={styles.alertExtraText}>
-                {translate("Sun - Thu")}
-              </Text>
-              <Text
-                style={[styles.alertExtraText, { color: globalColors.orange }]}
-              >
-                {translate("10 am - 6 pm")}
-              </Text>
-              <Text style={styles.alertExtraText}>{translate("Sat")}</Text>
-              <Text
-                style={[styles.alertExtraText, { color: globalColors.orange }]}
-              >
-                {translate("12 am - 6 pm")}
-              </Text>
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.alertExtraText}>
+                  {translate("Sun - Thu") + ": "}:
+                </Text>
+                <Text
+                  style={[
+                    styles.alertExtraText,
+                    { color: globalColors.orange },
+                  ]}
+                >
+                  {translate("10 am - 6 pm") + ": "}
+                </Text>
+              </View>
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.alertExtraText}>{translate("Sat")}: </Text>
+                <Text
+                  style={[
+                    styles.alertExtraText,
+                    { color: globalColors.orange },
+                  ]}
+                >
+                  {translate("12 am - 6 pm")}
+                </Text>
+              </View>
             </View>
           </View>
           <GradientButton
-            purpleViolet
-            text="Continue"
+            uppercase
+            redOrange
+            text={translate("Continue")}
             onPressAction={this.handleDismissingAlert}
             style={styles.alertGradientButton}
+          />
+          <GradientButton
+            uppercase
+            textStyle={{ color: globalColors.rum }}
+            transparent
+            text={translate("Go Back")}
+            onPressAction={() =>
+              this.setState({ showAlertModal: false }, () => resetAlertModal())
+            }
+            style={[
+              styles.alertGradientButton,
+              styles.alertGradientButtonBorder,
+            ]}
           />
         </View>
       </Modal>
