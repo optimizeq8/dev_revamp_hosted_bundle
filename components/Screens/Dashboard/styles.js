@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
   },
   languageText: {
     color: "#FFF",
-    fontSize: 19,
+    fontSize: RFValue(9.5, 414),
     textAlign: "left",
     fontFamily: !I18nManager.isRTL
       ? "montserrat-regular-arabic"
