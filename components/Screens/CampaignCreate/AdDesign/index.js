@@ -74,6 +74,8 @@ import CopilotTooltipFunction, {
   circleSvgPath,
 } from "../../../MiniComponents/CopilotTooltip/CopilotTooltipFunction";
 
+import list from "../../../Data/callactions.data";
+
 class AdDesign extends Component {
   static navigationOptions = {
     header: null,
@@ -186,7 +188,7 @@ class AdDesign extends Component {
         ? this.props.data.objective
         : "TRAFFIC",
     });
-
+    console.log("this.props.data", JSON.stringify(this.props.data, null, 2));
     const { translate } = this.props.screenProps;
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
     if (permission.status !== "granted") {
@@ -223,6 +225,60 @@ class AdDesign extends Component {
     let obj =
       (this.rejected && this.selectedCampaign.objective) ||
       (!this.rejected && this.props.data && this.props.data.objective);
+
+    // Based on the campaign ad type and swipe up destination check if attachment previously exist then set swipe up destination
+
+    const savedObjective = this.props.data && this.props.data.savedObjective;
+    if (
+      this.props.mainBusiness &&
+      (savedObjective === "WEBSITE_TRAFFIC" ||
+        savedObjective === "LEAD_GENERATION")
+    ) {
+      const { websitelink, weburl } = this.props.mainBusiness;
+      if (websitelink && websitelink !== "") {
+        _changeDestination(
+          this.props.collectionAdLinkForm === 0
+            ? obj !== "LEAD_GENERATION"
+              ? "REMOTE_WEBPAGE"
+              : "LEAD_GENERATION"
+            : "COLLECTION",
+
+          list.SnapAd[0].call_to_action_list[0],
+          {
+            url: websitelink,
+          },
+          null,
+          null,
+          this.adType,
+          this.props.setStoryAdAttachment,
+          this.state.campaignInfo,
+          this.props.save_campaign_info,
+          this.setTheState
+        );
+      } else if (weburl && weburl !== "") {
+        _changeDestination(
+          this.props.collectionAdLinkForm === 0
+            ? obj !== "LEAD_GENERATION"
+              ? "REMOTE_WEBPAGE"
+              : "LEAD_GENERATION"
+            : "COLLECTION",
+
+          list.SnapAd[0].call_to_action_list[0],
+          {
+            url: weburl.includes("https")
+              ? weburl
+              : `https://${weburl}.optimizeapp.com`,
+          },
+          null,
+          null,
+          this.adType,
+          this.props.setStoryAdAttachment,
+          this.state.campaignInfo,
+          this.props.save_campaign_info,
+          this.setTheState
+        );
+      }
+    }
     if (
       //   this.props.data.savedObjective !== "POLITICAL_TRAFFIC" &&
       (this.adType === "CollectionAd" &&
@@ -351,6 +407,7 @@ class AdDesign extends Component {
     // }
     if (
       this.state.objective !== "BRAND_AWARENESS" &&
+      prevState.campaignInfo.call_to_action &&
       ((prevState.campaignInfo.attachment === "BLANK" &&
         this.state.campaignInfo.attachment !== "BLANK") ||
         (prevState.campaignInfo.call_to_action.label === "BLANK" &&
