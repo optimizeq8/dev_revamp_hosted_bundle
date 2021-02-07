@@ -5,7 +5,12 @@ import GradientButton from "../../MiniComponents/GradientButton";
 import { globalColors } from "../../../GlobalStyles";
 
 export default class ChartChoices extends Component {
-  state = { selectedChoice: "Spend" };
+  state = {
+    selectedChoice:
+      this.props.selectedCampaign && this.props.selectedCampaign.web_interaction
+        ? "website interactions"
+        : "Spend",
+  };
   render() {
     let selectedCampaign = this.props.selectedCampaign;
     const { translate } = this.props.screenProps;
@@ -17,7 +22,7 @@ export default class ChartChoices extends Component {
         : "Clicks",
     ];
     if (selectedCampaign && selectedCampaign.web_interaction)
-      choices.push("website interactions");
+      choices.splice(0, 0, "website interactions");
     choices = choices.map((choice) => (
       <GradientButton
         activeOpacity={1}
