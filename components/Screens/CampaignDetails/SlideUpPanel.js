@@ -16,7 +16,11 @@ export default class SlideUpPanel extends Component {
   state = {
     chartAnimation: new Animated.Value(1),
     LineAnimation: new Animated.Value(0),
-    chartChoice: "Spend",
+    chartChoice:
+      this.props.selectedCampaign &&
+      this.props.selectedCampaign.source === "SME GROWTH"
+        ? "website interactions"
+        : "Spend",
     gotStats: false,
     refreshing: false,
   };
