@@ -5,6 +5,7 @@ import PenIcon from "../../../../assets/SVGs/Pen";
 
 import styles from "./styles";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+import QuestionComponent from "../../../MiniComponents/QuestionComponent";
 
 export default class CreativeHeadline extends Component {
   state = {
@@ -74,11 +75,17 @@ export default class CreativeHeadline extends Component {
       headlineError,
       setTheState,
       copilot,
+      copilotStart,
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
-      <View {...copilot}>
-        <Item style={[styles.inputBrand]}>
+      <View {...copilot} style={{ alignItems: "center", flexDirection: "row" }}>
+        <Item
+          style={[
+            styles.inputBrand,
+            field === "Business Name" && { width: "90%", marginRight: 5 },
+          ]}
+        >
           <PenIcon
             fill={
               this.state.input
@@ -150,6 +157,12 @@ export default class CreativeHeadline extends Component {
             />
           </View>
         </Item>
+        {field === "Business Name" && (
+          <QuestionComponent
+            style={{ position: "relative", bottom: 0, right: 0 }}
+            onPressFunction={() => copilotStart()}
+          />
+        )}
       </View>
     );
   }

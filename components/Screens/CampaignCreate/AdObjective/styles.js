@@ -298,6 +298,12 @@ const styles = StyleSheet.create({
   statusBar: {
     height: STATUSBAR_HEIGHT,
   },
+  questionIconContainer: {
+    position: "absolute",
+    right: "5%",
+    bottom: "10%",
+    zIndex: 10,
+  },
 });
 
 export default styles;

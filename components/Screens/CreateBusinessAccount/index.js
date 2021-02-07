@@ -821,6 +821,9 @@ class CreateBusinessAccount extends Component {
             isVisible={
               this.props.registering ? this.props.inputT : this.state.inputT
             }
+            customStyle={{
+              paddingRight: 15,
+            }}
           />
 
           {/* Business category view ends here */}
@@ -886,6 +889,9 @@ class CreateBusinessAccount extends Component {
             // isVisible={
             //   this.props.registering ? this.props.inputC : this.state.inputC
             // }
+            customStyle={{
+              paddingRight: 5,
+            }}
           />
 
           {/** Webiste Component for  */}
