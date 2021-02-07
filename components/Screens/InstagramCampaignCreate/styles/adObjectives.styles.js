@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
   buttonSubText: {
     fontFamily: "montserrat-regular",
     paddingTop: 2,
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
   },
   dateTextLabel: {
     borderTopLeftRadius: 150,
@@ -241,11 +241,11 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   collectionAdView: {
-    paddingTop: 10,
+    paddingTop: RFValue(5, 414),
   },
   collectionAdText: {
     color: "#FFFFFF",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     fontFamily: "montserrat-bold",
     textAlign: "center",
   },
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: RFValue(7.5, 414),
-    // paddingHorizontal: 10,
+    // paddingHorizontal: RFValue(5, 414),
     // paddingVertical: 6,
   },
   btnHeadingText: {
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    borderRadius: 35,
+    borderRadius: RFValue(17.5, 414),
     backgroundColor: "rgba(0,0,0,0.16)",
     flex: 1,
   },

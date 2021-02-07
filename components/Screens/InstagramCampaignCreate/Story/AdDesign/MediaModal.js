@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, Platform } from "react-native";
 import { Content } from "native-base";
+import { RFValue } from "react-native-responsive-fontsize";
 import { Modal } from "react-native-paper";
 import { BlurView } from "@react-native-community/blur";
 import SafeAreaView from "react-native-safe-area-view";
@@ -61,9 +62,9 @@ export default class MediaModal extends Component {
               <Content
                 indicatorStyle="white"
                 contentContainerStyle={{
-                  marginTop: 15,
-                  paddingTop: 15,
-                  marginBottom: 15,
+                  marginTop: RFValue(7.5, 414),
+                  paddingTop: RFValue(7.5, 414),
+                  marginBottom: RFValue(7.5, 414),
                 }}
               >
                 {options}
