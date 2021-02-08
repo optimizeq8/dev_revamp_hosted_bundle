@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, Image, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import AsyncStorage from "@react-native-community/async-storage";
 import analytics from "@segment/analytics-react-native";
 import { NavigationActions } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
@@ -58,6 +59,53 @@ class SuccessRedirect extends Component {
         wallet_amount: this.props.navigation.getParam("amount", "null"),
       });
     } else {
+      // For changing the Ad Name
+      let campaignChannelInitial = "";
+      let campaignAdType = "";
+      switch (this.props.channel) {
+        case "google":
+          campaignChannelInitial = "G";
+          campaignAdType = "Sem";
+          break;
+        case "instagram":
+          campaignChannelInitial = "I";
+          campaignAdType =
+            this.props.adTypeInstagram === "InstagramFeedAd" ? "Feed" : "Story";
+          break;
+        case "snapchat":
+          campaignChannelInitial = "S";
+          campaignAdType = this.props.adType;
+          break;
+        default:
+          campaignChannelInitial = "S";
+          campaignAdType = this.props.adType;
+          break;
+      }
+
+      if (
+        this.props.data &&
+        this.props.data.name &&
+        this.props.data.name.includes(
+          `${campaignChannelInitial}_${campaignAdType}`
+        )
+      ) {
+        // Read from async storage the value and do increment
+        AsyncStorage.getItem(
+          `${campaignChannelInitial}_${campaignAdType}`,
+          (error, result) => {
+            let count = result ? parseFloat(result) : 1;
+            count = count + 1;
+            count = count.toString();
+            if (count.length === 1) {
+              count = "0" + count;
+            }
+            AsyncStorage.setItem(
+              `${campaignChannelInitial}_${campaignAdType}`,
+              count
+            );
+          }
+        );
+      }
       segmentInfo = {
         payment_status: "success",
         campaign_channel:
