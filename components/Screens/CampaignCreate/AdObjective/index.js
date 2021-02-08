@@ -71,7 +71,7 @@ class AdObjective extends Component {
     this.state = {
       campaignInfo: {
         ad_account_id: "",
-        name: "",
+        name: `S_${this.props.adType}_01`,
         objective: snapchatObjectivesData[this.props.adType][0].value,
         start_time: "",
         end_time: "",
@@ -163,7 +163,10 @@ class AdObjective extends Component {
   /**
    * Sets the state to what ever is in this.props.data
    */
-  setCampaignInfo = () => {
+  setCampaignInfo = async () => {
+    const result = await AsyncStorage.getItem(`S_${this.props.adType}`);
+    const campaignName = `S_${this.props.adType}_${result ? result : "01"}`;
+
     let start_time = new Date();
     start_time.setDate(start_time.getDate() + 1);
     let end_time = new Date(start_time);
@@ -182,7 +185,7 @@ class AdObjective extends Component {
           this.props.mainBusiness && this.props.mainBusiness.snap_ad_account_id,
         businessid:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
-        name: this.props.data.name ? this.props.data.name : "",
+        name: this.props.data.name ? this.props.data.name : campaignName,
         objective: this.props.data.savedObjective
           ? this.props.data.savedObjective
           : snapchatObjectivesData[this.props.adType || "SnapAd"][0].value,
@@ -237,7 +240,7 @@ class AdObjective extends Component {
               this.props.mainBusiness.snap_ad_account_id,
             businessid:
               this.props.mainBusiness && this.props.mainBusiness.businessid,
-            name: "",
+            name: campaignName,
             objective: snapchatObjectivesData[this.props.adType][0].value,
             start_time: start_time.toISOString().split("T")[0],
             end_time: end_time.toISOString().split("T")[0],

@@ -15,7 +15,7 @@ import { Content, Container } from "native-base";
 import { BlurView } from "@react-native-community/blur";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
-
+import AsyncStorage from "@react-native-community/async-storage";
 import * as Animatable from "react-native-animatable";
 import ObjectivesCard from "../../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../../MiniComponents/LowerButton";
@@ -58,7 +58,7 @@ class AdObjective extends Component {
     this.state = {
       campaignInfo: {
         ad_account_id: "",
-        name: "",
+        name: `I_Story_01`,
         objective: "",
         start_time: "",
         end_time: "",
@@ -103,11 +103,13 @@ class AdObjective extends Component {
   /**
    * Sets the state to what ever is in this.props.data
    */
-  setCampaignInfo = () => {
+  setCampaignInfo = async () => {
     let start_time = new Date();
     start_time.setDate(start_time.getDate() + 1);
     let end_time = new Date(start_time);
     end_time.setDate(end_time.getDate() + this.state.duration - 1);
+    const result = await AsyncStorage.getItem(`I_Story`);
+    const campaignName = `I_Story_${result ? result : "01"}`;
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -120,7 +122,10 @@ class AdObjective extends Component {
         ...this.state.campaignInfo,
         ad_account_id: this.props.mainBusiness.fb_ad_account_id,
         businessid: this.props.mainBusiness.businessid,
-        name: this.props.data.name,
+        name:
+          this.props.data.name && this.props.data.name !== ""
+            ? this.props.data.name
+            : campaignName,
         objective: this.props.data.objective
           ? this.props.data.objective
           : instagramAdObjectives["InstagramStoryAd"][0].value,
@@ -152,7 +157,7 @@ class AdObjective extends Component {
         campaignInfo: {
           ad_account_id: this.props.mainBusiness.fb_ad_account_id,
           businessid: this.props.mainBusiness.businessid,
-          name: "",
+          name: campaignName,
           objective: instagramAdObjectives["InstagramStoryAd"][0].value,
           start_time: start_time.toISOString().split("T")[0],
           end_time: end_time.toISOString().split("T")[0],

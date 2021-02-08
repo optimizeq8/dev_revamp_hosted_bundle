@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { Content, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import { BlurView } from "@react-native-community/blur";
 import { Modal } from "react-native-paper";
 import { NavigationEvents } from "react-navigation";
@@ -66,7 +67,7 @@ class GoogleAdInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
+      name: `G_Sem_01`,
       country: "",
       language: "1000",
       start_time: "",
@@ -120,10 +121,19 @@ class GoogleAdInfo extends Component {
     });
     let data = { ...this.state };
     keys.filter((key) => {
-      data = {
-        ...data,
-        [key]: this.props.campaign[key],
-      };
+      if (key === "name" && this.props.campaign[key] === "") {
+        AsyncStorage.getItem("G_Sem", (err, result) => {
+          data = {
+            ...data,
+            [key]: `G_Sem_${result ? result : "01"}`,
+          };
+        });
+      } else {
+        data = {
+          ...data,
+          [key]: this.props.campaign[key],
+        };
+      }
     }, {});
     // By default set it to business country
     if (data.location && data.location.length === 0) {
