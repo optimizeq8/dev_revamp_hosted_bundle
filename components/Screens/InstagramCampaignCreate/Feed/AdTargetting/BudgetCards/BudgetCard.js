@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Text, View, TouchableOpacity, I18nManager } from "react-native";
 import styles from "./styles";
 import formatNumber from "../../../../../formatNumber";
+import { RFValue } from "react-native-responsive-fontsize";
 import { Icon } from "native-base";
 import RecomenededIcon from "../../../../../../assets/SVGs/AdDetails/RecomenededIcon.svg";
 import { globalColors } from "../../../../../../GlobalStyles";
@@ -23,7 +24,9 @@ export default class BudgetCard extends Component {
           }}
           style={[
             styles.budgetCardStyle,
-            budgetOption == bud.id ? { borderWidth: 2.5 } : { borderWidth: 0 },
+            budgetOption == bud.id
+              ? { borderWidth: RFValue(1.25, 414) }
+              : { borderWidth: 0 },
           ]}
         >
           <Text style={styles.budgetTextStyle}>
