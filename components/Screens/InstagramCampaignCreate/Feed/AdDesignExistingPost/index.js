@@ -133,14 +133,57 @@ class InstagramAdDesignExistingPost extends Component {
       ) {
         destination = this.props.data.destination;
       } else {
-        switch (this.props.data.objective) {
+        const { websitelink, weburl } = this.props.mainBusiness;
+        switch (this.state.selectedCampaign.objective) {
           case "BRAND_AWARENESS":
+            call_to_action =
+              list[
+                this.rejected
+                  ? this.props.instaRejCampaign["campaign_type"]
+                  : this.props.data["campaign_type"]
+              ][0].call_to_action_list[0];
+            link =
+              websitelink && websitelink !== ""
+                ? websitelink
+                : weburl && weburl !== ""
+                ? weburl.includes("https")
+                  ? weburl
+                  : `https://${weburl}.optimizeapp.com`
+                : "";
             destination = "BLANK";
             break;
           case "LINK_CLICKS":
+            call_to_action =
+              list[
+                this.rejected
+                  ? this.props.instaRejCampaign["campaign_type"]
+                  : this.props.data["campaign_type"]
+              ][1].call_to_action_list[0];
+            link =
+              websitelink && websitelink !== ""
+                ? websitelink
+                : weburl && weburl !== ""
+                ? weburl.includes("https")
+                  ? weburl
+                  : `https://${weburl}.optimizeapp.com`
+                : "";
             destination = "link";
             break;
           case "LEAD_GENERATION":
+            call_to_action =
+              list[
+                this.rejected
+                  ? this.props.instaRejCampaign["campaign_type"]
+                  : this.props.data["campaign_type"]
+              ][2].call_to_action_list[0];
+            link =
+              websitelink && websitelink !== ""
+                ? websitelink
+                : weburl && weburl !== ""
+                ? weburl.includes("https")
+                  ? weburl
+                  : `https://${weburl}.optimizeapp.com`
+                : "";
             destination = "link";
             break;
           case "APP_INSTALLS":
@@ -150,6 +193,20 @@ class InstagramAdDesignExistingPost extends Component {
             destination = "BLANK";
             break;
           default:
+            attachment =
+              list[
+                this.rejected
+                  ? this.props.instaRejCampaign["campaign_type"]
+                  : this.props.data["campaign_type"]
+              ][0].call_to_action_list[0];
+            link =
+              websitelink && websitelink !== ""
+                ? websitelink
+                : weburl && weburl !== ""
+                ? weburl.includes("https")
+                  ? weburl
+                  : `https://${weburl}.optimizeapp.com`
+                : "";
             destination = "BLANK";
         }
       }
