@@ -68,6 +68,7 @@ import CopilotTooltipFunction, {
   circleSvgPath,
 } from "../../../MiniComponents/CopilotTooltip/CopilotTooltipFunction";
 import AsyncStorage from "@react-native-community/async-storage";
+import QuestionComponent from "../../../MiniComponents/QuestionComponent";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -1420,15 +1421,15 @@ class AdDetails extends Component {
           : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
       );
     }
-    // AsyncStorage.getItem("AdDetailTutorialOpened").then((value) => {
-    //   if (!value && this.props.campaignList.length === 0) {
-    //     this.props.start();
-    //   }
-    // });
-    // this.props.copilotEvents.on("stop", () => {
-    //   AsyncStorage.setItem("AdDetailTutorialOpened", "true");
-    //   // Copilot tutorial finished!
-    // });
+    AsyncStorage.getItem("AdDetailTutorialOpened").then((value) => {
+      if (!value && this.props.campaignList.length === 0) {
+        this.props.start();
+      }
+    });
+    this.props.copilotEvents.on("stop", () => {
+      AsyncStorage.setItem("AdDetailTutorialOpened", "true");
+      // Copilot tutorial finished!
+    });
     // let adjustAdDetailsTracker = new AdjustEvent("1mtblg");
     // adjustAdDetailsTracker.addPartnerParameter(
     //   `Snap_${this.props.adType}`,
@@ -1732,58 +1733,62 @@ class AdDetails extends Component {
                 contentContainerStyle={styles.contentContainer}
               >
                 {!this.editCampaign ? (
-                  <CopilotStep
-                    text="Setting a good daily budget is very crucial to how successful your campaign will be The higher the budget the more people will see your ad"
-                    order={1}
-                    name="Daily budget"
-                  >
-                    <CopilotView
-                      screenProps={this.props.screenProps}
-                      style={{ marginTop: 5 }}
+                  <View style={{ marginTop: RFValue(2.5, 414) }}>
+                    <Row
+                      size={-1}
+                      style={{
+                        alignItems: "center",
+                        paddingHorizontal: RFValue(10, 414),
+                        marginBottom: RFValue(2, 414),
+                      }}
                     >
-                      <Row
-                        size={-1}
-                        style={{
-                          alignItems: "center",
-                          paddingHorizontal: 20,
-                          marginBottom: 4,
-                        }}
+                      <WalletIcon
+                        width={RFValue(15, 414)}
+                        height={RFValue(15, 414)}
+                        fill={globalColors.rum}
+                      />
+                      <Text
+                        uppercase
+                        style={[
+                          styles.subHeadings,
+                          {
+                            paddingHorizontal: RFValue(5, 414),
+                            fontSize: RFValue(7, 414),
+                            flex: 1,
+                          },
+                        ]}
                       >
-                        <WalletIcon
-                          width={RFValue(15, 414)}
-                          height={RFValue(15, 414)}
-                          fill={globalColors.rum}
-                        />
+                        {translate("Set your daily budget")}
+                      </Text>
+                      <View style={styles.lifetimeBudgetView}>
                         <Text
-                          uppercase
-                          style={[styles.subHeadings, styles.setBudgetText]}
+                          style={[
+                            styles.subHeadings,
+                            styles.lifetimeBudgetText,
+                          ]}
                         >
-                          {translate("Set your daily budget")}
+                          {translate("Lifetime budget")}
                         </Text>
-                        <View style={styles.lifetimeBudgetView}>
-                          <Text
-                            style={[
-                              styles.subHeadings,
-                              styles.lifetimeBudgetText,
-                            ]}
-                          >
-                            {translate("Lifetime budget")}
-                          </Text>
-                          <Text
-                            style={[
-                              styles.subHeadings,
-                              styles.lifetimeBudgetNumber,
-                            ]}
-                          >
-                            $
-                            {formatNumber(
-                              this.state.duration *
-                                this.state.campaignInfo.lifetime_budget_micro,
-                              true
-                            )}
-                          </Text>
-                        </View>
-                      </Row>
+                        <Text
+                          style={[
+                            styles.subHeadings,
+                            styles.lifetimeBudgetNumber,
+                          ]}
+                        >
+                          $
+                          {formatNumber(
+                            this.state.duration *
+                              this.state.campaignInfo.lifetime_budget_micro,
+                            true
+                          )}
+                        </Text>
+                      </View>
+                    </Row>
+                    <CopilotStep
+                      text="Setting a good daily budget is very crucial to how successful your campaign will be The higher the budget the more people will see your ad"
+                      order={1}
+                      name="Daily budget"
+                    >
                       <BudgetCards
                         value={this.state.value}
                         recBudget={this.state.recBudget}
@@ -1795,8 +1800,8 @@ class AdDetails extends Component {
                         screenProps={this.props.screenProps}
                         data={this.props.data}
                       />
-                    </CopilotView>
-                  </CopilotStep>
+                    </CopilotStep>
+                  </View>
                 ) : (
                   startEditing && (
                     <View style={styles.sliderPlaceHolder}>
@@ -1830,7 +1835,18 @@ class AdDetails extends Component {
                     >
                       {translate("Select Audience")}
                     </Text>
-
+                    {!this.editCampaign && !showAudienceList && (
+                      <QuestionComponent
+                        style={{
+                          position: "absolute",
+                          left: "55%",
+                          borderWidth: 0.7,
+                        }}
+                        width={25}
+                        height={25}
+                        onPressFunction={() => this.props.start()}
+                      ></QuestionComponent>
+                    )}
                     {(this.props.audienceList.length === 0 ||
                       showAudienceList) &&
                       !this.props.audienceListLoading && (
@@ -1849,9 +1865,9 @@ class AdDetails extends Component {
                         </TouchableOpacity>
                       )}
                     <CopilotStep
-                      text="Here you can create or select an audience preset for faster selection If you proceed without creating an audience you can find it here the next time you create a new campaign"
+                      text="Here you can create or select a saved audience for faster selection If you proceed without creating an audience you can find it here the next time you create a new campaign"
                       order={3}
-                      name="Audience preset"
+                      name="Saved Audiences"
                     >
                       <CopilotView screenProps={this.props.screenProps}>
                         {!showAudienceList &&
@@ -1889,27 +1905,27 @@ class AdDetails extends Component {
                   order={2}
                   name="Audience targeting"
                 >
-                  <CopilotView screenProps={this.props.screenProps}>
-                    {!showAudienceList && (
-                      <TargetAudience
-                        screenProps={this.props.screenProps}
-                        _renderSideMenu={this._renderSideMenu}
-                        loading={this.props.loading}
-                        gender={gender}
-                        targeting={this.state.campaignInfo.targeting}
-                        regions_names={regions_names}
-                        languages_names={languages_names}
-                        interests_names={interests_names}
-                        OSType={OSType}
-                        mainState={this.state}
-                        translate={translate}
-                        editCampaign={this.editCampaign}
-                        startEditing={startEditing}
-                        onSelectedGenderChange={this.onSelectedGenderChange}
-                        _handleAge={this._handleAge}
-                      />
-                    )}
-                  </CopilotView>
+                  {!showAudienceList ? (
+                    <TargetAudience
+                      screenProps={this.props.screenProps}
+                      _renderSideMenu={this._renderSideMenu}
+                      loading={this.props.loading}
+                      gender={gender}
+                      targeting={this.state.campaignInfo.targeting}
+                      regions_names={regions_names}
+                      languages_names={languages_names}
+                      interests_names={interests_names}
+                      OSType={OSType}
+                      mainState={this.state}
+                      translate={translate}
+                      editCampaign={this.editCampaign}
+                      startEditing={startEditing}
+                      onSelectedGenderChange={this.onSelectedGenderChange}
+                      _handleAge={this._handleAge}
+                    />
+                  ) : (
+                    <View></View>
+                  )}
                 </CopilotStep>
                 {showAudienceList && (
                   <SnapchatAudienceList

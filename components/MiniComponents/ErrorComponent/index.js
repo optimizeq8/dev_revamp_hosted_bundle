@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Image, Text, Linking } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import SafeAreaView from "react-native-safe-area-view";
+import RNRestart from "react-native-restart";
 
 // Redux
 import { connect } from "react-redux";
@@ -127,7 +128,7 @@ class ErrorComponent extends Component {
             style={styles.whitebutton}
             onPressAction={() => {
               this.props.dashboard
-                ? this.props.navigation.navigate("Signin")
+                ? RNRestart.Restart()
                 : this.props.navigation.navigate("Dashboard");
             }}
             textStyle={styles.whitebuttontext}

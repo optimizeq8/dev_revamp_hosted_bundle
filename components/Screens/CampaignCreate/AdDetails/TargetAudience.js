@@ -90,6 +90,7 @@ export class TargetAudience extends Component {
       mainState,
       editCampaign,
       startEditing,
+      copilot,
     } = this.props;
     const { translate } = this.props.screenProps;
     const { expandLocation, expandDemographics, expandDevices } = this.state;
@@ -103,6 +104,7 @@ export class TargetAudience extends Component {
     }
     return (
       <View
+        {...copilot}
         style={{
           height: heightPercentageToDP(67),
         }}

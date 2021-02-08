@@ -4,7 +4,6 @@ import { globalColors } from "../../../GlobalStyles";
 export default StyleSheet.create({
   input1: {
     backgroundColor: "rgba(0,0,0,0.16)",
-    paddingRight: RFValue(7.5, 414),
     borderRadius: RFValue(75, 414),
     borderColor: "rgba(0,0,0,0)",
     alignSelf: "center",

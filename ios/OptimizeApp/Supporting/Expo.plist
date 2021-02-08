@@ -3,10 +3,10 @@
 <plist version="1.0">
 <dict>
 	<key>EXUpdatesReleaseChannel</key>
-	<string>payment-url</string>
+	<string>copilot</string>
 	<key>EXUpdatesSDKVersion</key>
 	<string>39.0.0</string>
 	<key>EXUpdatesURL</key>
-	<string>https://github.com/optimizeq8/optimizeapp_live_hosted_bundle/ios-index.json</string>
+	<string>https://exp.host/@samyoptimize/optimize_app</string>
 </dict>
 </plist>

@@ -53,6 +53,7 @@ import GradientButton from "../../../../MiniComponents/GradientButton";
 import { colors } from "../../../../GradiantColors/colors";
 import globalStyles from "../../../../../GlobalStyles";
 import { LinearGradient } from "expo-linear-gradient";
+import { showMessage } from "react-native-flash-message";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -272,6 +273,20 @@ class AdObjective extends Component {
       start_timeError: dateErrors.start_timeError,
       end_timeError: dateErrors.end_timeError,
     });
+    let { translate } = this.props.screenProps;
+    if (
+      new Date(this.state.campaignInfo.start_time) < new Date() ||
+      new Date(this.state.campaignInfo.end_time) < new Date()
+    ) {
+      showMessage({
+        message: translate("The dates are no longer applicable"),
+        description: translate("Please choose new dates"),
+        type: "warning",
+      });
+
+      this.dateField && this.dateField.showModal();
+      return;
+    }
     // In case error in any field keep track
     if (
       nameError ||
@@ -650,6 +665,10 @@ class AdObjective extends Component {
           screenProps={this.props.screenProps}
           handleClosingContinueModal={this.handleClosingContinueModal}
           setCampaignInfo={this.setCampaignInfo}
+          resumingFromOtherAdTypeWithWrongDates={this.props.navigation.getParam(
+            "resumingFromOtherAdTypeWithWrongDates",
+            false
+          )}
         />
         <Modal
           animationType={"slide"}
