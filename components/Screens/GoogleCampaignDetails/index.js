@@ -415,11 +415,11 @@ class GoogleCampaignDetails extends Component {
                   selectedCampaign.campaign.review_status === "APPROVED"
                 }
                 topRightButtonFunction={() => this.showCSVModal(true)}
-                containerStyle={{ height: 50 }}
+                containerStyle={{ height: RFValue(25, 414) }}
                 titleStyle={{
                   textAlign: "left",
-                  fontSize: 15,
-                  paddingTop: 3,
+                  fontSize: RFValue(7.5, 414),
+                  paddingTop: RFValue(1.5, 414),
                   alignSelf: "center",
                   justifyContent: "center",
                   flex: 1,

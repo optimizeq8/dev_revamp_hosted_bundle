@@ -31,7 +31,7 @@ export default StyleSheet.create({
     borderBottomColor: "#0000",
     alignSelf: "center",
     textAlign: "center",
-    height: RFValue(15.5, 414),
+    // height: RFValue(15.5, 414),
   },
   title: {
     textAlign: "left",

@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
+import { RFValue } from "react-native-responsive-fontsize";
 import { View, Text, I18nManager } from "react-native";
 import GlobalStyles from "../../../GlobalStyles";
 import styles, { dynamicStyle } from "./styles";
@@ -58,7 +59,7 @@ export default GoogleSEAPreview = (props) => {
                 styles.headlineText,
                 styles.linkText,
                 {
-                  paddingRight: language === "1019" ? 20 : 0,
+                  paddingRight: language === "1019" ? RFValue(10, 414) : 0,
                 },
               ]}
             >

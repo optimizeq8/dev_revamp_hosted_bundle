@@ -1,5 +1,6 @@
 import { StyleSheet, Platform, PixelRatio, I18nManager } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
@@ -143,12 +144,12 @@ const styles = StyleSheet.create({
   bottom: {
     flexDirection: "row",
     justifyContent: "center",
-    paddingLeft: 10,
+    paddingLeft: RFValue(5, 414),
     // height: "14%",
     alignItems: "center",
     alignSelf: "center",
     // width: "100%",
-    bottom: 0,
+    bottom: heightPercentageToDP(5) < 30 ? RFValue(15, 414) : 0,
     position: "absolute",
     // flex: 0.55,
     backgroundColor: globalColors.white,

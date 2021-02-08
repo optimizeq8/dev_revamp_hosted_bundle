@@ -1,35 +1,35 @@
 import { StyleSheet } from "react-native";
-
+import { RFValue } from "react-native-responsive-fontsize";
 export default StyleSheet.create({
   safeAreaView: {
     backgroundColor: "#0000",
     height: "100%",
   },
   whitebutton: {
-    marginTop: 15,
+    marginTop: RFValue(7.5, 414),
     borderColor: "#FFF",
     borderWidth: 1,
-    borderRadius: 25,
-    width: 250,
-    height: 50,
+    borderRadius: RFValue(12.5, 414),
+    width: RFValue(125, 414),
+    height: RFValue(25, 414),
     alignSelf: "center",
     justifyContent: "center",
   },
   button: {
-    marginTop: 25,
-    width: 250,
-    height: 50,
+    marginTop: RFValue(12.5, 414),
+    width: RFValue(125, 414),
+    height: RFValue(25, 414),
     alignSelf: "center",
     justifyContent: "center",
   },
   buttontext: {
     color: "#fff",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     fontFamily: "montserrat-bold",
   },
   whitebuttontext: {
     color: "#FFF",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     fontFamily: "montserrat-bold",
   },
   popupOverlay: {
@@ -41,15 +41,15 @@ export default StyleSheet.create({
     textAlign: "left",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     textTransform: "uppercase",
   },
   pauseDes: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-light",
-    fontSize: 14,
-    // marginVertical: 20,
-    padding: 20,
+    fontSize: RFValue(7, 414),
+    // marginVertical:RFValue(10, 414),
+    padding: RFValue(10, 414),
   },
 });

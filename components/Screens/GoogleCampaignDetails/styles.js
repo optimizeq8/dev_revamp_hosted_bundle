@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     borderRadius: RFValue(8, 414),
     marginBottom: RFValue(2.5, 414),
     paddingHorizontal: RFValue(5, 414),
-    top: 40,
+    top: RFValue(20, 414),
     left: "22%",
     alignItems: "center",
     position: "absolute",
@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: RFValue(8, 414),
+    textTransform: "uppercase",
     // paddingRight: 30
     // paddingVertical: hp("1")
   },
@@ -140,15 +141,15 @@ const styles = StyleSheet.create({
   },
   gender: {
     // ...StyleSheet.absoluteFillObject,
-    left: 17,
+    left: RFValue(8.5, 414),
 
-    top: 5,
+    top: RFValue(2.5, 414),
 
     transform: [{ rotate: "-45deg" }],
   },
   optionalTargets: {
     flexDirection: "column",
-    marginBottom: 10,
+    marginBottom: RFValue(5, 414),
     // alignSelf: "center"
   },
   gradient: {
@@ -203,11 +204,11 @@ const styles = StyleSheet.create({
   bottomContainer: {
     width: wp("100"),
     // height: 200,
-    elevation: 10,
-    zIndex: 10,
+    elevation: RFValue(5, 414),
+    zIndex: RFValue(5, 414),
     alignItems: "center",
     justifyContent: "center",
-    bottom: 10,
+    bottom: RFValue(5, 414),
   },
   tab: {
     // position: "absolute",
@@ -228,10 +229,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     paddingTop: I18nManager.isRTL ? 0 : 25,
-    paddingBottom: I18nManager.isRTL ? 0 : 20,
+    paddingBottom: I18nManager.isRTL ? 0 : RFValue(10, 414),
     fontFamily: "montserrat-medium",
     fontSize: RFValue(9, 414),
-    bottom: I18nManager.isRTL ? -5 : 5,
+    bottom: I18nManager.isRTL ? -5 : RFValue(2.5, 414),
     // zIndex: 1
   },
   boxStats: {
@@ -313,10 +314,10 @@ const styles = StyleSheet.create({
     top: hp(4),
   },
   mainMetrics: {
-    top: 50,
+    top: RFValue(25, 414),
     flexDirection: "row",
     justifyContent: "space-evenly",
-    marginBottom: 10,
+    marginBottom: RFValue(5, 414),
   },
   statusButtonsText: {
     fontFamily: "montserrat-medium",
@@ -328,7 +329,7 @@ const styles = StyleSheet.create({
     borderColor: globalColors.orange,
     borderWidth: 0.5,
     alignSelf: "center",
-    marginVertical: 5,
+    marginVertical: RFValue(2.5, 414),
     padding: RFValue(5, 414),
     width: "40%",
     justifyContent: "center",
@@ -341,7 +342,7 @@ const styles = StyleSheet.create({
   },
   placeHolderChart: {
     position: "absolute",
-    zIndex: 10,
+    zIndex: RFValue(5, 414),
     width: wp(90),
     height: "100%",
     alignItems: "center",
@@ -349,22 +350,22 @@ const styles = StyleSheet.create({
     // borderRadius: 15,
   },
   ScrollChartArea: {
-    height: 35,
+    height: RFValue(17.5, 414),
   },
   placeHolderChartText: { fontFamily: "montserrat-medium", color: "#000" },
   dot: {
-    top: 10,
-    width: 10,
-    height: 10,
-    marginHorizontal: 10,
-    borderRadius: 50,
+    top: RFValue(5, 414),
+    width: RFValue(5, 414),
+    height: RFValue(5, 414),
+    marginHorizontal: RFValue(5, 414),
+    borderRadius: RFValue(25, 414),
     backgroundColor: globalColors.orange,
   },
   reviewButton: {
     alignSelf: "center",
-    borderRadius: 12,
+    borderRadius: RFValue(6, 414),
     top: "10%",
-    padding: 20,
+    padding: RFValue(10, 414),
     backgroundColor: globalColors.orange,
   },
   iconView: {
@@ -372,30 +373,30 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     width: wp(100),
-    paddingBottom: 10,
+    paddingBottom: RFValue(5, 414),
   },
   googleIcon: {
     alignSelf: "center",
-    marginTop: 20,
+    marginTop: RFValue(10, 414),
   },
   campaignInfo: {
     flexDirection: "column",
     alignItems: "flex-start",
     // width: wp(40)
     // left: 10
-    paddingLeft: 10,
+    paddingLeft: RFValue(5, 414),
   },
   campaignIcons: {
-    top: 10,
-    // left: 10,
+    top: RFValue(5, 414),
+    // left:  RFValue(5, 414),
     flexDirection: "row",
     alignItems: "flex-end",
-    paddingLeft: 10,
+    paddingLeft: RFValue(5, 414),
   },
   campaignNumbers: {
     top: 6,
     fontFamily: "montserrat-medium",
-    right: 10,
+    right: RFValue(5, 414),
   },
   chartContainer: {
     flexDirection: "row",
@@ -416,7 +417,7 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: RFValue(20, 414),
     // justifyContent: "center",
-    // paddingVertical: 20,
+    // paddingVertical:  RFValue(10, 414),
     paddingBottom: RFValue(15, 414),
     paddingHorizontal: RFValue(10, 414),
     overflow: "hidden",
@@ -447,17 +448,17 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 20
   },
   placeholderView: {
-    margin: 5,
+    margin: RFValue(2.5, 414),
   },
   keywordContainer: { width: "40%", height: "100%" },
   keywordLowerButton: {
-    width: 35,
-    height: 35,
+    width: RFValue(17.5, 414),
+    height: RFValue(17.5, 414),
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: globalColors.orange,
-    borderRadius: 20,
+    borderRadius: RFValue(10, 414),
   },
   chart: {
     // bottom: 0
@@ -479,7 +480,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "left",
     fontFamily: "montserrat-bold",
-    fontSize: 17,
+    fontSize: RFValue(8.5, 414),
     textTransform: "uppercase",
   },
   chartTextNum: {
@@ -493,8 +494,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   reachBarLowerButton: {
-    width: 55,
-    height: 55,
+    width: RFValue(27.5, 414),
+    height: RFValue(27.5, 414),
     marginRight: wp(35),
     flex: 0,
   },
@@ -503,24 +504,24 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "flex-start",
     justifyContent: "center",
-    paddingHorizontal: 8,
+    paddingHorizontal: RFValue(4, 414),
   },
   flex: {
     flex: 1,
   },
   customButtonStyle: {
-    width: 160,
-    height: 50,
+    width: RFValue(80, 414),
+    height: RFValue(25, 414),
     alignSelf: "flex-end",
   },
   customButtonText: {
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     // paddingVertical: 5
   },
   reviewStatusText: {
     textAlign: "left",
-    paddingVertical: 3,
-    fontSize: 12,
+    paddingVertical: RFValue(1.5, 414),
+    fontSize: RFValue(6, 414),
     fontFamily: "montserrat-regular",
     color: "#FFF",
   },
@@ -530,36 +531,36 @@ const styles = StyleSheet.create({
     // height: 80,
     // width: "100%",
     // justifyContent: "space-evenly",
-    marginVertical: 5,
-    // paddingHorizontal: 20,
+    marginVertical: RFValue(2.5, 414),
+    // paddingHorizontal:  RFValue(10, 414),
     // paddingVertical: 15,
   },
   hereReasonsText: {
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     fontFamily: "montserrat-regular",
     color: "#EA514B",
-    marginTop: 5,
-    marginBottom: 10,
+    marginTop: RFValue(2.5, 414),
+    marginBottom: RFValue(5, 414),
     textAlign: "left",
   },
   adRejectedTitle: {
     fontSize: 18,
     fontFamily: "montserrat-bold",
     color: "#EA514B",
-    // paddingVertical: 5,
+    // paddingVertical: RFValue(2.5, 414),
     textTransform: "uppercase",
-    marginLeft: 5,
+    marginLeft: RFValue(2.5, 414),
   },
   rejectedHeader: {
     backgroundColor: "#0005",
-    borderRadius: 35,
+    borderRadius: RFValue(17.5, 414),
     // alignItems: "center",
-    marginHorizontal: 20,
-    padding: 20,
-    marginTop: 10,
+    marginHorizontal: RFValue(10, 414),
+    padding: RFValue(10, 414),
+    marginTop: RFValue(5, 414),
   },
   reviewStatusReason: {
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     fontFamily: "montserrat-regular",
     color: "#FFF",
     textAlign: "left",
@@ -581,7 +582,7 @@ const styles = StyleSheet.create({
   reviewText: {
     fontFamily: "montserrat-bold",
     fontSize: RFValue(5.5, 414),
-    paddingHorizontal: 5,
+    paddingHorizontal: RFValue(2.5, 414),
     color: "#fff",
     textTransform: "uppercase",
   },

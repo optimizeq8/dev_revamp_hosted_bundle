@@ -109,7 +109,7 @@ export default class SingleMetric extends Component {
             </View>
           </View>
         ) : (
-          <PlaceholderLine width={70} />
+          <PlaceholderLine width={RFValue(35, 414)} />
         )}
       </View>
     );
