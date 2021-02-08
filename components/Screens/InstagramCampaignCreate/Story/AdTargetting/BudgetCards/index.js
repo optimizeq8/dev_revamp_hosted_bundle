@@ -7,6 +7,7 @@ import {
   TextInput,
 } from "react-native";
 import { connect } from "react-redux";
+import { RFValue } from "react-native-responsive-fontsize";
 import styles from "./styles";
 import BudgetCard from "./BudgetCard";
 import { TextInputMask } from "react-native-masked-text";
@@ -117,7 +118,7 @@ export class BudgetCards extends Component {
                       fontSize:
                         budgetOption !== 0 ||
                         (value === "$0" && !this.state.placeholder)
-                          ? 10
+                          ? RFValue(5, 414)
                           : 20,
                     },
                   ]}
@@ -138,9 +139,9 @@ export class BudgetCards extends Component {
                 <Text
                   style={[
                     {
-                      fontSize: 15,
+                      fontSize: RFValue(7.5, 414),
                       color: globalColors.purple,
-                      marginRight: -30,
+                      marginRight: RFValue(-15, 414),
                       fontFamily: "montserrat-bold",
                     },
                   ]}
@@ -166,10 +167,10 @@ export class BudgetCards extends Component {
                       fontSize:
                         budgetOption !== 0 ||
                         (value === "$0" && !this.state.placeholder)
-                          ? 10
-                          : 15,
+                          ? RFValue(5, 414)
+                          : RFValue(7.5, 414),
 
-                      paddingLeft: 30,
+                      paddingLeft: RFValue(15, 414),
                     },
                   ]}
                   placeholder={"0.00"}

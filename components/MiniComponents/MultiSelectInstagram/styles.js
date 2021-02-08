@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     color: globalColors.rum,
     marginVertical: RFValue(5, 414),
+    fontSize: RFValue(8, 414),
   },
 });
 export default styles;
