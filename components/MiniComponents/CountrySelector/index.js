@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, ScrollView, TouchableOpacity } from "react-native";
 import { Item, Input } from "native-base";
-
+import { RFValue } from "react-native-responsive-fontsize";
 //Icon
 import LocationIcon from "../../../assets/SVGs/Location.svg";
 import SearchIcon from "../../../assets/SVGs/Search.svg";
@@ -36,7 +36,7 @@ class CountrySelector extends Component {
           style={{
             fontFamily: "montserrat-bold",
             color: this.props.country === c.criteria_id ? "#FF9D00" : "#fff",
-            fontSize: 14,
+            fontSize: RFValue(7, 414),
           }}
         >
           {translate(c.name)}
