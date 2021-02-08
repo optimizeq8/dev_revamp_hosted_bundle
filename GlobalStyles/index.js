@@ -119,7 +119,7 @@ const globalStyles = StyleSheet.create({
   title: {
     fontSize: RFValue(10 / PixelRatio.getFontScale(), 414),
     color: "#fff",
-    paddingVertical: 10,
+    paddingVertical: RFValue(5, 414),
     fontFamily: "montserrat-bold",
     textTransform: "uppercase",
   },

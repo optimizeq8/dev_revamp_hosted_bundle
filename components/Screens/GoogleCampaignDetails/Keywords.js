@@ -30,7 +30,7 @@ export default function (props) {
         <Text
           style={[
             styles.subHeading,
-            { paddingVertical: RFValue(7, 414), fontSize: RFValue(8, 414) },
+            { paddingVertical: RFValue(5, 414), fontSize: RFValue(8, 414) },
           ]}
         >
           {translate("Keywords")}
