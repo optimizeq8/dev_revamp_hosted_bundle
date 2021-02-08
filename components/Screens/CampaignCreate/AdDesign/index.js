@@ -279,6 +279,59 @@ class AdDesign extends Component {
         );
       }
     }
+    if (this.props.mainBusiness && savedObjective === "ENGAGEMENT") {
+      const { callnumber } = this.props.mainBusiness;
+      _changeDestination(
+        "AD_TO_CALL",
+        list.SnapAd[5].call_to_action_list[0],
+        {
+          phone_number_id: `+${callnumber}`,
+        },
+        null,
+        null,
+        this.adType,
+        this.props.setStoryAdAttachment,
+        this.state.campaignInfo,
+        this.props.save_campaign_info,
+        this.setTheState
+      );
+    }
+    // console.log(
+    //   "this.props.mainBusiness;",
+    //   JSON.stringify(this.props.mainBusiness, null, 2)
+    // );
+    // if (
+    //   this.props.mainBusiness &&
+    //   savedObjective === "APP_INSTALLS" &&
+    //   ((this.props.mainBusiness.appstorelink &&
+    //     this.props.mainBusiness.appstorelink.ios_app_id !== "") ||
+    //     (this.props.mainBusiness.playstorelink &&
+    //       this.props.mainBusiness.playstorelink.android_app_url !== ""))
+    // ) {
+    //   let appChoice =
+    //     this.props.mainBusiness.appstorelink.ios_app_id === ""
+    //       ? "ANDROID"
+    //       : "iOS";
+    //   _changeDestination(
+    //     "APP_INSTALL",
+    //     list[this.props.adType][1].call_to_action_list[0],
+    //     {
+    //       app_name: "",
+    //       ios_app_id: this.props.mainBusiness.appstorelink.ios_app_id,
+    //       android_app_url: this.props.mainBusiness.playstorelink
+    //         .android_app_url,
+    //       icon_media_id: "",
+    //       icon_media_url: "",
+    //     },
+    //     appChoice,
+    //     null,
+    //     this.adType,
+    //     this.props.setStoryAdAttachment,
+    //     this.state.campaignInfo,
+    //     this.props.save_campaign_info,
+    //     this.setTheState
+    //   );
+    // }
     if (
       //   this.props.data.savedObjective !== "POLITICAL_TRAFFIC" &&
       (this.adType === "CollectionAd" &&

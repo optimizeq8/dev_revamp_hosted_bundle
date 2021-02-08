@@ -86,7 +86,7 @@ export const verifyBusinessUrl = (weburl) => {
         });
       })
       .catch((err) => {
-        // console.log("verifyBusinessName", err.message || err.response);
+        // console.log("verifyBusinessUrl", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_VERIFY_BUSINESSNAME,
