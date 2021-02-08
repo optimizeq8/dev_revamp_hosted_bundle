@@ -1,5 +1,6 @@
 import React from "react";
 import { Image } from "react-native-expo-image-cache";
+import { RFValue } from "react-native-responsive-fontsize";
 import analytics from "@segment/analytics-react-native";
 import { ActivityIndicator, View, TouchableOpacity, Text } from "react-native";
 import { Video } from "expo-av";
@@ -151,7 +152,7 @@ export default (props) => {
                     !loading && selectedCampaign ? selectedCampaign.media : "",
                 }}
                 style={{
-                  borderRadius: 40,
+                  borderRadius: RFValue(20, 414),
                   width: !loading ? "100%" : 0,
                   height: !loading ? "100%" : 0,
                 }}

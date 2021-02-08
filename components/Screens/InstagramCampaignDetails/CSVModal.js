@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
+import { RFValue } from "react-native-responsive-fontsize";
 
 import { BlurView } from "expo-blur";
 import Header from "../../MiniComponents/Header";
@@ -121,5 +122,5 @@ export default class CSVModal extends Component {
 }
 
 const CSVStyle = StyleSheet.create({
-  customButtonStyle: { height: 50, width: "70%" },
+  customButtonStyle: { height: RFValue(25, 414), width: "70%" },
 });

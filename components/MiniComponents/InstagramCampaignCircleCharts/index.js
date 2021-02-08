@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, Text, ScrollView } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import Chart from "../CircleChart/Chart";
 import ImpressionsIcons from "../../../assets/SVGs/CampaignCards/ImpressionsIcon";
 import SwipeUpsIcon from "../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
@@ -58,15 +59,17 @@ class CampaignCircleChart extends Component {
             {/* To switch between date choices and header of the component */}
             {!chartExpanded && (
               <>
-                <Text style={globalStyles.title}>
+                <Text
+                  style={[globalStyles.title, { fontSize: RFValue(8, 414) }]}
+                >
                   {translate("Ad Performance")}
                 </Text>
                 {!loading && (
                   <LowerButton
                     screenProps={this.props.screenProps}
                     function={() => handleChartToggle()}
-                    width={15}
-                    height={15}
+                    width={RFValue(7.5, 414)}
+                    height={RFValue(7.5, 414)}
                     style={styles.adPerformanceLowerBUtton}
                   />
                 )}
@@ -81,7 +84,7 @@ class CampaignCircleChart extends Component {
           scrollEnabled={detail && chartExpanded}
           contentContainerStyle={{
             justifyContent: "flex-start",
-            paddingRight: 40,
+            paddingRight: RFValue(20, 414),
           }}
           style={{
             maxHeight: "100%",
@@ -101,13 +104,23 @@ class CampaignCircleChart extends Component {
             />
           }
           {loading ? (
-            <View style={{ paddingHorizontal: 12, alignSelf: "center" }}>
+            <View
+              style={{
+                paddingHorizontal: RFValue(6, 414),
+                alignSelf: "center",
+              }}
+            >
               <PlaceholderLineComp {...styles.campaignIcons} />
               <PlaceholderLineComp {...styles.campaignIcons} />
               <PlaceholderLineComp {...styles.campaignIcons} />
             </View>
           ) : (
-            <View style={{ paddingHorizontal: 12, alignSelf: "center" }}>
+            <View
+              style={{
+                paddingHorizontal: RFValue(6, 414),
+                alignSelf: "center",
+              }}
+            >
               <View style={detail ? styles.campaignIcons : styles.campaignCard}>
                 {!detail ||
                 (campaign && campaign.objective === "BRAND_AWARENESS") ? (

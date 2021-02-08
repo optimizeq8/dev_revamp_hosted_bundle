@@ -17,17 +17,17 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     alignItems: "center",
     width: "100%",
-    height: 50,
+    height: RFValue(25, 414),
   },
   title: {
     fontFamily: "montserrat-bold",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     color: globalColors.white,
     alignSelf: "flex-start",
   },
   subtext: {
     fontFamily: "montserrat-regular",
-    // fontSize: 12,
+    // fontSize: RFValue(6, 414),
     fontSize: RFValue(6, 414),
     color: "#fff",
     textTransform: "uppercase",
@@ -38,19 +38,19 @@ const styles = StyleSheet.create({
   },
   chart: {
     alignItems: "center",
-    paddingHorizontal: 5,
+    paddingHorizontal: RFValue(2.5, 414),
   },
   chartText: {
     color: "#fff",
     fontFamily: "montserrat-medium",
-    fontSize: 16,
-    marginLeft: 10,
+    fontSize: RFValue(8, 414),
+    marginLeft: RFValue(5, 414),
   },
   chartSubtext: {
     alignSelf: "center",
-    paddingTop: 10,
+    paddingTop: RFValue(5, 414),
     fontFamily: "montserrat-regular",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#fff",
     textAlign: "left",
   },
@@ -59,11 +59,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#0004",
     marginVertical: 2.5,
-    borderRadius: 20,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    width: 160,
-    height: 50,
+    borderRadius: RFValue(10, 414),
+    paddingHorizontal: RFValue(5, 414),
+    paddingVertical: RFValue(5, 414),
+    width: RFValue(80, 414),
+    height: RFValue(25, 414),
   },
   campaignNumbers: {
     paddingHorizontal: 0,
@@ -81,14 +81,14 @@ const styles = StyleSheet.create({
   },
   campaignInfo: {
     flexDirection: "column",
-    paddingHorizontal: 10,
+    paddingHorizontal: RFValue(5, 414),
     // alignItems: "center"
     // width: wp(40),
     // left: 10
   },
   campaignInfoCard: {
     flex: 1,
-    top: 10,
+    top: RFValue(5, 414),
     alignItems: "flex-start",
   },
   campaignCard: {
@@ -97,8 +97,8 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 10
   },
   adPerformanceLowerBUtton: {
-    width: 35,
-    height: 35,
+    width: RFValue(17.5, 414),
+    height: RFValue(17.5, 414),
   },
 });
 
