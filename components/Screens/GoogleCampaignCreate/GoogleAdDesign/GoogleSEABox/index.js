@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { View, Text } from "react-native";
 import { Input } from "native-base";
+import { RFValue } from "react-native-responsive-fontsize";
 import GlobalStyles, { globalColors } from "../../../../../GlobalStyles";
 import styles from "./styles";
 import WebsiteSVG from "../../../../../assets/SVGs/SwipeUps/Website";
@@ -61,8 +62,8 @@ export default GoogleSEABox = (props) => {
     <View style={styles.previewBlock}>
       <View style={styles.row}>
         <WebsiteSVG
-          width={30}
-          height={30}
+          width={RFValue(15, 414)}
+          height={RFValue(15, 414)}
           fill={
             inputURL
               ? globalColors.orange
@@ -79,7 +80,7 @@ export default GoogleSEABox = (props) => {
               {
                 alignSelf:
                   campaign.language === "1019" ? "flex-end" : "flex-start",
-                paddingRight: 10,
+                paddingRight: RFValue(5, 414),
                 color: inputURL
                   ? globalColors.orange
                   : finalurlError
@@ -147,7 +148,7 @@ export default GoogleSEABox = (props) => {
                 {
                   alignSelf:
                     campaign.language === "1019" ? "flex-end" : "flex-start",
-                  paddingRight: 10,
+                  paddingRight: RFValue(5, 414),
                   color: inputH1
                     ? globalColors.orange
                     : headline1Error
@@ -163,7 +164,7 @@ export default GoogleSEABox = (props) => {
                   {
                     alignSelf:
                       campaign.language === "1019" ? "flex-end" : "flex-start",
-                    paddingRight: 10,
+                    paddingRight: RFValue(5, 414),
                     color: inputH1
                       ? globalColors.orange
                       : headline1Error
@@ -175,7 +176,7 @@ export default GoogleSEABox = (props) => {
               >{` (${30 - headline1.length})`}</Text>
             </Text>
             <Input
-              maxLength={30}
+              maxLength={RFValue(15, 414)}
               autoCorrect={true}
               disabled={disable}
               value={headline1}
@@ -219,7 +220,7 @@ export default GoogleSEABox = (props) => {
                 {
                   alignSelf:
                     campaign.language === "1019" ? "flex-end" : "flex-start",
-                  paddingRight: 10,
+                  paddingRight: RFValue(5, 414),
                   color: inputH2
                     ? globalColors.orange
                     : headline2Error
@@ -235,7 +236,7 @@ export default GoogleSEABox = (props) => {
                   {
                     alignSelf:
                       campaign.language === "1019" ? "flex-end" : "flex-start",
-                    paddingRight: 10,
+                    paddingRight: RFValue(5, 414),
                     color: inputH2
                       ? globalColors.orange
                       : headline2Error
@@ -255,7 +256,7 @@ export default GoogleSEABox = (props) => {
                 styles.input,
                 { textAlign: campaign.language === "1019" ? "right" : "left" },
               ]}
-              maxLength={30}
+              maxLength={RFValue(15, 414)}
               onChangeText={(value) => {
                 setVal({ headline2: value });
               }}
@@ -283,7 +284,7 @@ export default GoogleSEABox = (props) => {
                 {
                   alignSelf:
                     campaign.language === "1019" ? "flex-end" : "flex-start",
-                  paddingRight: 10,
+                  paddingRight: RFValue(5, 414),
                   color: inputH3 ? globalColors.orange : globalColors.twilight,
                 },
               ]}
@@ -295,7 +296,7 @@ export default GoogleSEABox = (props) => {
                   {
                     alignSelf:
                       campaign.language === "1019" ? "flex-end" : "flex-start",
-                    paddingRight: 10,
+                    paddingRight: RFValue(5, 414),
                     color: inputH3
                       ? globalColors.orange
                       : globalColors.twilight,
@@ -313,7 +314,7 @@ export default GoogleSEABox = (props) => {
                 styles.input,
                 { textAlign: campaign.language === "1019" ? "right" : "left" },
               ]}
-              maxLength={30}
+              maxLength={RFValue(15, 414)}
               onChangeText={(value) => {
                 setVal({ headline3: value });
               }}
@@ -350,7 +351,7 @@ export default GoogleSEABox = (props) => {
               {
                 alignSelf:
                   campaign.language === "1019" ? "flex-end" : "flex-start",
-                paddingRight: 10,
+                paddingRight: RFValue(5, 414),
                 color: inputD
                   ? globalColors.orange
                   : descriptionError
@@ -366,7 +367,7 @@ export default GoogleSEABox = (props) => {
                 {
                   alignSelf:
                     campaign.language === "1019" ? "flex-end" : "flex-start",
-                  paddingRight: 10,
+                  paddingRight: RFValue(5, 414),
                   color: inputD
                     ? globalColors.orange
                     : descriptionError
@@ -417,7 +418,7 @@ export default GoogleSEABox = (props) => {
               {
                 alignSelf:
                   campaign.language === "1019" ? "flex-end" : "flex-start",
-                paddingRight: 10,
+                paddingRight: RFValue(5, 414),
                 color: inputD2 ? globalColors.orange : globalColors.twilight,
               },
             ]}
@@ -429,7 +430,7 @@ export default GoogleSEABox = (props) => {
                 {
                   alignSelf:
                     campaign.language === "1019" ? "flex-end" : "flex-start",
-                  paddingRight: 10,
+                  paddingRight: RFValue(5, 414),
                   color: inputD2 ? globalColors.orange : globalColors.twilight,
                 },
                 styles.smallFont,
