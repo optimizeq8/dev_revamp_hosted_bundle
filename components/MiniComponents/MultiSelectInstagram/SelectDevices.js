@@ -3,7 +3,7 @@ import { Text, View, ScrollView, ActivityIndicator } from "react-native";
 import { Icon } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import isNull from "lodash/isNull";
-
+import { RFValue } from "react-native-responsive-fontsize";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";

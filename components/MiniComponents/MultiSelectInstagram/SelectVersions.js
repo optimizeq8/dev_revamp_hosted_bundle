@@ -4,7 +4,7 @@ import { Icon } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import LoadingScreen from "../LoadingScreen";
 import { showMessage } from "react-native-flash-message";
-
+import { RFValue } from "react-native-responsive-fontsize";
 //Icons
 import PlusCircle from "../../../assets/SVGs/PlusCircle";
 import BackButton from "../../MiniComponents/BackButton";
@@ -115,7 +115,10 @@ class SelectVersions extends Component {
                 style={styles.toggleSelectorButton}
                 onPressAction={() => this.VersionSection._toggleSelector()}
               >
-                <PlusCircle width={53} height={53} />
+                <PlusCircle
+                  width={RFValue(26.5, 414)}
+                  height={RFValue(26.5, 414)}
+                />
               </GradientButton>
               <Text style={styles.inputtext}>
                 {translate("Choose Minimum and Maximum versions")}
