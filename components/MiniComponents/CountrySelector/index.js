@@ -46,10 +46,18 @@ class CountrySelector extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.dataContainer}>
-          <LocationIcon width={50} height={80} fill="#fff" />
+          <LocationIcon
+            width={RFValue(25, 414)}
+            height={RFValue(40, 414)}
+            fill="#fff"
+          />
           <View style={styles.slidercontainer}>
             <Item style={styles.searchBar}>
-              <SearchIcon width={18} height={18} stroke="#fff" />
+              <SearchIcon
+                width={RFValue(9, 414)}
+                height={RFValue(9, 414)}
+                stroke="#fff"
+              />
               <Input
                 placeholder={translate("Search Country") + "..."}
                 style={styles.searchInputText}
