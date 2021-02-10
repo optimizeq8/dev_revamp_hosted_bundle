@@ -288,6 +288,8 @@ PODS:
     - React
   - react-native-advertising-id (1.0.11):
     - React
+  - react-native-biometrics (2.1.4):
+    - React
   - react-native-blur (0.8.0):
     - React
   - react-native-ffmpeg/https-gpl-lts (0.4.4):
@@ -391,6 +393,8 @@ PODS:
     - React
   - RNGestureHandler (1.7.0):
     - React
+  - RNKeychain (6.2.0):
+    - React
   - RNPhotoEditorSDK (2.6.1):
     - PhotoEditorSDK (~> 10.18)
     - React
@@ -483,6 +487,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-adjust (from `../node_modules/react-native-adjust`)
   - react-native-advertising-id (from `../node_modules/react-native-advertising-id`)
+  - react-native-biometrics (from `../node_modules/react-native-biometrics`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-ffmpeg/https-gpl-lts (from `../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
@@ -510,6 +515,7 @@ DEPENDENCIES:
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNPhotoEditorSDK (from `../node_modules/react-native-photoeditorsdk`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
@@ -631,6 +637,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-adjust"
   react-native-advertising-id:
     :path: "../node_modules/react-native-advertising-id"
+  react-native-biometrics:
+    :path: "../node_modules/react-native-biometrics"
   react-native-blur:
     :path: "../node_modules/@react-native-community/blur"
   react-native-ffmpeg:
@@ -685,6 +693,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-device-info"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNKeychain:
+    :path: "../node_modules/react-native-keychain"
   RNPhotoEditorSDK:
     :path: "../node_modules/react-native-photoeditorsdk"
   RNScreens:
@@ -778,6 +788,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 8e68ffbfe23880d3ee9bafa8be2777f60b25cbe2
   react-native-adjust: d8b1aa02957057007fede6188a32b76c19b692e7
   react-native-advertising-id: 91e0e65f5a1dd0667ce4b6e667ca7338e3c3414a
+  react-native-biometrics: 9d3306e5d29c3bc4e6a3c912d759a94e76a2f683
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-ffmpeg: f9a60452aaa5d478aac205b248224994f3bde416
   react-native-google-maps: 0a989abda71059db2caa98b9dacca7a8f38a47d0
@@ -805,6 +816,7 @@ SPEC CHECKSUMS:
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDeviceInfo: c5f8f3a456adcbba405ace475254b08febc4c095
   RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
+  RNKeychain: b8e0711b959a19c5b057d1e970d3c83d159b6da5
   RNPhotoEditorSDK: 19b264ecab792963aa63d244e33d6d25844fd0dc
   RNScreens: b6c9607e6fe47c1b6e2f1910d2acd46dd7ecea3a
   RNSentry: 1adaa43b01c6a3ab5091d4d1add66b7c58558898

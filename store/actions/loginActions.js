@@ -1,6 +1,6 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { Animated, AppState } from "react-native";
+import { Animated, AppState, Platform } from "react-native";
 import Intercom from "react-native-intercom";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
@@ -16,6 +16,7 @@ import createBaseUrl from "./createBaseUrl";
 import NavigationService from "../../NavigationService";
 import { errorMessageHandler } from "./ErrorActions";
 import AsyncStorage from "@react-native-community/async-storage";
+import ReactNativeBiometrics from "react-native-biometrics";
 
 export const chanege_base_url = (admin) => {
   return (dispatch) => {
@@ -537,6 +538,96 @@ export const checkHashForUser = () => {
             ios: null,
             android: null,
           },
+        });
+      });
+  };
+};
+
+export const checkPassword = (
+  userData,
+  modalFlash,
+  closeBioMetricModal,
+  translate
+) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SET_CHECKING_FOR_PASSWORD_LOADING,
+      payload: true,
+    });
+    createBaseUrl()
+      .post("userLogin", userData, {
+        timeout: 5000,
+        timeoutErrorMessage: "Something went wrong, please try again.",
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        if (data.success) {
+          dispatch({
+            type: actionTypes.PASSWORD_CHECKED,
+            payload: data.success,
+          });
+          ReactNativeBiometrics.simplePrompt({
+            promptMessage: "Authorize",
+          })
+            .then(async (resultObject) => {
+              const { success } = resultObject;
+
+              if (success) {
+                let userConnectedBiometrics = await SecureStore.getItemAsync(
+                  "accountsSecured",
+                  {
+                    keychainService:
+                      Platform.OS === "ios" ? "kSecAttrService" : "Alias",
+                  }
+                );
+                if (userConnectedBiometrics) {
+                  userConnectedBiometrics = JSON.parse(userConnectedBiometrics);
+                  userConnectedBiometrics = [
+                    ...userConnectedBiometrics,
+                    { username: userData.email, password: userData.password },
+                  ];
+                } else {
+                  userConnectedBiometrics = [
+                    { username: userData.email, password: userData.password },
+                  ];
+                }
+                SecureStore.setItemAsync(
+                  "accountsSecured",
+                  JSON.stringify(userConnectedBiometrics),
+                  {
+                    keychainService:
+                      Platform.OS === "ios" ? "kSecAttrService" : "Alias",
+                  }
+                ).then((value) => {
+                  closeBioMetricModal();
+                  showMessage({
+                    message: translate("Account secured successfully"),
+                    type: "success",
+                  });
+                });
+              }
+            })
+            .catch((err) => {
+              errorMessageHandler(err);
+              // console.log("check pass", err);
+            });
+        } else {
+          modalFlash.showMessage({
+            message: translate("Wrong password"),
+            type: "warning",
+          });
+          dispatch({
+            type: actionTypes.SET_CHECKING_FOR_PASSWORD_LOADING,
+            payload: false,
+          });
+        }
+      })
+      .catch((error) => {
+        // console.log("error hashForUser", error.error || error.message);
+        errorMessageHandler(error);
+        return dispatch({
+          type: actionTypes.SET_CHECKING_FOR_PASSWORD_LOADING,
+          payload: false,
         });
       });
   };
