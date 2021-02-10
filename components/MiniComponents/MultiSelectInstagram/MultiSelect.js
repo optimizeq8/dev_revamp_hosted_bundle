@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   Text,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { Item, Input } from "native-base";
 import isNull from "lodash/isNull";
 import SafeAreaView from "react-native-safe-area-view";
@@ -132,7 +133,7 @@ class MultiSelectList extends Component {
                 (country_code ? country_code : "") === c.value
                   ? "#FF9D00"
                   : globalColors.rum,
-              fontSize: 14,
+              fontSize: RFValue(7, 414),
               opacity: !disabled ? 1 : 0.5,
             }}
           >
@@ -148,7 +149,11 @@ class MultiSelectList extends Component {
       >
         <View style={styles.container}>
           <View style={styles.dataContainer}>
-            <LocationIcon width={70} height={70} fill={globalColors.rum} />
+            <LocationIcon
+              width={RFValue(35, 414)}
+              height={RFValue(35, 414)}
+              fill={globalColors.rum}
+            />
             <Text style={styles.title}> {translate("Select Country")} </Text>
 
             <View style={styles.slidercontainer}>

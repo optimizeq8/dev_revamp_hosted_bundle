@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import AnimatedCircularProgress from "../AnimatedCircleProgress/AnimatedCircularProgress";
 import styles from "./styles";
 import SpendingIcon from "../../../assets/SVGs/SpendingIcon";
@@ -14,13 +15,13 @@ export default Chart = (props) => {
     <View
       style={{
         alignSelf: "center",
-        marginVertical: 10,
-        paddingHorizontal: detail ? 20 : 0,
+        marginVertical: RFValue(5, 414),
+        paddingHorizontal: detail ? RFValue(10, 414) : 0,
       }}
     >
       <AnimatedCircularProgress
-        size={detail ? 160 : 80}
-        width={detail ? 12 : 5}
+        size={detail ? RFValue(80, 414) : RFValue(40, 414)}
+        width={detail ? RFValue(6, 414) : RFValue(2.5, 414)}
         fill={isNaN(x) ? 0 : x}
         rotation={0}
         lineCap="round"
@@ -37,7 +38,7 @@ export default Chart = (props) => {
               <View
                 style={{
                   justifyContent: "center",
-                  marginLeft: 4,
+                  marginLeft: RFValue(2, 414),
                 }}
               >
                 {detail && (

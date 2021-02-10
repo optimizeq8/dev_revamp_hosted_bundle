@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { TouchableOpacity, StyleSheet } from "react-native";
 import QuestionIcon from "../../assets/SVGs/QuestionIcon.svg";
 import { globalColors } from "../../GlobalStyles";
-
+import { RFValue } from "react-native-responsive-fontsize";
 export default class QuestionComponent extends Component {
   render() {
     let { onPressFunction, style, width = 35, height = 35 } = this.props;
@@ -11,7 +11,10 @@ export default class QuestionComponent extends Component {
         style={[styles.questionIconContainer, style]}
         onPress={() => onPressFunction()}
       >
-        <QuestionIcon width={width} height={height} />
+        <QuestionIcon
+          width={RFValue(width / 2, 414)}
+          height={RFValue(height / 2, 414)}
+        />
       </TouchableOpacity>
     );
   }
@@ -19,7 +22,7 @@ export default class QuestionComponent extends Component {
 
 const styles = StyleSheet.create({
   questionIconContainer: {
-    borderRadius: 100,
+    borderRadius: RFValue(50, 414),
     borderColor: globalColors.twilight,
   },
 });

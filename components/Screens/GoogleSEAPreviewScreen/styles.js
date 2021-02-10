@@ -3,6 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
@@ -33,32 +34,32 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   searchBar: {
-    elevation: 5,
-    shadowOffset: { width: 5, height: 5 },
-    shadowRadius: 15,
+    elevation: RFValue(2.5, 414),
+    shadowOffset: { width: RFValue(2.5, 414), height: 5 },
+    shadowRadius: RFValue(7.5, 414),
     shadowOpacity: 0.2,
     shadowColor: "#000",
   },
   searchImage: {
-    width: 322,
-    height: 43,
+    width: RFValue(161, 414),
+    height: RFValue(21.5, 414),
     alignSelf: "center",
   },
   phoneImage: {
-    width: 276,
-    height: 551,
+    width: RFValue(138, 414),
+    height: RFValue(275.5, 414),
     alignSelf: "center",
   },
   editButton: {
-    marginHorizontal: 5,
+    marginHorizontal: RFValue(2.5, 414),
     borderWidth: 1.5,
     borderColor: globalColors.white,
-    height: 50,
+    height: RFValue(25, 414),
     width: "40%",
   },
   nextButton: {
-    height: 50,
-    marginHorizontal: 5,
+    height: RFValue(25, 414),
+    marginHorizontal: RFValue(2.5, 414),
     width: "40%",
   },
   bottomView: {
@@ -66,15 +67,15 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 15,
+    marginVertical: RFValue(7.5, 414),
   },
   forwardLoading: {
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: 15,
+    marginHorizontal: RFValue(7.5, 414),
   },
   forwardLoadingMainView: {
-    marginHorizontal: 20,
+    marginHorizontal: RFValue(10, 414),
     width: wp(6),
     height: hp(6),
   },

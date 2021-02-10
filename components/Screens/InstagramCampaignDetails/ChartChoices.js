@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { ScrollView } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import styles from "./styles";
 import GradientButton from "../../MiniComponents/GradientButton";
 import { globalColors } from "../../../GlobalStyles";
@@ -40,8 +41,8 @@ export default class ChartChoices extends Component {
         textStyle={[
           styles.choiceText,
           {
-            fontSize: 11,
-            paddingHorizontal: 15,
+            fontSize: RFValue(5.5, 414),
+            paddingHorizontal: RFValue(7.5, 414),
             color:
               this.state.selectedChoice !== choice
                 ? globalColors.purple3

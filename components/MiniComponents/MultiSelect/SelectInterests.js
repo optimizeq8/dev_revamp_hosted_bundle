@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Text, ActivityIndicator, ScrollView } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 import isNull from "lodash/isNull";
+import { RFValue } from "react-native-responsive-fontsize";
 //Icons
 import InterestsIcon from "../../../assets/SVGs/Interests";
 import PlusCircle from "../../../assets/SVGs/PlusCircle";
@@ -95,7 +96,7 @@ class SelectInterests extends Component {
                 ]}
                 onPressAction={() => this.setState({ open: true })}
               >
-                <PlusCircle width={53} height={53} />
+                <PlusCircle width={RFValue(21.5)} height={RFValue(21.5)} />
               </GradientButton>
               <ScrollView>
                 <Picker

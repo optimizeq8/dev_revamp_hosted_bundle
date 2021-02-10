@@ -5,6 +5,7 @@ import { ActivityIndicator, View, TouchableOpacity, Text } from "react-native";
 import { Video } from "expo-av";
 import styles from "./styles";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
+import { RFValue } from "react-native-responsive-fontsize";
 
 const preview = {
   uri:
@@ -147,7 +148,7 @@ export default (props) => {
                     !loading && selectedCampaign ? selectedCampaign.media : "",
                 }}
                 style={{
-                  borderRadius: 40,
+                  borderRadius: RFValue(20, 414),
                   width: !loading ? "100%" : 0,
                   height: !loading ? "100%" : 0,
                 }}

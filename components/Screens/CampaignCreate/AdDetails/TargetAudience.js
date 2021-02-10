@@ -7,7 +7,7 @@ import {
   I18nManager,
 } from "react-native";
 import { connect } from "react-redux";
-
+import { RFValue } from "react-native-responsive-fontsize";
 //icons
 import PurpleCheckmarkIcon from "../../../../assets/SVGs/PurpleCheckmark";
 import LocationIcon from "../../../../assets/SVGs/Location";
@@ -176,13 +176,16 @@ export class TargetAudience extends Component {
                 {startEditing &&
                   (targeting.geos[0].country_code ? (
                     <PurpleCheckmarkIcon
-                      width={22}
-                      height={30}
+                      width={RFValue(11, 414)}
+                      height={RFValue(15, 414)}
                       fill={globalColors.purple}
                       stroke={"#FFF"}
                     />
                   ) : (
-                    <PurplePlusIcon width={22} height={30} />
+                    <PurplePlusIcon
+                      width={RFValue(11, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ))}
               </TouchableOpacity>
             )}
@@ -211,9 +214,15 @@ export class TargetAudience extends Component {
                   (targeting.geos.some(
                     (geo) => geo.region_id && geo.region_id.length !== 0
                   ) ? (
-                    <PurpleCheckmarkIcon width={22} height={30} />
+                    <PurpleCheckmarkIcon
+                      width={RFValue(11, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ) : (
-                    <PurplePlusIcon width={20} height={30} />
+                    <PurplePlusIcon
+                      width={RFValue(10, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ))}
               </TouchableOpacity>
             ) : null}
@@ -240,9 +249,15 @@ export class TargetAudience extends Component {
                 {startEditing &&
                   (mainState.locationsInfo &&
                   mainState.locationsInfo.length > 0 ? (
-                    <PurpleCheckmarkIcon width={22} height={30} />
+                    <PurpleCheckmarkIcon
+                      width={RFValue(11, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ) : (
-                    <PurplePlusIcon width={22} height={30} />
+                    <PurplePlusIcon
+                      width={RFValue(11, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ))}
               </TouchableOpacity>
             )}
@@ -354,9 +369,9 @@ export class TargetAudience extends Component {
 
                 {/* {startEditing &&
                   (targeting.demographics[0].max_age ? (
-                    <PurpleCheckmarkIcon width={22} height={30} />
+                    <PurpleCheckmarkIcon width={RFValue(11, 414)} height={RFValue(15,414)} />
                   ) : (
-                    <PurplePlusIcon width={22} height={30} />
+                    <PurplePlusIcon width={RFValue(11, 414)} height={RFValue(15,414)} />
                   ))} */}
               </TouchableOpacity>
             )}
@@ -395,9 +410,9 @@ export class TargetAudience extends Component {
 
                 {/* {startEditing &&
                   (targeting.demographics[0].languages.length !== 0 ? (
-                    <PurpleCheckmarkIcon width={22} height={30} />
+                    <PurpleCheckmarkIcon width={RFValue(11, 414)} height={RFValue(15,414)} />
                   ) : (
-                    <PurplePlusIcon width={22} height={30} />
+                    <PurplePlusIcon width={RFValue(11, 414)} height={RFValue(15,414)} />
                   ))} */}
               </TouchableOpacity>
             )}
@@ -412,10 +427,7 @@ export class TargetAudience extends Component {
                 this.closeAll();
                 this.callFunction("selectors", "interests");
               }}
-              style={[
-                styles.targetTouchable,
-                { marginVertical: 8, paddingHorizontal: 10 },
-              ]}
+              style={[styles.targetTouchable, styles.interestTargetTouchable]}
             >
               <View style={[globalStyles.row, styles.flex]}>
                 <InterestsIcon
@@ -427,7 +439,7 @@ export class TargetAudience extends Component {
                 <View
                   style={[
                     globalStyles.column,
-                    styles.flex,
+                    // styles.flex,
                     styles.interestView,
                   ]}
                 >
@@ -446,9 +458,15 @@ export class TargetAudience extends Component {
               <View style={[globalStyles.column, { marginRight: 7 }]}>
                 {startEditing &&
                   (targeting.interests[0].category_id.length !== 0 ? (
-                    <PurpleCheckmarkIcon width={20} height={30} />
+                    <PurpleCheckmarkIcon
+                      width={RFValue(10, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ) : (
-                    <PurplePlusIcon width={20} height={30} />
+                    <PurplePlusIcon
+                      width={RFValue(10, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ))}
               </View>
             </TouchableOpacity>
@@ -500,9 +518,15 @@ export class TargetAudience extends Component {
                   targeting.devices[0] &&
                   (targeting.devices[0].os_type === "" ||
                   targeting.devices[0].os_type ? (
-                    <PurpleCheckmarkIcon width={22} height={30} />
+                    <PurpleCheckmarkIcon
+                      width={RFValue(11, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ) : (
-                    <PurplePlusIcon width={22} height={30} />
+                    <PurplePlusIcon
+                      width={RFValue(11, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ))}
               </TouchableOpacity>
             )}
@@ -543,9 +567,15 @@ export class TargetAudience extends Component {
                   {startEditing &&
                     (targeting.devices[0] &&
                     targeting.devices[0].os_version_min !== "" ? (
-                      <PurpleCheckmarkIcon width={22} height={30} />
+                      <PurpleCheckmarkIcon
+                        width={RFValue(11, 414)}
+                        height={RFValue(15, 414)}
+                      />
                     ) : (
-                      <PurplePlusIcon width={22} height={30} />
+                      <PurplePlusIcon
+                        width={RFValue(11, 414)}
+                        height={RFValue(15, 414)}
+                      />
                     ))}
                 </TouchableOpacity>
               )}
@@ -586,9 +616,15 @@ export class TargetAudience extends Component {
                     (targeting.devices[0] &&
                     targeting.devices[0].marketing_name &&
                     targeting.devices[0].marketing_name.length !== 0 ? (
-                      <PurpleCheckmarkIcon width={22} height={30} />
+                      <PurpleCheckmarkIcon
+                        width={RFValue(11, 414)}
+                        height={RFValue(15, 414)}
+                      />
                     ) : (
-                      <PurplePlusIcon width={22} height={30} />
+                      <PurplePlusIcon
+                        width={RFValue(11, 414)}
+                        height={RFValue(15, 414)}
+                      />
                     ))}
                 </TouchableOpacity>
               )}

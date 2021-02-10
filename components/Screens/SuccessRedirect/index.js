@@ -3,6 +3,7 @@ import { View, Image, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
 import { NavigationActions } from "react-navigation";
+import { RFValue } from "react-native-responsive-fontsize";
 import SafeAreaView from "react-native-safe-area-view";
 import GradientButton from "../../MiniComponents/GradientButton";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
@@ -228,7 +229,7 @@ class SuccessRedirect extends Component {
             </View>
           ) : (
             <>
-              <SuccessIcon width={80} height={80} />
+              <SuccessIcon width={RFValue(40, 414)} height={RFValue(40, 414)} />
               <Text uppercase style={styles.title}>
                 {translate("Success!")}
               </Text>
@@ -243,8 +244,8 @@ class SuccessRedirect extends Component {
             style={[
               styles.details,
               this.state.showVerifyEngagment && {
-                paddingTop: 50,
-                bottom: 45,
+                paddingTop: RFValue(25, 414),
+                bottom: RFValue(22.5, 414),
                 zIndex: 1,
               },
             ]}

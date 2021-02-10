@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
@@ -10,10 +11,10 @@ const styles = StyleSheet.create({
   cardView: {
     display: "flex",
     flexDirection: "column",
-    paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingHorizontal: RFValue(10, 414),
+    paddingVertical: RFValue(7.5, 414),
     backgroundColor: "#fff",
-    borderRadius: 30,
+    borderRadius: RFValue(15, 414),
     shadowColor: "#000",
     width: "70%",
     shadowOffset: {
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
   },
   audienceName: {
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     // textTransform: "uppercase",
     fontFamily: "montserrat-medium",
     color: globalColors.purple,
@@ -42,24 +43,24 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   editAudienceIcon: {
-    marginHorizontal: 5,
+    marginHorizontal: RFValue(2.5, 414),
     borderWidth: 1,
-    width: 30,
-    height: 30,
+    width: RFValue(15, 414),
+    height: RFValue(15, 414),
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 30,
+    borderRadius: RFValue(15, 414),
     backgroundColor: globalColors.purpleTran,
     borderColor: globalColors.purple,
   },
   deleteAudienceIcon: {
-    marginHorizontal: 5,
+    marginHorizontal: RFValue(2.5, 414),
     borderWidth: 1,
-    width: 30,
-    height: 30,
+    width: RFValue(15, 414),
+    height: RFValue(15, 414),
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 30,
+    borderRadius: RFValue(15, 414),
     backgroundColor: globalColors.purpleTran,
     borderColor: globalColors.purple,
   },
@@ -71,8 +72,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginHorizontal: 20,
-    marginVertical: 5,
+    marginHorizontal: RFValue(10, 414),
+    marginVertical: RFValue(2.5, 414),
   },
   countryNames: {
     fontSize: 10,

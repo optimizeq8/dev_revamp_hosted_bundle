@@ -221,6 +221,8 @@ export const login = (userData, navigation) => {
       })
       .then((decodedUser) => {
         if (decodedUser && decodedUser.user) {
+          analytics.alias(decodedUser.user.userid);
+          analytics.flush();
           dispatch(setCurrentUser(decodedUser));
         }
       })

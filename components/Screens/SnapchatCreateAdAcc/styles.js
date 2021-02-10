@@ -1,8 +1,5 @@
 import { StyleSheet } from "react-native";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
@@ -15,14 +12,14 @@ const styles = StyleSheet.create({
     // flex: 1,
     flexDirection: "column",
     justifyContent: "center",
-    marginVertical: 10,
+    marginVertical: RFValue(5, 414),
   },
   imageSlide: {
-    height: 250,
-    width: 250,
+    height: RFValue(125, 414),
+    width: RFValue(125, 414),
   },
   container: {
-    // marginTop: 30,
+    // marginTop: RFValue(15, 414),
     backgroundColor: "#0000",
   },
   mainCard: {
@@ -31,8 +28,8 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
     shadowOpacity: 0.7,
     shadowOffset: { width: 8, height: 8 },
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
+    borderTopStartRadius: RFValue(15, 414),
+    borderTopEndRadius: RFValue(15, 414),
     flex: 1,
     // height: heightPercentageToDP(90),
     marginLeft: 0,
@@ -43,11 +40,11 @@ const styles = StyleSheet.create({
   button: {
     // top: "3%",
     // backgroundColor: "#5F5F5F",
-    // paddingHorizontal: 50,
-    borderRadius: 25,
+    // paddingHorizontal: RFValue(25, 414),
+    borderRadius: RFValue(12.5, 414),
     alignSelf: "center",
-    width: 250,
-    height: 50,
+    width: RFValue(125, 414),
+    height: RFValue(25, 414),
     marginHorizontal: 0,
   },
   gradient: {
@@ -67,16 +64,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   loadingText: {
-    fontSize: 14,
-    lineHeight: 18,
+    fontSize: RFValue(7, 414),
+    lineHeight: RFValue(9, 414),
     color: "#FFF",
     fontFamily: "montserrat-regular",
     textAlign: "center",
     width: "60%",
-    marginVertical: 20,
+    marginVertical: RFValue(10, 414),
   },
   questionText: {
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     fontFamily: "montserrat-bold",
     color: "#FFF",
     width: "60%",
@@ -86,13 +83,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    marginHorizontal: 10,
+    marginHorizontal: RFValue(5, 414),
   },
   answerText: {
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     fontFamily: "montserrat-bold",
     color: "#FFF",
-    marginHorizontal: 2,
+    marginHorizontal: RFValue(1, 414),
   },
   questionView: {
     display: "flex",
@@ -100,19 +97,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     width: "100%",
-    paddingHorizontal: 20,
+    paddingHorizontal: RFValue(10, 414),
   },
   answerRadio: {
-    width: 30,
-    height: 30,
-    borderRadius: 30,
+    width: RFValue(15, 414),
+    height: RFValue(15, 414),
+    borderRadius: RFValue(15, 414),
     backgroundColor: "#0005",
     justifyContent: "center",
   },
   answerRadioSelect: {
-    width: 22,
-    height: 22,
-    borderRadius: 25,
+    width: RFValue(11, 414),
+    height: RFValue(11, 414),
+    borderRadius: RFValue(12.5, 414),
     backgroundColor: globalColors.orange,
     alignSelf: "center",
   },

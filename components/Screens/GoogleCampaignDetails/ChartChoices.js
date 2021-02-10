@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, I18nManager } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import styles from "./styles";
 import GradientButton from "../../MiniComponents/GradientButton";
 import { globalColors } from "../../../GlobalStyles";
@@ -19,13 +20,13 @@ export default class ChartChoices extends Component {
         style={[
           // styles.choiceButtons,
           {
-            height: 35,
+            height: RFValue(17.5, 414),
             width: I18nManager.isRTL ? null : "20%", // Since for arabic the name string are big it should take up the width of the content size
             marginHorizontal: 0,
-            borderRadius: 100,
+            borderRadius: RFValue(50, 414),
           },
         ]}
-        radius={50}
+        radius={RFValue(25, 414)}
         purpleViolet={this.state.selectedChoice === choice}
         transparent={this.state.selectedChoice !== choice}
         text={translate(choice)}
@@ -33,8 +34,10 @@ export default class ChartChoices extends Component {
         textStyle={[
           styles.choiceText,
           {
-            fontSize: 11,
-            paddingHorizontal: I18nManager.isRTL ? 15 : 5,
+            fontSize: RFValue(5.5, 414),
+            paddingHorizontal: I18nManager.isRTL
+              ? RFValue(7.5, 414)
+              : RFValue(2.5, 414),
             color:
               this.state.selectedChoice !== choice
                 ? globalColors.purple3

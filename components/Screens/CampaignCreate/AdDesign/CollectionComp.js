@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { RFValue } from "react-native-responsive-fontsize";
 import { Text, View, TouchableOpacity } from "react-native";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 import PenIcon from "../../../../assets/SVGs/Pen";
@@ -63,10 +64,7 @@ class CollectionComp extends Component {
                 });
               }}
             >
-              <PlusCircle
-                width={hp(5) < 30 ? 20 : 30}
-                height={hp(5) < 30 ? 35 : 30}
-              />
+              <PlusCircle width={RFValue(12, 414)} height={RFValue(12, 414)} />
             </TouchableOpacity>
           )}
           {collectionAdMedia[collIdx] && (

@@ -1,6 +1,7 @@
 import React, { Component, PureComponent } from "react";
 import { View } from "react-native";
 import { connect } from "react-redux";
+import { RFValue } from "react-native-responsive-fontsize";
 
 //icons
 import SingleMetric from "./SingleMetric";
@@ -92,7 +93,7 @@ class CampaignStats extends PureComponent {
       <View
         style={{
           flexDirection: "row",
-          marginVertical: 5,
+          marginVertical: RFValue(2.5, 414),
         }}
       >
         {metrics.map((metric) => this.renderMetrics(metric))}

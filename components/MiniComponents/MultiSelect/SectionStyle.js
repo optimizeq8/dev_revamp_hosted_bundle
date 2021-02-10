@@ -4,6 +4,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 export const colors = {
   subItemBackground: "transparent",
@@ -15,14 +16,14 @@ export const colors = {
 };
 export default styles = StyleSheet.create({
   selectToggle: {
-    marginBottom: 30,
+    marginBottom: RFValue(15, 414),
     borderBottomWidth: 0.5,
     borderColor: "#fff",
     fontFamily: "montserrat-medium",
   },
   selectToggleText: {
     color: "#fff",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     fontFamily: "montserrat-medium",
   },
   container: {
@@ -37,14 +38,14 @@ export default styles = StyleSheet.create({
   searchBar: {
     backgroundColor: "#F4F4F4",
     borderColor: globalColors.rum,
-    borderRadius: 15,
+    borderRadius: RFValue(7.5, 414),
     color: globalColors.rum,
     width: wp(80),
     alignSelf: "center",
   },
   searchTextInput: {
     color: globalColors.rum,
-    fontSize: 17 / PixelRatio.getFontScale(),
+    fontSize: RFValue(8.5 / PixelRatio.getFontScale(), 414),
     textAlign: I18nManager.isRTL ? "right" : "left",
   },
   item: {
@@ -55,11 +56,12 @@ export default styles = StyleSheet.create({
     color: globalColors.rum,
     fontFamily: "montserrat-semibold",
     textAlign: "left",
+    fontSize: RFValue(8, 414),
   },
   selectedItemText: { color: globalColors.rum },
   subItemText: {
     color: globalColors.rum,
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     fontFamily: "montserrat-regular",
     textAlign: "left",
   },
@@ -69,13 +71,14 @@ export default styles = StyleSheet.create({
     alignSelf: "center",
   },
   button: {
-    borderRadius: 50,
-    width: 50,
-    height: 50,
+    borderRadius: RFValue(25, 414),
+    width: RFValue(25, 414),
+    height: RFValue(25, 414),
     alignSelf: "center",
   },
   confirmText: { color: "#fff" },
   chipText: {
     fontFamily: "montserrat-regular",
+    fontSize: RFValue(6.5, 414),
   },
 });

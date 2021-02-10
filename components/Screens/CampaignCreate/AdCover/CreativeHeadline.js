@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, TextInput } from "react-native";
 import { Item } from "native-base";
+import { RFValue } from "react-native-responsive-fontsize";
 import PenIcon from "../../../../assets/SVGs/Pen";
 
 import styles from "./styles";
@@ -14,8 +15,8 @@ export default class CreativeHeadline extends Component {
     return (
       <Item disabled={disabled} style={styles.inputHeadline}>
         <PenIcon
-          width={16}
-          height={16}
+          width={RFValue(8, 414)}
+          height={RFValue(8, 414)}
           style={{ alignSelf: "center" }}
           fill={
             this.state.input

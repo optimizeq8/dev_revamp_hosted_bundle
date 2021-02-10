@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, I18nManager, TouchableOpacity } from "react-native";
 import isEqual from "react-fast-compare";
+import { RFValue } from "react-native-responsive-fontsize";
 //styles
 import styles from "./styles";
 export default class AdButtons extends Component {
@@ -20,21 +21,42 @@ export default class AdButtons extends Component {
           }}
         >
           <AdIcon
-            width={ad.mediaType === "google" ? 20 : 30}
-            height={ad.mediaType === "google" ? 20 : 30}
+            width={
+              ad.mediaType === "google" ? RFValue(10, 414) : RFValue(15, 414)
+            }
+            height={
+              ad.mediaType === "google" ? RFValue(10, 414) : RFValue(15, 414)
+            }
           />
           {ChannelIcon && (
             <ChannelIcon
-              width={60}
-              height={60}
+              width={
+                ad.mediaType === "instagram"
+                  ? RFValue(13.5, 414)
+                  : RFValue(30, 414)
+              }
+              height={
+                ad.mediaType === "instagram"
+                  ? RFValue(13.5, 414)
+                  : RFValue(30, 414)
+              }
               style={[
                 styles.channelIcon,
                 I18nManager.isRTL
                   ? {
+                      top:
+                        ad.mediaType === "instagram"
+                          ? RFValue(-5, 414)
+                          : RFValue(-11, 414),
                       right: -20,
                     }
                   : {
-                      left: -20,
+                      top:
+                        ad.mediaType === "instagram"
+                          ? RFValue(-5, 414)
+                          : RFValue(-11, 414),
+
+                      left: ad.mediaType === "instagram" ? -10 : -20,
                     },
               ]}
               fill={ad.mediaType === "google" ? "#0000" : "#000"}

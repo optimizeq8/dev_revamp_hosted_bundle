@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 export default StyleSheet.create({
   chart: {
@@ -8,20 +9,21 @@ export default StyleSheet.create({
   chartText: {
     color: globalColors.orange,
     fontFamily: "montserrat-medium",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     textAlign: "center",
 
     textTransform: "uppercase",
   },
   chartSubtext: {
     textTransform: "uppercase",
-    fontSize: 12,
+    // fontSize: RFValue(6, 414),
+    fontSize: RFValue(6, 414),
     color: "#fff",
     fontFamily: "montserrat-bold",
     textAlign: "center",
   },
   chartBudgetSubtext: {
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#fff",
     fontFamily: "montserrat-regular",
     textAlign: "center",

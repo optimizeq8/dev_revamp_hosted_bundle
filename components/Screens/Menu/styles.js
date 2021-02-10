@@ -1,4 +1,5 @@
 import { StyleSheet, PixelRatio } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -41,19 +42,19 @@ const styles = StyleSheet.create({
   text: {
     color: "#fff",
     fontFamily: "montserrat-medium",
-    fontSize: 13,
+    fontSize: RFValue(6.5, 414),
     textAlign: "left",
     flex: 1,
-    paddingLeft: 20,
+    paddingLeft: RFValue(10, 414),
     textTransform: "uppercase",
   },
   button: {
     top: heightPercentageToDP("2"),
     marginBottom: heightPercentageToDP(3),
     // backgroundColor: "#FF9D00",
-    borderRadius: 30,
-    width: 150,
-    height: 50,
+    borderRadius: RFValue(15, 414),
+    width: RFValue(75, 414),
+    height: RFValue(25, 414),
     alignSelf: "center",
     zIndex: 2,
     flexDirection: "column",
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: "montserrat-bold",
     color: "#fff",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
   },
   businessTitle: {
     alignSelf: "center",
@@ -70,17 +71,17 @@ const styles = StyleSheet.create({
     // top: 0,
     color: "#fff",
     fontFamily: "montserrat-medium",
-    fontSize: 31,
+    fontSize: RFValue(15.5, 414),
   },
   menutext: {
     fontFamily: "montserrat-bold",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     alignSelf: "center",
     color: "#fff",
   },
   businessname: {
     fontFamily: "montserrat-regular",
-    fontSize: 15,
+    fontSize: RFValue(7.5, 414),
     paddingTop: 5,
     alignSelf: "center",
     color: "#fff",
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
   logoText: {
     textAlign: "center",
     color: "#fff",
-    fontSize: 15,
+    fontSize: RFValue(7.5, 414),
     fontFamily: "montserrat-medium-english",
     marginBottom: "5%",
   },

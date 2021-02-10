@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
-
+import { RFValue } from "react-native-responsive-fontsize";
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
@@ -20,10 +20,10 @@ const styles = StyleSheet.create({
     // marginBottom: 30
   },
   subHeading: {
-    fontSize: 19,
+    fontSize: RFValue(9.5, 414),
     color: "#FFF",
     fontFamily: "montserrat-bold",
-    marginLeft: 16,
+    marginLeft: RFValue(8, 414),
     textTransform: "uppercase",
   },
   subHeadView: {
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     // paddingHorizontal: 26,
-    marginVertical: 15,
+    marginVertical: RFValue(7.5, 414),
   },
 });
 

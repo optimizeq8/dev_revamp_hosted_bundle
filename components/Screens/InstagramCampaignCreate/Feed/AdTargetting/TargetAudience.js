@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import MaskedView from "@react-native-community/masked-view";
-
+import { RFValue } from "react-native-responsive-fontsize";
 //icons
 import PurpleCheckmarkIcon from "../../../../../assets/SVGs/PurpleCheckmark";
 import LocationIcon from "../../../../../assets/SVGs/Location";
@@ -113,8 +113,8 @@ export class TargetAudience extends Component {
               ]}
             >
               <LocationIcon
-                width={15}
-                height={16}
+                width={RFValue(7.5, 414)}
+                height={RFValue(8, 414)}
                 style={styles.icon}
                 fill={globalColors.purple3}
               />
@@ -142,9 +142,15 @@ export class TargetAudience extends Component {
 
                 {startEditing &&
                   (countries_names.length !== 0 ? (
-                    <PurpleCheckmarkIcon width={22} height={30} />
+                    <PurpleCheckmarkIcon
+                      width={RFValue(11, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ) : (
-                    <PurplePlusIcon width={22} height={30} />
+                    <PurplePlusIcon
+                      width={RFValue(11, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ))}
               </TouchableOpacity>
             )}
@@ -161,9 +167,15 @@ export class TargetAudience extends Component {
 
                 {startEditing &&
                   (regions_names.length !== 0 ? (
-                    <PurpleCheckmarkIcon width={22} height={30} />
+                    <PurpleCheckmarkIcon
+                      width={RFValue(11, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ) : (
-                    <PurplePlusIcon width={22} height={30} />
+                    <PurplePlusIcon
+                      width={RFValue(11, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ))}
               </TouchableOpacity>
             )}
@@ -181,8 +193,8 @@ export class TargetAudience extends Component {
               ]}
             >
               <GenderIcon
-                width={15}
-                height={16}
+                width={RFValue(7.5, 414)}
+                height={RFValue(8, 414)}
                 fill={globalColors.purple3}
                 style={styles.icon}
               />
@@ -280,7 +292,7 @@ export class TargetAudience extends Component {
                   style={styles.targetTouchable}
                 >
                   <View style={[globalStyles.row, styles.flex]}>
-                    <LocationIcon width={22} height={30} style={styles.icon}   fill={globalColors.purple}/>
+                    <LocationIcon width={RFValue(11, 414)} height={RFValue(15, 414)} style={styles.icon}   fill={globalColors.purple}/>
                     <View style={[globalStyles.column, styles.flex]}>
                       <Text
                         style={[
@@ -310,9 +322,9 @@ export class TargetAudience extends Component {
 
                   {startEditing &&
                     (targeting.geo_locations.region_id.length !== 0 ? (
-                      <PurpleCheckmarkIcon width={22} height={30} />
+                      <PurpleCheckmarkIcon width={RFValue(11, 414)} height={RFValue(15, 414)} />
                     ) : (
-                      <PurplePlusIcon width={22} height={30} />
+                      <PurplePlusIcon width={RFValue(11, 414)} height={RFValue(15, 414)} />
                     ))}
                 </TouchableOpacity>
               )} */}
@@ -325,7 +337,7 @@ export class TargetAudience extends Component {
               style={styles.targetTouchable}
             >
               <View style={[globalStyles.row, styles.flex]}>
-                <LanguageIcon width={22} height={30} style={styles.icon}   fill={globalColors.purple}/>
+                <LanguageIcon width={RFValue(11, 414)} height={RFValue(15, 414)} style={styles.icon}   fill={globalColors.purple}/>
                 <View style={[globalStyles.column, styles.flex]}>
                   <Text style={styles.menutext}>{translate("Language")}</Text>
                   <Text
@@ -338,9 +350,9 @@ export class TargetAudience extends Component {
               </View>
               {startEditing &&
                 (targeting.demographics[0].languages.length !== 0 ? (
-                  <PurpleCheckmarkIcon width={22} height={30} />
+                  <PurpleCheckmarkIcon width={RFValue(11, 414)} height={RFValue(15, 414)} />
                 ) : (
-                  <PurplePlusIcon width={22} height={30} />
+                  <PurplePlusIcon width={RFValue(11, 414)} height={RFValue(15, 414)} />
                 ))}
             </TouchableOpacity> */}
 
@@ -360,8 +372,8 @@ export class TargetAudience extends Component {
             >
               <View style={[globalStyles.row, { width: "80%" }]}>
                 <InterestsIcon
-                  width={15}
-                  height={30}
+                  width={RFValue(7.5, 414)}
+                  height={RFValue(15, 414)}
                   style={styles.icon}
                   fill={globalColors.purple3}
                 />
@@ -380,9 +392,15 @@ export class TargetAudience extends Component {
 
               {startEditing &&
                 (interests_names && interests_names.length !== 0 ? (
-                  <PurpleCheckmarkIcon width={22} height={30} />
+                  <PurpleCheckmarkIcon
+                    width={RFValue(11, 414)}
+                    height={RFValue(15, 414)}
+                  />
                 ) : (
-                  <PurplePlusIcon width={22} height={30} />
+                  <PurplePlusIcon
+                    width={RFValue(11, 414)}
+                    height={RFValue(15, 414)}
+                  />
                 ))}
             </TouchableOpacity>
           )}
@@ -396,8 +414,8 @@ export class TargetAudience extends Component {
               ]}
             >
               <OperatingSystemIcon
-                width={15}
-                height={16}
+                width={RFValue(7.5, 414)}
+                height={RFValue(8, 414)}
                 fill={globalColors.purple3}
                 style={styles.icon}
               />
@@ -433,9 +451,15 @@ export class TargetAudience extends Component {
 
                 {startEditing &&
                   (targeting.user_os[0] === "" || targeting.user_os[0] ? (
-                    <PurpleCheckmarkIcon width={22} height={30} />
+                    <PurpleCheckmarkIcon
+                      width={RFValue(11, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ) : (
-                    <PurplePlusIcon width={22} height={30} />
+                    <PurplePlusIcon
+                      width={RFValue(11, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ))}
               </TouchableOpacity>
             )}
@@ -459,9 +483,15 @@ export class TargetAudience extends Component {
 
                 {startEditing &&
                   (targeting.os_version_min !== "" ? (
-                    <PurpleCheckmarkIcon width={22} height={30} />
+                    <PurpleCheckmarkIcon
+                      width={RFValue(11, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ) : (
-                    <PurplePlusIcon width={22} height={30} />
+                    <PurplePlusIcon
+                      width={RFValue(11, 414)}
+                      height={RFValue(15, 414)}
+                    />
                   ))}
               </TouchableOpacity>
             ) : null}
@@ -490,16 +520,22 @@ export class TargetAudience extends Component {
 
                   {startEditing &&
                     (targeting.user_device.length !== 0 ? (
-                      <PurpleCheckmarkIcon width={22} height={30} />
+                      <PurpleCheckmarkIcon
+                        width={RFValue(11, 414)}
+                        height={RFValue(15, 414)}
+                      />
                     ) : (
-                      <PurplePlusIcon width={22} height={30} />
+                      <PurplePlusIcon
+                        width={RFValue(11, 414)}
+                        height={RFValue(15, 414)}
+                      />
                     ))}
                 </TouchableOpacity>
               )}
           </View>
         </ScrollView>
 
-        {this.state.scrollY < 12 &&
+        {/* {this.state.scrollY < 12 &&
           !editCampaign &&
           heightPercentageToDP(100) < 700 && (
             <Text
@@ -512,7 +548,7 @@ export class TargetAudience extends Component {
             >
               {translate("Scroll for more options")}
             </Text>
-          )}
+          )} */}
       </View>
     );
   }
