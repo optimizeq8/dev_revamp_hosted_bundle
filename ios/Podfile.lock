@@ -393,8 +393,6 @@ PODS:
     - React
   - RNGestureHandler (1.7.0):
     - React
-  - RNKeychain (6.2.0):
-    - React
   - RNPhotoEditorSDK (2.6.1):
     - PhotoEditorSDK (~> 10.18)
     - React
@@ -515,7 +513,6 @@ DEPENDENCIES:
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNPhotoEditorSDK (from `../node_modules/react-native-photoeditorsdk`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
@@ -693,8 +690,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-device-info"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
-  RNKeychain:
-    :path: "../node_modules/react-native-keychain"
   RNPhotoEditorSDK:
     :path: "../node_modules/react-native-photoeditorsdk"
   RNScreens:
@@ -816,7 +811,6 @@ SPEC CHECKSUMS:
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDeviceInfo: c5f8f3a456adcbba405ace475254b08febc4c095
   RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
-  RNKeychain: b8e0711b959a19c5b057d1e970d3c83d159b6da5
   RNPhotoEditorSDK: 19b264ecab792963aa63d244e33d6d25844fd0dc
   RNScreens: b6c9607e6fe47c1b6e2f1910d2acd46dd7ecea3a
   RNSentry: 1adaa43b01c6a3ab5091d4d1add66b7c58558898
