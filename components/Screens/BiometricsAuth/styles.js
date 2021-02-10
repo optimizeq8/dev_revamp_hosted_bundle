@@ -60,6 +60,22 @@ const styles = StyleSheet.create({
     borderColor: globalColors.rum,
     color: globalColors.rum,
   },
+  toggleConatiner: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#0002",
+    width: "85%",
+    height: 60,
+    borderRadius: 30,
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    marginVertical: 10,
+  },
+  toggleText: {
+    fontSize: 15,
+    fontFamily: "montserrat-regular",
+    color: globalColors.white,
+  },
 });
 
 export default styles;

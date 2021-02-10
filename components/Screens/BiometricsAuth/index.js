@@ -37,10 +37,6 @@ class BiometricsAuth extends Component {
         }
       );
       userConnectedBiometrics = JSON.parse(userConnectedBiometrics);
-      console.log(
-        "userConnectedBiometrics",
-        JSON.stringify(userConnectedBiometrics, null, 2)
-      );
       if (userConnectedBiometrics) {
         let biometricsEnabled = userConnectedBiometrics.find(
           (acc) => acc.username === this.props.userInfo.email
@@ -69,18 +65,20 @@ class BiometricsAuth extends Component {
               newUserConnectedBiometrics = newUserConnectedBiometrics.filter(
                 (acc) => acc.username !== this.props.userInfo.email
               );
-              console.log(
-                "newUserConnectedBiometrics",
-                newUserConnectedBiometrics
-              );
-              SecureStore.setItemAsync(
-                "accountsSecured",
-                JSON.stringify(newUserConnectedBiometrics),
-                {
+              if (newUserConnectedBiometrics.length === 0) {
+                SecureStore.deleteItemAsync("accountsSecured", {
                   keychainService:
                     Platform.OS === "ios" ? "kSecAttrService" : "Alias",
-                }
-              );
+                });
+              } else
+                SecureStore.setItemAsync(
+                  "accountsSecured",
+                  JSON.stringify(newUserConnectedBiometrics),
+                  {
+                    keychainService:
+                      Platform.OS === "ios" ? "kSecAttrService" : "Alias",
+                  }
+                );
             }
           } else {
             showMessage({ message: "Action not autorized", type: "danger" });
@@ -93,7 +91,6 @@ class BiometricsAuth extends Component {
   };
   handleAd;
   setValue = (stateName, value) => {
-    console.log(value);
     this.setState({ [stateName]: value });
   };
   getValidInfo = (stateError, validWrap) => {
@@ -167,12 +164,14 @@ class BiometricsAuth extends Component {
 
           <Text style={styles.description} numberOfLines={2}>
             {biometricsEnabled
-              ? translate(`Your account has been secured using`) +
-                ` ${biometryType}`
+              ? translate(
+                  `Your account has been secured using {{biometryType}}`,
+                  { biometryType }
+                )
               : translate(
                   `Would you like to enable {{biometryType}} with this account`,
                   {
-                    biometryType: biometryType,
+                    biometryType,
                   }
                 )}
           </Text>
@@ -193,23 +192,6 @@ class BiometricsAuth extends Component {
               secureTextEntry={true}
               customStyles={{ width: "70%" }}
               autoFocus
-            />
-          )}
-          {!showingInModal && showPasswordField && (
-            <GradientButton
-              uppercase
-              text={
-                showPasswordField ? translate("Continue") : translate("Enable")
-              }
-              onPressAction={
-                showPasswordField
-                  ? this.handleAddingAccount
-                  : this.handlePasswordField
-              }
-              style={[
-                styles.gradientButton,
-                { height: "6%", marginVertical: 20 },
-              ]}
             />
           )}
           {showingInModal ? (
@@ -237,16 +219,38 @@ class BiometricsAuth extends Component {
               />
             </>
           ) : (
-            <Toggle
-              onPress={this.handleToggle}
-              switchOn={!!biometricsEnabled}
-              backgroundColorOff="rgba(255,255,255,0.1)"
-              backgroundColorOn="rgba(255,255,255,0.1)"
-              circleColorOff="#FFf"
-              circleColorOn="#66D072"
-              duration={500}
-              circleStyle={styles.toggleCircle}
-              containerStyle={styles.toggleStyle}
+            <View style={styles.toggleConatiner}>
+              <Text style={styles.toggleText}>
+                {translate("Sign in")}:{"\n" + this.props.userInfo.email}
+              </Text>
+              <Toggle
+                onPress={this.handleToggle}
+                switchOn={!!biometricsEnabled}
+                backgroundColorOff="rgba(255,255,255,0.1)"
+                backgroundColorOn="rgba(255,255,255,0.1)"
+                circleColorOff="#FFf"
+                circleColorOn="#66D072"
+                duration={500}
+                circleStyle={styles.toggleCircle}
+                containerStyle={styles.toggleStyle}
+              />
+            </View>
+          )}
+          {!showingInModal && showPasswordField && (
+            <GradientButton
+              uppercase
+              text={
+                showPasswordField ? translate("Continue") : translate("Enable")
+              }
+              onPressAction={
+                showPasswordField
+                  ? this.handleAddingAccount
+                  : this.handlePasswordField
+              }
+              style={[
+                styles.gradientButton,
+                { height: "6%", marginVertical: 20 },
+              ]}
             />
           )}
         </View>
