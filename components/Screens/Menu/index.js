@@ -339,7 +339,7 @@ class Menu extends Component {
               >
                 <Icon type="Fontisto" name="unlocked" style={styles.icons} />
                 <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
-                  {"Touch or Face ID"}
+                  {translate("Secure Account")}
                 </Text>
               </TouchableOpacity>
 

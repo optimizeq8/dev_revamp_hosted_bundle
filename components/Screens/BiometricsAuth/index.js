@@ -110,7 +110,8 @@ class BiometricsAuth extends Component {
         password: this.state.password,
       },
       this.refs.modalFlash,
-      this.handleDismissingBiometricModal
+      this.handleDismissingBiometricModal,
+      this.props.screenProps.translate
     );
   };
   handleDismissingBiometricModal = () => {
@@ -162,12 +163,18 @@ class BiometricsAuth extends Component {
               style={{ fontSize: 50, color: "#fff" }}
             />
           )}
-          <Text style={styles.title}>{`Secure your account `}</Text>
+          <Text style={styles.title}>{translate(`Secure your account`)}</Text>
 
           <Text style={styles.description} numberOfLines={2}>
             {biometricsEnabled
-              ? `Your account has been secured using ${biometryType}`
-              : `Would you like to enable ${biometryType} with this account?`}
+              ? translate(`Your account has been secured using`) +
+                ` ${biometryType}`
+              : translate(
+                  `Would you like to enable {{biometryType}} with this account`,
+                  {
+                    biometryType: biometryType,
+                  }
+                )}
           </Text>
           {showPasswordField && (
             <InputField
@@ -260,12 +267,18 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   verifyEmail: (email, userInfo, navigation) =>
     dispatch(actionCreators.verifyEmail(email, userInfo, navigation)),
-  checkPassword: (userInfo, modalFlash, handleDismissingBiometricModal) =>
+  checkPassword: (
+    userInfo,
+    modalFlash,
+    handleDismissingBiometricModal,
+    translate
+  ) =>
     dispatch(
       actionCreators.checkPassword(
         userInfo,
         modalFlash,
-        handleDismissingBiometricModal
+        handleDismissingBiometricModal,
+        translate
       )
     ),
   resetRegister: () => dispatch(actionCreators.resetRegister()),
