@@ -329,6 +329,21 @@ class Menu extends Component {
               </TouchableOpacity>
 
               <TouchableOpacity
+                style={styles.options}
+                onPress={() =>
+                  this.handleNavigation("BiometricsAuth", false, {
+                    source: "open_hamburger",
+                    source_action: "a_open_biometric_auth",
+                  })
+                }
+              >
+                <Icon type="Fontisto" name="unlocked" style={styles.icons} />
+                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
+                  {"Touch or Face ID"}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
                 onPress={() =>
                   this.handleNavigation("ChangePassword", false, {
                     source: "open_hamburger",
