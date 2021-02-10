@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   Text,
   RefreshControl,
+  Modal,
 } from "react-native";
 import * as Notifications from "expo-notifications";
 import Intercom from "react-native-intercom";
@@ -67,11 +68,14 @@ import GradientButton from "../../MiniComponents/GradientButton";
 import LowerButton from "../../MiniComponents/LowerButton";
 import PlaceHolderLine from "../../MiniComponents/PlaceholderLine";
 import * as moment from "moment-timezone";
+import BiometricsAuth from "../BiometricsAuth";
 
 // import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import isNull from "lodash/isNull";
 import { Platform } from "react-native";
 import AlertModal from "../../MiniComponents/AlertModal";
+import { BlurView } from "@react-native-community/blur";
+import AsyncStorage from "@react-native-community/async-storage";
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
 
@@ -98,6 +102,7 @@ class Dashboard extends Component {
       showButton: true,
       count: 0,
       showAlertModal: false,
+      showBiometricsModal: false,
     };
 
     //Logs/gives warnign if a component has any functions that take a while to render
@@ -110,7 +115,7 @@ class Dashboard extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
-  componentDidMount() {
+  async componentDidMount() {
     this.props.checkHashForUser();
     // if (this.props.userInfo) {
     //   const MPTweakHelper = NativeModules.MPTweakHelper;
@@ -168,6 +173,12 @@ class Dashboard extends Component {
       this.props.instagramIncompleteCampaign
     ) {
       this.props.setCampaignInProgressInstagram(false);
+    }
+    let ignoreBiometricModal = await AsyncStorage.getItem(
+      "ignoreBiometricModal"
+    );
+    if (!ignoreBiometricModal) {
+      this.setState({ showBiometricsModal: true });
     }
   }
   handleBackPress = () => {
@@ -1067,6 +1078,23 @@ class Dashboard extends Component {
             resetAlertModal={this.resetAlertModal}
           ></AlertModal>
           <AppUpdateChecker screenProps={this.props.screenProps} />
+          <Modal transparent visible={this.state.showBiometricsModal}>
+            <BlurView
+              blurType="dark"
+              style={{
+                height: "100%",
+                justifyContent: "center",
+              }}
+            >
+              <BiometricsAuth
+                screenProps={this.props.screenProps}
+                closeBiometricsModal={() =>
+                  this.setState({ showBiometricsModal: false })
+                }
+                showingInModal={true}
+              />
+            </BlurView>
+          </Modal>
         </SafeAreaView>
       );
     }
