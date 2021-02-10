@@ -15,7 +15,8 @@ import analytics from "@segment/analytics-react-native";
 import InputScrollView from "react-native-input-scroll-view";
 import { LinearGradient } from "expo-linear-gradient";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
-
+import ReactNativeBiometrics from "react-native-biometrics";
+import * as SecureStore from "expo-secure-store";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -39,6 +40,8 @@ import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 import GradientButton from "../../MiniComponents/GradientButton";
 import { showMessage } from "react-native-flash-message";
+import { Icon } from "native-base";
+import BottomAccountMenu from "./BottomAccountMenu";
 
 class Signin extends Component {
   static navigationOptions = {
@@ -54,6 +57,9 @@ class Signin extends Component {
       newEmail: "",
       newEmailError: "",
       activeTab: 0,
+      biometrySupported: true,
+      showMultipleAccounts: false,
+      userConnectedBiometrics: [],
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
@@ -105,6 +111,9 @@ class Signin extends Component {
       });
     }
     if (this.props.userInfo) this.props.navigation.navigate("Dashboard");
+    ReactNativeBiometrics.isSensorAvailable().then((isSupported) => {
+      this.setState({ biometrySupported: isSupported.available });
+    });
   }
   handleDeepLink = (url) => {
     if (this.props.userInfo) {
@@ -204,6 +213,88 @@ class Signin extends Component {
     this.setState({
       activeTab: activeTabSignUp ? 1 : 0,
     });
+  };
+  biometricAuth = async () => {
+    let { translate } = this.props.screenProps;
+    try {
+      ReactNativeBiometrics.isSensorAvailable().then(async (resultObject) => {
+        const { available, biometryType } = resultObject;
+
+        if (available && biometryType) {
+          let userConnectedBiometrics = await SecureStore.getItemAsync(
+            "accountsSecured",
+            {
+              keychainService:
+                Platform.OS === "ios" ? "kSecAttrService" : "Alias",
+            }
+          );
+          let username = "";
+          let password = "";
+          if (userConnectedBiometrics) {
+            userConnectedBiometrics = JSON.parse(userConnectedBiometrics);
+            if (userConnectedBiometrics.length === 1) {
+              username = userConnectedBiometrics[0]["username"];
+              password = userConnectedBiometrics[0]["password"];
+            } else {
+              this.setState({ userConnectedBiometrics });
+              ReactNativeBiometrics.simplePrompt({
+                promptMessage: translate("Sign in"),
+              }).then((action) => {
+                if (action.success) {
+                  this.setState({ showMultipleAccounts: true });
+                }
+              });
+            }
+          }
+          if (!!password) {
+            ReactNativeBiometrics.simplePrompt({
+              promptMessage: "Sign in",
+            }).then(async (resultObject) => {
+              const { success } = resultObject;
+              if (success) {
+                this.props.login(
+                  {
+                    email: username,
+                    password,
+                  },
+                  this.props.navigation
+                );
+              }
+            });
+          } else if (!userConnectedBiometrics) {
+            showMessage({
+              message: translate("No credentials found"),
+              description: translate("Please sign in or sign up first"),
+              type: "warning",
+            });
+          }
+        } else {
+          showMessage({
+            message: translate("TouchID/FaceID or Biometrics not supported"),
+            type: "warning",
+          });
+        }
+      });
+    } catch (error) {
+      showMessage({
+        message: translate("Something went wrong!"),
+        description: translate("Keychain couldn't be accessed"),
+        type: "danger",
+      });
+    }
+  };
+
+  showAccountsModal = (value) => {
+    this.setState({ showMultipleAccounts: value });
+  };
+  loginAuthorizedUser = (loginCred) => {
+    this.props.login(
+      {
+        email: loginCred.username,
+        password: loginCred.password,
+      },
+      this.props.navigation
+    );
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -384,11 +475,33 @@ class Signin extends Component {
                     </Text>
                   </TouchableOpacity>
                 )}
+                {this.state.activeTab === 1 && this.state.biometrySupported && (
+                  <TouchableOpacity
+                    style={{
+                      alignSelf: "center",
+                    }}
+                    onPress={this.biometricAuth}
+                  >
+                    <Icon
+                      name="fingerprint"
+                      type="MaterialIcons"
+                      style={{ fontSize: 50, color: "#fff" }}
+                    />
+                  </TouchableOpacity>
+                )}
               </InputScrollView>
+
               <AppUpdateChecker screenProps={this.props.screenProps} />
               {(this.props.emailLoading || this.props.loading) && (
                 <LoadingScreen dash={true} />
               )}
+              <BottomAccountMenu
+                showMultipleAccounts={this.state.showMultipleAccounts}
+                showAccountsModal={this.showAccountsModal}
+                userConnectedBiometrics={this.state.userConnectedBiometrics}
+                loginAuthorizedUser={this.loginAuthorizedUser}
+                translate={translate}
+              />
             </View>
           )}
         </SafeAreaView>
