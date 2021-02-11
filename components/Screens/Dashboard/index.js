@@ -178,7 +178,9 @@ class Dashboard extends Component {
       "ignoreBiometricModal"
     );
     if (!ignoreBiometricModal) {
-      this.setState({ showBiometricsModal: true });
+      setTimeout(() => {
+        this.setState({ showBiometricsModal: true });
+      }, 3000);
     }
   }
   handleBackPress = () => {

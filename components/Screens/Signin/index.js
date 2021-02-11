@@ -43,6 +43,8 @@ import GradientButton from "../../MiniComponents/GradientButton";
 import { showMessage } from "react-native-flash-message";
 import { Icon } from "native-base";
 import BottomAccountMenu from "./BottomAccountMenu";
+import { globalColors } from "../../../GlobalStyles";
+import FaceID from "../../../assets/SVGs/FaceID.svg";
 
 class Signin extends Component {
   static navigationOptions = {
@@ -59,6 +61,7 @@ class Signin extends Component {
       newEmailError: "",
       activeTab: 0,
       biometrySupported: true,
+      biometryType: "",
       showMultipleAccounts: false,
       userConnectedBiometrics: [],
     };
@@ -113,7 +116,10 @@ class Signin extends Component {
     }
     if (this.props.userInfo) this.props.navigation.navigate("Dashboard");
     ReactNativeBiometrics.isSensorAvailable().then((isSupported) => {
-      this.setState({ biometrySupported: isSupported.available });
+      this.setState({
+        biometrySupported: isSupported.available,
+        biometryType: isSupported.biometryType,
+      });
     });
   }
   handleDeepLink = (url) => {
@@ -483,11 +489,20 @@ class Signin extends Component {
                     }}
                     onPress={this.biometricAuth}
                   >
-                    <Icon
-                      name="fingerprint"
-                      type="MaterialIcons"
-                      style={{ fontSize: 50, color: "#fff" }}
-                    />
+                    {this.state.biometryType === "FaceID" ? (
+                      <FaceID
+                        fill={globalColors.white}
+                        style={styles.icon}
+                        width={50}
+                        height={50}
+                      />
+                    ) : (
+                      <Icon
+                        name={"fingerprint"}
+                        type="MaterialCommunityIcons"
+                        style={{ fontSize: 50, color: "#fff" }}
+                      />
+                    )}
                   </TouchableOpacity>
                 )}
               </InputScrollView>
