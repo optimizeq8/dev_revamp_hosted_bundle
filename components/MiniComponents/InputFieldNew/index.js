@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { View, Text, Platform } from "react-native";
+import { View, Text, Platform, TouchableOpacity } from "react-native";
 import styles from "./styles";
-import { Item, Input } from "native-base";
+import { Item, Input, Icon } from "native-base";
 import * as Animatable from "react-native-animatable";
 
 //function
@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 
 //styles
 import GlobalStyles, { globalColors } from "../../../GlobalStyles";
+import FaceID from "../../../assets/SVGs/FaceID.svg";
 
 export default class InputField extends Component {
   typingTimeout = null;
@@ -171,6 +172,9 @@ export default class InputField extends Component {
       placeholderColor = "#FFF",
       labelColor = globalColors.white,
       copilot,
+      biometricAuth,
+      biometryType,
+      showBiometryButton,
     } = this.props;
 
     let FieldIcon = icon ? icon : null;
@@ -238,6 +242,31 @@ export default class InputField extends Component {
                   onFocus={this.focusFeild}
                   onBlur={() => this.handleBlur(false)}
                 />
+                {showBiometryButton && (
+                  <TouchableOpacity
+                    style={{
+                      alignSelf: "center",
+                      position: "absolute",
+                      right: "20%",
+                      bottom: "30%",
+                    }}
+                    onPress={biometricAuth}
+                  >
+                    {biometryType === "FaceID" || "Biometrics" ? (
+                      <FaceID
+                        fill={globalColors.white}
+                        width={30}
+                        height={30}
+                      />
+                    ) : (
+                      <Icon
+                        name={"fingerprint"}
+                        type="MaterialCommunityIcons"
+                        style={{ fontSize: 30, color: "#fff" }}
+                      />
+                    )}
+                  </TouchableOpacity>
+                )}
                 {stateName2 && (
                   <View
                     style={{

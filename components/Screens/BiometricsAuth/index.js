@@ -233,6 +233,12 @@ class BiometricsAuth extends Component {
                 duration={500}
                 circleStyle={styles.toggleCircle}
                 containerStyle={styles.toggleStyle}
+                buttonText={!!biometricsEnabled ? "On" : "Off"}
+                buttonTextStyle={styles.switchButtonText}
+                containerStyle={styles.toggleStyle}
+                circleStyle={styles.switchCircle}
+                circleColorOff="#FF9D00"
+                circleColorOn="#66D072"
               />
             </View>
           )}

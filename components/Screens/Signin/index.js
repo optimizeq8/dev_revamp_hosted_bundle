@@ -41,10 +41,7 @@ import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 import GradientButton from "../../MiniComponents/GradientButton";
 import { showMessage } from "react-native-flash-message";
-import { Icon } from "native-base";
 import BottomAccountMenu from "./BottomAccountMenu";
-import { globalColors } from "../../../GlobalStyles";
-import FaceID from "../../../assets/SVGs/FaceID.svg";
 
 class Signin extends Component {
   static navigationOptions = {
@@ -61,7 +58,7 @@ class Signin extends Component {
       newEmailError: "",
       activeTab: 0,
       biometrySupported: true,
-      biometryType: "",
+      biometryType: "TouchID/FaceID",
       showMultipleAccounts: false,
       userConnectedBiometrics: [],
     };
@@ -118,7 +115,9 @@ class Signin extends Component {
     ReactNativeBiometrics.isSensorAvailable().then((isSupported) => {
       this.setState({
         biometrySupported: isSupported.available,
-        biometryType: isSupported.biometryType,
+        biometryType: isSupported.available
+          ? isSupported.biometryType
+          : "TouchID/FaceID",
       });
     });
   }
@@ -277,7 +276,9 @@ class Signin extends Component {
           }
         } else {
           showMessage({
-            message: translate("TouchID/FaceID or Biometrics not supported"),
+            message: translate("{{biometryType}} not supported on this phone", {
+              biometryType: this.state.biometryType,
+            }),
             type: "warning",
           });
         }
@@ -451,6 +452,12 @@ class Signin extends Component {
                       getValidInfo={this.getValidInfo}
                       key={"Passowrd"}
                       secureTextEntry={true}
+                      showBiometryButton={
+                        this.state.activeTab === 1 &&
+                        this.state.biometrySupported
+                      }
+                      biometryType={this.state.biometryType}
+                      biometricAuth={this.biometricAuth}
                     />
                   </>
                 )}
@@ -480,29 +487,6 @@ class Signin extends Component {
                     <Text style={[styles.link, styles.forgotPasswordLink]}>
                       {translate("Forgot Password?")}
                     </Text>
-                  </TouchableOpacity>
-                )}
-                {this.state.activeTab === 1 && this.state.biometrySupported && (
-                  <TouchableOpacity
-                    style={{
-                      alignSelf: "center",
-                    }}
-                    onPress={this.biometricAuth}
-                  >
-                    {this.state.biometryType === "FaceID" ? (
-                      <FaceID
-                        fill={globalColors.white}
-                        style={styles.icon}
-                        width={50}
-                        height={50}
-                      />
-                    ) : (
-                      <Icon
-                        name={"fingerprint"}
-                        type="MaterialCommunityIcons"
-                        style={{ fontSize: 50, color: "#fff" }}
-                      />
-                    )}
                   </TouchableOpacity>
                 )}
               </InputScrollView>

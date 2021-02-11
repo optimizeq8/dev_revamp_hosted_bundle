@@ -4,6 +4,7 @@ import {
   widthPercentageToDP,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
+import { RFValue } from "react-native-responsive-fontsize";
 
 const styles = StyleSheet.create({
   safeAreaViewContainer: { flex: 1, backgroundColor: "#0000" },
@@ -75,6 +76,27 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: "montserrat-regular",
     color: globalColors.white,
+  },
+  switchButtonText: {
+    fontSize: RFValue(5, 414),
+    color: "#fff",
+    alignSelf: "center",
+    justifyContent: "center",
+    fontFamily: "montserrat-bold",
+  },
+  toggleStyle: {
+    marginTop: 0,
+    width: widthPercentageToDP("15"),
+    height: heightPercentageToDP("3"),
+    borderRadius: RFValue(12.5, 414),
+    padding: 0,
+  },
+  switchCircle: {
+    width: widthPercentageToDP("7.5"),
+    height: heightPercentageToDP("3"),
+    borderRadius: 25,
+    flexDirection: "column",
+    justifyContent: "center",
   },
 });
 
