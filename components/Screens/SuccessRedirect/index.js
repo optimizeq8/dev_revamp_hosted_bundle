@@ -38,6 +38,7 @@ class SuccessRedirect extends Component {
   }
 
   componentDidMount() {
+    this.props.getBusinessAccounts(false);
     const source = this.props.navigation.getParam(
       "source",
       "payment_processing"
@@ -310,5 +311,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.rest_google_campaign_data()),
   resetCampaignInfoInstagram: () =>
     dispatch(actionCreators.resetCampaignInfoInstagram()),
+  getBusinessAccounts: (businessSeleced) =>
+    dispatch(actionCreators.getBusinessAccounts(businessSeleced)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SuccessRedirect);
