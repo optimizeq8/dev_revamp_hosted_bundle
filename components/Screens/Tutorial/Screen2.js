@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Image, Text, I18nManager, Platform } from "react-native";
+import { View, Image, Text, I18nManager } from "react-native";
 import { Icon } from "native-base";
 import * as Animatable from "react-native-animatable";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import PenIcon from "../../../assets/SVGs/Pen";
 import EditCameraIcon from "../../../assets/SVGs/CameraCircleOutline";
 
@@ -34,7 +34,7 @@ export default class Screen2 extends React.Component {
             0: { scale: 1, translateX: 0 },
             0.5: {
               scale: 1.4,
-              translateX: I18nManager.isRTL ? -30 : 30,
+              translateX: I18nManager.isRTL ? -30 : RFValue(15, 414),
             },
             1: { scale: 1, translateX: 0 },
           })
@@ -99,14 +99,14 @@ export default class Screen2 extends React.Component {
         <View style={styles.screen2OuterView}>
           <View
             style={{
-              borderRadius: 30,
+              borderRadius: RFValue(15, 414),
               position: "absolute",
               height: "100%",
             }}
           >
             <Image
               style={{
-                borderRadius: 30,
+                borderRadius: RFValue(15, 414),
                 opacity: 0.4,
                 overflow: "hidden",
                 height: "100%",
@@ -117,10 +117,10 @@ export default class Screen2 extends React.Component {
           <Animatable.View
             ref={(ref) => (this.bsnView = ref)}
             duration={2000}
-            style={[styles.bsnView, { paddingTop: 20 }]}
+            style={[styles.bsnView, { paddingTop: RFValue(10, 414) }]}
           >
             <Animatable.View style={styles.adDesignTopView}>
-              <PenIcon width={17} height={17} />
+              <PenIcon width={RFValue(8.5, 414)} height={RFValue(8.5, 414)} />
               <View style={styles.adDesignDetailView}>
                 <Text style={styles.adDesignHeading}>
                   {translate("Business Name")}
@@ -129,7 +129,7 @@ export default class Screen2 extends React.Component {
               </View>
             </Animatable.View>
             <Animatable.View style={styles.adDesignTopView}>
-              <PenIcon width={17} height={17} />
+              <PenIcon width={RFValue(8.5, 414)} height={RFValue(8.5, 414)} />
               <View style={styles.adDesignDetailView}>
                 <Text style={styles.adDesignHeading}>
                   {translate("Headline")}
@@ -149,7 +149,10 @@ export default class Screen2 extends React.Component {
               textStyle={styles.blockText}
             />
 
-            <EditCameraIcon width={70} height={70} />
+            <EditCameraIcon
+              width={RFValue(35, 414)}
+              height={RFValue(35, 414)}
+            />
             <Text style={styles.editText}>{translate("Edit Media")}</Text>
           </Animatable.View>
           <Animatable.View

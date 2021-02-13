@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
 import { Item, Input } from "native-base";
+import { RFValue } from "react-native-responsive-fontsize";
 import PenIcon from "../../../../assets/SVGs/Pen";
 
 import styles from "./styles";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+import QuestionComponent from "../../../MiniComponents/QuestionComponent";
 
 export default class CreativeHeadline extends Component {
   state = {
@@ -74,12 +76,20 @@ export default class CreativeHeadline extends Component {
       headlineError,
       setTheState,
       copilot,
+      copilotStart,
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
-      <View {...copilot}>
-        <Item style={[styles.inputBrand]}>
+      <View {...copilot} style={{ alignItems: "center", flexDirection: "row" }}>
+        <Item
+          style={[
+            styles.inputBrand,
+            field === "Business Name" && { width: "90%", marginRight: 5 },
+          ]}
+        >
           <PenIcon
+            width={RFValue(10, 414)}
+            style={{ marginLeft: 5 }}
             fill={
               this.state.input
                 ? "#FF9D00"
@@ -150,6 +160,12 @@ export default class CreativeHeadline extends Component {
             />
           </View>
         </Item>
+        {field === "Business Name" && (
+          <QuestionComponent
+            style={{ position: "relative", bottom: 0, right: 0 }}
+            onPressFunction={() => copilotStart()}
+          />
+        )}
       </View>
     );
   }

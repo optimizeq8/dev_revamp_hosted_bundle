@@ -1,7 +1,7 @@
 //Components
 import React, { Component } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-
+import { RFValue } from "react-native-responsive-fontsize";
 //Style
 import styles from "./styles";
 
@@ -33,8 +33,8 @@ class ObjectiveCard extends Component {
         ]}
       >
         <IconName
-          width={45}
-          height={45}
+          width={RFValue(22.5, 414)}
+          height={RFValue(22.5, 414)}
           fill={changeState.color}
           style={[styles.icon]}
         />

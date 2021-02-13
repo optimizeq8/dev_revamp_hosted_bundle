@@ -1,4 +1,5 @@
 import { StyleSheet, PixelRatio } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
   },
   campaignInfoCard: {
     flex: 1,
-    top: 10,
+    top: RFValue(5, 414),
     alignItems: "flex-start",
   },
   titleContainer: {
@@ -24,59 +25,59 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     alignItems: "center",
     width: "100%",
-    height: 50,
+    height: RFValue(25, 414),
   },
   title: {
     fontFamily: "montserrat-bold",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     color: globalColors.white,
     alignSelf: "flex-start",
   },
   adPerformanceLowerButton: {
-    width: 35,
-    height: 35,
+    width: RFValue(17.5, 414),
+    height: RFValue(17.5, 414),
   },
   subtext: {
     fontFamily: "montserrat-bold",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#fff",
     textAlign: "left",
   },
   chartSubtext: {
     alignSelf: "center",
-    paddingTop: 10,
+    paddingTop: RFValue(5, 414),
     fontFamily: "montserrat-regular",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#fff",
     alignSelf: "flex-start",
   },
   metricsStyle: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 20,
-    marginVertical: 3,
-    marginRight: 10,
+    paddingHorizontal: RFValue(10, 414),
+    marginVertical: RFValue(1.5, 414),
+    marginRight: RFValue(5, 414),
     backgroundColor: "#0004",
     width: widthPercentageToDP(42),
-    borderRadius: 20,
-    height: 50,
+    borderRadius: RFValue(10, 414),
+    height: RFValue(25, 414),
   },
   metricsCardStyle: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 3,
+    marginBottom: RFValue(1.5, 414),
     backgroundColor: "#0000",
-    borderRadius: 20,
+    borderRadius: RFValue(10, 414),
   },
   metricIcon: {
-    marginRight: 10,
+    marginRight: RFValue(5, 414),
   },
   metricView: {
     display: "flex",
   },
   metricText: {
     color: "#fff",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     textAlign: "left",
     textTransform: "uppercase",
   },
@@ -84,12 +85,12 @@ const styles = StyleSheet.create({
     textAlign: "left",
     color: "#FF9D00",
     fontFamily: "montserrat-bold-english",
-    fontSize: 16 / PixelRatio.getFontScale(),
+    fontSize: RFValue(8, 414),
     textAlign: "left",
   },
   metricRow: {
     flexDirection: "row",
-    marginVertical: 5,
+    marginVertical: RFValue(2.5, 414),
   },
 });
 

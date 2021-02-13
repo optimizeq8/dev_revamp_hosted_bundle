@@ -8,6 +8,7 @@ import {
   Alert,
 } from "react-native";
 import { connect } from "react-redux";
+import { RFValue } from "react-native-responsive-fontsize";
 import { Input, Item, Icon } from "native-base";
 import SafeAreaView from "react-native-safe-area-view";
 import * as actionCreators from "../../../store/actions";
@@ -136,8 +137,8 @@ class SelectRegions extends Component {
         )}
         <View style={[styles.dataContainer]}>
           <LocationIcon
-            width={70}
-            height={70}
+            width={RFValue(35, 414)}
+            height={RFValue(35, 414)}
             fill={globalColors.rum}
             style={styles.locationIcon}
           />
@@ -156,7 +157,7 @@ class SelectRegions extends Component {
                   {
                     fontFamily: "montserrat-regular",
                     color: globalColors.rum,
-                    fontSize: 14 / PixelRatio.getFontScale(),
+                    fontSize: RFValue(7 / PixelRatio.getFontScale(), 414),
                   },
                 ]}
                 placeholderTextColor={globalColors.rum}

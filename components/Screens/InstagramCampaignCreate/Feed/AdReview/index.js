@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
-
+import { RFValue } from "react-native-responsive-screen";
 import { Transition } from "react-navigation-fluid-transitions";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { widthPercentageToDP } from "react-native-responsive-screen";
@@ -162,8 +162,8 @@ class AdFeedDesignReview extends React.Component {
             <View style={styles.profilePicView}>
               <Image
                 style={{ borderRadius: 20 }}
-                width={32}
-                height={32}
+                width={RFValue(16, 414)}
+                height={RFValue(16, 414)}
                 source={{
                   uri: instagram_profile_pic,
                 }}

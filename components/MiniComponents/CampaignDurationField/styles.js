@@ -1,4 +1,5 @@
 import { StyleSheet, PixelRatio, I18nManager } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 
 export default StyleSheet.create({
@@ -9,24 +10,24 @@ export default StyleSheet.create({
     alignSelf: "center",
     width: "100%",
     borderWidth: 0,
-    height: 54,
+    height: RFValue(27, 414),
     alignItems: "center",
-    marginBottom: 25,
-    marginTop: 10,
+    marginBottom: RFValue(12.5, 414),
+    marginTop: RFValue(5, 414),
     flexDirection: "row",
-    paddingHorizontal: 20,
+    paddingHorizontal: RFValue(10, 414),
   },
   durationLabel: {
     fontFamily: "montserrat-bold",
-    fontSize: 12 / PixelRatio.getFontScale(),
+    fontSize: RFValue(6 / PixelRatio.getFontScale(), 414),
     color: "#fff",
     alignSelf: "flex-start",
     textAlign: I18nManager.isRTL ? "right" : "left",
     textTransform: "uppercase",
-    marginTop: 10,
+    marginTop: RFValue(5, 414),
   },
   durationContent: {
-    marginLeft: 13,
+    marginLeft: RFValue(6.5, 414),
     width: "90%",
     height: "100%",
     justifyContent: "center",
@@ -63,15 +64,15 @@ export default StyleSheet.create({
   },
   buttonText: {
     fontFamily: "montserrat-regular",
-    fontSize: 25,
+    fontSize: RFValue(12.5, 414),
     color: "#fff",
     textAlign: "center",
   },
   durationData: {
     fontFamily: "montserrat-bold-english",
     color: globalColors.orange,
-    fontSize: 14,
-    paddingVertical: 5,
+    fontSize: RFValue(7, 414),
+    paddingVertical: RFValue(2.5, 414),
     textTransform: "uppercase",
     alignSelf: "flex-start",
   },

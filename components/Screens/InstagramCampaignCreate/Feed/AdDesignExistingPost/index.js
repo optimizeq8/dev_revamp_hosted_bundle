@@ -13,7 +13,7 @@ import {
   ScrollView,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
 
@@ -411,15 +411,15 @@ class InstagramAdDesignExistingPost extends Component {
     return (
       <TouchableOpacity
         style={{
-          width: 70,
-          height: 70,
+          width: RFValue(35, 414),
+          height: RFValue(35, 414),
           // borderWidth: 2,
-          margin: 5,
-          borderRadius: 20,
+          margin: RFValue(2.5, 414),
+          borderRadius: RFValue(10, 414),
           overflow: "hidden",
           borderWidth:
             this.state.campaignInfo.instagram_post_id === product.promotable_id
-              ? 5
+              ? RFValue(2.5, 414)
               : 0,
           borderColor:
             this.state.campaignInfo.instagram_post_id === product.promotable_id
@@ -466,8 +466,8 @@ class InstagramAdDesignExistingPost extends Component {
       >
         <RNImage
           style={{
-            width: 70,
-            height: 70,
+            width: RFValue(35, 414),
+            height: RFValue(35, 414),
           }}
           source={{ uri: product.full_picture }}
           resizeMode={"cover"}

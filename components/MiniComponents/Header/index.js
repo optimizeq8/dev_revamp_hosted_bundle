@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Image, I18nManager, Text } from "react-native";
 import { Icon } from "native-base";
+import { RFValue } from "react-native-responsive-fontsize";
 import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import BackIcon from "../../../assets/SVGs/BackButton";
@@ -81,28 +82,40 @@ export default class Header extends Component {
             backButton === "messenger" ? (
               <MSGBackIcon width={40} height={40} />
             ) : (
-              <CloseIcon width={20} height={20} stroke={iconColor} />
+              <CloseIcon
+                width={RFValue(10, 414)}
+                height={RFValue(10, 414)}
+                stroke={iconColor}
+              />
             )
           ) : (
-            <BackIcon width={24} height={24} stroke={iconColor} />
+            <BackIcon
+              width={RFValue(12, 414)}
+              height={RFValue(12, 414)}
+              stroke={iconColor}
+            />
           )}
         </TouchableOpacity>
         {icon === "snapchat" && (
-          <View style={{ paddingHorizontal: 5 }}>
-            <SnapchatIcon fill={"black"} width={30} height={30} />
+          <View style={{ paddingHorizontal: RFValue(2.5, 414) }}>
+            <SnapchatIcon
+              fill={"black"}
+              width={RFValue(15, 414)}
+              height={RFValue(15, 414)}
+            />
           </View>
         )}
         {icon === "google" && (
-          <View style={{ paddingHorizontal: 5 }}>
-            <GoogleSE width={30} style={styles.googleIcon} />
+          <View style={{ paddingHorizontal: RFValue(2.5, 414) }}>
+            <GoogleSE width={RFValue(15, 414)} style={styles.googleIcon} />
           </View>
         )}
         {icon === "instagram" && (
-          <View style={{ paddingHorizontal: 0 }}>
+          <View style={{ paddingHorizontal: RFValue(2.5, 414) }}>
             <InstagramIcon
-              style={styles.instaIcon}
-              width={50}
-              height={40}
+              //   style={styles.instaIcon}
+              width={RFValue(15, 414)}
+              height={RFValue(15, 414)}
               fill="#fff"
             />
           </View>

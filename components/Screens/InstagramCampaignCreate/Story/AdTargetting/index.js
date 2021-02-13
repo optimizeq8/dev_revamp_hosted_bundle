@@ -1018,6 +1018,7 @@ class InstagramStoryAdTargetting extends Component {
       case "age": {
         menu = (
           <AgeOption
+            showPlusIcon={false}
             screenProps={this.props.screenProps}
             state={this.state.campaignInfo}
             _handleAge={this._handleAge}

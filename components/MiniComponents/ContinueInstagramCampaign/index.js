@@ -32,7 +32,14 @@ class ContinueCampaign extends Component {
         campaign_channel: "instagram",
         campaign_ad_type: this.props.adType,
       });
-      this.continueCampaign();
+      if (
+        this.props.navigation.getParam(
+          "resumingFromOtherAdTypeWithWrongDates",
+          false
+        )
+      ) {
+        this.handleContinue();
+      } else this.continueCampaign();
     }
   }
 
@@ -106,17 +113,35 @@ class ContinueCampaign extends Component {
       new Date(this.props.data.start_time) < new Date() ||
       new Date(this.props.data.end_time) < new Date()
     ) {
-      showMessage({
-        message: translate("The dates are no longer applicable"),
-        description: translate("Please choose new dates"),
-        type: "warning",
-      });
-      //Shows the dateField's modal to set new dates and resumes campaign
-      this.handleSubmition(false, false), 800;
-      setTimeout(() => {
-        //to fix issue with date field not opening when the resume modal is open
-        this.props.dateField && this.props.dateField.showModal();
-      }, 500);
+      if (
+        this.props.data &&
+        this.props.data.campaign_type !==
+          this.props.navigation.getParam("tempAdType", "")
+      ) {
+        this.handleSubmition(false, false);
+        this.props.navigation.replace(
+          this.props.navigation.getParam("tempAdType", "") ===
+            "InstagramStoryAd"
+            ? "InstagramFeedAdObjective"
+            : "InstagramStoryAdObjective",
+          {
+            tempAdType: this.props.data.campaign_type,
+            resumingFromOtherAdTypeWithWrongDates: true,
+          }
+        );
+      } else {
+        showMessage({
+          message: translate("The dates are no longer applicable"),
+          description: translate("Please choose new dates"),
+          type: "warning",
+        });
+        // //Shows the dateField's modal to set new dates and resumes campaign
+        this.handleSubmition(false, false), 800;
+        setTimeout(() => {
+          //to fix issue with date field not opening when the resume modal is open
+          this.props.dateField && this.props.dateField.showModal();
+        }, 500);
+      }
     } else {
       this.setState({ resumeLoading: true });
       let updated_transaction_data = {

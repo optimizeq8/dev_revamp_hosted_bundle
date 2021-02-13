@@ -55,6 +55,7 @@ import isUndefined from "lodash/isUndefined";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../../GradiantColors/colors";
 import globalStyles from "../../../../GlobalStyles";
+import { showMessage } from "react-native-flash-message";
 
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 
@@ -310,7 +311,20 @@ class GoogleAdInfo extends Component {
     const locationsError =
       this.state.location.length === 0 ? "Please choose a region." : null;
     let dateErrors = this.dateField.getErrors();
+    let { translate } = this.props.screenProps;
+    if (
+      new Date(this.state.start_time) < new Date() ||
+      new Date(this.state.end_time) < new Date()
+    ) {
+      showMessage({
+        message: translate("The dates are no longer applicable"),
+        description: translate("Please choose new dates"),
+        type: "warning",
+      });
 
+      this.dateField && this.dateField.showModal();
+      return;
+    }
     this.setState({
       nameError,
       countryError,

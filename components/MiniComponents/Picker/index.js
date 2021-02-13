@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Text, ActivityIndicator } from "react-native";
 import { Icon, Input, Item } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
+import { RFValue } from "react-native-responsive-fontsize";
 import isNull from "lodash/isNull";
 import SearchIcon from "../../../assets/SVGs/Search";
 
@@ -166,6 +167,7 @@ export default class Picker extends Component {
         removeAllText={translate("Remove all")}
         itemFontFamily={{
           fontFamily: "montserrat-regular",
+          fontSize: RFValue(8, 414),
         }}
       />
     );

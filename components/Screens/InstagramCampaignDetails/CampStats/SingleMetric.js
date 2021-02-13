@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import styles from "../styles";
 import formatNumber from "../../../formatNumber";
 import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
@@ -49,7 +50,7 @@ export default class SingleMetric extends Component {
             width={heightPercentageToDP(3)}
             height={heightPercentageToDP(3)}
             fill="#fff"
-            style={{ marginRight: 10 }}
+            style={{ marginRight: RFValue(5, 414) }}
           />
         )}
         {!loadingCampaignStats ? (
@@ -64,7 +65,10 @@ export default class SingleMetric extends Component {
                   <Small
                     style={[
                       styles.numbers,
-                      { fontSize: 9, fontFamily: "montserrat-regular" },
+                      {
+                        fontSize: RFValue(4.5, 414),
+                        fontFamily: "montserrat-regular",
+                      },
                     ]}
                   >
                     $
@@ -86,7 +90,10 @@ export default class SingleMetric extends Component {
                 <Small
                   style={[
                     styles.numbers,
-                    { fontSize: 9, fontFamily: "montserrat-regular" },
+                    {
+                      fontSize: RFValue(4.5, 414),
+                      fontFamily: "montserrat-regular",
+                    },
                   ]}
                 >
                   %
@@ -95,7 +102,7 @@ export default class SingleMetric extends Component {
             </View>
           </View>
         ) : (
-          <PlaceholderLine width={70} />
+          <PlaceholderLine width={RFValue(35, 414)} />
         )}
       </View>
     );

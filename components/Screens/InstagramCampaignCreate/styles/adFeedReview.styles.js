@@ -3,6 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../../GlobalStyles";
 const styles = StyleSheet.create({
   mediaView: {
@@ -27,63 +28,64 @@ const styles = StyleSheet.create({
   profilePicView: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingHorizontal: RFValue(10, 414),
+    paddingVertical: RFValue(5, 414),
   },
   iconView: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: RFValue(10, 414),
     // paddingTop: 8,
     height: hp(5),
   },
   icon: {
     marginHorizontal: 5,
+    fontSize: RFValue(7, 414),
   },
   archiveIcon: {
     marginLeft: "auto",
   },
   detailProfileView: {
-    paddingHorizontal: 10,
+    paddingHorizontal: RFValue(5, 414),
   },
   likeText: {
     fontFamily: "montserrat-bold-english",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     color: "#262626",
   },
   likeView: {
     flexDirection: "row",
     alignItems: "center",
     // paddingTop: 15,
-    paddingHorizontal: 20,
+    paddingHorizontal: RFValue(10, 414),
     textAlign: "left",
   },
   captionText: {
     fontFamily: "montserrat-regular",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#2a2a2a",
     textAlign: "left",
-    // paddingHorizontal: 25,
-    marginTop: 10,
+    // paddingHorizontal: RFValue(12.5, 414),
+    marginTop: RFValue(5, 414),
     // marginHorizontal: 15
   },
   captionTextExist: {
-    // height: 30,
+    // height: RFValue(15, 414),
   },
   container: {
     backgroundColor: globalColors.white,
-    // marginHorizontal: 20,
-    borderRadius: 25,
-    paddingBottom: 30,
-    paddingTop: 10,
-    marginHorizontal: 20,
+    // marginHorizontal: RFValue(10, 414),
+    borderRadius: RFValue(12.5, 414),
+    paddingBottom: RFValue(15, 414),
+    paddingTop: RFValue(5, 414),
+    marginHorizontal: RFValue(10, 414),
     width: "90%",
     // alignSelf: "center"
     // flex: 1
   },
   callToActionText: {
-    fontSize: 13,
+    fontSize: RFValue(6.5, 414),
     fontFamily: "montserrat-bold-english",
     color: "#46B0FC",
     textTransform: "capitalize",
@@ -91,36 +93,36 @@ const styles = StyleSheet.create({
   swipeUpView: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 12,
+    paddingHorizontal: RFValue(10, 414),
+    paddingVertical: RFValue(6, 414),
     borderBottomColor: "rgba(112,112,112,.1)",
     borderBottomWidth: 1,
   },
   dot: {
     fontFamily: "montserrat-bold",
-    fontSize: 14,
-    lineHeight: 14,
-    marginTop: -7,
+    fontSize: RFValue(7, 414),
+    lineHeight: RFValue(7, 414),
+    marginTop: RFValue(-3.5, 414),
     marginBottom: 0,
     alignSelf: "flex-end",
     marginLeft: "auto",
   },
   businessNameText: {
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#2a2a2a",
     fontFamily: "montserrat-bold",
-    paddingHorizontal: 20,
-    marginTop: 4,
+    paddingHorizontal: RFValue(10, 414),
+    marginTop: RFValue(2, 414),
     textAlign: "left",
   },
   sponsoredText: {
     fontFamily: "montserrat-regular",
-    fontSize: 11,
+    fontSize: RFValue(5.5, 414),
     color: "#C6C6C6",
   },
   instagramBusinessName: {
     fontFamily: "montserrat-bold-english",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#2a2a2a",
   },
   dotView: {
@@ -150,23 +152,23 @@ const styles = StyleSheet.create({
     marginRight: "20%",
   },
   paginationDotStyle: {
-    borderRadius: 7,
-    height: 6,
+    borderRadius: RFValue(3.5, 414),
+    height: RFValue(3, 414),
     // marginHorizontal: "-20%",
-    width: 6,
+    width: RFValue(3, 414),
   },
   callToActionView: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 10,
+    paddingHorizontal: RFValue(5, 414),
     position: "absolute",
     bottom: 0,
   },
   callToActionTextStory: {
     color: "#FFF",
     fontFamily: "montserrat-regular",
-    lineHeight: 17,
+    lineHeight: RFValue(8.5, 414),
   },
   swipeUpViewStory: {
     flexDirection: "column",
@@ -185,7 +187,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
     alignSelf: "center",
   },
-  progressBar: { marginHorizontal: 10 },
-  profileImage: { borderRadius: 20 },
+  progressBar: { marginHorizontal: RFValue(5, 414) },
+  profileImage: { borderRadius: RFValue(10, 414) },
 });
 export default styles;

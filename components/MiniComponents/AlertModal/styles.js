@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 
 export default StyleSheet.create({
@@ -24,7 +25,7 @@ export default StyleSheet.create({
   },
   alertTextContainer: {
     height: "40%",
-    padding: 28,
+    padding: RFValue(14, 414),
     alignItems: "center",
     justifyContent: "space-between",
   },
@@ -32,14 +33,14 @@ export default StyleSheet.create({
   alertText: {
     fontFamily: "montserrat-regular",
     color: globalColors.rum,
-    fontSize: 13,
+    fontSize: RFValue(7.5, 414),
     textAlign: "center",
     padding: 8,
   },
   alertExtraText: {
     fontFamily: "montserrat-regular",
     color: globalColors.rum,
-    fontSize: 11,
+    fontSize: RFValue(7, 414),
     textAlign: "center",
   },
 
@@ -57,8 +58,14 @@ export default StyleSheet.create({
     // shadowRadius: 5,
   },
   alertGradientButton: {
-    height: 55,
+    height: RFValue(27.5, 414),
     width: "80%",
     alignSelf: "center",
+    marginVertical: 8,
+  },
+  alertGradientButtonBorder: {
+    borderWidth: 1,
+    borderColor: globalColors.rum,
+    color: globalColors.rum,
   },
 });

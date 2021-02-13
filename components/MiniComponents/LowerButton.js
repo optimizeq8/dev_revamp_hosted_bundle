@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, I18nManager } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -37,36 +38,36 @@ export default class LowerButton extends Component {
           styles.button,
           style,
         ]}
-        width={widthButton ? widthButton : 60}
-        height={60}
-        radius={50}
+        width={widthButton ? widthButton : RFValue(30, 414)}
+        height={RFValue(30, 414)}
+        radius={RFValue(25, 414)}
         onPressAction={() => this.props.function(false)}
       >
         <View style={styles.view}>
           {text && <Text style={styles.text}>{translate(text)}</Text>}
           {this.props.checkmark ? (
             <CheckmarkIcon
-              width={width ? width : 53}
-              height={height ? height : 53}
+              width={width ? width : RFValue(26.5, 414)}
+              height={height ? height : RFValue(26.5, 414)}
             />
           ) : this.props.cross ? (
             <CrossIcon
               fill={"#ff9d00"}
-              width={width ? width : 25}
-              height={height ? height : 25}
+              width={width ? width : RFValue(12.5, 414)}
+              height={height ? height : RFValue(12.5, 414)}
             />
           ) : I18nManager.isRTL ? (
             <BackButton
               style={styles.rtlReverse}
-              width={width ? width : 25}
-              height={height ? height : 25}
+              width={width ? width : RFValue(12.5, 414)}
+              height={height ? height : RFValue(12.5, 414)}
               stroke={"#FFF"}
             />
           ) : (
             <ArrowForward
               style={styles.rtlReverse}
-              width={width ? width : 25}
-              height={height ? height : 25}
+              width={width ? width : RFValue(12.5, 414)}
+              height={height ? height : RFValue(12.5, 414)}
             />
           )}
         </View>
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
   text: {
     color: "#FFF",
     textTransform: "uppercase",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     fontFamily: "montserrat-bold",
     // flex: 1,
   },

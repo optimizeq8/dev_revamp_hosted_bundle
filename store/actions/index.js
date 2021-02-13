@@ -128,6 +128,7 @@ export {
   send_push_notification,
   changePassword,
   checkHashForUser,
+  checkPassword,
 } from "./loginActions";
 
 export {

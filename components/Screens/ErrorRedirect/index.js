@@ -4,7 +4,7 @@ import analytics from "@segment/analytics-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { NavigationActions } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
-
+import { RFValue } from "react-native-responsive-fontsize";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -145,7 +145,11 @@ class ErrorRedirect extends Component {
             resizeMode="contain"
           />
           <View style={styles.view}>
-            <ErrorIcon fill="#E26A65" width={80} height={80} />
+            <ErrorIcon
+              fill="#E26A65"
+              width={RFValue(40, 414)}
+              height={RFValue(40, 414)}
+            />
 
             <Text style={styles.title}> {translate("Sorry")} </Text>
             <Text style={styles.errorText}>

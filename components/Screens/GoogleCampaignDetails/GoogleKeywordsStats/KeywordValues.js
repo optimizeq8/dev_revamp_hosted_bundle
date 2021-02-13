@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, ScrollView } from "react-native";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import styles from "./styles";
 import ClicksIcon from "../../../../assets/SVGs/Performance/Clicks";
 import ImpressionsIcon from "../../../../assets/SVGs/Performance/Impressions";
@@ -27,12 +27,15 @@ export default (props) => {
         </View>
         <View style={styles.statsOuterBlock}>
           <View style={styles.outerBlock}>
-            <SpendIcon width={26} fill={"#fff"} />
+            <SpendIcon width={RFValue(13, 414)} fill={"#fff"} />
             <View style={styles.innerBlock}>
               <Text style={styles.title}>{translate("Spend")}</Text>
               <View style={globalStyles.row}>
                 <Small
-                  style={[styles.number, { fontSize: 10, lineHeight: 18 }]}
+                  style={[
+                    styles.number,
+                    { fontSize: RFValue(5, 414), lineHeight: RFValue(9, 414) },
+                  ]}
                 >
                   $
                 </Small>
@@ -41,20 +44,23 @@ export default (props) => {
             </View>
           </View>
           <View style={styles.outerBlock}>
-            <ClicksIcon width={26} fill={"#fff"} />
+            <ClicksIcon width={RFValue(13, 414)} fill={"#fff"} />
             <View style={styles.innerBlock}>
               <Text style={styles.title}>{translate("clicks")}</Text>
               <Text style={styles.number}>{kFormatter(content.clicks)}</Text>
             </View>
           </View>
           <View style={styles.outerBlock}>
-            <CTRIcon width={26} fill={"#fff"} />
+            <CTRIcon width={RFValue(13, 414)} fill={"#fff"} />
             <View style={styles.innerBlock}>
               <Text style={styles.title}>{translate("ctr")}</Text>
               <View style={globalStyles.row}>
                 <Text style={styles.number}>{content.ctr}</Text>
                 <Small
-                  style={[styles.number, { fontSize: 10, lineHeight: 18 }]}
+                  style={[
+                    styles.number,
+                    { fontSize: RFValue(5, 414), lineHeight: RFValue(9, 414) },
+                  ]}
                 >
                   %
                 </Small>
@@ -62,7 +68,7 @@ export default (props) => {
             </View>
           </View>
           <View style={styles.outerBlock}>
-            <CPCIcon width={26} fill={"#fff"} />
+            <CPCIcon width={RFValue(13, 414)} fill={"#fff"} />
             <View style={styles.innerBlock}>
               <Text style={styles.title}>
                 {translate("COST")}{" "}
@@ -70,7 +76,10 @@ export default (props) => {
               </Text>
               <View style={globalStyles.row}>
                 <Small
-                  style={[styles.number, { fontSize: 10, lineHeight: 18 }]}
+                  style={[
+                    styles.number,
+                    { fontSize: RFValue(5, 414), lineHeight: RFValue(9, 414) },
+                  ]}
                 >
                   $
                 </Small>
@@ -79,7 +88,7 @@ export default (props) => {
             </View>
           </View>
           <View style={styles.outerBlock}>
-            <ImpressionsIcon width={26} fill={"#fff"} />
+            <ImpressionsIcon width={RFValue(13, 414)} fill={"#fff"} />
             <View style={styles.innerBlock}>
               <Text style={styles.title}>{translate("Impressions")}</Text>
               <Text style={styles.number}>

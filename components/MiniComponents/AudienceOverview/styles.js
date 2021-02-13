@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
@@ -7,8 +8,8 @@ const styles = StyleSheet.create({
     color: "#fff",
     flexDirection: "column",
     fontFamily: "montserrat-bold",
-    fontSize: 12,
-    paddingHorizontal: 10,
+    fontSize: RFValue(6, 414),
+    paddingHorizontal: RFValue(5, 414),
   },
   categoryView: {
     display: "flex",
@@ -16,38 +17,38 @@ const styles = StyleSheet.create({
     // alignSelf: "flex-start",
     alignItems: "center",
     // justifyContent: "center",
-    marginVertical: 5,
+    marginVertical: RFValue(2.5, 414),
   },
   subHeadings: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     // paddingRight: 30
     // paddingVertical: hp("1")
   },
   subtext: {
     textAlign: "left",
     fontFamily: "montserrat-light",
-    fontSize: 11,
+    fontSize: RFValue(5.5, 414),
     // paddingTop: 5,
-    paddingHorizontal: 10,
-    paddingTop: 6,
-    lineHeight: 17,
+    paddingHorizontal: RFValue(5, 414),
+    paddingTop: RFValue(3, 414),
+    lineHeight: RFValue(8.5, 414),
     color: "#fff",
   },
   title: {
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
   },
   targetingContainer: {
     height: "100%",
     flexDirection: "column",
     backgroundColor: "#0005",
     width: "100%",
-    borderRadius: 40,
+    borderRadius: RFValue(20, 414),
     // justifyContent: "center",
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+    paddingVertical: RFValue(10, 414),
+    paddingHorizontal: RFValue(10, 414),
   },
   audienceOverview: {
     height: "100%",
@@ -60,23 +61,23 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 20
   },
   placeholderView: {
-    margin: 5,
+    margin: RFValue(2.5, 414),
   },
   proceedLowerButton: {
-    width: 35,
-    height: 35,
+    width: RFValue(17.5, 414),
+    height: RFValue(17.5, 414),
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: globalColors.orange,
-    borderRadius: 30,
+    borderRadius: RFValue(15, 414),
   },
   backgroundViewWrapper: {
     justifyContent: "center",
     overflow: "hidden",
     width: "100%",
     height: "100%",
-    borderRadius: 40,
+    borderRadius: RFValue(20, 414),
   },
 });
 

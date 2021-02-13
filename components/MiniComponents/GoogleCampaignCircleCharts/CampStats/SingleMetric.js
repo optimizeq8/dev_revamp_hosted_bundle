@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import styles from "../styles";
 import formatNumber from "../../../formatNumber";
 import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
@@ -75,7 +76,7 @@ export default class SingleMetric extends Component {
                 style={[
                   (styles.numbers,
                   {
-                    fontSize: 10,
+                    fontSize: RFValue(6, 414),
                     color: "#FF9D00",
                     fontFamily: "montserrat-regular",
                   }),
@@ -98,14 +99,17 @@ export default class SingleMetric extends Component {
                 )}
               </Text>
               <Small
-                style={[(styles.numbers, { fontSize: 10, color: "#FF9D00" })]}
+                style={[
+                  (styles.numbers,
+                  { fontSize: RFValue(6, 414), color: "#FF9D00" }),
+                ]}
               >
                 {metric === "ctr" ? "%" : ""}
               </Small>
             </View>
           </View>
         ) : (
-          <PlaceholderLine width={70} />
+          <PlaceholderLine width={RFValue(35, 414)} />
         )}
       </View>
     );

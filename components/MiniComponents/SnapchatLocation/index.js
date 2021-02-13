@@ -7,6 +7,7 @@ import {
   Modal,
   Alert,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import LocationMap from "../LocationMap";
 import LocationIcon from "../../../assets/SVGs/Location.svg";
 import { globalColors } from "../../../GlobalStyles";
@@ -175,8 +176,8 @@ export default class SnapchatLocation extends Component {
         )}
         <LocationIcon
           fill={globalColors.gray}
-          width={60}
-          height={60}
+          width={RFValue(30, 414)}
+          height={RFValue(30, 414)}
         ></LocationIcon>
         <Text style={styles.title}>{translate("Select location")}</Text>
 

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
 import {
@@ -19,6 +20,7 @@ import Snapchat from "../../../../assets/SVGs/AdType/Snapchat";
 import Google from "../../../../assets/SVGs/AdType/GoogleIcon";
 import OnlineStoreHome from "../../../../assets/SVGs/OnlineStoreHome";
 import Logo from "../../../../assets/SVGs/Optimize";
+import Instagram from "../../../../assets/images/AdTypes/InstaWhiteLogo";
 
 export default class EmptyCampaigns extends Component {
   redirectToCampaignAdTypeOrCreateBsn = () => {
@@ -154,8 +156,8 @@ export default class EmptyCampaigns extends Component {
             <LaunchCampaignIcon style={styles.launchCampaignIcon} />
             <LowerButton
               screenProps={this.props.screenProps}
-              width={20}
-              height={20}
+              width={RFValue(10, 414)}
+              height={RFValue(10, 414)}
               style={styles.lowerButton}
               function={this.redirectToCampaignAdTypeOrCreateBsn}
             />

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import Intercom from "react-native-intercom";
 import {
   NavigationActions,
@@ -42,11 +43,16 @@ export default class SuspendedWarning extends Component {
             }}
           >
             <Suspended
-              width={285}
-              height={322}
-              style={{ alignSelf: "center", marginBottom: 20 }}
+              width={RFValue(144.5, 414)}
+              height={RFValue(161, 414)}
+              style={{ alignSelf: "center", marginBottom: RFValue(10, 414) }}
             />
-            <Text style={[styles.title, { fontSize: 16, alignSelf: "center" }]}>
+            <Text
+              style={[
+                styles.title,
+                { fontSize: RFValue(8, 414), alignSelf: "center" },
+              ]}
+            >
               {translate("Account Suspended")}
             </Text>
             <Text style={[styles.pauseDes]}>

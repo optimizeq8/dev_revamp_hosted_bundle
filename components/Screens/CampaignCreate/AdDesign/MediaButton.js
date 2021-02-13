@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
 import { Button, Icon } from "native-base";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import styles from "./styles";
 
 import EditCameraIcon from "../../../../assets/SVGs/CameraCircleOutline";
@@ -49,7 +49,7 @@ export default class MediaButton extends Component {
               snapAdCard
                 ? {
                     width: "100%",
-                    height: 40,
+                    height: RFValue(20, 414),
                     top: "30%",
                   }
                 : {},
@@ -78,9 +78,9 @@ export default class MediaButton extends Component {
               styles.inputMiddleButton,
               snapAdCard
                 ? {
-                    width: 40,
-                    height: 40,
-                    top: "27%",
+                    width: RFValue(20, 414),
+                    height: RFValue(20, 414),
+                    top: "12%",
                     // left: "85%"
                   }
                 : {},

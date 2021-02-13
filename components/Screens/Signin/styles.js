@@ -1,7 +1,6 @@
-import { StyleSheet, PixelRatio, Dimensions, I18nManager } from "react-native";
-import { globalColors } from "../../../GlobalStyles";
+import { StyleSheet, I18nManager } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
-
+import { RFValue } from "react-native-responsive-fontsize";
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
@@ -16,7 +15,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   signText: {
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     fontFamily: "montserrat-regular",
     textTransform: "capitalize",
   },
@@ -30,7 +29,11 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingHorizontal: 20,
   },
-  forgotPasswordLink: { paddingVertical: 10, fontSize: 12, zIndex: 10 },
+  forgotPasswordLink: {
+    paddingVertical: RFValue(5, 414),
+    fontSize: RFValue(6, 414),
+    zIndex: 10,
+  },
   SignInCoverImage: {
     position: "absolute",
     alignSelf: "flex-end",
@@ -47,11 +50,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   gradientBtn: {
-    height: 54,
+    height: RFValue(27, 414),
     width: "100%",
     marginHorizontal: 0,
   },
-  gradientBtnText: { fontSize: 14 },
+  gradientBtnText: { fontSize: RFValue(7, 414) },
 
   mainView: {
     // flex: 1,
@@ -64,14 +67,14 @@ const styles = StyleSheet.create({
     color: "#FFF",
     textTransform: "uppercase",
     fontFamily: "montserrat-bold",
-    fontSize: 25,
-    paddingVertical: 15,
+    fontSize: RFValue(12.5, 414),
+    paddingVertical: RFValue(7.5, 414),
   },
   link: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-regular",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
   },
   gradient: {
     ...StyleSheet.absoluteFillObject,

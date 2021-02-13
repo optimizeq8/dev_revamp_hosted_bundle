@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import styles from "./styles";
 import { globalColors } from "../../../GlobalStyles";
 import dateFormat from "dateformat";
@@ -78,7 +79,7 @@ export default class ChartDateChoices extends Component {
           },
         ]}
       >
-        <Text style={[styles.choiceText, { fontSize: 12 }]}>
+        <Text style={[styles.choiceText, { fontSize: RFValue(6, 414) }]}>
           {translate(choice)}
         </Text>
       </TouchableOpacity>

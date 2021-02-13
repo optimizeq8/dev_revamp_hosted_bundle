@@ -1,7 +1,7 @@
 import React from "react";
 import { View, ScrollView, Text, TouchableOpacity } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import { BlurView } from "expo-blur";
 import Modal from "react-native-modal";
 
@@ -58,8 +58,8 @@ export default (props) => {
           <GradientButton
             screenProps={screenProps}
             text={translate("Update Ad")}
-            width={200}
-            height={50}
+            width={RFValue(100, 414)}
+            height={RFValue(25, 414)}
             uppercase
             style={styles.updateAdButton}
             onPressAction={() => {

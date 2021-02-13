@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-
+import { RFValue } from "react-native-responsive-fontsize";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -10,121 +10,121 @@ const styles = StyleSheet.create({
     opacity: 1,
     elevation: 0,
     marginLeft: 0,
-    marginRight: 0
+    marginRight: 0,
   },
   headerContainer: {
     justifyContent: "flex-start",
-    marginTop: 10,
-    alignItems: "center"
+    marginTop: RFValue(5, 414),
+    alignItems: "center",
   },
   transactionFilterContainer: {
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   title: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 16,
-    width: 150,
-    paddingTop: 20,
-    alignSelf: "center"
+    fontSize: RFValue(8, 414),
+    width: RFValue(75, 414),
+    paddingTop: RFValue(10, 414),
+    alignSelf: "center",
   },
   titleStatus: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 16,
-    width: 150,
-    paddingTop: 20,
+    fontSize: RFValue(8, 414),
+    width: RFValue(75, 414),
+    paddingTop: RFValue(10, 414),
     alignSelf: "center",
-    paddingBottom: 20
+    paddingBottom: RFValue(10, 414),
   },
   titleDate: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 16,
-    marginBottom: -10,
-    alignSelf: "center"
+    fontSize: RFValue(8, 414),
+    marginBottom: RFValue(-5, 414),
+    alignSelf: "center",
   },
   labelView: {
-    width: 150,
+    width: RFValue(75, 414),
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
-    height: 15,
-    borderTopLeftRadius: 150,
-    borderTopRightRadius: 150,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    height: RFValue(7.5, 414),
+    borderTopLeftRadius: RFValue(75, 414),
+    borderTopRightRadius: RFValue(75, 414),
+    borderBottomLeftRadius: RFValue(10, 414),
+    borderBottomRightRadius: RFValue(10, 414),
     paddingTop: 0,
-    marginTop: 20,
-    zIndex: 1
+    marginTop: RFValue(10, 414),
+    zIndex: 1,
   },
   subtext: {
     fontFamily: "montserrat-regular",
-    fontSize: 14,
-    paddingTop: 25,
+    fontSize: RFValue(7, 414),
+    paddingTop: RFValue(12.5, 414),
     color: "#fff",
-    textAlign: "center"
+    textAlign: "center",
   },
   clearFilterText: {
     fontFamily: "montserrat-regular",
-    fontSize: 14,
-    paddingTop: 25,
+    fontSize: RFValue(7, 414),
+    paddingTop: RFValue(12.5, 414),
     color: "#fff",
     textAlign: "center",
     textDecorationLine: "underline",
-    marginBottom: 20,
-    textDecorationColor: "#fff"
+    marginBottom: RFValue(10, 414),
+    textDecorationColor: "#fff",
   },
   dateInput: {
-    marginBottom: 15,
+    marginBottom: RFValue(7.5, 414),
     backgroundColor: "rgba(0,0,0,0.2)",
-    borderRadius: 40,
+    borderRadius: RFValue(20, 414),
     alignSelf: "center",
-    width: 270,
+    width: RFValue(165, 414),
     height: hp(7.9),
-    justifyContent: "center"
+    justifyContent: "center",
   },
   categories: {
     textAlign: "center",
     color: "#fff",
     flexDirection: "column",
     fontFamily: "montserrat-regular",
-    fontSize: 16,
-    paddingHorizontal: 10
+    fontSize: RFValue(8, 414),
+    paddingHorizontal: RFValue(5, 414),
   },
   numbers: {
     textAlign: "center",
     color: "#FF9D00",
     fontFamily: "montserrat-medium",
-    fontSize: 16,
-    paddingHorizontal: 10
+    fontSize: RFValue(8, 414),
+    paddingHorizontal: RFValue(5, 414),
   },
   dateContainer: {
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   startColumn: {
     flexDirection: "column",
     // alignItems: "center",
     justifyContent: "center",
-    textAlign: "center"
+    textAlign: "center",
   },
   middleColumn: {
     flexDirection: "column",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   endColumn: {
     flexDirection: "column",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   bottomView: {
-    bottom: "10%"
+    bottom: "10%",
   },
   fontSize12: {
-    fontSize: 12
-  }
+    fontSize: RFValue(6, 414),
+  },
 });
 
 export default styles;

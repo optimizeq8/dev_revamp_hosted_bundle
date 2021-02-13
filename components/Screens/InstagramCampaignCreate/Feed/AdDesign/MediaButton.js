@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, TouchableOpacity } from "react-native";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import styles from "../../styles/adDesign.styles";
 
 // Icons
@@ -41,7 +41,7 @@ export default class MediaButton extends Component {
             carouselAdCard
               ? {
                   width: "100%",
-                  height: 40,
+                  height: RFValue(20, 414),
                   top: "30%",
                 }
               : {},
@@ -51,7 +51,7 @@ export default class MediaButton extends Component {
           <Text
             style={[
               styles.mediaButtonMsgEdit,
-              carouselAdCard ? {} : { width: 150 },
+              carouselAdCard ? {} : { width: RFValue(75, 414) },
             ]}
           >
             {type === "cover"
@@ -68,8 +68,8 @@ export default class MediaButton extends Component {
             styles.inputMiddleButton,
             carouselAdCard
               ? {
-                  width: 34,
-                  height: 36,
+                  width: RFValue(17, 414),
+                  height: RFValue(18, 414),
                   top: "27%",
                   // left: "85%"
                 }

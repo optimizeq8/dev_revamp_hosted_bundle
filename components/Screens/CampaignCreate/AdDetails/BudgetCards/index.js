@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { connect } from "react-redux";
 import styles from "./styles";
 import BudgetCard from "./BudgetCard";
@@ -102,6 +103,7 @@ export class BudgetCards extends Component {
       recBudget,
       budgetOption,
       lifetime_budget_micro,
+      copilot,
     } = this.props;
     const { translate } = this.props.screenProps;
     recBudget = parseFloat(recBudget);
@@ -125,7 +127,7 @@ export class BudgetCards extends Component {
       .map((el, i) => (i ? el.split("").slice(0, 2).join("") : el))
       .join(".");
     return (
-      <View>
+      <View {...copilot}>
         <MaskedView
           maskElement={
             <LinearGradient
@@ -164,8 +166,8 @@ export class BudgetCards extends Component {
                         fontSize:
                           budgetOption !== 0 ||
                           (value === "$0" && !this.state.placeholder)
-                            ? 9
-                            : 15,
+                            ? RFValue(4.5, 414)
+                            : RFValue(7.5, 414),
                       },
                     ]}
                   >
@@ -182,18 +184,7 @@ export class BudgetCards extends Component {
                     justifyContent: "space-around",
                   }}
                 >
-                  <Text
-                    style={[
-                      {
-                        fontSize: 15,
-                        color: globalColors.purple,
-                        marginRight: -30,
-                        fontFamily: "montserrat-bold",
-                      },
-                    ]}
-                  >
-                    $
-                  </Text>
+                  <Text style={styles.dollarText}>$</Text>
                   <TextInput
                     keyboardType={"decimal-pad"}
                     focus={this.state.placeholder}
@@ -213,10 +204,10 @@ export class BudgetCards extends Component {
                         fontSize:
                           budgetOption !== 0 ||
                           (value === "$0" && !this.state.placeholder)
-                            ? 10
-                            : 15,
+                            ? RFValue(5, 414)
+                            : RFValue(7.5, 414),
 
-                        paddingLeft: 30,
+                        paddingLeft: RFValue(15, 414),
                       },
                     ]}
                     placeholder={"0.00"}

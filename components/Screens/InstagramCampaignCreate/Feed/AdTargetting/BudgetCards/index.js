@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { connect } from "react-redux";
 import styles from "./styles";
 import BudgetCard from "./BudgetCard";
@@ -108,7 +109,9 @@ export class BudgetCards extends Component {
             <View
               style={[
                 styles.budgetCardStyle,
-                budgetOption === 0 ? { borderWidth: 2.5 } : { borderWidth: 0 },
+                budgetOption === 0
+                  ? { borderWidth: RFValue(1.25, 414) }
+                  : { borderWidth: 0 },
               ]}
             >
               {budgetOption !== 0 ||
@@ -127,8 +130,8 @@ export class BudgetCards extends Component {
                         fontSize:
                           budgetOption !== 0 ||
                           (value === "$0" && !this.state.placeholder)
-                            ? 9
-                            : 15,
+                            ? RFValue(4.5, 414)
+                            : RFValue(7.5, 414),
                       },
                     ]}
                   >
@@ -148,9 +151,9 @@ export class BudgetCards extends Component {
                   <Text
                     style={[
                       {
-                        fontSize: 15,
+                        fontSize: RFValue(7.5, 414),
                         color: globalColors.purple,
-                        marginRight: -30,
+                        marginRight: RFValue(-15, 414),
                         fontFamily: "montserrat-bold",
                       },
                     ]}
@@ -184,10 +187,10 @@ export class BudgetCards extends Component {
                         fontSize:
                           budgetOption !== 0 ||
                           (value === "$0" && !this.state.placeholder)
-                            ? 10
-                            : 15,
+                            ? RFValue(5, 414)
+                            : RFValue(7.5, 414),
 
-                        paddingLeft: 30,
+                        paddingLeft: RFValue(15, 414),
                       },
                     ]}
                     placeholder={"0.00"}

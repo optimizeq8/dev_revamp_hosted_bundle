@@ -28,6 +28,7 @@ import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import LowerButton from "../../MiniComponents/LowerButton";
 import PhoneNoField from "../Signup/PhoneNo/PhoneNoFieldNew";
 import InputField from "../../MiniComponents/InputFieldNew";
+import { RFValue } from "react-native-responsive-fontsize";
 
 class RegisterForm extends Component {
   static navigationOptions = {
@@ -533,7 +534,7 @@ class RegisterForm extends Component {
           icon={() => (
             <SnapchatIcon
               fill={"black"}
-              width={30}
+              width={RFValue(15, 414)}
               style={{ marginLeft: 15 }}
             />
           )}

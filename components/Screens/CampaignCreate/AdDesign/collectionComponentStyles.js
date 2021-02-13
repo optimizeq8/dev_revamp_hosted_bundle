@@ -3,6 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../../GlobalStyles";
 
 const styles = StyleSheet.create({
@@ -13,19 +14,19 @@ const styles = StyleSheet.create({
   },
   headingBlock: {
     backgroundColor: globalColors.orange,
-    width: hp(5) < 30 ? 30 : 60,
+    width: RFValue(30, 414),
     // width: 70,
-    paddingVertical: 5,
-    paddingHorizontal: 5,
-    height: 25,
-    borderRadius: 20,
-    marginBottom: -15,
+    paddingVertical: RFValue(2.5, 414),
+    paddingHorizontal: RFValue(2.5, 414),
+    height: RFValue(12.5, 414),
+    borderRadius: RFValue(10, 414),
+    marginBottom: RFValue(-7.5, 414),
     zIndex: 1,
     alignItems: "center",
     // flex: 1
   },
   productText: {
-    fontSize: 10,
+    fontSize: RFValue(5, 414),
     textAlign: "center",
     width: "100%",
     fontFamily: "montserrat-bold",
@@ -35,9 +36,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderColor: globalColors.orange,
     borderWidth: 2,
-    width: hp(5) < 30 ? 30 : 60,
-    height: hp(5) < 30 ? 30 : 60,
-    borderRadius: 25,
+    width: RFValue(30, 414),
+    height: RFValue(30, 414),
+    borderRadius: RFValue(12.5, 414),
     alignItems: "center",
     justifyContent: "center",
   },
@@ -50,10 +51,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   addButton: {
-    width: hp(5) < 30 ? 20 : 30,
-    height: hp(5) < 30 ? 20 : 30,
+    width: RFValue(12, 414),
+    height: RFValue(12, 414),
     alignSelf: "center",
-    borderRadius: hp(5) < 30 ? 20 : 30,
+    borderRadius: RFValue(15, 414),
     backgroundColor: globalColors.orange,
   },
   penView: { position: "absolute", bottom: 6, right: 6 },

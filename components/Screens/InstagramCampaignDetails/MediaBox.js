@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { ActivityIndicator, Text, View, TouchableOpacity } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 import { Video } from "expo-av";
 import RNImageOrCacheImage from "../../MiniComponents/RNImageOrCacheImage";

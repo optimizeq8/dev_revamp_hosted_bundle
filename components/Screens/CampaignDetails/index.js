@@ -6,6 +6,7 @@ import {
   BackHandler,
   TouchableOpacity,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { Container, Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
@@ -390,7 +391,13 @@ class CampaignDetails extends Component {
               translate(startCase(toLower(targeting.demographics[0].gender)));
         audienceOverViewData.push({
           heading: "Gender",
-          icon: <GenderIcon fill={"#FF790A"} width={31} height={31} />,
+          icon: (
+            <GenderIcon
+              fill={"#FF790A"}
+              width={RFValue(15.5, 414)}
+              height={RFValue(15.5, 414)}
+            />
+          ),
           content: gender,
         });
         const ageMin = targeting && targeting.demographics[0].min_age;
@@ -462,7 +469,13 @@ class CampaignDetails extends Component {
           );
         audienceOverViewData.push({
           heading: "Location",
-          icon: <LocationIcon fill={"#FF790A"} width={31} height={31} />,
+          icon: (
+            <LocationIcon
+              fill={"#FF790A"}
+              width={RFValue(15.5, 414)}
+              height={RFValue(15.5, 414)}
+            />
+          ),
           content: countryName + ": " + (region_names ? region_names : ""),
         });
         if (selectedCampaign.start_time && selectedCampaign.end_time) {
@@ -521,7 +534,7 @@ class CampaignDetails extends Component {
                 !this.state.expand ? this.props.navigation : undefined
               }
               selectedCampaign={selectedCampaign}
-              containerStyle={{ height: 50 }}
+              containerStyle={{ height: RFValue(25, 414) }}
               showTopRightButtonIcon={
                 !loading && selectedCampaign.review_status === "APPROVED"
                   ? selectedCampaign.ad_status !== "LIVE" &&
@@ -541,8 +554,8 @@ class CampaignDetails extends Component {
               topRightButtonFunction={() => this.showCSVModal(true)}
               titleStyle={{
                 textAlign: "left",
-                fontSize: 15,
-                paddingTop: 3,
+                fontSize: RFValue(7.5, 414),
+                paddingTop: RFValue(1.5, 414),
                 flex: 1,
               }}
               segment={{
@@ -557,7 +570,7 @@ class CampaignDetails extends Component {
               !this.state.expand && (
                 <View style={styles.remainingBudgetContainer}>
                   <Icon
-                    style={{ fontSize: 35, color: "#fff" }}
+                    style={{ fontSize: RFValue(17.5, 414), color: "#fff" }}
                     type="Ionicons"
                     name="ios-alert"
                   />
@@ -579,7 +592,10 @@ class CampaignDetails extends Component {
                   ]}
                 >
                   <Icon
-                    style={{ fontSize: 35, color: globalColors.orange }}
+                    style={{
+                      fontSize: RFValue(17.5, 414),
+                      color: globalColors.orange,
+                    }}
                     type="Ionicons"
                     name="ios-alert"
                   />
