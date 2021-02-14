@@ -17,6 +17,8 @@ let BusinessList = null;
 import Constants from "expo-constants";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import GradientButton from "../../MiniComponents/GradientButton";
+import ReactNativeBiometrics from "react-native-biometrics";
+
 // Icons
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import Logo from "../../../assets/SVGs/Optimize";
@@ -62,6 +64,11 @@ class Menu extends Component {
     };
   }
   componentDidMount() {
+    ReactNativeBiometrics.isSensorAvailable().then((isSupported) => {
+      this.setState({
+        biometrySupported: isSupported.available,
+      });
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -329,21 +336,24 @@ class Menu extends Component {
                 </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.options}
-                onPress={() =>
-                  this.handleNavigation("BiometricsAuth", false, {
-                    source: "open_hamburger",
-                    source_action: "a_open_biometric_auth",
-                  })
-                }
-              >
-                <Icon type="Fontisto" name="unlocked" style={styles.icons} />
-                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
-                  {translate("Secure Account")}
-                </Text>
-              </TouchableOpacity>
-
+              {this.state.biometrySupported && (
+                <TouchableOpacity
+                  style={styles.options}
+                  onPress={() =>
+                    this.handleNavigation("BiometricsAuth", false, {
+                      source: "open_hamburger",
+                      source_action: "a_open_biometric_auth",
+                    })
+                  }
+                >
+                  <Icon type="Fontisto" name="unlocked" style={styles.icons} />
+                  <Text
+                    style={I18nManager.isRTL ? rtlStyles.text : styles.text}
+                  >
+                    {translate("Secure Account")}
+                  </Text>
+                </TouchableOpacity>
+              )}
               <TouchableOpacity
                 onPress={() =>
                   this.handleNavigation("ChangePassword", false, {
