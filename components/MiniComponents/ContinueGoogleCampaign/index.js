@@ -121,7 +121,6 @@ class ContinueCampaign extends Component {
       };
     }
     this.props.setCampaignInfoForTransaction(updated_transaction_data);
-
     /**
      * checks if the old campaign dates are still applicable or not so
      * it doesn't create a campaign with old dates
