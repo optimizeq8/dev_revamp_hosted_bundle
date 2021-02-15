@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "100%",
     paddingHorizontal: 0,
+    height: "50%",
   },
   bottomCardBlock2: {
     width: "100%",
