@@ -32,10 +32,16 @@ export default class SingleMetric extends Component {
       case "Paid Frequency":
         Icon = FrequencyIcon;
         break;
+      case "Frequency":
+        Icon = FrequencyIcon;
+        break;
       case "Reach":
         Icon = ReachIcon;
         break;
       case "swipeup rate":
+        Icon = SwipeUpsIcon;
+        break;
+      case "Clicks":
         Icon = SwipeUpsIcon;
         break;
       default:
@@ -54,14 +60,21 @@ export default class SingleMetric extends Component {
           />
         )}
         {!loadingCampaignStats ? (
-          <View>
-            <Text style={[styles.title, globalStyles.whiteTextColor]}>
+          <View style={{ width: "80%" }}>
+            <Text
+              adjustsFontSizeToFit
+              numberOfLines={2}
+              style={[styles.title, globalStyles.whiteTextColor]}
+            >
               {translate(metric)}
             </Text>
             <View style={globalStyles.row}>
               {metric.toLowerCase().includes("c") &&
                 metric.toLowerCase() !== "ctr" &&
-                metric.toLowerCase() !== "link click" && (
+                metric.toLowerCase() !== "link click" &&
+                metric.toLowerCase() !== "reach" &&
+                metric.toLowerCase() !== "frequency" &&
+                metric.toLowerCase() !== "clicks" && (
                   <Small
                     style={[
                       styles.numbers,

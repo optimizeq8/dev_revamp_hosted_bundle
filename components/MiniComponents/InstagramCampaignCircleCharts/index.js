@@ -17,6 +17,7 @@ import LowerButton from "../LowerButton";
 import globalStyles from "../../../GlobalStyles";
 import { Small } from "../../MiniComponents/StyledComponents/index";
 import PlaceholderLineComp from "../PlaceholderLine";
+import ConversionMetrics from "./ConversionMetrics";
 class CampaignCircleChart extends Component {
   componentDidUpdate(prevProps) {
     if (
@@ -121,93 +122,108 @@ class CampaignCircleChart extends Component {
                 alignSelf: "center",
               }}
             >
-              <View style={detail ? styles.campaignIcons : styles.campaignCard}>
-                {!detail ||
-                (campaign && campaign.objective === "BRAND_AWARENESS") ? (
-                  <ImpressionsIcons
-                    fill="#fff"
-                    height={heightPercentageToDP(3)}
-                    width={heightPercentageToDP(3)}
-                  />
-                ) : (
-                  <SwipeUpsIcon
-                    fill="#fff"
-                    height={heightPercentageToDP(3)}
-                    width={heightPercentageToDP(3)}
-                  />
-                )}
-                <View
-                  style={[
-                    styles.campaignInfo,
-                    { flexDirection: detail ? "column-reverse" : "column" },
-                  ]}
-                >
-                  <Text
-                    style={[
-                      styles.campaignNumbers,
-                      detail && styles.campaignNumbersDetail,
-                    ]}
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
-                  >
-                    {formatNumber(
-                      campaign
-                        ? !detail || campaign.objective === "BRAND_AWARENESS"
-                          ? campaign.impressions
-                          : mediaChannel === "instagram"
-                          ? campaign.clicks
-                          : campaign.swipes
-                        : 0,
-                      true
-                    )}
-                  </Text>
-                  <Text
-                    style={[
-                      styles.subtext,
-                      detail && styles.subtextDetail,
-                      { textTransform: "uppercase" },
-                    ]}
-                  >
-                    {!detail ||
-                    (campaign && campaign.objective === "BRAND_AWARENESS")
-                      ? translate("Impressions")
-                      : mediaChannel === "instagram"
-                      ? translate("Clicks")
-                      : translate("Swipe Ups")}
-                  </Text>
-                </View>
-              </View>
-              {detail ? (
+              {!campaign.hasOwnProperty("conversion_summary") && (
                 <View
                   style={detail ? styles.campaignIcons : styles.campaignCard}
                 >
-                  <ReachIcon
-                    fill="#fff"
-                    height={heightPercentageToDP(3)}
-                    width={heightPercentageToDP(3)}
-                  />
-                  <View style={styles.campaignInfo}>
+                  {!detail ||
+                  (campaign && campaign.objective === "BRAND_AWARENESS") ? (
+                    <ImpressionsIcons
+                      fill="#fff"
+                      height={heightPercentageToDP(3)}
+                      width={heightPercentageToDP(3)}
+                    />
+                  ) : (
+                    <SwipeUpsIcon
+                      fill="#fff"
+                      height={heightPercentageToDP(3)}
+                      width={heightPercentageToDP(3)}
+                    />
+                  )}
+                  <View
+                    style={[
+                      styles.campaignInfo,
+                      { flexDirection: detail ? "column-reverse" : "column" },
+                    ]}
+                  >
                     <Text
-                      style={[styles.subtext, detail && styles.subtextDetail]}
-                    >
-                      {translate("Reach")}
-                      <Small style={{ fontSize: 8 }}>
-                        {" "}
-                        {translate("Total")}
-                      </Small>
-                    </Text>
-                    <Text
-                      ellipsizeMode="tail"
-                      numberOfLines={1}
                       style={[
                         styles.campaignNumbers,
                         detail && styles.campaignNumbersDetail,
                       ]}
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
                     >
-                      {campaign ? formatNumber(campaign.reach, true) : 0}
+                      {formatNumber(
+                        campaign
+                          ? !detail || campaign.objective === "BRAND_AWARENESS"
+                            ? campaign.impressions
+                            : mediaChannel === "instagram"
+                            ? campaign.clicks
+                            : campaign.swipes
+                          : 0,
+                        true
+                      )}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.subtext,
+                        detail && styles.subtextDetail,
+                        { textTransform: "uppercase" },
+                      ]}
+                    >
+                      {!detail ||
+                      (campaign && campaign.objective === "BRAND_AWARENESS")
+                        ? translate("Impressions")
+                        : mediaChannel === "instagram"
+                        ? translate("Clicks")
+                        : translate("Swipe Ups")}
                     </Text>
                   </View>
                 </View>
+              )}
+              {campaign.hasOwnProperty("conversion_summary") && (
+                <ConversionMetrics
+                  conversionMetric={campaign.conversion_summary}
+                  campaign={campaign}
+                  translate={translate}
+                  detail={detail}
+                  mediaChannel={mediaChannel}
+                />
+              )}
+              {detail ? (
+                !campaign.hasOwnProperty("conversion_summary") && (
+                  <View
+                    style={detail ? styles.campaignIcons : styles.campaignCard}
+                  >
+                    <ReachIcon
+                      fill="#fff"
+                      height={heightPercentageToDP(3)}
+                      width={heightPercentageToDP(3)}
+                    />
+                    <View style={styles.campaignInfo}>
+                      <Text
+                        style={[styles.subtext, detail && styles.subtextDetail]}
+                      >
+                        {translate("Reach")}
+                        <Small style={{ fontSize: 8 }}>
+                          {" "}
+                          {translate("Total")}
+                        </Small>
+                      </Text>
+                      <Text
+                        ellipsizeMode="tail"
+                        numberOfLines={1}
+                        style={[
+                          styles.campaignNumbers,
+                          detail && styles.campaignNumbersDetail,
+                        ]}
+                      >
+                        {campaign ? formatNumber(campaign.reach, true) : 0}
+                      </Text>
+                    </View>
+                  </View>
+                )
               ) : (
                 <View
                   style={detail ? styles.campaignIcons : styles.campaignCard}
@@ -250,7 +266,7 @@ class CampaignCircleChart extends Component {
                   </View>
                 </View>
               )}
-              {detail && (
+              {detail && !campaign.hasOwnProperty("conversion_summary") && (
                 <View
                   style={detail ? styles.campaignIcons : styles.campaignCard}
                 >
