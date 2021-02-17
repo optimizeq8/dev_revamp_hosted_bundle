@@ -61,7 +61,7 @@ class AppSearchModal extends Component {
     const { translate } = this.props.screenProps;
     this.props.setTheState({ loading: true });
     Axios.post(`https://optimizeapp.com/optimize/instagram/appSearch`, {
-      query_term: this.props.mainState.appValue,
+      query_term: this.props.mainState.appValue.trim(),
       app_store: "GOOGLE_PLAY",
     })
       .then((res) => {
@@ -69,7 +69,7 @@ class AppSearchModal extends Component {
       })
       .then((data) => {
         let list = [];
-        if (data.data && data.data.length > 0) {
+        if (data && data.data && data.data.length > 0) {
           list = data.data.filter((item) => {
             return !appsToRemove.includes(item.name);
           });
@@ -114,7 +114,7 @@ class AppSearchModal extends Component {
     const { translate } = this.props.screenProps;
     this.props.setTheState({ loading: true });
     Axios.post(`https://optimizeapp.com/optimize/instagram/appSearch`, {
-      query_term: this.props.mainState.appValue,
+      query_term: this.props.mainState.appValue.trim(),
       app_store: "ITUNES",
     })
       .then((res) => {
@@ -122,7 +122,7 @@ class AppSearchModal extends Component {
       })
       .then((data) => {
         let list = [];
-        if (data.data && data.data.length > 0) {
+        if (data && data.data && data.data.length > 0) {
           list = data.data.filter((item) => {
             return !appsToRemove.includes(item.name);
           });
@@ -134,6 +134,7 @@ class AppSearchModal extends Component {
         });
       })
       .catch((err) => {
+        // console.log("APP search", err);
         this.props.setTheState({ loading: false });
         analytics.track(`a_error`, {
           error_page: "app_search_modal",
