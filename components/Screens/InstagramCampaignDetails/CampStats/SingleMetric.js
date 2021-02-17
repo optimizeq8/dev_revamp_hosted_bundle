@@ -74,6 +74,7 @@ export default class SingleMetric extends Component {
                 metric.toLowerCase() !== "link click" &&
                 metric.toLowerCase() !== "reach" &&
                 metric.toLowerCase() !== "frequency" &&
+                metric.toLowerCase() !== "purchases" &&
                 metric.toLowerCase() !== "clicks" && (
                   <Small
                     style={[
