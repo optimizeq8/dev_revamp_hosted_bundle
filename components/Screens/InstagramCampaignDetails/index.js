@@ -737,7 +737,7 @@ class InstagramCampaignDetails extends Component {
             isVisible={this.state.CSVModalVisible}
             showCSVModal={this.showCSVModal}
             screenProps={this.props.screenProps}
-            downloadCSV={this.props.downloadCSV}
+            downloadCSV={this.props.downloadInstagramCSV}
             campaign_id={selectedCampaign && selectedCampaign.campaign_id}
           />
         </SafeAreaView>
@@ -765,8 +765,10 @@ const mapDispatchToProps = (dispatch) => ({
   getInstagraCampaignStats: (info, range) =>
     dispatch(actionCreators.getInstagraCampaignStats(info, range)),
   get_languages: () => dispatch(actionCreators.get_languages()),
-  downloadCSV: (campaign_id, email, showModalMessage) =>
-    dispatch(actionCreators.downloadCSV(campaign_id, email, showModalMessage)),
+  downloadInstagramCSV: (campaign_id, email, showModalMessage) =>
+    dispatch(
+      actionCreators.downloadInstagramCSV(campaign_id, email, showModalMessage)
+    ),
 });
 export default connect(
   mapStateToProps,

@@ -1042,3 +1042,22 @@ export const endInstagramCampaign = (info, handleToggle) => {
       });
   };
 };
+
+export const downloadInstagramCSV = (campaign_id, email, showModalMessage) => {
+  return (dispatch) => {
+    InstagramBackendURL()
+      .post(`exportData`, { campaign_id, email })
+      .then((res) => res.data)
+      .then((data) => {
+        analytics.track(`a_share_csv`, {
+          channel: "email",
+          source: "ad_detail",
+          source_action: "a_share_csv",
+          campaign_channel: "snapchat",
+          action_status: data.success ? "success" : "failure",
+        });
+        showModalMessage(data.message, data.success ? "success" : "warning");
+      })
+      .catch((err) => showModalMessage(err));
+  };
+};

@@ -235,6 +235,7 @@ export {
   moveRejectedAdAmountToWalletInstagram,
   updateInstagramStatus,
   endInstagramCampaign,
+  downloadInstagramCSV,
 } from "./instagramCampaignActions";
 
 export {
