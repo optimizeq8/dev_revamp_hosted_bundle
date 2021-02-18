@@ -389,12 +389,17 @@ class AdDesign extends Component {
           //   JSON.stringify(this.props.mainBusiness, null, 2)
           // );
           let appChoice =
-            this.props.mainBusiness.appstorelink.ios_app_id === ""
+            this.props.mainBusiness.appstorelink.ios_app_id === "" &&
+            this.props.mainBusiness.playstorelink.android_app_url === ""
+              ? ""
+              : this.props.mainBusiness.appstorelink.ios_app_id === ""
               ? "ANDROID"
               : "iOS";
           _changeDestination(
             savedObjective === "APP_TRAFFIC" ? "DEEP_LINK" : "APP_INSTALL",
-            list[this.props.adType][1].call_to_action_list[0],
+            list[
+              this.props.adType === "StoryAd" ? "SnapAd" : this.props.adType
+            ][1].call_to_action_list[0],
             {
               app_name:
                 this.props.mainBusiness.appstorelink.app_name !== ""
