@@ -32,9 +32,10 @@ class AppSearchModal extends Component {
   _searchAndroidApps = () => {
     const { translate } = this.props.screenProps;
     this.props.setTheState({ loading: true });
-    Axios.get(
-      `https://graph.facebook.com/v7.0/act_${this.props.FBAdAccountIDForAppSearch}/matched_search_applications?app_store=GOOGLE_PLAY&query_term=${this.props.mainState.appValue}&access_token=${this.props.FBAccessTokenForAppSearch}`
-    )
+    Axios.post(`https://optimizeapp.com/optimize/instagram/appSearch`, {
+      query_term: this.props.mainState.appValue,
+      app_store: "GOOGLE_PLAY",
+    })
       .then((res) => {
         return res.data;
       })
@@ -78,9 +79,10 @@ class AppSearchModal extends Component {
   _searchIosApps = () => {
     const { translate } = this.props.screenProps;
     this.props.setTheState({ loading: true });
-    Axios.get(
-      `https://graph.facebook.com/v7.0/act_${this.props.FBAdAccountIDForAppSearch}/matched_search_applications?app_store=ITUNES&query_term=${this.props.mainState.appValue}&access_token=${this.props.FBAccessTokenForAppSearch}`
-    )
+    Axios.post(`https://optimizeapp.com/optimize/instagram/appSearch`, {
+      query_term: this.props.mainState.appValue,
+      app_store: "ITUNES",
+    })
       .then((res) => {
         return res.data;
       })
@@ -92,7 +94,7 @@ class AppSearchModal extends Component {
         })
       )
       .catch((err) => {
-        // console.log(err);
+        console.log(err);
 
         this.props.setTheState({ loading: false });
         analytics.track(`a_error`, {
