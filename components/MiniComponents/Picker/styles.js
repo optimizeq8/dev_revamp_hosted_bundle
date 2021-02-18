@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     borderColor: "#0000",
     backgroundColor: "#0002",
     width: wp(80),
-    height: "RFValue(25, 414)%",
+    height: RFValue(25, 414),
     alignSelf: "center",
   },
   customSearchInput: {

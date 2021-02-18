@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000",
   },
   loadingText: {
-    fontSize: RFValue(14, 414),
+    fontSize: RFValue(8, 414),
     lineHeight: 18,
     color: "#FFF",
     fontFamily: "montserrat-regular",
