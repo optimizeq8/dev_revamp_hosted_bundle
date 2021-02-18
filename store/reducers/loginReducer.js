@@ -7,6 +7,8 @@ const initialState = {
   forgotPasswordSuccess: null,
   forgotPasswordMessage: "",
   temp_exist: 0,
+  passwordValid: false,
+  checkingPassword: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -52,6 +54,17 @@ const reducer = (state = initialState, action) => {
         forgotPasswordSuccess: action.payload.success,
         forgotPasswordMessage: action.payload.message,
         temp_exist: action.payload.temp_exist,
+      };
+    case actionTypes.SET_CHECKING_FOR_PASSWORD_LOADING:
+      return {
+        ...state,
+        checkingPassword: action.payload,
+      };
+    case actionTypes.PASSWORD_CHECKED:
+      return {
+        ...state,
+        passwordValid: action.payload,
+        checkingPassword: false,
       };
     default:
       return state;

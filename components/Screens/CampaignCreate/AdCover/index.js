@@ -7,6 +7,7 @@ import * as ImageManipulator from "expo-image-manipulator";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
+import { RFValue } from "react-native-responsive-fontsize";
 import {
   View,
   TouchableOpacity,
@@ -885,7 +886,11 @@ class AdCover extends Component {
                     style={styles.logoStyle}
                     resizeMode="contain"
                   />
-                  <PenIcon width={20} height={20} style={styles.logoEdit} />
+                  <PenIcon
+                    width={RFValue(10, 414)}
+                    height={RFValue(10, 414)}
+                    style={styles.logoEdit}
+                  />
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
@@ -910,13 +915,7 @@ class AdCover extends Component {
                         type="SimpleLineIcons"
                         style={{ color: globalColors.orange }}
                       />
-                      <Text
-                        style={{
-                          color: globalColors.orange,
-                          fontFamily: "montserrat-bold",
-                          fontSize: 14,
-                        }}
-                      >
+                      <Text style={styles.yourLogoText}>
                         {translate("Your Logo")}
                       </Text>
                       <Text style={styles.addLogoTextStyle}>

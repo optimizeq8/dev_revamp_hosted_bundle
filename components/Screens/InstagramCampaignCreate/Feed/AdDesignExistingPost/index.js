@@ -13,13 +13,14 @@ import {
   ScrollView,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
 
 import { Transition } from "react-navigation-fluid-transitions";
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
+import list from "../../../../Data/callactions.data";
 
 const preview = {
   uri:
@@ -116,6 +117,12 @@ class InstagramAdDesignExistingPost extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.goBack);
     this.props.getInstagramExistingPost(this.props.mainBusiness.businessid);
     if (this.props.data) {
+      console.log(
+        "this.props.data instagram",
+        JSON.stringify(this.props.data, null, 2)
+      );
+      const { websitelink, weburl } = this.props.mainBusiness;
+
       let {
         media_option = "single",
         link,
@@ -153,6 +160,78 @@ class InstagramAdDesignExistingPost extends Component {
             destination = "BLANK";
         }
       }
+      switch (this.props.data.objective) {
+        case "BRAND_AWARENESS":
+          call_to_action =
+            list[
+              this.rejected
+                ? this.props.instaRejCampaign["campaign_type"]
+                : this.props.data["campaign_type"]
+            ][0].call_to_action_list[0];
+          link =
+            websitelink && websitelink !== ""
+              ? websitelink
+              : weburl && weburl !== ""
+              ? weburl.includes("https")
+                ? weburl
+                : `https://${weburl}.optimizeapp.com`
+              : "";
+          break;
+        case "LINK_CLICKS":
+          call_to_action =
+            list[
+              this.rejected
+                ? this.props.instaRejCampaign["campaign_type"]
+                : this.props.data["campaign_type"]
+            ][1].call_to_action_list[0];
+          link =
+            websitelink && websitelink !== ""
+              ? websitelink
+              : weburl && weburl !== ""
+              ? weburl.includes("https")
+                ? weburl
+                : `https://${weburl}.optimizeapp.com`
+              : "";
+          break;
+        case "LEAD_GENERATION":
+          call_to_action =
+            list[
+              this.rejected
+                ? this.props.instaRejCampaign["campaign_type"]
+                : this.props.data["campaign_type"]
+            ][2].call_to_action_list[0];
+          link =
+            websitelink && websitelink !== ""
+              ? websitelink
+              : weburl && weburl !== ""
+              ? weburl.includes("https")
+                ? weburl
+                : `https://${weburl}.optimizeapp.com`
+              : "";
+          break;
+        case "APP_INSTALLS":
+          //   destination = "app_install";
+          break;
+        case "VIDEO_VIEWS":
+          //   destination = "BLANK";
+          break;
+        default:
+          attachment =
+            list[
+              this.rejected
+                ? this.props.instaRejCampaign["campaign_type"]
+                : this.props.data["campaign_type"]
+            ][0].call_to_action_list[0];
+          link =
+            websitelink && websitelink !== ""
+              ? websitelink
+              : weburl && weburl !== ""
+              ? weburl.includes("https")
+                ? weburl
+                : `https://${weburl}.optimizeapp.com`
+              : "";
+      }
+      console.log(link + " ,  " + call_to_action + " ,  " + attachment);
       // console.log("attachment", attachment);
       this.setState({
         campaignInfo: {
@@ -171,6 +250,9 @@ class InstagramAdDesignExistingPost extends Component {
       });
       this.props.save_campaign_info_instagram({
         destination,
+        link,
+        call_to_action,
+        attachment,
       });
     }
   }
@@ -354,15 +436,15 @@ class InstagramAdDesignExistingPost extends Component {
     return (
       <TouchableOpacity
         style={{
-          width: 70,
-          height: 70,
+          width: RFValue(35, 414),
+          height: RFValue(35, 414),
           // borderWidth: 2,
-          margin: 5,
-          borderRadius: 20,
+          margin: RFValue(2.5, 414),
+          borderRadius: RFValue(10, 414),
           overflow: "hidden",
           borderWidth:
             this.state.campaignInfo.instagram_post_id === product.promotable_id
-              ? 5
+              ? RFValue(2.5, 414)
               : 0,
           borderColor:
             this.state.campaignInfo.instagram_post_id === product.promotable_id
@@ -409,8 +491,8 @@ class InstagramAdDesignExistingPost extends Component {
       >
         <RNImage
           style={{
-            width: 70,
-            height: 70,
+            width: RFValue(35, 414),
+            height: RFValue(35, 414),
           }}
           source={{ uri: product.full_picture }}
           resizeMode={"cover"}

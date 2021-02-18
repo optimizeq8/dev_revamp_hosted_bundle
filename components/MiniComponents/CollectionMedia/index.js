@@ -4,6 +4,7 @@ import * as ImageManipulator from "expo-image-manipulator";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
+import { RFValue } from "react-native-responsive-fontsize";
 import {
   View,
   TouchableOpacity,
@@ -657,7 +658,7 @@ class CollectionMedia extends Component {
             } else this._pickImage();
           }}
         >
-          <CameraEdit width={70} height={70} />
+          <CameraEdit width={RFValue(35, 414)} height={RFValue(35, 414)} />
           <Text style={styles.mediaButtonMsg1}>{translate("Edit Image")}</Text>
         </TouchableOpacity>
       );

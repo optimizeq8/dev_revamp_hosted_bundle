@@ -6,6 +6,7 @@ import {
   BackHandler,
   TouchableOpacity,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { Container, Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
@@ -388,7 +389,13 @@ class InstagramCampaignDetails extends Component {
         }
         audienceOverViewData.push({
           heading: "Gender",
-          icon: <GenderIcon fill={"#FF790A"} width={31} height={31} />,
+          icon: (
+            <GenderIcon
+              fill={"#FF790A"}
+              width={RFValue(15.5, 414)}
+              height={RFValue(15.5, 414)}
+            />
+          ),
           content: gender,
         });
         interesetNames =
@@ -402,17 +409,35 @@ class InstagramCampaignDetails extends Component {
         });
         audienceOverViewData.push({
           heading: "Location",
-          icon: <LocationIcon fill={"#FF790A"} width={31} height={31} />,
+          icon: (
+            <LocationIcon
+              fill={"#FF790A"}
+              width={RFValue(15.5, 414)}
+              height={RFValue(15.5, 414)}
+            />
+          ),
           content: countryName + ", " + (region_names ? region_names : ""),
         });
         audienceOverViewData.push({
           heading: "Interests",
-          icon: <InterestsIcon fill={"#FF790A"} width={31} height={31} />,
+          icon: (
+            <InterestsIcon
+              fill={"#FF790A"}
+              width={RFValue(15.5, 414)}
+              height={RFValue(15.5, 414)}
+            />
+          ),
           content: interesetNames.length > 0 ? interesetNames : "All",
         });
         audienceOverViewData.push({
           heading: "Devices",
-          icon: <DeviceMakeIcon fill={"#FF790A"} width={31} height={31} />,
+          icon: (
+            <DeviceMakeIcon
+              fill={"#FF790A"}
+              width={RFValue(15.5, 414)}
+              height={RFValue(15.5, 414)}
+            />
+          ),
           content: deviceMakes.length > 0 ? deviceMakes : "All",
         });
         if (selectedCampaign.start_time && selectedCampaign.end_time) {

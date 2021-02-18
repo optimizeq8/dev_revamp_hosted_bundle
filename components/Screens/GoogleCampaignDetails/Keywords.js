@@ -1,5 +1,6 @@
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 
 import styles from "./styles";
@@ -29,7 +30,7 @@ export default function (props) {
         <Text
           style={[
             styles.subHeading,
-            { paddingVertical: 10, textAlign: "center" },
+            { paddingVertical: RFValue(5, 414), fontSize: RFValue(8, 414) },
           ]}
         >
           {translate("Keywords")}

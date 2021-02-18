@@ -2,257 +2,264 @@ import { StyleSheet, I18nManager, Dimensions } from "react-native";
 
 import {
   widthPercentageToDP,
-  heightPercentageToDP
+  heightPercentageToDP,
 } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   cardStyle: {
-    borderRadius: 30,
-    borderTopLeftRadius: 30,
+    borderRadius: RFValue(15, 414),
+    borderTopLeftRadius: RFValue(15, 414),
     borderTopRightRadius: 0,
-    borderBottomLeftRadius: 30,
+    borderBottomLeftRadius: RFValue(15, 414),
     borderBottomRightRadius: 0,
-    // marginVertical: 8,
+    // marginVertical : RFValue(4, 414),
     shadowOpacity: 1,
-    shadowRadius: 30,
+    shadowRadius: RFValue(15, 414),
     shadowColor: "#5314B4",
-    elevation: 8,
+    elevation: RFValue(4, 414),
     shadowOffset: { height: 6, width: 0 },
-    paddingVertical: 10,
-    borderTopLeftRadius: 30,
-    paddingHorizontal: 25,
-    zIndex: -19
+    paddingVertical: RFValue(5, 414),
+    borderTopLeftRadius: RFValue(15, 414),
+    paddingHorizontal: RFValue(12.5, 414),
+    zIndex: -19,
   },
   shopCard: {
     left: widthPercentageToDP(8),
 
-    width: widthPercentageToDP(100)
+    width: widthPercentageToDP(100),
   },
   campaignButton: {
-    padding: 20
+    padding: RFValue(10, 414),
   },
   textcontainer: {
-    flexDirection: "column"
+    flexDirection: "column",
   },
   header: {
     flexDirection: "row",
     paddingVertical: 0,
-    alignItems: "center"
+    alignItems: "center",
   },
   titleText: {
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 16,
-    textAlign: "left"
+    fontSize: RFValue(8, 414),
+    textAlign: "left",
   },
   adStatus: {
-    borderRadius: 16,
-    paddingTop: 3,
+    borderRadius: RFValue(8, 414),
+    paddingTop: RFValue(1.5, 414),
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   circleIcon: { color: "#fff", fontSize: 16 },
   reviewText: {
     fontFamily: "montserrat-bold",
     textAlign: "left",
-    fontSize: 13,
-    paddingHorizontal: 5,
+    fontSize: RFValue(6.5, 414),
+    paddingHorizontal: RFValue(2.5, 414),
     color: "#fff",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   chartContainer: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   channelIcon: {
     position: "absolute",
-    top: -15
+    top: -15,
   },
   horizontalLineView: {
-    width: 3,
+    width: RFValue(1.5, 414),
     height: "100%",
-    backgroundColor: "rgba(0,0,0,0.05)"
+    backgroundColor: "rgba(0,0,0,0.05)",
   },
   cardStatusDays: {
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-end",
     alignSelf: "center",
-    paddingLeft: 5
+    paddingLeft: RFValue(2.5, 414),
   },
   cardText: {
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     textAlign: "center",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   screen1OuterView: {
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    paddingHorizontal: 20,
+    paddingHorizontal: RFValue(10, 414),
     alignSelf: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   adDesignTopView: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: I18nManager.isRTL ? 5 : 8
+    marginVertical: I18nManager.isRTL ? 5 : RFValue(4, 414),
   },
   adDesignDetailView: {
-    marginHorizontal: 10
+    marginHorizontal: RFValue(5, 414),
   },
   adDesignHeading: {
     fontFamily: "montserrat-bold",
-    fontSize: 8,
+    fontSize: RFValue(4, 414),
     color: "#FFF",
-    textAlign: "left"
+    textAlign: "left",
   },
   adDesignDescp: {
     fontFamily: "montserrat-medium-english",
     color: "#FFF",
     textAlign: "left",
-    fontSize: 11
+    fontSize: RFValue(5.5, 414),
   },
   mediaButtonView: {
     display: "flex",
     alignItems: "center",
-    marginBottom: Dimensions.get("window").width > 400 ? 100 : 80,
-    marginTop: Dimensions.get("window").width > 400 ? 100 : 40,
-    alignSelf: "center"
+    marginBottom:
+      Dimensions.get("window").width > 400
+        ? RFValue(50, 414)
+        : RFValue(40, 414),
+    marginTop:
+      Dimensions.get("window").width > 400
+        ? RFValue(50, 414)
+        : RFValue(20, 414),
+    alignSelf: "center",
   },
   editText: {
-    fontSize: 9,
+    fontSize: RFValue(4.5, 414),
     fontFamily: "montserrat-medium",
     color: globalColors.orange,
-    textAlign: "center"
+    textAlign: "center",
   },
   swipeUpView: {
     backgroundColor: globalColors.orange,
-    paddingVertical: 10,
+    paddingVertical: RFValue(5, 414),
     width: 220,
-    borderRadius: 30,
+    borderRadius: RFValue(15, 414),
     alignSelf: "center",
-    marginBottom: 10
+    marginBottom: RFValue(5, 414),
   },
   adDesignWebsite: {
     fontFamily: "montserrat-medium",
     color: "#FFF",
-    fontSize: 11,
+    fontSize: RFValue(5.5, 414),
     textAlign: "center",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   adDesignWebsitePlaceholder: {
     fontFamily: "montserrat-bold-english",
-    fontSize: 8,
+    fontSize: RFValue(4, 414),
     textAlign: "center",
 
-    color: "#FFF"
+    color: "#FFF",
   },
   downIcon: {
     position: "absolute",
-    right: 15,
+    right: RFValue(7.5, 414),
     top: 6,
     color: "#fff",
-    width: 25,
-    height: 25,
-    fontSize: 30,
+    width: RFValue(12.5, 414),
+    height: RFValue(12.5, 414),
+    fontSize: RFValue(15, 414),
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   block: {
-    width: 30,
-    height: 30,
+    width: RFValue(15, 414),
+    height: RFValue(15, 414),
     position: "absolute",
     zIndex: 1,
-    left: -16
+    left: -16,
   },
   block1: {
-    width: 30,
-    height: 30,
-    marginLeft: widthPercentageToDP(10)
+    width: RFValue(15, 414),
+    height: RFValue(15, 414),
+    marginLeft: widthPercentageToDP(10),
   },
   block3: {
-    width: 30,
-    height: 30,
+    width: RFValue(15, 414),
+    height: RFValue(15, 414),
     position: "absolute",
     zIndex: 1,
-    top: -12
+    top: -12,
   },
   blockText: {
     fontFamily: "montserrat-bold-english",
-    fontSize: 17
+    fontSize: RFValue(8.5, 414),
   },
   safeAreaViewContainer: {
     flex: 1,
-    backgroundColor: "#0000"
+    backgroundColor: "#0000",
   },
   imageView: { backgroundColor: "#fff" },
   getStartedText: {
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 11,
-    textAlign: "center"
+    fontSize: RFValue(5.5, 414),
+    textAlign: "center",
   },
   getStartedButton: {
     alignSelf: "center",
-    zIndex: 100,
-    height: 40,
-    width: 110,
+    zIndex: RFValue(50, 414),
+    height: RFValue(20, 414),
+    width: RFValue(55, 414),
 
-    justifyContent: "center"
+    justifyContent: "center",
   },
   imageSlide: {
     height: heightPercentageToDP(100),
     flex: 1,
     alignContent: "center",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: { color: "#000", fontSize: 48 },
+  title: { color: "#000", fontSize: RFValue(24, 414) },
   container: {
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
   },
   background: {
     position: "absolute",
     opacity: 0.2,
     top: "30%",
     alignSelf: "center",
-    zIndex: 0
+    zIndex: 0,
   },
   media: {
     alignSelf: "center",
-    height: 100,
-    width: 100,
-    margin: 15
+    height: RFValue(50, 414),
+    width: RFValue(50, 414),
+    margin: RFValue(7.5, 414),
   },
 
   text: {
     textAlign: "center",
     color: "#717171",
-    paddingTop: 40,
-    paddingBottom: 10,
+    paddingTop: RFValue(20, 414),
+    paddingBottom: RFValue(5, 414),
     fontFamily: "montserrat-regular",
-    fontSize: 15,
-    paddingHorizontal: 10,
-    paddingVertical: 10
+    fontSize: RFValue(7.5, 414),
+    paddingHorizontal: RFValue(5, 414),
+    paddingVertical: RFValue(5, 414),
   },
 
   gradient: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   skipButton: {
-    borderRadius: 20,
+    borderRadius: RFValue(10, 414),
     borderWidth: 1,
     ...globalStyles.whiteBorderColor,
-    height: 40,
-    width: 110,
-    zIndex: 0
+    height: RFValue(20, 414),
+    width: RFValue(55, 414),
+    zIndex: 0,
   },
   bottomView: {
     display: "flex",
@@ -263,91 +270,91 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     position: "absolute",
     bottom: heightPercentageToDP(3.5),
-    paddingHorizontal: 20
+    paddingHorizontal: RFValue(10, 414),
   },
   blockDescription: {
-    marginVertical: 20,
-    alignSelf: "center"
+    marginVertical: RFValue(10, 414),
+    alignSelf: "center",
   },
   heading: {
-    fontSize: 20,
+    fontSize: RFValue(10, 414),
     color: "#FFFF",
     fontFamily: "montserrat-bold",
     textAlign: "center",
-    marginBottom: 8
+    marginBottom: RFValue(4, 414),
   },
   description: {
-    fontSize: 16,
-    marginTop: 8,
+    fontSize: RFValue(8, 414),
+    marginTop: RFValue(4, 414),
     color: "#FFFF",
     fontFamily: "montserrat-semibold",
-    textAlign: "center"
+    textAlign: "center",
   },
   screen1innerView: {
     flexGrow: 1,
     alignContent: "center",
-    marginVertical: 10,
-    width: 120,
-    marginHorizontal: 10
+    marginVertical: RFValue(5, 414),
+    width: RFValue(60, 414),
+    marginHorizontal: RFValue(5, 414),
   },
   screen1Container: {
     backgroundColor: "rgba(0,0,0,0.15)",
-    width: 90,
-    height: 90,
+    width: RFValue(45, 414),
+    height: RFValue(45, 414),
     display: "flex",
     justifyContent: "center",
-    borderRadius: 26,
+    borderRadius: RFValue(13, 414),
     alignSelf: "center",
-    marginBottom: 7
+    marginBottom: RFValue(3.5, 414),
   },
   slide1Title: {
     color: "#FFF",
-    fontSize: 17,
+    fontSize: RFValue(8.5, 414),
     textAlign: "center",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   graphImage: {
     height: heightPercentageToDP(30),
-    width: widthPercentageToDP(100)
+    width: widthPercentageToDP(100),
   },
   screen2OuterView: {
     display: "flex",
     alignItems: "center",
-    borderRadius: 30,
+    borderRadius: RFValue(15, 414),
     justifyContent: "center",
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.55)",
-    paddingHorizontal: 25,
-    marginTop: -15
+    paddingHorizontal: RFValue(12.5, 414),
+    marginTop: RFValue(-7.5, 414),
   },
   bsnView: {
-    alignSelf: "flex-start"
+    alignSelf: "flex-start",
   },
   bsnBtnView: {
     alignSelf: "flex-start",
     zIndex: 2,
-    elevation: 1
+    elevation: 1,
   },
-  lowerBtn: { width: 46, height: 46 },
+  lowerBtn: { width: RFValue(23, 414), height: RFValue(23, 414) },
   mainView: {
     flex: 1,
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 20
+    paddingHorizontal: RFValue(10, 414),
   },
   paginationContainerStyle: {
-    paddingVertical: 5,
+    paddingVertical: RFValue(2.5, 414),
     bottom: heightPercentageToDP(5),
-    left: widthPercentageToDP(18)
+    left: widthPercentageToDP(18),
   },
   paginationDotStyle: {
-    borderRadius: 7,
-    height: 14,
-    marginHorizontal: -5,
-    width: 14
-  }
+    borderRadius: RFValue(3.5, 414),
+    height: RFValue(7, 414),
+    marginHorizontal: RFValue(-2.5, 414),
+    width: RFValue(7, 414),
+  },
 });
 
 export default styles;

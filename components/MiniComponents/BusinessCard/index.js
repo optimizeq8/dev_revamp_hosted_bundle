@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
@@ -110,7 +111,7 @@ class BusinessCard extends Component {
               },
             ]}
           >
-            <BusinessIcon width={30} height={30} />
+            <BusinessIcon width={RFValue(15, 414)} height={RFValue(15, 414)} />
           </View>
           <View style={styles.textcontainer}>
             <Text

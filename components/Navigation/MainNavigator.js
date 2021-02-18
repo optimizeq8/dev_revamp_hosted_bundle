@@ -377,6 +377,9 @@ export default createNativeStackNavigator(
       require: () =>
         require("../Screens/SuccessRedirect/VerifyEngagmentNumber"),
     }),
+    BiometricsAuth: register({
+      require: () => require("../Screens/BiometricsAuth"),
+    }),
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }

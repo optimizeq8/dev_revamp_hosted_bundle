@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, ScrollView, TouchableOpacity } from "react-native";
 import { Item, Input } from "native-base";
-
+import { RFValue } from "react-native-responsive-fontsize";
 //Icon
 import LocationIcon from "../../../assets/SVGs/Location.svg";
 import SearchIcon from "../../../assets/SVGs/Search.svg";
@@ -36,7 +36,7 @@ class CountrySelector extends Component {
           style={{
             fontFamily: "montserrat-bold",
             color: this.props.country === c.criteria_id ? "#FF9D00" : "#fff",
-            fontSize: 14,
+            fontSize: RFValue(7, 414),
           }}
         >
           {translate(c.name)}
@@ -46,10 +46,18 @@ class CountrySelector extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.dataContainer}>
-          <LocationIcon width={50} height={80} fill="#fff" />
+          <LocationIcon
+            width={RFValue(25, 414)}
+            height={RFValue(40, 414)}
+            fill="#fff"
+          />
           <View style={styles.slidercontainer}>
             <Item style={styles.searchBar}>
-              <SearchIcon width={18} height={18} stroke="#fff" />
+              <SearchIcon
+                width={RFValue(9, 414)}
+                height={RFValue(9, 414)}
+                stroke="#fff"
+              />
               <Input
                 placeholder={translate("Search Country") + "..."}
                 style={styles.searchInputText}

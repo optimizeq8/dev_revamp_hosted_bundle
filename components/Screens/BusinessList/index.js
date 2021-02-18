@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import analytics from "@segment/analytics-react-native";
 import { Container, Icon } from "native-base";
 import SearchBar from "../../MiniComponents/SearchBar";
@@ -240,7 +241,7 @@ class BusinessList extends Component {
                 radius={50}
                 textStyle={{
                   fontFamily: "montserrat-bold",
-                  fontSize: 14,
+                  fontSize: RFValue(7, 414),
                   color: "#D2C6D8",
                 }}
                 text={"Refresh"}

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { View, Image, Text } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import { Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import isNull from "lodash/isNull";
@@ -248,9 +248,13 @@ class SwitchLanguage extends Component {
             style={styles.bottomButton}
           >
             {language === "ar" ? (
-              <BackButton stroke={"#FFF"} width={10} height={20} />
+              <BackButton
+                stroke={"#FFF"}
+                width={RFValue(5, 414)}
+                height={RFValue(10, 414)}
+              />
             ) : (
-              <ArrowForward width={10} height={20} />
+              <ArrowForward width={RFValue(5, 414)} height={RFValue(10, 414)} />
             )}
           </GradientButton>
         </SafeAreaView>

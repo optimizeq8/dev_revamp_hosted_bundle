@@ -3,6 +3,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
     // marginTop: 15
   },
   walletAmountText: {
-    fontSize: 40,
+    fontSize: RFValue(20, 414),
     left: "40%",
   },
   midContainer: { justifyContent: "center" },
@@ -33,8 +34,8 @@ const styles = StyleSheet.create({
     backgroundColor: globalColors.orange,
     borderRadius: 30,
     alignSelf: "center",
-    width: 250,
-    height: 50,
+    width: RFValue(125, 414),
+    height: RFValue(25, 414),
     marginTop: 20,
   },
   buttonTransparent: {
@@ -45,8 +46,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000",
     borderRadius: 30,
     alignSelf: "center",
-    width: 250,
-    height: 50,
+    width: RFValue(125, 414),
+    height: RFValue(25, 414),
     marginTop: 20,
     borderWidth: 1,
   },
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
   },
   contentContainer: {
     flex: 1,
@@ -66,17 +67,17 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     color: "#fff",
     fontFamily: "montserrat-regular",
-    fontSize: 14,
-    paddingHorizontal: 10,
-    marginTop: 5,
-    marginBottom: 10,
+    fontSize: RFValue(7, 414),
+    paddingHorizontal: RFValue(5, 414),
+    marginTop: RFValue(2.5, 414),
+    marginBottom: RFValue(5, 414),
   },
   mainText: {
     textAlign: "center",
     alignSelf: "center",
     color: "#FFFFFF",
     fontFamily: "montserrat-regular",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     // paddingHorizontal: 10,
     // marginTop: 30
     width: widthPercentageToDP(60),
@@ -84,12 +85,12 @@ const styles = StyleSheet.create({
   dollar: {
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 25,
+    fontSize: RFValue(12.5, 414),
   },
 
   inputtext: {
     fontFamily: "montserrat-bold-english",
-    fontSize: 31 / PixelRatio.getFontScale(),
+    fontSize: RFValue(15.5 / PixelRatio.getFontScale(), 414),
     color: "#FF9D00",
     alignSelf: "center",
     textAlign: "center",
@@ -137,9 +138,9 @@ const styles = StyleSheet.create({
   topUpHistory: {
     color: "#FFFFFF",
     fontFamily: "montserrat-bold",
-    fontSize: 18,
-    paddingHorizontal: 30,
-    paddingVertical: 10,
+    fontSize: RFValue(9, 414),
+    paddingHorizontal: RFValue(15, 414),
+    paddingVertical: RFValue(5, 414),
     textAlign: "left",
   },
   amountLabelView: {
@@ -154,10 +155,10 @@ const styles = StyleSheet.create({
   },
   amountLabelText: {
     textAlign: "center",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#FFF",
     fontFamily: "montserrat-bold",
-    marginBottom: -10,
+    marginBottom: RFValue(-5, 414),
   },
   contentScrollView: { paddingHorizontal: 15 },
   listLoader: {

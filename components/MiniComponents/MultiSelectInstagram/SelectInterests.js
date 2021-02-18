@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Icon } from "native-base";
 import isNull from "lodash/isNull";
+import { RFValue } from "react-native-responsive-fontsize";
 //Icons
 import InterestsIcon from "../../../assets/SVGs/Interests";
 import PlusCircle from "../../../assets/SVGs/PlusCircle";
@@ -257,7 +258,11 @@ class SelectInterests extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.dataContainer}>
-          <InterestsIcon width={100} height={100} fill={globalColors.rum} />
+          <InterestsIcon
+            width={RFValue(50, 414)}
+            height={RFValue(50, 414)}
+            fill={globalColors.rum}
+          />
           <Text style={styles.title}> {translate("Select Interests")}</Text>
           <Text style={styles.subHeadings}>
             {translate("Choose Interests that best describe your audience")}
@@ -274,7 +279,10 @@ class SelectInterests extends Component {
                 ]}
                 onPressAction={() => this.setState({ open: true })}
               >
-                <PlusCircle width={53} height={53} />
+                <PlusCircle
+                  width={RFValue(26.5, 414)}
+                  height={RFValue(26.5, 414)}
+                />
               </GradientButton>
               <GradientButton
                 style={[
@@ -286,7 +294,7 @@ class SelectInterests extends Component {
                 onPressAction={() => this.setState({ open2: true })}
               >
                 <Icon
-                  style={{ color: "#fff" }}
+                  style={{ color: "#fff", fontSize: RFValue(12, 414) }}
                   name="edit"
                   type="MaterialIcons"
                 />

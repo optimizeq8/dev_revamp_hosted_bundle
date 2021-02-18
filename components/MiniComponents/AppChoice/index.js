@@ -24,6 +24,7 @@ import { globalColors } from "../../../GlobalStyles";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import AppSearchModal from "./AppSearchModal";
 import AppBox from "./AppBox";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 class AppChoice extends Component {
   constructor(props) {
@@ -367,9 +368,13 @@ class AppChoice extends Component {
     let { iosAppSelected, androidAppSelected } = this.state;
     const { translate } = this.props.screenProps;
     return (
-      <InputScrollView
-        showsVerticalScrollIndicator={false}
+      // <InputScrollView
+      //   showsVerticalScrollIndicator={false}
+      //   contentContainerStyle={styles.scrollViewContainer}
+      // >
+      <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollViewContainer}
+        extraScrollHeight={30}
       >
         <AppBox
           appstorelink={this.props.mainBusiness.appstorelink}
@@ -464,7 +469,7 @@ class AppChoice extends Component {
           // bottom={5}
           purpleViolet={true}
         />
-      </InputScrollView>
+      </KeyboardAwareScrollView>
     );
   }
 }

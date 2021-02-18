@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, FlatList } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import MapSearchBar from "../LocationMap/MapSearchBar";
 import SearchResault from "../LocationMap/SearchResault";
 import { Icon } from "native-base";
@@ -21,7 +22,10 @@ export default class LocationList extends Component {
             onPress={() => this.props.handleLocationSearchModal(false)}
             name="close"
             type="FontAwesome"
-            style={{ fontSize: 20, marginHorizontal: 10 }}
+            style={{
+              fontSize: RFValue(10, 414),
+              marginHorizontal: RFValue(5, 414),
+            }}
           />
           <Text style={styles.title}>{translate("Add Country")}</Text>
         </View>

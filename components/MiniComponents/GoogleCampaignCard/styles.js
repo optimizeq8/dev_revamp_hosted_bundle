@@ -1,10 +1,12 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 
 const styles = StyleSheet.create({
   cardStyle: {
-    marginHorizontal: 20,
+    // marginHorizontal: 20,
+    marginHorizontal: RFValue(10, 414),
     borderRadius: 30,
-    marginVertical: 8,
+    marginVertical: RFValue(4, 414),
     shadowOpacity: 0.5,
     shadowRadius: 3,
     shadowColor: "#6268FF",
@@ -34,18 +36,19 @@ const styles = StyleSheet.create({
   titleText: {
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     textAlign: "left",
   },
   campaignButton: {
     flex: 1,
-    padding: 20,
-    paddingVertical: 20,
+    paddingHorizontal: RFValue(10, 414),
+    paddingVertical: RFValue(10, 414),
   },
   reviewText: {
     fontFamily: "montserrat-bold",
     textAlign: "left",
-    fontSize: 13,
+    // fontSize: 13,
+    fontSize: RFValue(6.5, 414),
     paddingHorizontal: 5,
     color: "#fff",
     textTransform: "uppercase",
@@ -68,7 +71,8 @@ const styles = StyleSheet.create({
   cardText: {
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 12,
+    // fontSize: 12,
+    fontSize: RFValue(6, 414),
     textAlign: "right",
   },
   cardStatusDays: {

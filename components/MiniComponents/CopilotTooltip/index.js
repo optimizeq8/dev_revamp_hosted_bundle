@@ -38,7 +38,11 @@ const Tooltip = ({
           style={[styles.tooltipCloseButton]}
           onPress={handleStop}
         >
-          <Text>{labels.skip || <Icon type="AntDesign" name="close" />}</Text>
+          <Text>
+            {labels.skip || (
+              <Icon style={styles.closeIcon} type="AntDesign" name="close" />
+            )}
+          </Text>
         </TouchableOpacity>
       </View>
 

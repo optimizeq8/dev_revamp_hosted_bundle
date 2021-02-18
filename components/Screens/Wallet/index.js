@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   TextInput,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import analytics from "@segment/analytics-react-native";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
@@ -164,7 +165,11 @@ class Wallet extends Component {
               source_action: "a_go_back",
             }}
           />
-          <WalletIcon style={styles.walletIcon} width={60} height={60} />
+          <WalletIcon
+            style={styles.walletIcon}
+            width={RFValue(30, 414)}
+            height={RFValue(30, 414)}
+          />
           <ScrollView contentContainerStyle={styles.contentScrollView}>
             <View
               style={{
@@ -276,8 +281,8 @@ class Wallet extends Component {
                 <View style={styles.midContainer}>
                   <WalletIcon
                     style={[styles.walletIcon, styles.modalWalletIcon]}
-                    width={82}
-                    height={65}
+                    width={RFValue(41, 414)}
+                    height={RFValue(32.5, 414)}
                   />
                   {/* <Text style={[styles.subHeading]}>
                       {translate(

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import styles from "../styles";
 import formatNumber from "../../../formatNumber";
 import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
@@ -13,7 +14,6 @@ import CPVIcon from "../../../../assets/SVGs/CampaignDetail/CPVIcon";
 import ReachIcon from "../../../../assets/SVGs/CampaignDetail/ReachIcon";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { Small } from "../../../MiniComponents/StyledComponents";
-
 export default class SingleMetric extends Component {
   render() {
     let { loadingCampaignStats, metric, metricValue, translate } = this.props;
@@ -62,7 +62,10 @@ export default class SingleMetric extends Component {
                 <Small
                   style={[
                     styles.numbers,
-                    { fontSize: 9, fontFamily: "montserrat-regular-english" },
+                    {
+                      fontSize: RFValue(4.5, 414),
+                      fontFamily: "montserrat-regular-english",
+                    },
                   ]}
                 >
                   $
@@ -85,7 +88,10 @@ export default class SingleMetric extends Component {
                 <Small
                   style={[
                     styles.numbers,
-                    { fontSize: 9, fontFamily: "montserrat-regular" },
+                    {
+                      fontSize: RFValue(4.5, 414),
+                      fontFamily: "montserrat-regular",
+                    },
                   ]}
                 >
                   %
@@ -94,7 +100,7 @@ export default class SingleMetric extends Component {
             </View>
           </View>
         ) : (
-          <PlaceholderLine width={70} />
+          <PlaceholderLine width={RFValue(35, 414)} height={RFValue(5, 414)} />
         )}
       </View>
     );

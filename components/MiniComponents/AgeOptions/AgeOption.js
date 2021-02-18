@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
-import { Container } from "native-base";
+import { RFValue } from "react-native-responsive-fontsize";
 import SafeAreaView from "react-native-safe-area-view";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import RangeMarkers from "./RangeMarkers";
@@ -62,7 +62,12 @@ export default class AgeOption extends Component {
               customMarkerLeft={(e) => (
                 <RangeMarkers value={e.currentValue} down={true} />
               )}
-              customMarkerRight={(e) => <RangeMarkers value={e.currentValue} />}
+              customMarkerRight={(e) => (
+                <RangeMarkers
+                  showPlusIcon={this.props.showPlusIcon}
+                  value={e.currentValue}
+                />
+              )}
               onValuesChange={this.multiSliderValuesChange}
               min={this.props.ageValuesRange[0]}
               max={this.props.ageValuesRange[1]}

@@ -8,6 +8,7 @@ import {
   UIManager,
   TouchableWithoutFeedback,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { Icon } from "native-base";
 import startCase from "lodash/startCase";
 import styles from "./styles";
@@ -208,7 +209,9 @@ export default class SwipeUpComponent extends Component {
                 // stroke="#000"
               />
               <View style={styles.swipeUpView}>
-                <Text style={[styles.swipeUpText, { fontSize: 12 }]}>
+                <Text
+                  style={[styles.swipeUpText, { fontSize: RFValue(6, 414) }]}
+                >
                   {translate("swipe up settings")}
                 </Text>
                 <Text style={styles.swipeUpText}>

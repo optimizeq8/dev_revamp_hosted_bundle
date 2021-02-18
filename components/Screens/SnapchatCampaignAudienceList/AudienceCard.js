@@ -1,7 +1,7 @@
 import React from "react";
 
 import { View, TouchableOpacity, Text } from "react-native";
-
+import { RFValue } from "react-native-responsive-fontsize";
 // STYLES
 import styles from "./styles";
 import { globalColors } from "../../../GlobalStyles";
@@ -59,13 +59,21 @@ export default AudienceCard = (props) => {
             });
           }}
         >
-          <PenIcon width={13} height={13} fill={globalColors.purple} />
+          <PenIcon
+            width={RFValue(6.5, 414)}
+            height={RFValue(6.5, 414)}
+            fill={globalColors.purple}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.deleteAudienceIcon}
           onPress={() => props.showAlert(item)}
         >
-          <TrashIcon width={13} height={13} fill={globalColors.purple} />
+          <TrashIcon
+            width={RFValue(6.5, 414)}
+            height={RFValue(6.5, 414)}
+            fill={globalColors.purple}
+          />
         </TouchableOpacity>
       </View>
     </View>

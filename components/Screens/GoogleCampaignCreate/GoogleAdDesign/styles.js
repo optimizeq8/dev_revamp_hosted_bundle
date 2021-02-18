@@ -4,6 +4,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../../GlobalStyles";
 
 const styles = StyleSheet.create({
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
     // flexGrow: 1,
     // height: "100%",
     // flex: 1,
-    paddingTop: 13,
+    paddingTop: RFValue(6.5, 414),
   },
   inputView: {
     borderTopLeftRadius: 150,
@@ -61,9 +62,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     width: "100%",
-    paddingVertical: 10,
+    paddingVertical: RFValue(5, 414),
     borderBottomColor: "transparent",
-    height: 50,
+    height: RFValue(25, 414),
   },
   inputTextarea: {
     fontFamily: "montserrat-regular",
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     width: "100%",
-    paddingVertical: 10,
+    paddingVertical: RFValue(5, 414),
     borderBottomColor: "transparent",
   },
   networkLabel: {
@@ -88,12 +89,12 @@ const styles = StyleSheet.create({
   },
   proceedButtonRTL: {
     width: "50%",
-    height: 50,
+    height: RFValue(25, 414),
     marginHorizontal: 0,
   },
   button: {
     width: "45%",
-    height: 50,
+    height: RFValue(25, 414),
     borderWidth: 1,
     borderColor: globalColors.white,
     marginHorizontal: 0,

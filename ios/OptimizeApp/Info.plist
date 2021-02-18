@@ -34,7 +34,7 @@
 			</dict>
 		</array>
 		<key>CFBundleVersion</key>
-		<string>158</string>
+		<string>159</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>NSAppTransportSecurity</key>
@@ -113,5 +113,7 @@
 		<false/>
 		<key>NSUserTrackingUsageDescription</key>
 		<string>Your data will be used to provide you a better and more personalized experience</string>
+		<key>NSFaceIDUsageDescription</key>
+		<string>OptimizeApp requires FaceID/TouchId access to allow you quick and secure access</string>
 	</dict>
 </plist>

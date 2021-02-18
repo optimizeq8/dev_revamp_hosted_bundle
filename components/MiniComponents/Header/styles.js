@@ -3,6 +3,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 const styles = StyleSheet.create({
   instaIcon: {
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
   },
   left: {
     width: "10%",
-    height: 40,
+    height: RFValue(20, 414),
     zIndex: 1,
     alignItems: "center",
     justifyContent: "center",
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: "center",
     alignItems: "center",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     color: "#fff",
     textAlign: "center",
     fontFamily: "montserrat-bold",
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
   titleText: {
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     color: "#fff",
     textAlign: "center",
     fontFamily: "montserrat-bold",

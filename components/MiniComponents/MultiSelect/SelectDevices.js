@@ -38,6 +38,7 @@ class SelectDevices extends Component {
   componentDidUpdate(prevProps) {
     if (
       prevProps.deviceBrands !== this.props.deviceBrands &&
+      this.props.deviceBrands &&
       this.props.deviceBrands.length > 0
     ) {
       let children = [];

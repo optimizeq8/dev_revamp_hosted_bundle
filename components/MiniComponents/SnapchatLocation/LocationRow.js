@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import styles from "./styles";
 import { Icon } from "native-base";
 import { globalColors } from "../../../GlobalStyles";
@@ -27,11 +28,13 @@ export default class LocationRow extends Component {
                 onPress={() => handleMapModal(true, locationInfo, index)}
               >
                 <Icon
-                  style={{ fontSize: 20 }}
+                  style={{ fontSize: RFValue(10, 414) }}
                   name="my-location"
                   type="MaterialIcons"
                 ></Icon>
-                <Text>{translate("Map")}</Text>
+                <Text style={{ fontSize: RFValue(6, 414) }}>
+                  {translate("Map")}
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => this.handleDeletion(locationInfo)}
@@ -39,7 +42,7 @@ export default class LocationRow extends Component {
               >
                 <Icon
                   style={{
-                    fontSize: 20,
+                    fontSize: RFValue(10, 414),
                     color: globalColors.purple,
                   }}
                   name="delete-outline"

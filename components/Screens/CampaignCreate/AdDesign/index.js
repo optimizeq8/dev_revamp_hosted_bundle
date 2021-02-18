@@ -13,6 +13,7 @@ import {
   ScrollView,
   BackHandler,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { Container } from "native-base";
 import { NavigationEvents } from "react-navigation";
 import { showMessage } from "react-native-flash-message";
@@ -73,6 +74,8 @@ import CopilotTooltip from "../../../MiniComponents/CopilotTooltip";
 import CopilotTooltipFunction, {
   circleSvgPath,
 } from "../../../MiniComponents/CopilotTooltip/CopilotTooltipFunction";
+
+import list from "../../../Data/callactions.data";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -186,7 +189,6 @@ class AdDesign extends Component {
         ? this.props.data.objective
         : "TRAFFIC",
     });
-
     const { translate } = this.props.screenProps;
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
     if (permission.status !== "granted") {
@@ -223,6 +225,7 @@ class AdDesign extends Component {
     let obj =
       (this.rejected && this.selectedCampaign.objective) ||
       (!this.rejected && this.props.data && this.props.data.objective);
+
     if (
       //   this.props.data.savedObjective !== "POLITICAL_TRAFFIC" &&
       (this.adType === "CollectionAd" &&
@@ -292,7 +295,145 @@ class AdDesign extends Component {
       this.props.data.hasOwnProperty("media")
     ) {
       let rep = this.state.campaignInfo;
+      if (
+        (!this.props.data.hasOwnProperty("attachment") ||
+          this.props.data.attachment === "BLANK") &&
+        (!this.props.data.hasOwnProperty("call_to_action") ||
+          this.props.data.call_to_action.value === "BLANK")
+      ) {
+        // Based on the campaign ad type and swipe up destination check if attachment previously exist then set swipe up destination
 
+        const savedObjective =
+          this.props.data && this.props.data.savedObjective;
+        if (
+          this.props.mainBusiness &&
+          (savedObjective === "WEBSITE_TRAFFIC" ||
+            savedObjective === "LEAD_GENERATION")
+        ) {
+          const { websitelink, weburl } = this.props.mainBusiness;
+          if (websitelink && websitelink !== "") {
+            _changeDestination(
+              this.props.collectionAdLinkForm === 0
+                ? obj !== "LEAD_GENERATION"
+                  ? "REMOTE_WEBPAGE"
+                  : "LEAD_GENERATION"
+                : "COLLECTION",
+
+              list.SnapAd[0].call_to_action_list[0],
+              {
+                url: websitelink,
+              },
+              null,
+              null,
+              this.adType,
+              this.props.setStoryAdAttachment,
+              this.state.campaignInfo,
+              this.props.save_campaign_info,
+              this.setTheState
+            );
+          } else if (weburl && weburl !== "") {
+            _changeDestination(
+              this.props.collectionAdLinkForm === 0
+                ? obj !== "LEAD_GENERATION"
+                  ? "REMOTE_WEBPAGE"
+                  : "LEAD_GENERATION"
+                : "COLLECTION",
+
+              list.SnapAd[0].call_to_action_list[0],
+              {
+                url: weburl.includes("https")
+                  ? weburl
+                  : `https://${weburl}.optimizeapp.com`,
+              },
+              null,
+              null,
+              this.adType,
+              this.props.setStoryAdAttachment,
+              this.state.campaignInfo,
+              this.props.save_campaign_info,
+              this.setTheState
+            );
+          }
+        }
+        if (this.props.mainBusiness && savedObjective === "ENGAGEMENT") {
+          const { callnumber } = this.props.mainBusiness;
+          console.log("savedObjective", {
+            phone_number_id: `+${callnumber}`,
+          });
+          _changeDestination(
+            "AD_TO_CALL",
+            list.SnapAd[5].call_to_action_list[0],
+            {
+              phone_number_id: `+${callnumber}`,
+            },
+            null,
+            null,
+            this.adType,
+            this.props.setStoryAdAttachment,
+            this.state.campaignInfo,
+            this.props.save_campaign_info,
+            this.setTheState
+          );
+        }
+        if (
+          this.props.mainBusiness &&
+          (savedObjective === "APP_INSTALLS" ||
+            savedObjective === "APP_TRAFFIC") &&
+          ((this.props.mainBusiness.appstorelink &&
+            this.props.mainBusiness.appstorelink.ios_app_id !== "") ||
+            (this.props.mainBusiness.playstorelink &&
+              this.props.mainBusiness.playstorelink.android_app_url !== ""))
+        ) {
+          // console.log(
+          //   "this.props.mainBusiness",
+          //   JSON.stringify(this.props.mainBusiness, null, 2)
+          // );
+          let appChoice =
+            this.props.mainBusiness.appstorelink.ios_app_id === ""
+              ? "ANDROID"
+              : "iOS";
+          _changeDestination(
+            savedObjective === "APP_TRAFFIC" ? "DEEP_LINK" : "APP_INSTALL",
+            list[this.props.adType][1].call_to_action_list[0],
+            {
+              app_name:
+                this.props.mainBusiness.appstorelink.app_name !== ""
+                  ? this.props.mainBusiness.appstorelink.app_name
+                  : this.props.mainBusiness.playstorelink.app_name !== ""
+                  ? this.props.mainBusiness.playstorelink.app_name
+                  : "",
+              ios_app_id: this.props.mainBusiness.appstorelink.ios_app_id,
+              android_app_url: this.props.mainBusiness.playstorelink
+                .android_app_url,
+              icon_media_id:
+                this.props.mainBusiness.appstorelink.icon_media_url !== ""
+                  ? this.props.mainBusiness.appstorelink.icon_media_url
+                  : this.props.mainBusiness.playstorelink.icon_media_url !== ""
+                  ? this.props.mainBusiness.playstorelink.icon_media_url
+                  : "",
+              icon_media_url:
+                this.props.mainBusiness.appstorelink.icon_media_url !== ""
+                  ? this.props.mainBusiness.appstorelink.icon_media_url
+                  : this.props.mainBusiness.playstorelink.icon_media_url !== ""
+                  ? this.props.mainBusiness.playstorelink.icon_media_url
+                  : "",
+              deep_link_uri:
+                this.props.mainBusiness.appstorelink.deep_link_uri !== ""
+                  ? this.props.mainBusiness.appstorelink.deep_link_uri
+                  : this.props.mainBusiness.playstorelink.deep_link_uri !== ""
+                  ? this.props.mainBusiness.playstorelink.deep_link_uri
+                  : "",
+            },
+            appChoice,
+            null,
+            this.adType,
+            this.props.setStoryAdAttachment,
+            this.state.campaignInfo,
+            this.props.save_campaign_info,
+            this.setTheState
+          );
+        }
+      }
       rep = {
         ...this.state.campaignInfo,
         call_to_action: this.props.data.call_to_action
@@ -351,6 +492,7 @@ class AdDesign extends Component {
     // }
     if (
       this.state.objective !== "BRAND_AWARENESS" &&
+      prevState.campaignInfo.call_to_action &&
       ((prevState.campaignInfo.attachment === "BLANK" &&
         this.state.campaignInfo.attachment !== "BLANK") ||
         (prevState.campaignInfo.call_to_action.label === "BLANK" &&
@@ -1522,8 +1664,8 @@ class AdDesign extends Component {
                       </Text>
                       <View>
                         <AnimatedCircularProgress
-                          size={50}
-                          width={5}
+                          size={RFValue(25, 414)}
+                          width={RFValue(2.5, 414)}
                           fill={Math.round(this.state.loaded)}
                           rotation={360}
                           lineCap="round"

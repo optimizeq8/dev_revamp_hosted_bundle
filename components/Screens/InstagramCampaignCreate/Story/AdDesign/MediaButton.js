@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, TouchableOpacity } from "react-native";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import styles from "../../styles/adDesign.styles";
 
 import EditCameraIcon from "../../../../../assets/SVGs/CameraCircleOutline";
@@ -86,7 +86,11 @@ export default class MediaButton extends Component {
               : setMediaModalVisible(true);
           }}
         >
-          <EditCameraIcon width={"100%"} height={"100%"} name="camera" />
+          <EditCameraIcon
+            width={RFValue(30, 414)}
+            height={RFValue(30, 414)}
+            name="camera"
+          />
           <Text style={[styles.mediaButtonMsg]}>
             {type === "cover"
               ? translate("Add Cover Image")

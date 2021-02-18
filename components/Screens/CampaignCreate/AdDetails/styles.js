@@ -1,8 +1,6 @@
 import { StyleSheet, Platform, PixelRatio, I18nManager } from "react-native";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
@@ -51,10 +49,15 @@ const styles = StyleSheet.create({
   subHeadings: {
     color: globalColors.gray,
     fontFamily: "montserrat-bold",
-    fontSize: 16,
-    paddingVertical: 5,
-    paddingHorizontal: 30,
+    fontSize: RFValue(8, 414),
+    paddingVertical: RFValue(2.5, 414),
+    paddingHorizontal: RFValue(15, 414),
     textAlign: "left",
+  },
+  setBudgetText: {
+    paddingHorizontal: RFValue(5, 414),
+    fontSize: RFValue(7, 414),
+    flex: 1,
   },
   moneyInputContainer: {
     flexDirection: "column",
@@ -111,7 +114,7 @@ const styles = StyleSheet.create({
     height: 20,
   },
   sliderPlaceHolder: {
-    height: 75,
+    height: RFValue(37.5, 414),
     justifyContent: "center",
   },
   targetList: {
@@ -126,9 +129,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     // marginVertical: 8,
     backgroundColor: "#fff",
-    borderRadius: 50,
+    borderRadius: RFValue(25.5, 414),
     paddingHorizontal: 0,
-    paddingVertical: 5,
+    paddingVertical: RFValue(2.5, 414),
   },
   icon: {
     alignSelf: "center",
@@ -141,18 +144,18 @@ const styles = StyleSheet.create({
   bottom: {
     flexDirection: "row",
     justifyContent: "center",
-    paddingLeft: 10,
+    paddingLeft: RFValue(5, 414),
     // height: "14%",
     alignItems: "center",
     alignSelf: "center",
     // width: "100%",
-    bottom: 0,
+    bottom: heightPercentageToDP(5) < 30 ? RFValue(15, 414) : 0,
     position: "absolute",
     // flex: 0.55,
     backgroundColor: globalColors.white,
     borderTopWidth: 1,
     borderTopColor: "#75647C21",
-    paddingVertical: 20,
+    paddingVertical: RFValue(10, 414),
   },
   chartText: {
     textTransform: "uppercase",
@@ -174,8 +177,8 @@ const styles = StyleSheet.create({
     // flex: 1,
   },
   reachBarLowerButton: {
-    width: 100,
-    height: 50,
+    width: RFValue(50, 414),
+    height: RFValue(25, 414),
   },
   reachPeopleView: {
     flexDirection: "row",
@@ -185,22 +188,26 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   menutext: {
-    paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
-    paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
-    fontSize: 12,
+    paddingLeft:
+      Platform.OS === "android" && I18nManager.isRTL ? 0 : RFValue(7.5, 414),
+    paddingRight:
+      Platform.OS === "android" && I18nManager.isRTL ? RFValue(7.5, 414) : 0,
+    fontSize: RFValue(6, 414),
     fontFamily: "montserrat-semibold",
     color: globalColors.purple3,
     textAlign: "left",
     textTransform: "uppercase",
   },
   menudetails: {
-    paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
-    paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
+    paddingLeft:
+      Platform.OS === "android" && I18nManager.isRTL ? 0 : RFValue(7.5, 414),
+    paddingRight:
+      Platform.OS === "android" && I18nManager.isRTL ? RFValue(7.5, 414) : 0,
     color: globalColors.purple3,
 
     fontFamily: "montserrat-regular",
-    fontSize: 13,
-    paddingVertical: 2,
+    fontSize: RFValue(6.5, 414),
+    paddingVertical: RFValue(1, 414),
     textAlign: "left",
   },
   flex: {
@@ -228,23 +235,23 @@ const styles = StyleSheet.create({
     color: globalColors.purple3,
     textTransform: "uppercase",
     fontFamily: "montserrat-bold",
-    fontSize: 10 / PixelRatio.getFontScale(),
+    fontSize: RFValue(5 / PixelRatio.getFontScale(), 414),
   },
   reachTextNum: {
     color: globalColors.purple3,
     fontFamily: "montserrat-regular-english",
-    fontSize: 10 / PixelRatio.getFontScale(),
+    fontSize: RFValue(5 / PixelRatio.getFontScale(), 414),
     textAlign: "left",
     width: "100%",
     textTransform: "uppercase",
   },
   expectedResultText: {
     color: globalColors.rum,
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     fontFamily: "montserrat-bold",
     textTransform: "uppercase",
-    marginVertical: 5,
-    marginHorizontal: 20,
+    marginVertical: RFValue(2.5, 414),
+    marginHorizontal: RFValue(10, 414),
     textAlign: "left",
   },
   reachInnerView: {
@@ -258,19 +265,19 @@ const styles = StyleSheet.create({
   },
   audienceHeading: {
     fontFamily: "montserrat-bold",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     color: globalColors.purple3,
     flex: 1,
-    marginHorizontal: 5,
+    marginHorizontal: RFValue(2.5, 414),
     textTransform: "uppercase",
     textAlign: "left",
   },
   audienceCard: {
     backgroundColor: "#FFF",
-    borderRadius: 30,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    marginVertical: 4,
+    borderRadius: RFValue(15, 414),
+    paddingHorizontal: RFValue(7.5, 414),
+    paddingVertical: RFValue(5, 414),
+    marginVertical: RFValue(2, 414),
   },
   lifetimeBudgetView: {
     backgroundColor: "#FFF",
@@ -280,31 +287,31 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   lifetimeBudgetText: {
-    fontSize: 10,
+    fontSize: RFValue(5, 414),
     paddingHorizontal: 0,
     color: globalColors.orange,
   },
   lifetimeBudgetNumber: {
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     paddingHorizontal: 0,
     paddingVertical: 0,
     fontFamily: "montserrat-bold-english",
   },
   selectAudienceText: {
-    paddingHorizontal: 10,
+    paddingHorizontal: RFValue(5, 414),
     width: "60%",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     textAlign: "left",
     flex: 1,
   },
   createView: { flexDirection: "row", alignItems: "center" },
   createText: {
     fontFamily: "montserrat-regular",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#9325FF",
   },
   iconRight: {
-    fontSize: 20,
+    fontSize: RFValue(10, 414),
     color: globalColors.purple,
   },
   iconLoading: {
@@ -314,19 +321,19 @@ const styles = StyleSheet.create({
   genderOuterView: {
     display: "flex",
     flexDirection: "row",
-    padding: 5,
+    padding: RFValue(2.5, 414),
   },
   genderInnerView: {
     borderWidth: 1,
-    borderRadius: 20,
-    paddingHorizontal: 10,
+    borderRadius: RFValue(10, 414),
+    paddingHorizontal: RFValue(5, 414),
     // paddingVertical: 5,
-    marginHorizontal: 5,
+    marginHorizontal: RFValue(2.5, 414),
     borderColor: globalColors.purple3,
   },
   genderRadioText: {
     color: globalColors.purple3,
-    fontSize: 13,
+    fontSize: RFValue(6.5, 414),
     fontFamily: "montserrat-regular",
     lineHeight: 29,
   },
@@ -342,38 +349,38 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 3,
+    paddingHorizontal: RFValue(5, 414),
+    paddingVertical: RFValue(1.5, 414),
     borderColor: globalColors.purple3,
-    borderRadius: 20,
-    marginHorizontal: 10,
-    marginVertical: 3,
+    borderRadius: RFValue(10, 414),
+    marginHorizontal: RFValue(5, 414),
+    marginVertical: RFValue(1.5, 414),
   },
   selectLanguageText: {
     fontFamily: "montserrat-regular",
     color: globalColors.purple3,
-    fontSize: 13,
+    fontSize: RFValue(6.5, 414),
   },
   ageText: {
     color: globalColors.purple,
-    fontSize: 13,
+    fontSize: RFValue(6.5, 414),
     fontFamily: "montserrat-regular",
     textAlign: "center",
   },
 
   toText: {
-    marginHorizontal: 15,
+    marginHorizontal: RFValue(7.5, 414),
     color: globalColors.purple3,
-    fontSize: 13,
+    fontSize: RFValue(6.5, 414),
     fontFamily: "montserrat-regular",
   },
 
   ageView: {
     borderWidth: 1,
     borderColor: globalColors.purple3,
-    borderRadius: 20,
-    paddingHorizontal: 20,
-    paddingVertical: 6,
+    borderRadius: RFValue(10, 414),
+    paddingHorizontal: RFValue(10, 414),
+    paddingVertical: RFValue(3, 414),
     justifyContent: "center",
   },
   ageOuterView: {
@@ -381,22 +388,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 5,
-    paddingLeft: 10,
+    paddingVertical: RFValue(2.5, 414),
+    paddingLeft: RFValue(5, 414),
   },
   iconDown: {
     color: globalColors.purple,
     right: 2,
-    fontSize: 22,
+    fontSize: RFValue(11, 414),
   },
   interestText: {
     fontFamily: "montserrat-bold",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     color: globalColors.purple3,
     flex: 1,
     textTransform: "uppercase",
     textAlign: "left",
-    paddingHorizontal: 10,
+    paddingHorizontal: RFValue(5, 414),
   },
   interestView: {
     alignSelf: "center",
@@ -405,6 +412,10 @@ const styles = StyleSheet.create({
   },
   swipesView: { flexDirection: "row", alignItems: "center" },
   impressionsView: { flexDirection: "row", alignItems: "center" },
+  interestTargetTouchable: {
+    marginVertical: RFValue(4, 414),
+    paddingHorizontal: RFValue(5, 414),
+  },
 });
 
 export default styles;

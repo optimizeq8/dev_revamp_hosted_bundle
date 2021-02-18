@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
 import { Icon } from "native-base";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import LowerButton from "../../MiniComponents/LowerButton";
 import businessCardStyles from "../../MiniComponents/BusinessCard/styles";
 import isStringArabic from "../../isStringArabic";
@@ -26,7 +26,7 @@ export default class InvitationRow extends Component {
           <Icon
             name="envelope-letter"
             type="SimpleLineIcons"
-            style={{ color: "#fff", fontSize: 25 }}
+            style={{ color: "#fff", fontSize: RFValue(12.5, 414) }}
           />
         </View>
         <View style={businessCardStyles.textcontainer}>
@@ -48,7 +48,7 @@ export default class InvitationRow extends Component {
           style={{
             flexDirection: "row",
             justifyContent: "space-around",
-            width: "30%",
+            // width: "30%",
           }}
         >
           <LowerButton
@@ -65,12 +65,12 @@ export default class InvitationRow extends Component {
                 }
               )
             }
-            width={30}
-            height={30}
+            width={RFValue(15, 414)}
+            height={RFValue(15, 414)}
             style={[
               {
-                width: 32,
-                height: 32,
+                width: RFValue(16, 414),
+                height: RFValue(16, 414),
                 ...globalStyles.orangeBorderColor,
               },
             ]}
@@ -91,11 +91,11 @@ export default class InvitationRow extends Component {
               })
             }
             style={{
-              width: 32,
-              height: 32,
+              width: RFValue(16, 414),
+              height: RFValue(16, 414),
             }}
-            width={30}
-            height={30}
+            width={RFValue(15, 414)}
+            height={RFValue(15, 414)}
           />
         </View>
       </View>

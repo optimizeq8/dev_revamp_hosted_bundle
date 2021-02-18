@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, Text, I18nManager } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import styles from "./styles";
 import { Item, Icon } from "native-base";
 import GlobalStyles, { globalColors } from "../../../GlobalStyles";
@@ -87,7 +88,12 @@ export default class ModalField extends Component {
                 // }
               />
             )}
-            <View style={[styles.colView, !FieldIcon && { marginLeft: 20 }]}>
+            <View
+              style={[
+                styles.colView,
+                !FieldIcon && { marginLeft: RFValue(10, 414) },
+              ]}
+            >
               <Text
                 style={[
                   styles.inputLabel,

@@ -18,6 +18,7 @@ import { Transition } from "react-navigation-fluid-transitions";
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
 import AnimatedCircularProgress from "../../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
+import list from "../../../../Data/callactions.data";
 
 //Redux
 import { connect } from "react-redux";
@@ -165,14 +166,57 @@ class AdDesign extends Component {
       ) {
         destination = this.state.selectedCampaign.destination;
       } else {
+        const { websitelink, weburl } = this.props.mainBusiness;
         switch (this.state.selectedCampaign.objective) {
           case "BRAND_AWARENESS":
+            call_to_action =
+              list[
+                this.rejected
+                  ? this.props.instaRejCampaign["campaign_type"]
+                  : this.props.data["campaign_type"]
+              ][0].call_to_action_list[0];
+            link =
+              websitelink && websitelink !== ""
+                ? websitelink
+                : weburl && weburl !== ""
+                ? weburl.includes("https")
+                  ? weburl
+                  : `https://${weburl}.optimizeapp.com`
+                : "";
             destination = "BLANK";
             break;
           case "LINK_CLICKS":
+            call_to_action =
+              list[
+                this.rejected
+                  ? this.props.instaRejCampaign["campaign_type"]
+                  : this.props.data["campaign_type"]
+              ][1].call_to_action_list[0];
+            link =
+              websitelink && websitelink !== ""
+                ? websitelink
+                : weburl && weburl !== ""
+                ? weburl.includes("https")
+                  ? weburl
+                  : `https://${weburl}.optimizeapp.com`
+                : "";
             destination = "link";
             break;
           case "LEAD_GENERATION":
+            call_to_action =
+              list[
+                this.rejected
+                  ? this.props.instaRejCampaign["campaign_type"]
+                  : this.props.data["campaign_type"]
+              ][2].call_to_action_list[0];
+            link =
+              websitelink && websitelink !== ""
+                ? websitelink
+                : weburl && weburl !== ""
+                ? weburl.includes("https")
+                  ? weburl
+                  : `https://${weburl}.optimizeapp.com`
+                : "";
             destination = "link";
             break;
           case "APP_INSTALLS":
@@ -182,6 +226,20 @@ class AdDesign extends Component {
             destination = "BLANK";
             break;
           default:
+            call_to_action =
+              list[
+                this.rejected
+                  ? this.props.instaRejCampaign["campaign_type"]
+                  : this.props.data["campaign_type"]
+              ][0].call_to_action_list[0];
+            link =
+              websitelink && websitelink !== ""
+                ? websitelink
+                : weburl && weburl !== ""
+                ? weburl.includes("https")
+                  ? weburl
+                  : `https://${weburl}.optimizeapp.com`
+                : "";
             destination = "BLANK";
         }
       }

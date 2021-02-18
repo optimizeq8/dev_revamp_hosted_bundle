@@ -1,11 +1,11 @@
 import { StyleSheet, PixelRatio } from "react-native";
 import { globalColors } from "../../../GlobalStyles";
 import { heightPercentageToDP } from "react-native-responsive-screen";
-
+import { RFValue } from "react-native-responsive-fontsize";
 export default styles = StyleSheet.create({
   title: {
     fontFamily: "montserrat-bold",
-    fontSize: 20,
+    fontSize: RFValue(10, 414),
     textTransform: "uppercase",
     color: "#fff",
     textAlign: "left",
@@ -18,11 +18,11 @@ export default styles = StyleSheet.create({
     justifyContent: "space-evenly",
     alignItems: "center",
     backgroundColor: "#0002",
-    borderRadius: 30,
-    paddingVertical: 10,
+    borderRadius: RFValue(15, 414),
+    paddingVertical: RFValue(5, 414),
     width: "85%",
 
-    marginVertical: 10,
+    marginVertical: RFValue(5, 414),
   },
   teamText: {
     // right: 30,
@@ -30,7 +30,7 @@ export default styles = StyleSheet.create({
     textAlign: "left",
     fontFamily: "montserrat-bold",
     color: globalColors.white,
-    fontSize: 11 / PixelRatio.getFontScale(),
+    fontSize: RFValue(6.5 / PixelRatio.getFontScale(), 414),
   },
   teamEmail: {
     fontFamily: "montserrat-light",
@@ -42,8 +42,8 @@ export default styles = StyleSheet.create({
     position: "absolute",
     height: "12%",
     width: "100%",
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: RFValue(15, 414),
+    borderTopRightRadius: RFValue(15, 414),
     justifyContent: "center",
     alignItems: "center",
     bottom: 0,
@@ -52,14 +52,14 @@ export default styles = StyleSheet.create({
   addTeamMember: {
     color: globalColors.white,
     fontFamily: "montserrat-bold",
-    marginHorizontal: 10,
+    marginHorizontal: RFValue(5, 414),
   },
   contentContainer: {
     flexGrow: 1,
     marginTop: heightPercentageToDP(3),
   },
   resendStyle: {
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     fontFamily: "montserrat-bold",
     textTransform: "uppercase",
     color: globalColors.orange,

@@ -329,20 +329,8 @@ class AdPaymentReview extends Component {
 
           <Content
             scrollEnabled={false}
-            contentContainerStyle={{
-              flex: 1,
-              marginVertical: 20,
-              // borderRadius: 30,
-              // background: "rgba(0,0,0,.75)",
-              // backgroundColor: "rgba(0,0,0,0.75)"
-            }}
-            style={{
-              marginHorizontal: 20,
-
-              // borderRadius: 30,
-              // backgroundColor: "rgba(0,0,0,0.75)"
-              // background: "rgba(0,0,0,.75)"
-            }}
+            contentContainerStyle={styles.contentContainerStyle2}
+            style={styles.contentStyle2}
           >
             {(media.includes(".mp4") ||
               media.includes(".mov") ||

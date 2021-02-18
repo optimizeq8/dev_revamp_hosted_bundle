@@ -1,6 +1,6 @@
 import { StyleSheet, PixelRatio } from "react-native";
 import { globalColors } from "../../../GlobalStyles";
-
+import { RFValue } from "react-native-responsive-fontsize";
 const styles = StyleSheet.create({
   mainCard: {
     backgroundColor: "#0000",
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     // paddingBottom: 10,
     fontFamily: "montserrat-medium",
-    fontSize: 24,
+    fontSize: RFValue(12, 414),
     paddingHorizontal: 10,
     paddingVertical: 10,
   },
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-light",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
   },
   gradient: {
     ...StyleSheet.absoluteFillObject,

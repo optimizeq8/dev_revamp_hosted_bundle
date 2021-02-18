@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { TouchableOpacity, I18nManager } from "react-native";
 import { View, Input, Item } from "native-base";
+import { RFValue } from "react-native-responsive-fontsize";
 // Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -84,8 +85,8 @@ class SearchBar extends Component {
       >
         <Item rounded style={[styles.searchBarItem, customInputStyle]}>
           <SearchIcon
-            width={20}
-            height={20}
+            width={RFValue(10, 414)}
+            height={RFValue(10, 414)}
             stroke={strokeColor ? strokeColor : "#fff"}
           />
           <Input
@@ -138,8 +139,8 @@ class SearchBar extends Component {
               }}
             >
               <CloseIcon
-                width={18}
-                height={18}
+                width={RFValue(9, 414)}
+                height={RFValue(9, 414)}
                 stroke={transactionSearch ? "#FFF" : "#909090"}
               />
             </TouchableOpacity>

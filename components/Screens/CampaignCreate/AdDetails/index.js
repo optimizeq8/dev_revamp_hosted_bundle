@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Content, Row, Icon } from "native-base";
+import { RFValue } from "react-native-responsive-fontsize";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../MiniComponents/SideMenu";
@@ -1462,6 +1463,7 @@ class AdDetails extends Component {
       case "age": {
         menu = (
           <AgeOption
+            showPlusIcon={true}
             screenProps={this.props.screenProps}
             state={this.state.campaignInfo.targeting.demographics[0]}
             _handleAge={this._handleAge}
@@ -1731,25 +1733,29 @@ class AdDetails extends Component {
                 contentContainerStyle={styles.contentContainer}
               >
                 {!this.editCampaign ? (
-                  <View style={{ marginTop: 5 }}>
+                  <View style={{ marginTop: RFValue(2.5, 414) }}>
                     <Row
                       size={-1}
                       style={{
                         alignItems: "center",
-                        paddingHorizontal: 20,
-                        marginBottom: 4,
+                        paddingHorizontal: RFValue(10, 414),
+                        marginBottom: RFValue(2, 414),
                       }}
                     >
                       <WalletIcon
-                        width={30}
-                        height={30}
+                        width={RFValue(15, 414)}
+                        height={RFValue(15, 414)}
                         fill={globalColors.rum}
                       />
                       <Text
                         uppercase
                         style={[
                           styles.subHeadings,
-                          { paddingHorizontal: 10, fontSize: 14, flex: 1 },
+                          {
+                            paddingHorizontal: RFValue(5, 414),
+                            fontSize: RFValue(7, 414),
+                            flex: 1,
+                          },
                         ]}
                       >
                         {translate("Set your daily budget")}

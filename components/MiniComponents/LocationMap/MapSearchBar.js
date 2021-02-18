@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import Axios from "axios";
+import { RFValue } from "react-native-responsive-fontsize";
 import countriesBillingAddress from "../../Data/countries.billingAddress";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import PredefinedPlaces from "./PredefinedPlaces";
@@ -140,7 +141,7 @@ export default class MapSearchBar extends Component {
             textInputContainer: {
               backgroundColor: "#fff",
               alignItems: "center",
-              paddingHorizontal: 10,
+              paddingHorizontal: RFValue(5, 414),
               borderTopWidth: 0,
               alignSelf: "center",
               borderRadius: 50,
@@ -161,15 +162,16 @@ export default class MapSearchBar extends Component {
             textInput: {
               marginLeft: 0,
               marginRight: 0,
-              height: 38,
+              height: RFValue(19, 414),
               color: globalColors.gray,
-              fontSize: 16,
-              borderRadius: 50,
+              fontSize: RFValue(8, 414),
+              borderRadius: RFValue(25, 414),
               fontFamily: "montserrat-regular",
             },
             predefinedPlacesDescription: {
               color: "#1faadb",
               fontFamily: "montserrat-bold",
+              fontSize: RFValue(8, 414),
             },
           }}
         />

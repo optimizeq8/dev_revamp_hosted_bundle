@@ -1,5 +1,5 @@
 import { StyleSheet, PixelRatio } from "react-native";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -24,9 +24,9 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     // marginBottom: -10,
-    marginTop: 10,
+    marginTop: RFValue(5, 414),
     fontFamily: "montserrat-bold",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#FFF",
     textAlign: "left",
     textTransform: "uppercase",
@@ -55,28 +55,28 @@ const styles = StyleSheet.create({
   iconSize: {
     // position: "absolute",
     // marginLeft: 15,
-    fontSize: 16 / PixelRatio.getFontScale(),
+    fontSize: RFValue(8 / PixelRatio.getFontScale(), 414),
   },
   emailerrorText: {
     textAlign: "center",
     color: "#717171",
     fontFamily: "montserrat-regular",
-    fontSize: 15,
+    fontSize: RFValue(7.5, 414),
     // bottom: 40,
     alignSelf: "center",
     justifyContent: "center",
   },
   passwordErrorText: {
-    paddingVertical: 10,
+    paddingVertical: RFValue(5, 414),
   },
   repassworderrorText: {
-    bottom: 15,
+    bottom: RFValue(7.5, 414),
     paddingTop: 0,
     marginBottom: 0,
     paddingVertical: 0,
   },
   container: {
-    paddingTop: 20,
+    paddingTop: RFValue(10, 414),
   },
   button: {
     backgroundColor: "#FF9D00",
@@ -118,11 +118,11 @@ const styles = StyleSheet.create({
   },
   inputText: {
     fontFamily: "montserrat-light-english",
-    fontSize: 14 / PixelRatio.getFontScale(),
+    fontSize: RFValue(7 / PixelRatio.getFontScale(), 414),
     // alignSelf: "left",
     textAlign: "left",
     color: "#FFF",
-    marginBottom: 10,
+    marginBottom: RFValue(5, 414),
     width: "100%",
     paddingVertical: 0,
   },
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     alignSelf: "center",
-    marginLeft: 13,
+    marginLeft: RFValue(6.5, 414),
     width: "90%",
   },
   // input: {
@@ -145,13 +145,13 @@ const styles = StyleSheet.create({
   // },
   input: {
     backgroundColor: "rgba(0,0,0,0.16)",
-    borderRadius: 150,
+    borderRadius: RFValue(75, 414),
     borderColor: "rgba(0,0,0,0)",
     alignSelf: "center",
     width: "100%",
     borderWidth: 0,
-    height: 56,
-    paddingHorizontal: 20,
+    height: RFValue(27, 414),
+    paddingHorizontal: RFValue(10, 414),
     display: "flex",
     alignItems: "center",
   },
@@ -171,15 +171,15 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   submitButton: {
-    height: 54,
+    height: RFValue(27, 414),
     width: "100%",
     alignSelf: "center",
   },
   subHeading: {
-    fontSize: 19,
+    fontSize: RFValue(9.5, 414),
     color: "#FFF",
     fontFamily: "montserrat-bold",
-    marginLeft: 16,
+    marginLeft: RFValue(8, 414),
     textTransform: "uppercase",
   },
   subHeadView: {
@@ -192,12 +192,12 @@ const styles = StyleSheet.create({
   link: {
     textAlign: "center",
     color: "#FFF",
-    paddingTop: 40,
-    paddingBottom: 10,
+    paddingTop: RFValue(20, 414),
+    paddingBottom: RFValue(5, 414),
     fontFamily: "montserrat-regular",
-    fontSize: 12 / PixelRatio.getFontScale(),
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+    fontSize: RFValue(6 / PixelRatio.getFontScale(), 414),
+    paddingHorizontal: RFValue(5, 414),
+    paddingVertical: RFValue(5, 414),
   },
   tNcLink: {
     textDecorationLine: "underline",

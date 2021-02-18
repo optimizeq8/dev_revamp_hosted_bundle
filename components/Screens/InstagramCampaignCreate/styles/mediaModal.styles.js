@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../../GlobalStyles";
 
 export default StyleSheet.create({
@@ -11,23 +12,23 @@ export default StyleSheet.create({
   },
   MediaOptionsStyle: {
     flexDirection: "row",
-    paddingHorizontal: 23,
+    paddingHorizontal: RFValue(11.5, 414),
     alignItems: "center",
-    marginVertical: 20,
+    marginVertical: RFValue(10, 414),
   },
 
   MediaOptionsTitle: {
     fontFamily: "montserrat-bold",
     color: globalColors.orange,
-    fontSize: 16,
-    lineHeight: 20,
+    fontSize: RFValue(8, 414),
+    lineHeight: RFValue(10, 414),
     textAlign: "left",
   },
   MediaOptionsDescription: {
     fontFamily: "montserrat-light",
     color: "#fff",
-    fontSize: 13,
-    lineHeight: 17,
+    fontSize: RFValue(6.5, 414),
+    lineHeight: RFValue(8.5, 414),
     textAlign: "left",
   },
 });

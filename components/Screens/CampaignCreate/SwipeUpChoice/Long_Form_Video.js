@@ -6,6 +6,7 @@ import {
   BackHandler,
   ScrollView,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { connect } from "react-redux";
 import * as ScreenOrientation from "expo-screen-orientation";
 import * as FileSystem from "expo-file-system";
@@ -500,8 +501,8 @@ class Long_Form_Video extends Component {
                 style={[styles.video]}
               >
                 <AddVidIcon
-                  width={35}
-                  height={35}
+                  width={RFValue(17.5, 414)}
+                  height={RFValue(17.5, 414)}
                   fill="#fff"
                   style={[styles.icon, { fontSize: 70 }]}
                 />
