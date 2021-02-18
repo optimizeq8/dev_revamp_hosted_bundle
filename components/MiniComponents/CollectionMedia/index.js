@@ -714,7 +714,6 @@ class CollectionMedia extends Component {
     });
   };
   render() {
-    console.log(this.props.loading, this.state.isVisible);
     const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
