@@ -32,6 +32,7 @@ export {
   setRejectedCampaignData,
   resetRejectedCampaignData,
   downloadCSV,
+  getNumberOfCampaigns,
 } from "./dashboardActions";
 
 export {

@@ -58,7 +58,7 @@ class AdObjective extends Component {
     this.state = {
       campaignInfo: {
         ad_account_id: "",
-        name: `I_Story_01`,
+        name: `I_Story_${parseInt(this.props.instastoryad) + 1}`,
         objective: "",
         start_time: "",
         end_time: "",
@@ -103,13 +103,13 @@ class AdObjective extends Component {
   /**
    * Sets the state to what ever is in this.props.data
    */
-  setCampaignInfo = async () => {
+  setCampaignInfo = () => {
     let start_time = new Date();
     start_time.setDate(start_time.getDate() + 1);
     let end_time = new Date(start_time);
     end_time.setDate(end_time.getDate() + this.state.duration - 1);
-    const result = await AsyncStorage.getItem(`I_Story`);
-    const campaignName = `I_Story_${result ? result : "01"}`;
+    const campaignName = `I_Feed_${parseInt(this.props.instafeedad) + 1}`;
+
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -657,6 +657,7 @@ const mapStateToProps = (state) => ({
   currentCampaignSteps: state.instagramAds.currentCampaignSteps,
   incompleteCampaign: state.instagramAds.incompleteCampaign,
   campaignProgressStarted: state.instagramAds.campaignProgressStarted,
+  instastoryad: state.dashboard.instastoryad,
 });
 
 const mapDispatchToProps = (dispatch) => ({

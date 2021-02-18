@@ -71,7 +71,15 @@ class AdObjective extends Component {
     this.state = {
       campaignInfo: {
         ad_account_id: "",
-        name: `S_${this.props.adType}_01`,
+        name: `S_${this.props.adType}_${
+          parseInt(
+            this.props[
+              !this.props.adType.toLowerCase().includes("snap")
+                ? "snap" + this.props.adType.toLowerCase()
+                : this.props.adType.toLowerCase()
+            ]
+          ) + 1
+        }`,
         objective: snapchatObjectivesData[this.props.adType][0].value,
         start_time: "",
         end_time: "",
@@ -164,8 +172,15 @@ class AdObjective extends Component {
    * Sets the state to what ever is in this.props.data
    */
   setCampaignInfo = async () => {
-    const result = await AsyncStorage.getItem(`S_${this.props.adType}`);
-    const campaignName = `S_${this.props.adType}_${result ? result : "01"}`;
+    const campaignName = `S_${this.props.adType}_${
+      parseInt(
+        this.props[
+          !this.props.adType.toLowerCase().includes("snap")
+            ? "snap" + this.props.adType.toLowerCase()
+            : this.props.adType.toLowerCase()
+        ]
+      ) + 1
+    }`;
 
     let start_time = new Date();
     start_time.setDate(start_time.getDate() + 1);
@@ -967,6 +982,9 @@ const mapStateToProps = (state) => ({
   incompleteCampaign: state.campaignC.incompleteCampaign,
   campaignProgressStarted: state.campaignC.campaignProgressStarted,
   campaignList: state.dashboard.campaignList,
+  snapad: state.dashboard.snapad,
+  snapcollectionad: state.dashboard.snapcollectionad,
+  snapstoryad: state.dashboard.snapstoryad,
 });
 
 const mapDispatchToProps = (dispatch) => ({

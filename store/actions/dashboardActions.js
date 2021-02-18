@@ -172,6 +172,7 @@ export const getCampaignStats = (campaign, duration) => {
 
 export const getCampaignList = (id, increasePage, cancelToken) => {
   return (dispatch) => {
+    dispatch(getNumberOfCampaigns());
     dispatch({
       type: actionTypes.GOT_ALL_CAMPAIGNS,
       payload: {
@@ -313,6 +314,22 @@ export const downloadCSV = (campaign_id, email, showModalMessage) => {
           action_status: data.success ? "success" : "failure",
         });
         showModalMessage(data.message, data.success ? "success" : "warning");
+      })
+      .catch((err) => showModalMessage(err));
+  };
+};
+
+export const getNumberOfCampaigns = (campaign_id, email, showModalMessage) => {
+  return (dispatch, getState) => {
+    createBaseUrl()
+      .get(`businesscampaigns/${getState().account.mainBusiness.businessid}`)
+      .then((res) => res.data)
+      .then((data) => {
+        if (data.success)
+          dispatch({
+            type: actionTypes.GET_NUMBER_OF_CAMPAIGNS,
+            payload: data.business_campaigns,
+          });
       })
       .catch((err) => showModalMessage(err));
   };

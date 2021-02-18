@@ -67,7 +67,7 @@ class GoogleAdInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: `G_Sem_01`,
+      name: `G_Sem_${parseInt(this.props.googlead) + 1}`,
       country: "",
       language: "1000",
       start_time: "",
@@ -122,12 +122,10 @@ class GoogleAdInfo extends Component {
     let data = { ...this.state };
     keys.filter((key) => {
       if (key === "name" && this.props.campaign[key] === "") {
-        AsyncStorage.getItem("G_Sem", (err, result) => {
-          data = {
-            ...data,
-            [key]: `G_Sem_${result ? result : "01"}`,
-          };
-        });
+        data = {
+          ...data,
+          [key]: `G_Sem_${parseInt(this.props.googlead) + 1}`,
+        };
       } else {
         data = {
           ...data,
@@ -834,6 +832,7 @@ const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   userInfo: state.auth.userInfo,
   campaign: state.googleAds,
+  googlead: state.dashboard.googlead,
 });
 
 const mapDispatchToProps = (dispatch) => ({
