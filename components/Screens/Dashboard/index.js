@@ -174,6 +174,13 @@ class Dashboard extends Component {
     ) {
       this.props.setCampaignInProgressInstagram(false);
     }
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    if (source === "payment_end" && this.props.mainBusiness) {
+      this.reloadData();
+    }
     let ignoreBiometricModal = await AsyncStorage.getItem(
       "ignoreBiometricModal"
     );
@@ -557,18 +564,10 @@ class Dashboard extends Component {
       source_action === "a_move_amount_to_wallet" &&
       this.props.mainBusiness
     ) {
-      this.props.getCampaignList(
-        this.props.mainBusiness.businessid,
-        this.increasePage,
-        this.signal.token
-      );
-    }
-
-    this.props.setCampaignInProgress(false);
-    this.props.setCampaignInProgressInstagram(false);
-    if (this.props.mainBusiness && this.props.mainBusiness.businessid) {
       this.reloadData();
     }
+    this.props.setCampaignInProgress(false);
+    this.props.setCampaignInProgressInstagram(false);
   };
   onDidBlur = () => {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);

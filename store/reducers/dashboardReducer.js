@@ -27,6 +27,12 @@ const initialState = {
   instaCampaignStats: [],
   instaCampaignMetrics: [],
   instaSMEMetrics: [],
+  snapad: "0",
+  snapcollectionad: "0",
+  snapstoryad: "0",
+  instafeedad: "0",
+  instastoryad: "0",
+  googlead: "0",
 };
 
 const reducer = (state = initialState, action) => {
@@ -348,6 +354,11 @@ const reducer = (state = initialState, action) => {
             status: action.payload.status,
           },
         },
+      };
+    case actionTypes.GET_NUMBER_OF_CAMPAIGNS:
+      return {
+        ...state,
+        ...action.payload,
       };
     default:
       return state;
