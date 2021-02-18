@@ -447,9 +447,9 @@ class Menu extends Component {
                   {translate("Logout")}
                 </Text>
               </TouchableOpacity>
-              <Text style={styles.version}>
+              <Text selectable style={styles.version}>
                 {translate("Version:")}
-                {Constants.nativeAppVersion}/355/
+                {Constants.nativeAppVersion}/357/
                 {Constants.nativeBuildVersion}
               </Text>
             </ScrollView>
