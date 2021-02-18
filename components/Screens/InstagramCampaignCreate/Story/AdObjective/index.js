@@ -108,7 +108,7 @@ class AdObjective extends Component {
     start_time.setDate(start_time.getDate() + 1);
     let end_time = new Date(start_time);
     end_time.setDate(end_time.getDate() + this.state.duration - 1);
-    const campaignName = `I_Feed_${parseInt(this.props.instafeedad) + 1}`;
+    const campaignName = `I_Story_${parseInt(this.props.instastoryad) + 1}`;
 
     if (
       this.props.data &&

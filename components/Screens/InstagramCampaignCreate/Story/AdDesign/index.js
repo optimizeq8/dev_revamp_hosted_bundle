@@ -166,7 +166,12 @@ class AdDesign extends Component {
       ) {
         destination = this.state.selectedCampaign.destination;
       } else {
-        const { websitelink, weburl } = this.props.mainBusiness;
+        const {
+          websitelink,
+          weburl,
+          playstorelink,
+          appstorelink,
+        } = this.props.mainBusiness;
         switch (this.state.selectedCampaign.objective) {
           case "BRAND_AWARENESS":
             call_to_action =
@@ -220,7 +225,41 @@ class AdDesign extends Component {
             destination = "link";
             break;
           case "APP_INSTALLS":
-            destination = "APP_INSTALLS";
+            call_to_action =
+              list[
+                this.rejected
+                  ? this.props.instaRejCampaign["campaign_type"]
+                  : this.props.data["campaign_type"]
+              ][3].call_to_action_list[0];
+            if (playstorelink || appstorelink) {
+              let appUrl =
+                playstorelink && playstorelink.android_app_url !== ""
+                  ? `https://play.google.com/store/apps/details?id=${playstorelink.android_app_url}`
+                  : `https://apps.apple.com/us/app/${appstorelink.app_name}/id${appstorelink.ios_app_id}?uo=4`;
+
+              link = appUrl !== "" ? appUrl : "";
+              attachment = {
+                app_name:
+                  playstorelink && playstorelink.app_name !== ""
+                    ? playstorelink.app_name
+                    : appstorelink.app_name,
+                ios_app_id:
+                  appstorelink && appstorelink.ios_app_id !== ""
+                    ? appstorelink.ios_app_id
+                    : "",
+                android_app_url:
+                  playstorelink && playstorelink.android_app_url !== ""
+                    ? playstorelink.android_app_url
+                    : "",
+                icon_media_url:
+                  playstorelink && playstorelink.icon_media_url !== ""
+                    ? playstorelink.icon_media_url
+                    : appstorelink && appstorelink.icon_media_url !== ""
+                    ? icon_media_url
+                    : "",
+              };
+            }
+            destination = "app_install";
             break;
           case "VIDEO_VIEWS":
             destination = "BLANK";
@@ -263,6 +302,9 @@ class AdDesign extends Component {
       });
       this.props.save_campaign_info_instagram({
         destination,
+        link,
+        call_to_action,
+        attachment,
         rejected: this.rejected,
       });
     }
