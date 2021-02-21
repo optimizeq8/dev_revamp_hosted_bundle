@@ -635,8 +635,8 @@ class Dashboard extends Component {
     if (
       userCurrentTime.getDay() < 0 ||
       userCurrentTime.getDay() > 5 ||
-      userCurrentTime.getHours() < 10 ||
-      userCurrentTime.getHours() >= 18
+      userCurrentTime.getUTCHours() < 10 ||
+      userCurrentTime.getUTCHours() >= 18
     ) {
       this.setState({ showAlertModal: true });
     } else {
