@@ -33,7 +33,7 @@ class AppSearchModal extends Component {
     const { translate } = this.props.screenProps;
     this.props.setTheState({ loading: true });
     Axios.post(`https://optimizeapp.com/optimize/instagram/appSearch`, {
-      query_term: this.props.mainState.appValue,
+      query_term: this.props.mainState.appValue.trim(),
       app_store: "GOOGLE_PLAY",
     })
       .then((res) => {
@@ -80,7 +80,7 @@ class AppSearchModal extends Component {
     const { translate } = this.props.screenProps;
     this.props.setTheState({ loading: true });
     Axios.post(`https://optimizeapp.com/optimize/instagram/appSearch`, {
-      query_term: this.props.mainState.appValue,
+      query_term: this.props.mainState.appValue.trim(),
       app_store: "ITUNES",
     })
       .then((res) => {

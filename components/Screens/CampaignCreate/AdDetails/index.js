@@ -709,7 +709,12 @@ class AdDetails extends Component {
       });
   };
 
-  onSelectedMapChange = (selectedItems, unselect = false, locationsInfo) => {
+  onSelectedMapChange = (
+    selectedItems,
+    unselect = false,
+    locationsInfo = []
+  ) => {
+    console.log("selectedItems", selectedItems);
     let stateRep = cloneDeep(this.state.campaignInfo);
     if (unselect) {
       stateRep.targeting.locations[0].circles = [];
@@ -1905,7 +1910,7 @@ class AdDetails extends Component {
                   order={2}
                   name="Audience targeting"
                 >
-                  {!showAudienceList ? (
+                  {!showAudienceList && (
                     <TargetAudience
                       screenProps={this.props.screenProps}
                       _renderSideMenu={this._renderSideMenu}
@@ -1923,8 +1928,6 @@ class AdDetails extends Component {
                       onSelectedGenderChange={this.onSelectedGenderChange}
                       _handleAge={this._handleAge}
                     />
-                  ) : (
-                    <View></View>
                   )}
                 </CopilotStep>
                 {showAudienceList && (

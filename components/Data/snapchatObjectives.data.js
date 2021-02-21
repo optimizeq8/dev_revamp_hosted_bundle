@@ -69,13 +69,13 @@ export default {
     //   icon: ObjIcons.Awareness,
     //   color: "#332BEF",
     // },
-    {
-      label: "Call",
-      value: "ENGAGEMENT",
-      info: "Get more Snapchatters to Engage with your Ad",
-      color: "#EF6C57",
-      icon: ObjIcons.Phone,
-    },
+    // {
+    //   label: "Call",
+    //   value: "ENGAGEMENT",
+    //   info: "Get more Snapchatters to Engage with your Ad",
+    //   color: "#EF6C57",
+    //   icon: ObjIcons.Phone,
+    // },
     {
       label: "App Installs",
       value: "APP_INSTALLS",
