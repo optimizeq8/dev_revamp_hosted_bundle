@@ -370,7 +370,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     alignSelf: "center",
     width: "90%",
-    height: hp(5) < 40 ? hp(25) : hp(38),
+    height: hp(38),
     backgroundColor: "rgba(0,0,0,0.4)",
     justifyContent: "center",
   },
