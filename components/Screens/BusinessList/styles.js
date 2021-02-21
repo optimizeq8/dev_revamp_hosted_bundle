@@ -3,6 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
@@ -20,10 +21,10 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     color: "#5F5F5F",
     textTransform: "uppercase",
-    fontSize: 19,
+    fontSize: RFValue(9.5, 414),
     textAlign: "left",
     marginTop: 28,
-    paddingHorizontal: "11%",
+    paddingHorizontal: RFValue(25, 414),
   },
   container: {
     backgroundColor: "#0000",
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     color: "#A496AC",
     fontFamily: "montserrat-regular",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     textAlign: "center",
     position: "absolute",
     bottom: hp(30),
@@ -53,8 +54,8 @@ const styles = StyleSheet.create({
   },
   bottomCard: {
     borderRadius: 50,
-    height: 54,
-    width: wp(70),
+    height: RFValue(27, 414),
+    width: RFValue(150, 414),
     position: "absolute",
     alignSelf: "center",
     bottom: hp(5) > 40 ? hp(10) : hp(12),
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
   },
   subtext: {
     fontFamily: "montserrat-regular",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     // paddingBottom: 20,
     color: "#A496AC",
     // color: "#FF790A"
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 20,
     paddingBottom: hp("30"),
-    paddingHorizontal: "10%",
+    paddingHorizontal: RFValue(20, 414),
   },
   headings: {
     fontFamily: "montserrat-bold",
@@ -116,17 +117,17 @@ const styles = StyleSheet.create({
   },
   flatlistWrapper: { height: hp(55), marginTop: 10 },
   iconStyle: {
-    fontSize: 15,
+    fontSize: RFValue(7.5, 414),
     color: "#fff",
   },
   tabView: {
     display: "flex",
     flexDirection: "row",
-    paddingHorizontal: "10%",
+    paddingHorizontal: RFValue(20, 414),
   },
   tabText: {
     fontFamily: "montserrat-bold",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     color: "#A0A0A0",
     textTransform: "uppercase",
   },
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
   pendingInviteNumber: {
     fontFamily: "montserrat-bold-english",
     color: globalColors.white,
-    fontSize: 10,
+    fontSize: RFValue(5, 414),
     textAlign: "center",
   },
   pendingInviteView: {
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   addNewBusinessText: {
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     color: globalColors.white,
     fontFamily: "montserrat-medium",
   },

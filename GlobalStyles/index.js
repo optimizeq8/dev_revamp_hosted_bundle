@@ -3,6 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 export const globalColors = {
   orange: "#FF790A",
   darkOrange: "#FF790A",
@@ -116,32 +117,14 @@ const globalStyles = StyleSheet.create({
     flexDirection: "column",
   },
   title: {
-    fontSize: 20 / PixelRatio.getFontScale(),
+    fontSize: RFValue(10 / PixelRatio.getFontScale(), 414),
     color: "#fff",
-    paddingVertical: 10,
+    paddingVertical: RFValue(5, 414),
     fontFamily: "montserrat-bold",
     textTransform: "uppercase",
   },
   buttonText: {
-    fontSize: 16 / PixelRatio.getFontScale(),
-    color: "#fff",
-    textAlign: "center",
-    fontFamily: "montserrat-bold",
-  },
-  buttonText: {
-    fontSize: 16 / PixelRatio.getFontScale(),
-    color: "#fff",
-    textAlign: "center",
-    fontFamily: "montserrat-bold",
-  },
-  buttonText: {
-    fontSize: 16 / PixelRatio.getFontScale(),
-    color: "#fff",
-    textAlign: "center",
-    fontFamily: "montserrat-bold",
-  },
-  buttonText: {
-    fontSize: 16 / PixelRatio.getFontScale(),
+    fontSize: RFValue(8 / PixelRatio.getFontScale(), 414),
     color: "#fff",
     textAlign: "center",
     fontFamily: "montserrat-bold",
@@ -150,8 +133,8 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
     color: "#FF9D00",
     fontFamily: "montserrat-bold-english",
-    fontSize: 16 / PixelRatio.getFontScale(),
-    paddingHorizontal: 10,
+    fontSize: RFValue(8 / PixelRatio.getFontScale(), 414),
+    paddingHorizontal: RFValue(5, 414),
   },
   backButton: {
     top: hp(5),

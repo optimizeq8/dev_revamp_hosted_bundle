@@ -3,6 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
@@ -11,6 +12,11 @@ export const colors = {
   background2: "#6268FF",
 };
 const styles = StyleSheet.create({
+  yourLogoText: {
+    color: globalColors.orange,
+    fontFamily: "montserrat-bold",
+    fontSize: RFValue(7, 414),
+  },
   safeAreaView: {
     backgroundColor: "#0000",
     height: "100%",
@@ -159,24 +165,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     borderColor: "transparent",
-    paddingLeft: 15,
-    height: 50,
+    paddingLeft: RFValue(7.5, 414),
+    height: RFValue(25, 414),
     backgroundColor: "#0003",
-    borderRadius: 40,
+    borderRadius: RFValue(20, 414),
   },
   container: {
     backgroundColor: "#0000",
   },
   inputText: {
     fontFamily: "montserrat-regular",
-    fontSize: 13 / PixelRatio.getFontScale(),
+    fontSize: RFValue(6.5 / PixelRatio.getFontScale(), 414),
     color: "#fff",
-    marginLeft: 8,
+    marginLeft: RFValue(4, 414),
     // height: "100%",
   },
 
   placeholder: {
-    borderRadius: 30,
+    borderRadius: RFValue(15, 414),
     overflow: "hidden",
     alignSelf: "center",
     width: "100%",
@@ -184,11 +190,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#0003",
     justifyContent: "space-evenly",
     padding: 20,
-    // paddingBottom: 30,
+    // paddingBottom:  RFValue(15, 414),
   },
   placeholder1: {
     // opacity: 0.5,
-    borderRadius: 30,
+    borderRadius: RFValue(15, 414),
     overflow: "hidden",
     alignSelf: "center",
     width: "100%",
@@ -211,7 +217,7 @@ const styles = StyleSheet.create({
   },
 
   footerTextStyle: {
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "white",
     fontFamily: "montserrat-medium",
     alignSelf: "center",
@@ -222,7 +228,7 @@ const styles = StyleSheet.create({
   },
   subtitleHeading: {
     color: "#fff",
-    fontSize: 9,
+    fontSize: RFValue(4.5, 414),
     fontFamily: "montserrat-regular",
     marginLeft: 8,
     textAlign: "left",
@@ -239,12 +245,12 @@ const styles = StyleSheet.create({
   MediaOptionsTitle: {
     fontFamily: "montserrat-bold",
     color: globalColors.orange,
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
   },
   MediaOptionsDescription: {
     fontFamily: "montserrat-light",
     color: "#fff",
-    fontSize: 13,
+    fontSize: RFValue(6.5, 414),
   },
   subText: {
     textAlign: "center",
@@ -253,7 +259,7 @@ const styles = StyleSheet.create({
     fontSize: hp(1.7),
   },
   addLogoStyle: {
-    borderRadius: 40,
+    borderRadius: RFValue(20, 414),
     height: "25%",
     width: "100%",
     alignSelf: "center",
@@ -264,12 +270,12 @@ const styles = StyleSheet.create({
   addLogoTextStyle: {
     color: globalColors.white,
     fontFamily: "montserrat-regular",
-    fontSize: 13,
+    fontSize: RFValue(6.5, 414),
     textAlign: "center",
-    width: 250,
+    width: RFValue(125, 414),
   },
   changeLogoStyle: {
-    borderRadius: 30,
+    borderRadius: RFValue(15, 414),
     width: "100%",
     height: "20%",
     alignSelf: "center",
@@ -277,8 +283,8 @@ const styles = StyleSheet.create({
     // paddingVertical: 10,
   },
   proceedButtonRTL: {
-    width: 50,
-    height: 50,
+    width: RFValue(25, 414),
+    height: RFValue(25, 414),
   },
   logoStyle: {
     height: "100%",
@@ -294,7 +300,7 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontFamily: "montserrat-regular",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: globalColors.purple,
   },
 });

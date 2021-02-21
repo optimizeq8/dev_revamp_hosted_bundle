@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
-
+import { RFValue } from "react-native-responsive-fontsize";
 // Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
@@ -68,7 +68,7 @@ class RejectedSnapchatInfo extends Component {
       <View style={styles.rejectedOuterView}>
         <View style={styles.rejectedDetailView}>
           <View style={styles.adRejetcedHeader}>
-            <Rejected width={20} height={20} />
+            <Rejected width={RFValue(10, 414)} height={RFValue(10, 414)} />
             <Text uppercase style={styles.adRejectedTitle}>
               {translate("Ad Rejected")}
             </Text>

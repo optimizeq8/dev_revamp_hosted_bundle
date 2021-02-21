@@ -5,6 +5,7 @@ import styles from "./styles";
 
 export default class RangeMarkers extends Component {
   render() {
+    let showPlusIcon = this.props.showPlusIcon;
     return (
       <View
         style={[
@@ -20,7 +21,8 @@ export default class RangeMarkers extends Component {
               styles.markerStyle,
             ]}
           >
-            {this.props.value + (this.props.value === 50 ? "+" : "")}
+            {this.props.value +
+              (this.props.value === 50 && showPlusIcon ? "+" : "")}
           </Text>
         )}
         <View style={styles.breaker} />

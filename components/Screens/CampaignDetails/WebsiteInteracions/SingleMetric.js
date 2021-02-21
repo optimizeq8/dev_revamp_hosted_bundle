@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import styles from "../styles";
 import formatNumber from "../../../formatNumber";
 import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
@@ -10,6 +11,10 @@ import MobileIcon from "../../../../assets/SVGs/CampaignDetail/MobileIcon";
 import WhatsAppIcon from "../../../../assets/SVGs/SwipeUps/WhatsApp";
 import LocationClicksIcon from "../../../../assets/SVGs/CampaignDetail/LocationClicksIcon";
 import YoutubeIcon from "../../../../assets/SVGs/CampaignDetail/YoutubeIcon";
+import TwitterIcon from "../../../../assets/SVGs/CampaignDetail/TwitterIcon";
+import SnapchatIcon from "../../../../assets/SVGs/CampaignDetail/SnapchatIcon";
+import WebsiteIcon from "../../../../assets/SVGs/CampaignDetail/WebsiteIcon";
+import LinkedInIcon from "../../../../assets/SVGs/CampaignDetail/LinkedInIcon";
 
 import {
   heightPercentageToDP,
@@ -30,10 +35,37 @@ export default class SingleMetric extends Component {
         Icon = WhatsAppIcon;
         break;
       case "location clicks":
+        if (metricValue === 0) {
+          return null;
+        }
         Icon = LocationClicksIcon;
         break;
       case "instagram clicks":
         Icon = InstagramIcon;
+        break;
+      case "website clicks":
+        if (metricValue === 0) {
+          return null;
+        }
+        Icon = WebsiteIcon;
+        break;
+      case "snapchat clicks":
+        if (metricValue === 0) {
+          return null;
+        }
+        Icon = SnapchatIcon;
+        break;
+      case "twitter clicks":
+        if (metricValue === 0) {
+          return null;
+        }
+        Icon = TwitterIcon;
+        break;
+      case "linkedin clicks":
+        if (metricValue === 0) {
+          return null;
+        }
+        Icon = LinkedInIcon;
         break;
       case "youtube clicks":
         if (metricValue === 0) {
@@ -47,14 +79,14 @@ export default class SingleMetric extends Component {
         break;
     }
     return (
-      <View style={[styles.metricsStyle, { marginTop: 20 }]}>
+      <View style={[styles.metricsStyle, { marginTop: RFValue(10, 414) }]}>
         {Icon && (
           <Icon
             width={widthPercentageToDP(7)}
             height={heightPercentageToDP(4)}
             fill={iconFill}
             stroke={iconStroke}
-            style={{ marginRight: 10 }}
+            style={{ marginRight: RFValue(5, 414) }}
           />
         )}
         {!loadingCampaignStats ? (
@@ -66,7 +98,7 @@ export default class SingleMetric extends Component {
             </Text>
           </Text>
         ) : (
-          <PlaceholderLine width={70} />
+          <PlaceholderLine width={RFValue(35, 414)} height={RFValue(5, 414)} />
         )}
       </View>
     );

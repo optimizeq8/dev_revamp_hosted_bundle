@@ -1,11 +1,18 @@
 import React, { Component } from "react";
 import { ScrollView } from "react-native";
 import styles from "./styles";
+import { RFValue } from "react-native-responsive-fontsize";
 import GradientButton from "../../MiniComponents/GradientButton";
 import { globalColors } from "../../../GlobalStyles";
 
 export default class ChartChoices extends Component {
-  state = { selectedChoice: "Spend" };
+  state = {
+    selectedChoice:
+      this.props.selectedCampaign &&
+      this.props.selectedCampaign.source === "SME GROWTH"
+        ? "website interactions"
+        : "Spend",
+  };
   render() {
     let selectedCampaign = this.props.selectedCampaign;
     const { translate } = this.props.screenProps;
@@ -20,8 +27,10 @@ export default class ChartChoices extends Component {
       selectedCampaign &&
       selectedCampaign.source === "SME GROWTH" &&
       "website interactions"
-    )
-      choices.push("website interactions");
+    ) {
+      choices.splice(0, 0, "website interactions");
+    }
+    //   choices.push("website interactions");
     choices = choices.map((choice) => (
       <GradientButton
         activeOpacity={0.8}
@@ -39,8 +48,8 @@ export default class ChartChoices extends Component {
         textStyle={[
           styles.choiceText,
           {
-            fontSize: 11,
-            paddingHorizontal: 15,
+            fontSize: RFValue(5.5, 414),
+            paddingHorizontal: RFValue(7.5, 414),
             color:
               this.state.selectedChoice !== choice
                 ? globalColors.purple3

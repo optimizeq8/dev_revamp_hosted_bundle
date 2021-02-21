@@ -27,6 +27,12 @@ const initialState = {
   instaCampaignStats: [],
   instaCampaignMetrics: [],
   instaSMEMetrics: [],
+  snapad: "0",
+  snapcollectionad: "0",
+  snapstoryad: "0",
+  instafeedad: "0",
+  instastoryad: "0",
+  googlead: "0",
 };
 
 const reducer = (state = initialState, action) => {
@@ -114,6 +120,10 @@ const reducer = (state = initialState, action) => {
               "location_clicks",
               "whatsapp_clicks",
               "youtube_clicks",
+              "snapchat_clicks",
+              "website_clicks",
+              "twitter_clicks",
+              "linkedin_clicks",
               "total_installs",
               "timeseries_stats",
             ].includes(metric)
@@ -130,6 +140,10 @@ const reducer = (state = initialState, action) => {
               "location_clicks",
               "whatsapp_clicks",
               "youtube_clicks",
+              "snapchat_clicks",
+              "website_clicks",
+              "twitter_clicks",
+              "linkedin_clicks",
             ].includes(metric)
           ) {
             smeMetrics.push({
@@ -340,6 +354,11 @@ const reducer = (state = initialState, action) => {
             status: action.payload.status,
           },
         },
+      };
+    case actionTypes.GET_NUMBER_OF_CAMPAIGNS:
+      return {
+        ...state,
+        ...action.payload,
       };
     default:
       return state;

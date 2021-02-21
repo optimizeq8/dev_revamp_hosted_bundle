@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, ScrollView, TouchableOpacity, Text } from "react-native";
 import { Item, Input, Icon } from "native-base";
+import { RFValue } from "react-native-responsive-fontsize";
 import LoadingScreen from "../LoadingScreen";
 
 //Icon
@@ -42,7 +43,7 @@ class RegionsSelector extends Component {
   render() {
     const { translate } = this.props.screenProps;
     if (this.props.loading) {
-      return <LoadingScreen top={50} />;
+      return <LoadingScreen top={RFValue(25, 414)} />;
     } else {
       let regionslist = this.state.filteredRegions.map((r) => {
         var found = !isUndefined(this.props.locations.find((l) => l === r.id));
@@ -85,11 +86,19 @@ class RegionsSelector extends Component {
       return (
         <View style={styles.container}>
           <View style={styles.dataContainer}>
-            <LocationIcon width={50} height={80} fill="#fff" />
+            <LocationIcon
+              width={RFValue(25, 414)}
+              height={RFValue(40, 414)}
+              fill="#fff"
+            />
 
             <View style={styles.slidercontainer}>
               <Item style={styles.searchbarContainer}>
-                <SearchIcon width={18} height={18} stroke="#fff" />
+                <SearchIcon
+                  width={RFValue(9, 414)}
+                  height={RFValue(9, 414)}
+                  stroke="#fff"
+                />
                 <Input
                   placeholder={translate("Search Region") + "..."}
                   style={styles.searchInputText}

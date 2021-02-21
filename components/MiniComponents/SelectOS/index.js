@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, I18nManager } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
+import { RFValue } from "react-native-responsive-fontsize";
 import { Icon } from "native-base";
 import styles from "../MultiSelect/styles";
 import OperatingSystemIcon from "../../../assets/SVGs/AdDetails/OperatingSystem";
@@ -34,8 +35,8 @@ export default class SelectOS extends Component {
           <View style={styles.dataContainer}>
             <OperatingSystemIcon
               fill={globalColors.rum}
-              width={100}
-              height={100}
+              width={RFValue(50, 414)}
+              height={RFValue(50, 414)}
               style={styles.icon}
             />
             <Text style={styles.title}>{translate("Operating System")}</Text>

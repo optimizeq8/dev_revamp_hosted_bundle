@@ -19,6 +19,7 @@ class GradientButton extends React.PureComponent {
       width,
       radius,
       onPressAction,
+      redOrange,
       purpleViolet,
       violetPink,
       pinkDarkGreen,
@@ -40,6 +41,8 @@ class GradientButton extends React.PureComponent {
     const blueVioletColor = ["#3672F8", "#B01EFF"];
     const blueMarineColor = ["#14F1D9", "#3672F8"];
     const deepBlueColor = ["#4F73C3", "#3C46A2"];
+    const redOrangeColor = ["#FF0000", "#C13535"];
+
     const disabledColor = [
       disabledGradientBegin || "#FF9D00",
       disabledGradientEnd || "#FF5C14",
@@ -85,6 +88,8 @@ class GradientButton extends React.PureComponent {
           colors={
             purpleViolet
               ? purpleVioletColor
+              : redOrange
+              ? redOrangeColor
               : violetPink
               ? violetPinkColor
               : pinkDarkGreen

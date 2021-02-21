@@ -1,4 +1,5 @@
 import { StyleSheet, PixelRatio } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../../../GlobalStyles";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 export default StyleSheet.create({
@@ -26,12 +27,12 @@ export default StyleSheet.create({
   budgetTextStyle: {
     color: globalColors.purple,
     fontFamily: "montserrat-bold",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
   },
   budget: {
     alignSelf: "center",
     color: globalColors.purple,
-    fontSize: 19 / PixelRatio.getFontScale(),
+    fontSize: RFValue(9.5 / PixelRatio.getFontScale(), 414),
     fontFamily: "montserrat-bold",
     textAlign: "center",
     width: "100%",
@@ -50,8 +51,14 @@ export default StyleSheet.create({
     justifyContent: "center",
   },
   recommendText: {
-    fontSize: 9,
+    fontSize: RFValue(4.5, 414),
     color: globalColors.white,
+    fontFamily: "montserrat-bold",
+  },
+  dollarText: {
+    fontSize: RFValue(7.5, 414),
+    color: globalColors.purple,
+    marginRight: RFValue(-15, 414),
     fontFamily: "montserrat-bold",
   },
 });

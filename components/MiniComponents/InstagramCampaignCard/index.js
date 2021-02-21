@@ -93,10 +93,16 @@ class CampaignCard extends Component {
           <View style={styles.textcontainer}>
             <View style={styles.header}>
               <InstagramIcon
-                width={55}
-                height={55}
+                width={25}
+                height={25}
                 fill={"#FFF"}
-                style={{ marginRight: -15, marginLeft: -10, marginBottom: -10 }}
+                style={
+                  {
+                    //   marginRight: RFValue(-7.5, 414),
+                    //   marginLeft: -10,
+                    //   marginBottom: -10,
+                  }
+                }
               />
               <View
                 style={{

@@ -1,15 +1,16 @@
 import { StyleSheet } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 const styles = StyleSheet.create({
   walletCard: {
-    marginVertical: 5,
+    marginVertical: RFValue(2.5, 414),
     backgroundColor: "rgba(0,0,0,0.2)",
-    borderRadius: 40,
-    paddingVertical: 20,
-    paddingHorizontal: 25,
+    borderRadius: RFValue(20, 414),
+    paddingVertical: RFValue(10, 414),
+    paddingHorizontal: RFValue(12.5, 414),
   },
   paymentDate: {
     fontFamily: "montserrat-bold-english",
-    fontSize: 18,
+    fontSize: RFValue(9, 414),
     color: "#FF8D04",
     textAlign: "left",
   },
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   subHeading: {
-    fontSize: 13,
+    fontSize: RFValue(6.5, 414),
     lineHeight: 16,
     fontFamily: "montserrat-bold",
     color: "#FFF",
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
   },
   subText: {
     fontFamily: "montserrat-regular-english",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     lineHeight: 18,
     color: "#FFF",
     textTransform: "uppercase",
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   amountText: {
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     lineHeight: 18,
     fontFamily: "montserrat-bold",
     color: "#FFF",
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   amountValue: {
-    fontSize: 26,
+    fontSize: RFValue(13, 414),
     fontFamily: "montserrat-bold-english",
     color: "#FF8D04",
     lineHeight: 34,

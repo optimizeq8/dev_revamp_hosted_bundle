@@ -3,6 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
@@ -18,14 +19,14 @@ const styles = StyleSheet.create({
   dataContainer: {
     alignItems: "center",
     width: "100%",
-    marginTop: 30,
+    marginTop: RFValue(15, 414),
     flex: 1,
     justifyContent: "space-between",
   },
   countrySelectorText: {
-    paddingVertical: 20,
+    paddingVertical: RFValue(10, 414),
     color: "#FFFF",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     textAlign: "center",
     fontFamily: "montserrat-regular",
   },
@@ -33,44 +34,44 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 16,
-    // width: 150,
-    paddingTop: 20,
+    fontSize: RFValue(8, 414),
+    // width: 1RFValue(25, 414),
+    paddingTop: RFValue(10, 414),
     alignSelf: "center",
   },
   subHeadings: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-regular",
-    fontSize: 14,
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+    fontSize: RFValue(7, 414),
+    paddingVertical: RFValue(10, 414),
+    paddingHorizontal: RFValue(10, 414),
   },
   slidercontainer: {
-    paddingHorizontal: 40,
+    paddingHorizontal: RFValue(20, 414),
     width: "100%",
     flex: 1,
   },
   toggleSelectorButton: {
-    width: 50,
-    height: 50,
+    width: RFValue(25, 414),
+    height: RFValue(25, 414),
   },
   selectVersionIcon: {
-    fontSize: 60,
+    fontSize: RFValue(30, 414),
     color: "#fff",
   },
   scrollContainer: {
-    marginVertical: 10,
+    marginVertical: RFValue(5, 414),
     flexGrow: 1,
   },
   indicator: {
-    fontSize: 30,
+    fontSize: RFValue(15, 414),
     color: globalColors.orange,
     // marginRight: 20,
     // color: "#fff"
   },
   itemCircles: {
-    fontSize: 30,
+    fontSize: RFValue(15, 414),
     color: globalColors.orange,
   },
   choiceContainer: {
@@ -78,13 +79,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   button: {
-    marginTop: 10,
-    marginBottom: 40,
+    marginTop: RFValue(5, 414),
+    marginBottom: RFValue(20, 414),
   },
   stickyFooterButton: {
     backgroundColor: "transparent",
     alignSelf: "center",
-    borderRadius: 50,
+    borderRadius: RFValue(25, 414),
     borderColor: "transparent",
     borderWidth: 1,
     justifyContent: "center",
@@ -104,16 +105,16 @@ const styles = StyleSheet.create({
     paddingTop: hp(1),
   },
   icon: {
-    fontSize: 70,
+    fontSize: RFValue(35, 414),
     color: "#fff",
-    paddingLeft: 5,
+    paddingLeft: RFValue(2.5, 414),
     alignSelf: "center",
     justifyContent: "center",
     textAlign: "center",
   },
   inputtext: {
     fontFamily: "montserrat-light",
-    fontSize: 17 / PixelRatio.getFontScale(),
+    fontSize: RFValue(8.5 / PixelRatio.getFontScale(), 414),
     color: "#fff",
     alignSelf: "center",
     textAlign: "center",
@@ -125,43 +126,43 @@ const styles = StyleSheet.create({
   searchInputText: {
     fontFamily: "montserrat-regular",
     color: "#fff",
-    fontSize: 14 / PixelRatio.getFontScale(),
+    fontSize: RFValue(14 / PixelRatio.getFontScale(), 414),
   },
   selectTextContainer: {
-    paddingVertical: 20,
+    paddingVertical: RFValue(10, 414),
     flexDirection: "row",
   },
   errorText: {
     color: "#FFFF",
     fontFamily: "montserrat-regular",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     textAlign: "center",
-    paddingVertical: 20,
+    paddingVertical: RFValue(10, 414),
   },
   languageRowConatiner: {
-    paddingVertical: 10,
-    marginVertical: 10,
+    paddingVertical: RFValue(5, 414),
+    marginVertical: RFValue(5, 414),
     flexDirection: "row",
     alignItems: "center",
   },
 
   optionsIconSize: {
-    fontSize: 25,
+    fontSize: RFValue(12.5, 414),
   },
   optionsTextContainer: {
     fontFamily: "montserrat-bold",
     color: "#fff",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     paddingLeft: 20,
   },
   inactivetext: {
     fontFamily: "montserrat-bold",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     color: "#fff",
   },
   activetext: {
     fontFamily: "montserrat-bold",
-    fontSize: 16,
+    fontSize: RFValue(8, 414),
     color: globalColors.orange,
   },
   optionsRowContainer: {
@@ -179,12 +180,12 @@ const styles = StyleSheet.create({
     borderColor: "#0000",
     backgroundColor: "#0002",
     width: wp(80),
-    height: "50%",
+    height: RFValue(25, 414),
     alignSelf: "center",
   },
   customSearchInput: {
     fontFamily: "montserrat-light",
-    fontSize: 14 / PixelRatio.getFontScale(),
+    fontSize: RFValue(7 / PixelRatio.getFontScale(), 414),
     alignSelf: "center",
     textAlign: I18nManager.isRTL ? "right" : "left",
     color: globalColors.rum,

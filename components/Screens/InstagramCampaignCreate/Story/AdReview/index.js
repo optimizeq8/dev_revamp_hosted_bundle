@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import { Transition } from "react-navigation-fluid-transitions";
 import Carousel from "react-native-snap-carousel";
 import { widthPercentageToDP } from "react-native-responsive-screen";
@@ -85,6 +85,7 @@ class AdStoryDesignReview extends React.Component {
       : this.props.navigation.state.params;
     const { translate } = this.props.screenProps;
     let mediaView = null;
+    console.log("call_to_action", call_to_action);
     if (media_option === "single") {
       if (media_type === "IMAGE" && media) {
         mediaView = <RNImage style={styles.imagePreviewStory} media={media} />;
@@ -136,8 +137,8 @@ class AdStoryDesignReview extends React.Component {
             <View style={styles.profilePicView}>
               <Image
                 style={styles.profileImage}
-                width={32}
-                height={32}
+                width={RFValue(16, 414)}
+                height={RFValue(16, 414)}
                 source={{
                   uri: instagram_profile_pic,
                 }}
@@ -161,8 +162,7 @@ class AdStoryDesignReview extends React.Component {
             </View>
             <View style={styles.mediaView2}>{mediaView}</View>
             <View style={styles.callToActionView}>
-              {(call_to_action || (call_to_action && call_to_action.value)) !==
-                "BLANK" && (
+              {call_to_action && call_to_action.value !== "BLANK" && (
                 <View style={[styles.swipeUpView, styles.swipeUpViewStory]}>
                   <ArrowUp stroke={"#FFFF"} />
 

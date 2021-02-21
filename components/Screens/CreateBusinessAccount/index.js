@@ -1,6 +1,7 @@
 //Components
 import React, { Component } from "react";
 import { View, Text, ScrollView, BackHandler, Keyboard } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import analytics from "@segment/analytics-react-native";
 import CustomHeader from "../../MiniComponents/Header";
 import SafeAreaView from "react-native-safe-area-view";
@@ -821,6 +822,9 @@ class CreateBusinessAccount extends Component {
             isVisible={
               this.props.registering ? this.props.inputT : this.state.inputT
             }
+            customStyle={{
+              paddingRight: 15,
+            }}
           />
 
           {/* Business category view ends here */}
@@ -886,6 +890,9 @@ class CreateBusinessAccount extends Component {
             // isVisible={
             //   this.props.registering ? this.props.inputC : this.state.inputC
             // }
+            customStyle={{
+              paddingRight: 5,
+            }}
           />
 
           {/** Webiste Component for  */}

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { Icon } from "native-base";
 import styles from "./styles";
 export default class CampaignDuration extends Component {
@@ -9,7 +10,11 @@ export default class CampaignDuration extends Component {
 
     return (
       <View style={styles.durationContainer}>
-        <Icon type="AntDesign" name="clockcircleo" style={{ color: "#fff" }} />
+        <Icon
+          type="AntDesign"
+          name="clockcircleo"
+          style={{ fontSize: RFValue(15, 414), color: "#fff" }}
+        />
         <View style={styles.durationContent}>
           <Text style={styles.durationLabel}>{translate("Duration")}</Text>
           <Text style={[styles.durationData]}>
@@ -17,7 +22,7 @@ export default class CampaignDuration extends Component {
             <Text
               style={[
                 styles.durationData,
-                { fontSize: 10, fontFamily: "montserrat-bold" },
+                { fontSize: RFValue(5, 414), fontFamily: "montserrat-bold" },
               ]}
             >
               {this.props.duration > 1 ? translate("days") : translate("day")}

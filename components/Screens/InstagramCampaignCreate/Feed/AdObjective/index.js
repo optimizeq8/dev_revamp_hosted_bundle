@@ -14,7 +14,6 @@ import analytics from "@segment/analytics-react-native";
 import { Content, Container } from "native-base";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
-
 import * as Animatable from "react-native-animatable";
 import ObjectivesCard from "../../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../../MiniComponents/LowerButton";
@@ -53,6 +52,7 @@ import GradientButton from "../../../../MiniComponents/GradientButton";
 import { colors } from "../../../../GradiantColors/colors";
 import globalStyles from "../../../../../GlobalStyles";
 import { LinearGradient } from "expo-linear-gradient";
+import { showMessage } from "react-native-flash-message";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -63,7 +63,7 @@ class AdObjective extends Component {
     this.state = {
       campaignInfo: {
         ad_account_id: "",
-        name: "",
+        name: `I_Feed_${parseInt(this.props.instafeedad) + 1}`,
         objective: instagramAdObjectives["InstagramFeedAd"][0].value,
         start_time: "",
         end_time: "",
@@ -115,6 +115,7 @@ class AdObjective extends Component {
     start_time.setDate(start_time.getDate() + 1);
     let end_time = new Date(start_time);
     end_time.setDate(end_time.getDate() + this.state.duration - 1);
+    const campaignName = `I_Feed_${parseInt(this.props.instafeedad) + 1}`;
 
     if (
       this.props.data &&
@@ -128,7 +129,10 @@ class AdObjective extends Component {
         ...this.state.campaignInfo,
         ad_account_id: this.props.mainBusiness.fb_ad_account_id,
         businessid: this.props.mainBusiness.businessid,
-        name: this.props.data.name,
+        name:
+          this.props.data.name && this.props.data.name !== ""
+            ? this.props.data.name
+            : campaignName,
         objective: this.props.data.objective
           ? this.props.data.objective
           : instagramAdObjectives["InstagramFeedAd"][0].value,
@@ -160,7 +164,7 @@ class AdObjective extends Component {
         campaignInfo: {
           ad_account_id: this.props.mainBusiness.fb_ad_account_id,
           businessid: this.props.mainBusiness.businessid,
-          name: "",
+          name: campaignName,
           objective: instagramAdObjectives["InstagramFeedAd"][0].value,
           start_time: start_time.toISOString().split("T")[0],
           end_time: end_time.toISOString().split("T")[0],
@@ -272,6 +276,20 @@ class AdObjective extends Component {
       start_timeError: dateErrors.start_timeError,
       end_timeError: dateErrors.end_timeError,
     });
+    let { translate } = this.props.screenProps;
+    if (
+      new Date(this.state.campaignInfo.start_time) < new Date() ||
+      new Date(this.state.campaignInfo.end_time) < new Date()
+    ) {
+      showMessage({
+        message: translate("The dates are no longer applicable"),
+        description: translate("Please choose new dates"),
+        type: "warning",
+      });
+
+      this.dateField && this.dateField.showModal();
+      return;
+    }
     // In case error in any field keep track
     if (
       nameError ||
@@ -650,6 +668,10 @@ class AdObjective extends Component {
           screenProps={this.props.screenProps}
           handleClosingContinueModal={this.handleClosingContinueModal}
           setCampaignInfo={this.setCampaignInfo}
+          resumingFromOtherAdTypeWithWrongDates={this.props.navigation.getParam(
+            "resumingFromOtherAdTypeWithWrongDates",
+            false
+          )}
         />
         <Modal
           animationType={"slide"}
@@ -699,6 +721,7 @@ const mapStateToProps = (state) => ({
   currentCampaignSteps: state.instagramAds.currentCampaignSteps,
   incompleteCampaign: state.instagramAds.incompleteCampaign,
   campaignProgressStarted: state.instagramAds.campaignProgressStarted,
+  instafeedad: state.dashboard.instafeedad,
 });
 
 const mapDispatchToProps = (dispatch) => ({

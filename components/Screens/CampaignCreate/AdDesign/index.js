@@ -13,6 +13,7 @@ import {
   ScrollView,
   BackHandler,
 } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { Container } from "native-base";
 import { NavigationEvents } from "react-navigation";
 import { showMessage } from "react-native-flash-message";
@@ -73,6 +74,8 @@ import CopilotTooltip from "../../../MiniComponents/CopilotTooltip";
 import CopilotTooltipFunction, {
   circleSvgPath,
 } from "../../../MiniComponents/CopilotTooltip/CopilotTooltipFunction";
+
+import list from "../../../Data/callactions.data";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -186,7 +189,6 @@ class AdDesign extends Component {
         ? this.props.data.objective
         : "TRAFFIC",
     });
-
     const { translate } = this.props.screenProps;
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
     if (permission.status !== "granted") {
@@ -223,6 +225,7 @@ class AdDesign extends Component {
     let obj =
       (this.rejected && this.selectedCampaign.objective) ||
       (!this.rejected && this.props.data && this.props.data.objective);
+
     if (
       //   this.props.data.savedObjective !== "POLITICAL_TRAFFIC" &&
       (this.adType === "CollectionAd" &&
@@ -292,7 +295,150 @@ class AdDesign extends Component {
       this.props.data.hasOwnProperty("media")
     ) {
       let rep = this.state.campaignInfo;
+      if (
+        (!this.props.data.hasOwnProperty("attachment") ||
+          this.props.data.attachment === "BLANK") &&
+        (!this.props.data.hasOwnProperty("call_to_action") ||
+          this.props.data.call_to_action.value === "BLANK")
+      ) {
+        // Based on the campaign ad type and swipe up destination check if attachment previously exist then set swipe up destination
 
+        const savedObjective =
+          this.props.data && this.props.data.savedObjective;
+        if (
+          this.props.mainBusiness &&
+          (savedObjective === "WEBSITE_TRAFFIC" ||
+            savedObjective === "LEAD_GENERATION")
+        ) {
+          const { websitelink, weburl } = this.props.mainBusiness;
+          if (websitelink && websitelink !== "") {
+            _changeDestination(
+              this.props.collectionAdLinkForm === 0
+                ? obj !== "LEAD_GENERATION"
+                  ? "REMOTE_WEBPAGE"
+                  : "LEAD_GENERATION"
+                : "COLLECTION",
+
+              list.SnapAd[0].call_to_action_list[0],
+              {
+                url: websitelink,
+              },
+              null,
+              null,
+              this.adType,
+              this.props.setStoryAdAttachment,
+              this.state.campaignInfo,
+              this.props.save_campaign_info,
+              this.setTheState
+            );
+          } else if (weburl && weburl !== "") {
+            _changeDestination(
+              this.props.collectionAdLinkForm === 0
+                ? obj !== "LEAD_GENERATION"
+                  ? "REMOTE_WEBPAGE"
+                  : "LEAD_GENERATION"
+                : "COLLECTION",
+
+              list.SnapAd[0].call_to_action_list[0],
+              {
+                url: weburl.includes("https")
+                  ? weburl
+                  : `https://${weburl}.optimizeapp.com`,
+              },
+              null,
+              null,
+              this.adType,
+              this.props.setStoryAdAttachment,
+              this.state.campaignInfo,
+              this.props.save_campaign_info,
+              this.setTheState
+            );
+          }
+        }
+        if (this.props.mainBusiness && savedObjective === "ENGAGEMENT") {
+          const { callnumber } = this.props.mainBusiness;
+          console.log("savedObjective", {
+            phone_number_id: `+${callnumber}`,
+          });
+          _changeDestination(
+            "AD_TO_CALL",
+            list.SnapAd[5].call_to_action_list[0],
+            {
+              phone_number_id: `+${callnumber}`,
+            },
+            null,
+            null,
+            this.adType,
+            this.props.setStoryAdAttachment,
+            this.state.campaignInfo,
+            this.props.save_campaign_info,
+            this.setTheState
+          );
+        }
+        if (
+          this.props.mainBusiness &&
+          (savedObjective === "APP_INSTALLS" ||
+            savedObjective === "APP_TRAFFIC") &&
+          ((this.props.mainBusiness.appstorelink &&
+            this.props.mainBusiness.appstorelink.ios_app_id !== "") ||
+            (this.props.mainBusiness.playstorelink &&
+              this.props.mainBusiness.playstorelink.android_app_url !== ""))
+        ) {
+          // console.log(
+          //   "this.props.mainBusiness",
+          //   JSON.stringify(this.props.mainBusiness, null, 2)
+          // );
+          let appChoice =
+            this.props.mainBusiness.appstorelink.ios_app_id === "" &&
+            this.props.mainBusiness.playstorelink.android_app_url === ""
+              ? ""
+              : this.props.mainBusiness.appstorelink.ios_app_id === ""
+              ? "ANDROID"
+              : "iOS";
+          _changeDestination(
+            savedObjective === "APP_TRAFFIC" ? "DEEP_LINK" : "APP_INSTALL",
+            list[
+              this.props.adType === "StoryAd" ? "SnapAd" : this.props.adType
+            ][1].call_to_action_list[0],
+            {
+              app_name:
+                this.props.mainBusiness.appstorelink.app_name !== ""
+                  ? this.props.mainBusiness.appstorelink.app_name
+                  : this.props.mainBusiness.playstorelink.app_name !== ""
+                  ? this.props.mainBusiness.playstorelink.app_name
+                  : "",
+              ios_app_id: this.props.mainBusiness.appstorelink.ios_app_id,
+              android_app_url: this.props.mainBusiness.playstorelink
+                .android_app_url,
+              icon_media_id:
+                this.props.mainBusiness.appstorelink.icon_media_url !== ""
+                  ? this.props.mainBusiness.appstorelink.icon_media_url
+                  : this.props.mainBusiness.playstorelink.icon_media_url !== ""
+                  ? this.props.mainBusiness.playstorelink.icon_media_url
+                  : "",
+              icon_media_url:
+                this.props.mainBusiness.appstorelink.icon_media_url !== ""
+                  ? this.props.mainBusiness.appstorelink.icon_media_url
+                  : this.props.mainBusiness.playstorelink.icon_media_url !== ""
+                  ? this.props.mainBusiness.playstorelink.icon_media_url
+                  : "",
+              deep_link_uri:
+                this.props.mainBusiness.appstorelink.deep_link_uri !== ""
+                  ? this.props.mainBusiness.appstorelink.deep_link_uri
+                  : this.props.mainBusiness.playstorelink.deep_link_uri !== ""
+                  ? this.props.mainBusiness.playstorelink.deep_link_uri
+                  : "",
+            },
+            appChoice,
+            null,
+            this.adType,
+            this.props.setStoryAdAttachment,
+            this.state.campaignInfo,
+            this.props.save_campaign_info,
+            this.setTheState
+          );
+        }
+      }
       rep = {
         ...this.state.campaignInfo,
         call_to_action: this.props.data.call_to_action
@@ -351,6 +497,7 @@ class AdDesign extends Component {
     // }
     if (
       this.state.objective !== "BRAND_AWARENESS" &&
+      prevState.campaignInfo.call_to_action &&
       ((prevState.campaignInfo.attachment === "BLANK" &&
         this.state.campaignInfo.attachment !== "BLANK") ||
         (prevState.campaignInfo.call_to_action.label === "BLANK" &&
@@ -1134,15 +1281,15 @@ class AdDesign extends Component {
         ? this.selectedCampaign.campaign_collectionAdLinkForm
         : this.props.data.campaign_collectionAdLinkForm,
     });
-    // AsyncStorage.getItem("AdDesignTutorialOpened").then((value) => {
-    //   if (!value && this.props.campaignList.length === 0) {
-    //     this.props.start();
-    //   }
-    // });
-    // this.props.copilotEvents.on("stop", () => {
-    //   AsyncStorage.setItem("AdDesignTutorialOpened", "true");
-    //   // Copilot tutorial finished!
-    // });
+    AsyncStorage.getItem("AdDesignTutorialOpened").then((value) => {
+      if (!value && this.props.campaignList.length === 0) {
+        this.props.start();
+      }
+    });
+    this.props.copilotEvents.on("stop", () => {
+      AsyncStorage.setItem("AdDesignTutorialOpened", "true");
+      // Copilot tutorial finished!
+    });
     // let adjustAdDesignTracker = new AdjustEvent("o7pn8g");
     // adjustAdDesignTracker.addPartnerParameter(
     //   `Snap_${this.adType}`,
@@ -1209,36 +1356,37 @@ class AdDesign extends Component {
       {
         title: "Promotional Message",
         description:
-          "Here you need to add a promotional message related to what you're advertising eg New products on sale now",
+          "Here you need to add a promotional message related to what you're advertising eg New products now on sale",
       },
     ].map((field, i) => (
-      //   <CopilotStep
-      //     key={field.title}
-      //     text={field.description}
-      //     order={i + 1}
-      //     name={field.title}
-      //   >
-      <CreativeHeadline
+      <CopilotStep
         key={field.title}
-        disabled={
-          this.props.loading ||
-          (this.props.loadingStoryAdsArray.length > 0 &&
-            this.props.loadingStoryAdsArray.includes(true))
-        }
-        data={this.props.data}
-        changeBusinessName={this.changeBusinessName}
-        changeHeadline={this.changeHeadline}
-        brand_name={brand_name}
-        headline={headline}
-        storyAdSelected={storyAdCards.storyAdSelected}
-        field={field.title}
-        mainBusiness={this.props.mainBusiness}
-        screenProps={this.props.screenProps}
-        brand_nameError={this.state.brand_nameError}
-        headlineError={this.state.headlineError}
-        setTheState={this.setTheState}
-      />
-      //   </CopilotStep>
+        text={field.description}
+        order={i + 1}
+        name={field.title}
+      >
+        <CreativeHeadline
+          key={field.title}
+          disabled={
+            this.props.loading ||
+            (this.props.loadingStoryAdsArray.length > 0 &&
+              this.props.loadingStoryAdsArray.includes(true))
+          }
+          data={this.props.data}
+          changeBusinessName={this.changeBusinessName}
+          changeHeadline={this.changeHeadline}
+          brand_name={brand_name}
+          headline={headline}
+          storyAdSelected={storyAdCards.storyAdSelected}
+          field={field.title}
+          mainBusiness={this.props.mainBusiness}
+          screenProps={this.props.screenProps}
+          brand_nameError={this.state.brand_nameError}
+          headlineError={this.state.headlineError}
+          setTheState={this.setTheState}
+          copilotStart={this.props.start}
+        />
+      </CopilotStep>
     ));
 
     let collection = [0, 1, 2, 3].map((collIdx) => (
@@ -1353,27 +1501,27 @@ class AdDesign extends Component {
                         navigation={this.props.navigation}
                       />
                     ) : (
-                      //   <CopilotStep
-                      //     text="Add your media here, It can be a video or an image Make sure your ad looks professional so that it can attract a lot of people"
-                      //     order={3}
-                      //     name="Media"
-                      //   >
-                      <MediaButton
-                        disabled={
-                          this.props.loading ||
-                          (this.props.loadingStoryAdsArray.length > 0 &&
-                            this.props.loadingStoryAdsArray.includes(true))
-                        }
-                        screenProps={this.props.screenProps}
-                        type={"media"}
-                        setMediaModalVisible={this.setMediaModalVisible}
-                        media={
-                          media !== "//"
-                            ? media
-                            : storyAdCards.selectedStoryAd.media
-                        }
-                      />
-                      //   </CopilotStep>
+                      <CopilotStep
+                        text="Add your media here, It can be a video or an image Make sure your ad looks professional so that it can attract a lot of people"
+                        order={3}
+                        name="Media"
+                      >
+                        <MediaButton
+                          disabled={
+                            this.props.loading ||
+                            (this.props.loadingStoryAdsArray.length > 0 &&
+                              this.props.loadingStoryAdsArray.includes(true))
+                          }
+                          screenProps={this.props.screenProps}
+                          type={"media"}
+                          setMediaModalVisible={this.setMediaModalVisible}
+                          media={
+                            media !== "//"
+                              ? media
+                              : storyAdCards.selectedStoryAd.media
+                          }
+                        />
+                      </CopilotStep>
                     )}
                     {videoIsLoading ? (
                       <VideoProcessingLoader
@@ -1409,52 +1557,52 @@ class AdDesign extends Component {
                       <View style={styles.collectionView}>{collection}</View>
                     )}
                   </View>
-                  {/* <CopilotStep
+                  <CopilotStep
                     text={`You need to add a swipe up destination to send your audience to and select a call to action to push your audience into taking action`}
                     order={4}
                     name="Swipe Up destination"
                     active={this.state.objective !== "BRAND_AWARENESS"}
-                  > */}
-                  <SwipeCompCondition
-                    swipeUpExpanded={this.state.swipeUpExpanded}
-                    screenProps={this.props.screenProps}
-                    swipeUpMaxHeight={this.state.swipeUpMaxHeight}
-                    setTheState={this.setTheState}
-                    _changeDestination={(
-                      destination,
-                      call_to_action,
-                      attachment,
-                      appChoice = null,
-                      whatsAppCampaign
-                    ) =>
-                      _changeDestination(
+                  >
+                    <SwipeCompCondition
+                      swipeUpExpanded={this.state.swipeUpExpanded}
+                      screenProps={this.props.screenProps}
+                      swipeUpMaxHeight={this.state.swipeUpMaxHeight}
+                      setTheState={this.setTheState}
+                      _changeDestination={(
                         destination,
                         call_to_action,
                         attachment,
-                        appChoice,
-                        whatsAppCampaign,
-                        this.adType,
-                        this.props.setStoryAdAttachment,
-                        this.state.campaignInfo,
-                        this.props.save_campaign_info,
-                        this.setTheState
-                      )
-                    }
-                    navigation={this.props.navigation}
-                    objective={objective}
-                    destination={destination}
-                    attachment={attachment}
-                    storyAdCards={storyAdCards}
-                    adType={this.adType}
-                    media={media}
-                    call_to_action={call_to_action}
-                    disabled={
-                      this.props.loading ||
-                      (this.props.loadingStoryAdsArray.length > 0 &&
-                        this.props.loadingStoryAdsArray.includes(true))
-                    }
-                  />
-                  {/* </CopilotStep> */}
+                        appChoice = null,
+                        whatsAppCampaign
+                      ) =>
+                        _changeDestination(
+                          destination,
+                          call_to_action,
+                          attachment,
+                          appChoice,
+                          whatsAppCampaign,
+                          this.adType,
+                          this.props.setStoryAdAttachment,
+                          this.state.campaignInfo,
+                          this.props.save_campaign_info,
+                          this.setTheState
+                        )
+                      }
+                      navigation={this.props.navigation}
+                      objective={objective}
+                      destination={destination}
+                      attachment={attachment}
+                      storyAdCards={storyAdCards}
+                      adType={this.adType}
+                      media={media}
+                      call_to_action={call_to_action}
+                      disabled={
+                        this.props.loading ||
+                        (this.props.loadingStoryAdsArray.length > 0 &&
+                          this.props.loadingStoryAdsArray.includes(true))
+                      }
+                    />
+                  </CopilotStep>
                 </View>
               </View>
             )}
@@ -1521,8 +1669,8 @@ class AdDesign extends Component {
                       </Text>
                       <View>
                         <AnimatedCircularProgress
-                          size={50}
-                          width={5}
+                          size={RFValue(25, 414)}
+                          width={RFValue(2.5, 414)}
                           fill={Math.round(this.state.loaded)}
                           rotation={360}
                           lineCap="round"

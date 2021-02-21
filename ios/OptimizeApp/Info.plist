@@ -17,7 +17,7 @@
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
-		<string>0.4.32</string>
+		<string>0.4.340</string>
 		<key>CFBundleSignature</key>
 		<string>????</string>
 		<key>CFBundleURLTypes</key>
@@ -34,7 +34,7 @@
 			</dict>
 		</array>
 		<key>CFBundleVersion</key>
-		<string>157</string>
+		<string>160</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>NSAppTransportSecurity</key>
@@ -113,5 +113,7 @@
 		<false/>
 		<key>NSUserTrackingUsageDescription</key>
 		<string>Your data will be used to provide you a better and more personalized experience</string>
+		<key>NSFaceIDUsageDescription</key>
+		<string>OptimizeApp requires FaceID/TouchId access to allow you quick and secure access</string>
 	</dict>
 </plist>

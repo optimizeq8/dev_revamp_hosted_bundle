@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
-
+import { RFValue } from "react-native-responsive-fontsize";
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlignVertical: "center",
     color: "#FFF",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     fontFamily: "montserrat-bold",
   },
   dash: {
@@ -59,13 +59,13 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     color: "#C6C6C6",
-    fontSize: 9,
+    fontSize: RFValue(4.5, 414),
     fontFamily: "montserrat-light",
     textAlign: "center",
   },
   activeTitleText: {
     fontFamily: "montserrat-bold",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#9300FF",
     textAlign: "center",
     height: "120%",
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontFamily: "montserrat-regular",
-    fontSize: 8,
+    fontSize: RFValue(4, 414),
     color: "#C6C6C6",
     paddingTop: 3,
   },
@@ -89,12 +89,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     flexDirection: "row",
     justifyContent: "space-around",
-    paddingVertical: 20,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
+    paddingVertical: RFValue(10, 414),
+    borderBottomLeftRadius: RFValue(15, 414),
+    borderBottomRightRadius: RFValue(15, 414),
   },
   title: {
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     color: "#9300FF",
     textTransform: "uppercase",
     fontFamily: "montserrat-bold",

@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, View } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import styles from "./styles";
 import { Small } from "../../../MiniComponents/StyledComponents";
 import GradientButton from "../../../MiniComponents/GradientButton";
@@ -28,7 +29,7 @@ export default (props) => {
         </Text>
         <View style={styles.keywordRowView}>
           <View style={styles.displayStatsView}>
-            <Small style={{ fontSize: 8 }}>$</Small>
+            <Small style={{ fontSize: RFValue(4, 414) }}>$</Small>
             <Text
               adjustsFontSizeToFit={true}
               style={[
@@ -55,7 +56,7 @@ export default (props) => {
             <Text style={[styles.numbercontentStyle, { textAlign: "right" }]}>
               {content.ctr}
             </Text>
-            <Small style={{ fontSize: 9 }}>%</Small>
+            <Small style={{ fontSize: RFValue(4.5, 414) }}>%</Small>
           </View>
         </View>
       </View>

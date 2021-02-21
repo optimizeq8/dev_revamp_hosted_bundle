@@ -94,7 +94,7 @@ class AppSearchModal extends Component {
         })
       )
       .catch((err) => {
-        // console.log(err);
+        console.log(err);
 
         this.props.setTheState({ loading: false });
         analytics.track(`a_error`, {

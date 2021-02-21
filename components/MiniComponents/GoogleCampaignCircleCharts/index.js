@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, ScrollView } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import Chart from "../CircleChart/Chart";
 import CampaignStats from "./CampStats/CampaignStats";
 import SingleMetric from "./CampStats/SingleMetric";
@@ -32,15 +33,18 @@ class CampaignCircleChart extends Component {
             {!chartExpanded && (
               <>
                 <Text
-                  style={[globalStyles.title, { textTransform: "uppercase" }]}
+                  style={[
+                    globalStyles.title,
+                    { textTransform: "uppercase", fontSize: RFValue(8, 414) },
+                  ]}
                 >
                   {translate("Ad Performance")}
                 </Text>
                 <LowerButton
                   screenProps={this.props.screenProps}
                   function={() => handleChartToggle()}
-                  width={15}
-                  height={15}
+                  width={RFValue(7.5, 414)}
+                  height={RFValue(7.5, 414)}
                   style={styles.adPerformanceLowerButton}
                 />
               </>
@@ -53,7 +57,7 @@ class CampaignCircleChart extends Component {
           scrollEnabled={detail && chartExpanded}
           contentContainerStyle={{
             justifyContent: "flex-start",
-            paddingRight: 30,
+            paddingRight: RFValue(15, 414),
           }}
           style={{
             maxHeight: "100%",
@@ -72,7 +76,9 @@ class CampaignCircleChart extends Component {
               detail={detail}
             />
           )}
-          <View style={{ paddingHorizontal: 12, alignSelf: "center" }}>
+          <View
+            style={{ paddingHorizontal: RFValue(6, 414), alignSelf: "center" }}
+          >
             {detail && (
               <SingleMetric
                 detail={detail}

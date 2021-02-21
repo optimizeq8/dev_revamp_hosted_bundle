@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, Platform } from "react-native";
-
+import { RFValue } from "react-native-responsive-fontsize";
 //icons
 import CameraIcon from "../../../../assets/SVGs/CameraOption";
 import VideoIcon from "../../../../assets/SVGs/SwipeUps/Video";
@@ -43,26 +43,42 @@ export default class MediaOptions extends Component {
     let imageIcon = null;
     if (title === "Media") {
       imageIcon = (
-        <CameraIcon width={30} height={25} fill={globalColors.orange} />
+        <CameraIcon
+          width={RFValue(15, 414)}
+          height={RFValue(12.5, 414)}
+          fill={globalColors.orange}
+        />
       );
     } else if (title === "Video") {
       imageIcon = (
-        <VideoIcon width={30} height={30} fill={globalColors.orange} />
+        <VideoIcon
+          width={RFValue(15, 414)}
+          height={RFValue(15, 414)}
+          fill={globalColors.orange}
+        />
       );
     } else if (title === "Upload media from a different device") {
       imageIcon = (
-        <UploadIcon width={35} height={35} fill={globalColors.orange} />
+        <UploadIcon
+          width={RFValue(17.5, 414)}
+          height={RFValue(17.5, 414)}
+          fill={globalColors.orange}
+        />
       );
     } else if (title === "Download media from a different device") {
       imageIcon = (
-        <DownloadIcon width={35} height={35} fill={globalColors.orange} />
+        <DownloadIcon
+          width={RFValue(17.5, 414)}
+          height={RFValue(17.5, 414)}
+          fill={globalColors.orange}
+        />
       );
     } else {
       imageIcon = (
         <Icon
           name="square-edit-outline"
           type="MaterialCommunityIcons"
-          style={{ color: globalColors.orange, fontSize: 35 }}
+          style={{ color: globalColors.orange, fontSize: RFValue(17.5, 414) }}
         />
       );
     }
@@ -72,7 +88,13 @@ export default class MediaOptions extends Component {
         style={styles.MediaOptionsStyle}
       >
         {imageIcon}
-        <View style={{ flexDirection: "column", marginLeft: 10, flex: 1 }}>
+        <View
+          style={{
+            flexDirection: "column",
+            marginLeft: RFValue(5, 414),
+            flex: 1,
+          }}
+        >
           <Text style={styles.MediaOptionsTitle}>{translate(title)}</Text>
           <Text style={[styles.MediaOptionsDescription]}>
             {title === "Upload media from a different device"

@@ -32,6 +32,7 @@ export {
   setRejectedCampaignData,
   resetRejectedCampaignData,
   downloadCSV,
+  getNumberOfCampaigns,
 } from "./dashboardActions";
 
 export {
@@ -128,6 +129,7 @@ export {
   send_push_notification,
   changePassword,
   checkHashForUser,
+  checkPassword,
 } from "./loginActions";
 
 export {

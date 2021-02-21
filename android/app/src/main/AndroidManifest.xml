@@ -19,6 +19,7 @@
   <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
   <uses-permission android:name="android.permission.WAKE_LOCK"/>
+  <uses-permission android:name="android.permission.USE_BIOMETRIC" />
   <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" tools:node="remove" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" tools:node="remove" />
@@ -26,7 +27,7 @@
   <application android:usesCleartextTraffic="true" android:name=".MainApplication" android:requestLegacyExternalStorage="true" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme">
     <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://optimizeq8.github.io/optimizeapp_live_v2_hosted_bundle/android-index.json" />
     <meta-data android:name="expo.modules.updates.EXPO_SDK_VERSION" android:value="39.0.0" />
-    <meta-data android:name="expo.modules.updates.EXPO_RELEASE_CHANNEL" android:value="development" />
+    <meta-data android:name="expo.modules.updates.EXPO_RELEASE_CHANNEL" android:value="copilot" />
     <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_stat_group_11" />
     <meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/splashscreen_background" />
     <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDxOd8PlgO-DjzmoVDaFmpGj2XcqhclrwM"/>
@@ -57,13 +58,10 @@
         <action android:name="com.google.firebase.MESSAGING_EVENT"/>
       </intent-filter>
     </service> -->
-     <service
-      android:name=".MainMessagingService"
-      android:enabled="true"
-      android:exported="true">
-        <intent-filter>
-          <action android:name="com.google.firebase.MESSAGING_EVENT" />
-        </intent-filter>
+    <service android:name=".MainMessagingService" android:enabled="true" android:exported="true">
+      <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
+      </intent-filter>
     </service>
     <activity android:name="com.mixpanel.android.takeoverinapp.TakeoverInAppActivity" android:theme="@style/com_mixpanel_android_TakeoverInAppActivityTheme"/>
     <meta-data android:name="com.google.android.gms.ads.AD_MANAGER_APP" android:value="true"/>

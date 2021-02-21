@@ -1,10 +1,11 @@
 import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#751AFF",
 };
 const styles = StyleSheet.create({
   marginVertical: {
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
     // marginVertical: 30,
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   labelView: {
     borderTopLeftRadius: 150,
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.16)",
     height: 15,
-    zIndex: 1
+    zIndex: 1,
   },
   inputLabel: {
     fontFamily: "montserrat-bold",
@@ -34,18 +35,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderRadius: 30,
     marginBottom: -10,
-    marginTop: I18nManager.isRTL ? -5 : 0
+    marginTop: I18nManager.isRTL ? -5 : 0,
   },
   inputLabelNew: {
     fontFamily: "montserrat-bold",
-    fontSize: 12 / PixelRatio.getFontScale(),
+    fontSize: RFValue(6 / PixelRatio.getFontScale(), 414),
     color: "#fff",
     textTransform: "uppercase",
     // alignSelf: "center",
     textAlign: "left",
     borderRadius: 30,
     // marginBottom: -10,
-    marginTop: I18nManager.isRTL ? -5 : 0
+    marginTop: I18nManager.isRTL ? -5 : 0,
   },
   button: {
     backgroundColor: "#FF9D00",
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
-    shadowOpacity: 0.2
+    shadowOpacity: 0.2,
   },
   icon: {
     fontSize: 45,
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     alignSelf: "center",
     justifyContent: "center",
-    textAlign: "center"
+    textAlign: "center",
   },
   container: {
     backgroundColor: "transparent",
@@ -77,12 +78,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // padding: 20,
     // paddingTop: 20,
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   info: {
     borderRadius: 5,
     padding: 10,
-    marginBottom: 20
+    marginBottom: 20,
   },
   mainCard: {
     top: 15,
@@ -94,80 +95,80 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 30,
     flex: 1,
     marginLeft: 0,
-    marginRight: 0
+    marginRight: 0,
   },
   errorText: {
     textAlign: "center",
     color: "red",
     fontFamily: "montserrat-light",
-    fontSize: 14
+    fontSize: RFValue(7, 414),
   },
   text: {
     textAlign: "center",
     color: "#FFF",
     fontFamily: "montserrat-regular",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     marginTop: 10,
-    lineHeight: 18
+    lineHeight: 18,
     // marginBottom: 60
   },
   input: {
     fontFamily: "montserrat-light-english",
-    fontSize: 21 / PixelRatio.getFontScale(),
+    fontSize: RFValue(10.5 / PixelRatio.getFontScale(), 414),
     alignSelf: "center",
     borderBottomColor: "#f0f0f0",
     borderBottomWidth: 1,
-    width: 190,
-    height: 30
+    width: RFValue(95, 414),
+    height: RFValue(15, 414),
   },
   phoneInput: {
     borderRadius: 50,
     borderColor: "transparent",
     alignSelf: "center",
     width: widthPercentageToDP(75),
-    height: 50
+    height: 50,
   },
   phoneView: {
     width: "100%",
-    flex: 1
+    flex: 1,
   },
   phoneInputNew: {
-    borderRadius: 50,
+    borderRadius: RFValue(25, 414),
     borderColor: "transparent",
     alignSelf: "center",
     width: "100%",
     // height: 56,
-    paddingVertical: 6,
+    paddingVertical: RFValue(3, 414),
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.16)",
-    paddingHorizontal: 20
+    paddingHorizontal: RFValue(10, 414),
   },
   flagTouchableArea: {
-    width: 60,
-    height: 30,
+    width: RFValue(30, 414),
+    height: RFValue(15, 414),
     position: "absolute",
     borderWidth: 0.3,
     borderColor: "transparent",
     borderRadius: 5,
     left: 4,
-    zIndex: 5
+    zIndex: 5,
   },
   flagIcon: {
-    marginRight: -30,
-    left: 50,
+    marginRight: RFValue(-15, 414),
+    left: RFValue(25, 414),
     alignSelf: "center",
-    top: 7
+    top: RFValue(2.5, 414),
   },
   flagStyle: {
     left: 0,
-    zIndex: 5
+    zIndex: 5,
   },
   phoneInputTextStyle: {
     left: "3%",
-    textAlign: I18nManager.isRTL ? "right" : "left"
+    textAlign: I18nManager.isRTL ? "right" : "left",
   },
   optionTextStyle: {
-    alignSelf: "flex-start"
+    alignSelf: "flex-start",
   },
   keyboardArea: {
     // flex: 1,
@@ -175,9 +176,9 @@ const styles = StyleSheet.create({
     // justifyContent: "center"
   },
   phoneViewContainer: {
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
-  phoneInputStyle: { width: widthPercentageToDP(70) }
+  phoneInputStyle: { width: widthPercentageToDP(70) },
 });
 
 export default styles;

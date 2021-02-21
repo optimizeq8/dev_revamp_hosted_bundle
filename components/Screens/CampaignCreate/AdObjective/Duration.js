@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, TouchableHighlight, I18nManager, Text } from "react-native";
 import dateFormat from "dateformat";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import CalendarIcon from "../../../../assets/SVGs/Calendar";
 
 //styles
@@ -44,7 +44,7 @@ export default class Duration extends Component {
         }}
       >
         <View style={styles.dateContainer}>
-          <CalendarIcon />
+          <CalendarIcon width={RFValue(15, 414)} height={RFValue(15, 414)} />
           <View
             style={{ flexDirection: "column", marginLeft: 13, width: "100%" }}
           >

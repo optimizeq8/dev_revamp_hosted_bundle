@@ -4,21 +4,22 @@ import {
   heightPercentageToDP as hp,
   heightPercentageToDP,
 } from "react-native-responsive-screen";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   outerPreview: {
     height: heightPercentageToDP(70),
     backgroundColor: "rgba(0,0,0,0.16)",
-    marginHorizontal: 15,
-    borderRadius: 20,
-    marginVertical: 15,
+    marginHorizontal: RFValue(7.5, 414),
+    borderRadius: RFValue(10, 414),
+    marginVertical: RFValue(7.5, 414),
   },
   promoteText: {
     color: "#FFF",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     fontFamily: "montserrat-regular",
-    paddingHorizontal: 20,
+    paddingHorizontal: RFValue(10, 414),
     textAlign: "left",
   },
   flatListContentStyle: {
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   scrollView: { height: "100%" },
-  container: { marginBottom: 20 },
+  container: { marginBottom: RFValue(10, 414) },
   lowerBtn: {
     top: "20%",
     width: "90%",

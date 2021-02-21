@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, I18nManager } from "react-native";
 import * as Animatable from "react-native-animatable";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import { snapAds, googleAds } from "../../Data/adTypes.data";
 import styles from "./styles";
 export default class Screen1 extends Component {
@@ -30,13 +30,21 @@ export default class Screen1 extends Component {
                 <View style={styles.screen1Container}>
                   <AdIcon
                     style={{ alignSelf: "center" }}
-                    width={item.mediaType === "google" ? 25 : 35}
-                    height={item.mediaType === "google" ? 25 : 35}
+                    width={
+                      item.mediaType === "google"
+                        ? RFValue(12.5, 414)
+                        : RFValue(17.5, 414)
+                    }
+                    height={
+                      item.mediaType === "google"
+                        ? RFValue(12.5, 414)
+                        : RFValue(17.5, 414)
+                    }
                   />
                   {ChannelIcon && (
                     <ChannelIcon
-                      width={75}
-                      height={75}
+                      width={RFValue(37.5, 414)}
+                      height={RFValue(37.5, 414)}
                       style={[
                         styles.channelIcon,
                         I18nManager.isRTL

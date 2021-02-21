@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { Content, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import { BlurView } from "@react-native-community/blur";
 import { Modal } from "react-native-paper";
 import { NavigationEvents } from "react-navigation";
@@ -55,6 +56,7 @@ import isUndefined from "lodash/isUndefined";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../../GradiantColors/colors";
 import globalStyles from "../../../../GlobalStyles";
+import { showMessage } from "react-native-flash-message";
 
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 
@@ -65,7 +67,7 @@ class GoogleAdInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
+      name: `G_Sem_${parseInt(this.props.googlead) + 1}`,
       country: "",
       language: "1000",
       start_time: "",
@@ -119,10 +121,17 @@ class GoogleAdInfo extends Component {
     });
     let data = { ...this.state };
     keys.filter((key) => {
-      data = {
-        ...data,
-        [key]: this.props.campaign[key],
-      };
+      if (key === "name" && this.props.campaign[key] === "") {
+        data = {
+          ...data,
+          [key]: `G_Sem_${parseInt(this.props.googlead) + 1}`,
+        };
+      } else {
+        data = {
+          ...data,
+          [key]: this.props.campaign[key],
+        };
+      }
     }, {});
     // By default set it to business country
     if (data.location && data.location.length === 0) {
@@ -310,7 +319,20 @@ class GoogleAdInfo extends Component {
     const locationsError =
       this.state.location.length === 0 ? "Please choose a region." : null;
     let dateErrors = this.dateField.getErrors();
+    let { translate } = this.props.screenProps;
+    if (
+      new Date(this.state.start_time) < new Date() ||
+      new Date(this.state.end_time) < new Date()
+    ) {
+      showMessage({
+        message: translate("The dates are no longer applicable"),
+        description: translate("Please choose new dates"),
+        type: "warning",
+      });
 
+      this.dateField && this.dateField.showModal();
+      return;
+    }
     this.setState({
       nameError,
       countryError,
@@ -810,6 +832,7 @@ const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   userInfo: state.auth.userInfo,
   campaign: state.googleAds,
+  googlead: state.dashboard.googlead,
 });
 
 const mapDispatchToProps = (dispatch) => ({

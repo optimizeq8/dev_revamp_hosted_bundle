@@ -11,10 +11,11 @@ import {
   ActivityIndicator,
   Text,
   RefreshControl,
+  Modal,
 } from "react-native";
 import * as Notifications from "expo-notifications";
 import Intercom from "react-native-intercom";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
 import { Container, Icon } from "native-base";
@@ -67,11 +68,14 @@ import GradientButton from "../../MiniComponents/GradientButton";
 import LowerButton from "../../MiniComponents/LowerButton";
 import PlaceHolderLine from "../../MiniComponents/PlaceholderLine";
 import * as moment from "moment-timezone";
+import BiometricsAuth from "../BiometricsAuth";
 
 // import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import isNull from "lodash/isNull";
 import { Platform } from "react-native";
 import AlertModal from "../../MiniComponents/AlertModal";
+import { BlurView } from "@react-native-community/blur";
+import AsyncStorage from "@react-native-community/async-storage";
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
 
@@ -98,6 +102,7 @@ class Dashboard extends Component {
       showButton: true,
       count: 0,
       showAlertModal: false,
+      showBiometricsModal: false,
     };
 
     //Logs/gives warnign if a component has any functions that take a while to render
@@ -110,7 +115,7 @@ class Dashboard extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
-  componentDidMount() {
+  async componentDidMount() {
     this.props.checkHashForUser();
     // if (this.props.userInfo) {
     //   const MPTweakHelper = NativeModules.MPTweakHelper;
@@ -168,6 +173,21 @@ class Dashboard extends Component {
       this.props.instagramIncompleteCampaign
     ) {
       this.props.setCampaignInProgressInstagram(false);
+    }
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    if (source === "payment_end" && this.props.mainBusiness) {
+      this.reloadData();
+    }
+    let ignoreBiometricModal = await AsyncStorage.getItem(
+      "ignoreBiometricModal"
+    );
+    if (!ignoreBiometricModal) {
+      setTimeout(() => {
+        this.setState({ showBiometricsModal: true });
+      }, 3000);
     }
   }
   handleBackPress = () => {
@@ -544,18 +564,10 @@ class Dashboard extends Component {
       source_action === "a_move_amount_to_wallet" &&
       this.props.mainBusiness
     ) {
-      this.props.getCampaignList(
-        this.props.mainBusiness.businessid,
-        this.increasePage,
-        this.signal.token
-      );
-    }
-
-    this.props.setCampaignInProgress(false);
-    this.props.setCampaignInProgressInstagram(false);
-    if (this.props.mainBusiness && this.props.mainBusiness.businessid) {
       this.reloadData();
     }
+    this.props.setCampaignInProgress(false);
+    this.props.setCampaignInProgressInstagram(false);
   };
   onDidBlur = () => {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
@@ -623,8 +635,8 @@ class Dashboard extends Component {
     if (
       userCurrentTime.getDay() < 0 ||
       userCurrentTime.getDay() > 5 ||
-      userCurrentTime.getHours() < 10 ||
-      userCurrentTime.getHours() >= 18
+      userCurrentTime.getUTCHours() < 10 ||
+      userCurrentTime.getUTCHours() >= 18
     ) {
       this.setState({ showAlertModal: true });
     } else {
@@ -758,7 +770,10 @@ class Dashboard extends Component {
                     {
                       // !this.props.unread_converstaion || this.props.unread_converstaion === 0
                       !this.props.count || this.props.count === 0 ? (
-                        <IntercomIcon width={24} height={24} />
+                        <IntercomIcon
+                          width={RFValue(12, 414)}
+                          height={RFValue(12, 414)}
+                        />
                       ) : (
                         <>
                           <View style={styles.unreadTextView}>
@@ -892,7 +907,7 @@ class Dashboard extends Component {
                             >
                               <GradientButton
                                 style={styles.button}
-                                radius={30}
+                                radius={RFValue(15, 414)}
                                 onPressAction={this.handleNewCampaign}
                               >
                                 <Icon
@@ -987,7 +1002,11 @@ class Dashboard extends Component {
                             this._handleSideMenuState(true);
                           }}
                         >
-                          <FilterIcon width={30} height={30} fill="#909090" />
+                          <FilterIcon
+                            width={RFValue(15, 414)}
+                            height={RFValue(15, 414)}
+                            fill="#909090"
+                          />
                         </TouchableOpacity>
                       </View>
 
@@ -1067,6 +1086,23 @@ class Dashboard extends Component {
             resetAlertModal={this.resetAlertModal}
           ></AlertModal>
           <AppUpdateChecker screenProps={this.props.screenProps} />
+          <Modal transparent visible={this.state.showBiometricsModal}>
+            <BlurView
+              blurType="dark"
+              style={{
+                height: "100%",
+                justifyContent: "center",
+              }}
+            >
+              <BiometricsAuth
+                screenProps={this.props.screenProps}
+                closeBiometricsModal={() =>
+                  this.setState({ showBiometricsModal: false })
+                }
+                showingInModal={true}
+              />
+            </BlurView>
+          </Modal>
         </SafeAreaView>
       );
     }
