@@ -117,10 +117,6 @@ class InstagramAdDesignExistingPost extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.goBack);
     this.props.getInstagramExistingPost(this.props.mainBusiness.businessid);
     if (this.props.data) {
-      console.log(
-        "this.props.data instagram",
-        JSON.stringify(this.props.data, null, 2)
-      );
       const { websitelink, weburl } = this.props.mainBusiness;
 
       let {
@@ -210,7 +206,42 @@ class InstagramAdDesignExistingPost extends Component {
               : "";
           break;
         case "APP_INSTALLS":
-          //   destination = "app_install";
+          let { playstorelink, appstorelink } = this.props.mainBusiness;
+          call_to_action =
+            list[
+              this.rejected
+                ? this.props.instaRejCampaign["campaign_type"]
+                : this.props.data["campaign_type"]
+            ][3].call_to_action_list[0];
+          if (playstorelink || appstorelink) {
+            let appUrl =
+              playstorelink && playstorelink.android_app_url !== ""
+                ? `https://play.google.com/store/apps/details?id=${playstorelink.android_app_url}`
+                : `https://apps.apple.com/us/app/${appstorelink.app_name}/id${appstorelink.ios_app_id}?uo=4`;
+
+            link = appUrl !== "" ? appUrl : "";
+            attachment = {
+              app_name:
+                playstorelink && playstorelink.app_name !== ""
+                  ? playstorelink.app_name
+                  : appstorelink.app_name,
+              ios_app_id:
+                appstorelink && appstorelink.ios_app_id !== ""
+                  ? appstorelink.ios_app_id
+                  : "",
+              android_app_url:
+                playstorelink && playstorelink.android_app_url !== ""
+                  ? playstorelink.android_app_url
+                  : "",
+              icon_media_url:
+                playstorelink && playstorelink.icon_media_url !== ""
+                  ? playstorelink.icon_media_url
+                  : appstorelink && appstorelink.icon_media_url !== ""
+                  ? icon_media_url
+                  : "",
+            };
+          }
+          destination = "app_install";
           break;
         case "VIDEO_VIEWS":
           //   destination = "BLANK";
@@ -231,8 +262,6 @@ class InstagramAdDesignExistingPost extends Component {
                 : `https://${weburl}.optimizeapp.com`
               : "";
       }
-      console.log(link + " ,  " + call_to_action + " ,  " + attachment);
-      // console.log("attachment", attachment);
       this.setState({
         campaignInfo: {
           ...this.props.data,

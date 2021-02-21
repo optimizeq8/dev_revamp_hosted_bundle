@@ -110,10 +110,19 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_AD_OBJECTIVE_INSTAGARM:
+      let stateData = {};
+      if (
+        action.payload.data.existingPost === 1 &&
+        state.data.media !== "" &&
+        state.data.message !== ""
+      ) {
+        stateData.media = "";
+        stateData.message = "";
+      }
       return {
         ...state,
         campaign_id: action.payload.campaign_id,
-        data: { ...state.data, ...action.payload.data },
+        data: { ...state.data, ...action.payload.data, ...stateData },
         message: action.payload.message,
         loadingObj: false,
         incompleteCampaign: true,
