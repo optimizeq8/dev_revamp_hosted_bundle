@@ -281,11 +281,12 @@ class SelectInterests extends Component {
                     opacity: this.props.country_code === "" ? 0.5 : 1,
                   },
                 ]}
-                onPressAction={() => this.setState({ open: true })}
+                onPressAction={() => this.setState({ open2: true })}
               >
-                <PlusCircle
-                  width={RFValue(26.5, 414)}
-                  height={RFValue(26.5, 414)}
+                <Icon
+                  style={{ color: "#fff", fontSize: RFValue(12, 414) }}
+                  name="edit"
+                  type="MaterialIcons"
                 />
               </GradientButton>
               <GradientButton
@@ -295,12 +296,11 @@ class SelectInterests extends Component {
                     opacity: this.props.country_code === "" ? 0.5 : 1,
                   },
                 ]}
-                onPressAction={() => this.setState({ open2: true })}
+                onPressAction={() => this.setState({ open: true })}
               >
-                <Icon
-                  style={{ color: "#fff", fontSize: RFValue(12, 414) }}
-                  name="edit"
-                  type="MaterialIcons"
+                <PlusCircle
+                  width={RFValue(26.5, 414)}
+                  height={RFValue(26.5, 414)}
                 />
               </GradientButton>
             </View>
