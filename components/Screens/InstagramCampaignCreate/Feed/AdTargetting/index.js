@@ -1,6 +1,12 @@
 //Components
 import React, { Component } from "react";
-import { View, BackHandler, I18nManager, Text } from "react-native";
+import {
+  View,
+  BackHandler,
+  I18nManager,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { Container, Content, Row } from "native-base";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
@@ -46,6 +52,7 @@ import { TargetAudience } from "./TargetAudience";
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 import WalletIcon from "../../../../../assets/SVGs/WalletOutline";
 import AudienceIcon from "../../../../../assets/SVGs/AudienceOutline";
+import PurplePlusIcon from "../../../../../assets/SVGs/PurplePlusIcon";
 
 import { globalColors } from "../../../../../GlobalStyles";
 class InstagramFeedAdTargetting extends Component {
@@ -1449,6 +1456,19 @@ class InstagramFeedAdTargetting extends Component {
                         <Text style={[styles.subHeadings]}>
                           {translate("Select Audience")}
                         </Text>
+                        <TouchableOpacity
+                          style={styles.createView}
+                          onPress={this.createNewAudience}
+                        >
+                          <PurplePlusIcon
+                            width={15}
+                            height={15}
+                            style={styles.iconAdd}
+                          />
+                          <Text style={styles.createText}>
+                            {translate("Create")}
+                          </Text>
+                        </TouchableOpacity>
                       </View>
                     )}
                     <TargetAudience
