@@ -1,6 +1,6 @@
 import analytics from "@segment/analytics-react-native";
 import * as actionTypes from "./actionTypes";
-import createBaseUrl from "./createBaseUrl";
+import InstagramBackendURL from "./instagramCampaignActions";
 import NavigationService from "../../NavigationService";
 
 /**
@@ -12,7 +12,7 @@ export const getInstagramAudienceList = () => {
       type: actionTypes.AUDIENCE_INSTAGRAM_LIST_LOADING,
       payload: true,
     });
-    createBaseUrl()
+    InstagramBackendURL()
       .get(
         `/instagramsavedaudience/${getState().account.mainBusiness.businessid}`
       )
@@ -53,7 +53,7 @@ export const getInstagramAudienceDetail = (audienceId) => {
       type: actionTypes.LOADING_INSTAGRAM_AUDIENCE_DETAIL,
       payload: true,
     });
-    createBaseUrl()
+    InstagramBackendURL()
       .get(
         `instagramsavedaudience/${
           getState().account.mainBusiness.businessid
@@ -92,7 +92,7 @@ export const createInstagramAudience = (
       type: actionTypes.SAVE_INSTAGRAM_AUDIENCE_DETAIL_LOADING,
       payload: true,
     });
-    createBaseUrl()
+    InstagramBackendURL()
       .post(`instagramsavedaudience`, {
         businessid: getState().account.mainBusiness.businessid,
         name: audience.name,
@@ -135,7 +135,7 @@ export const createInstagramAudience = (
  */
 export const deleteInstagramAudience = (audienceId) => {
   return (dispatch) => {
-    createBaseUrl()
+    InstagramBackendURL()
       .delete(`/instagramsavedaudience/${audienceId}`)
       .then((res) => res.data)
       .then((data) => {
@@ -173,7 +173,7 @@ export const updateInstagramAudience = (
       type: actionTypes.SAVE_INSTAGRAM_AUDIENCE_DETAIL_LOADING,
       payload: true,
     });
-    createBaseUrl()
+    InstagramBackendURL()
       .put(`instagramsavedaudience/${audienceId}`, {
         businessid: getState().account.mainBusiness.businessid,
         name: audienceName,

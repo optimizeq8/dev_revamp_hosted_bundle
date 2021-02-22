@@ -7,7 +7,7 @@ import { setCampaignInfoForTransaction } from "./transactionActions";
 import { errorMessageHandler } from "./ErrorActions";
 import NavigationService from "../../NavigationService";
 
-InstagramBackendURL = () =>
+export default InstagramBackendURL = () =>
   axios.create({
     baseURL: store.getState().login.admin
       ? "https://optimizekwtestingserver.com/optimize/instagram/"
