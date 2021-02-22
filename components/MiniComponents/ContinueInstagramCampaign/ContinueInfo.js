@@ -80,7 +80,7 @@ ContinueInfo = (props) => {
               ))}
           </View>
         )}
-        {data && data.media && (
+        {data && data.media ? (
           <View style={[styles.sections, { top: "2%", height: "60%" }]}>
             <Text style={[styles.text, styles.uppercase]}>
               {translate("Media")}
@@ -95,7 +95,7 @@ ContinueInfo = (props) => {
               )}
             </View>
           </View>
-        )}
+        ) : null}
       </Content>
     </View>
   );
