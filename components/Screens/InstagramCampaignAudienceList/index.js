@@ -18,7 +18,7 @@ import * as actionCreators from "../../../store/actions";
 
 import AudienceCard from "./AudienceCard";
 
-class SnapchatCampaignAudience extends React.Component {
+class InstagramCampaignAudience extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -124,23 +124,21 @@ class SnapchatCampaignAudience extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  audienceList: state.audience.audienceList,
-  audienceListLoading: state.audience.audienceListLoading,
-  data: state.campaignC.data,
+  audienceList: state.instagramAudience.audienceList,
+  audienceListLoading: state.instagramAudience.audienceListLoading,
+  data: state.instagramAds.data,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setAudienceDetail: (audienceInfo) =>
-    dispatch(actionCreators.setAudienceDetail(audienceInfo)),
-  getAudienceList: () => dispatch(actionCreators.getAudienceList()),
+    dispatch(actionCreators.setInstagramAudienceDetail(audienceInfo)),
+  getAudienceList: () => dispatch(actionCreators.getInstagramAudienceList()),
   getAudienceDetail: (audienceId) =>
-    dispatch(actionCreators.getAudienceDetail(audienceId)),
+    dispatch(actionCreators.getInstagramAudienceDetail(audienceId)),
   deleteAudience: (audienceId) =>
-    dispatch(actionCreators.deleteAudience(audienceId)),
-  save_campaign_info: (info) =>
-    dispatch(actionCreators.save_campaign_info(info)),
+    dispatch(actionCreators.deleteInstagramAudience(audienceId)),
 });
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SnapchatCampaignAudience);
+)(InstagramCampaignAudience);

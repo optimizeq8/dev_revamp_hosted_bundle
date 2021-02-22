@@ -1024,6 +1024,15 @@ class InstagramFeedAdTargetting extends Component {
       });
     }
   };
+  createNewAudience = () => {
+    this.props.setInstagramAudienceDetail({ reset: true });
+    this.props.navigation.navigate("InstagramAudienceTagetting", {
+      source: "audience_list",
+      source_action: "a_create_audience_detail",
+      audience_channel: "instagram",
+    });
+  };
+
   render() {
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing } = this.state;
@@ -1540,6 +1549,8 @@ const mapDispatchToProps = (dispatch) => ({
   // get_languages: () => dispatch(actionCreators.get_languages()),
   saveCampaignSteps: (step) =>
     dispatch(actionCreators.saveCampaignStepsInstagram(step)),
+  setInstagramAudienceDetail: (audienceInfo) =>
+    dispatch(actionCreators.setInstagramAudienceDetail(audienceInfo)),
   // setCampaignInfoForTransaction: data =>
   //   dispatch(actionCreators.setCampaignInfoForTransaction(data)),
   // resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),

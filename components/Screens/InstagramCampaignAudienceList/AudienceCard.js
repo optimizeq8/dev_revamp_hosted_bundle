@@ -54,7 +54,7 @@ export default AudienceCard = (props) => {
           style={styles.editAudienceIcon}
           onPress={() => {
             props.getAudienceDetail(item.id);
-            props.navigation.navigate("SnapchatAudienceTagetting", {
+            props.navigation.navigate("InstagramAudienceTagetting", {
               editAudience: true,
             });
           }}
