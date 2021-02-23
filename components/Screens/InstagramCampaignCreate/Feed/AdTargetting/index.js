@@ -6,6 +6,7 @@ import {
   I18nManager,
   Text,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { Container, Content, Row } from "native-base";
 import analytics from "@segment/analytics-react-native";
@@ -141,6 +142,7 @@ class InstagramFeedAdTargetting extends Component {
     return true;
   };
   async componentDidMount() {
+    this.props.getAudienceList();
     if (this.editCampaign) {
       let editedCampaign = deepmerge(
         this.state.campaignInfo,
@@ -1035,7 +1037,7 @@ class InstagramFeedAdTargetting extends Component {
 
   render() {
     const { translate } = this.props.screenProps;
-    let { campaignInfo, startEditing } = this.state;
+    let { campaignInfo, startEditing, showAudienceList } = this.state;
     let menu;
     switch (this.state.sidemenu) {
       case "genders": {
@@ -1461,23 +1463,74 @@ class InstagramFeedAdTargetting extends Component {
                     )}
                     {startEditing && (
                       <View style={styles.reachView}>
-                        <AudienceIcon />
-                        <Text style={[styles.subHeadings]}>
+                        {showAudienceList ? (
+                          <Icon
+                            name={`keyboard-arrow-${
+                              I18nManager.isRTL ? "right" : "left"
+                            }`}
+                            type="MaterialIcons"
+                            style={{
+                              fontSize: 25,
+                              color: globalColors.rum,
+                            }}
+                            onPress={this.chooseExistingAudience}
+                          />
+                        ) : (
+                          <AudienceIcon />
+                        )}
+                        <Text
+                          style={[
+                            styles.subHeadings,
+                            styles.selectAudienceText,
+                          ]}
+                        >
                           {translate("Select Audience")}
                         </Text>
-                        <TouchableOpacity
-                          style={styles.createView}
-                          onPress={this.createNewAudience}
-                        >
-                          <PurplePlusIcon
-                            width={15}
-                            height={15}
-                            style={styles.iconAdd}
-                          />
-                          <Text style={styles.createText}>
-                            {translate("Create")}
-                          </Text>
-                        </TouchableOpacity>
+
+                        {(this.props.audienceList.length === 0 ||
+                          showAudienceList) &&
+                          !this.props.audienceListLoading && (
+                            <TouchableOpacity
+                              style={styles.createView}
+                              onPress={this.createNewAudience}
+                            >
+                              <PurplePlusIcon
+                                width={15}
+                                height={15}
+                                style={styles.iconAdd}
+                              />
+                              <Text style={styles.createText}>
+                                {translate("Create")}
+                              </Text>
+                            </TouchableOpacity>
+                          )}
+
+                        {!showAudienceList &&
+                        this.props.audienceList.length > 0 ? (
+                          <TouchableOpacity
+                            style={styles.createView}
+                            onPress={this.chooseExistingAudience}
+                          >
+                            <Text style={styles.createText}>
+                              {translate("Choose Preset")}
+                            </Text>
+                            <Icon
+                              name={`keyboard-arrow-${
+                                I18nManager.isRTL ? "left" : "right"
+                              }`}
+                              type="MaterialIcons"
+                              style={styles.iconRight}
+                            />
+                          </TouchableOpacity>
+                        ) : (
+                          this.props.audienceListLoading && (
+                            <ActivityIndicator
+                              color={globalColors.purple}
+                              size="small"
+                              style={styles.iconLoading}
+                            />
+                          )
+                        )}
                       </View>
                     )}
                     <TargetAudience
@@ -1531,9 +1584,12 @@ const mapStateToProps = (state) => ({
   currentCampaignSteps: state.instagramAds.currentCampaignSteps,
   interests: state.instagramAds.interests,
   campaignDateChanged: state.instagramAds.campaignDateChanged,
+  audienceList: state.instagramAudience.audienceList,
+  audienceListLoading: state.instagramAudience.audienceListLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  getAudienceList: () => dispatch(actionCreators.getInstagramAudienceList()),
   ad_details_instagram: (info, navigation, segmentInfo) =>
     dispatch(
       actionCreators.ad_details_instagram(info, navigation, segmentInfo)

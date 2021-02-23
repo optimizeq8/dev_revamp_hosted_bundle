@@ -1,4 +1,5 @@
-import { StyleSheet, Platform, I18nManager } from "react-native";
+import { StyleSheet } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
@@ -7,7 +8,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f8f8f8",
   },
   innerView: {
-    marginHorizontal: 30,
+    marginHorizontal: RFValue(15, 414),
     height: "100%",
     flex: 1,
     backgroundColor: "#0000",
@@ -19,27 +20,27 @@ const styles = StyleSheet.create({
   },
   targetList: {
     flexDirection: "column",
-    paddingBottom: 40,
+    paddingBottom: RFValue(20, 414),
     height: "100%",
-    // marginHorizontal: 30,
+    // marginHorizontal: RFValue(15, 414),
   },
   targetTouchable: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginVertical: 8,
+    marginVertical: RFValue(4, 414),
     backgroundColor: "#fff",
     // borderRadius: 50,
-    // padding: 10,
+    // padding: RFValue(5, 414),
   },
   targetTouchableOuter: {
     flexDirection: "column",
     justifyContent: "space-between",
-    marginVertical: 8,
+    marginVertical: RFValue(4, 414),
     backgroundColor: "#fff",
     borderRadius: 23,
-    // padding: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    // padding: RFValue(5, 414),
+    paddingHorizontal: RFValue(5, 414),
+    paddingVertical: RFValue(2.5, 414),
   },
   icon: {
     alignSelf: "center",
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
   menutext: {
     // paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 25,
     // paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     fontFamily: "montserrat-semibold",
     color: globalColors.purple3,
     textAlign: "left",
@@ -59,8 +60,8 @@ const styles = StyleSheet.create({
     color: globalColors.purple3,
 
     fontFamily: "montserrat-regular",
-    fontSize: 13,
-    lineHeight: 29,
+    fontSize: RFValue(6.5, 414),
+    lineHeight: RFValue(14.5, 414),
     textAlign: "left",
   },
   flex: {
@@ -79,34 +80,34 @@ const styles = StyleSheet.create({
   },
   audienceHeading: {
     fontFamily: "montserrat-bold",
-    fontSize: 14,
+    fontSize: RFValue(7, 414),
     color: globalColors.purple3,
     flex: 1,
-    marginHorizontal: 5,
+    marginHorizontal: RFValue(2.5, 414),
     textTransform: "uppercase",
     textAlign: "left",
   },
   audienceSubHeading: {
-    paddingHorizontal: 30,
+    paddingHorizontal: RFValue(15, 414),
   },
   genderOuterView: {
     display: "flex",
     flexDirection: "row",
-    paddingVertical: 8,
+    paddingVertical: RFValue(4, 414),
   },
   genderInnerView: {
     borderWidth: 1,
-    borderRadius: 20,
-    paddingHorizontal: 10,
-    // paddingVertical: 5,
-    marginHorizontal: 5,
+    borderRadius: RFValue(10, 414),
+    paddingHorizontal: RFValue(5, 414),
+    // paddingVertical: RFValue(2.5, 414),
+    marginHorizontal: RFValue(2.5, 414),
     borderColor: globalColors.purple3,
   },
   genderRadioText: {
     color: globalColors.purple3,
-    fontSize: 13,
+    fontSize: RFValue(6.5, 414),
     fontFamily: "montserrat-regular",
-    lineHeight: 29,
+    lineHeight: RFValue(14.5, 414),
   },
   genderInnerActiveView: {
     borderColor: globalColors.purple,
@@ -120,38 +121,38 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 3,
+    paddingHorizontal: RFValue(5, 414),
+    paddingVertical: RFValue(1.5, 414),
     borderColor: globalColors.purple3,
-    borderRadius: 20,
-    // marginHorizontal: 10,
-    marginVertical: 5,
+    borderRadius: RFValue(10, 414),
+    // marginHorizontal: RFValue(5, 414),
+    marginVertical: RFValue(2.5, 414),
   },
   selectLanguageText: {
     fontFamily: "montserrat-regular",
     color: globalColors.purple3,
-    fontSize: 13,
+    fontSize: RFValue(6.5, 414),
   },
   ageText: {
     color: globalColors.purple,
-    fontSize: 13,
+    fontSize: RFValue(6.5, 414),
     fontFamily: "montserrat-regular",
     textAlign: "center",
   },
 
   toText: {
-    marginHorizontal: 15,
+    marginHorizontal: RFValue(7.5, 414),
     color: globalColors.purple3,
-    fontSize: 13,
+    fontSize: RFValue(6.5, 414),
     fontFamily: "montserrat-regular",
   },
 
   ageView: {
     borderWidth: 1,
     borderColor: globalColors.purple3,
-    borderRadius: 20,
-    paddingHorizontal: 20,
-    paddingVertical: 6,
+    borderRadius: RFValue(10, 414),
+    paddingHorizontal: RFValue(10, 414),
+    paddingVertical: RFValue(3, 414),
     justifyContent: "center",
   },
   ageOuterView: {
@@ -159,12 +160,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 5,
+    paddingVertical: RFValue(2.5, 414),
   },
   iconDown: {
     color: globalColors.purple,
     right: 2,
-    fontSize: 22,
+    fontSize: RFValue(11, 414),
   },
 });
 
