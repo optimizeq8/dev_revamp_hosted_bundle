@@ -143,7 +143,7 @@ class BiometricsAuth extends Component {
             source: "open_biometrics_details",
             source_action: "a_go_back",
           }}
-          closeButton={showingInModal}
+          hideButton={showingInModal}
         />
         <View
           style={[
