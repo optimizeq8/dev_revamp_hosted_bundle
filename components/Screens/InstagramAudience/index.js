@@ -40,7 +40,7 @@ import {
 } from "react-native-responsive-screen";
 
 import Sidemenu from "../../MiniComponents/SideMenu";
-import SelectRegions from "../../MiniComponents/SelectRegions";
+import SelectRegions from "../../MiniComponents/SelectRegionsInstagram";
 import SelectLanguages from "../../MiniComponents/SelectLanguages";
 import GenderOptions from "../../MiniComponents/GenderOptions/GenderOptions";
 import AgeOption from "../../MiniComponents/AgeOptions/AgeOption";
@@ -85,6 +85,8 @@ export class SnapchatAudience extends Component {
       expandDemographics: false,
       expandDevices: false,
       selectedGender: "",
+      selectedCountriesAndRegions: [],
+      filteredRegions: [],
     };
     this.editAudience = this.props.navigation.getParam("editAudience", false);
   }
@@ -590,113 +592,38 @@ export class SnapchatAudience extends Component {
     unselect = false
   ) => {
     let replace = cloneDeep(this.props.audience);
-    let coRegIndex = 0;
-    let rIds = [];
-    if (country_code) {
-      //get the index of the selected country to add the regions to it
-      coRegIndex = replace.targeting.geos.findIndex(
-        (co) => co.country_code === country_code
-      );
-      rIds = replace.targeting.geos[coRegIndex].region_id;
-    }
-    let rNamesSelected = this.state.regionNames;
+    let regionsArray = cloneDeep(replace.targeting.geo_locations.regions);
 
-    if (selectedItem === -1) {
-      //Select all option
-      let regionsLength = 0;
-      this.state.regions.forEach((reg) => {
-        if (reg.regions && reg.regions.length > 3)
-          regionsLength += reg.regions.length;
-      });
-      if (regionsLength === this.state.regionNames.length || unselect) {
-        //if all the regions of all selected countries are selected
-        //then regionNames.length will === all the regions of the selected countries
-        //Meaning that this will unselect all the regions
-        replace.targeting.geos.forEach(
-          (co, i) => (replace.targeting.geos[i].region_id = [])
-        );
-        analytics.track(`a_audience_regions`, {
-          source: "audience_detail",
-          source_action: "a_audience_regions",
-          audience_region_names: [],
-        });
-        rNamesSelected = [];
-        this.setState({
-          regionNames: rNamesSelected,
-          // campaignInfo: replace,
-        });
+    let selectedAllRegions = selectedItem === "all";
+    if (selectedItem === "all") {
+      if (this.state.selectedAllRegions) {
+        regionsArray = [];
+        selectedAllRegions = false;
       } else {
-        //To select all regions of all selected countries
-        rNamesSelected = [];
-        rIds = [];
-        //this.state.regions is an array of multiple country regions of selected countries
-        //[{country_code:"kw",country_name:"Kuwait",regions:[{id,name},{id,name},{id,name}]}]
-        this.state.regions.forEach(
-          (r) =>
-            r.regions.length > 3 &&
-            r.regions.forEach((region) => {
-              //Add region names of all regions of the selected countries
-              rNamesSelected.push({
-                name: region.name,
-                country_code: r.country_code,
-              });
+        regionsArray = replace.targeting.geo_locations.countries.map(
+          (country) =>
+            allRegions.filter((cR) => {
+              if (cR.country === country) return cR;
             })
         );
-        //To add the region ids of all selected countries
-        replace.targeting.geos.forEach((cou, i) => {
-          let foundRegions = this.state.regions.find(
-            (cReg) =>
-              cReg.regions.length > 3 &&
-              cReg.country_code === replace.targeting.geos[i].country_code
-          );
-          replace.targeting.geos[i].region_id = foundRegions
-            ? foundRegions.regions.map((reg) => reg.id)
-            : [];
-        });
-        analytics.track(`a_audience_regions`, {
-          source: "audience_detail",
-          source_action: "a_audience_regions",
-          audience_region_names: rNamesSelected.join(", "),
-        });
-        this.setState({
-          regionNames: rNamesSelected,
-          // campaignInfo: replace,
-        });
+        regionsArray = regionsArray.flat(1);
+        selectedAllRegions = true;
       }
-
-      this.props.setAudienceDetail({
-        ...replace,
-      });
-      return;
     } else {
-      // logic change
+      let checkIfInRegionsArray = regionsArray.findIndex(
+        (reg) => reg.key === selectedItem.key
+      );
 
-      // campignInfo region
-      if (rIds.find((r) => r === selectedItem)) {
-        replace.targeting.geos[coRegIndex].region_id = rIds.filter(
-          (r) => r !== selectedItem
-        );
-        rNamesSelected = rNamesSelected.filter((r) => r.name !== regionName);
+      if (checkIfInRegionsArray === -1) {
+        regionsArray = [...regionsArray, { ...selectedItem }];
       } else {
-        replace.targeting.geos[coRegIndex].region_id.push(selectedItem);
-        rNamesSelected.push({
-          name: regionName,
-          country_code: country_code,
-        });
+        regionsArray.splice(checkIfInRegionsArray, 1);
       }
-      analytics.track(`a_audience_regions`, {
-        source: "audience_detail",
-        source_action: "a_audience_regions",
-        audience_region_names: rNamesSelected.join(", "),
-      });
-      this.setState({
-        regionNames: rNamesSelected,
-      });
-
-      this.props.setAudienceDetail({
-        ...replace,
-      });
     }
+    replace.targeting.geo_locations.regions = [...regionsArray];
+    this.props.setAudienceDetail({
+      ...replace,
+    });
   };
 
   onSelectedGenderChange = (gender) => {
@@ -941,6 +868,45 @@ export class SnapchatAudience extends Component {
     }
     return [];
   };
+  // For picker not to crash
+  onSelectedCountryRegionChange = (item) => {
+    let replace = cloneDeep(this.props.audience);
+
+    // check if country exist in array remove it else add country and show regions for that country
+    if (
+      replace.targeting.geo_locations.countries &&
+      replace.targeting.geo_locations.countries.length > 0
+    ) {
+      let countryExist = replace.targeting.geo_locations.countries.find(
+        (ctry) => item === ctry
+      );
+      if (countryExist) {
+        replace.targeting.geo_locations.countries = replace.targeting.geo_locations.countries.filter(
+          (ctr) => ctr !== countryExist
+        );
+
+        // remove all regions of those countries
+        replace.targeting.geo_locations.regions = replace.targeting.geo_locations.regions.filter(
+          (ctr) => ctr.country !== countryExist
+        );
+      } else {
+        replace.targeting.geo_locations.countries.push(item);
+      }
+    } // add the country
+    else {
+      replace.targeting.geo_locations.countries.push(item);
+      // show all regions of that country
+    }
+
+    this.setState({
+      selectedCountriesAndRegions: replace.targeting.geo_locations.countries,
+    });
+    this.props.setAudienceDetail({ ...replace });
+  };
+  onSelectedCountryRegionsObjectsChange = (items) => {};
+  filterRegions = (value) => {
+    this.setState({ filteredRegions: value });
+  };
   render() {
     let { saveAudienceLoading = false, audience } = this.props;
     const { targeting } = audience;
@@ -988,7 +954,7 @@ export class SnapchatAudience extends Component {
           <AgeOption
             showPlusIcon={false}
             screenProps={this.props.screenProps}
-            state={this.state.campaignInfo}
+            state={this.props.audience}
             _handleAge={this._handleAge}
             _handleSideMenuState={this._handleSideMenuState}
             ageValuesRange={[18, 65]}
