@@ -337,7 +337,10 @@ class Dashboard extends Component {
     if (this.state.adTypeChanged && !this.props.incompleteCampaign) {
       this.props.resetCampaignInfo(true);
     }
-    if (!this.props.incompleteCampaign) {
+    if (
+      !this.props.incompleteCampaign ||
+      !this.props.instagramIncompleteCampaign
+    ) {
       this.props.set_adType(adType.value);
     }
 
