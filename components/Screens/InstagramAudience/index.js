@@ -44,7 +44,7 @@ import SelectRegions from "../../MiniComponents/SelectRegions";
 import SelectLanguages from "../../MiniComponents/SelectLanguages";
 import GenderOptions from "../../MiniComponents/GenderOptions/GenderOptions";
 import AgeOption from "../../MiniComponents/AgeOptions/AgeOption";
-import MultiSelectSections from "../../MiniComponents/MultiSelect/MultiSelect";
+import MultiSelectSections from "../../MiniComponents/MultiSelectInstagram/MultiSelect";
 import SelectOS from "../../MiniComponents/SelectOS";
 import Header from "../../MiniComponents/Header";
 import SnapchatLocation from "../../MiniComponents/SnapchatLocation";
@@ -446,7 +446,7 @@ export class SnapchatAudience extends Component {
 
   onSelectedDevicesChange = (selectedItems) => {
     let replace = cloneDeep(this.props.audience);
-    replace.targeting.devices[0].marketing_name = selectedItems;
+    replace.targeting.user_device = selectedItems;
 
     analytics.track(`a_audience_devices`, {
       source: "audience_detail",
@@ -529,9 +529,10 @@ export class SnapchatAudience extends Component {
 
   onSelectedOSChange = (selectedItem) => {
     let replace = cloneDeep(this.props.audience);
-    replace.targeting.devices[0].os_type = selectedItem;
-    replace.targeting.devices[0].os_version_min = "";
-    replace.targeting.devices[0].os_version_max = "";
+    replace.targeting.user_os = [selectedItem];
+    replace.targeting.user_device = [];
+    replace.targeting.os_version_max = "";
+    replace.targeting.os_version_min = "";
     analytics.track(`a_audience_OS_type`, {
       source: "audience_detail",
       source_action: "a_audience_OS_type",
@@ -547,8 +548,8 @@ export class SnapchatAudience extends Component {
 
   onSelectedVersionsChange = (selectedItem) => {
     let replace = cloneDeep(this.props.audience);
-    replace.targeting.devices[0].os_version_min = selectedItem[0];
-    replace.targeting.devices[0].os_version_max = selectedItem[1];
+    replace.targeting.os_version_min = selectedItem[0];
+    replace.targeting.os_version_max = selectedItem[1];
     analytics.track(`a_audience_OS_version`, {
       source: "audience_detail",
       source_action: "a_audience_OS_version",
@@ -928,6 +929,18 @@ export class SnapchatAudience extends Component {
       expandDevices: !this.state.expandDevices,
     });
   };
+  selectedItemsId = (array) => {
+    if (array && array.length > 0) {
+      return array.map((item) => item.id || item.key);
+    }
+    return [];
+  };
+  selectedCustomItemsId = (array) => {
+    if (array && array.length > 0) {
+      return array.map((item) => item.id || item.key);
+    }
+    return [];
+  };
   render() {
     let { saveAudienceLoading = false, audience } = this.props;
     const { targeting } = audience;
@@ -1049,12 +1062,15 @@ export class SnapchatAudience extends Component {
       case "OS": {
         menu = (
           <SelectOS
+            selectedOSType={targeting.user_os[0]}
+            iosName={"iOS"}
+            androidName={"Android"}
+            data={OSType}
+            // objective={objective}
             screenProps={this.props.screenProps}
             campaignInfo={this.props.audience}
             onSelectedOSChange={this.onSelectedOSChange}
-            data={OSType}
             _handleSideMenuState={this._handleSideMenuState}
-            showBackButton={true}
           />
         );
         break;
@@ -1063,34 +1079,35 @@ export class SnapchatAudience extends Component {
       case "selectors": {
         menu = (
           <MultiSelectSections
-            screenProps={this.props.screenProps}
             countries={countries}
-            country_code={this.props.audience.targeting.geos}
-            onSelectedCountryChange={this.onSelectedCountryChange}
-            country_codes={this.props.audience.targeting.geos}
+            screenProps={this.props.screenProps}
+            country_regions={country_regions}
+            selectedItemsRegionsCountry={this.state.selectedCountriesAndRegions}
+            onSelectedCountryRegionChange={this.onSelectedCountryRegionChange}
+            onSelectedCountryRegionsObjectsChange={
+              this.onSelectedCountryRegionsObjectsChange
+            }
             _handleSideMenuState={this._handleSideMenuState}
             onSelectedInterestsChange={this.onSelectedInterestsChange}
             onSelectedInterestsNamesChange={this.onSelectedInterestsNamesChange}
-            selectedItems={
-              this.props.audience.targeting.interests
-                ? this.props.audience.targeting.interests[0].category_id
-                : []
-            }
-            selectedDevices={
-              this.props.audience.targeting.devices[0].marketing_name
-            }
+            selectedItems={this.selectedItemsId(
+              targeting.flexible_spec[0].interests
+            )}
+            selectedCustomItems={this.selectedCustomItemsId(
+              this.state.customInterests
+            )}
+            selectedDevices={targeting.user_device}
             onSelectedDevicesChange={this.onSelectedDevicesChange}
-            selectedMinVersions={
-              this.props.audience.targeting.devices[0].os_version_min
-            }
-            selectedMaxVersions={
-              this.props.audience.targeting.devices[0].os_version_max
-            }
+            selectedMinVersions={targeting.os_version_min}
+            selectedMaxVersions={targeting.os_version_max}
+            selectedVersions={[
+              targeting.os_version_min,
+              targeting.os_version_max,
+            ]}
             onSelectedVersionsChange={this.onSelectedVersionsChange}
-            OSType={this.props.audience.targeting.devices[0].os_type}
+            OSType={targeting.user_os[0]}
             option={this.state.selectionOption}
-            editAudience={this.editAudience}
-            showBackButton={true}
+            editCampaign={this.editCampaign}
           />
         );
         break;
@@ -1599,7 +1616,13 @@ export class SnapchatAudience extends Component {
                         }
                         style={styles.targetTouchable}
                       >
-                        <View style={[globalStyles.column, styles.flex]}>
+                        <View
+                          style={[
+                            globalStyles.column,
+                            styles.flex,
+                            styles.audienceSubHeading,
+                          ]}
+                        >
                           <Text style={styles.menutext}>
                             {translate("OS Versions")}
                           </Text>
@@ -1644,10 +1667,7 @@ export class SnapchatAudience extends Component {
                             <Text style={styles.menutext}>
                               {translate("Device Make")}
                             </Text>
-                            <Text
-                              numberOfLines={startEditing ? 1 : 10}
-                              style={styles.menudetails}
-                            >
+                            <Text numberOfLines={10} style={styles.menudetails}>
                               {targeting.user_device.join(", ")}
                             </Text>
                           </View>
