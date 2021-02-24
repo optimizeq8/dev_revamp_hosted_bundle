@@ -88,6 +88,7 @@ export class SnapchatAudience extends Component {
       selectedGender: "",
       selectedCountriesAndRegions: [],
       filteredRegions: [],
+      customInterests: [],
     };
     this.editAudience = this.props.navigation.getParam("editAudience", false);
   }
@@ -279,18 +280,7 @@ export class SnapchatAudience extends Component {
     this.setState({ scrollY: y > 10 ? y / 10 : 1 });
   };
   callFunction = (selector, option) => {
-    const { translate } = this.props.screenProps;
-
-    if (
-      (option === "regions" || option === "interests") &&
-      this.props.audience.targeting.geos[0].country_code === ""
-    ) {
-      showMessage({
-        message: translate("Please select a country first"),
-        position: "top",
-        type: "warning",
-      });
-    } else this._renderSideMenu(selector, option);
+    this._renderSideMenu(selector, option);
   };
 
   _handleAge = (values) => {
@@ -442,9 +432,7 @@ export class SnapchatAudience extends Component {
   };
 
   onSelectedInterestsChange = (selectedItems) => {
-    let replace = cloneDeep(this.props.audience);
-    replace.targeting.interests[0].category_id = selectedItems;
-    this.props.setAudienceDetail({ ...replace });
+    // No more used, kept for PICKER component
   };
 
   onSelectedDevicesChange = (selectedItems) => {
@@ -462,20 +450,40 @@ export class SnapchatAudience extends Component {
       ...replace,
     });
   };
-  onSelectedInterestsNamesChange = (selectedItems) => {
-    let names = [];
-    names = selectedItems.length > 0 && selectedItems.map((item) => item.name);
+  onSelectedInterestsNamesChange = (selectedItems, custom = false) => {
+    let replace = cloneDeep(this.props.audience);
+    selectedItems = selectedItems.filter((item) => item);
+    let interestArray =
+      selectedItems.length > 0
+        ? selectedItems.map((item) => {
+            return { name: item.name, id: item.id };
+          })
+        : [];
+    if (!custom) {
+      replace.targeting.flexible_spec[0].interests = interestArray;
+      this.setState({ campaignInfo: replace });
+    } else {
+      this.setState({
+        customInterests: interestArray,
+      });
+    }
+    this.setState({
+      interestNames: selectedItems,
+    });
+
     analytics.track(`a_audience_interests`, {
       source: "audience_detail",
       source_action: "a_audience_interests",
-      audience_interests_names: names && names.length > 0 && names.join(", "),
+      audience_interests_names:
+        selectedItems && selectedItems.length > 0 && selectedItems.join(", "),
     });
-    this.setState({
-      interestNames: names,
+    this.props.setAudienceDetail({
+      ...replace,
+      customInterests: custom ? interestArray : this.state.customInterests,
+      customInterestObjects: custom
+        ? selectedItems
+        : this.props.audience.customInterestObjects,
     });
-    // this.props.setAudienceDetail({
-    //   interestNames: names,
-    // });
   };
 
   onSelectedLangsChange = (selectedItem) => {
