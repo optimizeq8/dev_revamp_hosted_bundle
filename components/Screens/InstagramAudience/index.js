@@ -60,6 +60,7 @@ import countries, {
   gender as genders,
   OSType,
   country_regions,
+  allRegions,
 } from "../InstagramCampaignCreate/Feed/AdTargetting/data";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
@@ -969,17 +970,13 @@ export class SnapchatAudience extends Component {
           <SelectRegions
             screenProps={this.props.screenProps}
             countryName={this.state.countryName}
+            countries={targeting.geo_locations.countries}
             filteredRegions={this.state.filteredRegions}
             onSelectedRegionChange={this.onSelectedRegionChange}
             _handleSideMenuState={this._handleSideMenuState}
             regions={this.state.regions}
-            region_id={this.props.audience.targeting.geos}
+            region_id={targeting.geo_locations.regions}
             filterRegions={this.filterRegions}
-            locationsSelected={
-              this.props.audience.targeting.locations[0].circles.length > 0
-            }
-            onSelectedMapChange={this.onSelectedMapChange}
-            showBackButton={true}
           />
         );
 
