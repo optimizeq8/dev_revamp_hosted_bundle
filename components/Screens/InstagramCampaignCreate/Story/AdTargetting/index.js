@@ -215,7 +215,9 @@ class InstagramStoryAdTargetting extends Component {
       let markers = [];
       if (editedCampaign.coordinates) {
         editedMapLocation = cloneDeep(JSON.parse(editedCampaign.coordinates));
-        markers = cloneDeep(editedCampaign.targeting.locations[0].circles);
+        markers = cloneDeep(
+          editedCampaign.targeting.geo_locations.custom_locations
+        );
       }
       this.setState(
         {
@@ -223,6 +225,7 @@ class InstagramStoryAdTargetting extends Component {
           startEditing: false,
           selectedGender,
           locationsInfo: editedMapLocation,
+          markers,
         },
         () => this._calcReach()
       );
@@ -653,7 +656,6 @@ class InstagramStoryAdTargetting extends Component {
     // }
     //gender is coming in as 1,2
     replace.targeting.genders = [gender];
-    console.log("replace.targeting.genders", replace.targeting.genders, gender);
     analytics.track(`a_ad_gender`, {
       source: "ad_targeting",
       source_action: "a_ad_gender",
@@ -870,12 +872,14 @@ class InstagramStoryAdTargetting extends Component {
       if (rep.targeting.user_device && rep.targeting.user_device.length === 0) {
         delete rep.targeting.user_device;
       }
-      if (rep.targeting.geo_locations.custom_locations.length > 0) {
+      if (
+        rep.targeting.geo_locations.custom_locations.length > 0 &&
+        !this.editCampaign
+      ) {
         rep.targeting.geo_locations.custom_locations = this.props.customLocations;
-      } else {
+      } else if (!this.editCampaign) {
         delete rep.targeting.geo_locations.custom_locations;
       }
-      console.log(JSON.stringify(rep.targeting, null, 2));
       rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
         campaign_ad_type: "InstagramStoryAd",
@@ -907,6 +911,14 @@ class InstagramStoryAdTargetting extends Component {
             : null,
       };
       if (this.editCampaign) {
+        if (
+          rep.targeting.geo_locations.custom_locations.length > 0 &&
+          !this.editCampaign
+        ) {
+          rep.targeting.geo_locations.custom_locations = this.props.customLocations;
+        } else if (!this.editCampaign) {
+          delete rep.targeting.geo_locations.custom_locations;
+        }
         this.props.updateInstagramCampaign(
           rep,
           this.props.mainBusiness.businessid,
@@ -1028,7 +1040,6 @@ class InstagramStoryAdTargetting extends Component {
     unselect = false,
     locationsInfo = []
   ) => {
-    console.log("selectedItems", selectedItems);
     let stateRep = cloneDeep(this.state.campaignInfo);
     if (unselect) {
       stateRep.targeting.geo_locations.custom_locations = [];
@@ -1155,6 +1166,7 @@ class InstagramStoryAdTargetting extends Component {
             save_campaign_info={this.props.save_campaign_info_instagram}
             data={this.props.data}
             _handleSideMenuState={this._handleSideMenuState}
+            editCampaign={this.editCampaign}
           />
         );
         break;

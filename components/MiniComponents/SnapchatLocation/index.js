@@ -32,6 +32,7 @@ class SnapchatLocation extends Component {
   };
   componentDidMount() {
     if (
+      !this.props.editCampaign &&
       this.props.data &&
       this.props.data.markers &&
       this.props.data.markers.length > 0
@@ -162,10 +163,11 @@ class SnapchatLocation extends Component {
           true
         );
     }
-    this.props.save_campaign_info({
-      markers: this.state.markers,
-      locationsInfo: this.state.locationsInfo,
-    });
+    !this.props.editCampaign &&
+      this.props.save_campaign_info({
+        markers: this.state.markers,
+        locationsInfo: this.state.locationsInfo,
+      });
     this.props._handleSideMenuState(false);
   };
   render() {

@@ -227,7 +227,9 @@ class InstagramFeedAdTargetting extends Component {
       let markers = [];
       if (editedCampaign.coordinates) {
         editedMapLocation = cloneDeep(JSON.parse(editedCampaign.coordinates));
-        markers = cloneDeep(editedCampaign.targeting.locations[0].circles);
+        markers = cloneDeep(
+          editedCampaign.targeting.geo_locations.custom_locations
+        );
       }
       this.setState(
         {
@@ -236,6 +238,7 @@ class InstagramFeedAdTargetting extends Component {
           selectedGender,
           duration,
           locationsInfo: editedMapLocation,
+          markers,
         },
         () => this._calcReach()
       );
@@ -781,7 +784,6 @@ class InstagramFeedAdTargetting extends Component {
       campaign_id: this.state.campaignInfo.campaign_id,
       daily_budget_micro: this.state.campaignInfo.lifetime_budget_micro,
     };
-    console.log("obj2", JSON.stringify(obj2, null, 2));
 
     await this.props.instagram_ad_audience_size(obj, obj2);
     // }
@@ -890,9 +892,12 @@ class InstagramFeedAdTargetting extends Component {
         delete rep.targeting.user_device;
       }
 
-      if (rep.targeting.geo_locations.custom_locations.length > 0) {
+      if (
+        rep.targeting.geo_locations.custom_locations.length > 0 &&
+        !this.editCampaign
+      ) {
         rep.targeting.geo_locations.custom_locations = this.props.customLocations;
-      } else {
+      } else if (!this.editCampaign) {
         delete rep.targeting.geo_locations.custom_locations;
       }
       rep.targeting = JSON.stringify(rep.targeting);
@@ -926,6 +931,14 @@ class InstagramFeedAdTargetting extends Component {
             : null,
       };
       if (this.editCampaign) {
+        if (
+          this.state.campaignInfo.targeting.geo_locations.custom_locations
+            .length === 0
+        ) {
+          rep.coordinates = [];
+        } else if (this.state.locationsInfo.length > 0) {
+          rep.coordinates = this.state.locationsInfo;
+        } else rep.coordinates = JSON.parse(rep.coordinates);
         this.props.updateInstagramCampaign(
           rep,
           this.props.mainBusiness.businessid,
@@ -1047,7 +1060,6 @@ class InstagramFeedAdTargetting extends Component {
     unselect = false,
     locationsInfo = []
   ) => {
-    console.log("selectedItems", selectedItems);
     let stateRep = cloneDeep(this.state.campaignInfo);
     if (unselect) {
       stateRep.targeting.geo_locations.custom_locations = [];
@@ -1173,6 +1185,7 @@ class InstagramFeedAdTargetting extends Component {
             save_campaign_info={this.props.save_campaign_info_instagram}
             data={this.props.data}
             _handleSideMenuState={this._handleSideMenuState}
+            editCampaign={this.editCampaign}
           />
         );
         break;

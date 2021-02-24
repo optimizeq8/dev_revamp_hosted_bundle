@@ -195,7 +195,10 @@ export class TargetAudience extends Component {
                   <Text style={styles.menudetails}>
                     {mainState.locationsInfo &&
                     mainState.locationsInfo.length > 0
-                      ? mainState.locationsInfo
+                      ? (typeof mainState.locationsInfo === "string"
+                          ? JSON.parse(mainState.locationsInfo)
+                          : mainState.locationsInfo
+                        )
                           .map((loc) => translate(loc.countryName))
                           .join(", ")
                       : ""}
