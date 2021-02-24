@@ -157,15 +157,16 @@ export class SnapchatAudience extends Component {
         type: "warning",
         position: "top",
       });
-    } else if (languagesError) {
-      showMessage({
-        message: translate("Please choose a language"),
-        type: "warning",
-        position: "top",
-      });
     }
+    // else if (languagesError) {
+    //   showMessage({
+    //     message: translate("Please choose a language"),
+    //     type: "warning",
+    //     position: "top",
+    //   });
+    // }
     // segment track for error on final submit
-    if (countryError || languagesError || audienceNameError) {
+    if (countryError || audienceNameError) {
       analytics.track(`a_error_form`, {
         error_page: "audience_targeting",
         source_action: "a_save_audience_targeting",
@@ -212,9 +213,9 @@ export class SnapchatAudience extends Component {
       // ) {
       //   delete rep.targeting.devices;
       // }
-      if (rep.targeting.demographics[0].max_age === 50) {
-        rep.targeting.demographics[0].max_age = "50+";
-      }
+      //   if (rep.targeting.demographics[0].max_age === 50) {
+      //     rep.targeting.demographics[0].max_age = "50+";
+      //   }
       // rep.targeting = JSON.stringify(rep.targeting);
       // let interestNamesList = [];
       // interestNamesList =
@@ -269,8 +270,9 @@ export class SnapchatAudience extends Component {
           this.state.locationsInfo
         );
       } else {
+        console.log("rep.targeting", JSON.stringify(rep.targeting, null, 2));
         rep.targeting = JSON.stringify(rep.targeting);
-        this.props.createAudience(rep, true, this.state.locationsInfo);
+        // this.props.createAudience(rep, true, this.state.locationsInfo);
       }
     }
   };
@@ -720,26 +722,32 @@ export class SnapchatAudience extends Component {
   getInterestNames = () => {
     // Map Interest code to actual Interest name
     const { translate } = this.props.screenProps;
+    const { targeting } = this.props.audience;
     let interestNames = [];
-    interestNames =
-      this.props.audience.targeting &&
-      this.props.audience.targeting.interests &&
-      this.props.audience.targeting.interests[0].category_id.length > 0 &&
-      this.props.audience.targeting.interests[0].category_id.map(
-        (category_id) => {
-          return (
-            this.props.interests &&
-            this.props.interests.length > 0 &&
-            translate(
-              this.props.interests.find(
-                (interest) => interest.id == category_id
-              ).name
-            )
-          );
-        }
+    let interests_names = [];
+
+    if (targeting.flexible_spec[0].interests.length > 0) {
+      interests_names = targeting.flexible_spec[0].interests.map(
+        (interest) => interest.name
       );
-    return interestNames && interestNames.length > 0
-      ? interestNames.join(", ")
+      interests_names = [
+        targeting.flexible_spec[0].interests.map((interest) => interest.name),
+        this.state.customInterests &&
+          this.state.customInterests.map((interest) => interest.name),
+      ];
+    } else if (
+      this.state.customInterests &&
+      this.state.customInterests.length > 0
+    ) {
+      interests_names = [
+        this.state.customInterests &&
+          this.state.customInterests.map((interest) => interest.name),
+      ];
+    }
+    interests_names = [].concat.apply([], interests_names);
+
+    return interests_names && interests_names.length > 0
+      ? interests_names.join(", ")
       : [];
   };
   getCountryNames = () => {
@@ -1472,7 +1480,11 @@ export class SnapchatAudience extends Component {
                       }}
                       style={[
                         styles.targetTouchable,
-                        { marginVertical: 8, paddingHorizontal: 10 },
+                        {
+                          marginVertical: RFValue(4, 414),
+                          paddingHorizontal: RFValue(5, 414),
+                          borderRadius: RFValue(10, 414),
+                        },
                       ]}
                     >
                       <View style={[globalStyles.row, { width: "80%" }]}>
