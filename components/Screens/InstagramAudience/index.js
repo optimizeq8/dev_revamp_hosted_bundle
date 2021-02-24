@@ -292,9 +292,8 @@ export class SnapchatAudience extends Component {
 
   _handleAge = (values) => {
     let rep = cloneDeep(this.props.audience);
-    rep.targeting.demographics[0].min_age = parseInt(values[0]);
-    rep.targeting.demographics[0].max_age = parseInt(values[1]);
-
+    rep.targeting.age_min = parseInt(values[0]);
+    rep.targeting.age_max = parseInt(values[1]);
     analytics.track(`a_audience_age`, {
       source: "audience_detail",
       source_action: "a_audience_age",
@@ -701,13 +700,29 @@ export class SnapchatAudience extends Component {
 
   onSelectedGenderChange = (gender) => {
     let replace = cloneDeep(this.props.audience);
-    replace.targeting.demographics[0].gender = gender;
+    // let x = "";
+    // switch (gender) {
+    //   case "MALE":
+    //     x = "1";
+    //     break;
+    //   case "FEMALE":
+    //     x = "2";
+    //     break;
+    //   default:
+    //     x = "";
+    //     break;
+    // }
+    //gender is coming in as 1,2
+    replace.targeting.genders = [gender];
     analytics.track(`a_audience_gender`, {
-      audience_gender: gender === "" ? "ALL" : gender,
+      source: "audience_detail",
+      source_action: "a_audience_gender",
+      audience_gender: replace.targeting.genders,
     });
-    this.setState({ targeting: { ...replace } });
 
-    this.props.setAudienceDetail({ ...replace });
+    this.props.setAudienceDetail({
+      ...replace,
+    });
   };
 
   filterRegions = (value) => {
@@ -958,15 +973,14 @@ export class SnapchatAudience extends Component {
       case "age": {
         menu = (
           <AgeOption
-            showPlusIcon={true}
-            showBackButton={true}
+            showPlusIcon={false}
             screenProps={this.props.screenProps}
-            state={this.props.audience.targeting.demographics[0]}
-            _handleSideMenuState={this._handleSideMenuState}
+            state={this.state.campaignInfo}
             _handleAge={this._handleAge}
-            ageValuesRange={[13, 50]}
-            minAge={this.props.audience.targeting.demographics[0].min_age}
-            maxAge={this.props.audience.targeting.demographics[0].max_age}
+            _handleSideMenuState={this._handleSideMenuState}
+            ageValuesRange={[18, 65]}
+            minAge={targeting.age_min || 18}
+            maxAge={targeting.age_max || 65}
           />
         );
         break;
@@ -1173,7 +1187,7 @@ export class SnapchatAudience extends Component {
                         globalStyles.row,
                         {
                           alignItems: "center",
-                          marginBottom: expandLocation ? 10 : 0,
+                          marginVertical: expandLocation ? 10 : 0,
                         },
                       ]}
                     >
@@ -1235,7 +1249,13 @@ export class SnapchatAudience extends Component {
                         onPress={() => this.callFunction("regions")}
                         style={styles.targetTouchable}
                       >
-                        <View style={[globalStyles.column, styles.flex]}>
+                        <View
+                          style={[
+                            globalStyles.column,
+                            styles.flex,
+                            styles.audienceSubHeading,
+                          ]}
+                        >
                           <Text style={styles.menutext}>
                             {translate("Regions")}
                           </Text>
@@ -1266,7 +1286,7 @@ export class SnapchatAudience extends Component {
                         globalStyles.row,
                         {
                           alignItems: "center",
-                          marginBottom: expandDemographics ? 10 : 0,
+                          marginVertical: expandDemographics ? 10 : 0,
                         },
                       ]}
                     >
@@ -1295,7 +1315,12 @@ export class SnapchatAudience extends Component {
                         // onPress={() => this.callFunction("genders")}
                         style={styles.targetTouchable}
                       >
-                        <View style={globalStyles.column}>
+                        <View
+                          style={[
+                            globalStyles.column,
+                            styles.audienceSubHeading,
+                          ]}
+                        >
                           <Text style={styles.menutext}>
                             {translate("Gender")}
                           </Text>
@@ -1305,19 +1330,19 @@ export class SnapchatAudience extends Component {
                               <TouchableOpacity
                                 style={[
                                   styles.genderInnerView,
-                                  this.state.selectedGender === g.value &&
+                                  targeting.genders.includes(g.value) &&
                                     styles.genderInnerActiveView,
                                 ]}
                                 activeOpacity={0.6}
                                 onPress={() => {
-                                  this.props.onSelectedGenderChange(g.value);
+                                  this.onSelectedGenderChange(g.value);
                                 }}
                                 disabled={saveAudienceLoading}
                               >
                                 <Text
                                   style={[
                                     styles.genderRadioText,
-                                    this.state.selectedGender === g.value &&
+                                    targeting.genders.includes(g.value) &&
                                       styles.genderRadioTextActive,
                                   ]}
                                 >
@@ -1336,7 +1361,12 @@ export class SnapchatAudience extends Component {
                         onPress={() => this.callFunction("age")}
                         style={styles.targetTouchable}
                       >
-                        <View style={globalStyles.column}>
+                        <View
+                          style={[
+                            globalStyles.column,
+                            styles.audienceSubHeading,
+                          ]}
+                        >
                           <Text style={styles.menutext}>
                             {translate("Age")}
                           </Text>
@@ -1521,7 +1551,13 @@ export class SnapchatAudience extends Component {
                         onPress={() => this.callFunction("OS")}
                         style={styles.targetTouchable}
                       >
-                        <View style={[globalStyles.column, styles.flex]}>
+                        <View
+                          style={[
+                            globalStyles.column,
+                            styles.flex,
+                            styles.audienceSubHeading,
+                          ]}
+                        >
                           <Text style={styles.menutext}>
                             {translate("Operating System")}
                           </Text>
@@ -1598,7 +1634,13 @@ export class SnapchatAudience extends Component {
                           }
                           style={styles.targetTouchable}
                         >
-                          <View style={[globalStyles.column, styles.flex]}>
+                          <View
+                            style={[
+                              globalStyles.column,
+                              styles.flex,
+                              styles.audienceSubHeading,
+                            ]}
+                          >
                             <Text style={styles.menutext}>
                               {translate("Device Make")}
                             </Text>

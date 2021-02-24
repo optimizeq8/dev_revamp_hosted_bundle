@@ -8,20 +8,19 @@ const initialState = {
     id: "",
     name: "",
     targeting: {
-      demographics: [
-        { gender: "", min_age: 13, max_age: 50, languages: ["ar", "en"] },
-      ],
-      geos: [{ country_code: "", region_id: [] }],
-      interests: [{ category_id: [] }],
-      devices: [
+      genders: [""],
+      flexible_spec: [
         {
-          os_type: "",
-          marketing_name: [],
-          os_version_max: "",
-          os_version_min: "",
+          interests: [],
         },
       ],
-      locations: [{ circles: [] }],
+      user_os: [""],
+      user_device: [],
+      os_version_min: "",
+      os_version_max: "",
+      geo_locations: { countries: [], regions: [] },
+      age_max: 65,
+      age_min: 18,
     },
   },
 };
