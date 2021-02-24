@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
+import { globalColors } from "../../../GlobalStyles";
 const styles = StyleSheet.create({
   mainView: {
     flexDirection: "row",
@@ -51,6 +52,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    width: "100%",
   },
   titleText: {
     textAlign: "left",
@@ -82,6 +84,18 @@ const styles = StyleSheet.create({
     marginLeft: -20,
     marginBottom: -25,
     marginTop: -20,
+  },
+  refundedContainer: {
+    backgroundColor: globalColors.red,
+    borderRadius: 20,
+    padding: RFValue(5, 414),
+    alignSelf: "center",
+    left: RFValue(10, 414),
+  },
+  refundedText: {
+    color: globalColors.white,
+    fontFamily: "montserrat-bold",
+    fontSize: RFValue(6, 414),
   },
 });
 
