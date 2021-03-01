@@ -1,7 +1,14 @@
 //Components
 import React, { Component } from "react";
-import { View, Text, BackHandler, I18nManager } from "react-native";
-import { Container, Content, Row } from "native-base";
+import {
+  View,
+  Text,
+  BackHandler,
+  I18nManager,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+import { Container, Content, Row, Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../../MiniComponents/SideMenu";
@@ -17,6 +24,7 @@ import MultiSelectSections from "../../../../MiniComponents/MultiSelectInstagram
 import CustomHeader from "../../../../MiniComponents/Header";
 import SelectOS from "../../../../MiniComponents/SelectOS";
 import { showMessage } from "react-native-flash-message";
+import InstagramAudienceList from "../../../InstagramCampaignAudienceList";
 
 //Data
 import countries, { gender, OSType, country_regions, allRegions } from "./data";
@@ -48,7 +56,7 @@ import { globalColors } from "../../../../../GlobalStyles";
 
 import AudienceIcon from "../../../../../assets/SVGs/AudienceOutline";
 import WalletIcon from "../../../../../assets/SVGs/WalletOutline";
-
+import PurplePlusIcon from "../../../../../assets/SVGs/PurplePlusIcon";
 class InstagramStoryAdTargetting extends Component {
   static navigationOptions = {
     header: null,
@@ -98,6 +106,7 @@ class InstagramStoryAdTargetting extends Component {
       startEditing: true,
       customInterests: [],
       selectedAllRegions: false,
+      showAudienceList: false,
     };
     this.editCampaign = this.props.navigation.getParam("editCampaign", false);
   }
@@ -134,6 +143,8 @@ class InstagramStoryAdTargetting extends Component {
     return true;
   };
   async componentDidMount() {
+    this.props.getAudienceList();
+
     if (this.editCampaign) {
       let editedCampaign = deepmerge(
         this.state.campaignInfo,
@@ -997,9 +1008,126 @@ class InstagramStoryAdTargetting extends Component {
       });
     }
   };
+  createNewAudience = () => {
+    this.props.setInstagramAudienceDetail({ reset: true });
+    this.props.navigation.navigate("InstagramAudienceTagetting", {
+      source: "audience_list",
+      source_action: "a_create_audience_detail",
+      audience_channel: "instagram",
+    });
+  };
+  chooseExistingAudience = () => {
+    // this.props.navigation.navigate("SnapchatAudienceList", {
+    //   source: "ad_targeting",
+    //   source_action: "a_open_audience_list",
+    // });
+    this.setState({
+      showAudienceList: !this.state.showAudienceList,
+    });
+  };
+  setSelectedAudience = (targeting, coordinates) => {
+    let editedCampaign = cloneDeep(this.state.campaignInfo);
+    let campaignTargeting = targeting;
+    let locationsInfo = coordinates || [];
+    if (this.editCampaign) {
+      campaignTargeting.geo_locations = editedCampaign.targeting.geo_locations;
+    }
+    editedCampaign.targeting = {
+      ...editedCampaign.targeting,
+      ...campaignTargeting,
+    };
+
+    // let editedCountryCodes = editedCampaign.targeting.geo_locations.map(
+    //   (geo) => geo.country_code
+    // );
+
+    editedCampaign.targeting.age_max = parseInt(
+      editedCampaign.targeting.age_max
+    );
+    editedCampaign.targeting.age_min = parseInt(
+      editedCampaign.targeting.age_min
+    );
+    let getCountryName = editedCampaign.targeting.geo_locations.countries.map(
+      (geo, i) => countries.find((country) => country.value === geo.value)
+    );
+    let editedRegionNames = editedCampaign.targeting.geo_locations.regions.map(
+      (geo, i) =>
+        country_regions.find(
+          (country_region) => country_region.country_code === geo.value
+        )
+    );
+    let markers = [];
+    // if (locationsInfo && locationsInfo.length > 0) {
+    //   locationsInfo = cloneDeep(JSON.parse(locationsInfo));
+    //   markers = cloneDeep(campaignTargeting.locations[0].circles);
+    // }
+    // LOCATIONS MAP
+    let stateRegionNames = [];
+    this.setState(
+      {
+        campaignInfo: editedCampaign,
+        // startEditing: false,
+        countryName: getCountryName,
+        regions: editedRegionNames,
+        filteredRegions: editedRegionNames,
+        locationsInfo,
+        markers,
+      },
+      () => {
+        // editedCampaign.targeting.geo_locations.forEach(
+        //   (geo, i) =>
+        //     editedCampaign.targeting.geos[i].region_id &&
+        //     editedCampaign.targeting.geos[i].region_id.forEach((id) => {
+        //       let regN = editedRegionNames[i].regions.find(
+        //         (region) => region.id === id
+        //       );
+        //       regN.country_code = editedCampaign.targeting.geos[i].country_code;
+        //       stateRegionNames.push(regN);
+        //     })
+        // );
+        let showRegions = this.state.regions.some(
+          (reg) => reg.regions.length > 3
+        );
+
+        if (this.props.data && this.props.data.appChoice) {
+          let navAppChoice =
+            this.props.data.iosApp_name &&
+            this.props.data.iosApp_name !== "" &&
+            this.props.data.androidApp_name &&
+            this.props.data.androidApp_name !== ""
+              ? ""
+              : this.props.data.appChoice;
+          let rep = cloneDeep(this.state.campaignInfo);
+          rep.targeting.user_os = [navAppChoice];
+          this.setState({
+            campaignInfo: rep,
+          });
+        }
+        this.handleMultipleCountrySelection();
+        this._calcReach();
+        this.setState({
+          //   regionNames: stateRegionNames,
+          showRegions,
+          showAudienceList: false,
+        });
+        !this.editCampaign &&
+          this.props.save_campaign_info_instagram({
+            campaignInfo: editedCampaign,
+            countryName: getCountryName,
+            regions: editedRegionNames,
+            filteredRegions: editedRegionNames,
+            showRegions,
+            // regionNames: stateRegionNames,
+            markers,
+            locationsInfo,
+          });
+      }
+    );
+  };
+
   render() {
     const { translate } = this.props.screenProps;
-    let { campaignInfo, startEditing } = this.state;
+    let { campaignInfo, startEditing, showAudienceList } = this.state;
     let menu;
     switch (this.state.sidemenu) {
       case "genders": {
@@ -1367,40 +1495,6 @@ class InstagramStoryAdTargetting extends Component {
                           screenProps={this.props.screenProps}
                           data={this.props.data}
                         />
-
-                        {/*---------leave if in case we want to use it again---------*/}
-                        {/* <View style={styles.sliderContainer}>
-                      <View style={styles.budgetSliderText}>
-                        <Text style={globalStyles.whiteTextColor}>
-                          ${this.state.minValueBudget}
-                        </Text>
-                        <Text style={globalStyles.whiteTextColor}>
-                          ${this.state.maxValueBudget}
-                        </Text>
-                      </View>
-
-                      <Slider
-                        thumbTintColor={globalColors.orange}
-                        disabled={this.editCampaign || this.props.loading}
-                        style={styles.slider}
-                        step={10}
-                        minimumValue={this.state.minValueBudget}
-                        maximumValue={this.state.maxValueBudget}
-                        value={
-                          this.state.campaignInfo.lifetime_budget_micro <
-                          90000000000000000000
-                            ? this.state.campaignInfo.lifetime_budget_micro
-                            : 1500
-                        }
-                        onValueChange={debounce(
-                          this.onSelectedBudgetChange,
-                          60
-                        )}
-                        maximumTrackTintColor={globalColors.white}
-                        minimumTrackTintColor={globalColors.purple}
-                      />
-                    </View>
-                  */}
                       </>
                     ) : (
                       startEditing && (
@@ -1415,29 +1509,104 @@ class InstagramStoryAdTargetting extends Component {
                     )}
                     {startEditing && (
                       <View style={styles.reachView}>
-                        <AudienceIcon />
-                        <Text style={[styles.subHeadings]}>
+                        {showAudienceList ? (
+                          <Icon
+                            name={`keyboard-arrow-${
+                              I18nManager.isRTL ? "right" : "left"
+                            }`}
+                            type="MaterialIcons"
+                            style={{
+                              fontSize: 25,
+                              color: globalColors.rum,
+                            }}
+                            onPress={this.chooseExistingAudience}
+                          />
+                        ) : (
+                          <AudienceIcon />
+                        )}
+                        <Text
+                          style={[
+                            styles.subHeadings,
+                            styles.selectAudienceText,
+                          ]}
+                        >
                           {translate("Select Audience")}
                         </Text>
+
+                        {(this.props.audienceList.length === 0 ||
+                          showAudienceList) &&
+                          !this.props.audienceListLoading && (
+                            <TouchableOpacity
+                              style={styles.createView}
+                              onPress={this.createNewAudience}
+                            >
+                              <PurplePlusIcon
+                                width={15}
+                                height={15}
+                                style={styles.iconAdd}
+                              />
+                              <Text style={styles.createText}>
+                                {translate("Create")}
+                              </Text>
+                            </TouchableOpacity>
+                          )}
+
+                        {!showAudienceList &&
+                        this.props.audienceList.length > 0 ? (
+                          <TouchableOpacity
+                            style={styles.createView}
+                            onPress={this.chooseExistingAudience}
+                          >
+                            <Text style={styles.createText}>
+                              {translate("Choose Preset")}
+                            </Text>
+                            <Icon
+                              name={`keyboard-arrow-${
+                                I18nManager.isRTL ? "left" : "right"
+                              }`}
+                              type="MaterialIcons"
+                              style={styles.iconRight}
+                            />
+                          </TouchableOpacity>
+                        ) : (
+                          this.props.audienceListLoading && (
+                            <ActivityIndicator
+                              color={globalColors.purple}
+                              size="small"
+                              style={styles.iconLoading}
+                            />
+                          )
+                        )}
                       </View>
                     )}
-                    <TargetAudience
-                      screenProps={this.props.screenProps}
-                      _renderSideMenu={this._renderSideMenu}
-                      loading={this.props.loading}
-                      gender={this.state.selectedGender}
-                      targeting={this.state.campaignInfo.targeting}
-                      countries_names={countries_names}
-                      regions_names={regions_names}
-                      languages_names={languages_names}
-                      interests_names={interests_names}
-                      OSType={OSType}
-                      mainState={this.state}
-                      translate={translate}
-                      editCampaign={this.editCampaign}
-                      startEditing={startEditing}
-                      onSelectedGenderChange={this.onSelectedGenderChange}
-                    />
+                    {!showAudienceList && (
+                      <TargetAudience
+                        screenProps={this.props.screenProps}
+                        _renderSideMenu={this._renderSideMenu}
+                        loading={this.props.loading}
+                        gender={this.state.selectedGender}
+                        targeting={this.state.campaignInfo.targeting}
+                        countries_names={countries_names}
+                        regions_names={regions_names}
+                        languages_names={languages_names}
+                        interests_names={interests_names}
+                        OSType={OSType}
+                        mainState={this.state}
+                        translate={translate}
+                        editCampaign={this.editCampaign}
+                        startEditing={startEditing}
+                        onSelectedGenderChange={this.onSelectedGenderChange}
+                      />
+                    )}
+
+                    {showAudienceList && (
+                      <InstagramAudienceList
+                        screenProps={this.props.screenProps}
+                        navigation={this.props.navigation}
+                        chooseExistingAudience={this.chooseExistingAudience}
+                        setSelectedAudience={this.setSelectedAudience}
+                      />
+                    )}
 
                     <ReachBar
                       loading={this.props.loading}
@@ -1472,9 +1641,12 @@ const mapStateToProps = (state) => ({
   currentCampaignSteps: state.instagramAds.currentCampaignSteps,
   interests: state.instagramAds.interests,
   campaignDateChanged: state.instagramAds.campaignDateChanged,
+  audienceList: state.instagramAudience.audienceList,
+  audienceListLoading: state.instagramAudience.audienceListLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  getAudienceList: () => dispatch(actionCreators.getInstagramAudienceList()),
   ad_details_instagram: (info, navigation, segmentInfo) =>
     dispatch(
       actionCreators.ad_details_instagram(info, navigation, segmentInfo)
@@ -1490,6 +1662,9 @@ const mapDispatchToProps = (dispatch) => ({
   // get_languages: () => dispatch(actionCreators.get_languages()),
   saveCampaignSteps: (step) =>
     dispatch(actionCreators.saveCampaignStepsInstagram(step)),
+
+  setInstagramAudienceDetail: (audienceInfo) =>
+    dispatch(actionCreators.setInstagramAudienceDetail(audienceInfo)),
   // setCampaignInfoForTransaction: data =>
   //   dispatch(actionCreators.setCampaignInfoForTransaction(data)),
   // resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
