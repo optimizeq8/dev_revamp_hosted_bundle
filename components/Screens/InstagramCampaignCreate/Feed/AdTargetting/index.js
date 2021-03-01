@@ -1044,6 +1044,106 @@ class InstagramFeedAdTargetting extends Component {
       showAudienceList: !this.state.showAudienceList,
     });
   };
+  setSelectedAudience = (targeting, coordinates) => {
+    let editedCampaign = cloneDeep(this.state.campaignInfo);
+    let campaignTargeting = targeting;
+    let locationsInfo = coordinates || [];
+    if (this.editCampaign) {
+      campaignTargeting.geo_locations = editedCampaign.targeting.geo_locations;
+    }
+    editedCampaign.targeting = {
+      ...editedCampaign.targeting,
+      ...campaignTargeting,
+    };
+
+    // let editedCountryCodes = editedCampaign.targeting.geo_locations.map(
+    //   (geo) => geo.country_code
+    // );
+
+    editedCampaign.targeting.age_max = parseInt(
+      editedCampaign.targeting.age_max
+    );
+    editedCampaign.targeting.age_min = parseInt(
+      editedCampaign.targeting.age_min
+    );
+    let getCountryName = editedCampaign.targeting.geo_locations.countries.map(
+      (geo, i) => countries.find((country) => country.value === geo.value)
+    );
+    let editedRegionNames = editedCampaign.targeting.geo_locations.regions.map(
+      (geo, i) =>
+        country_regions.find(
+          (country_region) => country_region.country_code === geo.value
+        )
+    );
+    let markers = [];
+    // if (locationsInfo && locationsInfo.length > 0) {
+    //   locationsInfo = cloneDeep(JSON.parse(locationsInfo));
+    //   markers = cloneDeep(campaignTargeting.locations[0].circles);
+    // }
+    // LOCATIONS MAP
+    let stateRegionNames = [];
+    this.setState(
+      {
+        campaignInfo: editedCampaign,
+        // startEditing: false,
+        countryName: getCountryName,
+        regions: editedRegionNames,
+        filteredRegions: editedRegionNames,
+        locationsInfo,
+        markers,
+      },
+      () => {
+        // editedCampaign.targeting.geo_locations.forEach(
+        //   (geo, i) =>
+        //     editedCampaign.targeting.geos[i].region_id &&
+        //     editedCampaign.targeting.geos[i].region_id.forEach((id) => {
+        //       let regN = editedRegionNames[i].regions.find(
+        //         (region) => region.id === id
+        //       );
+        //       regN.country_code = editedCampaign.targeting.geos[i].country_code;
+        //       stateRegionNames.push(regN);
+        //     })
+        // );
+        let showRegions = this.state.regions.some(
+          (reg) => reg.regions.length > 3
+        );
+
+        if (this.props.data && this.props.data.appChoice) {
+          let navAppChoice =
+            this.props.data.iosApp_name &&
+            this.props.data.iosApp_name !== "" &&
+            this.props.data.androidApp_name &&
+            this.props.data.androidApp_name !== ""
+              ? ""
+              : this.props.data.appChoice;
+          let rep = cloneDeep(this.state.campaignInfo);
+          rep.targeting.user_os = [navAppChoice];
+          this.setState({
+            campaignInfo: rep,
+          });
+        }
+        this.handleMultipleCountrySelection();
+        this._calcReach();
+        this.setState({
+          //   regionNames: stateRegionNames,
+          showRegions,
+          showAudienceList: false,
+        });
+        !this.editCampaign &&
+          this.props.save_campaign_info_instagram({
+            campaignInfo: editedCampaign,
+            countryName: getCountryName,
+            regions: editedRegionNames,
+            filteredRegions: editedRegionNames,
+            showRegions,
+            // regionNames: stateRegionNames,
+            markers,
+            locationsInfo,
+          });
+      }
+    );
+  };
+
   render() {
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing, showAudienceList } = this.state;

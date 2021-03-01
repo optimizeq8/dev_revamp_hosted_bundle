@@ -69,34 +69,22 @@ const reducer = (state = initialState, action) => {
       };
 
     case actionTypes.SET_INSTAGRAM_AUDIENCE_DETAIL:
-      let devices =
-        action.payload.targeting &&
-        action.payload.targeting.devices &&
-        action.payload.targeting.devices[0]
-          ? { ...action.payload.targeting.devices[0] }
-          : {};
       let audienceCopy = {
         ...action.payload,
         targeting: {
-          // initialising it blank state
-          demographics: [
-            { gender: "", min_age: 13, max_age: 50, languages: ["ar", "en"] },
-          ],
-          interests: [{ category_id: [] }],
-          ...action.payload.targeting,
-          devices: [
+          genders: [""],
+          flexible_spec: [
             {
-              os_type: "",
-              marketing_name: [],
-              os_version_max: "",
-              os_version_min: "",
-              ...devices,
+              interests: [],
             },
           ],
-          geos: [...action.payload.targeting.geos],
-          locations: [
-            { circles: [], ...action.payload.targeting.locations[0] },
-          ],
+          user_os: [""],
+          user_device: [],
+          os_version_min: "",
+          os_version_max: "",
+          geo_locations: { countries: [], regions: [] },
+          age_max: 65,
+          age_min: 18,
         },
       };
 

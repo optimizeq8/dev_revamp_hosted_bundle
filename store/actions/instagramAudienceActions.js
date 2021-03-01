@@ -80,7 +80,7 @@ export const getInstagramAudienceDetail = (audienceId) => {
  */
 export const createInstagramAudience = (
   audience,
-  navigate = true,
+  navigate = null,
   locationsInfo = []
 ) => {
   // console.log(
@@ -116,7 +116,7 @@ export const createInstagramAudience = (
         if (data.success) {
           dispatch(getInstagramAudienceList());
           navigate &&
-            NavigationService.navigate("AdDetails", {
+            NavigationService.navigate(navigate, {
               source: "audience_detail",
               source_action: "a_create_audience",
             });
@@ -197,7 +197,7 @@ export const updateInstagramAudience = (
         });
         if (data.success) {
           dispatch(getInstagramAudienceList());
-          NavigationService.navigate("AdDetails", {
+          NavigationService.navigate("InstagramFeedAdTargetting", {
             source: "audience_detail",
             source_action: "a_update_audience",
           });

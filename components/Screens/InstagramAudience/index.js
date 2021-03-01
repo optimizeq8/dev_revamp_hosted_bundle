@@ -66,7 +66,7 @@ import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 
-export class SnapchatAudience extends Component {
+export class InstagramAudience extends Component {
   constructor(props) {
     super(props);
     this.state = state = {
@@ -93,33 +93,30 @@ export class SnapchatAudience extends Component {
     this.editAudience = this.props.navigation.getParam("editAudience", false);
   }
 
-  async componentDidMount() {
-    this.props.get_languages();
-
-    // To by default set the country to that of the business country selected
-  }
   componentDidUpdate(prevProps) {
     if (
       prevProps.audienceDetailLoading !== this.props.audienceDetailLoading &&
-      this.props.audience.targeting.geos[0].country_code !== ""
+      this.props.audience.targeting.geo_locations.countries.length !== 0
     ) {
       let showRegions = false;
-      let countryRegions = this.props.audience.targeting.geos.map((cou) => {
-        let foundCountryReg = find(
-          country_regions,
-          (country) => country.country_code === cou.country_code
-        );
-        showRegions = foundCountryReg.regions.length > 3;
+      let countryRegions = this.props.audience.targeting.geos_locations.countries.map(
+        (cou) => {
+          let foundCountryReg = find(
+            country_regions,
+            (country) => country.country_code === cou.value
+          );
+          // showRegions = foundCountryReg.regions.length > 3;
 
-        return foundCountryReg;
-      });
+          return foundCountryReg;
+        }
+      );
 
       let locationsInfo = [];
       let markers = [];
-      if (this.props.audience.coordinates) {
-        locationsInfo = cloneDeep(JSON.parse(this.props.audience.coordinates));
-        markers = cloneDeep(this.props.audience.targeting.locations[0].circles);
-      }
+      //   if (this.props.audience.coordinates) {
+      //     locationsInfo = cloneDeep(JSON.parse(this.props.audience.coordinates));
+      //     markers = cloneDeep(this.props.audience.targeting.locations[0].circles);
+      //   }
 
       this.setState({
         regions: countryRegions ? countryRegions : [],
@@ -1618,7 +1615,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setAudienceDetail: (audienceInfo) =>
     dispatch(actionCreators.setInstagramAudienceDetail(audienceInfo)),
-  get_languages: () => dispatch(actionCreators.get_languages()),
   get_interests: (countryCode) =>
     dispatch(actionCreators.get_interests(countryCode)),
   createAudience: (audience, navigate, locationInfo) =>
@@ -1636,4 +1632,4 @@ const mapDispatchToProps = (dispatch) => ({
     ),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SnapchatAudience);
+export default connect(mapStateToProps, mapDispatchToProps)(InstagramAudience);

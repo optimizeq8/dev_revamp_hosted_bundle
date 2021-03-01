@@ -84,10 +84,10 @@ class InstagramCampaignAudience extends React.Component {
   };
   createNewAudience = () => {
     this.props.setAudienceDetail({ reset: true });
-    this.props.navigation.navigate("SnapchatAudienceTagetting", {
+    this.props.navigation.navigate("InstagramAudienceTagetting", {
       source: "audience_list",
       source_action: "a_create_audience_detail",
-      audience_channel: "snapchat",
+      audience_channel: "instagram",
     });
   };
 
