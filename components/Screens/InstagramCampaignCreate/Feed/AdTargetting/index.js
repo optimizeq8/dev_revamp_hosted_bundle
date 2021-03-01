@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { Container, Content, Row } from "native-base";
+import { Container, Content, Row, Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../../MiniComponents/SideMenu";
@@ -48,6 +48,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
+import InstagramAudienceList from "../../../InstagramCampaignAudienceList";
 import { BudgetCards } from "./BudgetCards";
 import { TargetAudience } from "./TargetAudience";
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
@@ -1034,7 +1035,15 @@ class InstagramFeedAdTargetting extends Component {
       audience_channel: "instagram",
     });
   };
-
+  chooseExistingAudience = () => {
+    // this.props.navigation.navigate("SnapchatAudienceList", {
+    //   source: "ad_targeting",
+    //   source_action: "a_open_audience_list",
+    // });
+    this.setState({
+      showAudienceList: !this.state.showAudienceList,
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing, showAudienceList } = this.state;
@@ -1356,183 +1365,144 @@ class InstagramFeedAdTargetting extends Component {
                   }
                 }}
               />
-              <Container style={styles.mainContainer}>
-                <Container style={styles.container}>
-                  <Content
-                    scrollEnabled={false}
-                    contentContainerStyle={styles.contentContainer}
-                  >
-                    {!this.editCampaign ? (
-                      <>
-                        <Row size={-1} style={styles.row}>
-                          <View style={styles.walletTextView}>
-                            <WalletIcon
-                              width={30}
-                              height={30}
-                              fill={globalColors.rum}
-                            />
-                            <Text
-                              style={[
-                                styles.subHeadings,
-                                styles.dailyBudgetText,
-                              ]}
-                            >
-                              {translate("Set your daily budget")}
-                            </Text>
-                          </View>
-                          <View style={styles.lifetimeBudgetView}>
-                            <Text
-                              style={[
-                                styles.subHeadings,
-                                styles.lifetimeBudgetText,
-                              ]}
-                            >
-                              {translate("Lifetime budget")}
-                            </Text>
-                            <Text
-                              style={[
-                                styles.subHeadings,
-                                styles.lifetimeBudgetNumber,
-                              ]}
-                            >
-                              {this.formatNumber(
-                                this.state.duration *
-                                  this.state.campaignInfo.lifetime_budget_micro,
-                                true
-                              )}
-                            </Text>
-                          </View>
-                        </Row>
 
-                        <BudgetCards
-                          value={this.state.value}
-                          recBudget={this.state.recBudget}
-                          lifetime_budget_micro={
-                            this.state.campaignInfo.lifetime_budget_micro
-                          }
-                          budgetOption={this.state.budgetOption}
-                          _handleBudget={this._handleBudget}
-                          screenProps={this.props.screenProps}
-                          data={this.props.data}
-                        />
-
-                        {/*---------leave if in case we want to use it again---------*/}
-                        {/* <View style={styles.sliderContainer}>
-                      <View style={styles.budgetSliderText}>
-                        <Text style={globalStyles.whiteTextColor}>
-                          ${this.state.minValueBudget}
-                        </Text>
-                        <Text style={globalStyles.whiteTextColor}>
-                          ${this.state.maxValueBudget}
-                        </Text>
-                      </View>
-
-                      <Slider
-                        thumbTintColor={globalColors.orange}
-                        disabled={this.editCampaign || this.props.loading}
-                        style={styles.slider}
-                        step={10}
-                        minimumValue={this.state.minValueBudget}
-                        maximumValue={this.state.maxValueBudget}
-                        value={
-                          this.state.campaignInfo.lifetime_budget_micro <
-                          90000000000000000000
-                            ? this.state.campaignInfo.lifetime_budget_micro
-                            : 1500
-                        }
-                        onValueChange={debounce(
-                          this.onSelectedBudgetChange,
-                          60
-                        )}
-                        maximumTrackTintColor={globalColors.white}
-                        minimumTrackTintColor={globalColors.purple}
-                      />
-                    </View>
-                  */}
-                      </>
-                    ) : (
-                      startEditing && (
-                        <View style={styles.sliderPlaceHolder}>
-                          <Text style={styles.subHeadings}>
-                            {translate(
-                              "Editing budget and duration\nis currently unavailable"
+              <Container style={styles.container}>
+                <Content
+                  scrollEnabled={false}
+                  contentContainerStyle={styles.contentContainer}
+                >
+                  {!this.editCampaign ? (
+                    <View>
+                      <Row style={styles.row}>
+                        <View style={styles.walletTextView}>
+                          <WalletIcon
+                            width={30}
+                            height={30}
+                            fill={globalColors.rum}
+                          />
+                          <Text
+                            style={[styles.subHeadings, styles.dailyBudgetText]}
+                          >
+                            {translate("Set your daily budget")}
+                          </Text>
+                        </View>
+                        <View style={styles.lifetimeBudgetView}>
+                          <Text
+                            style={[
+                              styles.subHeadings,
+                              styles.lifetimeBudgetText,
+                            ]}
+                          >
+                            {translate("Lifetime budget")}
+                          </Text>
+                          <Text
+                            style={[
+                              styles.subHeadings,
+                              styles.lifetimeBudgetNumber,
+                            ]}
+                          >
+                            {this.formatNumber(
+                              this.state.duration *
+                                this.state.campaignInfo.lifetime_budget_micro,
+                              true
                             )}
                           </Text>
                         </View>
-                      )
-                    )}
-                    {startEditing && (
-                      <View style={styles.reachView}>
-                        {showAudienceList ? (
-                          <Icon
-                            name={`keyboard-arrow-${
-                              I18nManager.isRTL ? "right" : "left"
-                            }`}
-                            type="MaterialIcons"
-                            style={{
-                              fontSize: 25,
-                              color: globalColors.rum,
-                            }}
-                            onPress={this.chooseExistingAudience}
-                          />
-                        ) : (
-                          <AudienceIcon />
-                        )}
-                        <Text
-                          style={[
-                            styles.subHeadings,
-                            styles.selectAudienceText,
-                          ]}
-                        >
-                          {translate("Select Audience")}
-                        </Text>
+                      </Row>
 
-                        {(this.props.audienceList.length === 0 ||
-                          showAudienceList) &&
-                          !this.props.audienceListLoading && (
-                            <TouchableOpacity
-                              style={styles.createView}
-                              onPress={this.createNewAudience}
-                            >
-                              <PurplePlusIcon
-                                width={15}
-                                height={15}
-                                style={styles.iconAdd}
-                              />
-                              <Text style={styles.createText}>
-                                {translate("Create")}
-                              </Text>
-                            </TouchableOpacity>
+                      <BudgetCards
+                        value={this.state.value}
+                        recBudget={this.state.recBudget}
+                        lifetime_budget_micro={
+                          this.state.campaignInfo.lifetime_budget_micro
+                        }
+                        budgetOption={this.state.budgetOption}
+                        _handleBudget={this._handleBudget}
+                        screenProps={this.props.screenProps}
+                        data={this.props.data}
+                      />
+                    </View>
+                  ) : (
+                    startEditing && (
+                      <View style={styles.sliderPlaceHolder}>
+                        <Text style={styles.subHeadings}>
+                          {translate(
+                            "Editing budget and duration\nis currently unavailable"
                           )}
+                        </Text>
+                      </View>
+                    )
+                  )}
+                  {startEditing && (
+                    <View style={styles.reachView}>
+                      {showAudienceList ? (
+                        <Icon
+                          name={`keyboard-arrow-${
+                            I18nManager.isRTL ? "right" : "left"
+                          }`}
+                          type="MaterialIcons"
+                          style={{
+                            fontSize: 25,
+                            color: globalColors.rum,
+                          }}
+                          onPress={this.chooseExistingAudience}
+                        />
+                      ) : (
+                        <AudienceIcon />
+                      )}
+                      <Text
+                        style={[styles.subHeadings, styles.selectAudienceText]}
+                      >
+                        {translate("Select Audience")}
+                      </Text>
 
-                        {!showAudienceList &&
-                        this.props.audienceList.length > 0 ? (
+                      {(this.props.audienceList.length === 0 ||
+                        showAudienceList) &&
+                        !this.props.audienceListLoading && (
                           <TouchableOpacity
                             style={styles.createView}
-                            onPress={this.chooseExistingAudience}
+                            onPress={this.createNewAudience}
                           >
+                            <PurplePlusIcon
+                              width={15}
+                              height={15}
+                              style={styles.iconAdd}
+                            />
                             <Text style={styles.createText}>
-                              {translate("Choose Preset")}
+                              {translate("Create")}
                             </Text>
-                            <Icon
-                              name={`keyboard-arrow-${
-                                I18nManager.isRTL ? "left" : "right"
-                              }`}
-                              type="MaterialIcons"
-                              style={styles.iconRight}
-                            />
                           </TouchableOpacity>
-                        ) : (
-                          this.props.audienceListLoading && (
-                            <ActivityIndicator
-                              color={globalColors.purple}
-                              size="small"
-                              style={styles.iconLoading}
-                            />
-                          )
                         )}
-                      </View>
-                    )}
+
+                      {!showAudienceList &&
+                      this.props.audienceList.length > 0 ? (
+                        <TouchableOpacity
+                          style={styles.createView}
+                          onPress={this.chooseExistingAudience}
+                        >
+                          <Text style={styles.createText}>
+                            {translate("Choose Preset")}
+                          </Text>
+                          <Icon
+                            name={`keyboard-arrow-${
+                              I18nManager.isRTL ? "left" : "right"
+                            }`}
+                            type="MaterialIcons"
+                            style={styles.iconRight}
+                          />
+                        </TouchableOpacity>
+                      ) : (
+                        this.props.audienceListLoading && (
+                          <ActivityIndicator
+                            color={globalColors.purple}
+                            size="small"
+                            style={styles.iconLoading}
+                          />
+                        )
+                      )}
+                    </View>
+                  )}
+                  {!showAudienceList && (
                     <TargetAudience
                       screenProps={this.props.screenProps}
                       _renderSideMenu={this._renderSideMenu}
@@ -1550,18 +1520,26 @@ class InstagramFeedAdTargetting extends Component {
                       startEditing={startEditing}
                       onSelectedGenderChange={this.onSelectedGenderChange}
                     />
+                  )}
 
-                    <ReachBar
-                      loading={this.props.loading}
-                      campaignInfo={campaignInfo}
-                      _handleSubmission={this._handleSubmission}
-                      startEditing={startEditing}
-                      campaignInfo={campaignInfo}
-                      editCampaign={this.editCampaign}
+                  {showAudienceList && (
+                    <InstagramAudienceList
                       screenProps={this.props.screenProps}
+                      navigation={this.props.navigation}
+                      chooseExistingAudience={this.chooseExistingAudience}
+                      setSelectedAudience={this.setSelectedAudience}
                     />
-                  </Content>
-                </Container>
+                  )}
+                  <ReachBar
+                    loading={this.props.loading}
+                    campaignInfo={campaignInfo}
+                    _handleSubmission={this._handleSubmission}
+                    startEditing={startEditing}
+                    campaignInfo={campaignInfo}
+                    editCampaign={this.editCampaign}
+                    screenProps={this.props.screenProps}
+                  />
+                </Content>
               </Container>
             </View>
           </Sidemenu>

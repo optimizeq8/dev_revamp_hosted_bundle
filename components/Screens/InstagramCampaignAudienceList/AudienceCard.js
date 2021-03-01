@@ -7,7 +7,7 @@ import styles from "./styles";
 import { globalColors } from "../../../GlobalStyles";
 
 // DATA
-import countries from "../../Data/countries.billingAddress";
+import countries from "../InstagramCampaignCreate/Feed/AdTargetting/data";
 // ICONS
 import PenIcon from "../../../assets/SVGs/Pen";
 import TrashIcon from "../../../assets/SVGs/Bin.svg";
@@ -15,13 +15,14 @@ import TrashIcon from "../../../assets/SVGs/Bin.svg";
 export default AudienceCard = (props) => {
   const { item } = props;
   const { translate } = props.screenProps;
-  let countryNames = item.targeting.geos.map((country) => country.country_code);
-  let updatedcountryNames = countries.filter((ctry) => {
-    return countryNames.indexOf(ctry.value) !== -1;
-  });
-  updatedcountryNames = updatedcountryNames.map((name) =>
-    translate(name.label)
+
+  let countryNames = item.targeting.geo_locations.countries.map(
+    (country) => country
   );
+  countryNames = countries.filter((ctry) => {
+    if (countryNames.includes(ctry.value)) return translate(ctry.label);
+  });
+  countryNames = countryNames.map((ct) => translate(ct.label));
 
   return (
     <View style={[styles.cardViewOut]}>
@@ -45,9 +46,7 @@ export default AudienceCard = (props) => {
         }}
       >
         <Text style={styles.audienceName}>{item.name}</Text>
-        <Text style={styles.countryNames}>
-          {updatedcountryNames.join(", ")}
-        </Text>
+        <Text style={styles.countryNames}>{countryNames.join(", ")}</Text>
       </TouchableOpacity>
       <View style={styles.flexAddEdit}>
         <TouchableOpacity

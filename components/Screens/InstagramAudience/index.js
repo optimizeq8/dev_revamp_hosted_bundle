@@ -130,138 +130,44 @@ export class SnapchatAudience extends Component {
       });
     }
   }
+
   _handleSubmission = () => {
     const { translate } = this.props.screenProps;
+    let rep = cloneDeep(this.props.audience);
     const audienceNameError =
       this.props.audience.name.length === 0
         ? "Please enter name for your audience"
         : null;
-    const languagesError =
-      this.props.audience.targeting.demographics[0].languages.length === 0
-        ? "Please choose a language."
-        : null;
-
-    const countryError = validateWrapper(
-      "mandatory",
-      this.props.audience.targeting.geos[0].country_code
-    );
+    const countryRegionError =
+      rep.targeting.geo_locations.countries.length === 0 &&
+      rep.targeting.geo_locations.regions.length === 0;
     if (audienceNameError) {
       showMessage({
         message: translate(audienceNameError),
         type: "warning",
         position: "top",
       });
-    } else if (countryError) {
+    } else if (countryRegionError) {
       showMessage({
         message: translate("Please choose a country"),
         type: "warning",
         position: "top",
       });
     }
-    // else if (languagesError) {
-    //   showMessage({
-    //     message: translate("Please choose a language"),
-    //     type: "warning",
-    //     position: "top",
-    //   });
-    // }
     // segment track for error on final submit
-    if (countryError || audienceNameError) {
+    if (countryRegionError || audienceNameError) {
       analytics.track(`a_error_form`, {
         error_page: "audience_targeting",
         source_action: "a_save_audience_targeting",
         timestamp: new Date().getTime(),
-
         // campaign_channel: "snapchat",
         // campaign_ad_type: this.props.adType,
-        error_description: countryError || languagesError || audienceNameError,
+        error_description: countryRegionError || audienceNameError,
       });
     }
-    if (!languagesError && !countryError && !audienceNameError) {
-      let rep = cloneDeep(this.props.audience);
-      // if (rep.targeting.demographics[0].gender === "") {
-      //   delete rep.targeting.demographics[0].gender;
-      // }
-      // if (
-      //   rep.targeting.geos[0].hasOwnProperty("region_id") &&
-      //   rep.targeting.geos[0].region_id.length === 0
-      // ) {
-      //   delete rep.targeting.geos[0].region_id;
-      // }
-      // if (
-      //   rep.targeting.hasOwnProperty("interests") &&
-      //   rep.targeting.interests[0].category_id.length === 0
-      // ) {
-      //   delete rep.targeting.interests;
-      // }
-      // if (
-      //   rep.targeting.devices[0].hasOwnProperty("marketing_name") &&
-      //   rep.targeting.devices[0].marketing_name.length === 0
-      // ) {
-      //   delete rep.targeting.devices[0].marketing_name;
-      // }
-      // if (rep.targeting.devices[0].os_type === "") {
-      //   delete rep.targeting.devices[0].os_type;
-      // }
-      // if (rep.targeting.devices[0].os_version_max === "") {
-      //   delete rep.targeting.devices[0].os_version_max;
-      //   delete rep.targeting.devices[0].os_version_min;
-      // }
-      // if (
-      //   Object.entries(rep.targeting.devices[0]).length === 0 &&
-      //   rep.targeting.devices[0].constructor === Object
-      // ) {
-      //   delete rep.targeting.devices;
-      // }
-      //   if (rep.targeting.demographics[0].max_age === 50) {
-      //     rep.targeting.demographics[0].max_age = "50+";
-      //   }
-      // rep.targeting = JSON.stringify(rep.targeting);
-      // let interestNamesList = [];
-      // interestNamesList =
-      //   this.state.interestNames &&
-      //   this.state.interestNames.length > 0 &&
-      //   this.state.interestNames.map((inter) => inter.name);
-      // const segmentInfo = {
-      //   campaign_id: this.props.campaign_id,
+    if (!audienceNameError && !countryRegionError) {
+      console.log("rep", JSON.stringify(rep, null, 2));
 
-      //   business_name: this.props.mainBusiness.businessname,
-      //   campaign_budget: this.props.audience.lifetime_budget_micro,
-      //   campaign_gender:
-      //     this.props.audience.targeting.demographics[0].gender === ""
-      //       ? "ALL"
-      //       : this.props.audience.targeting.demographics[0].gender,
-      //   campaign_max_age: this.props.audience.targeting.demographics[0].max_age,
-      //   campaign_min_age: this.props.audience.targeting.demographics[0].min_age,
-      //   campaign_country_name: this.state.countryName,
-      //   campaign_region_names:
-      //     this.state.regionNames && this.state.regionNames.length > 0
-      //       ? this.state.regionNames.join(", ")
-      //       : null,
-      //   campaign_languages:
-      //     this.props.audience.targeting.demographics[0].languages &&
-      //     this.props.audience.targeting.demographics[0].languages.length > 0
-      //       ? this.props.audience.targeting.demographics[0].languages.join(", ")
-      //       : null,
-      //   campaign_min_version: this.props.audience.targeting.devices[0]
-      //     .os_version_min,
-      //   campaign_max_version: this.props.audience.targeting.devices[0]
-      //     .os_version_max,
-      //   campaign_os_type:
-      //     this.props.audience.targeting.devices[0].os_type === ""
-      //       ? "ALL"
-      //       : this.props.audience.targeting.devices[0].os_type,
-      //   campaign_devices_name:
-      //     this.props.audience.targeting.devices[0].marketing_name &&
-      //     this.props.audience.targeting.devices[0].marketing_name.length > 0
-      //       ? this.props.audience.targeting.devices[0].marketing_name.join(", ")
-      //       : null,
-      //   campaign_interests_names:
-      //     interestNamesList && interestNamesList.length > 0
-      //       ? interestNamesList.join(", ")
-      //       : null,
-
-      // };
       if (this.editAudience) {
         this.props.updateAudience(
           rep.id,
@@ -270,9 +176,12 @@ export class SnapchatAudience extends Component {
           this.state.locationsInfo
         );
       } else {
-        console.log("rep.targeting", JSON.stringify(rep.targeting, null, 2));
         rep.targeting = JSON.stringify(rep.targeting);
-        // this.props.createAudience(rep, true, this.state.locationsInfo);
+        this.props.createAudience(
+          rep,
+          "InstagramFeedAdTargetting",
+          this.state.locationsInfo
+        );
       }
     }
   };
