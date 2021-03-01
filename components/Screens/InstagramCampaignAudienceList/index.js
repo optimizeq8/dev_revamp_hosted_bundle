@@ -79,6 +79,7 @@ class InstagramCampaignAudience extends React.Component {
         setAudienceId={this.setAudienceId}
         getAudienceDetail={this.props.getAudienceDetail}
         setSelectedAudience={this.props.setSelectedAudience}
+        audience_type={this.props.audience_type}
       />
     );
   };
@@ -88,6 +89,7 @@ class InstagramCampaignAudience extends React.Component {
       source: "audience_list",
       source_action: "a_create_audience_detail",
       audience_channel: "instagram",
+      audience_type: this.props.audience_type,
     });
   };
 

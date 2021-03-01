@@ -14,7 +14,7 @@ import analytics from "@segment/analytics-react-native";
 import Sidemenu from "../../../../MiniComponents/SideMenu";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import ReachBar from "./ReachBar";
 import SelectRegions from "../../../../MiniComponents/SelectRegionsInstagram";
 import SelectLanguages from "../../../../MiniComponents/SelectLanguages";
@@ -1033,6 +1033,7 @@ class InstagramFeedAdTargetting extends Component {
       source: "audience_list",
       source_action: "a_create_audience_detail",
       audience_channel: "instagram",
+      audience_type: "InstagramFeedAdTargetting",
     });
   };
   chooseExistingAudience = () => {
@@ -1472,8 +1473,8 @@ class InstagramFeedAdTargetting extends Component {
                   contentContainerStyle={styles.contentContainer}
                 >
                   {!this.editCampaign ? (
-                    <View>
-                      <Row style={styles.row}>
+                    <View style={{ marginTop: RFValue(2.5, 414) }}>
+                      <Row size={-1} style={styles.row}>
                         <View style={styles.walletTextView}>
                           <WalletIcon
                             width={30}
@@ -1628,6 +1629,7 @@ class InstagramFeedAdTargetting extends Component {
                       navigation={this.props.navigation}
                       chooseExistingAudience={this.chooseExistingAudience}
                       setSelectedAudience={this.setSelectedAudience}
+                      audience_type={"InstagramFeedAdTargetting"}
                     />
                   )}
                   <ReachBar

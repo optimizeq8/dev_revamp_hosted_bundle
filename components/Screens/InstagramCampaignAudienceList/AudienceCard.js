@@ -55,6 +55,7 @@ export default AudienceCard = (props) => {
             props.getAudienceDetail(item.id);
             props.navigation.navigate("InstagramAudienceTagetting", {
               editAudience: true,
+              audience_type: this.props.audience_type,
             });
           }}
         >

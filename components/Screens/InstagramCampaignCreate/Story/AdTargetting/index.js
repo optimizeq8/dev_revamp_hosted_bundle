@@ -14,7 +14,7 @@ import analytics from "@segment/analytics-react-native";
 import Sidemenu from "../../../../MiniComponents/SideMenu";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
-
+import { RFValue } from "react-native-responsive-fontsize";
 import ReachBar from "./ReachBar";
 import SelectRegions from "../../../../MiniComponents/SelectRegionsInstagram";
 import SelectLanguages from "../../../../MiniComponents/SelectLanguages";
@@ -1014,6 +1014,7 @@ class InstagramStoryAdTargetting extends Component {
       source: "audience_list",
       source_action: "a_create_audience_detail",
       audience_channel: "instagram",
+      audience_type: "InstagramStoryAdTargetting",
     });
   };
   chooseExistingAudience = () => {
@@ -1444,7 +1445,7 @@ class InstagramStoryAdTargetting extends Component {
                     contentContainerStyle={styles.contentContainer}
                   >
                     {!this.editCampaign ? (
-                      <>
+                      <View style={{ marginTop: RFValue(2.5, 414) }}>
                         <Row size={-1} style={styles.row}>
                           <View style={styles.walletTextView}>
                             <WalletIcon
@@ -1495,7 +1496,7 @@ class InstagramStoryAdTargetting extends Component {
                           screenProps={this.props.screenProps}
                           data={this.props.data}
                         />
-                      </>
+                      </View>
                     ) : (
                       startEditing && (
                         <View style={styles.sliderPlaceHolder}>
@@ -1605,6 +1606,7 @@ class InstagramStoryAdTargetting extends Component {
                         navigation={this.props.navigation}
                         chooseExistingAudience={this.chooseExistingAudience}
                         setSelectedAudience={this.setSelectedAudience}
+                        audience_type={"InstagramStoryAdTargetting"}
                       />
                     )}
 

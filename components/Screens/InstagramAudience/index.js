@@ -176,7 +176,10 @@ export class InstagramAudience extends Component {
         rep.targeting = JSON.stringify(rep.targeting);
         this.props.createAudience(
           rep,
-          "InstagramFeedAdTargetting",
+          this.props.navigation.getParam(
+            "audience_type",
+            "InstagramFeedAdTargetting"
+          ),
           this.state.locationsInfo
         );
       }
