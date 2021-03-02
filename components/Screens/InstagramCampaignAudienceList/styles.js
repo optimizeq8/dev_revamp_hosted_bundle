@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     marginVertical: RFValue(2.5, 414),
   },
   countryNames: {
-    fontSize: 10,
+    fontSize: RFValue(5, 414),
     fontFamily: "montserrat-regular",
     color: globalColors.purple3,
     textAlign: "left",

@@ -905,7 +905,18 @@ class InstagramStoryAdTargetting extends Component {
         //   campaign_id: this.props.campaign_id,
         //   campaign_budget: this.state.campaignInfo.lifetime_budget_micro
         // });
+        /** If the audience list is empty for the first time create a new audience */
 
+        if (this.props.audienceList.length === 0) {
+          this.props.createAudience(
+            {
+              name: "Audience",
+              targeting: rep.targeting,
+            },
+            false,
+            []
+          );
+        }
         this.props.ad_details_instagram(
           rep,
           this.props.navigation,
@@ -1667,6 +1678,10 @@ const mapDispatchToProps = (dispatch) => ({
 
   setInstagramAudienceDetail: (audienceInfo) =>
     dispatch(actionCreators.setInstagramAudienceDetail(audienceInfo)),
+  createAudience: (audience, navigate, locationInfo) =>
+    dispatch(
+      actionCreators.createInstagramAudience(audience, navigate, locationInfo)
+    ),
   // setCampaignInfoForTransaction: data =>
   //   dispatch(actionCreators.setCampaignInfoForTransaction(data)),
   // resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
