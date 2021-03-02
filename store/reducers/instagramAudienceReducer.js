@@ -71,21 +71,21 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_INSTAGRAM_AUDIENCE_DETAIL:
       let audienceCopy = {
         ...action.payload,
-        targeting: {
-          genders: [""],
-          flexible_spec: [
-            {
-              interests: [],
-            },
-          ],
-          user_os: [""],
-          user_device: [],
-          os_version_min: "",
-          os_version_max: "",
-          geo_locations: { countries: [], regions: [] },
-          age_max: 65,
-          age_min: 18,
-        },
+        // targeting: {
+        //   genders: [""],
+        //   flexible_spec: [
+        //     {
+        //       interests: [],
+        //     },
+        //   ],
+        //   user_os: [""],
+        //   user_device: [],
+        //   os_version_min: "",
+        //   os_version_max: "",
+        //   geo_locations: { countries: [], regions: [] },
+        //   age_max: 65,
+        //   age_min: 18,
+        // },
       };
 
       return {

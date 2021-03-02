@@ -92,27 +92,27 @@ export class InstagramAudience extends Component {
     };
     this.editAudience = this.props.navigation.getParam("editAudience", false);
   }
-
   componentDidUpdate(prevProps) {
     if (
       prevProps.audienceDetailLoading !== this.props.audienceDetailLoading &&
+      this.props.audience.targeting.geo_locations.countries &&
       this.props.audience.targeting.geo_locations.countries.length !== 0
     ) {
       let showRegions = false;
-      let countryRegions = this.props.audience.targeting.geos_locations.countries.map(
+      let countryRegions = this.props.audience.targeting.geo_locations.countries.map(
         (cou) => {
           let foundCountryReg = find(
             country_regions,
-            (country) => country.country_code === cou.value
+            (country) => country.key === cou.value
           );
-          // showRegions = foundCountryReg.regions.length > 3;
+          //   showRegions = foundCountryReg.regions.length > 3;
 
           return foundCountryReg;
         }
       );
 
-      let locationsInfo = [];
-      let markers = [];
+      //   let locationsInfo = [];
+      //   let markers = [];
       //   if (this.props.audience.coordinates) {
       //     locationsInfo = cloneDeep(JSON.parse(this.props.audience.coordinates));
       //     markers = cloneDeep(this.props.audience.targeting.locations[0].circles);
@@ -121,13 +121,12 @@ export class InstagramAudience extends Component {
       this.setState({
         regions: countryRegions ? countryRegions : [],
         filteredRegions: countryRegions ? countryRegions : [],
-        showRegions: showRegions,
-        locationsInfo,
-        markers,
+        // showRegions: showRegions,
+        // locationsInfo,
+        // markers,
       });
     }
   }
-
   _handleSubmission = () => {
     const { translate } = this.props.screenProps;
     let rep = cloneDeep(this.props.audience);
@@ -163,8 +162,6 @@ export class InstagramAudience extends Component {
       });
     }
     if (!audienceNameError && !countryRegionError) {
-      console.log("rep", JSON.stringify(rep, null, 2));
-
       if (this.editAudience) {
         this.props.updateAudience(
           rep.id,
@@ -837,7 +834,7 @@ export class InstagramAudience extends Component {
     let { saveAudienceLoading = false, audience } = this.props;
     const { targeting } = audience;
     const { translate } = this.props.screenProps;
-    let languages_names = this.getLanguagesName();
+    // let languages_names = this.getLanguagesName();
     let interests_names = this.getInterestNames();
     let countries_names = [];
     countries.forEach((r) => {
