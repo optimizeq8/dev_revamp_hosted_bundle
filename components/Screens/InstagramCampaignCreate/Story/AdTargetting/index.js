@@ -1549,8 +1549,8 @@ class InstagramStoryAdTargetting extends Component {
                         <Row size={-1} style={styles.row}>
                           <View style={styles.walletTextView}>
                             <WalletIcon
-                              width={30}
-                              height={30}
+                              width={RFValue(15, 414)}
+                              height={RFValue(15, 414)}
                               fill={globalColors.rum}
                             />
                             <Text

@@ -89,6 +89,7 @@ export class InstagramAudience extends Component {
       selectedCountriesAndRegions: [],
       filteredRegions: [],
       customInterests: [],
+      locationsInfo: [],
     };
     this.editAudience = this.props.navigation.getParam("editAudience", false);
   }
@@ -111,19 +112,21 @@ export class InstagramAudience extends Component {
         }
       );
 
-      //   let locationsInfo = [];
-      //   let markers = [];
-      //   if (this.props.audience.coordinates) {
-      //     locationsInfo = cloneDeep(JSON.parse(this.props.audience.coordinates));
-      //     markers = cloneDeep(this.props.audience.targeting.locations[0].circles);
-      //   }
+      let locationsInfo = [];
+      let markers = [];
+      if (this.props.audience.coordinates) {
+        locationsInfo = cloneDeep(JSON.parse(this.props.audience.coordinates));
+        markers = cloneDeep(
+          this.props.audience.targeting.geo_locations.customLocations
+        );
+      }
 
       this.setState({
         regions: countryRegions ? countryRegions : [],
         filteredRegions: countryRegions ? countryRegions : [],
         // showRegions: showRegions,
-        // locationsInfo,
-        // markers,
+        locationsInfo,
+        markers,
       });
     }
   }
@@ -481,27 +484,28 @@ export class InstagramAudience extends Component {
     });
   };
 
-  onSelectedMapChange = (selectedItems, unselect = false, locationsInfo) => {
+  onSelectedMapChange = (
+    selectedItems,
+    unselect = false,
+    locationsInfo = []
+  ) => {
     let stateRep = cloneDeep(this.props.audience);
     if (unselect) {
-      stateRep.targeting.locations[0].circles = [];
-      // this.props.setAudienceDetail({ markers: [], locationsInfo: [] });
-    } else stateRep.targeting.locations[0].circles = selectedItems;
-    analytics.track(`a_audience_map_locations`, {
-      source: "audience_detail",
-      source_action: "a_audience_map_locations",
-      audience_map_locations: selectedItems,
+      stateRep.targeting.geo_locations.custom_locations = [];
+    } else stateRep.targeting.geo_locations.custom_locations = selectedItems;
+    analytics.track(`a_ad_map_locations`, {
+      source: "ad_targeting",
+      source_action: "a_ad_map_locations",
+      campaign_map_locations: selectedItems,
     });
     this.setState({
-      // campaignInfo: { ...stateRep },
+      //   campaignInfo: { ...stateRep },
       locationsInfo,
     });
-
     this.props.setAudienceDetail({
       ...stateRep,
     });
   };
-
   onSelectedRegionChange = (
     selectedItem,
     regionName,
@@ -910,20 +914,16 @@ export class InstagramAudience extends Component {
         }
         menu = (
           <SnapchatLocation
-            country_code={this.props.audience.targeting.geos[0].country_code}
+            country_code={targeting.geo_locations.countries[0]}
             screenProps={this.props.screenProps}
             _handleSideMenuState={this._handleSideMenuState}
-            circles={this.props.audience.targeting.locations[0].circles}
+            circles={targeting.geo_locations.custom_locations}
             locationsInfo={this.state.locationsInfo}
             onSelectedMapChange={this.onSelectedMapChange}
             save_campaign_info={this.props.setAudienceDetail}
             data={this.props.audience}
-            regionsSelected={this.props.audience.targeting.geos}
-            onSelectedRegionChange={this.onSelectedRegionChange}
-            onSelectedCountryChange={this.onSelectedCountryChange}
             _handleSideMenuState={this._handleSideMenuState}
-            showBackButton={true}
-            c
+            editCampaign={true}
           />
         );
         break;
@@ -1167,6 +1167,49 @@ export class InstagramAudience extends Component {
                         </View>
 
                         {regions_names.length !== 0 ? (
+                          <PurpleCheckmarkIcon
+                            width={RFValue(11, 414)}
+                            height={RFValue(15, 414)}
+                          />
+                        ) : (
+                          <PurplePlusIcon
+                            width={RFValue(11, 414)}
+                            height={RFValue(15, 414)}
+                          />
+                        )}
+                      </TouchableOpacity>
+                    )}
+                    {expandLocation && (
+                      <TouchableOpacity
+                        disabled={saveAudienceLoading}
+                        onPress={() => this.callFunction("map")}
+                        style={styles.targetTouchable}
+                      >
+                        <View
+                          style={[
+                            globalStyles.column,
+                            styles.flex,
+                            styles.audienceSubHeading,
+                          ]}
+                        >
+                          <Text style={styles.menutext}>
+                            {translate("Map Targeting")}
+                          </Text>
+                          <Text style={styles.menudetails}>
+                            {this.state.locationsInfo &&
+                            this.state.locationsInfo.length > 0
+                              ? (typeof this.state.locationsInfo === "string"
+                                  ? JSON.parse(this.state.locationsInfo)
+                                  : this.state.locationsInfo
+                                )
+                                  .map((loc) => translate(loc.countryName))
+                                  .join(", ")
+                              : ""}
+                          </Text>
+                        </View>
+
+                        {this.state.locationsInfo &&
+                        this.state.locationsInfo.length > 0 ? (
                           <PurpleCheckmarkIcon
                             width={RFValue(11, 414)}
                             height={RFValue(15, 414)}
@@ -1610,6 +1653,7 @@ const mapStateToProps = (state) => ({
   saveAudienceLoading: state.instagramAudience.saveAudienceLoading,
   mainBusiness: state.account.mainBusiness,
   interests: state.instagramAds.interests,
+  customLocations: state.instagramAds.customLocations,
 });
 
 const mapDispatchToProps = (dispatch) => ({

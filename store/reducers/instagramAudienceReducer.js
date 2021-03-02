@@ -18,7 +18,7 @@ const initialState = {
       user_device: [],
       os_version_min: "",
       os_version_max: "",
-      geo_locations: { countries: [], regions: [] },
+      geo_locations: { countries: [], regions: [], custom_locations: [] },
       age_max: 65,
       age_min: 18,
     },
