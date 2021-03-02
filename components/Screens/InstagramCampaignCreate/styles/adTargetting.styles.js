@@ -331,13 +331,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: RFValue(5, 414),
     textTransform: "capitalize",
   },
-  createView: { flexDirection: "row", alignItems: "center" },
+  createView: {
+    flexDirection: "row",
+    alignItems: "center",
+    right: 0,
+    position: "absolute",
+    // alignSelf: "flex-end",
+  },
   createText: {
     fontFamily: "montserrat-regular",
     fontSize: RFValue(6, 414),
     color: "#9325FF",
   },
-  iconAdd: { marginHorizontal: 5 },
+  iconAdd: { marginHorizontal: RFValue(2.5, 414) },
+  iconRight: {
+    fontSize: RFValue(10, 414),
+    color: globalColors.purple,
+  },
 });
 
 export default styles;
