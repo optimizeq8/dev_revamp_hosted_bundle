@@ -139,8 +139,8 @@ class DateFields extends Component {
           });
         }, 200);
       } else {
-        if (this.props.handleRepeatModal) {
-          this.props.handleRepeatModal(false);
+        if (this.props.handleSwitch) {
+          this.props.handleSwitch(true);
         }
         this.setState({
           modalVisible: false,

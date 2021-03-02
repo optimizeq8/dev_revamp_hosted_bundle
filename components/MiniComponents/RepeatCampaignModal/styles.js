@@ -1,9 +1,13 @@
 import { StyleSheet } from "react-native";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 export default StyleSheet.create({
   datePickerContainer: {
-    height: "100%",
+    height: "80%",
     width: "100%",
-    backgroundColor: "#0005",
+    backgroundColor: "#fff",
+    top: heightPercentageToDP(20),
+    borderRadius: 50,
+    padding: 8,
   },
 });

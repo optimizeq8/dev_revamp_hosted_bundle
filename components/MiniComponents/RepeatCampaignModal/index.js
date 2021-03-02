@@ -1,10 +1,17 @@
 import React, { Component } from "react";
-import { Modal, Text, View } from "react-native";
+import { Modal, Text, TouchableOpacity, View } from "react-native";
 import DateFields from "../DatePickerRedesigned/DateFields";
 import analytics from "@segment/analytics-react-native";
-
+import RepeatCampaignBudget from "../RepeatCampaignBudget";
 import styles from "./styles";
 import CampaignDuration from "../CampaignDurationField";
+import CustomHeader from "../Header";
+import { globalColors } from "../../../GlobalStyles";
+import SafeAreaView from "react-native-safe-area-view";
+import { heightPercentageToDP } from "react-native-responsive-screen";
+import * as Animatable from "react-native-animatable";
+import { RFValue } from "react-native-responsive-fontsize";
+
 export default class RepeatCampaignModal extends Component {
   state = {
     start_time: "",
@@ -12,6 +19,7 @@ export default class RepeatCampaignModal extends Component {
     showDatePicker: false,
     showBudgetSelector: false,
     duration: 7,
+    switchComponent: false,
   };
   componentDidMount() {
     if (this.props.showRepeatModal) {
@@ -81,25 +89,84 @@ export default class RepeatCampaignModal extends Component {
   stopTimer = () => {
     if (this.timer) clearTimeout(this.timer);
   };
+
+  handleSwitch = (value) => {
+    this.setState({ switchComponent: value });
+    if (!value) {
+      this.dateField.showModal();
+    }
+  };
   render() {
     let { showRepeatModal = true, screenProps, handleRepeatModal } = this.props;
+    let { switchComponent } = this.state;
     return (
-      <Modal visible={showRepeatModal} transparent>
-        <View style={styles.datePickerContainer}>
-          <DateFields
-            screenProps={screenProps}
-            handleRepeatModal={handleRepeatModal}
-            onRef={(ref) => (this.dateField = ref)}
-            handleStartDatePicked={this.handleStartDatePicked}
-            handleEndDatePicked={this.handleEndDatePicked}
-            start_time={this.state.start_time}
-            end_time={this.state.start_time}
-            showDurationSelector={true}
-            stopTimer={this.stopTimer}
-            handleDuration={this.handleDuration}
-            duration={this.state.duration}
-            disabled={this.state.duration === 3}
-          />
+      <Modal
+        visible={showRepeatModal}
+        animationType="fade"
+        transparent
+        onRequestClose={() => this.handleRepeatModal(false)}
+      >
+        <TouchableOpacity
+          style={{
+            width: "100%",
+            height: "20%",
+            position: "absolute",
+          }}
+          onPress={() => this.handleRepeatModal(false)}
+          activeOpacity={1}
+        ></TouchableOpacity>
+        <View style={{ backgroundColor: "#0007", height: "100%" }}>
+          <Animatable.View
+            duration={700}
+            easing={"ease"}
+            animation={switchComponent ? "slideInUp" : "slideOutDown"}
+          >
+            <View
+              style={[
+                styles.datePickerContainer,
+                !this.dateField && { backgroundColor: "#0000" },
+                switchComponent && { top: RFValue(300, 414) },
+              ]}
+            >
+              {this.dateField && (
+                <CustomHeader
+                  screenProps={screenProps}
+                  closeButton={false}
+                  segment={{
+                    str: "Ad Details Back Button",
+                    source: "ad_targeting",
+                    source_action: "a_go_back",
+                  }}
+                  actionButton={() => this.handleSwitch(false)}
+                  titleStyle={{ color: globalColors.rum }}
+                  iconColor={globalColors.rum}
+                  navigation={undefined}
+                  title={"Repeat Campaign"}
+                />
+              )}
+
+              <RepeatCampaignBudget
+                screenProps={screenProps}
+                start_time={this.state.start_time}
+                end_time={this.state.start_time}
+              />
+              <DateFields
+                screenProps={screenProps}
+                handleRepeatModal={handleRepeatModal}
+                onRef={(ref) => (this.dateField = ref)}
+                handleStartDatePicked={this.handleStartDatePicked}
+                handleEndDatePicked={this.handleEndDatePicked}
+                start_time={this.state.start_time}
+                end_time={this.state.start_time}
+                showDurationSelector={true}
+                stopTimer={this.stopTimer}
+                handleDuration={this.handleDuration}
+                duration={this.state.duration}
+                disabled={this.state.duration === 3}
+                handleSwitch={this.handleSwitch}
+              />
+            </View>
+          </Animatable.View>
         </View>
       </Modal>
     );
