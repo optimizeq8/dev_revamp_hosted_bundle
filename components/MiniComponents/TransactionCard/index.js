@@ -62,6 +62,11 @@ class TransactionCard extends Component {
               ? translate("Wallet") + "\t" + translate("Top Up")
               : transaction.campaign_name}
           </Text>
+          {transaction.refunded === "1" && (
+            <View style={styles.refundedContainer}>
+              <Text style={styles.refundedText}>{translate("Refunded")}</Text>
+            </View>
+          )}
         </View>
         <View style={styles.mainView}>
           <View>
