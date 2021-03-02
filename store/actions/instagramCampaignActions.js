@@ -451,14 +451,19 @@ export const get_total_reach_instagram = (info) => {
  * @param {*} navigation
  * @param {*} segmentInfo
  */
-export const ad_details_instagram = (info, navigation, segmentInfo) => {
+export const ad_details_instagram = (
+  info,
+  navigation,
+  segmentInfo,
+  locationsInfo
+) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DETAIL_INSTAGRAM,
       payload: true,
     });
     InstagramBackendURL()
-      .post(`saveinstatargeting`, info)
+      .post(`saveinstatargeting`, { ...info, coordinates: locationsInfo })
       .then((res) => {
         return res.data;
       })
@@ -1053,11 +1058,55 @@ export const downloadInstagramCSV = (campaign_id, email, showModalMessage) => {
           channel: "email",
           source: "ad_detail",
           source_action: "a_share_csv",
-          campaign_channel: "snapchat",
+          campaign_channel: "instagram",
           action_status: data.success ? "success" : "failure",
         });
         showModalMessage(data.message, data.success ? "success" : "warning");
       })
       .catch((err) => showModalMessage(err));
+  };
+};
+
+export const geoLocationSearch = (latLong, updateMarkers, radius) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SET_INSTAGRAM_CUSTOM_LOCATION_LOADING,
+      payload: true,
+    });
+    InstagramBackendURL()
+      .post(`geoLocationSearch`, {
+        latitude: latLong.latitude,
+        longitude: latLong.longitude,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        if (data && data.data.hasOwnProperty("custom_locations")) {
+          updateMarkers();
+          return dispatch({
+            type: actionTypes.SET_INSTAGRAM_CUSTOM_LOCATION,
+            payload: {
+              data: data.data.custom_locations,
+              radius,
+              index: latLong.index,
+            },
+          });
+        }
+      })
+      .catch((err) => {
+        dispatch({
+          type: actionTypes.SET_INSTAGRAM_CUSTOM_LOCATION_LOADING,
+          payload: false,
+        });
+        errorMessageHandler(err);
+      });
+  };
+};
+
+export const deleteCustomLocation = (index) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.DELETE_INSTAGRAM_CUSTOM_LOCATION_LOADING,
+      payload: index,
+    });
   };
 };

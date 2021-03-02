@@ -236,6 +236,8 @@ export {
   updateInstagramStatus,
   endInstagramCampaign,
   downloadInstagramCSV,
+  geoLocationSearch,
+  deleteCustomLocation,
 } from "./instagramCampaignActions";
 
 export {

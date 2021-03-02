@@ -15,6 +15,9 @@ import Sidemenu from "../../../../MiniComponents/SideMenu";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
 import { RFValue } from "react-native-responsive-fontsize";
+let LocationMap = null;
+import SnapchatLocation from "../../../../MiniComponents/SnapchatLocation";
+
 import ReachBar from "./ReachBar";
 import SelectRegions from "../../../../MiniComponents/SelectRegionsInstagram";
 import SelectLanguages from "../../../../MiniComponents/SelectLanguages";
@@ -79,7 +82,7 @@ class InstagramFeedAdTargetting extends Component {
           user_device: [],
           os_version_min: "",
           os_version_max: "",
-          geo_locations: { countries: [], regions: [] },
+          geo_locations: { countries: [], regions: [], custom_locations: [] },
           age_max: 65,
           age_min: 18,
         },
@@ -107,6 +110,7 @@ class InstagramFeedAdTargetting extends Component {
       customInterests: [],
       duration: 3,
       selectedAllRegions: false,
+      locationsInfo: [],
     };
     this.editCampaign = this.props.navigation.getParam("editCampaign", false);
   }
@@ -138,6 +142,14 @@ class InstagramFeedAdTargetting extends Component {
       return false;
     }
     if (this.state.sidemenustate) {
+      if (
+        this.state.sidemenu === "map" &&
+        this.state.locationsInfo &&
+        this.state.locationsInfo.length === 0
+      ) {
+        this.onSelectedMapChange([], true, []);
+        this.props.deleteCustomLocation("all");
+      }
       this._handleSideMenuState(false);
     } else this.props.navigation.goBack();
     return true;
@@ -222,12 +234,22 @@ class InstagramFeedAdTargetting extends Component {
           selectedGender = "";
           break;
       }
+      let editedMapLocation = [];
+      let markers = [];
+      if (editedCampaign.coordinates) {
+        editedMapLocation = cloneDeep(JSON.parse(editedCampaign.coordinates));
+        markers = cloneDeep(
+          editedCampaign.targeting.geo_locations.custom_locations
+        );
+      }
       this.setState(
         {
           campaignInfo: editedCampaign,
           startEditing: false,
           selectedGender,
           duration,
+          locationsInfo: editedMapLocation,
+          markers,
         },
         () => this._calcReach()
       );
@@ -773,7 +795,6 @@ class InstagramFeedAdTargetting extends Component {
       campaign_id: this.state.campaignInfo.campaign_id,
       daily_budget_micro: this.state.campaignInfo.lifetime_budget_micro,
     };
-    console.log("obj2", JSON.stringify(obj2, null, 2));
 
     await this.props.instagram_ad_audience_size(obj, obj2);
     // }
@@ -881,6 +902,15 @@ class InstagramFeedAdTargetting extends Component {
       if (rep.targeting.user_device && rep.targeting.user_device.length === 0) {
         delete rep.targeting.user_device;
       }
+
+      if (
+        rep.targeting.geo_locations.custom_locations.length > 0 &&
+        !this.editCampaign
+      ) {
+        rep.targeting.geo_locations.custom_locations = this.props.customLocations;
+      } else if (!this.editCampaign) {
+        delete rep.targeting.geo_locations.custom_locations;
+      }
       rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
         campaign_ad_type: "InstagramFeedAd",
@@ -912,6 +942,14 @@ class InstagramFeedAdTargetting extends Component {
             : null,
       };
       if (this.editCampaign) {
+        if (
+          this.state.campaignInfo.targeting.geo_locations.custom_locations
+            .length === 0
+        ) {
+          rep.coordinates = [];
+        } else if (this.state.locationsInfo.length > 0) {
+          rep.coordinates = this.state.locationsInfo;
+        } else rep.coordinates = JSON.parse(rep.coordinates);
         this.props.updateInstagramCampaign(
           rep,
           this.props.mainBusiness.businessid,
@@ -937,7 +975,8 @@ class InstagramFeedAdTargetting extends Component {
         this.props.ad_details_instagram(
           rep,
           this.props.navigation,
-          segmentInfo
+          segmentInfo,
+          this.state.locationsInfo
         );
       }
     }
@@ -1155,6 +1194,33 @@ class InstagramFeedAdTargetting extends Component {
     );
   };
 
+  onSelectedMapChange = (
+    selectedItems,
+    unselect = false,
+    locationsInfo = []
+  ) => {
+    let stateRep = cloneDeep(this.state.campaignInfo);
+    if (unselect) {
+      stateRep.targeting.geo_locations.custom_locations = [];
+      this.props.save_campaign_info_instagram({
+        markers: [],
+        locationsInfo: [],
+      });
+    } else stateRep.targeting.geo_locations.custom_locations = selectedItems;
+    analytics.track(`a_ad_map_locations`, {
+      source: "ad_targeting",
+      source_action: "a_ad_map_locations",
+      campaign_map_locations: selectedItems,
+    });
+    this.setState({
+      campaignInfo: { ...stateRep },
+      locationsInfo,
+    });
+    !this.editCampaign &&
+      this.props.save_campaign_info_instagram({
+        campaignInfo: { ...stateRep },
+      });
+  };
   render() {
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing, showAudienceList } = this.state;
@@ -1238,7 +1304,31 @@ class InstagramFeedAdTargetting extends Component {
         );
         break;
       }
-
+      case "map": {
+        if (!LocationMap) {
+          LocationMap = require("../../../../MiniComponents/LocationMap")
+            .default;
+        }
+        menu = (
+          <SnapchatLocation
+            country_code={
+              this.state.campaignInfo.targeting.geo_locations.countries[0]
+            }
+            screenProps={this.props.screenProps}
+            _handleSideMenuState={this._handleSideMenuState}
+            circles={
+              this.state.campaignInfo.targeting.geo_locations.custom_locations
+            }
+            locationsInfo={this.state.locationsInfo}
+            onSelectedMapChange={this.onSelectedMapChange}
+            save_campaign_info={this.props.save_campaign_info_instagram}
+            data={this.props.data}
+            _handleSideMenuState={this._handleSideMenuState}
+            editCampaign={this.editCampaign}
+          />
+        );
+        break;
+      }
       case "selectors": {
         menu = (
           <MultiSelectSections
@@ -1674,6 +1764,7 @@ const mapStateToProps = (state) => ({
   currentCampaignSteps: state.instagramAds.currentCampaignSteps,
   interests: state.instagramAds.interests,
   campaignDateChanged: state.instagramAds.campaignDateChanged,
+  customLocations: state.instagramAds.customLocations,
   audienceList: state.instagramAudience.audienceList,
   audienceListLoading: state.instagramAudience.audienceListLoading,
 });
@@ -1682,7 +1773,12 @@ const mapDispatchToProps = (dispatch) => ({
   getAudienceList: () => dispatch(actionCreators.getInstagramAudienceList()),
   ad_details_instagram: (info, navigation, segmentInfo) =>
     dispatch(
-      actionCreators.ad_details_instagram(info, navigation, segmentInfo)
+      actionCreators.ad_details_instagram(
+        info,
+        navigation,
+        segmentInfo,
+        locationsInfo
+      )
     ),
   updateInstagramCampaign: (info, businessid, navigation) =>
     dispatch(
@@ -1701,6 +1797,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(
       actionCreators.createInstagramAudience(audience, navigate, locationInfo)
     ),
+  deleteCustomLocation: (index) =>
+    dispatch(actionCreators.deleteCustomLocation(index)),
   // setCampaignInfoForTransaction: data =>
   //   dispatch(actionCreators.setCampaignInfoForTransaction(data)),
   // resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
