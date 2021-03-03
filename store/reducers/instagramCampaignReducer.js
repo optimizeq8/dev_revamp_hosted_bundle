@@ -105,6 +105,8 @@ const initialState = {
   instaRejCampaign: {},
   movingAmountToWallet: false,
   customInterestsLoading: false,
+  repeatingInstaCampaginData: {},
+  repeatInstaCampaignLoading: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -579,6 +581,19 @@ const reducer = (state = initialState, action) => {
         ...state,
         campaignEnded: action.payload,
       };
+    case actionTypes.SET_INSTA_REPEATING_CAMPAIGN_INFO: {
+      return {
+        ...state,
+        repeatingInstaCampaginData: action.payload.data,
+        repeatInstaCampaignLoading: false,
+      };
+    }
+    case actionTypes.SET_REPEAT_INSTA_CAMPAIGN_LOADING: {
+      return {
+        ...state,
+        repeatInstaCampaignLoading: action.payload,
+      };
+    }
     default:
       return state;
   }

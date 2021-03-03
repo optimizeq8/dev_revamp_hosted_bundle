@@ -100,6 +100,7 @@ export {
   verifySnapchatNumber,
   verifySnapchatOtp,
   repeatSnapCampagin,
+  repeatSnapCampaginBudget,
 } from "./campaignActions";
 
 export {
@@ -237,6 +238,8 @@ export {
   updateInstagramStatus,
   endInstagramCampaign,
   downloadInstagramCSV,
+  repeatInstaCampagin,
+  repeatInstaCampaginBudget,
 } from "./instagramCampaignActions";
 
 export {

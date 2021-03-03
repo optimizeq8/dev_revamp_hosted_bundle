@@ -103,7 +103,11 @@ class RepeatCampaignModal extends Component {
   };
   handleDateSubmition = () => {
     let { campaign } = this.props;
-    this.props.repeatSnapCampagin(
+    let repeatCampaignAction =
+      campaign.channel === "instagram"
+        ? this.props.repeatInstaCampagin
+        : this.props.repeatSnapCampagin;
+    repeatCampaignAction(
       {
         previous_campaign_id: campaign.campaign_id,
         start_time: this.state.start_time,
@@ -114,7 +118,12 @@ class RepeatCampaignModal extends Component {
     );
   };
   render() {
-    let { showRepeatModal = true, screenProps, handleRepeatModal } = this.props;
+    let {
+      showRepeatModal = true,
+      screenProps,
+      handleRepeatModal,
+      campaign,
+    } = this.props;
     let { switchComponent } = this.state;
     return (
       <Modal
@@ -175,6 +184,8 @@ class RepeatCampaignModal extends Component {
                   screenProps={screenProps}
                   start_time={this.state.start_time}
                   end_time={this.state.start_time}
+                  handleRepeatModal={handleRepeatModal}
+                  campaign={campaign}
                 />
                 <DateFields
                   screenProps={screenProps}
@@ -202,12 +213,14 @@ class RepeatCampaignModal extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  repeatingCampaginData: state.campaignC.repeatingCampaginData,
   repeatCampaignLoading: state.campaignC.repeatCampaignLoading,
+  repeatInstaCampaignLoading: state.campaignC.repeatInstaCampaignLoading,
 });
 const mapDispatchToProps = (dispatch) => ({
   repeatSnapCampagin: (campaignInfo, handleSwitch) =>
     dispatch(actionCreators.repeatSnapCampagin(campaignInfo, handleSwitch)),
+  repeatInstaCampagin: (campaignInfo, handleSwitch) =>
+    dispatch(actionCreators.repeatInstaCampagin(campaignInfo, handleSwitch)),
 });
 export default connect(
   mapStateToProps,

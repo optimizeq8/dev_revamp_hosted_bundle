@@ -246,6 +246,7 @@ class CampaignCard extends Component {
               showRepeatModal={this.state.showRepeatModal}
               screenProps={this.props.screenProps}
               handleRepeatModal={this.handleRepeatModal}
+              campaign={campaign}
             />
           </View>
         </TouchableOpacity>

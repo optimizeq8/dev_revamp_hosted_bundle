@@ -14,9 +14,11 @@ import SafeAreaView from "react-native-safe-area-view";
 import LowerButton from "../LowerButton";
 import AudienceReach from "../../Screens/CampaignCreate/AdDetails/AudienceReach";
 import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
 
 class RepeatCampaignBudget extends Component {
   state = {
+    repeatingCampaginData: {},
     value: 0,
     recBudget: 0,
     lifetime_budget_micro: 50,
@@ -26,21 +28,31 @@ class RepeatCampaignBudget extends Component {
   };
   componentDidUpdate(prevProps) {
     let duration = 7;
-    let repeatingCampaginData = this.props.repeatingCampaginData;
+    let prevCampaignIsInstagram = this.props.campaign.channel === "instagram";
+    let repeatingCampaginData = prevCampaignIsInstagram
+      ? this.props.repeatingInstaCampaginData
+      : this.props.repeatingCampaginData;
+    let previousRepeatingCampaginData = prevCampaignIsInstagram
+      ? prevProps.repeatingInstaCampaginData
+      : prevProps.repeatingCampaginData;
     let prevTargeting = { geos: [] };
     let recBudget = prevTargeting.geos.length * 75;
 
     let minValueBudget = 25 * prevTargeting.geos.length;
-
     if (
-      prevProps.repeatingCampaginData.campaign_id !==
+      previousRepeatingCampaginData.campaign_id !==
       repeatingCampaginData.campaign_id
     ) {
       if (repeatingCampaginData.hasOwnProperty("campaign_id")) {
         duration = repeatingCampaginData.duration;
         prevTargeting = repeatingCampaginData.targeting;
-        recBudget = prevTargeting.geos.length * 75;
-        minValueBudget = 25 * prevTargeting.geos.length;
+        if (prevCampaignIsInstagram) {
+          recBudget = prevTargeting.geo_locations.countries.length * 75;
+          minValueBudget = 25 * prevTargeting.geo_locations.countries.length;
+        } else {
+          recBudget = prevTargeting.geos.length * 75;
+          minValueBudget = 25 * prevTargeting.geos.length;
+        }
       } else {
         duration = Math.round(
           Math.abs(
@@ -52,11 +64,13 @@ class RepeatCampaignBudget extends Component {
       }
 
       this.setState({
+        repeatingCampaginData,
         lifetime_budget_micro: recBudget * 2,
         value: this.formatNumber(recBudget * 2, true),
         recBudget: recBudget,
         duration,
         minValueBudget,
+        prevCampaignIsInstagram,
       });
     }
   }
@@ -96,13 +110,16 @@ class RepeatCampaignBudget extends Component {
                 : "error",
           });
         }
+        let repeatingCampaginData = this.state.repeatingCampaginData;
         showMessage({
           message: validateWrapper("Budget", rawValue)
             ? validateWrapper("Budget", rawValue)
             : translate("Budget can't be less than the minimum"),
           description:
-            this.props.repeatingCampaginData.targeting &&
-            this.props.repeatingCampaginData.targeting.geos.length > 1
+            repeatingCampaginData.targeting &&
+            (this.state.prevCampaignIsInstagram
+              ? repeatingCampaginData.targeting.geo_locations.countries.length
+              : repeatingCampaginData.targeting.geos.length) > 1
               ? `$25 x ${translate("no of Countries")} = $${
                   this.state.minValueBudget
                 }`
@@ -126,6 +143,21 @@ class RepeatCampaignBudget extends Component {
 
       return false;
     }
+  };
+  handleSubmission = () => {
+    let { campaign } = this.props;
+    let repeatCampaignAction =
+      campaign.channel === "instagram"
+        ? this.props.repeatInstaCampaginBudget
+        : this.props.repeatSnapCampaginBudget;
+    repeatCampaignAction(
+      {
+        campaign_id: this.state.repeatingCampaginData.campaign_id,
+        lifetime_budget_micro:
+          this.state.duration * this.state.lifetime_budget_micro,
+      },
+      this.props.handleRepeatModal
+    );
   };
   render() {
     let { screenProps, selectedCampaign } = this.props;
@@ -193,7 +225,7 @@ class RepeatCampaignBudget extends Component {
         <LowerButton
           screenProps={this.props.screenProps}
           checkmark
-          function={() => {}}
+          function={this.handleSubmission}
           purpleViolet={true}
           style={{ alignSelf: "flex-end", bottom: 10 }}
         />
@@ -205,10 +237,18 @@ class RepeatCampaignBudget extends Component {
 const mapStateToProps = (state) => ({
   repeatingCampaginData: state.campaignC.repeatingCampaginData,
   repeatCampaignLoading: state.campaignC.repeatCampaignLoading,
+  repeatingInstaCampaginData: state.instagramAds.repeatingInstaCampaginData,
+  repeatInstaCampaignLoading: state.instagramAds.repeatInstaCampaignLoading,
 });
 const mapDispatchToProps = (dispatch) => ({
-  repeatSnapCampagin: (campaignInfo, handleSwitch) =>
-    dispatch(actionCreators.repeatSnapCampagin(campaignInfo, handleSwitch)),
+  repeatSnapCampaginBudget: (campaignInfo, handleRepeatModal) =>
+    dispatch(
+      actionCreators.repeatSnapCampaginBudget(campaignInfo, handleRepeatModal)
+    ),
+  repeatInstaCampaginBudget: (campaignInfo, handleRepeatModal) =>
+    dispatch(
+      actionCreators.repeatInstaCampaginBudget(campaignInfo, handleRepeatModal)
+    ),
 });
 export default connect(
   mapStateToProps,
