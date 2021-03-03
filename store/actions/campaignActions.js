@@ -1801,3 +1801,33 @@ export const verifySnapchatOtp = (
       });
   };
 };
+export const repeatSnapCampagin = (previous_campaign_info, handleSwitch) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_REPEAT_CAMPAIGN_LOADING,
+      payload: true,
+    });
+    createBaseUrl()
+      .post(`repeatcampaign`, {
+        ...previous_campaign_info,
+        businessid: getState().account.mainBusiness.businessid,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        console.log(JSON.stringify(data, null, 2));
+        if (data.success)
+          dispatch({
+            type: actionTypes.SET_REPEATING_CAMPAIGN_INFO,
+            payload: data,
+          });
+        handleSwitch(true);
+      })
+      .catch((err) => {
+        showModalMessage(err);
+        dispatch({
+          type: actionTypes.SET_REPEAT_CAMPAIGN_LOADING,
+          payload: false,
+        });
+      });
+  };
+};

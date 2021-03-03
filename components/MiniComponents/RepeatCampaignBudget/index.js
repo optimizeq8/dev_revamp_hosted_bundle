@@ -13,8 +13,9 @@ import formatNumber from "../../formatNumber";
 import SafeAreaView from "react-native-safe-area-view";
 import LowerButton from "../LowerButton";
 import AudienceReach from "../../Screens/CampaignCreate/AdDetails/AudienceReach";
+import { connect } from "react-redux";
 
-export default class RepeatCampaignBudget extends Component {
+class RepeatCampaignBudget extends Component {
   state = {
     value: 0,
     recBudget: 0,
@@ -23,23 +24,41 @@ export default class RepeatCampaignBudget extends Component {
     minValueBudget: 25,
     duration: 0,
   };
-  componentDidMount() {
-    let duration = Math.round(
-      Math.abs(
-        (new Date(this.props.start_time).getTime() -
-          new Date(this.props.end_time).getTime()) /
-          86400000
-      ) + 1
-    );
-    console.log("duration", duration);
-    let recBudget = 75;
+  componentDidUpdate(prevProps) {
+    let duration = 7;
+    let repeatingCampaginData = this.props.repeatingCampaginData;
+    let prevTargeting = { geos: [] };
+    let recBudget = prevTargeting.geos.length * 75;
 
-    this.setState({
-      lifetime_budget_micro: recBudget * 2,
-      value: this.formatNumber(recBudget * 2, true),
-      recBudget: recBudget,
-      duration,
-    });
+    let minValueBudget = 25 * prevTargeting.geos.length;
+
+    if (
+      prevProps.repeatingCampaginData.campaign_id !==
+      repeatingCampaginData.campaign_id
+    ) {
+      if (repeatingCampaginData.hasOwnProperty("campaign_id")) {
+        duration = repeatingCampaginData.duration;
+        prevTargeting = repeatingCampaginData.targeting;
+        recBudget = prevTargeting.geos.length * 75;
+        minValueBudget = 25 * prevTargeting.geos.length;
+      } else {
+        duration = Math.round(
+          Math.abs(
+            (new Date(this.props.start_time).getTime() -
+              new Date(this.props.end_time).getTime()) /
+              86400000
+          ) + 1
+        );
+      }
+
+      this.setState({
+        lifetime_budget_micro: recBudget * 2,
+        value: this.formatNumber(recBudget * 2, true),
+        recBudget: recBudget,
+        duration,
+        minValueBudget,
+      });
+    }
   }
   formatNumber = (num) => {
     return "$" + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -82,7 +101,8 @@ export default class RepeatCampaignBudget extends Component {
             ? validateWrapper("Budget", rawValue)
             : translate("Budget can't be less than the minimum"),
           description:
-            this.props.targeting && this.props.targeting.geos.length > 1
+            this.props.repeatingCampaginData.targeting &&
+            this.props.repeatingCampaginData.targeting.geos.length > 1
               ? `$25 x ${translate("no of Countries")} = $${
                   this.state.minValueBudget
                 }`
@@ -181,3 +201,16 @@ export default class RepeatCampaignBudget extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  repeatingCampaginData: state.campaignC.repeatingCampaginData,
+  repeatCampaignLoading: state.campaignC.repeatCampaignLoading,
+});
+const mapDispatchToProps = (dispatch) => ({
+  repeatSnapCampagin: (campaignInfo, handleSwitch) =>
+    dispatch(actionCreators.repeatSnapCampagin(campaignInfo, handleSwitch)),
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RepeatCampaignBudget);

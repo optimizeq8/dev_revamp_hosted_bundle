@@ -1,18 +1,21 @@
 import React, { Component } from "react";
-import { Modal, Text, TouchableOpacity, View } from "react-native";
+import { Modal, TouchableOpacity, View } from "react-native";
 import DateFields from "../DatePickerRedesigned/DateFields";
 import analytics from "@segment/analytics-react-native";
 import RepeatCampaignBudget from "../RepeatCampaignBudget";
 import styles from "./styles";
-import CampaignDuration from "../CampaignDurationField";
+import * as actionCreators from "../../../store/actions";
 import CustomHeader from "../Header";
 import { globalColors } from "../../../GlobalStyles";
 import SafeAreaView from "react-native-safe-area-view";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import * as Animatable from "react-native-animatable";
 import { RFValue } from "react-native-responsive-fontsize";
+import { connect } from "react-redux";
+import Loading from "../LoadingScreen";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-export default class RepeatCampaignModal extends Component {
+class RepeatCampaignModal extends Component {
   state = {
     start_time: "",
     end_time: "",
@@ -94,7 +97,21 @@ export default class RepeatCampaignModal extends Component {
     this.setState({ switchComponent: value });
     if (!value) {
       this.dateField.showModal();
+    } else {
+      this.dateField.hideModal();
     }
+  };
+  handleDateSubmition = () => {
+    let { campaign } = this.props;
+    this.props.repeatSnapCampagin(
+      {
+        previous_campaign_id: campaign.campaign_id,
+        start_time: this.state.start_time,
+        end_time: this.state.end_time,
+        duration: this.state.duration,
+      },
+      this.handleSwitch
+    );
   };
   render() {
     let { showRepeatModal = true, screenProps, handleRepeatModal } = this.props;
@@ -121,54 +138,78 @@ export default class RepeatCampaignModal extends Component {
             easing={"ease"}
             animation={switchComponent ? "slideInUp" : "slideOutDown"}
           >
-            <View
-              style={[
-                styles.datePickerContainer,
-                !this.dateField && { backgroundColor: "#0000" },
-                switchComponent && { top: RFValue(300, 414) },
-              ]}
+            <KeyboardAwareScrollView
+              contentContainerStyle={{
+                width: "100%",
+                height: "100%",
+                paddingBottom: 200,
+              }}
+              extraScrollHeight={30}
             >
-              {this.dateField && (
-                <CustomHeader
-                  screenProps={screenProps}
-                  closeButton={false}
-                  segment={{
-                    str: "Ad Details Back Button",
-                    source: "ad_targeting",
-                    source_action: "a_go_back",
-                  }}
-                  actionButton={() => this.handleSwitch(false)}
-                  titleStyle={{ color: globalColors.rum }}
-                  iconColor={globalColors.rum}
-                  navigation={undefined}
-                  title={"Repeat Campaign"}
-                />
-              )}
+              <View
+                style={[
+                  styles.datePickerContainer,
+                  !this.dateField && { backgroundColor: "#0000" },
+                  switchComponent && { top: RFValue(300, 414) },
+                ]}
+              >
+                {this.dateField && (
+                  <CustomHeader
+                    screenProps={screenProps}
+                    closeButton={false}
+                    segment={{
+                      str: "Ad Details Back Button",
+                      source: "ad_targeting",
+                      source_action: "a_go_back",
+                    }}
+                    actionButton={() => this.handleSwitch(false)}
+                    titleStyle={{ color: globalColors.rum }}
+                    iconColor={globalColors.rum}
+                    navigation={undefined}
+                    title={"Repeat Campaign"}
+                    containerStyle={{ padding: 60 }}
+                  />
+                )}
 
-              <RepeatCampaignBudget
-                screenProps={screenProps}
-                start_time={this.state.start_time}
-                end_time={this.state.start_time}
-              />
-              <DateFields
-                screenProps={screenProps}
-                handleRepeatModal={handleRepeatModal}
-                onRef={(ref) => (this.dateField = ref)}
-                handleStartDatePicked={this.handleStartDatePicked}
-                handleEndDatePicked={this.handleEndDatePicked}
-                start_time={this.state.start_time}
-                end_time={this.state.start_time}
-                showDurationSelector={true}
-                stopTimer={this.stopTimer}
-                handleDuration={this.handleDuration}
-                duration={this.state.duration}
-                disabled={this.state.duration === 3}
-                handleSwitch={this.handleSwitch}
-              />
-            </View>
+                <RepeatCampaignBudget
+                  screenProps={screenProps}
+                  start_time={this.state.start_time}
+                  end_time={this.state.start_time}
+                />
+                <DateFields
+                  screenProps={screenProps}
+                  handleRepeatModal={handleRepeatModal}
+                  onRef={(ref) => (this.dateField = ref)}
+                  handleStartDatePicked={this.handleStartDatePicked}
+                  handleEndDatePicked={this.handleEndDatePicked}
+                  start_time={this.state.start_time}
+                  end_time={this.state.start_time}
+                  showDurationSelector={true}
+                  stopTimer={this.stopTimer}
+                  handleDuration={this.handleDuration}
+                  duration={this.state.duration}
+                  disabled={this.state.duration === 3}
+                  handleDateSubmition={this.handleDateSubmition}
+                />
+              </View>
+            </KeyboardAwareScrollView>
           </Animatable.View>
+          {this.props.repeatCampaignLoading && <Loading dash={true} />}
         </View>
       </Modal>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  repeatingCampaginData: state.campaignC.repeatingCampaginData,
+  repeatCampaignLoading: state.campaignC.repeatCampaignLoading,
+});
+const mapDispatchToProps = (dispatch) => ({
+  repeatSnapCampagin: (campaignInfo, handleSwitch) =>
+    dispatch(actionCreators.repeatSnapCampagin(campaignInfo, handleSwitch)),
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RepeatCampaignModal);

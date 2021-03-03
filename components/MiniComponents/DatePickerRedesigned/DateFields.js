@@ -82,6 +82,12 @@ class DateFields extends Component {
     });
   };
 
+  hideModal = (outdatedDate = false) => {
+    this.setState({
+      modalVisible: false,
+      outdatedDate,
+    });
+  };
   handleDate = async () => {
     //Gets the difference between two dates
     let timeDiff = Math.round(
@@ -139,8 +145,9 @@ class DateFields extends Component {
           });
         }, 200);
       } else {
-        if (this.props.handleSwitch) {
-          this.props.handleSwitch(true);
+        if (this.props.handleDateSubmition) {
+          this.props.handleDateSubmition();
+          return;
         }
         this.setState({
           modalVisible: false,
