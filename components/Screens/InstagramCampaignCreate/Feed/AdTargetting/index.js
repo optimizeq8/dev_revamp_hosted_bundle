@@ -1109,7 +1109,18 @@ class InstagramFeedAdTargetting extends Component {
     // let editedCountryCodes = editedCampaign.targeting.geo_locations.map(
     //   (geo) => geo.country_code
     // );
-
+    let selectedGender = "";
+    switch (editedCampaign.targeting.genders[0]) {
+      case "1":
+        selectedGender = "1";
+        break;
+      case "2":
+        selectedGender = "2";
+        break;
+      default:
+        selectedGender = "";
+        break;
+    }
     editedCampaign.targeting.age_max = parseInt(
       editedCampaign.targeting.age_max
     );
@@ -1141,6 +1152,7 @@ class InstagramFeedAdTargetting extends Component {
         filteredRegions: editedRegionNames,
         locationsInfo,
         markers,
+        selectedGender,
       },
       () => {
         // editedCampaign.targeting.geo_locations.forEach(
