@@ -22,17 +22,17 @@ export const getInstagramAudienceList = () => {
           type: actionTypes.AUDIENCE_INSTAGRAM_LIST_LOADING,
           payload: false,
         });
-        console.log("getInstagramAudienceList data", data);
+        // console.log("getInstagramAudienceList data", data);
         return dispatch({
           type: actionTypes.SET_INSTAGRAM_AUDIENCE_LIST,
           payload: data.success ? data.data : [],
         });
       })
       .catch((error) => {
-        console.log(
-          "getInstagramAudienceList error",
-          error.response || error.message
-        );
+        // console.log(
+        //   "getInstagramAudienceList error",
+        //   error.response || error.message
+        // );
         dispatch({
           type: actionTypes.AUDIENCE_INSTAGRAM_LIST_LOADING,
           payload: false,
@@ -130,7 +130,7 @@ export const createInstagramAudience = (
         }
       })
       .catch((error) => {
-        console.log("createAudience error", error.response || error.message);
+        // console.log("createAudience error", error.response || error.message);
         dispatch({
           type: actionTypes.SAVE_INSTAGRAM_AUDIENCE_DETAIL_LOADING,
           payload: false,
@@ -219,7 +219,7 @@ export const updateInstagramAudience = (
         }
       })
       .catch((error) => {
-        console.log("updateAudience error", error.response || error.message);
+        // console.log("updateAudience error", error.response || error.message);
         dispatch({
           type: actionTypes.SAVE_INSTAGRAM_AUDIENCE_DETAIL_LOADING,
           payload: false,
