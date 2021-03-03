@@ -170,7 +170,8 @@ export class InstagramAudience extends Component {
           rep.id,
           rep.name,
           rep.targeting,
-          this.state.locationsInfo
+          this.state.locationsInfo,
+          this.state.customInterests
         );
       } else {
         rep.targeting = JSON.stringify(rep.targeting);
@@ -180,7 +181,8 @@ export class InstagramAudience extends Component {
             "audience_type",
             "InstagramFeedAdTargetting"
           ),
-          this.state.locationsInfo
+          this.state.locationsInfo,
+          this.state.customInterests
         );
       }
     }
@@ -1661,17 +1663,38 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.setInstagramAudienceDetail(audienceInfo)),
   get_interests: (countryCode) =>
     dispatch(actionCreators.get_interests(countryCode)),
-  createAudience: (audience, navigate, locationInfo) =>
+  createAudience: (
+    audience,
+    navigate,
+    locationInfo,
+    custom_interest,
+    custom_location
+  ) =>
     dispatch(
-      actionCreators.createInstagramAudience(audience, navigate, locationInfo)
+      actionCreators.createInstagramAudience(
+        audience,
+        navigate,
+        locationInfo,
+        custom_interest,
+        custom_location
+      )
     ),
-  updateAudience: (audienceId, audienceName, targeting, locationInfo) =>
+  updateAudience: (
+    audienceId,
+    audienceName,
+    targeting,
+    locationInfo,
+    custom_interest,
+    custom_location
+  ) =>
     dispatch(
       actionCreators.updateInstagramAudience(
         audienceId,
         audienceName,
         targeting,
-        locationInfo
+        locationInfo,
+        custom_interest,
+        custom_location
       )
     ),
 });

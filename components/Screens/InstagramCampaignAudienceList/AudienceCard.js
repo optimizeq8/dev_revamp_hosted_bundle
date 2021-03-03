@@ -34,7 +34,12 @@ export default AudienceCard = (props) => {
         ]}
         onPress={() => {
           props.setAudienceId(item.id);
-          props.setSelectedAudience(item.targeting, item.coordinates);
+          props.setSelectedAudience(
+            item.targeting,
+            item.coordinates,
+            JSON.parse(item.custom_interest),
+            JSON.parse(item.custom_location)
+          );
 
           //   props.navigation.navigate("AdDetails", {
           //     audienceSelected: true,

@@ -22,14 +22,17 @@ export const getInstagramAudienceList = () => {
           type: actionTypes.AUDIENCE_INSTAGRAM_LIST_LOADING,
           payload: false,
         });
-        // console.log("getInstagramAudienceList data", data);
+        console.log("getInstagramAudienceList data", data);
         return dispatch({
           type: actionTypes.SET_INSTAGRAM_AUDIENCE_LIST,
           payload: data.success ? data.data : [],
         });
       })
       .catch((error) => {
-        // console.log("getInstagramAudienceList error", error.response || error.message);
+        console.log(
+          "getInstagramAudienceList error",
+          error.response || error.message
+        );
         dispatch({
           type: actionTypes.AUDIENCE_INSTAGRAM_LIST_LOADING,
           payload: false,
@@ -81,7 +84,9 @@ export const getInstagramAudienceDetail = (audienceId) => {
 export const createInstagramAudience = (
   audience,
   navigate = null,
-  locationsInfo = []
+  locationsInfo = [],
+  custom_interest = [],
+  custom_location = []
 ) => {
   // console.log(
   //   "createAudience targeting ",
@@ -98,6 +103,8 @@ export const createInstagramAudience = (
         name: audience.name,
         targeting: audience.targeting,
         coordinates: locationsInfo,
+        custom_interest,
+        custom_location,
       })
       .then((res) => res.data)
       .then((data) => {
@@ -123,7 +130,11 @@ export const createInstagramAudience = (
         }
       })
       .catch((error) => {
-        // console.log("createAudience error", error.response || error.message)
+        console.log("createAudience error", error.response || error.message);
+        dispatch({
+          type: actionTypes.SAVE_INSTAGRAM_AUDIENCE_DETAIL_LOADING,
+          payload: false,
+        });
       });
   };
 };
@@ -166,7 +177,9 @@ export const updateInstagramAudience = (
   audienceId,
   audienceName,
   targeting,
-  locationsInfo = []
+  locationsInfo = [],
+  custom_interest = [],
+  custom_location = []
 ) => {
   return (dispatch, getState) => {
     dispatch({
@@ -179,6 +192,8 @@ export const updateInstagramAudience = (
         name: audienceName,
         targeting: JSON.stringify(targeting),
         coordinates: locationsInfo,
+        custom_interest,
+        custom_location,
       })
       .then((res) => res.data)
       .then((data) => {
@@ -204,7 +219,11 @@ export const updateInstagramAudience = (
         }
       })
       .catch((error) => {
-        // console.log("updateAudience error", error.response || error.message);
+        console.log("updateAudience error", error.response || error.message);
+        dispatch({
+          type: actionTypes.SAVE_INSTAGRAM_AUDIENCE_DETAIL_LOADING,
+          payload: false,
+        });
       });
   };
 };

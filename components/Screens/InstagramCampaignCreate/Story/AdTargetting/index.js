@@ -1075,7 +1075,12 @@ class InstagramStoryAdTargetting extends Component {
       showAudienceList: !this.state.showAudienceList,
     });
   };
-  setSelectedAudience = (targeting, coordinates) => {
+  setSelectedAudience = (
+    targeting,
+    coordinates,
+    customInterests = [],
+    customLocations = []
+  ) => {
     let editedCampaign = cloneDeep(this.state.campaignInfo);
     let campaignTargeting = targeting;
     let locationsInfo = coordinates || [];
@@ -1134,6 +1139,7 @@ class InstagramStoryAdTargetting extends Component {
         locationsInfo,
         markers,
         selectedGender,
+        customInterests,
       },
       () => {
         // editedCampaign.targeting.geo_locations.forEach(
