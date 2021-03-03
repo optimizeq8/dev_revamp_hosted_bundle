@@ -38,7 +38,7 @@ export default AudienceCard = (props) => {
             item.targeting,
             item.coordinates,
             JSON.parse(item.custom_interest),
-            JSON.parse(item.custom_location)
+            item.custom_location
           );
 
           //   props.navigation.navigate("AdDetails", {

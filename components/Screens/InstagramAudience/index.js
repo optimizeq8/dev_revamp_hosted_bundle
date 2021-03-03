@@ -165,13 +165,20 @@ export class InstagramAudience extends Component {
       });
     }
     if (!audienceNameError && !countryRegionError) {
+      if (rep.targeting.geo_locations.custom_locations.length > 0) {
+        rep.targeting.geo_locations.custom_locations = this.props.customLocations;
+      } else {
+        delete rep.targeting.geo_locations.custom_locations;
+      }
+
       if (this.editAudience) {
         this.props.updateAudience(
           rep.id,
           rep.name,
           rep.targeting,
           this.state.locationsInfo,
-          this.state.customInterests
+          this.state.customInterests,
+          this.props.customLocations
         );
       } else {
         rep.targeting = JSON.stringify(rep.targeting);
@@ -182,7 +189,8 @@ export class InstagramAudience extends Component {
             "InstagramFeedAdTargetting"
           ),
           this.state.locationsInfo,
-          this.state.customInterests
+          this.state.customInterests,
+          this.props.customLocations
         );
       }
     }
@@ -207,141 +215,6 @@ export class InstagramAudience extends Component {
       audience_min_age: parseInt(values[1]),
     });
     this.props.setAudienceDetail({ ...rep });
-  };
-
-  onSelectedCountryChange = async (
-    selectedItem,
-    mounting = false,
-    countryName,
-    addCountryOfLocations = false
-  ) => {
-    let replace = cloneDeep(this.props.audience);
-    let newCountry = selectedItem;
-    let regionNames = this.state.regionNames;
-    let locationsInfo = this.state.locationsInfo;
-
-    if (newCountry) {
-      if (
-        replace.targeting.geos.find((co) => co.country_code === newCountry) &&
-        replace.targeting.geos.length === 1 &&
-        !addCountryOfLocations &&
-        !mounting
-      ) {
-        //To overwrite the object in geos instead of filtering it out
-        replace.targeting.geos[0] = {
-          country_code: "",
-          region_id: [],
-        };
-        countryName = [];
-        regionNames = [];
-        locationsInfo = [];
-        replace.targeting.locations[0].circles = [];
-      } else if (
-        replace.targeting.geos.find((co) => co.country_code === newCountry) &&
-        !addCountryOfLocations &&
-        !mounting
-      ) {
-        //To remove the country from the array
-        replace.targeting.geos = replace.targeting.geos.filter(
-          (co) => co.country_code !== newCountry
-        );
-
-        //To remove the regions from the the region names
-        regionNames =
-          this.state.regionNames.length > 0
-            ? this.state.regionNames.filter(
-                (reg) => reg.country_code !== newCountry
-              )
-            : [];
-
-        locationsInfo =
-          this.state.locationsInfo &&
-          this.state.locationsInfo.length &&
-          this.state.locationsInfo.filter((loc, i) => {
-            if (loc.country_code !== newCountry) {
-              return loc;
-            } else {
-              replace.targeting.locations[0].circles.splice(i, 1);
-            }
-          });
-      } else if (replace.targeting.geos[0].country_code === "" && !mounting) {
-        //To overwrite the only object in geos instead of pushing the new country
-        replace.targeting.geos[0] = {
-          country_code: newCountry,
-          region_id: [],
-        };
-        countryName = [countryName];
-        regionNames = this.state.regionNames.filter(
-          (reg) => reg.country_code !== newCountry
-        );
-      } else if (
-        (addCountryOfLocations
-          ? !replace.targeting.geos.find((co) => co.country_code === newCountry)
-          : true) &&
-        !mounting
-      ) {
-        //To add the coutnry to geos array
-        replace.targeting.geos.push({
-          country_code: newCountry,
-          region_id: [],
-        });
-      }
-      let reg = country_regions.find((c) => c.country_code === newCountry);
-      if (
-        this.state.regions.find((c) => c.country_code === newCountry) &&
-        !addCountryOfLocations &&
-        !mounting
-      ) {
-        //To remove the region from the list of country regions that shows all regions of countriees when
-        //the country is unselected
-        reg = this.state.regions.filter((coReg) => {
-          return coReg.country_code !== newCountry;
-        });
-      } else if (
-        (addCountryOfLocations
-          ? !this.state.regions.find((c) => c.country_code === newCountry)
-          : true) &&
-        !mounting
-      ) {
-        if (reg) reg = [...this.state.regions, reg];
-      } else {
-        reg = [...this.state.regions];
-      }
-      if (replace.targeting.interests)
-        replace.targeting.interests[0].category_id = [];
-      // analytics.track(`a_audience_country`, {
-      //   source: "audience_detail",
-      //   source_action: "a_audience_country",
-      //   audience_country_name: countryName,
-      // });
-      let showRegions = false;
-      this.setState(
-        {
-          regions: reg,
-          filteredRegions: reg,
-          // regionNames,
-          // interestNames: [],
-          // countryName,
-          locationsInfo,
-        },
-        () => {
-          // console.log("this.state.regions", this.state.regions);
-          // //To show the regions options if one of the selected countries has more than 3 regions
-          showRegions =
-            this.state.regions && this.state.regions.length > 0
-              ? this.state.regions.some(
-                  (reg) => reg.regions && reg.regions.length > 3
-                )
-              : false;
-
-          !mounting &&
-            this.props.setAudienceDetail({
-              ...replace,
-            });
-          this.setState({ showRegions });
-        }
-      );
-    }
   };
 
   onSelectedInterestsChange = (selectedItems) => {

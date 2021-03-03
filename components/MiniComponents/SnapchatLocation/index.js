@@ -21,7 +21,7 @@ import Header from "../Header";
 import cloneDeep from "lodash/cloneDeep";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
-
+import findIndex from "lodash/findIndex";
 class SnapchatLocation extends Component {
   state = {
     mapModal: false,
@@ -64,6 +64,7 @@ class SnapchatLocation extends Component {
     );
   };
   handleMapModal = (value, locationInfo, index) => {
+    console.log("this.state.markers", this.state.markers);
     if (locationInfo) {
       locationInfo.index = index;
       locationInfo.radius = this.state.markers[index].radius;
@@ -79,12 +80,14 @@ class SnapchatLocation extends Component {
     this.setState({ searchModalVisible: value });
   };
   handleMarkers = (marker, locInfo, remove = false) => {
+    console.log("locInfo", locInfo);
     let markers = this.state.markers;
     let locationsInfo = this.state.locationsInfo;
+    console.log("locationsInfo", locationsInfo.length > 0);
     let index =
       locationsInfo &&
       locationsInfo.length > 0 &&
-      locationsInfo.findIndex((loc) => loc.place_id === locInfo.place_id);
+      findIndex(locationsInfo, (loc) => loc.place_id === locInfo.place_id);
     if (!remove) locInfo.index = locationsInfo.length;
     if (index > -1 && remove) {
       locationsInfo.splice(index, 1);
@@ -173,6 +176,7 @@ class SnapchatLocation extends Component {
   render() {
     let { ...props } = this.props;
     const { translate } = props.screenProps;
+    console.log("123locationsInfo", this.state.locationsInfo);
     return (
       <View style={styles.locationContainer}>
         {props.showBackButton && (

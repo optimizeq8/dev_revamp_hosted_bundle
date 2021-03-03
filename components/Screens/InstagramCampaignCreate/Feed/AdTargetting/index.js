@@ -1142,10 +1142,10 @@ class InstagramFeedAdTargetting extends Component {
         )
     );
     let markers = [];
-    // if (locationsInfo && locationsInfo.length > 0) {
-    //   locationsInfo = cloneDeep(JSON.parse(locationsInfo));
-    //   markers = cloneDeep(campaignTargeting.locations[0].circles);
-    // }
+    if (customLocations && customLocations.length > 0) {
+      locationsInfo = cloneDeep(JSON.parse(customLocations));
+      markers = cloneDeep(coordinates);
+    }
     // LOCATIONS MAP
     let stateRegionNames = [];
     this.setState(

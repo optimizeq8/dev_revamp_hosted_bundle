@@ -17,7 +17,7 @@ export default class LocationRow extends Component {
         <Text style={styles.locationName}>
           {locationInfo &&
             locationInfo.description &&
-            locationInfolocationInfo.description.replace(",", " - ")}
+            locationInfo.description.replace(",", " - ")}
         </Text>
         <View style={styles.buttonsContainer}>
           {result ? (
