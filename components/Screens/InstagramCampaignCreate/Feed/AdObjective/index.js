@@ -481,7 +481,7 @@ class AdObjective extends Component {
         // selected={this.state.campaignInfo.objective}
         selected={this.state.objectiveLabel}
         setObjective={this.setObjective}
-        key={o.value}
+        key={o.label}
         screenProps={this.props.screenProps}
       />
     ));
