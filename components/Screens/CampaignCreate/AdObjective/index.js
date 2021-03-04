@@ -677,7 +677,8 @@ class AdObjective extends Component {
     const list = this.state.objectivesList[this.props.adType].map((o) => (
       <ObjectivesCard
         choice={o}
-        selected={this.state.campaignInfo.objective}
+        // selected={this.state.campaignInfo.objective}
+        selected={this.state.objectiveLabel}
         setObjective={this.setObjective}
         key={o.value}
         screenProps={this.props.screenProps}

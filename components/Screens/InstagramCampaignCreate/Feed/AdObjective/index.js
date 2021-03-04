@@ -478,7 +478,8 @@ class AdObjective extends Component {
     const list = instagramAdObjectives["InstagramFeedAd"].map((o) => (
       <ObjectivesCard
         choice={o}
-        selected={this.state.campaignInfo.objective}
+        // selected={this.state.campaignInfo.objective}
+        selected={this.state.objectiveLabel}
         setObjective={this.setObjective}
         key={o.value}
         screenProps={this.props.screenProps}

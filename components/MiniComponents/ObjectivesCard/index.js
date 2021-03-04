@@ -21,7 +21,7 @@ class ObjectiveCard extends Component {
     let IconName = obj.icon;
     let color = obj.color;
     let changeState = { borderColor: "#fff", color };
-    if (this.props.selected === obj.value) {
+    if (this.props.selected === obj.label) {
       changeState.borderColor = "#9304FF";
     }
     return (
@@ -44,7 +44,7 @@ class ObjectiveCard extends Component {
               styles.titletext,
               {
                 color:
-                  this.props.selected === obj.value
+                  this.props.selected === obj.label
                     ? changeState.color
                     : "#D2C6D8",
               },
