@@ -951,7 +951,9 @@ class InstagramStoryAdTargetting extends Component {
               targeting: rep.targeting,
             },
             false,
-            []
+            this.state.locationsInfo,
+            this.state.customInterests,
+            this.props.customLocations
           );
         }
         this.props.ad_details_instagram(
@@ -1792,9 +1794,21 @@ const mapDispatchToProps = (dispatch) => ({
 
   setInstagramAudienceDetail: (audienceInfo) =>
     dispatch(actionCreators.setInstagramAudienceDetail(audienceInfo)),
-  createAudience: (audience, navigate, locationInfo) =>
+  createAudience: (
+    audience,
+    navigate,
+    locationInfo,
+    custom_interest,
+    custom_locations
+  ) =>
     dispatch(
-      actionCreators.createInstagramAudience(audience, navigate, locationInfo)
+      actionCreators.createInstagramAudience(
+        audience,
+        navigate,
+        locationInfo,
+        custom_interest,
+        custom_locations
+      )
     ),
   deleteCustomLocation: (index) =>
     dispatch(actionCreators.deleteCustomLocation(index)),
