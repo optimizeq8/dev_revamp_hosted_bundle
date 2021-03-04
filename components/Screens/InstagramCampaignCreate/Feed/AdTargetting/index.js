@@ -1107,9 +1107,10 @@ class InstagramFeedAdTargetting extends Component {
     customInterests,
     customLocations
   ) => {
+    customLocations = JSON.parse(customLocations);
     let editedCampaign = cloneDeep(this.state.campaignInfo);
     let campaignTargeting = targeting;
-    let locationsInfo = coordinates || [];
+    let locationsInfo = JSON.parse(coordinates) || [];
     if (this.editCampaign) {
       campaignTargeting.geo_locations = editedCampaign.targeting.geo_locations;
     }
@@ -1150,8 +1151,9 @@ class InstagramFeedAdTargetting extends Component {
     );
     let markers = [];
     if (customLocations && customLocations.length > 0) {
-      locationsInfo = cloneDeep(JSON.parse(customLocations));
-      markers = cloneDeep(coordinates);
+      locationsInfo = cloneDeep(JSON.parse(coordinates));
+      markers = cloneDeep(JSON.parse(coordinates));
+      this.props.setInstagramAudienceCustomLocations(customLocations);
     }
     // LOCATIONS MAP
     let stateRegionNames = [];
@@ -1796,7 +1798,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getAudienceList: () => dispatch(actionCreators.getInstagramAudienceList()),
-  ad_details_instagram: (info, navigation, segmentInfo) =>
+  ad_details_instagram: (info, navigation, segmentInfo, locationsInfo) =>
     dispatch(
       actionCreators.ad_details_instagram(
         info,
@@ -1836,6 +1838,10 @@ const mapDispatchToProps = (dispatch) => ({
     ),
   deleteCustomLocation: (index) =>
     dispatch(actionCreators.deleteCustomLocation(index)),
+  setInstagramAudienceCustomLocations: (custom_locations) =>
+    dispatch(
+      actionCreators.setInstagramAudienceCustomLocations(custom_locations)
+    ),
   // setCampaignInfoForTransaction: data =>
   //   dispatch(actionCreators.setCampaignInfoForTransaction(data)),
   // resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),

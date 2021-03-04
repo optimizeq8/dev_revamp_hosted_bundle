@@ -1074,7 +1074,12 @@ export const downloadInstagramCSV = (campaign_id, email, showModalMessage) => {
   };
 };
 
-export const geoLocationSearch = (latLong, updateMarkers, radius) => {
+export const geoLocationSearch = (
+  latLong,
+  updateMarkers,
+  radius,
+  audienceUpdate = false
+) => {
   return (dispatch) => {
     dispatch({
       type: actionTypes.SET_INSTAGRAM_CUSTOM_LOCATION_LOADING,
@@ -1095,6 +1100,7 @@ export const geoLocationSearch = (latLong, updateMarkers, radius) => {
               data: data.data.custom_locations,
               radius,
               index: latLong.index,
+              audienceUpdate,
             },
           });
         }
@@ -1109,11 +1115,11 @@ export const geoLocationSearch = (latLong, updateMarkers, radius) => {
   };
 };
 
-export const deleteCustomLocation = (index) => {
+export const deleteCustomLocation = (index, audienceUpdate) => {
   return (dispatch) => {
     dispatch({
       type: actionTypes.DELETE_INSTAGRAM_CUSTOM_LOCATION_LOADING,
-      payload: index,
+      payload: { index, audienceUpdate },
     });
   };
 };

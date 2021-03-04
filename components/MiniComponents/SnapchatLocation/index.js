@@ -64,7 +64,6 @@ class SnapchatLocation extends Component {
     );
   };
   handleMapModal = (value, locationInfo, index) => {
-    console.log("this.state.markers", this.state.markers);
     if (locationInfo) {
       locationInfo.index = index;
       locationInfo.radius = this.state.markers[index].radius;
@@ -80,10 +79,8 @@ class SnapchatLocation extends Component {
     this.setState({ searchModalVisible: value });
   };
   handleMarkers = (marker, locInfo, remove = false) => {
-    console.log("locInfo", locInfo);
     let markers = this.state.markers;
     let locationsInfo = this.state.locationsInfo;
-    console.log("locationsInfo", locationsInfo.length > 0);
     let index =
       locationsInfo &&
       locationsInfo.length > 0 &&
@@ -92,6 +89,7 @@ class SnapchatLocation extends Component {
     if (index > -1 && remove) {
       locationsInfo.splice(index, 1);
       markers.splice(index, 1);
+      this.props.deleteCustomLocation(index, this.props.audience);
     } else {
       locationsInfo = [...locationsInfo, locInfo];
       markers = [...markers, marker];
@@ -176,7 +174,6 @@ class SnapchatLocation extends Component {
   render() {
     let { ...props } = this.props;
     const { translate } = props.screenProps;
-    console.log("123locationsInfo", this.state.locationsInfo);
     return (
       <View style={styles.locationContainer}>
         {props.showBackButton && (
@@ -274,7 +271,7 @@ class SnapchatLocation extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteCustomLocation: (index) =>
-    dispatch(actionCreators.deleteCustomLocation(index)),
+  deleteCustomLocation: (index, audienceUpdate) =>
+    dispatch(actionCreators.deleteCustomLocation(index, audienceUpdate)),
 });
 export default connect(null, mapDispatchToProps)(SnapchatLocation);

@@ -256,4 +256,5 @@ export {
   updateInstagramAudience,
   setInstagramAudienceDetail,
   getInstagramAudienceDetail,
+  setInstagramAudienceCustomLocations,
 } from "./instagramAudienceActions";

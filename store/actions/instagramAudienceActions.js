@@ -240,3 +240,16 @@ export const setInstagramAudienceDetail = (audienceInfo) => {
     });
   };
 };
+
+/**
+ * To set the customLocations obj from audience in the reducer
+ * @param {*} customLocations
+ */
+export const setInstagramAudienceCustomLocations = (customLocations) => {
+  return (dispatch) => {
+    return dispatch({
+      type: actionTypes.SET_INSTAGRAM_CUSTOM_LOCATION_FROM_AUDIENCE,
+      payload: customLocations,
+    });
+  };
+};

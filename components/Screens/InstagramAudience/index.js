@@ -620,6 +620,7 @@ export class InstagramAudience extends Component {
               source: "audience_detail",
               source_action: "a_go_back",
             });
+            this.props.deleteCustomLocation("all", true);
             this.props.navigation.goBack();
           },
         },
@@ -799,6 +800,7 @@ export class InstagramAudience extends Component {
             data={this.props.audience}
             _handleSideMenuState={this._handleSideMenuState}
             editCampaign={true}
+            audience={true}
           />
         );
         break;
@@ -1528,7 +1530,7 @@ const mapStateToProps = (state) => ({
   saveAudienceLoading: state.instagramAudience.saveAudienceLoading,
   mainBusiness: state.account.mainBusiness,
   interests: state.instagramAds.interests,
-  customLocations: state.instagramAds.customLocations,
+  customLocations: state.instagramAds.audienceCustomLocations,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1570,6 +1572,8 @@ const mapDispatchToProps = (dispatch) => ({
         custom_location
       )
     ),
+  deleteCustomLocation: (index, audienceUpdate) =>
+    dispatch(actionCreators.deleteCustomLocation(index, audienceUpdate)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InstagramAudience);

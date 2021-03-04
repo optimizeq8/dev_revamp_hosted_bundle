@@ -107,6 +107,7 @@ const initialState = {
   movingAmountToWallet: false,
   customInterestsLoading: false,
   customLocations: [],
+  audienceCustomLocations: [],
   customLocationLoading: false,
 };
 
@@ -591,37 +592,73 @@ const reducer = (state = initialState, action) => {
         customLocationLoading: action.payload,
       };
     case actionTypes.DELETE_INSTAGRAM_CUSTOM_LOCATION_LOADING:
-      let index = action.payload;
-      let customLocationsOrg = state.customLocations;
+      let index = action.payload.index;
+      let deletionAudienceUpdate = action.payload.audienceUpdate;
+      let customLocationsOrg = cloneDeep(
+        deletionAudienceUpdate
+          ? state.audienceCustomLocations
+          : state.customLocations
+      );
       if (index === "all") {
         customLocationsOrg = [];
-      } else customLocationsOrg.splice(action.payload, 1);
+      } else customLocationsOrg.splice(action.payload.index, 1);
 
       return {
         ...state,
-        customLocations: customLocationsOrg,
+        customLocations: deletionAudienceUpdate
+          ? state.customLocations
+          : customLocationsOrg,
+        audienceCustomLocations: deletionAudienceUpdate
+          ? customLocationsOrg
+          : state.audienceCustomLocations,
+      };
+
+    case actionTypes.SET_INSTAGRAM_CUSTOM_LOCATION_FROM_AUDIENCE:
+      return {
+        ...state,
+        customLocations: action.payload,
+        customLocationLoading: false,
       };
     case actionTypes.SET_INSTAGRAM_CUSTOM_LOCATION:
       let customLocationData = Object.values(action.payload.data)[0];
       let customLocationObj = {
         name: customLocationData.address_string,
-        distance_unit: "meters",
+        distance_unit: "miles",
         latitude: customLocationData.latitude,
         longitude: customLocationData.longitude,
         primary_city_id: customLocationData.primary_city_id,
-        radius: action.payload.radius,
+        radius: action.payload.radius / 1609,
         region_id: customLocationData.region_id,
         country: customLocationData.country_code,
       };
-      let customLocations = state.customLocations;
-      if (customLocations.length - 1 === action.payload.index)
-        customLocations[action.payload.index] = customLocationObj;
-      else {
-        customLocations = [...state.customLocations, customLocationObj];
+      let audienceUpdate = action.payload.audienceUpdate;
+
+      let customLocationsInState = audienceUpdate
+        ? state.audienceCustomLocations
+        : state.customLocations;
+      if (customLocationsInState.length === action.payload.index) {
+        console.log(
+          "ss",
+          audienceUpdate,
+          !audienceUpdate ? "customLocations" : "audienceCustomLocations"
+        );
+        customLocationsInState = [
+          ...state[
+            !audienceUpdate ? "customLocations" : "audienceCustomLocations"
+          ],
+          customLocationObj,
+        ];
+      } else {
+        customLocationsInState[action.payload.index] = customLocationObj;
       }
       return {
         ...state,
-        customLocations: customLocations,
+        customLocations: audienceUpdate
+          ? state.customLocations
+          : customLocationsInState,
+        audienceCustomLocations: audienceUpdate
+          ? customLocationsInState
+          : state.audienceCustomLocations,
         customLocationLoading: false,
       };
     default:
