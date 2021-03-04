@@ -1068,10 +1068,6 @@ export const repeatInstaCampagin = (previous_campaign_info, handleSwitch) => {
       type: actionTypes.SET_REPEAT_INSTA_CAMPAIGN_LOADING,
       payload: true,
     });
-    console.log({
-      ...previous_campaign_info,
-      businessid: getState().account.mainBusiness.businessid,
-    });
     InstagramBackendURL()
       .post(`repeatinstacampaign`, {
         ...previous_campaign_info,

@@ -39,7 +39,12 @@ class ReachBar extends Component {
   }
   render() {
     const { translate } = this.props.screenProps;
-    let { startEditing, editCampaign, campaignInfo } = this.props;
+    let {
+      startEditing,
+      editCampaign,
+      campaignInfo,
+      customContainerStyle,
+    } = this.props;
     return (
       <View
         style={[
@@ -47,6 +52,7 @@ class ReachBar extends Component {
           editCampaign && {
             bottom: "10%",
           },
+          customContainerStyle,
         ]}
       >
         <AnimatedCircularProgress

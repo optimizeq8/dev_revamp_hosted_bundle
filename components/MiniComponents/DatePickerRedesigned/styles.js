@@ -73,6 +73,12 @@ const styles = StyleSheet.create({
     top: 7,
     backgroundColor: "#0002",
   },
+  loadingBackground: {
+    backgroundColor: "#0005",
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+  },
 });
 
 export default styles;

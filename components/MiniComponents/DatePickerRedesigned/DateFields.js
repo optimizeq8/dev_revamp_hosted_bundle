@@ -452,7 +452,11 @@ class DateFields extends Component {
               ) : null}
             </View>
           </View>
-          {this.state.resumeLoading && <Loading dash />}
+          {(this.state.resumeLoading || this.props.repeatCampaignLoading) && (
+            <View style={styles.loadingBackground}>
+              <Loading dash={true} />
+            </View>
+          )}
         </Modal>
       </View>
     );

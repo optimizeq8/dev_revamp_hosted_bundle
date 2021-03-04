@@ -15,6 +15,13 @@ import LowerButton from "../LowerButton";
 import AudienceReach from "../../Screens/CampaignCreate/AdDetails/AudienceReach";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
+import { cloneDeep } from "lodash";
+import ReachBar from "../../Screens/InstagramCampaignCreate/Feed/AdTargetting/ReachBar";
+import ForwardLoading from "../ForwardLoading";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
 
 class RepeatCampaignBudget extends Component {
   state = {
@@ -26,6 +33,9 @@ class RepeatCampaignBudget extends Component {
     minValueBudget: 25,
     duration: 0,
   };
+  componentDidMount() {
+    this.props.get_languages();
+  }
   componentDidUpdate(prevProps) {
     let duration = 7;
     let prevCampaignIsInstagram = this.props.campaign.channel === "instagram";
@@ -63,15 +73,23 @@ class RepeatCampaignBudget extends Component {
         );
       }
 
-      this.setState({
-        repeatingCampaginData,
-        lifetime_budget_micro: recBudget * 2,
-        value: this.formatNumber(recBudget * 2, true),
-        recBudget: recBudget,
-        duration,
-        minValueBudget,
-        prevCampaignIsInstagram,
-      });
+      this.setState(
+        {
+          repeatingCampaginData,
+          lifetime_budget_micro: recBudget * 2,
+          value: this.formatNumber(recBudget * 2, true),
+          recBudget: recBudget,
+          duration,
+          minValueBudget,
+          prevCampaignIsInstagram,
+        },
+        () => {
+          if (repeatingCampaginData.hasOwnProperty("campaign_id"))
+            !prevCampaignIsInstagram
+              ? this._calcSnapReach(repeatingCampaginData)
+              : this._calcInstaReach(repeatingCampaginData);
+        }
+      );
     }
   }
   formatNumber = (num) => {
@@ -96,7 +114,9 @@ class RepeatCampaignBudget extends Component {
         custom_budget: false,
         campaign_budget: rawValue,
       });
-
+      !this.state.prevCampaignIsInstagram
+        ? this._calcSnapReach(this.state.repeatingCampaginData, rawValue)
+        : this._calcInstaReach(this.state.repeatingCampaginData, rawValue);
       return true;
     } else {
       if (onBlur) {
@@ -159,8 +179,163 @@ class RepeatCampaignBudget extends Component {
       this.props.handleRepeatModal
     );
   };
+
+  _calcSnapReach = async (
+    repeatingCampaginData,
+    rawValue = this.state.lifetime_budget_micro
+  ) => {
+    repeatingCountryTargetingCampaign = repeatingCampaginData.targeting;
+    if (repeatingCountryTargetingCampaign !== "") {
+      let r = cloneDeep(repeatingCampaginData.targeting);
+      if (r.demographics[0].gender === "") {
+        delete r.demographics[0].gender;
+      }
+      if (r.hasOwnProperty("devices") && r.devices[0].os_type === "") {
+        delete r.devices[0].os_type;
+      }
+      if (
+        r.geos.some((re) => re.hasOwnProperty("region_id")) &&
+        r.geos.some(
+          (re) => re.hasOwnProperty("region_id") && re.region_id.length === 0
+        )
+      ) {
+        r.geos.forEach(
+          (re) =>
+            re.hasOwnProperty("region_id") &&
+            re.region_id.length === 0 &&
+            delete re.region_id
+        );
+      }
+      if (
+        r.hasOwnProperty("interests") &&
+        r.interests[0].category_id.length === 0
+      ) {
+        delete r.interests;
+      }
+      const obj = {
+        targeting: JSON.stringify(r),
+        ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+        daily_budget_micro: rawValue,
+        campaign_id: repeatingCampaginData.campaign_id,
+        duration: repeatingCampaginData.duration,
+      };
+
+      let totalReach = {
+        demographics: [
+          {
+            languages: this.props.languages.map((lang) => lang.id),
+            min_age: 18,
+            max_age: "50+",
+          },
+        ],
+        geos: repeatingCampaginData.targeting.geos.map((geo) => ({
+          country_code: geo.country_code,
+        })),
+      };
+      const obj2 = {
+        targeting: JSON.stringify(totalReach),
+        duration: repeatingCampaginData.duration,
+        ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+      };
+      await this.props.snap_ad_audience_size(obj, obj2);
+    }
+  };
+
+  _calcInstaReach = async (
+    repeatingCampaginData,
+    rawValue = this.state.lifetime_budget_micro
+  ) => {
+    let r = cloneDeep(repeatingCampaginData.targeting);
+    if (
+      r.hasOwnProperty("flexible_spec") &&
+      r.hasOwnProperty("customInterests") &&
+      r.flexible_spec[0].interests.length > 0 &&
+      repeatingCampaginData.customInterests &&
+      repeatingCampaginData.customInterests.length > 0
+    )
+      r.flexible_spec[0].interests = r.flexible_spec[0].interests.concat(
+        this.state.customInterests
+      );
+    else if (
+      repeatingCampaginData.customInterests &&
+      repeatingCampaginData.customInterests.length > 0
+    ) {
+      r.flexible_spec[0].interests = this.state.customInterests;
+    }
+    let totalReach = {
+      geo_locations: {
+        countries: r.geo_locations.countries,
+      },
+    };
+    if (r.geo_locations.countries.length === 0) {
+      delete r.geo_locations.countries;
+    }
+    if (r.geo_locations.regions && r.geo_locations.regions.length === 0) {
+      delete r.geo_locations.regions;
+    }
+    if (
+      !r.geo_locations.hasOwnProperty("regions") &&
+      !r.geo_locations.hasOwnProperty("countries")
+    ) {
+      delete r.geo_locations;
+    }
+    if (r.hasOwnProperty("genders") && r.genders[0] === "") {
+      delete r.genders;
+    }
+
+    if (r.hasOwnProperty("user_os") && r.user_os[0] === "") {
+      r.user_os = [];
+      delete r.user_device;
+      delete r.os_version_min;
+      delete r.os_version_max;
+    }
+    if (
+      r.hasOwnProperty("flexible_spec") &&
+      (!r.flexible_spec[0].interests ||
+        r.flexible_spec[0].interests.length === 0)
+    ) {
+      delete r.flexible_spec;
+    }
+
+    if (r.user_device && r.user_device.length === 0) {
+      delete r.user_device;
+    }
+    if (r.hasOwnProperty("os_version_min") && r.os_version_min === "") {
+      delete r.os_version_min;
+    }
+    if (r.hasOwnProperty("os_version_max") && r.os_version_max === "") {
+      delete r.os_version_max;
+    }
+    const obj = {
+      targeting: JSON.stringify(r),
+      ad_account_id: this.props.mainBusiness.fb_ad_account_id,
+      campaign_id: repeatingCampaginData.campaign_id,
+      daily_budget_micro: rawValue,
+    };
+    if (totalReach.geo_locations.countries.length === 0) {
+      delete totalReach.geo_locations.countries;
+    }
+    // if (totalReach.geo_locations.regions.length === 0) {
+    //   delete totalReach.geo_locations.regions;
+    // }
+    if (
+      !totalReach.geo_locations.hasOwnProperty("regions") &&
+      !totalReach.geo_locations.hasOwnProperty("countries")
+    ) {
+      delete totalReach.geo_locations;
+    }
+    const obj2 = {
+      targeting: JSON.stringify(totalReach),
+      ad_account_id: this.props.mainBusiness.fb_ad_account_id,
+      campaign_id: repeatingCampaginData.campaign_id,
+      daily_budget_micro: this.state.lifetime_budget_micro,
+    };
+
+    await this.props.instagram_ad_audience_size(obj, obj2);
+    // }
+  };
   render() {
-    let { screenProps, selectedCampaign } = this.props;
+    let { screenProps, campaign } = this.props;
     let { translate } = screenProps;
 
     return (
@@ -206,7 +381,6 @@ class RepeatCampaignBudget extends Component {
             </Text>
           </View>
         </Row>
-
         <BudgetCards
           screenProps={screenProps}
           value={this.state.value}
@@ -215,20 +389,52 @@ class RepeatCampaignBudget extends Component {
           budgetOption={this.state.budgetOption}
           _handleBudget={this._handleBudget}
         />
-        <AudienceReach
-          loading={this.props.loading}
-          _handleSubmission={this._handleSubmission}
-          campaignInfo={selectedCampaign}
-          screenProps={this.props.screenProps}
-          customContainerStyle={styles.customAudienceReach}
-        />
-        <LowerButton
-          screenProps={this.props.screenProps}
-          checkmark
-          function={this.handleSubmission}
-          purpleViolet={true}
-          style={{ alignSelf: "flex-end", bottom: 10 }}
-        />
+        {campaign.channel !== "instagram" ? (
+          <AudienceReach
+            _handleSubmission={this._handleSubmission}
+            campaignInfo={campaign}
+            screenProps={this.props.screenProps}
+            customContainerStyle={styles.customAudienceReach}
+          />
+        ) : (
+          <ReachBar
+            campaignInfo={campaign}
+            screenProps={this.props.screenProps}
+            customContainerStyle={{ bottom: 0, height: "50%" }}
+          />
+        )}
+        {(
+          campaign.channel !== "instagram"
+            ? this.props.repeatCampaignLoading
+            : this.props.repeatInstaCampaignLoading
+        ) ? (
+          <ForwardLoading
+            mainViewStyle={{
+              width: widthPercentageToDP(5),
+              height: heightPercentageToDP(5),
+              alignSelf: "flex-end",
+              right: "5%",
+            }}
+            bottom={20}
+            style={{
+              width: widthPercentageToDP(7),
+              height: heightPercentageToDP(7),
+            }}
+          />
+        ) : (
+          <LowerButton
+            screenProps={this.props.screenProps}
+            checkmark
+            function={this.handleSubmission}
+            purpleViolet={true}
+            style={{ alignSelf: "flex-end", bottom: 10 }}
+            disabled={
+              campaign.channel !== "instagram"
+                ? this.props.repeatCampaignLoading
+                : this.props.repeatInstaCampaignLoading
+            }
+          />
+        )}
       </View>
     );
   }
@@ -239,6 +445,8 @@ const mapStateToProps = (state) => ({
   repeatCampaignLoading: state.campaignC.repeatCampaignLoading,
   repeatingInstaCampaginData: state.instagramAds.repeatingInstaCampaginData,
   repeatInstaCampaignLoading: state.instagramAds.repeatInstaCampaignLoading,
+  languages: state.campaignC.languagesList,
+  mainBusiness: state.account.mainBusiness,
 });
 const mapDispatchToProps = (dispatch) => ({
   repeatSnapCampaginBudget: (campaignInfo, handleRepeatModal) =>
@@ -249,6 +457,11 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(
       actionCreators.repeatInstaCampaginBudget(campaignInfo, handleRepeatModal)
     ),
+  snap_ad_audience_size: (info, totalReach) =>
+    dispatch(actionCreators.snap_ad_audience_size(info, totalReach)),
+  instagram_ad_audience_size: (info, totalReach) =>
+    dispatch(actionCreators.instagram_ad_audience_size(info, totalReach)),
+  get_languages: () => dispatch(actionCreators.get_languages()),
 });
 export default connect(
   mapStateToProps,

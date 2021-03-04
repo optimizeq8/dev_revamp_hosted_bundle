@@ -201,6 +201,11 @@ class RepeatCampaignModal extends Component {
                   duration={this.state.duration}
                   disabled={this.state.duration === 3}
                   handleDateSubmition={this.handleDateSubmition}
+                  repeatCampaignLoading={
+                    campaign.channel === "instagram"
+                      ? this.props.repeatInstaCampaignLoading
+                      : this.props.repeatCampaignLoading
+                  }
                 />
               </View>
             </KeyboardAwareScrollView>
@@ -214,7 +219,7 @@ class RepeatCampaignModal extends Component {
 
 const mapStateToProps = (state) => ({
   repeatCampaignLoading: state.campaignC.repeatCampaignLoading,
-  repeatInstaCampaignLoading: state.campaignC.repeatInstaCampaignLoading,
+  repeatInstaCampaignLoading: state.instagramAds.repeatInstaCampaignLoading,
 });
 const mapDispatchToProps = (dispatch) => ({
   repeatSnapCampagin: (campaignInfo, handleSwitch) =>
