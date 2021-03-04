@@ -947,9 +947,14 @@ class InstagramFeedAdTargetting extends Component {
             .length === 0
         ) {
           rep.coordinates = [];
+          rep.custom_location = [];
         } else if (this.state.locationsInfo.length > 0) {
           rep.coordinates = this.state.locationsInfo;
-        } else rep.coordinates = JSON.parse(rep.coordinates);
+          rep.custom_location = this.props.customLocations;
+        } else {
+          rep.coordinates = JSON.parse(rep.coordinates);
+          rep.custom_location = JSON.parse(rep.custom_location);
+        }
         this.props.updateInstagramCampaign(
           rep,
           this.props.mainBusiness.businessid,
