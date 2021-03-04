@@ -76,7 +76,6 @@ class CampaignCard extends Component {
   render() {
     const { translate } = this.props.screenProps;
     let campaign = this.props.campaign;
-    console.log(JSON.stringify(campaign, null, 2));
     let endDate = new Date(campaign.end_time);
     endDate.setDate(endDate.getDate() + 2);
     let gradientColor = {
@@ -199,7 +198,7 @@ class CampaignCard extends Component {
               </Text>
             )}
 
-            {this.review_status !== "APPROVED" && (
+            {this.review_status === "APPROVED" && (
               <View style={styles.chartContainer}>
                 <CampaignCircleChart
                   channel={this.props.channel}
