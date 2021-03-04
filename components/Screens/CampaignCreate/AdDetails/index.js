@@ -313,151 +313,151 @@ class AdDetails extends Component {
           duration,
         },
         async () => {
-          if (this.props.data.hasOwnProperty("campaignInfo")) {
-            let interestNames = [];
-            // NOTE: For mother's day
-            if (
-              this.props.data &&
-              this.props.data.objectiveLabel === "Mother's Day"
-            ) {
-              var targeting = {
-                demographics: [
-                  {
-                    gender: "",
-                    languages: ["ar", "en"],
-                    min_age: 18,
-                    max_age: 35,
-                  },
-                ],
-                interests: [
-                  {
-                    category_id: [
-                      "SLC_5",
-                      "SLC_11",
-                      "SLC_36",
-                      "SLC_54",
-                      "SLC_162",
-                      "SLC_63",
-                      "SLC_166",
-                      "SLC_64",
-                      "SLC_65",
-                      "SLC_106",
-                      "SLC_176",
-                      "SLC_91",
-                      "SLC_88",
-                    ],
-                  },
-                ],
-                devices: [{ os_type: "iOS" }],
-              };
-              interestNames = [
+          let interestNames = [];
+          // NOTE: For mother's day
+          if (
+            this.props.data &&
+            this.props.data.objectiveLabel === "Mother's Day"
+          ) {
+            var targeting = {
+              demographics: [
                 {
-                  hasChild: 0,
-                  id: "SLC_5",
-                  name: "Beauty Mavens",
-                  parentId: "SLC_0",
-                  path: "/Beauty Mavens",
-                  source: "SNAPCHAT",
+                  gender: "",
+                  languages: ["ar", "en"],
+                  min_age: 18,
+                  max_age: 35,
                 },
+              ],
+              interests: [
                 {
-                  hasChild: 0,
-                  id: "SLC_11",
-                  name: "Fashion & Style Gurus",
-                  parentId: "SLC_0",
-                  path: "/Fashion & Style Gurus",
-                  source: "SNAPCHAT",
+                  category_id: [
+                    "SLC_5",
+                    "SLC_11",
+                    "SLC_36",
+                    "SLC_54",
+                    "SLC_162",
+                    "SLC_63",
+                    "SLC_166",
+                    "SLC_64",
+                    "SLC_65",
+                    "SLC_106",
+                    "SLC_176",
+                    "SLC_91",
+                    "SLC_88",
+                  ],
                 },
-                {
-                  hasChild: 0,
-                  id: "SLC_36",
-                  name: "Green Living Enthusiasts",
-                  parentId: "SLC_0",
-                  path: "/Green Living Enthusiasts",
-                  source: "SNAPCHAT",
-                },
-                {
-                  hasChild: 0,
-                  id: "SLC_54",
-                  name: "Celebrity News Watchers",
-                  parentId: "SLC_52",
-                  path: "/News Watchers/Celebrity News Watchers",
-                  source: "SNAPCHAT",
-                },
-                {
-                  hasChild: 0,
-                  id: "SLC_162",
-                  name: "Cosmetics Shoppers",
-                  parentId: "SLC_61",
-                  path: "/Shoppers/Cosmetics Shoppers",
-                  source: "SNAPCHAT",
-                },
-                {
-                  hasChild: 0,
-                  id: "SLC_63",
-                  name: "Department Store Shoppers",
-                  parentId: "SLC_61",
-                  path: "/Shoppers/Department Store Shoppers",
-                  source: "SNAPCHAT",
-                },
-                {
-                  hasChild: 0,
-                  id: "SLC_166",
-                  name: "Jewelry & Watch Shoppers",
-                  parentId: "SLC_61",
-                  path: "/Shoppers/Jewelry & Watch Shoppers",
-                  source: "SNAPCHAT",
-                },
-                {
-                  hasChild: 0,
-                  id: "SLC_64",
-                  name: "Luxury Shoppers",
-                  parentId: "SLC_61",
-                  path: "/Shoppers/Luxury Shoppers",
-                  source: "SNAPCHAT",
-                },
-                {
-                  hasChild: 0,
-                  id: "SLC_65",
-                  name: "Online Shoppers",
-                  parentId: "SLC_61",
-                  path: "/Shoppers/Online Shoppers",
-                  source: "SNAPCHAT",
-                },
-                {
-                  hasChild: 0,
-                  id: "SLC_106",
-                  name: "Shopping Mall Shoppers",
-                  parentId: "SLC_61",
-                  path: "/Shoppers/Shopping Mall Shoppers",
-                  source: "SNAPCHAT",
-                },
-                {
-                  hasChild: 0,
-                  id: "SLC_176",
-                  name: "Women's Fashion Shoppers",
-                  parentId: "SLC_61",
-                  path: "/Shoppers/Women's Fashion Shoppers",
-                  source: "SNAPCHAT",
-                },
-                {
-                  hasChild: 0,
-                  id: "SLC_91",
-                  name: "Wellness & Healthy Lifestyle",
-                  parentId: "SLC_0",
-                  path: "/Wellness & Healthy Lifestyle",
-                  source: "SNAPCHAT",
-                },
-                {
-                  hasChild: 0,
-                  id: "SLC_88",
-                  name: "Women's Lifestyle",
-                  parentId: "SLC_0",
-                  path: "/Women's Lifestyle",
-                  source: "SNAPCHAT",
-                },
-              ];
-            }
+              ],
+              devices: [{ os_type: "iOS" }],
+            };
+            interestNames = [
+              {
+                hasChild: 0,
+                id: "SLC_5",
+                name: "Beauty Mavens",
+                parentId: "SLC_0",
+                path: "/Beauty Mavens",
+                source: "SNAPCHAT",
+              },
+              {
+                hasChild: 0,
+                id: "SLC_11",
+                name: "Fashion & Style Gurus",
+                parentId: "SLC_0",
+                path: "/Fashion & Style Gurus",
+                source: "SNAPCHAT",
+              },
+              {
+                hasChild: 0,
+                id: "SLC_36",
+                name: "Green Living Enthusiasts",
+                parentId: "SLC_0",
+                path: "/Green Living Enthusiasts",
+                source: "SNAPCHAT",
+              },
+              {
+                hasChild: 0,
+                id: "SLC_54",
+                name: "Celebrity News Watchers",
+                parentId: "SLC_52",
+                path: "/News Watchers/Celebrity News Watchers",
+                source: "SNAPCHAT",
+              },
+              {
+                hasChild: 0,
+                id: "SLC_162",
+                name: "Cosmetics Shoppers",
+                parentId: "SLC_61",
+                path: "/Shoppers/Cosmetics Shoppers",
+                source: "SNAPCHAT",
+              },
+              {
+                hasChild: 0,
+                id: "SLC_63",
+                name: "Department Store Shoppers",
+                parentId: "SLC_61",
+                path: "/Shoppers/Department Store Shoppers",
+                source: "SNAPCHAT",
+              },
+              {
+                hasChild: 0,
+                id: "SLC_166",
+                name: "Jewelry & Watch Shoppers",
+                parentId: "SLC_61",
+                path: "/Shoppers/Jewelry & Watch Shoppers",
+                source: "SNAPCHAT",
+              },
+              {
+                hasChild: 0,
+                id: "SLC_64",
+                name: "Luxury Shoppers",
+                parentId: "SLC_61",
+                path: "/Shoppers/Luxury Shoppers",
+                source: "SNAPCHAT",
+              },
+              {
+                hasChild: 0,
+                id: "SLC_65",
+                name: "Online Shoppers",
+                parentId: "SLC_61",
+                path: "/Shoppers/Online Shoppers",
+                source: "SNAPCHAT",
+              },
+              {
+                hasChild: 0,
+                id: "SLC_106",
+                name: "Shopping Mall Shoppers",
+                parentId: "SLC_61",
+                path: "/Shoppers/Shopping Mall Shoppers",
+                source: "SNAPCHAT",
+              },
+              {
+                hasChild: 0,
+                id: "SLC_176",
+                name: "Women's Fashion Shoppers",
+                parentId: "SLC_61",
+                path: "/Shoppers/Women's Fashion Shoppers",
+                source: "SNAPCHAT",
+              },
+              {
+                hasChild: 0,
+                id: "SLC_91",
+                name: "Wellness & Healthy Lifestyle",
+                parentId: "SLC_0",
+                path: "/Wellness & Healthy Lifestyle",
+                source: "SNAPCHAT",
+              },
+              {
+                hasChild: 0,
+                id: "SLC_88",
+                name: "Women's Lifestyle",
+                parentId: "SLC_0",
+                path: "/Women's Lifestyle",
+                source: "SNAPCHAT",
+              },
+            ];
+          }
 
+          if (this.props.data.hasOwnProperty("campaignInfo")) {
             const rep = {
               ...this.state.campaignInfo,
               ...this.props.data.campaignInfo,
@@ -562,6 +562,18 @@ class AdDetails extends Component {
                 campaignInfo: rep,
               });
             }
+            const rep = {
+              ...this.state.campaignInfo,
+
+              targeting: {
+                ...this.state.campaignInfo.targeting,
+                ...targeting,
+              },
+            };
+            this.setState({
+              interestNames,
+              campaignInfo: rep,
+            });
           }
           this.props.save_campaign_info({
             budgetOption: this.state.budgetOption,
