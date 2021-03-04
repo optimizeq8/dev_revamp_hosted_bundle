@@ -10,6 +10,13 @@ export const instagramAdObjectives = {
       color: "#4BD6C6",
     },
     {
+      label: "Mother's Day",
+      value: "LINK_CLICKS",
+      info: "SELL MOTHER'S DAY PRODUCTS",
+      icon: ObjIcons.Mother,
+      color: "#BF77F4",
+    },
+    {
       label: "App Installs",
       value: "APP_INSTALLS",
       info: "INCREASE APP DOWNLOADS",
@@ -57,6 +64,13 @@ export const instagramAdObjectives = {
       info: "INCREASE MY WEBSITE VISITS",
       icon: ObjIcons.BRAND_AWARENESS,
       color: "#4BD6C6",
+    },
+    {
+      label: "Mother's Day",
+      value: "LINK_CLICKS",
+      info: "SELL MOTHER'S DAY PRODUCTS",
+      icon: ObjIcons.Mother,
+      color: "#BF77F4",
     },
     {
       label: "App Installs",

@@ -10,6 +10,13 @@ export default {
       color: "#4BD6C6",
     },
     {
+      label: "Mother's Day",
+      value: "WEBSITE_TRAFFIC",
+      info: "SELL MOTHER'S DAY PRODUCTS",
+      icon: ObjIcons.Mother,
+      color: "#BF77F4",
+    },
+    {
       label: "Lead Generation",
       value: "LEAD_GENERATION",
       info: "I WANT TO KNOW MY CUSTOMERS",
@@ -61,6 +68,13 @@ export default {
       info: "INCREASE MY WEBSITE VISITS",
       icon: ObjIcons.BRAND_AWARENESS,
       color: "#4BD6C6",
+    },
+    {
+      label: "Mother's Day",
+      value: "WEBSITE_TRAFFIC",
+      info: "SELL MOTHER'S DAY PRODUCTS",
+      icon: ObjIcons.Mother,
+      color: "#BF77F4",
     },
     // {
     //   label: "Majlis 2020",
