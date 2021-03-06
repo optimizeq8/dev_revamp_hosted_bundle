@@ -265,11 +265,72 @@ class InstagramFeedAdTargetting extends Component {
           duration,
         },
         async () => {
+          let targeting = {
+            ...this.state.campaignInfo.targeting,
+            flexible_spec: [
+              {
+                interests: [
+                  { name: "Online shopping", id: "6003346592981" },
+                  { name: "Family", id: "6003476182657" },
+                  { name: "Flower bouquet", id: "6003012436681" },
+                  { name: "giFT", id: "6002962884972" },
+                  { name: "Gift shop", id: "6003106645378" },
+                  { name: "Mother's Day", id: "6003395917803" },
+                ],
+              },
+            ],
+            user_os: ["iOS"],
+            age_max: 35,
+            age_min: 18,
+          };
+          console.log(
+            "this.props.data.objectiveLabel",
+            JSON.stringify(this.props.data, null, 2)
+          );
+          let customInterests = [];
+          let customInterestObjects = [];
           if (this.props.data.hasOwnProperty("campaignInfo")) {
             let rep = {
               ...this.state.campaignInfo,
               ...this.props.data.campaignInfo,
             };
+            if (this.props.data.objectiveLabel === "Mother's Day") {
+              rep.targeting = {
+                ...targeting,
+              };
+              customInterests = [
+                { id: "6003012436681", name: "Flower bouquet" },
+                { id: "6002962884972", name: "giFT" },
+                { id: "6003106645378", name: "Gift shop" },
+                { id: "6003395917803", name: "Mother's Day" },
+              ];
+              customInterestObjects = [
+                {
+                  id: "6003012436681",
+                  name: "Flower bouquet",
+                  sub_sub_cat: 1,
+                  subcat_name: "Additional Interests",
+                },
+                {
+                  id: "6002962884972",
+                  name: "giFT",
+                  sub_sub_cat: 1,
+                  subcat_name: "Additional Interests",
+                },
+                {
+                  id: "6003106645378",
+                  name: "Gift shop",
+                  sub_sub_cat: 1,
+                  subcat_name: "Additional Interests",
+                },
+                {
+                  id: "6003395917803",
+                  name: "Mother's Day",
+                  sub_sub_cat: 1,
+                  subcat_name: "Additional Interests",
+                },
+              ];
+            }
             // console.log("data campaignInfo", this.props.data);
             let minValueBudget =
               25 * rep.targeting.geo_locations.countries.length;
@@ -307,8 +368,11 @@ class InstagramFeedAdTargetting extends Component {
                     !isUndefined(this.props.data.budgetOption)
                   ? this.props.data.budgetOption
                   : 1,
-                customInterests: this.props.data.customInterests,
+                customInterests: this.props.data.customInterests
+                  ? this.props.data.customInterests
+                  : customInterests,
                 minValueBudget,
+                customInterestObjects,
               },
               () => {
                 if (this.props.data.appChoice) {
@@ -338,6 +402,48 @@ class InstagramFeedAdTargetting extends Component {
               (country) => country.name === this.props.mainBusiness.country
             ).key;
             await this.onSelectedCountryRegionChange(country_code);
+            if (this.props.data.objectiveLabel === "Mother's Day") {
+              this.setState({
+                campaignInfo: {
+                  ...this.state.campaignInfo,
+                  targeting: {
+                    ...targeting,
+                  },
+                },
+                customInterests: [
+                  { id: "6003012436681", name: "Flower bouquet" },
+                  { id: "6002962884972", name: "giFT" },
+                  { id: "6003106645378", name: "Gift shop" },
+                  { id: "6003395917803", name: "Mother's Day" },
+                ],
+                customInterestObjects: [
+                  {
+                    id: "6003012436681",
+                    name: "Flower bouquet",
+                    sub_sub_cat: 1,
+                    subcat_name: "Additional Interests",
+                  },
+                  {
+                    id: "6002962884972",
+                    name: "giFT",
+                    sub_sub_cat: 1,
+                    subcat_name: "Additional Interests",
+                  },
+                  {
+                    id: "6003106645378",
+                    name: "Gift shop",
+                    sub_sub_cat: 1,
+                    subcat_name: "Additional Interests",
+                  },
+                  {
+                    id: "6003395917803",
+                    name: "Mother's Day",
+                    sub_sub_cat: 1,
+                    subcat_name: "Additional Interests",
+                  },
+                ],
+              });
+            }
           }
           await this._calcReach();
         }
@@ -950,7 +1056,8 @@ class InstagramFeedAdTargetting extends Component {
         //   campaign_id: this.props.campaign_id,
         //   campaign_budget: this.state.campaignInfo.lifetime_budget_micro
         // });
-
+        console.log("rep", rep.targeting);
+        console.log("customInteerest", this.state.customInterests);
         this.props.ad_details_instagram(
           rep,
           this.props.navigation,

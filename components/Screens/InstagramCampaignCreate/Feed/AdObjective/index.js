@@ -360,6 +360,9 @@ class AdObjective extends Component {
         ...this.state.campaignInfo,
         duration: this.state.duration,
       };
+      if (this.state.objectiveLabel === "Mother's Day") {
+        info.campaign_season = "Mother's Day";
+      }
       this.getMinimumCash();
       this.props.ad_objective_instagram(
         {
