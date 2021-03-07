@@ -285,7 +285,6 @@ class InstagramFeedAdTargetting extends Component {
           let customInterests = [];
           let customInterestObjects = [];
           if (this.props.data.hasOwnProperty("campaignInfo")) {
-            console.log("123");
             let rep = {
               ...this.state.campaignInfo,
               ...this.props.data.campaignInfo,
