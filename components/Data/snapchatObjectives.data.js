@@ -14,7 +14,7 @@ export default {
       value: "WEBSITE_TRAFFIC",
       info: "SELL MOTHER'S DAY PRODUCTS",
       icon: ObjIcons.Mother,
-      color: "#BF77F4",
+      color: "#F26622",
     },
     {
       label: "Lead Generation",
@@ -74,7 +74,7 @@ export default {
       value: "WEBSITE_TRAFFIC",
       info: "SELL MOTHER'S DAY PRODUCTS",
       icon: ObjIcons.Mother,
-      color: "#BF77F4",
+      color: "#F26622",
     },
     // {
     //   label: "Majlis 2020",
