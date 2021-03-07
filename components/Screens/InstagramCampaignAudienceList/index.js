@@ -18,7 +18,7 @@ import * as actionCreators from "../../../store/actions";
 
 import AudienceCard from "./AudienceCard";
 
-class SnapchatCampaignAudience extends React.Component {
+class InstagramCampaignAudience extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -79,15 +79,17 @@ class SnapchatCampaignAudience extends React.Component {
         setAudienceId={this.setAudienceId}
         getAudienceDetail={this.props.getAudienceDetail}
         setSelectedAudience={this.props.setSelectedAudience}
+        audience_type={this.props.audience_type}
       />
     );
   };
   createNewAudience = () => {
     this.props.setAudienceDetail({ reset: true });
-    this.props.navigation.navigate("SnapchatAudienceTagetting", {
+    this.props.navigation.navigate("InstagramAudienceTagetting", {
       source: "audience_list",
       source_action: "a_create_audience_detail",
-      audience_channel: "snapchat",
+      audience_channel: "instagram",
+      audience_type: this.props.audience_type,
     });
   };
 
@@ -111,7 +113,7 @@ class SnapchatCampaignAudience extends React.Component {
             keyExtractor={(item) => item.id}
             contentContainerStyle={{
               minHeight: heightPercentageToDP(50),
-              //   flex: 1,
+              flex: 1,
               paddingBottom: heightPercentageToDP(50),
             }}
             onRefresh={this.retrieveAudinece}
@@ -124,23 +126,21 @@ class SnapchatCampaignAudience extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  audienceList: state.audience.audienceList,
-  audienceListLoading: state.audience.audienceListLoading,
-  data: state.campaignC.data,
+  audienceList: state.instagramAudience.audienceList,
+  audienceListLoading: state.instagramAudience.audienceListLoading,
+  data: state.instagramAds.data,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setAudienceDetail: (audienceInfo) =>
-    dispatch(actionCreators.setAudienceDetail(audienceInfo)),
-  getAudienceList: () => dispatch(actionCreators.getAudienceList()),
+    dispatch(actionCreators.setInstagramAudienceDetail(audienceInfo)),
+  getAudienceList: () => dispatch(actionCreators.getInstagramAudienceList()),
   getAudienceDetail: (audienceId) =>
-    dispatch(actionCreators.getAudienceDetail(audienceId)),
+    dispatch(actionCreators.getInstagramAudienceDetail(audienceId)),
   deleteAudience: (audienceId) =>
-    dispatch(actionCreators.deleteAudience(audienceId)),
-  save_campaign_info: (info) =>
-    dispatch(actionCreators.save_campaign_info(info)),
+    dispatch(actionCreators.deleteInstagramAudience(audienceId)),
 });
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SnapchatCampaignAudience);
+)(InstagramCampaignAudience);

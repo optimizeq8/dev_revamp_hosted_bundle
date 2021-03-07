@@ -7,7 +7,7 @@ import { setCampaignInfoForTransaction } from "./transactionActions";
 import { errorMessageHandler } from "./ErrorActions";
 import NavigationService from "../../NavigationService";
 
-InstagramBackendURL = () =>
+export default InstagramBackendURL = () =>
   axios.create({
     baseURL: store.getState().login.admin
       ? "https://optimizekwtestingserver.com/optimize/instagram/"
@@ -456,8 +456,8 @@ export const ad_details_instagram = (
   navigation,
   segmentInfo,
   locationsInfo,
-  custom_location = [],
-  custom_interest = []
+  custom_interest = [],
+  custom_location = []
 ) => {
   return (dispatch, getState) => {
     dispatch({
@@ -468,8 +468,8 @@ export const ad_details_instagram = (
       .post(`saveinstatargeting`, {
         ...info,
         coordinates: locationsInfo,
-        custom_location: custom_location,
-        custom_interest: custom_interest,
+        custom_interest,
+        custom_location,
       })
       .then((res) => {
         return res.data;
@@ -616,16 +616,16 @@ export const updateInstagramCampaign = (
   businessid,
   navigation,
   segmentInfo,
-  custom_location = [],
-  custom_interest = []
+  custom_interest = [],
+  custom_location = []
 ) => {
   return (dispatch, getState) => {
     InstagramBackendURL()
       .post(`saveinstatargeting`, {
         ...info,
         businessid,
-        custom_location,
         custom_interest,
+        custom_location,
       })
       .then((res) => {
         // console.log("back end info", res.data);
@@ -1081,7 +1081,12 @@ export const downloadInstagramCSV = (campaign_id, email, showModalMessage) => {
   };
 };
 
-export const geoLocationSearch = (latLong, updateMarkers, radius) => {
+export const geoLocationSearch = (
+  latLong,
+  updateMarkers,
+  radius,
+  audienceUpdate = false
+) => {
   return (dispatch) => {
     dispatch({
       type: actionTypes.SET_INSTAGRAM_CUSTOM_LOCATION_LOADING,
@@ -1102,6 +1107,7 @@ export const geoLocationSearch = (latLong, updateMarkers, radius) => {
               data: data.data.custom_locations,
               radius,
               index: latLong.index,
+              audienceUpdate,
             },
           });
         }
@@ -1116,11 +1122,11 @@ export const geoLocationSearch = (latLong, updateMarkers, radius) => {
   };
 };
 
-export const deleteCustomLocation = (index) => {
+export const deleteCustomLocation = (index, audienceUpdate) => {
   return (dispatch) => {
     dispatch({
       type: actionTypes.DELETE_INSTAGRAM_CUSTOM_LOCATION_LOADING,
-      payload: index,
+      payload: { index, audienceUpdate },
     });
   };
 };

@@ -21,7 +21,7 @@ import Header from "../Header";
 import cloneDeep from "lodash/cloneDeep";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
-
+import findIndex from "lodash/findIndex";
 class SnapchatLocation extends Component {
   state = {
     mapModal: false,
@@ -84,11 +84,12 @@ class SnapchatLocation extends Component {
     let index =
       locationsInfo &&
       locationsInfo.length > 0 &&
-      locationsInfo.findIndex((loc) => loc.place_id === locInfo.place_id);
+      findIndex(locationsInfo, (loc) => loc.place_id === locInfo.place_id);
     if (!remove) locInfo.index = locationsInfo.length;
     if (index > -1 && remove) {
       locationsInfo.splice(index, 1);
       markers.splice(index, 1);
+      this.props.deleteCustomLocation(index, this.props.audience);
     } else {
       locationsInfo = [...locationsInfo, locInfo];
       markers = [...markers, marker];
@@ -270,7 +271,7 @@ class SnapchatLocation extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteCustomLocation: (index) =>
-    dispatch(actionCreators.deleteCustomLocation(index)),
+  deleteCustomLocation: (index, audienceUpdate) =>
+    dispatch(actionCreators.deleteCustomLocation(index, audienceUpdate)),
 });
 export default connect(null, mapDispatchToProps)(SnapchatLocation);

@@ -214,7 +214,8 @@ class LocaionMap extends Component {
           index: this.props.selectedLocation.index,
         },
         () => this.handleUpdatingMarkers(marker),
-        markers[0].radius
+        markers[0].radius,
+        this.props.audience
       );
     else {
       this.handleUpdatingMarkers(marker);
@@ -487,7 +488,14 @@ const mapStateToProps = (state) => ({
   customLocationLoading: state.instagramAds.customLocationLoading,
 });
 const mapDispatchToProps = (dispatch) => ({
-  geoLocationSearch: (latLong, updateMarkers, radius) =>
-    dispatch(actionCreators.geoLocationSearch(latLong, updateMarkers, radius)),
+  geoLocationSearch: (latLong, updateMarkers, radius, audienceUpdate) =>
+    dispatch(
+      actionCreators.geoLocationSearch(
+        latLong,
+        updateMarkers,
+        radius,
+        audienceUpdate
+      )
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(LocaionMap);
