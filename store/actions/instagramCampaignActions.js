@@ -455,7 +455,9 @@ export const ad_details_instagram = (
   info,
   navigation,
   segmentInfo,
-  locationsInfo
+  locationsInfo,
+  custom_location = [],
+  custom_interest = []
 ) => {
   return (dispatch, getState) => {
     dispatch({
@@ -463,7 +465,12 @@ export const ad_details_instagram = (
       payload: true,
     });
     InstagramBackendURL()
-      .post(`saveinstatargeting`, { ...info, coordinates: locationsInfo })
+      .post(`saveinstatargeting`, {
+        ...info,
+        coordinates: locationsInfo,
+        custom_location: custom_location,
+        custom_interest: custom_interest,
+      })
       .then((res) => {
         return res.data;
       })
@@ -608,11 +615,18 @@ export const updateInstagramCampaign = (
   info,
   businessid,
   navigation,
-  segmentInfo
+  segmentInfo,
+  custom_location = [],
+  custom_interest = []
 ) => {
   return (dispatch, getState) => {
     InstagramBackendURL()
-      .post(`saveinstatargeting`, { ...info, businessid })
+      .post(`saveinstatargeting`, {
+        ...info,
+        businessid,
+        custom_location,
+        custom_interest,
+      })
       .then((res) => {
         // console.log("back end info", res.data);
 
