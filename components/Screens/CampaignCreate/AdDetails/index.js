@@ -1910,7 +1910,7 @@ class AdDetails extends Component {
                   order={2}
                   name="Audience targeting"
                 >
-                  {!showAudienceList && (
+                  {!showAudienceList ? (
                     <TargetAudience
                       screenProps={this.props.screenProps}
                       _renderSideMenu={this._renderSideMenu}
@@ -1928,7 +1928,7 @@ class AdDetails extends Component {
                       onSelectedGenderChange={this.onSelectedGenderChange}
                       _handleAge={this._handleAge}
                     />
-                  )}
+                  ):<View/>}
                 </CopilotStep>
                 {showAudienceList && (
                   <SnapchatAudienceList
