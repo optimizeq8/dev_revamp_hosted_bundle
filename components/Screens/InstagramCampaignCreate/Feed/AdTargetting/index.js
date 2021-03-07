@@ -282,14 +282,9 @@ class InstagramFeedAdTargetting extends Component {
             age_max: 35,
             age_min: 18,
           };
-          console.log(
-            "this.props.data.objectiveLabel",
-            JSON.stringify(this.props.data, null, 2)
-          );
           let customInterests = [];
           let customInterestObjects = [];
           if (this.props.data.hasOwnProperty("campaignInfo")) {
-            console.log("123");
             let rep = {
               ...this.state.campaignInfo,
               ...this.props.data.campaignInfo,
@@ -1059,8 +1054,7 @@ class InstagramFeedAdTargetting extends Component {
         //   campaign_id: this.props.campaign_id,
         //   campaign_budget: this.state.campaignInfo.lifetime_budget_micro
         // });
-        console.log("rep", rep.targeting);
-        console.log("customInteerest", this.state.customInterests);
+     
         this.props.ad_details_instagram(
           rep,
           this.props.navigation,
