@@ -8,3 +8,4 @@ export { default as Group } from "../LeadGen.svg";
 export { default as WhatsApp } from "../SwipeUps/WhatsApp";
 export { default as Instagram } from "../InstagramIcon.svg";
 export { default as Phone } from "../MobileOutline.svg";
+export { default as Mother } from "./MothersDay.svg";

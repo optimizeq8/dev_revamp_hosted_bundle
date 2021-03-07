@@ -474,6 +474,8 @@ class AdObjective extends Component {
               ? "Website"
               : "App DeepLink"
             : null,
+        campaign_season:
+          this.state.objectiveLabel === "Mother's Day" ? "Mother's Day" : "",
       };
       //If the user closes the continueModal without choosing to resume or not
       //and creates a new campaign then everything related to campaign creation is reset
@@ -507,6 +509,8 @@ class AdObjective extends Component {
       this.props.save_campaign_info({
         campaign_id: this.props.campaign_id,
         ...this.state.campaignInfo,
+        campaign_season:
+          this.state.objectiveLabel === "Mother's Day" ? "Mother's Day" : "",
       });
       let objective = this.state.campaignInfo.objective;
 
@@ -528,7 +532,9 @@ class AdObjective extends Component {
       if (this.state.savedObjective !== "POLITICAL_TRAFFIC") {
         delete info.is_political;
       }
-
+      if (this.state.objectiveLabel === "Mother's Day") {
+        info.campaign_season = "Mother's Day";
+      }
       this.getMinimumCash();
       this.props.ad_objective(
         {
@@ -677,9 +683,10 @@ class AdObjective extends Component {
     const list = this.state.objectivesList[this.props.adType].map((o) => (
       <ObjectivesCard
         choice={o}
-        selected={this.state.campaignInfo.objective}
+        // selected={this.state.campaignInfo.objective}
+        selected={this.state.objectiveLabel}
         setObjective={this.setObjective}
-        key={o.value}
+        key={o.label}
         screenProps={this.props.screenProps}
       />
     ));
