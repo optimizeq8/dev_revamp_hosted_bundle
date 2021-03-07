@@ -21,7 +21,15 @@ import SelectOS from "../../../../MiniComponents/SelectOS";
 import { showMessage } from "react-native-flash-message";
 
 //Data
-import countries, { gender, OSType, country_regions, allRegions } from "./data";
+import countries, {
+  gender,
+  OSType,
+  country_regions,
+  allRegions,
+  mothersDayTargeting,
+  mothersDayCustomInterest,
+  mothersDayCustomInterestObject,
+} from "./data";
 
 //Style
 import styles from "../../styles/adTargetting.styles";
@@ -254,11 +262,24 @@ class InstagramStoryAdTargetting extends Component {
           duration,
         },
         async () => {
+          let targeting = mothersDayTargeting;
+
+          let customInterests = [];
+          let customInterestObjects = [];
           if (this.props.data.hasOwnProperty("campaignInfo")) {
             let rep = {
               ...this.state.campaignInfo,
               ...this.props.data.campaignInfo,
             };
+            if (this.props.data.objectiveLabel === "Mother's Day") {
+              rep.targeting = {
+                ...this.state.campaignInfo.targeting,
+                ...this.props.data.campaignInfo.targeting,
+                ...targeting,
+              };
+              customInterests = mothersDayCustomInterest;
+              customInterestObjects = mothersDayCustomInterestObject;
+            }
             // console.log("data campaignInfo", this.props.data);
             let minValueBudget =
               25 * rep.targeting.geo_locations.countries.length;
@@ -269,9 +290,12 @@ class InstagramStoryAdTargetting extends Component {
                 ...this.props.data,
                 campaignInfo: {
                   ...rep,
-                  lifetime_budget_micro: this.props.data.campaignDateChanged
-                    ? recBudget * 2
-                    : this.props.data.campaignInfo.lifetime_budget_micro,
+                  lifetime_budget_micro:
+                    this.props.data && this.props.data.campaignDateChanged
+                      ? recBudget * 2
+                      : this.props.data
+                      ? this.props.data.campaignInfo.lifetime_budget_micro
+                      : 50,
                   campaign_id: this.props.campaign_id,
                   targeting: {
                     ...rep.targeting,
@@ -280,19 +304,24 @@ class InstagramStoryAdTargetting extends Component {
                   },
                 },
                 value: this.formatNumber(
-                  this.props.data.campaignDateChanged
+                  this.props.data && this.props.data.campaignDateChanged
                     ? recBudget * 2
-                    : this.props.data.campaignInfo.lifetime_budget_micro
+                    : this.props.data
+                    ? this.props.data.campaignInfo.lifetime_budget_micro
+                    : 50
                 ),
                 recBudget,
                 budgetOption: this.props.data.campaignDateChanged
                   ? 1
-                  : !isNull(this.props.data.budgetOption) &&
+                  : !isNull(this.props.data.budgetOption) ||
                     !isUndefined(this.props.data.budgetOption)
                   ? this.props.data.budgetOption
                   : 1,
-                customInterests: this.props.data.customInterests,
+                customInterests: this.props.data.customInterests
+                  ? this.props.data.customInterests
+                  : customInterests,
                 minValueBudget,
+                customInterestObjects,
               },
               () => {
                 if (this.props.data.appChoice) {
@@ -310,6 +339,20 @@ class InstagramStoryAdTargetting extends Component {
               }
             );
           } else {
+            if (this.props.data.objectiveLabel === "Mother's Day") {
+              await this.setState({
+                campaignInfo: {
+                  ...this.state.campaignInfo,
+
+                  targeting: {
+                    ...this.state.campaignInfo.targeting,
+                    ...targeting,
+                  },
+                },
+                customInterests: mothersDayCustomInterest,
+                customInterestObjects: mothersDayCustomInterestObject,
+              });
+            }
             if (this.props.data && this.props.data.appChoice) {
               let navAppChoice = this.props.data.appChoice;
               let rep = this.state.campaignInfo;
@@ -324,7 +367,7 @@ class InstagramStoryAdTargetting extends Component {
 
             await this.onSelectedCountryRegionChange(country_code);
           }
-          this._calcReach();
+          await this._calcReach();
         }
       );
     }

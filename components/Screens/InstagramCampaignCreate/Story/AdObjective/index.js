@@ -351,6 +351,9 @@ class AdObjective extends Component {
         ...this.state.campaignInfo,
         duration: this.state.duration,
       };
+      if (this.state.objectiveLabel === "Mother's Day") {
+        info.campaign_season = "Mother's Day";
+      }
       this.getMinimumCash();
       this.props.ad_objective_instagram(
         {
@@ -451,9 +454,10 @@ class AdObjective extends Component {
     const list = instagramAdObjectives["InstagramStoryAd"].map((o) => (
       <ObjectivesCard
         choice={o}
-        selected={this.state.campaignInfo.objective}
+        // selected={this.state.campaignInfo.objective}
+        selected={this.state.objectiveLabel}
         setObjective={this.setObjective}
-        key={o.value}
+        key={o.label}
         screenProps={this.props.screenProps}
       />
     ));

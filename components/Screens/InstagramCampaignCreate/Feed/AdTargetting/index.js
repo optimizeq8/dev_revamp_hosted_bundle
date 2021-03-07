@@ -21,7 +21,15 @@ import SelectOS from "../../../../MiniComponents/SelectOS";
 import { showMessage } from "react-native-flash-message";
 
 //Data
-import countries, { gender, OSType, country_regions, allRegions } from "./data";
+import countries, {
+  gender,
+  OSType,
+  country_regions,
+  allRegions,
+  mothersDayTargeting,
+  mothersDayCustomInterest,
+  mothersDayCustomInterestObject,
+} from "./data";
 
 //Style
 import styles from "../../styles/adTargetting.styles";
@@ -265,11 +273,23 @@ class InstagramFeedAdTargetting extends Component {
           duration,
         },
         async () => {
+          let targeting = mothersDayTargeting;
+          let customInterests = [];
+          let customInterestObjects = [];
           if (this.props.data.hasOwnProperty("campaignInfo")) {
             let rep = {
               ...this.state.campaignInfo,
               ...this.props.data.campaignInfo,
             };
+            if (this.props.data.objectiveLabel === "Mother's Day") {
+              rep.targeting = {
+                ...this.state.campaignInfo.targeting,
+                ...this.props.data.campaignInfo.targeting,
+                ...targeting,
+              };
+              customInterests = mothersDayCustomInterest;
+              customInterestObjects = mothersDayCustomInterestObject;
+            }
             // console.log("data campaignInfo", this.props.data);
             let minValueBudget =
               25 * rep.targeting.geo_locations.countries.length;
@@ -307,8 +327,11 @@ class InstagramFeedAdTargetting extends Component {
                     !isUndefined(this.props.data.budgetOption)
                   ? this.props.data.budgetOption
                   : 1,
-                customInterests: this.props.data.customInterests,
+                customInterests: this.props.data.customInterests
+                  ? this.props.data.customInterests
+                  : customInterests,
                 minValueBudget,
+                customInterestObjects,
               },
               () => {
                 if (this.props.data.appChoice) {
@@ -326,6 +349,19 @@ class InstagramFeedAdTargetting extends Component {
               }
             );
           } else {
+            if (this.props.data.objectiveLabel === "Mother's Day") {
+              await this.setState({
+                campaignInfo: {
+                  ...this.state.campaignInfo,
+                  targeting: {
+                    ...this.state.campaignInfo.targeting,
+                    ...targeting,
+                  },
+                },
+                customInterests: mothersDayCustomInterest,
+                customInterestObjects: mothersDayCustomInterestObject,
+              });
+            }
             if (this.props.data && this.props.data.appChoice) {
               let navAppChoice = this.props.data.appChoice;
               let rep = this.state.campaignInfo;

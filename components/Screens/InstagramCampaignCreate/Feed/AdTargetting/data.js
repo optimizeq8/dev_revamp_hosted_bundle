@@ -1,3 +1,53 @@
+export const mothersDayTargeting = {
+  flexible_spec: [
+    {
+      interests: [
+        { name: "Online shopping", id: "6003346592981" },
+        { name: "Family", id: "6003476182657" },
+        { name: "Flower bouquet", id: "6003012436681" },
+        { name: "giFT", id: "6002962884972" },
+        { name: "Gift shop", id: "6003106645378" },
+        { name: "Mother's Day", id: "6003395917803" },
+      ],
+    },
+  ],
+  user_os: ["iOS"],
+  age_max: 35,
+  age_min: 18,
+};
+export const mothersDayCustomInterest = [
+  { id: "6003012436681", name: "Flower bouquet" },
+  { id: "6002962884972", name: "giFT" },
+  { id: "6003106645378", name: "Gift shop" },
+  { id: "6003395917803", name: "Mother's Day" },
+];
+
+export const mothersDayCustomInterestObject = [
+  {
+    id: "6003012436681",
+    name: "Flower bouquet",
+    sub_sub_cat: 1,
+    subcat_name: "Additional Interests",
+  },
+  {
+    id: "6002962884972",
+    name: "giFT",
+    sub_sub_cat: 1,
+    subcat_name: "Additional Interests",
+  },
+  {
+    id: "6003106645378",
+    name: "Gift shop",
+    sub_sub_cat: 1,
+    subcat_name: "Additional Interests",
+  },
+  {
+    id: "6003395917803",
+    name: "Mother's Day",
+    sub_sub_cat: 1,
+    subcat_name: "Additional Interests",
+  },
+];
 export const gender = [
   { label: "Male", value: "1" },
   { label: "Female", value: "2" },
