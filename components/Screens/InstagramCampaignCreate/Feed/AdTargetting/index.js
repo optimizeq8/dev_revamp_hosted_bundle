@@ -1054,8 +1054,7 @@ class InstagramFeedAdTargetting extends Component {
         //   campaign_id: this.props.campaign_id,
         //   campaign_budget: this.state.campaignInfo.lifetime_budget_micro
         // });
-        console.log("rep", rep.targeting);
-        console.log("customInteerest", this.state.customInterests);
+     
         this.props.ad_details_instagram(
           rep,
           this.props.navigation,
