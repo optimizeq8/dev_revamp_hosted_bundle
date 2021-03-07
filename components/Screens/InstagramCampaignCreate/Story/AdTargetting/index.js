@@ -21,7 +21,15 @@ import SelectOS from "../../../../MiniComponents/SelectOS";
 import { showMessage } from "react-native-flash-message";
 
 //Data
-import countries, { gender, OSType, country_regions, allRegions } from "./data";
+import countries, {
+  gender,
+  OSType,
+  country_regions,
+  allRegions,
+  mothersDayTargeting,
+  mothersDayCustomInterest,
+  mothersDayCustomInterestObject,
+} from "./data";
 
 //Style
 import styles from "../../styles/adTargetting.styles";
@@ -254,23 +262,7 @@ class InstagramStoryAdTargetting extends Component {
           duration,
         },
         async () => {
-          let targeting = {
-            flexible_spec: [
-              {
-                interests: [
-                  { name: "Online shopping", id: "6003346592981" },
-                  { name: "Family", id: "6003476182657" },
-                  { name: "Flower bouquet", id: "6003012436681" },
-                  { name: "giFT", id: "6002962884972" },
-                  { name: "Gift shop", id: "6003106645378" },
-                  { name: "Mother's Day", id: "6003395917803" },
-                ],
-              },
-            ],
-            user_os: ["iOS"],
-            age_max: 35,
-            age_min: 18,
-          };
+          let targeting = mothersDayTargeting;
 
           let customInterests = [];
           let customInterestObjects = [];
@@ -285,38 +277,8 @@ class InstagramStoryAdTargetting extends Component {
                 ...this.props.data.campaignInfo.targeting,
                 ...targeting,
               };
-              customInterests = [
-                { id: "6003012436681", name: "Flower bouquet" },
-                { id: "6002962884972", name: "giFT" },
-                { id: "6003106645378", name: "Gift shop" },
-                { id: "6003395917803", name: "Mother's Day" },
-              ];
-              customInterestObjects = [
-                {
-                  id: "6003012436681",
-                  name: "Flower bouquet",
-                  sub_sub_cat: 1,
-                  subcat_name: "Additional Interests",
-                },
-                {
-                  id: "6002962884972",
-                  name: "giFT",
-                  sub_sub_cat: 1,
-                  subcat_name: "Additional Interests",
-                },
-                {
-                  id: "6003106645378",
-                  name: "Gift shop",
-                  sub_sub_cat: 1,
-                  subcat_name: "Additional Interests",
-                },
-                {
-                  id: "6003395917803",
-                  name: "Mother's Day",
-                  sub_sub_cat: 1,
-                  subcat_name: "Additional Interests",
-                },
-              ];
+              customInterests = mothersDayCustomInterest;
+              customInterestObjects = mothersDayCustomInterestObject;
             }
             // console.log("data campaignInfo", this.props.data);
             let minValueBudget =
@@ -387,38 +349,8 @@ class InstagramStoryAdTargetting extends Component {
                     ...targeting,
                   },
                 },
-                customInterests: [
-                  { id: "6003012436681", name: "Flower bouquet" },
-                  { id: "6002962884972", name: "giFT" },
-                  { id: "6003106645378", name: "Gift shop" },
-                  { id: "6003395917803", name: "Mother's Day" },
-                ],
-                customInterestObjects: [
-                  {
-                    id: "6003012436681",
-                    name: "Flower bouquet",
-                    sub_sub_cat: 1,
-                    subcat_name: "Additional Interests",
-                  },
-                  {
-                    id: "6002962884972",
-                    name: "giFT",
-                    sub_sub_cat: 1,
-                    subcat_name: "Additional Interests",
-                  },
-                  {
-                    id: "6003106645378",
-                    name: "Gift shop",
-                    sub_sub_cat: 1,
-                    subcat_name: "Additional Interests",
-                  },
-                  {
-                    id: "6003395917803",
-                    name: "Mother's Day",
-                    sub_sub_cat: 1,
-                    subcat_name: "Additional Interests",
-                  },
-                ],
+                customInterests: mothersDayCustomInterest,
+                customInterestObjects: mothersDayCustomInterestObject,
               });
             }
             if (this.props.data && this.props.data.appChoice) {
