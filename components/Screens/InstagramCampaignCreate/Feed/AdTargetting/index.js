@@ -282,10 +282,6 @@ class InstagramFeedAdTargetting extends Component {
             age_max: 35,
             age_min: 18,
           };
-          console.log(
-            "this.props.data.objectiveLabel",
-            JSON.stringify(this.props.data, null, 2)
-          );
           let customInterests = [];
           let customInterestObjects = [];
           if (this.props.data.hasOwnProperty("campaignInfo")) {
