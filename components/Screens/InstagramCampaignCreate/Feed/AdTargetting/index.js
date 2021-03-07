@@ -266,7 +266,6 @@ class InstagramFeedAdTargetting extends Component {
         },
         async () => {
           let targeting = {
-            ...this.state.campaignInfo.targeting,
             flexible_spec: [
               {
                 interests: [
@@ -290,12 +289,15 @@ class InstagramFeedAdTargetting extends Component {
           let customInterests = [];
           let customInterestObjects = [];
           if (this.props.data.hasOwnProperty("campaignInfo")) {
+            console.log("123");
             let rep = {
               ...this.state.campaignInfo,
               ...this.props.data.campaignInfo,
             };
             if (this.props.data.objectiveLabel === "Mother's Day") {
               rep.targeting = {
+                ...this.state.campaignInfo.targeting,
+                ...this.props.data.campaignInfo.targeting,
                 ...targeting,
               };
               customInterests = [
@@ -390,23 +392,12 @@ class InstagramFeedAdTargetting extends Component {
               }
             );
           } else {
-            if (this.props.data && this.props.data.appChoice) {
-              let navAppChoice = this.props.data.appChoice;
-              let rep = this.state.campaignInfo;
-              rep.targeting.user_os = [navAppChoice];
-              this.setState({
-                campaignInfo: rep,
-              });
-            }
-            let country_code = country_regions.find(
-              (country) => country.name === this.props.mainBusiness.country
-            ).key;
-            await this.onSelectedCountryRegionChange(country_code);
             if (this.props.data.objectiveLabel === "Mother's Day") {
-              this.setState({
+              await this.setState({
                 campaignInfo: {
                   ...this.state.campaignInfo,
                   targeting: {
+                    ...this.state.campaignInfo.targeting,
                     ...targeting,
                   },
                 },
@@ -444,6 +435,18 @@ class InstagramFeedAdTargetting extends Component {
                 ],
               });
             }
+            if (this.props.data && this.props.data.appChoice) {
+              let navAppChoice = this.props.data.appChoice;
+              let rep = this.state.campaignInfo;
+              rep.targeting.user_os = [navAppChoice];
+              this.setState({
+                campaignInfo: rep,
+              });
+            }
+            let country_code = country_regions.find(
+              (country) => country.name === this.props.mainBusiness.country
+            ).key;
+            await this.onSelectedCountryRegionChange(country_code);
           }
           await this._calcReach();
         }
