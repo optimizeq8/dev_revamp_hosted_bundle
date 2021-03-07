@@ -991,7 +991,9 @@ class InstagramStoryAdTargetting extends Component {
           rep,
           this.props.mainBusiness.businessid,
           this.props.navigation,
-          segmentInfo
+          segmentInfo,
+          this.state.customInterests,
+          this.props.customLocations
         );
       } else {
         // this.props.setCampaignInfoForTransaction({
@@ -1016,7 +1018,9 @@ class InstagramStoryAdTargetting extends Component {
           rep,
           this.props.navigation,
           segmentInfo,
-          this.state.locationsInfo
+          this.state.locationsInfo,
+          this.state.customInterests,
+          this.props.customLocations
         );
       }
     }
@@ -1827,18 +1831,41 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getAudienceList: () => dispatch(actionCreators.getInstagramAudienceList()),
-  ad_details_instagram: (info, navigation, segmentInfo) =>
+  ad_details_instagram: (
+    info,
+    navigation,
+    segmentInfo,
+    locationsInfo,
+    custom_interest,
+    custom_location
+  ) =>
     dispatch(
       actionCreators.ad_details_instagram(
         info,
         navigation,
         segmentInfo,
-        locationsInfo
+        locationsInfo,
+        custom_interest,
+        custom_location
       )
     ),
-  updateInstagramCampaign: (info, businessid, navigation) =>
+  updateInstagramCampaign: (
+    info,
+    businessid,
+    navigation,
+    segmentInfo,
+    custom_interest,
+    custom_location
+  ) =>
     dispatch(
-      actionCreators.updateInstagramCampaign(info, businessid, navigation)
+      actionCreators.updateInstagramCampaign(
+        info,
+        businessid,
+        navigation,
+        segmentInfo,
+        custom_interest,
+        custom_location
+      )
     ),
   save_campaign_info_instagram: (info) =>
     dispatch(actionCreators.save_campaign_info_instagram(info)),

@@ -616,16 +616,16 @@ export const updateInstagramCampaign = (
   businessid,
   navigation,
   segmentInfo,
-  custom_location = [],
-  custom_interest = []
+  custom_interest = [],
+  custom_location = []
 ) => {
   return (dispatch, getState) => {
     InstagramBackendURL()
       .post(`saveinstatargeting`, {
         ...info,
         businessid,
-        custom_location,
         custom_interest,
+        custom_location,
       })
       .then((res) => {
         // console.log("back end info", res.data);
