@@ -105,7 +105,36 @@ export const mothersDayInterest = [
   },
 ];
 
-export const mothersDayTargeting = {};
+export const mothersDayTargeting = {
+  demographics: [
+    {
+      gender: "",
+      languages: ["ar", "en"],
+      min_age: 18,
+      max_age: 35,
+    },
+  ],
+  interests: [
+    {
+      category_id: [
+        "SLC_5",
+        "SLC_11",
+        "SLC_36",
+        "SLC_54",
+        "SLC_162",
+        "SLC_63",
+        "SLC_166",
+        "SLC_64",
+        "SLC_65",
+        "SLC_106",
+        "SLC_176",
+        "SLC_91",
+        "SLC_88",
+      ],
+    },
+  ],
+  devices: [{ os_type: "iOS" }],
+};
 export const gender = [
   { label: "Male", value: "MALE" },
   { label: "Female", value: "FEMALE" },
