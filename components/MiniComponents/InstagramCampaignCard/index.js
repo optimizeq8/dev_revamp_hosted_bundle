@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, TouchableOpacity, Text, I18nManager } from "react-native";
 import { Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
@@ -103,8 +104,8 @@ class CampaignCard extends Component {
           <View style={styles.textcontainer}>
             <View style={styles.header}>
               <InstagramIcon
-                width={25}
-                height={25}
+                width={RFValue(12.5, 414)}
+                height={RFValue(12.5, 414)}
                 fill={"#FFF"}
                 style={
                   {
@@ -118,7 +119,7 @@ class CampaignCard extends Component {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  paddingHorizontal: 10,
+                  paddingHorizontal: RFValue(5, 414),
                   flex: 1,
                 }}
               >
