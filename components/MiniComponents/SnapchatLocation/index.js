@@ -19,7 +19,10 @@ import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
 import Header from "../Header";
 import cloneDeep from "lodash/cloneDeep";
-export default class SnapchatLocation extends Component {
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
+import findIndex from "lodash/findIndex";
+class SnapchatLocation extends Component {
   state = {
     mapModal: false,
     searchModalVisible: false,
@@ -29,6 +32,7 @@ export default class SnapchatLocation extends Component {
   };
   componentDidMount() {
     if (
+      !this.props.editCampaign &&
       this.props.data &&
       this.props.data.markers &&
       this.props.data.markers.length > 0
@@ -80,11 +84,12 @@ export default class SnapchatLocation extends Component {
     let index =
       locationsInfo &&
       locationsInfo.length > 0 &&
-      locationsInfo.findIndex((loc) => loc.place_id === locInfo.place_id);
+      findIndex(locationsInfo, (loc) => loc.place_id === locInfo.place_id);
     if (!remove) locInfo.index = locationsInfo.length;
     if (index > -1 && remove) {
       locationsInfo.splice(index, 1);
       markers.splice(index, 1);
+      this.props.deleteCustomLocation(index, this.props.audience);
     } else {
       locationsInfo = [...locationsInfo, locInfo];
       markers = [...markers, marker];
@@ -113,9 +118,11 @@ export default class SnapchatLocation extends Component {
 
   checkForRegions = () => {
     let { translate } = this.props.screenProps;
-    let regionsSelected = this.props.regionsSelected.some(
-      (geo) => geo.region_id && geo.region_id.length > 0
-    );
+    let regionsSelected =
+      this.props.regionsSelected &&
+      this.props.regionsSelected.some(
+        (geo) => geo.region_id && geo.region_id.length > 0
+      );
     if (regionsSelected) {
       Alert.alert(
         translate("Reset selected regions"),
@@ -142,22 +149,26 @@ export default class SnapchatLocation extends Component {
       longitude: mrk.longitude,
       radius: mrk.radius,
     }));
-    await this.props.onSelectedMapChange(
-      markers,
-      false,
-      this.state.locationsInfo
-    );
-    for (let loc of this.state.locationsInfo)
-      await this.props.onSelectedCountryChange(
-        loc.country_code,
-        null,
-        loc.countryName,
-        true
+    if (this.props.onSelectedMapChange)
+      await this.props.onSelectedMapChange(
+        markers,
+        false,
+        this.state.locationsInfo
       );
-    this.props.save_campaign_info({
-      markers: this.state.markers,
-      locationsInfo: this.state.locationsInfo,
-    });
+    if (this.props.onSelectedCountryChange) {
+      for (let loc of this.state.locationsInfo)
+        await this.props.onSelectedCountryChange(
+          loc.country_code,
+          null,
+          loc.countryName,
+          true
+        );
+    }
+    !this.props.editCampaign &&
+      this.props.save_campaign_info({
+        markers: this.state.markers,
+        locationsInfo: this.state.locationsInfo,
+      });
     this.props._handleSideMenuState(false);
   };
   render() {
@@ -258,3 +269,9 @@ export default class SnapchatLocation extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  deleteCustomLocation: (index, audienceUpdate) =>
+    dispatch(actionCreators.deleteCustomLocation(index, audienceUpdate)),
+});
+export default connect(null, mapDispatchToProps)(SnapchatLocation);

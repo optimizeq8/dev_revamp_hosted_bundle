@@ -16,6 +16,7 @@ import SelectInterests from "./SelectInterests";
 import SelectVersions from "./SelectVersions";
 import Picker from "../Picker";
 import GradientButton from "../GradientButton";
+import Header from "../Header";
 
 //Icon
 import LocationIcon from "../../../assets/SVGs/Location";
@@ -147,6 +148,13 @@ class MultiSelectList extends Component {
         forceInset={{ top: "always", bottom: "never" }}
         style={styles.safeAreaContainer}
       >
+        {this.props.showBackButton && (
+          <Header
+            screenProps={this.props.screenProps}
+            iconColor={globalColors.purple}
+            actionButton={() => this.props._handleSideMenuState(false)}
+          />
+        )}
         <View style={styles.container}>
           <View style={styles.dataContainer}>
             <LocationIcon
@@ -274,6 +282,7 @@ class MultiSelectList extends Component {
       case "interests":
         return (
           <SelectInterests
+            showBackButton={this.props.showBackButton}
             screenProps={this.props.screenProps}
             onSelectedItemObjectsChange={this.onSelectedItemObjectsChange}
             onSelectedItemsChange={this.onSelectedItemsChange}
@@ -287,6 +296,7 @@ class MultiSelectList extends Component {
       case "deviceBrands":
         return (
           <SelectDevices
+            showBackButton={this.props.showBackButton}
             screenProps={this.props.screenProps}
             OSType={this.props.OSType}
             onSelectedItemsChange={this.onSelectedItemsChange}
@@ -298,6 +308,7 @@ class MultiSelectList extends Component {
       case "deviceVersions":
         return (
           <SelectVersions
+            showBackButton={this.props.showBackButton}
             screenProps={this.props.screenProps}
             OSType={this.props.OSType}
             onSelectedItemsChange={this.onSelectedItemsChange}
