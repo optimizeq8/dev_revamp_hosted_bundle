@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import { Icon } from "native-base";
 import isNull from "lodash/isNull";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { RFValue } from "react-native-responsive-fontsize";
 //Icons
 import InterestsIcon from "../../../assets/SVGs/Interests";
@@ -22,6 +24,7 @@ import * as actionCreators from "../../../store/actions";
 import Picker from "../Picker";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
+import Header from "../Header";
 import { globalColors } from "../../../GlobalStyles";
 import {
   PowerTranslator,
@@ -261,6 +264,14 @@ class SelectInterests extends Component {
     const { translate } = this.props.screenProps;
     return (
       <View style={styles.container}>
+        <SafeAreaView />
+        {this.props.showBackButton && (
+          <Header
+            screenProps={this.props.screenProps}
+            iconColor={globalColors.purple}
+            actionButton={this.handleSideMenu}
+          />
+        )}
         <View style={styles.dataContainer}>
           <InterestsIcon
             width={RFValue(50, 414)}

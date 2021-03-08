@@ -755,6 +755,7 @@ export class InstagramAudience extends Component {
       case "age": {
         menu = (
           <AgeOption
+            showBackButton={true}
             showPlusIcon={false}
             screenProps={this.props.screenProps}
             state={this.props.audience}
@@ -770,6 +771,7 @@ export class InstagramAudience extends Component {
       case "regions": {
         menu = (
           <SelectRegions
+            showBackButton={true}
             screenProps={this.props.screenProps}
             countryName={this.state.countryName}
             countries={targeting.geo_locations.countries}
@@ -790,6 +792,7 @@ export class InstagramAudience extends Component {
         }
         menu = (
           <SnapchatLocation
+            showBackButton={true}
             country_code={targeting.geo_locations.countries[0]}
             screenProps={this.props.screenProps}
             _handleSideMenuState={this._handleSideMenuState}
@@ -808,6 +811,7 @@ export class InstagramAudience extends Component {
       case "languages": {
         menu = (
           <SelectLanguages
+            showBackButton={true}
             screenProps={this.props.screenProps}
             filteredLanguages={this.state.filteredLanguages}
             onSelectedLangsChange={this.onSelectedLangsChange}
@@ -824,6 +828,7 @@ export class InstagramAudience extends Component {
       case "OS": {
         menu = (
           <SelectOS
+            showBackButton={true}
             selectedOSType={targeting.user_os[0]}
             iosName={"iOS"}
             androidName={"Android"}
@@ -841,6 +846,7 @@ export class InstagramAudience extends Component {
       case "selectors": {
         menu = (
           <MultiSelectSections
+            showBackButton={true}
             countries={countries}
             screenProps={this.props.screenProps}
             country_regions={country_regions}

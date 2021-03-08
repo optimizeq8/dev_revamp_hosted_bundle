@@ -4,6 +4,8 @@ import { Icon } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import LoadingScreen from "../LoadingScreen";
 import { showMessage } from "react-native-flash-message";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { RFValue } from "react-native-responsive-fontsize";
 //Icons
 import PlusCircle from "../../../assets/SVGs/PlusCircle";
@@ -19,6 +21,7 @@ import { connect } from "react-redux";
 
 import compareVersions from "compare-versions";
 import LowerButton from "../LowerButton";
+import Header from "../Header";
 import GradientButton from "../GradientButton";
 import upperFirst from "lodash/upperFirst";
 import { globalColors } from "../../../GlobalStyles";
@@ -96,6 +99,16 @@ class SelectVersions extends Component {
     const { translate } = this.props.screenProps;
     return (
       <View style={styles.container}>
+        <SafeAreaView />
+        {this.props.showBackButton && (
+          <Header
+            screenProps={this.props.screenProps}
+            iconColor={globalColors.purple}
+            actionButton={() => {
+              this.props._handleSideMenuState(false);
+            }}
+          />
+        )}
         <View style={[styles.dataContainer]}>
           <Icon
             name="versions"
