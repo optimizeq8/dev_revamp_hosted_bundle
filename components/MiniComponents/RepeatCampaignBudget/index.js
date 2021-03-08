@@ -50,8 +50,9 @@ class RepeatCampaignBudget extends Component {
 
     let minValueBudget = 25 * prevTargeting.geos.length;
     if (
+      previousRepeatingCampaginData &&
       previousRepeatingCampaginData.campaign_id !==
-      repeatingCampaginData.campaign_id
+        repeatingCampaginData.campaign_id
     ) {
       if (repeatingCampaginData.hasOwnProperty("campaign_id")) {
         duration = repeatingCampaginData.duration;
