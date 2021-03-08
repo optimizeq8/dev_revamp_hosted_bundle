@@ -2046,26 +2046,26 @@ const strings = {
   "Apple Pay": "أبل الدفع",
   AFS: "AFS",
   "CREDIT CARD": "بطاقة الإئتمان",
-  "Pay with": "",
-  "VISA/MASTER Oman": "",
-  "VISA/MASTER": "",
-  MASTERCARD: "",
+  "Pay with": "ادفع بواسطة",
+  "VISA/MASTER Oman": "فيزا\\ماستركارد عمان",
+  "VISA/MASTER": "فيزا\\ماستركارد",
+  MASTERCARD: "ماستركارد",
   "Optimize Advertising & Marketing Company Wll": "",
   "This is where you should put your business name that your advertising": "",
-  "Here you need to add a promotional message related to what you're advertising eg New products on sale now":
+  "Here you need to add a promotional message related to what you're advertising eg New products now on sale":
     "",
   "Add your media here, It can be a video or an image Make sure your ad looks professional so that it can attract a lot of people":
     "",
   "You need to add a swipe up destination to send your audience to and select a call to action to push your audience into taking action":
     "",
-  Previous: "",
+  Previous: "السابق",
   "Enter your campaign's name Make sure you name it something descriptive so you can keep track of all your campaigns":
     "",
   "Select your campaign's objective to choose what your audience should do eg download your app or visit your website etc":
     "",
   "Select your campaign's duration and start date The longer the campaign’s duration is, the better the results":
     "",
-  "Here you can create or select an audience preset for faster selection If you proceed without creating an audience you can find it here the next time you create a new campaign":
+  "Here you can create or select a saved audience for faster selection If you proceed without creating an audience you can find it here the next time you create a new campaign":
     "",
   "Setting a good daily budget is very crucial to how successful your campaign will be The higher the budget the more people will see your ad":
     "",
@@ -2074,20 +2074,58 @@ const strings = {
   "You can see the potential results of the ad based on the targeting options you select and how high your daily budget is":
     "",
   "Daily budget": "ميزانيتك اليومية",
-  "Audience preset": "",
-  "Audience targeting": "",
-  "Audience reach": "",
-  "Live chat unavailable": "",
+  "Saved Audiences": "شريحة مستهدفة مسبقة",
+  "Audience targeting": "الشريحة المستهدفة",
+  "Audience reach": "وصول الشريحة المستهدفة",
+  "Live chat unavailable": "المحادثة المباشرة غير متوفرة",
   "Please note that we are currently out of office and will get back to you as soon as possible":
-    "",
-  "Working hours": "",
-  "Sun - Thu": "",
-  "10 am - 6 pm": "",
+    "يرجى العلم بأننا خارج المكتب حالياً وسنعاود الإتصال بكم في أقرب وقت ممكن",
+  "Working hours": "أوقات العمل",
+  "Sun - Thu": "الأحد - الخميس",
+  "10 am - 6 pm": "10 صباحاً - 6 مساءً",
   Saturday: {
-    Sat: "",
+    Sat: "السبت",
   },
-  "Debit Cards UAE": "",
-  "12 am - 6 pm": "",
+  "Debit Cards UAE": "بطاقات ائتمانية - دولة الإمارات العربية المتحدة",
+  "12 am - 6 pm": "12 صباحاً - 6 مساءً",
+  "snapchat clicks": "ضغطات سناب جات",
+  "website clicks": "ضغطات الموقع",
+  "twitter clicks": "ضغطات تويتر",
+  "linkedin clicks": "ضغطات لينكد إن",
+  Continue: "الإستمرار",
+  "Secure Account": "تأمين الحساب",
+  "Not now": "ليس الآن",
+  Enable: "تفعيل",
+  "No credentials found": "لم يتم العثور على البيانات",
+  "Please sign in or sign up first": "يرجى تسجيل الدخول أو التسجيل أولاً",
+  "Keychain couldn't be accessed": "لم نتمكن الوصول لسلسلة مفاتيح Apple",
+  "Account secured successfully": "تم تأمين الحساب بنجاح",
+  "Wrong password": "كلمة المرور خطأ",
+  "Would you like to enable TouchID with this account":
+    "هل ترغب بتفعيل TouchID على هذا الحساب؟",
+  "Secure your account": "تأمين الحساب",
+  "Choose an account": "أختار الحساب",
+  "Your account has been secured using": "تم تأمين حسابك بواسطة",
+  "not supported on this phone": "غير مدعوم على هذا الهاتف",
+  purchases: "المشتريات",
+  "purchase roas": "العائد على الإنفاق الإعلاني",
+  "purchase conversion value": "قيمة تحويل الشراء",
+  "Would you like to enable FaceID with this account":
+    "هل ترغب بتفعيل FaceID على هذا الحساب؟",
+  TouchID: "TouchID",
+  FaceID: "FaceID",
+  Biometrics: "القياسات الحيوية",
+  "Would you like to enable Biometrics with this account":
+    "هل ترغب بتفعيل القياسات الحيوية على هذا الحساب؟",
+  Refunded: "المبلغ المسترجع",
+  "Your account has been secured using {{biometryType}}":
+    "تم تأمين حسابك بواسطة القياسات الحيوية",
+  "Would you like to enable {{biometryType}} with this account":
+    "هل ترغب بتفعيل القياسات الحيوية على هذا الحساب؟",
+  "Repeat Campaign": "",
+  "Mother's Day": "يوم الأم",
+  "SELL MOTHER'S DAY PRODUCTS": "لزيادة مبيعات منتجات يوم الأم",
+  Repeat: "",
 };
 
 export default strings;
