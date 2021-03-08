@@ -20,7 +20,7 @@ import RepeatCampaignModal from "../RepeatCampaignModal";
 
 whyDidYouRender(React);
 class CampaignCard extends Component {
-  review_status = this.props.campaign.review_status;
+  review_status = "APPROVED" ||this.props.campaign.review_status;
   campaign_status = this.props.campaign.status;
   ad_status_color = this.props.campaign.ad_status_color_code;
   ad_status = this.props.campaign.ad_status;
@@ -219,7 +219,7 @@ class CampaignCard extends Component {
                   screenProps={this.props.screenProps}
                 />
 
-                {!this.campaignEndedOrNot(campaign, endDate) ? (
+                {!this.campaignEndedOrNot(campaign, endDate)&&false ? (
                   <>
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>

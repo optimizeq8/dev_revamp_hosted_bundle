@@ -33,7 +33,7 @@ class CampaignCard extends Component {
     date.setTime(date.getTime() - new Date().getTimezoneOffset() * 60 * 1000);
     return date;
   };
-  review_status = this.props.campaign.review_status;
+  review_status ="APPROVED"|| this.props.campaign.review_status;
   campaign_status = this.props.campaign.status;
   ad_status = this.props.campaign.ad_status;
   ad_status_color_code = this.props.campaign.ad_status_color_code;
@@ -207,7 +207,7 @@ class CampaignCard extends Component {
                   screenProps={this.props.screenProps}
                 />
 
-                {this.campaignEndedOrNot(campaign, endDate) ? (
+                {this.campaignEndedOrNot(campaign, endDate)&&false ? (
                   <>
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
