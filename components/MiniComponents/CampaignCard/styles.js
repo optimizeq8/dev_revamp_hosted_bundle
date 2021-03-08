@@ -173,8 +173,8 @@ const styles = StyleSheet.create({
   },
   repeatButton: {
     backgroundColor: globalColors.green,
-    padding: 8,
-    borderRadius: 20,
+    padding: RFValue(4, 414),
+    borderRadius: RFValue(10, 414),
     width: "25%",
     height: "50%",
     justifyContent: "center",
@@ -182,6 +182,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
   },
   repeatText: {
+    fontSize: RFValue(7, 414),
     color: globalColors.white,
     fontFamily: "montserrat-bold",
   },
