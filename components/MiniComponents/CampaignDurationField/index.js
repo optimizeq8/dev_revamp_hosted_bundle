@@ -6,17 +6,27 @@ import styles from "./styles";
 export default class CampaignDuration extends Component {
   render() {
     const { translate } = this.props.screenProps;
-    const { disabled } = this.props;
+    const {
+      disabled,
+      customContainerStyle,
+      customTextColor,
+      buttonsCustomColor,
+    } = this.props;
 
     return (
-      <View style={styles.durationContainer}>
+      <View style={[styles.durationContainer, customContainerStyle]}>
         <Icon
           type="AntDesign"
           name="clockcircleo"
-          style={{ fontSize: RFValue(15, 414), color: "#fff" }}
+          style={[
+            { fontSize: RFValue(15, 414), color: "#fff" },
+            customTextColor,
+          ]}
         />
         <View style={styles.durationContent}>
-          <Text style={styles.durationLabel}>{translate("Duration")}</Text>
+          <Text style={[styles.durationLabel, customTextColor]}>
+            {translate("Duration")}
+          </Text>
           <Text style={[styles.durationData]}>
             {this.props.duration}{" "}
             <Text
@@ -40,6 +50,7 @@ export default class CampaignDuration extends Component {
                 styles.durButton,
                 styles.leftButton,
                 disabled && { opacity: 0.7 },
+                buttonsCustomColor,
               ]}
               disabled={disabled}
             >
@@ -51,7 +62,7 @@ export default class CampaignDuration extends Component {
               onLongPress={() => this.props.handleDuration(false)}
               onPress={() => this.props.handleDuration(false, true)}
               delayLongPress={75}
-              style={[styles.durButton, styles.rightButton]}
+              style={[styles.durButton, styles.rightButton, buttonsCustomColor]}
             >
               <Text style={styles.buttonText}>+</Text>
             </TouchableOpacity>

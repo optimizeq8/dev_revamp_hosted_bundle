@@ -1801,3 +1801,84 @@ export const verifySnapchatOtp = (
       });
   };
 };
+export const repeatSnapCampagin = (previous_campaign_info, handleSwitch) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_REPEAT_CAMPAIGN_LOADING,
+      payload: true,
+    });
+    createBaseUrl()
+      .post(`repeatcampaign`, {
+        ...previous_campaign_info,
+        businessid: getState().account.mainBusiness.businessid,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        console.log(JSON.stringify(data, null, 2));
+        if (data.success)
+          dispatch({
+            type: actionTypes.SET_REPEATING_CAMPAIGN_INFO,
+            payload: data,
+          });
+        handleSwitch(true);
+      })
+      .catch((err) => {
+        showModalMessage(err);
+        dispatch({
+          type: actionTypes.SET_REPEAT_CAMPAIGN_LOADING,
+          payload: false,
+        });
+      });
+  };
+};
+
+export const repeatSnapCampaginBudget = (
+  repeating_campaign_info,
+  handleSwitch
+) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_REPEAT_CAMPAIGN_LOADING,
+      payload: true,
+    });
+    createBaseUrl()
+      .post(`repeatcampaigntargeting`, {
+        ...repeating_campaign_info,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        dispatch(
+          setCampaignInfoForTransaction({
+            campaign_id: data.campaign_id,
+            campaign_budget: data.data.lifetime_budget_micro,
+            campaign_budget_kdamount: data.kdamount,
+            channel: "",
+          })
+        );
+        console.log(JSON.stringify(data, null, 2));
+        if (data.success) {
+          dispatch({
+            type: actionTypes.SET_REPEATING_CAMPAIGN_INFO_BUDGET,
+            payload: data,
+          });
+          dispatch({
+            type: actionTypes.SET_REPEAT_CAMPAIGN_LOADING,
+            payload: false,
+          });
+          NavigationService.navigate("PaymentForm", {
+            source: "ad_review",
+            source_action: `a_submit_ad_review`,
+            campaign_channel: "snapchat",
+          });
+        }
+        handleSwitch(false);
+      })
+      .catch((err) => {
+        showModalMessage(err);
+        dispatch({
+          type: actionTypes.SET_REPEAT_CAMPAIGN_LOADING,
+          payload: false,
+        });
+      });
+  };
+};

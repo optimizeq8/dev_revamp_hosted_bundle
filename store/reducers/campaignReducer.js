@@ -238,6 +238,8 @@ const initialState = {
   engagementNumberOTPLoading: false,
   verifiedEngagementNumberOTP: false,
   verifyEngagementNumberLoadingOTP: false,
+  repeatingCampaginData: {},
+  repeatCampaignLoading: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -1219,6 +1221,19 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         verifyEngagementNumberLoadingOTP: action.payload,
+      };
+    }
+    case actionTypes.SET_REPEATING_CAMPAIGN_INFO: {
+      return {
+        ...state,
+        repeatingCampaginData: action.payload.data,
+        repeatCampaignLoading: false,
+      };
+    }
+    case actionTypes.SET_REPEAT_CAMPAIGN_LOADING: {
+      return {
+        ...state,
+        repeatCampaignLoading: action.payload,
       };
     }
     default:

@@ -62,6 +62,23 @@ const styles = StyleSheet.create({
     fontSize: 15,
     alignSelf: "flex-end",
   },
+  footerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 12,
+  },
+  campaignDurationContainerStyle: {
+    width: "80%",
+    top: 7,
+    backgroundColor: "#0002",
+  },
+  loadingBackground: {
+    backgroundColor: "#0005",
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+  },
 });
 
 export default styles;

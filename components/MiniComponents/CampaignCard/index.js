@@ -16,14 +16,15 @@ import isEqual from "react-fast-compare";
 import globalStyles from "../../../GlobalStyles";
 import GradientButton from "../GradientButton";
 import NavigationService from "../../../NavigationService";
+import RepeatCampaignModal from "../RepeatCampaignModal";
 
 whyDidYouRender(React);
 class CampaignCard extends Component {
-  review_status = this.props.campaign.review_status;
+  review_status = "APPROVED" ||this.props.campaign.review_status;
   campaign_status = this.props.campaign.status;
   ad_status_color = this.props.campaign.ad_status_color_code;
   ad_status = this.props.campaign.ad_status;
-
+  state = { showRepeatModal: false };
   //New date returns the current date with a timezone of -3
   //So I add back the offset so the dates from the backend are compared properly
   currentDate = () => {
@@ -60,6 +61,11 @@ class CampaignCard extends Component {
         : campaign.campaign_end === "1" ||
           new Date(campaign.end_time) < this.currentDate();
     return campaignEndedOrNot;
+  };
+  handleRepeatModal = (value) => {
+    this.setState({
+      showRepeatModal: value,
+    });
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -213,7 +219,7 @@ class CampaignCard extends Component {
                   screenProps={this.props.screenProps}
                 />
 
-                {!this.campaignEndedOrNot(campaign, endDate) && (
+                {!this.campaignEndedOrNot(campaign, endDate)&&false ? (
                   <>
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
@@ -226,9 +232,22 @@ class CampaignCard extends Component {
                       </Text>
                     </View>
                   </>
+                ) : (
+                  <TouchableOpacity
+                    style={styles.repeatButton}
+                    onPress={() => this.handleRepeatModal(true)}
+                  >
+                    <Text style={styles.repeatText}>Repeat</Text>
+                  </TouchableOpacity>
                 )}
               </View>
             )}
+            <RepeatCampaignModal
+              showRepeatModal={this.state.showRepeatModal}
+              screenProps={this.props.screenProps}
+              handleRepeatModal={this.handleRepeatModal}
+              campaign={campaign}
+            />
           </View>
         </TouchableOpacity>
       </LinearGradient>

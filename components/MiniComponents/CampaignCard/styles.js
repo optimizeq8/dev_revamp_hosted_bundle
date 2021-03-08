@@ -171,6 +171,20 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "rgba(0,0,0,0.05)",
   },
+  repeatButton: {
+    backgroundColor: globalColors.green,
+    padding: 8,
+    borderRadius: 20,
+    width: "25%",
+    height: "50%",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "flex-end",
+  },
+  repeatText: {
+    color: globalColors.white,
+    fontFamily: "montserrat-bold",
+  },
 });
 
 export default styles;
