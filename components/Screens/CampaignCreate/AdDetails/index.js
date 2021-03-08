@@ -442,7 +442,7 @@ class AdDetails extends Component {
                 ...targeting,
               },
             };
-            this.setState({
+            await this.setState({
               interestNames,
               campaignInfo: rep,
             });
