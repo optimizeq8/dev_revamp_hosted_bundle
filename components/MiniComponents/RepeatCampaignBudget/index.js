@@ -342,13 +342,15 @@ class RepeatCampaignBudget extends Component {
     return (
       <View style={styles.repeatBudgetContainer}>
         <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
-        <Row
-          size={-1}
+
+        <View
           style={{
+            display: "flex",
+            flexDirection: "row",
             alignItems: "center",
             paddingHorizontal: RFValue(10, 414),
             marginBottom: RFValue(2, 414),
-            justifyContent: "center",
+            //   justifyContent: "center",
           }}
         >
           <WalletIcon
@@ -381,7 +383,7 @@ class RepeatCampaignBudget extends Component {
               )}
             </Text>
           </View>
-        </Row>
+        </View>
         <BudgetCards
           screenProps={screenProps}
           value={this.state.value}
@@ -390,6 +392,7 @@ class RepeatCampaignBudget extends Component {
           budgetOption={this.state.budgetOption}
           _handleBudget={this._handleBudget}
         />
+
         {campaign.channel !== "instagram" ? (
           <AudienceReach
             _handleSubmission={this._handleSubmission}
@@ -401,7 +404,7 @@ class RepeatCampaignBudget extends Component {
           <ReachBar
             campaignInfo={campaign}
             screenProps={this.props.screenProps}
-            customContainerStyle={{ bottom: 0, height: "50%" }}
+            customContainerStyle={{ bottom: 0 }}
           />
         )}
         {(
@@ -428,7 +431,7 @@ class RepeatCampaignBudget extends Component {
             checkmark
             function={this.handleSubmission}
             purpleViolet={true}
-            style={{ alignSelf: "flex-end", bottom: 10 }}
+            style={{ alignSelf: "flex-end", bottom: RFValue(5, 414) }}
             disabled={
               campaign.channel !== "instagram"
                 ? this.props.repeatCampaignLoading

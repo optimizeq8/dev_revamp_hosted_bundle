@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     width: wp("10%"),
   },
   edit: {
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: globalColors.rum,
     fontFamily: "montserrat-regular",
     textDecorationLine: "underline",

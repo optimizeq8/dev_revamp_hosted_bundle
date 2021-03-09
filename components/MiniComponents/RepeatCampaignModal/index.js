@@ -151,7 +151,7 @@ class RepeatCampaignModal extends Component {
               contentContainerStyle={{
                 width: "100%",
                 height: "100%",
-                paddingBottom: 200,
+                paddingBottom: RFValue(100, 414),
               }}
               extraScrollHeight={30}
             >
@@ -159,7 +159,7 @@ class RepeatCampaignModal extends Component {
                 style={[
                   styles.datePickerContainer,
                   !this.dateField && { backgroundColor: "#0000" },
-                  switchComponent && { top: RFValue(300, 414) },
+                  switchComponent && { top: RFValue(220, 414) },
                 ]}
               >
                 {this.dateField && (
@@ -176,7 +176,7 @@ class RepeatCampaignModal extends Component {
                     iconColor={globalColors.rum}
                     navigation={undefined}
                     title={"Repeat Campaign"}
-                    containerStyle={{ padding: 60 }}
+                    containerStyle={{ padding: RFValue(30, 414) }}
                   />
                 )}
 
