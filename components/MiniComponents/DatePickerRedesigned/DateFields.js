@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, I18nManager, Modal, TouchableOpacity } from "react-native";
 import { BlurView } from "expo-blur";
+import { RFValue } from "react-native-responsive-fontsize";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 
 import DateRangePicker from "./DateRangePicker";
@@ -379,7 +380,9 @@ class DateFields extends Component {
                 showTopRightButton={
                   this.state.start_date || this.props.chartRange
                 }
-                containerStyle={I18nManager.isRTL && { paddingHorizontal: 50 }}
+                containerStyle={
+                  I18nManager.isRTL && { paddingHorizontal: RFValue(25, 414) }
+                }
                 title={"Choose campaign start date"}
                 titleStyle={{ color: "#000" }}
               />
