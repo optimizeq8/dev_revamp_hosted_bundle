@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 // import { AnimatedCircularProgress } from "react-native-circular-progress";
 import LowerButton from "../../../../MiniComponents/LowerButton";
 import ForwardLoading from "../../../../MiniComponents/ForwardLoading";
@@ -57,7 +58,7 @@ class ReachBar extends Component {
       >
         <AnimatedCircularProgress
           size={hp(10)}
-          width={8}
+          width={RFValue(4, 414)}
           fill={this.state.total_reach || 0}
           rotation={360}
           lineCap="round"
