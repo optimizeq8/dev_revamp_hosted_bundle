@@ -5,19 +5,19 @@ import { globalColors } from "../../../../GlobalStyles";
 export default StyleSheet.create({
   scrollContainerStyle: {
     alignItems: "center",
-    width: "100%",
+    // width: "100%",
     height: "100%",
     // top: RFValue(5, 414),
   },
   budgetCardsStyle: {
     alignSelf: "center",
-    width: "100%",
+    // width: "100%",
     maxHeight: "50%",
   },
   budgetCardStyle: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#0001",
     borderRadius: RFValue(20, 414),
     borderColor: globalColors.purple,
     borderWidth: 2.5,
