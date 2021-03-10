@@ -928,6 +928,7 @@ class InstagramStoryAdTargetting extends Component {
         delete rep.targeting.user_device;
       }
       if (
+        rep.targeting.geo_locations.custom_locations &&
         rep.targeting.geo_locations.custom_locations.length > 0 &&
         !this.editCampaign
       ) {

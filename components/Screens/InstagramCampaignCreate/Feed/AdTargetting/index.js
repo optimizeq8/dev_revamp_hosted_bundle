@@ -940,6 +940,7 @@ class InstagramFeedAdTargetting extends Component {
       }
 
       if (
+        rep.targeting.geo_locations.custom_locations &&
         rep.targeting.geo_locations.custom_locations.length > 0 &&
         !this.editCampaign
       ) {
