@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Text, I18nManager } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  I18nManager,
+  BackHandler,
+} from "react-native";
 import { Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
@@ -67,6 +73,17 @@ class CampaignCard extends Component {
       showRepeatModal: value,
     });
   };
+  componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  handleBackPress = () => {
+    if (this.state.showRepeatModal) {
+      this.handleRepeatModal(false);
+    }
+  };
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
   render() {
     const { translate } = this.props.screenProps;
     let campaign = this.props.campaign;

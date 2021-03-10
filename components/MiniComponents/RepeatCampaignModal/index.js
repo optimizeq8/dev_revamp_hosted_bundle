@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Modal, TouchableOpacity, View } from "react-native";
+import { Modal, TouchableOpacity, View, BackHandler } from "react-native";
 import DateFields from "../DatePickerRedesigned/DateFields";
 import analytics from "@segment/analytics-react-native";
 import RepeatCampaignBudget from "../RepeatCampaignBudget";
@@ -130,7 +130,10 @@ class RepeatCampaignModal extends Component {
         visible={showRepeatModal}
         animationType="fade"
         transparent
-        onRequestClose={() => this.handleRepeatModal(false)}
+        hardwareAccelerated={true}
+        onRequestClose={() => {
+          handleRepeatModal(false);
+        }}
       >
         <TouchableOpacity
           style={{
@@ -138,7 +141,7 @@ class RepeatCampaignModal extends Component {
             height: "20%",
             position: "absolute",
           }}
-          onPress={() => this.handleRepeatModal(false)}
+          onPress={() => handleRepeatModal(false)}
           activeOpacity={1}
         ></TouchableOpacity>
         <View style={{ backgroundColor: "#0007", height: "100%" }}>
