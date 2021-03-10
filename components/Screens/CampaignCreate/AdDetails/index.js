@@ -1959,6 +1959,9 @@ class AdDetails extends Component {
                       startEditing={startEditing}
                       onSelectedGenderChange={this.onSelectedGenderChange}
                       _handleAge={this._handleAge}
+                      objectiveLabel={
+                        this.props.data ? this.props.data.objectiveLabel : ""
+                      }
                     />
                   )}
                 </CopilotStep>

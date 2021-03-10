@@ -1778,6 +1778,9 @@ class InstagramStoryAdTargetting extends Component {
                         editCampaign={this.editCampaign}
                         startEditing={startEditing}
                         onSelectedGenderChange={this.onSelectedGenderChange}
+                        objectiveLabel={
+                          this.props.data ? this.props.data.objectiveLabel : ""
+                        }
                       />
                     )}
 
