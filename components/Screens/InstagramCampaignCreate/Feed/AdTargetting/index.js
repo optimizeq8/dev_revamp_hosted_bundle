@@ -1787,6 +1787,9 @@ class InstagramFeedAdTargetting extends Component {
                       translate={translate}
                       editCampaign={this.editCampaign}
                       startEditing={startEditing}
+                      objectiveLabel={
+                        this.props.data ? this.props.data.objectiveLabel : ""
+                      }
                       onSelectedGenderChange={this.onSelectedGenderChange}
                     />
                   )}
