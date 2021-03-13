@@ -143,7 +143,7 @@ class BiometricsAuth extends Component {
             source: "open_biometrics_details",
             source_action: "a_go_back",
           }}
-          closeButton={showingInModal}
+          hideButton={showingInModal}
         />
         <View
           style={[
@@ -164,15 +164,11 @@ class BiometricsAuth extends Component {
 
           <Text style={styles.description} numberOfLines={2}>
             {biometricsEnabled
-              ? translate(
-                  `Your account has been secured using {{biometryType}}`,
-                  { biometryType }
-                )
+              ? translate(`Your account has been secured using`) +
+                " " +
+                translate(biometryType)
               : translate(
-                  `Would you like to enable {{biometryType}} with this account`,
-                  {
-                    biometryType,
-                  }
+                  `Would you like to enable ${biometryType} with this account`
                 )}
           </Text>
           {showPasswordField && (

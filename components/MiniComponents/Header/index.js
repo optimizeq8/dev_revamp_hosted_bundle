@@ -44,6 +44,7 @@ export default class Header extends Component {
       iconColor = "#FFF",
       titleContainerStyle,
       rightViewStyle,
+      hideButton = false,
     } = this.props;
     const { translate } = this.props.screenProps;
     if (translateTitle)
@@ -59,43 +60,45 @@ export default class Header extends Component {
       <View
         style={[styles.container, { height: 50, padding: 0 }, containerStyle]}
       >
-        <TouchableOpacity
-          disabled={disabled}
-          onPress={() => {
-            if (!isUndefined(segment)) {
-              analytics.track(segment.source_action, {
-                source: segment.source,
-                source_action: segment.source_action,
-              });
-            }
-            if (!isUndefined(navigation)) navigation.goBack();
-            else actionButton();
-          }}
-          style={[
-            styles.left,
-            I18nManager.isRTL && {
-              transform: [{ rotateY: "180deg" }, { translateX: -13 }],
-            },
-          ]}
-        >
-          {closeButton ? (
-            backButton === "messenger" ? (
-              <MSGBackIcon width={40} height={40} />
+        {!hideButton && (
+          <TouchableOpacity
+            disabled={disabled}
+            onPress={() => {
+              if (!isUndefined(segment)) {
+                analytics.track(segment.source_action, {
+                  source: segment.source,
+                  source_action: segment.source_action,
+                });
+              }
+              if (!isUndefined(navigation)) navigation.goBack();
+              else actionButton();
+            }}
+            style={[
+              styles.left,
+              I18nManager.isRTL && {
+                transform: [{ rotateY: "180deg" }, { translateX: -13 }],
+              },
+            ]}
+          >
+            {closeButton ? (
+              backButton === "messenger" ? (
+                <MSGBackIcon width={40} height={40} />
+              ) : (
+                <CloseIcon
+                  width={RFValue(10, 414)}
+                  height={RFValue(10, 414)}
+                  stroke={iconColor}
+                />
+              )
             ) : (
-              <CloseIcon
-                width={RFValue(10, 414)}
-                height={RFValue(10, 414)}
+              <BackIcon
+                width={RFValue(12, 414)}
+                height={RFValue(12, 414)}
                 stroke={iconColor}
               />
-            )
-          ) : (
-            <BackIcon
-              width={RFValue(12, 414)}
-              height={RFValue(12, 414)}
-              stroke={iconColor}
-            />
-          )}
-        </TouchableOpacity>
+            )}
+          </TouchableOpacity>
+        )}
         {icon === "snapchat" && (
           <View style={{ paddingHorizontal: RFValue(2.5, 414) }}>
             <SnapchatIcon
