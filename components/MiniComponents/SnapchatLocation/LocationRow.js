@@ -12,11 +12,12 @@ export default class LocationRow extends Component {
   render() {
     let { locationInfo, index, handleMapModal, result } = this.props;
     const { translate } = this.props.screenProps;
-
     return (
       <View style={styles.locationRow}>
         <Text style={styles.locationName}>
-          {locationInfo.description.replace(",", " - ")}
+          {locationInfo &&
+            locationInfo.description &&
+            locationInfo.description.replace(",", " - ")}
         </Text>
         <View style={styles.buttonsContainer}>
           {result ? (

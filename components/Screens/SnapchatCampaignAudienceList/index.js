@@ -95,22 +95,8 @@ class SnapchatCampaignAudience extends React.Component {
     this.props.getAudienceList();
   };
   render() {
-    const { translate } = this.props.screenProps;
     return (
       <View style={styles.campaignAudienceListOuterView}>
-        {/* <NavigationEvents onDidFocus={this.onDidFocus} />
-        <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
-        <Header
-          title={"Select Audience"}
-          screenProps={this.props.screenProps}
-          titleStyle={{ color: globalColors.rum }}
-          navigation={this.props.navigation}
-          iconColor={globalColors.rum}
-          showTopRightButton={true}
-          topRightButtonText={translate("Create")}
-          topRightButtonFunction={this.createNewAudience}
-          rightViewStyle={styles.rightViewStyle}
-        /> */}
         {this.props.audienceListLoading ? (
           <ActivityIndicator
             style={{ top: "20%" }}

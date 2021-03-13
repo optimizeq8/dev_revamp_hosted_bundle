@@ -66,6 +66,7 @@ class BusinessCard extends Component {
       this.props.changeBusiness(this.props.business);
       this.props.resetCampaignInfo();
       this.props.rest_google_campaign_data();
+      this.props.resetCampaignInfoInstagram();
     } else this.props.selectAccount();
   };
   render() {
@@ -149,5 +150,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.deleteBusinessAccount(business_id)),
   rest_google_campaign_data: () =>
     dispatch(actionCreators.rest_google_campaign_data()),
+  resetCampaignInfoInstagram: (resetAdType) =>
+    dispatch(actionCreators.resetCampaignInfoInstagram(resetAdType)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(BusinessCard);

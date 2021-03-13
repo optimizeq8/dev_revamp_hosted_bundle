@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, I18nManager, Modal, TouchableOpacity } from "react-native";
 import { BlurView } from "expo-blur";
+import { RFValue } from "react-native-responsive-fontsize";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 
 import DateRangePicker from "./DateRangePicker";
@@ -23,6 +24,7 @@ import Loading from "../LoadingScreen";
 import LowerButton from "../LowerButton";
 import { showMessage } from "react-native-flash-message";
 import { globalColors } from "../../../GlobalStyles";
+import CampaignDuration from "../CampaignDurationField";
 
 class DateFields extends Component {
   constructor(props) {
@@ -81,6 +83,12 @@ class DateFields extends Component {
     });
   };
 
+  hideModal = (outdatedDate = false) => {
+    this.setState({
+      modalVisible: false,
+      outdatedDate,
+    });
+  };
   handleDate = async () => {
     //Gets the difference between two dates
     let timeDiff = Math.round(
@@ -137,12 +145,17 @@ class DateFields extends Component {
             end_choice: false,
           });
         }, 200);
-      } else
+      } else {
+        if (this.props.handleDateSubmition) {
+          this.props.handleDateSubmition();
+          return;
+        }
         this.setState({
           modalVisible: false,
           start_choice: false,
           end_choice: false,
         });
+      }
     } else if (this.props.filterMenu) {
       await this.props.handleStartDatePicked(this.state.start_date);
       await this.props.handleEndDatePicked(this.state.end_date);
@@ -296,6 +309,7 @@ class DateFields extends Component {
   };
 
   render() {
+    let { showDurationSelector } = this.props;
     const { translate } = this.props.screenProps;
     return (
       <View
@@ -333,7 +347,12 @@ class DateFields extends Component {
               height: "20%",
               position: "absolute",
             }}
-            onPress={() => this.setState({ modalVisible: false })}
+            onPress={() => {
+              if (this.props.handleRepeatModal) {
+                this.props.handleRepeatModal(false);
+              }
+              this.setState({ modalVisible: false });
+            }}
             activeOpacity={1}
           ></TouchableOpacity>
           <View style={styles.safeArea}>
@@ -349,6 +368,9 @@ class DateFields extends Component {
                 iconColor="#000"
                 actionButton={() => {
                   this.setState({ modalVisible: false });
+                  if (this.props.handleRepeatModal) {
+                    this.props.handleRepeatModal(false);
+                  }
                   if (this.state.outdatedDate) {
                     this.props.navigation.goBack();
                   }
@@ -358,7 +380,9 @@ class DateFields extends Component {
                 showTopRightButton={
                   this.state.start_date || this.props.chartRange
                 }
-                containerStyle={I18nManager.isRTL && { paddingHorizontal: 50 }}
+                containerStyle={
+                  I18nManager.isRTL && { paddingHorizontal: RFValue(25, 414) }
+                }
                 title={"Choose campaign start date"}
                 titleStyle={{ color: "#000" }}
               />
@@ -404,21 +428,38 @@ class DateFields extends Component {
                 }}
               />
             </View>
-
-            {this.state.end_choice ||
-            (this.state.end_choice &&
-              this.props.start_time &&
-              !this.state.reset) ? (
-              <LowerButton
-                screenProps={this.props.screenProps}
-                checkmark
-                function={() => this.handleDate()}
-                purpleViolet={true}
-                style={{ alignSelf: "flex-end" }}
-              />
-            ) : null}
+            <View style={showDurationSelector && styles.footerContainer}>
+              {showDurationSelector && (
+                <CampaignDuration
+                  screenProps={this.props.screenProps}
+                  stopTimer={this.props.stopTimer}
+                  handleDuration={this.props.handleDuration}
+                  duration={this.props.duration}
+                  disabled={this.props.duration === 3}
+                  customContainerStyle={styles.campaignDurationContainerStyle}
+                  customTextColor={{ color: "#808080" }}
+                  buttonsCustomColor={{ backgroundColor: globalColors.purple }}
+                />
+              )}
+              {this.state.end_choice ||
+              (this.state.end_choice &&
+                this.props.start_time &&
+                !this.state.reset) ? (
+                <LowerButton
+                  screenProps={this.props.screenProps}
+                  checkmark
+                  function={() => this.handleDate()}
+                  purpleViolet={true}
+                  style={!showDurationSelector && { alignSelf: "flex-end" }}
+                />
+              ) : null}
+            </View>
           </View>
-          {this.state.resumeLoading && <Loading dash />}
+          {(this.state.resumeLoading || this.props.repeatCampaignLoading) && (
+            <View style={styles.loadingBackground}>
+              <Loading dash={true} />
+            </View>
+          )}
         </Modal>
       </View>
     );

@@ -47,6 +47,10 @@ let blacklistTransform = createTransform((inboundState, key) => {
         "collectionLoader",
         "loadingMoreInstaPost",
         "campaignProgressStarted",
+        "customInterestsLoading",
+        "repeatInstaCampaignLoading",
+        "postsLoadingpostsLoading",
+        "customLocationLoading",
       ]);
       break;
     default:

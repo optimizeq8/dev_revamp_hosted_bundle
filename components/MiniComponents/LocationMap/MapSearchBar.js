@@ -171,7 +171,7 @@ export default class MapSearchBar extends Component {
             predefinedPlacesDescription: {
               color: "#1faadb",
               fontFamily: "montserrat-bold",
-              fontSize: RFValue(8, 414),
+              fontSize: RFValue(7, 414),
             },
           }}
         />

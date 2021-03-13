@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import { Icon } from "native-base";
 import isNull from "lodash/isNull";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { RFValue } from "react-native-responsive-fontsize";
 //Icons
 import InterestsIcon from "../../../assets/SVGs/Interests";
@@ -22,6 +24,7 @@ import * as actionCreators from "../../../store/actions";
 import Picker from "../Picker";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
+import Header from "../Header";
 import { globalColors } from "../../../GlobalStyles";
 import {
   PowerTranslator,
@@ -68,62 +71,17 @@ class SelectInterests extends Component {
         this.props.customInterests.Interests.length === 0
       ) {
         this.setState({ customInterests: [] });
-      } else {
-        customInterests =
-          this.props.customInterests &&
-          Object.keys(this.props.customInterests).map((interest) => {
-            return {
-              id: interest,
-              name: interest,
-              subcat: [...this.props.customInterests[interest]],
-            };
-          });
-        if (
-          this.props.data &&
-          this.props.data.hasOwnProperty("customInterestObjects") &&
-          this.props.data.customInterestObjects
-        ) {
-          customInterests[0].subcat = customInterests[0].subcat.concat(
-            this.props.data.customInterestObjects
-          );
-        }
-        this.setState({ customInterests });
       }
       // else {
-      //   TranslatorConfiguration.setConfig(
-      //     ProviderTypes.Google,
-      //     "AIzaSyCPCME2BWXM3bRzNdvrGHAvnOxB3np3c_Q",
-      //     I18nManager.isRTL ? "ar" : "en"
-      //   );
-      //   let translator2 = TranslatorFactory.createTranslator();
-
       //   customInterests =
       //     this.props.customInterests &&
-      //     //Had to use Promise.all because the translation function returns a promise and
-      //     // using an async function in a .map() returns a promise so I had wrap both loops in Promise.all
-      //     (await Promise.all(
-      //       Object.keys(this.props.customInterests).map(async (interest) => {
-      //         let interestsInArabic = await Promise.all(
-      //           this.props.customInterests[interest] // only showing 25 interests to not overuse the translation api
-      //             .slice(
-      //               0,
-      //               this.props.customInterests[interest].length >= 25
-      //                 ? 25
-      //                 : this.props.customInterests[interest].length - 1
-      //             )
-      //             .map(async (inter) => {
-      //               let arabicInter = await translator2.translate(inter.name);
-      //               inter = { ...inter, name: arabicInter };
-      //               return inter;
-      //             })
-      //         );
-      //         return {
-      //           id: interest,
-      //           name: translate(interest),
-      //           subcat: [...interestsInArabic],
-      //         };
-      //       })
-      //     ));
+      //     Object.keys(this.props.customInterests).map((interest) => {
+      //       return {
+      //         id: interest,
+      //         name: interest,
+      //         subcat: [...this.props.customInterests[interest]],
+      //       };
+      //     });
       //   if (
       //     this.props.data &&
       //     this.props.data.hasOwnProperty("customInterestObjects") &&
@@ -135,6 +93,52 @@ class SelectInterests extends Component {
       //   }
       //   this.setState({ customInterests });
       // }
+      else {
+        TranslatorConfiguration.setConfig(
+          ProviderTypes.Google,
+          "AIzaSyCPCME2BWXM3bRzNdvrGHAvnOxB3np3c_Q",
+          I18nManager.isRTL ? "ar" : "en"
+        );
+        let translator2 = TranslatorFactory.createTranslator();
+
+        customInterests =
+          this.props.customInterests &&
+          //Had to use Promise.all because the translation function returns a promise and
+          // using an async function in a .map() returns a promise so I had wrap both loops in Promise.all
+          (await Promise.all(
+            Object.keys(this.props.customInterests).map(async (interest) => {
+              let interestsInArabic = await Promise.all(
+                this.props.customInterests[interest] // only showing 25 interests to not overuse the translation api
+                  .slice(
+                    0,
+                    this.props.customInterests[interest].length >= 25
+                      ? 25
+                      : this.props.customInterests[interest].length - 1
+                  )
+                  .map(async (inter) => {
+                    let arabicInter = await translator2.translate(inter.name);
+                    inter = { ...inter, name: arabicInter };
+                    return inter;
+                  })
+              );
+              return {
+                id: interest,
+                name: translate(interest),
+                subcat: [...interestsInArabic],
+              };
+            })
+          ));
+        if (
+          this.props.data &&
+          this.props.data.hasOwnProperty("customInterestObjects") &&
+          this.props.data.customInterestObjects
+        ) {
+          customInterests[0].subcat = customInterests[0].subcat.concat(
+            this.props.data.customInterestObjects
+          );
+        }
+        this.setState({ customInterests });
+      }
     }
     this.setState({
       filteredCountreis: this.props.countries,
@@ -173,59 +177,17 @@ class SelectInterests extends Component {
         this.props.customInterests.Interests.length === 0
       ) {
         this.setState({ customInterests: [] });
-      } else {
-        customInterests =
-          this.props.customInterests &&
-          Object.keys(this.props.customInterests).map((interest) => {
-            return {
-              id: interest,
-              name: interest,
-              subcat: [...this.props.customInterests[interest]],
-            };
-          });
-        if (
-          this.props.data &&
-          this.props.data.hasOwnProperty("customInterestObjects")
-        ) {
-          customInterests[0].subcat = customInterests[0].subcat.concat(
-            this.props.data.customInterestObjects
-          );
-        }
-        this.setState({ customInterests });
       }
       // else {
-      //   TranslatorConfiguration.setConfig(
-      //     ProviderTypes.Google,
-      //     "AIzaSyCPCME2BWXM3bRzNdvrGHAvnOxB3np3c_Q",
-      //     I18nManager.isRTL ? "ar" : "en"
-      //   );
-      //   let translator2 = TranslatorFactory.createTranslator();
-
       //   customInterests =
       //     this.props.customInterests &&
-      //     (await Promise.all(
-      //       Object.keys(this.props.customInterests).map(async (interest) => {
-      //         let interestsInArabic = await Promise.all(
-      //           this.props.customInterests[interest]
-      //             .slice(
-      //               0,
-      //               this.props.customInterests[interest].length >= 25
-      //                 ? 25
-      //                 : this.props.customInterests[interest].length - 1
-      //             )
-      //             .map(async (inter) => {
-      //               let arabicInter = await translator2.translate(inter.name);
-      //               inter = { ...inter, name: arabicInter };
-      //               return inter;
-      //             })
-      //         );
-      //         return {
-      //           id: interest,
-      //           name: translate(interest),
-      //           subcat: [...interestsInArabic],
-      //         };
-      //       })
-      //     ));
+      //     Object.keys(this.props.customInterests).map((interest) => {
+      //       return {
+      //         id: interest,
+      //         name: interest,
+      //         subcat: [...this.props.customInterests[interest]],
+      //       };
+      //     });
       //   if (
       //     this.props.data &&
       //     this.props.data.hasOwnProperty("customInterestObjects")
@@ -236,6 +198,49 @@ class SelectInterests extends Component {
       //   }
       //   this.setState({ customInterests });
       // }
+      else {
+        TranslatorConfiguration.setConfig(
+          ProviderTypes.Google,
+          "AIzaSyCPCME2BWXM3bRzNdvrGHAvnOxB3np3c_Q",
+          I18nManager.isRTL ? "ar" : "en"
+        );
+        let translator2 = TranslatorFactory.createTranslator();
+
+        customInterests =
+          this.props.customInterests &&
+          (await Promise.all(
+            Object.keys(this.props.customInterests).map(async (interest) => {
+              let interestsInArabic = await Promise.all(
+                this.props.customInterests[interest]
+                  .slice(
+                    0,
+                    this.props.customInterests[interest].length >= 25
+                      ? 25
+                      : this.props.customInterests[interest].length - 1
+                  )
+                  .map(async (inter) => {
+                    let arabicInter = await translator2.translate(inter.name);
+                    inter = { ...inter, name: arabicInter };
+                    return inter;
+                  })
+              );
+              return {
+                id: interest,
+                name: translate(interest),
+                subcat: [...interestsInArabic],
+              };
+            })
+          ));
+        if (
+          this.props.data &&
+          this.props.data.hasOwnProperty("customInterestObjects")
+        ) {
+          customInterests[0].subcat = customInterests[0].subcat.concat(
+            this.props.data.customInterestObjects
+          );
+        }
+        this.setState({ customInterests });
+      }
     }
   }
   handleSideMenu = () => {
@@ -243,20 +248,30 @@ class SelectInterests extends Component {
   };
   handleCustomInterests = (event) => {
     event = event.nativeEvent.text;
-    // translator.translate(event).then((translated) => {
-    //Do something with the translated text
     if (event) {
-      if (this.timeout) clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => {
-        this.props.get_custom_interests_instagram(event.replace(" ", "_"));
-      }, 200);
+      translator.translate(event).then((translated) => {
+        //Do something with the translated text
+        if (this.timeout) clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+          this.props.get_custom_interests_instagram(
+            translated.replace(" ", "_")
+          );
+        }, 200);
+      });
     }
-    // });
   };
   render() {
     const { translate } = this.props.screenProps;
     return (
       <View style={styles.container}>
+        <SafeAreaView />
+        {this.props.showBackButton && (
+          <Header
+            screenProps={this.props.screenProps}
+            iconColor={globalColors.purple}
+            actionButton={this.handleSideMenu}
+          />
+        )}
         <View style={styles.dataContainer}>
           <InterestsIcon
             width={RFValue(50, 414)}
@@ -277,11 +292,12 @@ class SelectInterests extends Component {
                     opacity: this.props.country_code === "" ? 0.5 : 1,
                   },
                 ]}
-                onPressAction={() => this.setState({ open: true })}
+                onPressAction={() => this.setState({ open2: true })}
               >
-                <PlusCircle
-                  width={RFValue(26.5, 414)}
-                  height={RFValue(26.5, 414)}
+                <Icon
+                  style={{ color: "#fff", fontSize: RFValue(12, 414) }}
+                  name="edit"
+                  type="MaterialIcons"
                 />
               </GradientButton>
               <GradientButton
@@ -291,12 +307,11 @@ class SelectInterests extends Component {
                     opacity: this.props.country_code === "" ? 0.5 : 1,
                   },
                 ]}
-                onPressAction={() => this.setState({ open2: true })}
+                onPressAction={() => this.setState({ open: true })}
               >
-                <Icon
-                  style={{ color: "#fff", fontSize: RFValue(12, 414) }}
-                  name="edit"
-                  type="MaterialIcons"
+                <PlusCircle
+                  width={RFValue(26.5, 414)}
+                  height={RFValue(26.5, 414)}
                 />
               </GradientButton>
             </View>

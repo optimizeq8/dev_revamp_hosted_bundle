@@ -78,6 +78,7 @@ export class TargetAudience extends Component {
       mainState,
       editCampaign,
       startEditing,
+      objectiveLabel = "",
     } = this.props;
     const { translate } = this.props.screenProps;
     const { expandLocation, expandDemographics, expandDevices } = this.state;
@@ -167,6 +168,44 @@ export class TargetAudience extends Component {
 
                 {startEditing &&
                   (regions_names.length !== 0 ? (
+                    <PurpleCheckmarkIcon
+                      width={RFValue(11, 414)}
+                      height={RFValue(15, 414)}
+                    />
+                  ) : (
+                    <PurplePlusIcon
+                      width={RFValue(11, 414)}
+                      height={RFValue(15, 414)}
+                    />
+                  ))}
+              </TouchableOpacity>
+            )}
+            {expandLocation && (
+              <TouchableOpacity
+                disabled={loading}
+                onPress={() => this.callFunction("map")}
+                style={styles.targetTouchable}
+              >
+                <View style={[globalStyles.column, styles.subAudienceHeading]}>
+                  <Text style={styles.menutext}>
+                    {translate("Map Targeting")}
+                  </Text>
+                  <Text style={styles.menudetails}>
+                    {mainState.locationsInfo &&
+                    mainState.locationsInfo.length > 0
+                      ? (typeof mainState.locationsInfo === "string"
+                          ? JSON.parse(mainState.locationsInfo)
+                          : mainState.locationsInfo
+                        )
+                          .map((loc) => translate(loc.countryName))
+                          .join(", ")
+                      : ""}
+                  </Text>
+                </View>
+
+                {startEditing &&
+                  (mainState.locationsInfo &&
+                  mainState.locationsInfo.length > 0 ? (
                     <PurpleCheckmarkIcon
                       width={RFValue(11, 414)}
                       height={RFValue(15, 414)}
@@ -385,7 +424,11 @@ export class TargetAudience extends Component {
                     numberOfLines={startEditing ? 1 : 10}
                     style={styles.menudetails}
                   >
-                    {interests_names}
+                    {objectiveLabel === "Mother's Day" &&
+                    interests_names &&
+                    interests_names.length !== 0
+                      ? translate("Auto")
+                      : interests_names}
                   </Text>
                 </View>
               </View>

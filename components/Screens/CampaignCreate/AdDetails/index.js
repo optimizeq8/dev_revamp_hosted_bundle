@@ -28,7 +28,13 @@ import SnapchatAudienceList from "../../SnapchatCampaignAudienceList";
 // import LocationMap from "../../../MiniComponents/LocationMap";
 let LocationMap = null;
 //Data
-import countries, { gender, OSType, country_regions } from "./data";
+import countries, {
+  gender,
+  OSType,
+  country_regions,
+  mothersDayInterest,
+  mothersDayTargeting,
+} from "./data";
 
 //Style
 import styles from "./styles";
@@ -313,10 +319,24 @@ class AdDetails extends Component {
           duration,
         },
         async () => {
+          let interestNames = [];
+          // NOTE: For mother's day
+          if (
+            this.props.data &&
+            this.props.data.objectiveLabel === "Mother's Day"
+          ) {
+            var targeting = mothersDayTargeting;
+            interestNames = mothersDayInterest;
+          }
+
           if (this.props.data.hasOwnProperty("campaignInfo")) {
             const rep = {
               ...this.state.campaignInfo,
               ...this.props.data.campaignInfo,
+              targeting: {
+                ...this.props.data.campaignInfo.targeting,
+                ...targeting,
+              },
             };
             let savedRegionNames = this.props.data.regionNames;
             let countryRegions = rep.targeting.geos.map((cou) => {
@@ -374,6 +394,7 @@ class AdDetails extends Component {
                     : 1,
                 regionNames: savedRegionNames,
                 minValueBudget,
+                interestNames,
               },
               () => {
                 if (this.props.data && this.props.data.appChoice) {
@@ -413,6 +434,18 @@ class AdDetails extends Component {
                 campaignInfo: rep,
               });
             }
+            const rep = {
+              ...this.state.campaignInfo,
+
+              targeting: {
+                ...this.state.campaignInfo.targeting,
+                ...targeting,
+              },
+            };
+            await this.setState({
+              interestNames,
+              campaignInfo: rep,
+            });
           }
           this.props.save_campaign_info({
             budgetOption: this.state.budgetOption,
@@ -714,7 +747,6 @@ class AdDetails extends Component {
     unselect = false,
     locationsInfo = []
   ) => {
-    console.log("selectedItems", selectedItems);
     let stateRep = cloneDeep(this.state.campaignInfo);
     if (unselect) {
       stateRep.targeting.locations[0].circles = [];
@@ -1927,6 +1959,9 @@ class AdDetails extends Component {
                       startEditing={startEditing}
                       onSelectedGenderChange={this.onSelectedGenderChange}
                       _handleAge={this._handleAge}
+                      objectiveLabel={
+                        this.props.data ? this.props.data.objectiveLabel : ""
+                      }
                     />
                   ):<View/>}
                 </CopilotStep>

@@ -276,9 +276,9 @@ class Signin extends Component {
           }
         } else {
           showMessage({
-            message: translate("{{biometryType}} not supported on this phone", {
-              biometryType: this.state.biometryType,
-            }),
+            message: translate(
+              `${this.state.biometryType} not supported on this phone`
+            ),
             type: "warning",
           });
         }

@@ -10,7 +10,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 const styles = StyleSheet.create({
   cardStyle: {
     marginHorizontal: RFValue(10, 414),
-    borderRadius: 30,
+    borderRadius: RFValue(15, 414),
     marginVertical: RFValue(4, 414),
     shadowOpacity: 0.5,
     shadowRadius: 3,
@@ -56,14 +56,14 @@ const styles = StyleSheet.create({
   chartText: {
     color: globalColors.orange,
     fontFamily: "montserrat-medium",
-    fontSize: 12,
-    marginLeft: 10,
+    fontSize: RFValue(6, 414),
+    marginLeft: RFValue(5, 414),
   },
   chartSubtext: {
     alignSelf: "center",
-    paddingTop: 17,
+    paddingTop: RFValue(8.5, 414),
     fontFamily: "montserrat-regular",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
     color: "#fff",
     fontFamily: "montserrat-bold",
   },
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     left: "80%",
     top: "87%",
     backgroundColor: "transparent",
-    borderRadius: 20,
+    borderRadius: RFValue(10, 414),
   },
   toggleStyle: {
     width: 65,
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     // fontSize: 13,
     fontSize: RFValue(6.6, 414),
-    paddingHorizontal: 5,
+    paddingHorizontal: RFValue(2.5, 414),
     color: "#fff",
     textTransform: "uppercase",
   },
@@ -164,6 +164,22 @@ const styles = StyleSheet.create({
     width: 3,
     height: "100%",
     backgroundColor: "rgba(0,0,0,0.05)",
+  },
+  repeatButton: {
+    backgroundColor: "#d4d4d4",
+    padding: RFValue(4, 414),
+    borderRadius: RFValue(10, 414),
+    width: "25%",
+    height: "40%",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "flex-end",
+    opacity:0.8
+  },
+  repeatText: {
+    fontSize: RFValue(7, 414),
+    color: "#0008",
+    fontFamily: "montserrat-bold",
   },
 });
 

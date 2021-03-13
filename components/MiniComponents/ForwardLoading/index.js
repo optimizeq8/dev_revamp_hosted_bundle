@@ -35,7 +35,10 @@ class ForwardLoading extends React.Component {
     return (
       <>
         {this.state.loop ? (
-          <CircleLoader bottom={this.props.bottom ? this.props.bottom : 18} />
+          <CircleLoader
+            bottom={this.props.bottom ? this.props.bottom : 18}
+            {...this.props}
+          />
         ) : (
           <View
             style={[
