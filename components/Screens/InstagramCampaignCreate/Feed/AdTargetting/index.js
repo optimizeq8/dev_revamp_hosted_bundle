@@ -1393,6 +1393,11 @@ class InstagramFeedAdTargetting extends Component {
             data={this.props.data}
             _handleSideMenuState={this._handleSideMenuState}
             editCampaign={this.editCampaign}
+            instagramCampaign={true}
+            countriesSelected={
+              this.state.campaignInfo.targeting.geo_locations.countries
+            }
+            onSelectedCountryRegionChange={this.onSelectedCountryRegionChange}
           />
         );
         break;
