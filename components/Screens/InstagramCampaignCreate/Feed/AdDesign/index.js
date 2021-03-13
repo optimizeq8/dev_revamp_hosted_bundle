@@ -402,7 +402,8 @@ class AdDesign extends Component {
       (!this.state.selectedCampaign.call_to_action ||
         (this.state.selectedCampaign &&
           this.state.selectedCampaign.call_to_action &&
-          this.state.selectedCampaign.call_to_action.label === "BLANK"))
+          this.state.selectedCampaign.call_to_action.label === "BLANK") ||
+        this.state.selectedCampaign.link === "BLANK")
     ) {
       showMessage({
         message: translate("Choose A Swipe Up Destination"),
