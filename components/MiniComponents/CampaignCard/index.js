@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Text, I18nManager } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  I18nManager,
+  BackHandler,
+} from "react-native";
 import { Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
@@ -16,6 +22,7 @@ import isEqual from "react-fast-compare";
 import globalStyles from "../../../GlobalStyles";
 import GradientButton from "../GradientButton";
 import NavigationService from "../../../NavigationService";
+import RepeatCampaignModal from "../RepeatCampaignModal";
 
 whyDidYouRender(React);
 class CampaignCard extends Component {
@@ -23,7 +30,7 @@ class CampaignCard extends Component {
   campaign_status = this.props.campaign.status;
   ad_status_color = this.props.campaign.ad_status_color_code;
   ad_status = this.props.campaign.ad_status;
-
+  state = { showRepeatModal: false };
   //New date returns the current date with a timezone of -3
   //So I add back the offset so the dates from the backend are compared properly
   currentDate = () => {
@@ -61,6 +68,22 @@ class CampaignCard extends Component {
           new Date(campaign.end_time) < this.currentDate();
     return campaignEndedOrNot;
   };
+  handleRepeatModal = (value) => {
+    this.setState({
+      showRepeatModal: value,
+    });
+  };
+  componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  handleBackPress = () => {
+    if (this.state.showRepeatModal) {
+      this.handleRepeatModal(false);
+    }
+  };
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
   render() {
     const { translate } = this.props.screenProps;
     let campaign = this.props.campaign;
@@ -213,7 +236,7 @@ class CampaignCard extends Component {
                   screenProps={this.props.screenProps}
                 />
 
-                {!this.campaignEndedOrNot(campaign, endDate) && (
+                {!this.campaignEndedOrNot(campaign, endDate) && false ? (
                   <>
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
@@ -226,9 +249,22 @@ class CampaignCard extends Component {
                       </Text>
                     </View>
                   </>
+                ) : (
+                  <TouchableOpacity
+                    style={styles.repeatButton}
+                    onPress={() => this.handleRepeatModal(true)}
+                  >
+                    <Text style={styles.repeatText}>{translate("Repeat")}</Text>
+                  </TouchableOpacity>
                 )}
               </View>
             )}
+            <RepeatCampaignModal
+              showRepeatModal={this.state.showRepeatModal}
+              screenProps={this.props.screenProps}
+              handleRepeatModal={this.handleRepeatModal}
+              campaign={campaign}
+            />
           </View>
         </TouchableOpacity>
       </LinearGradient>

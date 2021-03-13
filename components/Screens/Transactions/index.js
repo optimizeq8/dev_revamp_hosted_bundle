@@ -171,7 +171,7 @@ class Transactions extends Component {
                 renderItem={this.renderTransactionCard}
                 data={this.props.filteredTransactions}
                 contentContainerStyle={styles.contentContainer}
-                keyExtractor={(item) => item.payment_id}
+                keyExtractor={(item) => item.id + item.refunded}
                 showsVerticalScrollIndicator={false}
               />
             </View>

@@ -2062,7 +2062,7 @@ const strings = {
     "Optimize Advertising & Marketing Company Wll",
   "This is where you should put your business name that your advertising":
     "This is where you should put your business name that your advertising.",
-  "Here you need to add a promotional message related to what you're advertising eg New products on sale now":
+  "Here you need to add a promotional message related to what you're advertising eg New products now on sale":
     "Here you need to add a promotional message related to what you're advertising eg. 'New products on sale now!'",
   "Add your media here, It can be a video or an image Make sure your ad looks professional so that it can attract a lot of people":
     "Add your media here, It can be a video or an image. Make sure your ad looks professional so that it can attract a lot of people!",
@@ -2075,8 +2075,8 @@ const strings = {
     "Select your campaign's objective to choose what your audience should do eg. download your app or visit your website etc.",
   "Select your campaign's duration and start date The longer the campaign’s duration is, the better the results":
     "Select your campaign's duration and start date. The longer the campaign’s duration is, the better the results.",
-  "Here you can create or select an audience preset for faster selection If you proceed without creating an audience you can find it here the next time you create a new campaign":
-    "Here you can create or select an audience preset for faster selection. If you proceed without creating an audience you can find it here the next time you create a new campaign",
+  "Here you can create or select a saved audience for faster selection If you proceed without creating an audience you can find it here the next time you create a new campaign":
+    "Here you can create or select a saved audience for faster selection If you proceed without creating an audience you can find it here the next time you create a new campaign",
   "Setting a good daily budget is very crucial to how successful your campaign will be The higher the budget the more people will see your ad":
     "Setting a good daily budget is very crucial to how successful your campaign will be. The higher the budget the more people will see your ad.",
   "You can choose who your ad gets shown to by selecting different combinations of options You can experiment with different combinations and see what best suits your business":
@@ -2084,7 +2084,7 @@ const strings = {
   "You can see the potential results of the ad based on the targeting options you select and how high your daily budget is":
     "Here you can see the potential results of the ad. This is based on the targeting options you select and how high your daily budget is.",
   "Daily budget": "Daily budget",
-  "Audience preset": "Audience preset",
+  "Saved Audiences": "Saved Audiences",
   "Audience targeting": "Audience targeting",
   "Audience reach": "Audience reach",
   "Live chat unavailable": "Live chat unavailable",
@@ -2098,5 +2098,43 @@ const strings = {
   },
   "Debit Cards UAE": "Debit Cards UAE",
   "12 am - 6 pm": "12 am - 6 pm",
+  "snapchat clicks": "Snapchat",
+  "website clicks": "Website",
+  "twitter clicks": "Twitter",
+  "linkedin clicks": "Linked In",
+  Continue: "Continue",
+  "Secure Account": "Secure Account",
+  "Not now": "Not now",
+  Enable: "Enable",
+  "No credentials found": "No credentials found",
+  "Please sign in or sign up first": "Please sign in or sign up first",
+  "Keychain couldn't be accessed": "Keychain couldn't be accessed",
+  "Account secured successfully": "Account secured successfully",
+  "Wrong password": "Wrong Password",
+  "Would you like to enable TouchID with this account":
+    "Would you like to enable TouchID with this account?",
+  "Secure your account": "Secure your account",
+  "Choose an account": "Choose an account",
+  "Your account has been secured using": "Your account has been secured using",
+  "not supported on this phone": "not supported on this phone",
+  purchases: "purchases",
+  "purchase roas": "purchase roas",
+  "purchase conversion value": "purchase conversion value",
+  "Would you like to enable FaceID with this account":
+    "Would you like to enable FaceID with this account?",
+  TouchID: "TouchID",
+  FaceID: "FaceID",
+  Biometrics: "Biometrics",
+  "Would you like to enable Biometrics with this account":
+    "Would you like to enable Biometrics with this account?",
+  Refunded: "Refunded",
+  "Your account has been secured using {{biometryType}}":
+    "Your account has been secured using {{biometryType}}",
+  "Would you like to enable {{biometryType}} with this account":
+    "Would you like to enable {{biometryType}} with this account",
+  "Repeat Campaign": "Repeat Campaign",
+  "Mother's Day": "Mother's Day",
+  "SELL MOTHER'S DAY PRODUCTS": "SELL MOTHER'S DAY PRODUCTS",
+  Repeat: "Repeat",
 };
 export default strings;

@@ -10,7 +10,10 @@ import GradientButton from "../GradientButton";
 import MapMarker from "../../../assets/SVGs/MapMarker";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import { showMessage } from "react-native-flash-message";
-export default class LocaionMap extends Component {
+import * as actionCreators from "../../../store/actions";
+
+import { connect } from "react-redux";
+class LocaionMap extends Component {
   state = {
     initialRegion: {
       // longitude: 42,
@@ -203,6 +206,23 @@ export default class LocaionMap extends Component {
       radius: markers[0].radius,
       index: this.props.selectedLocation.index,
     };
+    if (this.props.adType.toLowerCase().includes("instagram"))
+      this.props.geoLocationSearch(
+        {
+          latitude: markers[0].coordinate.latitude,
+          longitude: markers[0].coordinate.longitude,
+          index: this.props.selectedLocation.index,
+        },
+        () => this.handleUpdatingMarkers(marker),
+        markers[0].radius,
+        this.props.audience
+      );
+    else {
+      this.handleUpdatingMarkers(marker);
+    }
+  };
+
+  handleUpdatingMarkers = (marker) => {
     this.props.updateMarkerLocation(marker);
     this.props.handleMapModal(
       false,
@@ -405,12 +425,14 @@ export default class LocaionMap extends Component {
                 radius={50}
                 purpleViolet
                 style={styles.pinTwoButtons}
+                disabled={this.props.customLocationLoading}
                 onPressAction={this.handlePin}
                 text={translate("Remove pin")}
                 uppercase={true}
               />
               <GradientButton
                 radius={50}
+                disabled={this.props.customLocationLoading}
                 purpleViolet
                 style={styles.pinTwoButtons}
                 onPressAction={this.handleMapSubmission}
@@ -461,3 +483,19 @@ export default class LocaionMap extends Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+  adType: state.campaignC.adType,
+  customLocationLoading: state.instagramAds.customLocationLoading,
+});
+const mapDispatchToProps = (dispatch) => ({
+  geoLocationSearch: (latLong, updateMarkers, radius, audienceUpdate) =>
+    dispatch(
+      actionCreators.geoLocationSearch(
+        latLong,
+        updateMarkers,
+        radius,
+        audienceUpdate
+      )
+    ),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(LocaionMap);

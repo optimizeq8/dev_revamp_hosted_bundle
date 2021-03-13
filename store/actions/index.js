@@ -99,6 +99,8 @@ export {
   getEngagmentNumberVerification,
   verifySnapchatNumber,
   verifySnapchatOtp,
+  repeatSnapCampagin,
+  repeatSnapCampaginBudget,
 } from "./campaignActions";
 
 export {
@@ -236,6 +238,10 @@ export {
   updateInstagramStatus,
   endInstagramCampaign,
   downloadInstagramCSV,
+  repeatInstaCampagin,
+  repeatInstaCampaginBudget,
+  geoLocationSearch,
+  deleteCustomLocation,
 } from "./instagramCampaignActions";
 
 export {
@@ -246,3 +252,13 @@ export {
   setAudienceDetail,
   getAudienceDetail,
 } from "./audienceActions";
+
+export {
+  getInstagramAudienceList,
+  createInstagramAudience,
+  deleteInstagramAudience,
+  updateInstagramAudience,
+  setInstagramAudienceDetail,
+  getInstagramAudienceDetail,
+  setInstagramAudienceCustomLocations,
+} from "./instagramAudienceActions";

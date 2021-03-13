@@ -1,4 +1,5 @@
 import cloneDeep from "lodash/cloneDeep";
+import { act } from "react-test-renderer";
 import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
@@ -105,6 +106,11 @@ const initialState = {
   instaRejCampaign: {},
   movingAmountToWallet: false,
   customInterestsLoading: false,
+  repeatingInstaCampaginData: {},
+  repeatInstaCampaignLoading: false,
+  customLocations: [],
+  audienceCustomLocations: [],
+  customLocationLoading: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -245,6 +251,7 @@ const reducer = (state = initialState, action) => {
       let maxValueBudget = 0;
       let incompleteCampaign = false;
       let currentCampaignSteps = [];
+      let stateCustomLocations = [];
       if (resetAdType) {
         currentCampaignSteps = state.currentCampaignSteps;
         incompleteCampaign = state.incompleteCampaign;
@@ -256,6 +263,7 @@ const reducer = (state = initialState, action) => {
         countryName = state.countryName;
         interestNames = state.interestNames;
         regionNames = state.regionNames;
+        stateCustomLocations = state.stateCustomLocations;
         if (data) {
           delete data.media;
           delete data.media_type;
@@ -334,6 +342,7 @@ const reducer = (state = initialState, action) => {
           },
         ],
         loadingCarouselAdsArray: [],
+        customLocations: stateCustomLocations,
       };
     case actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM:
       return {
@@ -578,6 +587,94 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         campaignEnded: action.payload,
+      };
+    case actionTypes.SET_INSTA_REPEATING_CAMPAIGN_INFO: {
+      return {
+        ...state,
+        repeatingInstaCampaginData: action.payload.data,
+        repeatInstaCampaignLoading: false,
+      };
+    }
+    case actionTypes.SET_REPEAT_INSTA_CAMPAIGN_LOADING: {
+      return {
+        ...state,
+        repeatInstaCampaignLoading: action.payload,
+      };
+    }
+    case actionTypes.SET_INSTAGRAM_CUSTOM_LOCATION_LOADING:
+      return {
+        ...state,
+        customLocationLoading: action.payload,
+      };
+    case actionTypes.DELETE_INSTAGRAM_CUSTOM_LOCATION_LOADING:
+      let index = action.payload.index;
+      let deletionAudienceUpdate = action.payload.audienceUpdate;
+      let customLocationsOrg = cloneDeep(
+        deletionAudienceUpdate
+          ? state.audienceCustomLocations
+          : state.customLocations
+      );
+      if (index === "all") {
+        customLocationsOrg = [];
+      } else customLocationsOrg.splice(action.payload.index, 1);
+
+      return {
+        ...state,
+        customLocations: deletionAudienceUpdate
+          ? state.customLocations
+          : customLocationsOrg,
+        audienceCustomLocations: deletionAudienceUpdate
+          ? customLocationsOrg
+          : state.audienceCustomLocations,
+      };
+
+    case actionTypes.SET_INSTAGRAM_CUSTOM_LOCATION_FROM_AUDIENCE:
+      return {
+        ...state,
+        customLocations: action.payload,
+        customLocationLoading: false,
+      };
+    case actionTypes.SET_INSTAGRAM_CUSTOM_LOCATION:
+      let customLocationData = Object.values(action.payload.data)[0];
+      let customLocationObj = {
+        name: customLocationData.address_string,
+        distance_unit: "miles",
+        latitude: customLocationData.latitude,
+        longitude: customLocationData.longitude,
+        primary_city_id: customLocationData.primary_city_id,
+        radius: action.payload.radius / 1609,
+        region_id: customLocationData.region_id,
+        country: customLocationData.country_code,
+      };
+      let audienceUpdate = action.payload.audienceUpdate;
+
+      let customLocationsInState = audienceUpdate
+        ? state.audienceCustomLocations
+        : state.customLocations;
+      if (customLocationsInState.length === action.payload.index) {
+        console.log(
+          "ss",
+          audienceUpdate,
+          !audienceUpdate ? "customLocations" : "audienceCustomLocations"
+        );
+        customLocationsInState = [
+          ...state[
+            !audienceUpdate ? "customLocations" : "audienceCustomLocations"
+          ],
+          customLocationObj,
+        ];
+      } else {
+        customLocationsInState[action.payload.index] = customLocationObj;
+      }
+      return {
+        ...state,
+        customLocations: audienceUpdate
+          ? state.customLocations
+          : customLocationsInState,
+        audienceCustomLocations: audienceUpdate
+          ? customLocationsInState
+          : state.audienceCustomLocations,
+        customLocationLoading: false,
       };
     default:
       return state;

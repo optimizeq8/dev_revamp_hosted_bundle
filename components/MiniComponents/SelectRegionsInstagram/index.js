@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { connect } from "react-redux";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { Icon } from "native-base";
 import * as actionCreators from "../../../store/actions";
 import styles from "../MultiSelect/styles";
 
 import LocationIcon from "../../../assets/SVGs/Location";
 import LowerButton from "../LowerButton";
+import Header from "../Header";
 import { globalColors } from "../../../GlobalStyles";
 import { country_regions } from "../../Screens/InstagramCampaignCreate/Feed/AdTargetting/data";
 
@@ -79,6 +82,16 @@ class SelectRegions extends Component {
 
     return (
       <View style={styles.container}>
+        <SafeAreaView />
+        {this.props.showBackButton && (
+          <Header
+            screenProps={this.props.screenProps}
+            iconColor={globalColors.purple}
+            actionButton={() => {
+              this.props._handleSideMenuState(false);
+            }}
+          />
+        )}
         <View style={[styles.dataContainer]}>
           <LocationIcon
             width={70}

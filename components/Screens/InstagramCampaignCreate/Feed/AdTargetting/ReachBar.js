@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 // import { AnimatedCircularProgress } from "react-native-circular-progress";
 import LowerButton from "../../../../MiniComponents/LowerButton";
 import ForwardLoading from "../../../../MiniComponents/ForwardLoading";
@@ -39,7 +40,12 @@ class ReachBar extends Component {
   }
   render() {
     const { translate } = this.props.screenProps;
-    let { startEditing, editCampaign, campaignInfo } = this.props;
+    let {
+      startEditing,
+      editCampaign,
+      campaignInfo,
+      customContainerStyle,
+    } = this.props;
     return (
       <View
         style={[
@@ -47,11 +53,12 @@ class ReachBar extends Component {
           editCampaign && {
             bottom: "10%",
           },
+          customContainerStyle,
         ]}
       >
         <AnimatedCircularProgress
           size={hp(10)}
-          width={8}
+          width={RFValue(4, 414)}
           fill={this.state.total_reach || 0}
           rotation={360}
           lineCap="round"

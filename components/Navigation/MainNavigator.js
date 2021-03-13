@@ -362,6 +362,12 @@ export default createNativeStackNavigator(
     SnapchatAudienceTagetting: register({
       require: () => require("../Screens/SnapchatAudience"),
     }),
+    InstagramAudienceList: register({
+      require: () => require("../Screens/InstagramCampaignAudienceList"),
+    }),
+    InstagramAudienceTagetting: register({
+      require: () => require("../Screens/InstagramAudience"),
+    }),
     AddCategory: register({
       require: () => require("../Screens/OptimizeWebsite/Category/AddCategory"),
     }),

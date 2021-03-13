@@ -4,7 +4,7 @@ import { Icon } from "native-base";
 import { CalendarList, LocaleConfig } from "react-native-calendars";
 import styles from "./styles";
 import { widthPercentageToDP } from "react-native-responsive-screen";
-
+import { RFValue } from "react-native-responsive-fontsize";
 const XDate = require("xdate");
 
 type Props = {
@@ -216,9 +216,9 @@ export default class DateRangePicker extends Component<Props> {
             : null
         }
         pastScrollRange={
-          this.props.filterMenu || this.props.chartRange ? 50 : 0
+          this.props.filterMenu || this.props.chartRange ? RFValue(25, 414) : 0
         }
-        calendarHeight={350}
+        calendarHeight={RFValue(175, 414)}
         calendarWidth={
           this.props.filterMenu
             ? widthPercentageToDP("90%")
@@ -245,9 +245,9 @@ export default class DateRangePicker extends Component<Props> {
           "stylesheet.day.period": {
             base: {
               overflow: "hidden",
-              height: 34,
+              height: RFValue(17, 414),
               alignItems: "center",
-              width: 38,
+              width: RFValue(19, 414),
             },
             fillers: {
               position: "absolute",
@@ -258,8 +258,8 @@ export default class DateRangePicker extends Component<Props> {
           },
           "stylesheet.calendar.main": {
             week: {
-              marginTop: 7,
-              marginBottom: 7,
+              marginTop: RFValue(3.5, 414),
+              marginBottom: RFValue(3.5, 414),
               alignItems: "center",
               flexDirection: "row",
               justifyContent: "space-around",
@@ -268,16 +268,16 @@ export default class DateRangePicker extends Component<Props> {
           "stylesheet.calendar.header": {
             header: {
               flexDirection: "row",
-              paddingLeft: 10,
-              paddingRight: 10,
+              paddingLeft: RFValue(5, 414),
+              paddingRight: RFValue(5, 414),
             },
             week: {
-              marginTop: 7,
+              marginTop: RFValue(3.5, 414),
               flexDirection: "row",
               justifyContent: "space-around",
               backgroundColor: "#fff",
-              borderRadius: 50,
-              height: 30,
+              borderRadius: RFValue(25, 414),
+              height: RFValue(15, 414),
               shadowColor: "#000",
               shadowOffset: {
                 width: 0,
@@ -286,13 +286,13 @@ export default class DateRangePicker extends Component<Props> {
               shadowOpacity: 0.05,
               shadowRadius: 5,
 
-              elevation: 5,
+              elevation: RFValue(2.5, 414),
             },
             dayHeader: {
               // width: 45,
               alignSelf: "center",
               color: "#000",
-              fontSize: 12,
+              fontSize: RFValue(6, 414),
               textAlign: "center",
               fontFamily: "montserrat-bold",
             },
@@ -311,8 +311,8 @@ export default class DateRangePicker extends Component<Props> {
           textDayFontFamily: "montserrat-regular-english",
           textMonthFontFamily: "montserrat-bold",
           textDayHeaderFontFamily: "montserrat-bold",
-          textDayFontSize: 17,
-          textMonthFontSize: 18,
+          textDayFontSize: RFValue(8.5, 414),
+          textMonthFontSize: RFValue(9, 414),
           // textDayHeaderFontSize: I18nManager.isRTL ? 8.5 : 12,
         }}
       />

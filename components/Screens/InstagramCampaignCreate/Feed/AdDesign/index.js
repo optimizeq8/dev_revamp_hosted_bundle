@@ -919,6 +919,7 @@ class AdDesign extends Component {
                     {translate("Caption")}
                   </Text>
                   <TextInput
+                    textAlignVertical="top"
                     autoFocus={true}
                     multiline={true}
                     numberOfLines={12}

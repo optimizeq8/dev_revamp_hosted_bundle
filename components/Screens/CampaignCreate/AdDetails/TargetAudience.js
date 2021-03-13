@@ -91,6 +91,7 @@ export class TargetAudience extends Component {
       editCampaign,
       startEditing,
       copilot,
+      objectiveLabel = "",
     } = this.props;
     const { translate } = this.props.screenProps;
     const { expandLocation, expandDemographics, expandDevices } = this.state;
@@ -451,7 +452,11 @@ export class TargetAudience extends Component {
                     numberOfLines={startEditing ? 1 : 10}
                     style={styles.menudetails}
                   >
-                    {interests_names}
+                    {objectiveLabel === "Mother's Day" &&
+                    interests_names &&
+                    interests_names.length !== 0
+                      ? translate("Auto")
+                      : interests_names}
                   </Text>
                 </View>
               </View>
