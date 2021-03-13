@@ -1942,7 +1942,7 @@ class AdDetails extends Component {
                   order={2}
                   name="Audience targeting"
                 >
-                  {!showAudienceList && (
+                  {!showAudienceList ? (
                     <TargetAudience
                       screenProps={this.props.screenProps}
                       _renderSideMenu={this._renderSideMenu}
@@ -1963,7 +1963,7 @@ class AdDetails extends Component {
                         this.props.data ? this.props.data.objectiveLabel : ""
                       }
                     />
-                  )}
+                  ):<View/>}
                 </CopilotStep>
                 {showAudienceList && (
                   <SnapchatAudienceList
