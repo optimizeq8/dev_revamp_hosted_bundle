@@ -13,6 +13,7 @@ import { Icon } from "native-base";
 import startCase from "lodash/startCase";
 import styles from "./styles";
 import SnapObjective from "../../../Data/snapchatObjectives.data";
+import * as ObjectiveIcons from "../../../../assets/SVGs/Objectives";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import SwipeUpChoice from "../SwipeUpChoice/";
 import SwipeUpDestination from "../SwipeUpDestination";
@@ -164,9 +165,14 @@ export default class SwipeUpComponent extends Component {
       disabled,
       savedObjective,
     } = this.props;
-    let SwipeIcon = SnapObjective[adType || "SnapAd"].find(
-      (obj) => obj.value === (savedObjective || objective || "BRAND_AWARENESS")
-    ).icon;
+    let SwipeIcon =
+      ObjectiveIcons[
+        SnapObjective[adType || "SnapAd"].find(
+          (obj) =>
+            obj.value === (savedObjective || objective || "BRAND_AWARENESS")
+        ).icon
+      ];
+
     let sty = !this.state.expanded
       ? {}
       : {
@@ -224,8 +230,9 @@ export default class SwipeUpComponent extends Component {
                     ? translate(
                         startCase(destination.replace("_", " ").toLowerCase())
                       )
-                    : (destination === "REMOTE_WEBPAGE" &&
-                        objective === "WEB_CONVERSION") ||
+                    : destination === "REMOTE_WEBPAGE" ||
+                      // &&
+                      //     objective !== "WEB_CONVERSION"
                       (destination === "COLLECTION" &&
                         collectionAdLinkForm === 1)
                     ? translate("Website")
