@@ -77,11 +77,11 @@ export default {
       color: "#F26622",
     },
     {
-      label: "Conversion Campaign",
+      label: "Sales Campaign",
       value: "WEB_CONVERSION",
-      info: "OPTIMIZE FOR SALES PURCHASES",
-      icon: ObjIcons.BRAND_AWARENESS,
-      color: "#4BD6C6",
+      info: "Increase sales for my website",
+      icon: ObjIcons.Sale,
+      color: "#42EB56",
     },
     // {
     //   label: "Majlis 2020",
