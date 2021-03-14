@@ -36,6 +36,8 @@ const initialState = {
   googlead: "0",
   snapchatObjLoading: false,
   snapchatObjectives: [],
+  instagramObjLoading: false,
+  instagramObjectives: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -373,6 +375,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         snapchatObjectives: action.payload,
+      };
+    }
+    case actionTypes.INSTAGRAM_OBJECTIVE_LIST_LOADING: {
+      return {
+        ...state,
+        instagramObjLoading: action.payload,
+      };
+    }
+    case actionTypes.SET_INSTAGRAM_OBJECTIVE_LIST: {
+      return {
+        ...state,
+        instagramObjectives: action.payload,
       };
     }
     default:

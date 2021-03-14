@@ -34,6 +34,7 @@ export {
   downloadCSV,
   getNumberOfCampaigns,
   getSnapchatObjectiveList,
+  getInstagramObjectiveList,
 } from "./dashboardActions";
 
 export {
