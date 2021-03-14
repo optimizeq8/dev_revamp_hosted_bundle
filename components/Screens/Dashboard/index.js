@@ -117,8 +117,6 @@ class Dashboard extends Component {
   }
   async componentDidMount() {
     this.props.checkHashForUser();
-    this.props.getSnapchatObjectiveList();
-    this.props.getInstagramObjectiveList();
 
     // if (this.props.userInfo) {
     //   const MPTweakHelper = NativeModules.MPTweakHelper;
@@ -212,6 +210,9 @@ class Dashboard extends Component {
       this.props.mainBusiness.hasOwnProperty("businessid") &&
       prevProps.mainBusiness !== this.props.mainBusiness
     ) {
+      this.props.getSnapchatObjectiveList();
+      this.props.getInstagramObjectiveList();
+
       // to set for instagram accounts
       if (this.props.mainBusiness.instagram_access === "1") {
         let adButtons = [...snapAds, ...googleAds, ...instagramAds];

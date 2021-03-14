@@ -1,6 +1,9 @@
 import * as actionTypes from "../actions/actionTypes";
 import isUndefined from "lodash/isUndefined";
 import analytics from "@segment/analytics-react-native";
+import snapchatObjectives from "../../components/Data/snapchatObjectives.data";
+import instagramObjectives from "../../components/Data/instagramObjectives.data";
+
 import { AccessibilityInfo } from "react-native";
 const initialState = {
   campaignList: null,
@@ -35,9 +38,9 @@ const initialState = {
   instastoryad: "0",
   googlead: "0",
   snapchatObjLoading: false,
-  snapchatObjectives: [],
+  snapchatObjectives: snapchatObjectives,
   instagramObjLoading: false,
-  instagramObjectives: [],
+  instagramObjectives: instagramObjectives,
 };
 
 const reducer = (state = initialState, action) => {

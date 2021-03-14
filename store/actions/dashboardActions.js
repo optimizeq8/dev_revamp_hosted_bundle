@@ -391,6 +391,7 @@ export const getInstagramObjectiveList = () => {
           type: actionTypes.INSTAGRAM_OBJECTIVE_LIST_LOADING,
           payload: false,
         });
+        // console.log("data.data", data.data);
         return dispatch({
           type: actionTypes.SET_INSTAGRAM_OBJECTIVE_LIST,
           payload:
