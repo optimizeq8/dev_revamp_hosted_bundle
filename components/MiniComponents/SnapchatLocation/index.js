@@ -123,7 +123,43 @@ class SnapchatLocation extends Component {
       this.props.regionsSelected.some(
         (geo) => geo.region_id && geo.region_id.length > 0
       );
-    if (regionsSelected) {
+    let locationsSelectedCountryCode = this.state.locationsInfo.map(
+      (loc) => loc.country_code
+    );
+    let countriesSelectedIsTrue =
+      this.props.countriesSelected &&
+      this.props.countriesSelected.some((geo) =>
+        locationsSelectedCountryCode.includes(geo.toLowerCase())
+      );
+    if (this.props.instagramCampaign && countriesSelectedIsTrue) {
+      Alert.alert(
+        translate("Reset selected countries"),
+        translate(
+          "Selecting locations will overwrite and reset your selected countries, are you sure you want to continue"
+        ),
+        [
+          { text: translate("Cancel") },
+          {
+            text: translate("Yes"),
+            onPress: () => {
+              this.handleSubmisionOfMarkers();
+              if (!this.props.instagramCampaign) {
+                this.props.onSelectedRegionChange(-1, null, null, true);
+              } else {
+                locationsSelectedCountryCode.forEach((locCode) => {
+                  if (
+                    this.props.countriesSelected.includes(locCode.toUpperCase())
+                  )
+                    this.props.onSelectedCountryRegionChange(
+                      locCode.toUpperCase()
+                    );
+                });
+              }
+            },
+          },
+        ]
+      );
+    } else if (regionsSelected) {
       Alert.alert(
         translate("Reset selected regions"),
         translate(
@@ -155,7 +191,7 @@ class SnapchatLocation extends Component {
         false,
         this.state.locationsInfo
       );
-    if (this.props.onSelectedCountryChange) {
+    if (this.props.onSelectedCountryChange && !this.props.instagramCampaign) {
       for (let loc of this.state.locationsInfo)
         await this.props.onSelectedCountryChange(
           loc.country_code,
