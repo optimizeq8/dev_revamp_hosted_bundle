@@ -7,6 +7,8 @@ import styles from "./styles";
 
 //Redux
 import * as actionCreators from "../../../store/actions";
+import * as ObjIcons from "../../../assets/SVGs/Objectives";
+
 import { connect } from "react-redux";
 class ObjectiveCard extends Component {
   constructor(props) {
@@ -18,7 +20,7 @@ class ObjectiveCard extends Component {
   render() {
     const { translate } = this.props.screenProps;
     let obj = this.props.choice;
-    let IconName = obj.icon;
+    let IconName = ObjIcons[obj.icon];
     let color = obj.color;
     let changeState = { borderColor: "#fff", color };
     if (this.props.selected === obj.label) {
