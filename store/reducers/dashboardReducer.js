@@ -1,6 +1,7 @@
 import * as actionTypes from "../actions/actionTypes";
 import isUndefined from "lodash/isUndefined";
 import analytics from "@segment/analytics-react-native";
+import { AccessibilityInfo } from "react-native";
 const initialState = {
   campaignList: null,
   filteredCampaigns: [],
@@ -33,6 +34,8 @@ const initialState = {
   instafeedad: "0",
   instastoryad: "0",
   googlead: "0",
+  snapchatObjLoading: false,
+  snapchatObjectives: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -360,6 +363,18 @@ const reducer = (state = initialState, action) => {
         ...state,
         ...action.payload,
       };
+    case actionTypes.SNAPCHAT_OBJECTIVE_LIST_LOADING: {
+      return {
+        ...state,
+        snapchatObjLoading: action.payload,
+      };
+    }
+    case actionTypes.SET_SNAPCHAT_OBJECTIVE_LIST: {
+      return {
+        ...state,
+        snapchatObjectives: action.payload,
+      };
+    }
     default:
       return state;
   }

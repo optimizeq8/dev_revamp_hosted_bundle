@@ -6,6 +6,7 @@ import { showMessage } from "react-native-flash-message";
 import store from "../index";
 import createBaseUrl from "./createBaseUrl";
 import { get_languages } from "./campaignActions";
+import snapchatObjectives from "../../components/Data/snapchatObjectives.data";
 
 export const filterCampaigns = (query) => {
   return {
@@ -332,5 +333,38 @@ export const getNumberOfCampaigns = (campaign_id, email, showModalMessage) => {
           });
       })
       .catch((err) => showModalMessage(err));
+  };
+};
+
+export const getSnapchatObjectiveList = () => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SNAPCHAT_OBJECTIVE_LIST_LOADING,
+      payload: true,
+    });
+    createBaseUrl()
+      .get(`getObjectives/${getState().account.mainBusiness.businessid}`)
+      .then((res) => res.data)
+      .then((data) => {
+        dispatch({
+          type: actionTypes.SNAPCHAT_OBJECTIVE_LIST_LOADING,
+          payload: false,
+        });
+        return dispatch({
+          type: actionTypes.SET_SNAPCHAT_OBJECTIVE_LIST,
+          payload:
+            data.data && data.data.length > 0 ? data.data : snapchatObjectives,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: actionTypes.SNAPCHAT_OBJECTIVE_LIST_LOADING,
+          payload: false,
+        });
+        return dispatch({
+          type: actionTypes.SET_SNAPCHAT_OBJECTIVE_LIST,
+          payload: snapchatObjectives,
+        });
+      });
   };
 };

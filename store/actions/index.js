@@ -33,6 +33,7 @@ export {
   resetRejectedCampaignData,
   downloadCSV,
   getNumberOfCampaigns,
+  getSnapchatObjectiveList,
 } from "./dashboardActions";
 
 export {
