@@ -662,6 +662,7 @@ const mapStateToProps = (state) => ({
   incompleteCampaign: state.instagramAds.incompleteCampaign,
   campaignProgressStarted: state.instagramAds.campaignProgressStarted,
   instastoryad: state.dashboard.instastoryad,
+  instagramObjectives: state.dashboard.instagramObjectives,
 });
 
 const mapDispatchToProps = (dispatch) => ({

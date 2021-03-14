@@ -117,6 +117,9 @@ class Dashboard extends Component {
   }
   async componentDidMount() {
     this.props.checkHashForUser();
+    this.props.getSnapchatObjectiveList();
+    this.props.getInstagramObjectiveList();
+
     // if (this.props.userInfo) {
     //   const MPTweakHelper = NativeModules.MPTweakHelper;
     //   MPTweakHelper.getCustomTweak(
@@ -1186,6 +1189,10 @@ const mapDispatchToProps = (dispatch) => ({
   setCounterForUnreadMessage: (count) =>
     dispatch(actionCreators.setCounterForUnreadMessage(count)),
   checkHashForUser: () => dispatch(actionCreators.checkHashForUser()),
+  getSnapchatObjectiveList: () =>
+    dispatch(actionCreators.getSnapchatObjectiveList()),
+  getInstagramObjectiveList: () =>
+    dispatch(actionCreators.getInstagramObjectiveList()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
 

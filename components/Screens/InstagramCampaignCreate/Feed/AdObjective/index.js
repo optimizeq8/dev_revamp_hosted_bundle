@@ -725,6 +725,7 @@ const mapStateToProps = (state) => ({
   currentCampaignSteps: state.instagramAds.currentCampaignSteps,
   incompleteCampaign: state.instagramAds.incompleteCampaign,
   campaignProgressStarted: state.instagramAds.campaignProgressStarted,
+  instagramObjectives: state.dashboard.instagramObjectives,
   instafeedad: state.dashboard.instafeedad,
 });
 
