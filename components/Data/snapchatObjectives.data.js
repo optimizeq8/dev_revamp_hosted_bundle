@@ -76,6 +76,13 @@ export default {
       icon: ObjIcons.Mother,
       color: "#F26622",
     },
+    {
+      label: "Conversion Campaign",
+      value: "WEB_CONVERSION",
+      info: "OPTIMIZE FOR SALES PURCHASES",
+      icon: ObjIcons.BRAND_AWARENESS,
+      color: "#4BD6C6",
+    },
     // {
     //   label: "Majlis 2020",
     //   value: "POLITICAL_TRAFFIC",
