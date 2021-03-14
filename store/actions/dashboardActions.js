@@ -355,10 +355,16 @@ export const getSnapchatObjectiveList = () => {
         return dispatch({
           type: actionTypes.SET_SNAPCHAT_OBJECTIVE_LIST,
           payload:
-            data.data && data.data.length > 0 ? data.data : snapchatObjectives,
+            data.data && Object.keys(data.data).length > 0
+              ? data.data
+              : snapchatObjectives,
         });
       })
       .catch((err) => {
+        // console.log(
+        //   "err getSnapchatObjectiveList",
+        //   err.response || err.message
+        // );
         dispatch({
           type: actionTypes.SNAPCHAT_OBJECTIVE_LIST_LOADING,
           payload: false,
@@ -388,10 +394,16 @@ export const getInstagramObjectiveList = () => {
         return dispatch({
           type: actionTypes.SET_INSTAGRAM_OBJECTIVE_LIST,
           payload:
-            data.data && data.data.length > 0 ? data.data : instagramObjectives,
+            data.data && Object.keys(data.data).length > 0
+              ? data.data
+              : instagramObjectives,
         });
       })
       .catch((err) => {
+        // console.log(
+        //   "err getInstagramObjectiveList",
+        //   err.response || err.message
+        // );
         dispatch({
           type: actionTypes.INSTAGRAM_OBJECTIVE_LIST_LOADING,
           payload: false,

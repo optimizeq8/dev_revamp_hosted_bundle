@@ -1,6 +1,6 @@
 import * as ObjIcons from "../../assets/SVGs/Objectives";
 
-export const instagramAdObjectives = {
+export default {
   InstagramFeedAd: [
     {
       label: "Website Traffic",
