@@ -175,17 +175,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#d4d4d4",
     padding: RFValue(4, 414),
     borderRadius: RFValue(10, 414),
-    width: "25%",
+    width: "35%",
     height: "40%",
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "flex-end",
-    opacity:0.8
+    opacity: 0.8,
   },
   repeatText: {
-    fontSize: RFValue(7, 414),
-     color: "#0008",
-
+    fontSize: RFValue(6, 414),
+    color: "#0008",
     fontFamily: "montserrat-bold",
   },
 });

@@ -404,7 +404,7 @@ class RepeatCampaignBudget extends Component {
           <ReachBar
             campaignInfo={campaign}
             screenProps={this.props.screenProps}
-            customContainerStyle={{ bottom: -20 }}
+            customContainerStyle={{ bottom: -50 }}
           />
         )}
         {(
