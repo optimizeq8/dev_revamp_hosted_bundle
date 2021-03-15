@@ -2118,8 +2118,8 @@ const strings = {
   "Your account has been secured using": "Your account has been secured using",
   "not supported on this phone": "not supported on this phone",
   purchases: "purchases",
-  "purchase roas": "purchase roas",
-  "purchase conversion value": "purchase conversion value",
+  roas: "purchase roas",
+  "total purchase value": "purchase conversion value",
   "Would you like to enable FaceID with this account":
     "Would you like to enable FaceID with this account?",
   TouchID: "TouchID",
@@ -2136,5 +2136,23 @@ const strings = {
   "Mother's Day": "Mother's Day",
   "SELL MOTHER'S DAY PRODUCTS": "SELL MOTHER'S DAY PRODUCTS",
   Repeat: "Repeat",
+  Auto: "Auto",
+  "Conversion Campaign": "Conversion Campaign",
+  "OPTIMIZE FOR SALES PURCHASES": "OPTIMIZE FOR SALES PURCHASES",
+  "Promote again": "Promote again",
+  "Sales Campaign": "Sales Campaign",
+  "Increase sales for my website": "Increase sales for my website",
+  "Reset selected countries": "Reset selected countries",
+  'Selecting locations will overwrite and reset your selected countries, are you sure you want to continue"':
+    'Selecting locations will overwrite and reset your selected countries, are you sure you want to continue"',
+  "Selecting this country will remove your selected location, are you sure you want to continue":
+    "Selecting this country will remove your selected location, are you sure you want to continue?",
+  "Selecting locations will remove some of your selected countries, are you sure you want to continue":
+    "Selecting locations will remove some of your selected countries, are you sure you want to continue?",
+  "Pixel Info": "Pixel Info",
+  "Please copy the snap pixel code and paste it on your website":
+    "Please copy the snap pixel code and paste it on your website",
+  "Snap Pixel copied to clipboard": "Snap Pixel copied to clipboard",
 };
+
 export default strings;

@@ -386,6 +386,9 @@ export default createNativeStackNavigator(
     BiometricsAuth: register({
       require: () => require("../Screens/BiometricsAuth"),
     }),
+    PixelScreen: register({
+      require: () => require("../Screens/PixelScreen"),
+    }),
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
