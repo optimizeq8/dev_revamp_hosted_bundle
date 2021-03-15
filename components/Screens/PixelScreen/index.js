@@ -1,12 +1,34 @@
 import React from "react";
-import { View, SafeAreaView, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  Clipboard,
+} from "react-native";
+import { connect } from "react-redux";
+
 import CustomHeader from "../../MiniComponents/Header";
 
 import CopyIcon from "../../../assets/SVGs/CopyIcon";
 
 import styles from "./styles";
-export default class PixelScreen extends React.Component {
+import { showMessage } from "react-native-flash-message";
+class PixelScreen extends React.Component {
+  copyPixel = () => {
+    const { mainBusiness } = this.props;
+    const { translate } = this.props.screenProps;
+
+    Clipboard.setString(mainBusiness.snap_pixel_id);
+    showMessage({
+      message: translate("Snap Pixel copied to clipboard"),
+      type: "warning",
+      autoHide: true,
+    });
+  };
   render() {
+    const { translate } = this.props.screenProps;
+    const { mainBusiness } = this.props;
     return (
       <View>
         <SafeAreaView />
@@ -21,13 +43,23 @@ export default class PixelScreen extends React.Component {
           }}
         />
         <Text style={styles.copyText}>
-          Please copy the code and paste it into your website under the head tag
+          {translate(
+            "Please copy the snap pixel code and paste it on your website"
+          )}
         </Text>
-        <TouchableOpacity activeOpacity={0.8} style={styles.pixelView}>
-          <Text style={styles.pixelCode}>1213-12123-12323-1223</Text>
+        <TouchableOpacity
+          onPress={this.copyPixel}
+          activeOpacity={0.8}
+          style={styles.pixelView}
+        >
+          <Text style={styles.pixelCode}>{mainBusiness.snap_pixel_id}</Text>
           <CopyIcon fill={"#FFF"} style={styles.copyIcon} />
         </TouchableOpacity>
       </View>
     );
   }
 }
+const mapStateToProps = (state) => ({
+  mainBusiness: state.account.mainBusiness,
+});
+export default connect(mapStateToProps, null)(PixelScreen);
