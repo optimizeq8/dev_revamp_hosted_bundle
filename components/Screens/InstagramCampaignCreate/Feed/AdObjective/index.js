@@ -64,7 +64,7 @@ class AdObjective extends Component {
       campaignInfo: {
         ad_account_id: "",
         name: `I_Feed_${parseInt(this.props.instafeedad) + 1}`,
-        objective: instagramAdObjectives["InstagramFeedAd"][0].value,
+        objective: this.props.instagramObjectives["InstagramFeedAd"][0].value,
         start_time: "",
         end_time: "",
         existingPost: 0,
@@ -72,9 +72,10 @@ class AdObjective extends Component {
       minValueBudget: 0,
       maxValueBudget: 0,
       modalVisible: false,
-      objectiveLabel: instagramAdObjectives["InstagramFeedAd"][0].label,
+      objectiveLabel: this.props.instagramObjectives["InstagramFeedAd"][0]
+        .label,
       inputN: false,
-      objectives: instagramAdObjectives["InstagramFeedAd"],
+      objectives: this.props.instagramObjectives["InstagramFeedAd"],
       closedContinueModal: false,
       nameError: "",
       objectiveError: "",
@@ -135,7 +136,7 @@ class AdObjective extends Component {
             : campaignName,
         objective: this.props.data.objective
           ? this.props.data.objective
-          : instagramAdObjectives["InstagramFeedAd"][0].value,
+          : this.props.instagramObjectives["InstagramFeedAd"][0].value,
         start_time: this.props.data.start_time
           ? this.props.data.start_time
           : start_time.toISOString().split("T")[0],
@@ -150,7 +151,7 @@ class AdObjective extends Component {
         modalVisible: this.props.data.modalVisible,
         objectiveLabel: this.props.data.objectiveLabel
           ? this.props.data.objectiveLabel
-          : instagramAdObjectives["InstagramFeedAd"][0].label,
+          : this.props.instagramObjectives["InstagramFeedAd"][0].label,
         inputN: this.props.data.inputN,
         nameError: this.props.data.nameError,
         objectiveError: this.props.data.objectiveError,
@@ -165,7 +166,7 @@ class AdObjective extends Component {
           ad_account_id: this.props.mainBusiness.fb_ad_account_id,
           businessid: this.props.mainBusiness.businessid,
           name: campaignName,
-          objective: instagramAdObjectives["InstagramFeedAd"][0].value,
+          objective: this.props.instagramObjectives["InstagramFeedAd"][0].value,
           start_time: start_time.toISOString().split("T")[0],
           end_time: end_time.toISOString().split("T")[0],
           existingPost: 0,
@@ -174,7 +175,8 @@ class AdObjective extends Component {
         maxValueBudget: 0,
         duration: 7,
         modalVisible: false,
-        objectiveLabel: instagramAdObjectives["InstagramFeedAd"][0].label,
+        objectiveLabel: this.props.instagramObjectives["InstagramFeedAd"][0]
+          .label,
         inputN: false,
         nameError: "",
         objectiveError: "",
@@ -478,7 +480,7 @@ class AdObjective extends Component {
     if (this.timer) clearTimeout(this.timer);
   };
   render() {
-    const list = instagramAdObjectives["InstagramFeedAd"].map((o) => (
+    const list = this.props.instagramObjectives["InstagramFeedAd"].map((o) => (
       <ObjectivesCard
         choice={o}
         // selected={this.state.campaignInfo.objective}
@@ -725,6 +727,7 @@ const mapStateToProps = (state) => ({
   currentCampaignSteps: state.instagramAds.currentCampaignSteps,
   incompleteCampaign: state.instagramAds.incompleteCampaign,
   campaignProgressStarted: state.instagramAds.campaignProgressStarted,
+  instagramObjectives: state.dashboard.instagramObjectives,
   instafeedad: state.dashboard.instafeedad,
 });
 

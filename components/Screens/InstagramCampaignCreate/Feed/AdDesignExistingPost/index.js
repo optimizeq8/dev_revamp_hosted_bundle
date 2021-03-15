@@ -793,6 +793,7 @@ class InstagramAdDesignExistingPost extends Component {
                 existingPosts={true}
                 adType={"InstagramFeedAd"}
                 closeAnimation={this.state.closeAnimation}
+                instagramObjectives={this.props.instagramObjectives}
               />
             </View>
             <View style={[styles.lowerBtn, existPostStyles.lowerBtn]}>
@@ -850,6 +851,7 @@ const mapStateToProps = (state) => ({
   instagramExistingPost: state.instagramAds.instagramExistingPost,
   paging: state.instagramAds.paging,
   postsLoading: state.instagramAds.postsLoading,
+  instagramObjectives: state.dashboard.instagramObjectives,
 });
 
 const mapDispatchToProps = (dispatch) => ({

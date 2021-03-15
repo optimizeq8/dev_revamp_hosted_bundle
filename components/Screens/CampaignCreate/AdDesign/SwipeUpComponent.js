@@ -13,6 +13,7 @@ import { Icon } from "native-base";
 import startCase from "lodash/startCase";
 import styles from "./styles";
 import SnapObjective from "../../../Data/snapchatObjectives.data";
+import * as ObjectiveIcons from "../../../../assets/SVGs/Objectives";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import SwipeUpChoice from "../SwipeUpChoice/";
 import SwipeUpDestination from "../SwipeUpDestination";
@@ -164,9 +165,14 @@ export default class SwipeUpComponent extends Component {
       disabled,
       savedObjective,
     } = this.props;
-    let SwipeIcon = SnapObjective[adType || "SnapAd"].find(
-      (obj) => obj.value === (savedObjective || objective || "BRAND_AWARENESS")
-    ).icon;
+    let SwipeIcon =
+      ObjectiveIcons[
+        SnapObjective[adType || "SnapAd"].find(
+          (obj) =>
+            obj.value === (savedObjective || objective || "BRAND_AWARENESS")
+        ).icon
+      ];
+
     let sty = !this.state.expanded
       ? {}
       : {
@@ -224,21 +230,25 @@ export default class SwipeUpComponent extends Component {
                     ? translate(
                         startCase(destination.replace("_", " ").toLowerCase())
                       )
-                    : (destination === "REMOTE_WEBPAGE" &&
-                        objective !== "WEB_CONVERSION") ||
+                    : destination === "REMOTE_WEBPAGE" ||
+                      // &&
+                      //     objective !== "WEB_CONVERSION"
                       (destination === "COLLECTION" &&
                         collectionAdLinkForm === 1)
                     ? translate("Website")
-                    : objective === "WEB_CONVERSION" &&
-                      call_to_action_label !== "BLANK" &&
-                      (destination !== "BLANK" ||
-                        selectedStoryAd.destination !== "BLANK")
-                    ? translate("SME Growth")
-                    : objective === "WEB_CONVERSION"
+                    : // :
+                    //  objective === "WEB_CONVERSION" &&
+                    //   call_to_action_label !== "BLANK" &&
+                    //   (destination !== "BLANK" ||
+                    //     selectedStoryAd.destination !== "BLANK")
+                    // ? translate("SME Growth")
+                    objective === "WEB_CONVERSION"
                     ? translate("Call")
                     : translate("Swipe Up destination")}
                 </Text>
-                {objective !== "WEB_CONVERSION" &&
+                {
+                  // objective !== "WEB_CONVERSION"
+                  // &&
                   [
                     "REMOTE_WEBPAGE",
                     "DEEP_LINK",
@@ -256,7 +266,8 @@ export default class SwipeUpComponent extends Component {
                         ? attachment.phone_number_id
                         : attachment.url}
                     </Text>
-                  )}
+                  )
+                }
               </View>
             </View>
             <Icon

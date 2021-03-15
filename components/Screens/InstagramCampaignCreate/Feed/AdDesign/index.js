@@ -800,6 +800,7 @@ class AdDesign extends Component {
                     adType={"InstagramFeedAd"}
                     closeAnimation={this.state.closeAnimation}
                     rejected={this.rejected}
+                    instagramObjectives={this.props.instagramObjectives}
                   />
                 </View>
                 {!this.state.swipeUpExpanded && (
@@ -993,6 +994,7 @@ const mapStateToProps = (state) => ({
   carouselAdsArray: state.instagramAds.carouselAdsArray,
   loadingCarouselAdsArray: state.instagramAds.loadingCarouselAdsArray,
   instaRejCampaign: state.instagramAds.instaRejCampaign,
+  instagramObjectives: state.dashboard.instagramObjectives,
 });
 
 const mapDispatchToProps = (dispatch) => ({

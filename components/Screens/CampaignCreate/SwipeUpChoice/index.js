@@ -137,6 +137,7 @@ class SwipeUpChoice extends Component {
     } else {
       if (
         objective === "LEAD_GENERATION" ||
+        objective === "WEB_CONVERSION" ||
         savedObjective === "WEBSITE_TRAFFIC" ||
         savedObjective === "POLITICAL_TRAFFIC"
       )
@@ -186,19 +187,21 @@ class SwipeUpChoice extends Component {
             />
           </>
         );
-      } else if (objective === "WEB_CONVERSION") {
-        menu = (
-          <>
-            <NavigationEvents onDidFocus={this.segment} />
-            <WhatsApp
-              _changeDestination={_changeDestination}
-              navigation={this.props.navigation}
-              screenProps={this.props.screenProps}
-              toggle={this.props.toggle}
-            />
-          </>
-        );
-      } else if (objective === "ENGAGEMENT") {
+      }
+      //   else if (objective === "WEB_CONVERSION") {
+      //     menu = (
+      //       <>
+      //         <NavigationEvents onDidFocus={this.segment} />
+      //         <WhatsApp
+      //           _changeDestination={_changeDestination}
+      //           navigation={this.props.navigation}
+      //           screenProps={this.props.screenProps}
+      //           toggle={this.props.toggle}
+      //         />
+      //       </>
+      //     );
+      //   }
+      else if (objective === "ENGAGEMENT") {
         menu = (
           <>
             <NavigationEvents onDidFocus={this.segment} />

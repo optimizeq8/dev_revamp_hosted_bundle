@@ -7,6 +7,8 @@ import ArrowUp from "../../../../../assets/SVGs/ArrowUp";
 import InstagramSwipeUpDestination from "../../SwipeUpDestination/index";
 import { Icon } from "native-base";
 import { Platform } from "react-native";
+import * as ObjectiveIcons from "../../../../../assets/SVGs/Objectives";
+
 import { instagramAdObjectives } from "../../../../Data/instagramObjectives.data";
 export default class ClickDestination extends Component {
   state = {
@@ -57,10 +59,14 @@ export default class ClickDestination extends Component {
           zIndex: 10,
         };
 
-    let SwipeIcon = instagramAdObjectives[this.props.adType].find(
-      (obj) =>
-        obj.value === (this.props.campaignInfo.objective || "BRAND_AWARENESS")
-    ).icon;
+    let SwipeIcon =
+      ObjectiveIcons[
+        this.props.instagramObjectives[this.props.adType].find(
+          (obj) =>
+            obj.value ===
+            (this.props.campaignInfo.objective || "BRAND_AWARENESS")
+        ).icon
+      ];
     return (
       <View
         style={{

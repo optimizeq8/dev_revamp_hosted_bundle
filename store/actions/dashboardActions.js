@@ -5,7 +5,10 @@ import analytics from "@segment/analytics-react-native";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
 import createBaseUrl from "./createBaseUrl";
+import InstagramBaseUrl from "./instagramCampaignActions";
 import { get_languages } from "./campaignActions";
+import snapchatObjectives from "../../components/Data/snapchatObjectives.data";
+import instagramObjectives from "../../components/Data/instagramObjectives.data";
 
 export const filterCampaigns = (query) => {
   return {
@@ -332,5 +335,84 @@ export const getNumberOfCampaigns = (campaign_id, email, showModalMessage) => {
           });
       })
       .catch((err) => showModalMessage(err));
+  };
+};
+
+export const getSnapchatObjectiveList = () => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SNAPCHAT_OBJECTIVE_LIST_LOADING,
+      payload: true,
+    });
+    createBaseUrl()
+      .get(`getObjectives/${getState().account.mainBusiness.businessid}`)
+      .then((res) => res.data)
+      .then((data) => {
+        dispatch({
+          type: actionTypes.SNAPCHAT_OBJECTIVE_LIST_LOADING,
+          payload: false,
+        });
+        return dispatch({
+          type: actionTypes.SET_SNAPCHAT_OBJECTIVE_LIST,
+          payload:
+            data.data && Object.keys(data.data).length > 0
+              ? data.data
+              : snapchatObjectives,
+        });
+      })
+      .catch((err) => {
+        // console.log(
+        //   "err getSnapchatObjectiveList",
+        //   err.response || err.message
+        // );
+        dispatch({
+          type: actionTypes.SNAPCHAT_OBJECTIVE_LIST_LOADING,
+          payload: false,
+        });
+        return dispatch({
+          type: actionTypes.SET_SNAPCHAT_OBJECTIVE_LIST,
+          payload: snapchatObjectives,
+        });
+      });
+  };
+};
+
+export const getInstagramObjectiveList = () => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.INSTAGRAM_OBJECTIVE_LIST_LOADING,
+      payload: true,
+    });
+    InstagramBaseUrl()
+      .get(`getObjectives/${getState().account.mainBusiness.businessid}`)
+      .then((res) => res.data)
+      .then((data) => {
+        dispatch({
+          type: actionTypes.INSTAGRAM_OBJECTIVE_LIST_LOADING,
+          payload: false,
+        });
+        // console.log("data.data", data.data);
+        return dispatch({
+          type: actionTypes.SET_INSTAGRAM_OBJECTIVE_LIST,
+          payload:
+            data.data && Object.keys(data.data).length > 0
+              ? data.data
+              : instagramObjectives,
+        });
+      })
+      .catch((err) => {
+        // console.log(
+        //   "err getInstagramObjectiveList",
+        //   err.response || err.message
+        // );
+        dispatch({
+          type: actionTypes.INSTAGRAM_OBJECTIVE_LIST_LOADING,
+          payload: false,
+        });
+        return dispatch({
+          type: actionTypes.SET_INSTAGRAM_OBJECTIVE_LIST,
+          payload: instagramObjectives,
+        });
+      });
   };
 };

@@ -117,6 +117,7 @@ class Dashboard extends Component {
   }
   async componentDidMount() {
     this.props.checkHashForUser();
+
     // if (this.props.userInfo) {
     //   const MPTweakHelper = NativeModules.MPTweakHelper;
     //   MPTweakHelper.getCustomTweak(
@@ -209,6 +210,9 @@ class Dashboard extends Component {
       this.props.mainBusiness.hasOwnProperty("businessid") &&
       prevProps.mainBusiness !== this.props.mainBusiness
     ) {
+      this.props.getSnapchatObjectiveList();
+      this.props.getInstagramObjectiveList();
+
       // to set for instagram accounts
       if (this.props.mainBusiness.instagram_access === "1") {
         let adButtons = [...snapAds, ...googleAds, ...instagramAds];
@@ -1186,6 +1190,10 @@ const mapDispatchToProps = (dispatch) => ({
   setCounterForUnreadMessage: (count) =>
     dispatch(actionCreators.setCounterForUnreadMessage(count)),
   checkHashForUser: () => dispatch(actionCreators.checkHashForUser()),
+  getSnapchatObjectiveList: () =>
+    dispatch(actionCreators.getSnapchatObjectiveList()),
+  getInstagramObjectiveList: () =>
+    dispatch(actionCreators.getInstagramObjectiveList()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
 
