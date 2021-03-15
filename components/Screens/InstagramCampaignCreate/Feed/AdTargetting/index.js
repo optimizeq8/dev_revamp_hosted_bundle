@@ -841,7 +841,9 @@ class InstagramFeedAdTargetting extends Component {
 
     const countryRegionError =
       this.state.campaignInfo.targeting.geo_locations.countries.length === 0 &&
-      this.state.campaignInfo.targeting.geo_locations.regions.length === 0;
+      this.state.campaignInfo.targeting.geo_locations.regions.length === 0 &&
+      this.state.campaignInfo.targeting.geo_locations.custom_locations
+        .length === 0;
     if (countryRegionError) {
       showMessage({
         message: translate("Please choose a country"),
@@ -1287,6 +1289,7 @@ class InstagramFeedAdTargetting extends Component {
     !this.editCampaign &&
       this.props.save_campaign_info_instagram({
         campaignInfo: { ...stateRep },
+        locationsInfo,
       });
   };
   render() {
@@ -1438,6 +1441,12 @@ class InstagramFeedAdTargetting extends Component {
             OSType={this.state.campaignInfo.targeting.user_os[0]}
             option={this.state.selectionOption}
             editCampaign={this.editCampaign}
+            instagramCampaign={true}
+            circles={
+              this.state.campaignInfo.targeting.geo_locations.custom_locations
+            }
+            locationsInfo={this.state.locationsInfo}
+            onSelectedMapChange={this.onSelectedMapChange}
           />
         );
         break;

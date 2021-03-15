@@ -63,7 +63,7 @@ export default class ConversionMetrics extends Component {
               ? campaign.objective === "BRAND_AWARENESS"
                 ? campaign.cpm
                 : mediaChannel === "instagram"
-                ? campaign.clicks
+                ? campaign.reach
                 : campaign.swipes
               : 0,
             campaign.objective !== "BRAND_AWARENESS",

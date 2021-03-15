@@ -135,7 +135,7 @@ class SnapchatLocation extends Component {
       Alert.alert(
         translate("Reset selected countries"),
         translate(
-          "Selecting locations will overwrite and reset your selected countries, are you sure you want to continue"
+          "Selecting locations will remove some of your selected countries, are you sure you want to continue"
         ),
         [
           { text: translate("Cancel") },
