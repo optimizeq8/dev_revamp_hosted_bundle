@@ -172,12 +172,12 @@ export const formatMedia = (
     let formatVideo = resVideo.split(".")[1];
     var video = {
       uri: longformvideo_media,
-      type: longformvideo_media_type + "/" + formatVideo,
+      type: "VIDEO" + "/" + formatVideo,
       name: resVideo,
     };
 
     body.append("longformvideo_media", video);
-    body.append("longformvideo_media_type", longformvideo_media_type);
+    body.append("longformvideo_media_type", "VIDEO");
   }
   if (campaignInfo.source) {
     body.append("insta_handle", campaignInfo.insta_handle);
@@ -227,7 +227,6 @@ export const formatMedia = (
     mediaLink = mediaLink[mediaLink.length - 1];
     body.append("media_link", mediaLink);
   }
-
   setTheState({
     formatted: body,
   });
