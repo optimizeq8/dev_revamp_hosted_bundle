@@ -55,7 +55,9 @@ class PixelScreen extends React.Component {
           activeOpacity={0.8}
           style={styles.pixelView}
         >
-          <Text style={styles.pixelCode}>{mainBusiness.snap_pixel_id}</Text>
+          <Text numberOfLines={1} style={styles.pixelCode}>
+            {mainBusiness.snap_pixel_id}
+          </Text>
           <CopyIcon fill={"#FFF"} style={styles.copyIcon} />
         </TouchableOpacity>
       </View>
