@@ -1,4 +1,5 @@
 import { StyleSheet, PixelRatio, I18nManager } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -6,9 +7,15 @@ export const colors = {
   background2: "#751AFF",
 };
 const styles = StyleSheet.create({
-  customStyleInput: { width: "95%", alignSelf: "flex-start" },
-  customAnimate: { width: "50%" },
+  customStyleInput: {
+    width: "100%",
+    alignSelf: "flex-start",
+  },
+  customAnimate: {
+    width: RFValue(90, 414),
+  },
   inputView: {
+    display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "center",
