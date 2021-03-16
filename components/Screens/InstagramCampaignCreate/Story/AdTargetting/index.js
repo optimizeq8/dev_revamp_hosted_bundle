@@ -94,6 +94,7 @@ class InstagramStoryAdTargetting extends Component {
           age_max: 65,
           age_min: 18,
         },
+        auto_targeting: 0,
       },
       selectedCountriesAndRegions: [],
       filteredRegions: [],
@@ -1283,6 +1284,17 @@ class InstagramStoryAdTargetting extends Component {
       });
   };
 
+  handleAutoTargeting = () => {
+    let stateRep = cloneDeep(this.state.campaignInfo);
+    stateRep.auto_targeting = !this.state.campaignInfo.auto_targeting ? 1 : 0;
+    this.setState({
+      campaignInfo: { ...stateRep },
+    });
+    !this.editCampaign &&
+      this.props.save_campaign_info_instagram({
+        campaignInfo: { ...stateRep },
+      });
+  };
   render() {
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing, showAudienceList } = this.state;
@@ -1781,6 +1793,7 @@ class InstagramStoryAdTargetting extends Component {
                         objectiveLabel={
                           this.props.data ? this.props.data.objectiveLabel : ""
                         }
+                        handleAutoTargeting={this.handleAutoTargeting}
                       />
                     )}
 

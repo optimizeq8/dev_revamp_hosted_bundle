@@ -20,6 +20,8 @@ import { Icon } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { gender as genders } from "./data";
+import Toggle from "../../../../MiniComponents/Toggle";
+
 export class TargetAudience extends Component {
   state = {
     scrollY: 1,
@@ -262,6 +264,7 @@ export class TargetAudience extends Component {
                   <View style={styles.genderOuterView}>
                     {genders.map((g) => (
                       <TouchableOpacity
+                        key={g.value}
                         style={[
                           styles.genderInnerView,
                           gender === g.value && styles.genderInnerActiveView,
@@ -580,6 +583,37 @@ export class TargetAudience extends Component {
                     ))}
                 </TouchableOpacity>
               )}
+          </View>
+          <View style={styles.audienceCard}>
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={this.expandDevices}
+              style={[
+                globalStyles.row,
+                { alignItems: "center", marginBottom: expandDevices ? 10 : 0 },
+              ]}
+            >
+              <Icon
+                name={`target-account`}
+                type="MaterialCommunityIcons"
+                style={[styles.iconDown, { color: globalColors.purple3 }]}
+                onPress={this.expandDevices}
+              />
+              <Text style={styles.audienceHeading}>
+                {translate("Auto target look-alike audience")}
+              </Text>
+              <Toggle
+                switchOn={mainState.campaignInfo.auto_targeting}
+                backgroundColorOff="#0001"
+                backgroundColorOn="#0001"
+                circleColorOff={globalColors.purple3}
+                circleColorOn={globalColors.purple}
+                onPress={this.props.handleAutoTargeting}
+                duration={500}
+                circleStyle={styles.toggleCircle}
+                containerStyle={styles.toggleStyle}
+              />
+            </TouchableOpacity>
           </View>
         </ScrollView>
 
