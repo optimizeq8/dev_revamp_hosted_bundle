@@ -76,7 +76,7 @@ const Tooltip = ({
         ) : (
           <TouchableOpacity style={styles.tooltipButton} onPress={handleStop}>
             <Text style={styles.tooltipButtonText}>
-              {labels.finish || "Finish"}
+              {labels.finish || translate("Finish")}
             </Text>
           </TouchableOpacity>
         )}
