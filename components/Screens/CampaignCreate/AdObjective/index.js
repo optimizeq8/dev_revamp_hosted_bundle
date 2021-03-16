@@ -221,7 +221,7 @@ class AdObjective extends Component {
               : 0,
           minValueBudget: this.props.data.minValueBudget,
           maxValueBudget: this.props.data.maxValueBudget,
-          modalVisible: this.props.data.modalVisible,
+          modalVisible: this.props.data.modalVisible || false,
           objectiveLabel: this.props.data.objectiveLabel
             ? this.props.data.objectiveLabel
             : snapchatObjectivesData[this.props.adType][0].label,
@@ -231,7 +231,7 @@ class AdObjective extends Component {
           start_timeError: this.props.data.start_timeError,
           end_timeError: this.props.data.end_timeError,
           campaignInfo: { ...rep },
-          modalVisible: false,
+
           duration: this.props.data.duration ? this.props.data.duration : 7,
           savedObjective: this.props.data.hasOwnProperty("savedObjective")
             ? this.props.data.savedObjective

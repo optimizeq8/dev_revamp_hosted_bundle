@@ -58,17 +58,13 @@ export default class ConversionMetrics extends Component {
       ...[
         {
           label: "Reach",
-          value: formatNumber(
-            campaign
-              ? campaign.objective === "BRAND_AWARENESS"
-                ? campaign.cpm
-                : mediaChannel === "instagram"
-                ? campaign.clicks
-                : campaign.swipes
-              : 0,
-            campaign.objective !== "BRAND_AWARENESS",
-            campaign.objective === "BRAND_AWARENESS"
-          ),
+          value: campaign
+            ? campaign.objective === "BRAND_AWARENESS"
+              ? formatNumber(campaign.cpm, false, true)
+              : mediaChannel === "instagram"
+              ? campaign.reach
+              : campaign.swipes
+            : 0,
         },
         {
           label: "Frequency",
