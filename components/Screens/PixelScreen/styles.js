@@ -28,12 +28,12 @@ const styles = StyleSheet.create({
   },
   pixelCode: {
     color: "#FFFFFF",
-    fontSize: 16,
+    fontSize: RFValue(7, 414),
     fontFamily: "montserrat-bold",
   },
   copyIcon: {
     alignSelf: "flex-end",
-    left: 10,
+    left: RFValue(4, 414),
   },
 });
 export default styles;
