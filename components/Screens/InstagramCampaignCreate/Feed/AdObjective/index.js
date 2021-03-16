@@ -7,9 +7,10 @@ import {
   BackHandler,
   ScrollView,
   StatusBar,
-  Modal,
   Text,
 } from "react-native";
+import Modal from "react-native-modal";
+
 import analytics from "@segment/analytics-react-native";
 import { Content, Container } from "native-base";
 import { NavigationEvents } from "react-navigation";
@@ -681,9 +682,12 @@ class AdObjective extends Component {
         />
         <Modal
           animationType={"slide"}
-          transparent={true}
           onDismiss={() => this.setModalVisible(false)}
-          visible={this.state.modalVisible}
+          isVisible={this.state.modalVisible}
+          hardwareAccelerated={true}
+          onBackdropPress={() => this.setModalVisible(false)}
+          onBackButtonPress={() => this.setModalVisible(false)}
+          backdropOpacity={0}
         >
           <View style={styles.objectiveModal}>
             <View style={styles.popupOverlay}>

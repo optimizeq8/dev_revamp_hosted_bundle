@@ -7,7 +7,6 @@ import {
   BackHandler,
   ScrollView,
   StatusBar,
-  Modal,
   Text,
   InteractionManager,
 } from "react-native";
@@ -15,6 +14,7 @@ import { Content, Container } from "native-base";
 // import { Modal } from "react-native-paper";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
+import Modal from "react-native-modal";
 
 import analytics from "@segment/analytics-react-native";
 import * as Animatable from "react-native-animatable";
@@ -940,11 +940,14 @@ class AdObjective extends Component {
           />
           <Modal
             animationType={"slide"}
-            transparent={true}
             onDismiss={() => this.setModalVisible(false)}
-            visible={this.state.modalVisible}
+            isVisible={this.state.modalVisible}
+            hardwareAccelerated={true}
+            onBackdropPress={() => this.setModalVisible(false)}
+            onBackButtonPress={() => this.setModalVisible(false)}
+            backdropOpacity={0}
           >
-            <View style={styles.objectiveModal}>
+            <SafeAreaView style={styles.objectiveModal}>
               <CustomHeader
                 screenProps={this.props.screenProps}
                 closeButton={true}
@@ -969,7 +972,7 @@ class AdObjective extends Component {
                   {list}
                 </Content>
               </View>
-            </View>
+            </SafeAreaView>
           </Modal>
         </View>
       );

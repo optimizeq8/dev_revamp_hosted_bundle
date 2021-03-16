@@ -274,12 +274,12 @@ const styles = StyleSheet.create({
   },
   objectiveModal: {
     height: "76%",
-    top: "20%",
+    top: "5%",
     backgroundColor: "#fff",
     paddingTop: RFValue(5, 414),
     overflow: "hidden",
     borderRadius: RFValue(25, 414),
-    width: "95%",
+    width: "100%",
     alignSelf: "center",
   },
   customHeaderContainer: {
