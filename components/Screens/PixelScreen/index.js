@@ -1,15 +1,13 @@
 import React from "react";
-import {
-  View,
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  Clipboard,
-} from "react-native";
+import { View, Text, TouchableOpacity, Clipboard } from "react-native";
 import { connect } from "react-redux";
+import SafeAreaView from "react-native-safe-area-view";
+import { LinearGradient } from "expo-linear-gradient";
 
 import CustomHeader from "../../MiniComponents/Header";
 
+import globalStyles, { globalColors } from "../../../GlobalStyles";
+import { colors } from "../../GradiantColors/colors";
 import CopyIcon from "../../../assets/SVGs/CopyIcon";
 
 import styles from "./styles";
@@ -30,8 +28,13 @@ class PixelScreen extends React.Component {
     const { translate } = this.props.screenProps;
     const { mainBusiness } = this.props;
     return (
-      <View>
-        <SafeAreaView />
+      <View style={{ flex: 1 }}>
+        <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <CustomHeader
           screenProps={this.props.screenProps}
           title={"Pixel Info"}
