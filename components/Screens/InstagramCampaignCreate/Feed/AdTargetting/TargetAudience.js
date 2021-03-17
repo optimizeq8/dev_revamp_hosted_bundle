@@ -578,9 +578,8 @@ export class TargetAudience extends Component {
               )}
           </View>
           <View style={styles.audienceCard}>
-            <TouchableOpacity
+            <View
               activeOpacity={1}
-              onPress={this.expandDevices}
               style={[
                 globalStyles.row,
                 { alignItems: "center", marginBottom: expandDevices ? 10 : 0 },
@@ -606,7 +605,37 @@ export class TargetAudience extends Component {
                 circleStyle={styles.toggleCircle}
                 containerStyle={styles.toggleStyle}
               />
-            </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.audienceCard}>
+            <View
+              activeOpacity={1}
+              style={[
+                globalStyles.row,
+                { alignItems: "center", marginBottom: expandDevices ? 10 : 0 },
+              ]}
+            >
+              <Icon
+                name={`contacts`}
+                type="MaterialCommunityIcons"
+                style={[styles.iconDown, { color: globalColors.purple3 }]}
+                onPress={this.expandDevices}
+              />
+              <Text style={styles.audienceHeading}>
+                {translate("Remarket instagram behaviour")}
+              </Text>
+              <Toggle
+                switchOn={mainState.campaignInfo.instagram_custom_audience}
+                backgroundColorOff="#0001"
+                backgroundColorOn="#0001"
+                circleColorOff={globalColors.purple3}
+                circleColorOn={globalColors.purple}
+                onPress={this.props.handleCustomAudience}
+                duration={500}
+                circleStyle={styles.toggleCircle}
+                containerStyle={styles.toggleStyle}
+              />
+            </View>
           </View>
         </ScrollView>
 

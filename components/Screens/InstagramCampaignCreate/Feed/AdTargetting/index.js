@@ -95,6 +95,7 @@ class InstagramFeedAdTargetting extends Component {
           age_min: 18,
         },
         auto_targeting: 0,
+        instagram_custom_audience: 0,
       },
       selectedCountriesAndRegions: [],
       filteredRegions: [],
@@ -1047,12 +1048,23 @@ class InstagramFeedAdTargetting extends Component {
   // For picker not to crash
   onSelectedCountryRegionChange = (item) => {
     let replace = cloneDeep(this.state.campaignInfo);
-
-    // check if country exist in array remove it else add country and show regions for that country
+    if (
+      replace.targeting.geo_locations.countries.length === 1 &&
+      (replace.auto_targeting === 1 || replace.instagram_custom_audience === 1)
+    ) {
+      replace.auto_targeting = 0;
+      replace.instagram_custom_audience = 0;
+      this.setState({
+        campaignInfo: {
+          ...replace,
+        },
+      });
+    }
     if (
       replace.targeting.geo_locations.countries &&
       replace.targeting.geo_locations.countries.length > 0
     ) {
+      // check if country exist in array remove it else add country and show regions for that country
       let countryExist = replace.targeting.geo_locations.countries.find(
         (ctry) => item === ctry
       );
@@ -1292,15 +1304,55 @@ class InstagramFeedAdTargetting extends Component {
   };
 
   handleAutoTargeting = () => {
-    let stateRep = cloneDeep(this.state.campaignInfo);
-    stateRep.auto_targeting = !this.state.campaignInfo.auto_targeting ? 1 : 0;
-    this.setState({
-      campaignInfo: { ...stateRep },
-    });
-    !this.editCampaign &&
-      this.props.save_campaign_info_instagram({
+    let { translate } = this.props.screenProps;
+    if (
+      this.state.campaignInfo.targeting.geo_locations.countries.length > 1 &&
+      this.state.campaignInfo.auto_targeting === 0
+    ) {
+      showMessage({
+        message: translate(
+          "Only on country selection is allowed to enable this option"
+        ),
+        type: "warning",
+      });
+    } else {
+      let stateRep = cloneDeep(this.state.campaignInfo);
+      stateRep.auto_targeting = !this.state.campaignInfo.auto_targeting ? 1 : 0;
+      this.setState({
         campaignInfo: { ...stateRep },
       });
+      !this.editCampaign &&
+        this.props.save_campaign_info_instagram({
+          campaignInfo: { ...stateRep },
+        });
+    }
+  };
+  handleCustomAudience = () => {
+    let { translate } = this.props.screenProps;
+    if (
+      this.state.campaignInfo.targeting.geo_locations.countries.length > 1 &&
+      this.state.campaignInfo.instagram_custom_audience === 0
+    ) {
+      showMessage({
+        message: translate(
+          "Only on country selection is allowed to enable this option"
+        ),
+        type: "warning",
+      });
+    } else {
+      let stateRep = cloneDeep(this.state.campaignInfo);
+      stateRep.instagram_custom_audience = !this.state.campaignInfo
+        .instagram_custom_audience
+        ? 1
+        : 0;
+      this.setState({
+        campaignInfo: { ...stateRep },
+      });
+      !this.editCampaign &&
+        this.props.save_campaign_info_instagram({
+          campaignInfo: { ...stateRep },
+        });
+    }
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -1810,6 +1862,7 @@ class InstagramFeedAdTargetting extends Component {
                       }
                       onSelectedGenderChange={this.onSelectedGenderChange}
                       handleAutoTargeting={this.handleAutoTargeting}
+                      handleCustomAudience={this.handleCustomAudience}
                     />
                   )}
 
