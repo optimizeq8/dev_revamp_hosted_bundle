@@ -48,6 +48,9 @@ export default class SingleMetric extends Component {
       case "eCPV":
         Icon = CPVIcon;
         break;
+      case "swipes":
+        Icon = SwipeUpsIcon;
+        break;
     }
     return (
       <View style={styles.metricsStylePurple}>
