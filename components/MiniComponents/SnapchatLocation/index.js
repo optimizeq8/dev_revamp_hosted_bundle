@@ -131,11 +131,11 @@ class SnapchatLocation extends Component {
       this.props.countriesSelected.some((geo) =>
         locationsSelectedCountryCode.includes(geo.toLowerCase())
       );
-    if (this.props.instagramCampaign && countriesSelectedIsTrue) {
+    if (countriesSelectedIsTrue) {
       Alert.alert(
         translate("Reset selected countries"),
         translate(
-          "Selecting locations will overwrite and reset your selected countries, are you sure you want to continue"
+          "Selecting locations will remove some of your selected countries, are you sure you want to continue"
         ),
         [
           { text: translate("Cancel") },
@@ -143,18 +143,15 @@ class SnapchatLocation extends Component {
             text: translate("Yes"),
             onPress: () => {
               this.handleSubmisionOfMarkers();
-              if (!this.props.instagramCampaign) {
-                this.props.onSelectedRegionChange(-1, null, null, true);
-              } else {
-                locationsSelectedCountryCode.forEach((locCode) => {
-                  if (
-                    this.props.countriesSelected.includes(locCode.toUpperCase())
-                  )
-                    this.props.onSelectedCountryRegionChange(
-                      locCode.toUpperCase()
-                    );
-                });
-              }
+
+              locationsSelectedCountryCode.forEach((locCode) => {
+                if (
+                  this.props.countriesSelected.includes(locCode.toUpperCase())
+                )
+                  this.props.onSelectedCountryRegionChange(
+                    locCode.toUpperCase()
+                  );
+              });
             },
           },
         ]

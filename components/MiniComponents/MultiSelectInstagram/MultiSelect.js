@@ -6,6 +6,7 @@ import {
   I18nManager,
   ActivityIndicator,
   Text,
+  Alert,
 } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { Item, Input } from "native-base";
@@ -34,6 +35,7 @@ import * as actionCreators from "../../../store/actions";
 
 import LowerButton from "../LowerButton";
 import { globalColors } from "../../../GlobalStyles";
+import { cloneDeep, pullAt } from "lodash";
 
 class MultiSelectList extends Component {
   constructor() {
@@ -109,6 +111,57 @@ class MultiSelectList extends Component {
     }
   };
 
+  handleCountrySelection = (country, countryGeos) => {
+    let { translate } = this.props.screenProps;
+    let customLocations = cloneDeep(this.props.customLocations);
+    let customLocationAndCountryExist = false;
+
+    let locIndecies = [];
+    let filterdLocations = cloneDeep(this.props.circles);
+    let filteredLocationInfos = cloneDeep(this.props.locationsInfo);
+
+    if (customLocations.length > 0) {
+      if (customLocations.some((loc) => country === loc.country)) {
+        customLocations.forEach((loc, index) => {
+          console.log("loc.country", loc.country);
+          if (country === loc.country) {
+            locIndecies.push(index);
+            customLocationAndCountryExist = true;
+          }
+        });
+      }
+
+      if (customLocationAndCountryExist) {
+        let x = pullAt(filterdLocations, [locIndecies]);
+        let y = pullAt(filteredLocationInfos, [locIndecies]);
+      }
+    }
+    if (!customLocationAndCountryExist) {
+      this.props.onSelectedCountryRegionChange(country);
+    } else
+      Alert.alert(
+        translate("Reset selected locations"),
+        translate(
+          "Selecting this country will remove your selected location, are you sure you want to continue"
+        ),
+        [
+          { text: translate("Cancel") },
+          {
+            text: translate("Yes"),
+            onPress: () => {
+              locIndecies.forEach((i) => this.props.deleteCustomLocation(i));
+              this.props.onSelectedCountryRegionChange(country);
+              this.props.onSelectedMapChange(
+                filterdLocations,
+                false,
+                filteredLocationInfos
+              );
+            },
+          },
+        ]
+      );
+  };
+
   selectCountry = () => {
     let countryGeos =
       (typeof this.props.selectedItemsRegionsCountry[0] !== "string" &&
@@ -123,7 +176,7 @@ class MultiSelectList extends Component {
           key={c.value}
           style={styles.selectTextContainer}
           onPress={() => {
-            this.props.onSelectedCountryRegionChange(c.value);
+            this.handleCountrySelection(c.value, countryGeos);
           }}
           disabled={disabled}
         >
@@ -324,10 +377,13 @@ const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
   mainBusiness: state.account.mainBusiness,
   interests: state.instagramAds.interests,
+  customLocations: state.instagramAds.customLocations,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   get_interests_instagram: () =>
     dispatch(actionCreators.get_interests_instagram()),
+  deleteCustomLocation: (index, audienceUpdate) =>
+    dispatch(actionCreators.deleteCustomLocation(index, audienceUpdate)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MultiSelectList);

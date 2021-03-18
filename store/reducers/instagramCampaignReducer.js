@@ -638,7 +638,7 @@ const reducer = (state = initialState, action) => {
       let customLocationData = Object.values(action.payload.data)[0];
       let customLocationObj = {
         name: customLocationData.address_string,
-        distance_unit: "miles",
+        distance_unit: "mile",
         latitude: customLocationData.latitude,
         longitude: customLocationData.longitude,
         primary_city_id: customLocationData.primary_city_id,
