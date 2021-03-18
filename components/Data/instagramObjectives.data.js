@@ -17,6 +17,13 @@ export default {
       color: "#F26622",
     },
     {
+      label: "Sales Campaign",
+      value: "CONVERSIONS",
+      info: "Increase sales for my website",
+      icon: "Sale",
+      color: "#42EB56",
+    },
+    {
       label: "App Installs",
       value: "APP_INSTALLS",
       info: "INCREASE APP DOWNLOADS",
@@ -71,6 +78,13 @@ export default {
       info: "SELL MOTHER'S DAY PRODUCTS",
       icon: "Mother",
       color: "#F26622",
+    },
+    {
+      label: "Sales Campaign",
+      value: "CONVERSIONS",
+      info: "Increase sales for my website",
+      icon: "Sale",
+      color: "#42EB56",
     },
     {
       label: "App Installs",
