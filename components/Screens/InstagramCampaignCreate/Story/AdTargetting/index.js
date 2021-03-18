@@ -1353,7 +1353,7 @@ class InstagramStoryAdTargetting extends Component {
     ) {
       showMessage({
         message: translate(
-          "Only on country selection is allowed to enable this option"
+          "Only one country selection is allowed to enable this option"
         ),
         type: "warning",
       });
@@ -1382,7 +1382,7 @@ class InstagramStoryAdTargetting extends Component {
     ) {
       showMessage({
         message: translate(
-          "Only on country selection is allowed to enable this option"
+          "Only one country selection is allowed to enable this option"
         ),
         type: "warning",
       });
