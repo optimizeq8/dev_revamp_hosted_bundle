@@ -20,15 +20,7 @@ export const SocialPlatforms = [
     media: require("../../assets/images/AdTypes/SnapAd.gif"),
     headingIcon: <SnapchatMain />,
   },
-  {
-    id: 2,
-    text: "Create Your Ad Now!",
-    rout: "GoogleAdInfo",
-    icon: <GoogleAds />,
-    title: "Google",
-    media: require("../../assets/images/AdTypes/StoryAd.gif"),
-    headingIcon: <GoogleMain />,
-  },
+
   {
     id: 3,
     text: "Create Your Ad Now!",
@@ -37,6 +29,15 @@ export const SocialPlatforms = [
     title: "Instagram",
     media: require("../../assets/images/AdTypes/Instagram/InstagramFeedAd.svg"),
     headingIcon: <InstagramMain />,
+  },
+  {
+    id: 2,
+    text: "Create Your Ad Now!",
+    rout: "GoogleAdInfo",
+    icon: <GoogleAds />,
+    title: "Google",
+    media: require("../../assets/images/AdTypes/StoryAd.gif"),
+    headingIcon: <GoogleMain />,
   },
   // {
   //   id: 3,

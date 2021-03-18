@@ -111,13 +111,7 @@ export default {
       icon: "AppTraffic",
       color: "#44B5F8",
     },
-    {
-      label: "Video Views",
-      value: "VIDEO_VIEWS",
-      info: "GET MORE VIEWS ON MY VIDEO",
-      icon: "Video",
-      color: "#9325FF",
-    },
+
     {
       label: "Lead Generation",
       value: "LEAD_GENERATION",
@@ -131,6 +125,13 @@ export default {
       info: "INFORM PEOPLE ABOUT MY BRAND",
       icon: "Awareness",
       color: "#EF6C57",
+    },
+    {
+      label: "Video Views",
+      value: "VIDEO_VIEWS",
+      info: "GET MORE VIEWS ON MY VIDEO",
+      icon: "Video",
+      color: "#9325FF",
     },
     // {
     //   label: "SME Growth",
