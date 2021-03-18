@@ -1366,6 +1366,7 @@ class InstagramFeedAdTargetting extends Component {
     } else {
       let stateRep = cloneDeep(this.state.campaignInfo);
       stateRep.auto_targeting = !this.state.campaignInfo.auto_targeting ? 1 : 0;
+      stateRep.instagram_custom_audience = 0;
       this.setState({
         campaignInfo: { ...stateRep },
       });
@@ -1393,6 +1394,8 @@ class InstagramFeedAdTargetting extends Component {
         .instagram_custom_audience
         ? 1
         : 0;
+      stateRep.auto_targeting = 0;
+
       this.setState({
         campaignInfo: { ...stateRep },
       });
