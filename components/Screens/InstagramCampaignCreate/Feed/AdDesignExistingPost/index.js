@@ -326,10 +326,10 @@ class InstagramAdDesignExistingPost extends Component {
 
   validator = () => {
     const { translate } = this.props.screenProps;
-    const messageError = validateWrapper(
-      "mandatory",
-      this.state.campaignInfo.message
-    );
+    // const messageError = validateWrapper(
+    //   "mandatory",
+    //   this.state.campaignInfo.message
+    // );
 
     const mediaError = this.state.campaignInfo.media === "//";
 
@@ -352,13 +352,13 @@ class InstagramAdDesignExistingPost extends Component {
       swipeUpError = "Choose A Swipe Up Destination";
     }
 
-    if (messageError) {
-      showMessage({
-        message: translate("Please add caption to proceed"),
-        position: "top",
-        type: "warning",
-      });
-    }
+    // if (messageError) {
+    //   showMessage({
+    //     message: translate("Please add caption to proceed"),
+    //     position: "top",
+    //     type: "warning",
+    //   });
+    // }
     if (mediaError) {
       showMessage({
         message: translate("Please add media to proceed"),
@@ -368,12 +368,13 @@ class InstagramAdDesignExistingPost extends Component {
     }
 
     this.setState({
-      messageError,
+      //   messageError,
       mediaError,
       swipeUpError,
     });
 
-    return !mediaError && !swipeUpError && !messageError;
+    return !mediaError && !swipeUpError;
+    //  && !messageError;
   };
   handleUpload = () => {
     this.setState({ signal: Axios.CancelToken.source() });
