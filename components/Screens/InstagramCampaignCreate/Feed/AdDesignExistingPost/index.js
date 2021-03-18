@@ -143,6 +143,9 @@ class InstagramAdDesignExistingPost extends Component {
           case "LINK_CLICKS":
             destination = "link";
             break;
+          case "CONVERSIONS":
+            destination = "link";
+            break;
           case "LEAD_GENERATION":
             destination = "link";
             break;
@@ -245,6 +248,22 @@ class InstagramAdDesignExistingPost extends Component {
           break;
         case "VIDEO_VIEWS":
           //   destination = "BLANK";
+          break;
+        case "CONVERSIONS":
+          call_to_action =
+            list[
+              this.rejected
+                ? this.props.instaRejCampaign["campaign_type"]
+                : this.props.data["campaign_type"]
+            ][5].call_to_action_list[0];
+          link =
+            websitelink && websitelink !== ""
+              ? websitelink
+              : weburl && weburl !== ""
+              ? weburl.includes("https")
+                ? weburl
+                : `https://${weburl}.optimizeapp.com`
+              : "";
           break;
         default:
           attachment =
