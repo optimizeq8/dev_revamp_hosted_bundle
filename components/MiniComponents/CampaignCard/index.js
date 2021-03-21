@@ -237,13 +237,11 @@ class CampaignCard extends Component {
                 />
 
                 {!this.campaignEndedOrNot(campaign, endDate) ? (
-                  // && false
                   <>
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
                       <Text style={globalStyles.numbers}>
-                        {TimeDifferance(this.currentDate(), campaign.end_time) +
-                          1}
+                        {TimeDifferance(this.currentDate(), campaign.end_time)}
                       </Text>
                       <Text uppercase style={styles.cardText}>
                         {translate("Day(s) left")}

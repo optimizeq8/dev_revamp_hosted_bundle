@@ -161,7 +161,6 @@ class MultiSelectList extends Component {
         ]
       );
   };
-
   selectCountry = () => {
     let countryGeos =
       (typeof this.props.selectedItemsRegionsCountry[0] !== "string" &&

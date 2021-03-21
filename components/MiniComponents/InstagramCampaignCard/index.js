@@ -226,7 +226,6 @@ class CampaignCard extends Component {
                 />
 
                 {!this.campaignEndedOrNot(campaign, endDate) ? (
-                  // && false
                   <>
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
