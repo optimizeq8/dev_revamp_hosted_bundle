@@ -167,9 +167,10 @@ const styles = StyleSheet.create({
   },
   repeatButton: {
     backgroundColor: "#d4d4d4",
-    padding: RFValue(4, 414),
+    paddingVertical: RFValue(4, 414),
+    paddingHorizontal: RFValue(7, 414),
     borderRadius: RFValue(10, 414),
-    width: "35%",
+    // width: "25%",
     height: "40%",
     justifyContent: "center",
     alignItems: "center",
@@ -177,7 +178,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   repeatText: {
-    fontSize: RFValue(6, 414),
+    fontSize: RFValue(5.5, 414),
     color: "#0008",
     fontFamily: "montserrat-bold",
   },
