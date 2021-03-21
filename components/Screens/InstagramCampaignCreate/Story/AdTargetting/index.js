@@ -296,8 +296,14 @@ class InstagramStoryAdTargetting extends Component {
             }
             // console.log("data campaignInfo", this.props.data);
             let minValueBudget =
-              25 * rep.targeting.geo_locations.countries.length;
-            recBudget *= rep.targeting.geo_locations.countries.length;
+              25 *
+              (rep.targeting.geo_locations.countries.length > 0
+                ? rep.targeting.geo_locations.countries.length
+                : rep.targeting.geo_locations.custom_locations.length);
+            recBudget *=
+              rep.targeting.geo_locations.countries.length > 0
+                ? rep.targeting.geo_locations.countries.length
+                : rep.targeting.geo_locations.custom_locations.length;
             this.setState(
               {
                 ...this.state,
@@ -666,7 +672,10 @@ class InstagramStoryAdTargetting extends Component {
             ? validateWrapper("Budget", rawValue)
             : translate("Budget can't be less than the minimum"),
           description:
-            this.state.campaignInfo.targeting.geo_locations.countries.length > 1
+            this.state.campaignInfo.targeting.geo_locations.countries.length >
+              1 ||
+            this.state.campaignInfo.targeting.geo_locations.custom_locations
+              .length > 1
               ? `$25 x ${translate("no of Countries")} = $${
                   this.state.minValueBudget
                 }`
@@ -1114,11 +1123,15 @@ class InstagramStoryAdTargetting extends Component {
   };
   handleMultipleCountrySelection = () => {
     if (!this.editCampaign) {
+      let countryLength = this.state.campaignInfo.targeting.geo_locations
+        .countries.length;
+      let locationsLength = this.state.campaignInfo.targeting.geo_locations
+        .custom_locations.length;
       let recBudget =
-        this.state.campaignInfo.targeting.geo_locations.countries.length * 75;
+        (countryLength > 0 ? countryLength : locationsLength) * 75;
 
       let minValueBudget =
-        25 * this.state.campaignInfo.targeting.geo_locations.countries.length;
+        25 * (countryLength > 0 ? countryLength : locationsLength);
       let lifetime_budget_micro = this.state.campaignInfo.lifetime_budget_micro;
       let value = this.state.value;
       if (this.state.budgetOption !== 0) {
