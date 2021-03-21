@@ -243,7 +243,9 @@ class CampaignCard extends Component {
                     style={styles.repeatButton}
                     onPress={() => this.handleRepeatModal(true)}
                   >
-                    <Text style={styles.repeatText}>{translate("Repeat")}</Text>
+                    <Text style={styles.repeatText}>
+                      {translate("Promote again")}
+                    </Text>
                   </TouchableOpacity>
                 )}
               </View>
