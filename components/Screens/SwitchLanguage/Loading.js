@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { View, ActivityIndicator, Text } from "react-native";
 import * as Updates from "expo-updates";
+import { LinearGradient } from "expo-linear-gradient";
+
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
 import RNRestart from "react-native-restart";
@@ -11,6 +13,7 @@ import * as actionCreators from "../../../store/actions";
 
 // Style
 import styles from "./styles";
+import { colors } from "../../GradiantColors/colors";
 import { globalColors } from "../../../GlobalStyles";
 import isStringArabic from "../../isStringArabic";
 
@@ -43,6 +46,11 @@ class SwitchLanguageLoading extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={styles.gradient}
+        />
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <View style={styles.loadingView}>
           <ActivityIndicator color={globalColors.orange} size="large" />

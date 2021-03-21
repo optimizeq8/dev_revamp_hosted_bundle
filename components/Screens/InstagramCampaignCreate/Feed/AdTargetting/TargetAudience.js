@@ -13,7 +13,7 @@ import AgeIcon from "../../../../../assets/SVGs/AdDetails/AgeIcon";
 import OperatingSystemIcon from "../../../../../assets/SVGs/AdDetails/OperatingSystem";
 import LanguageIcon from "../../../../../assets/SVGs/Language";
 import DeviceMakeIcon from "../../../../../assets/SVGs/DeviceMake";
-
+import Toggle from "../../../../MiniComponents/Toggle";
 import styles from "../../styles/adTargetting.styles";
 import globalStyles, { globalColors } from "../../../../../GlobalStyles";
 import { Icon } from "native-base";
@@ -260,6 +260,7 @@ export class TargetAudience extends Component {
                   <View style={styles.genderOuterView}>
                     {genders.map((g) => (
                       <TouchableOpacity
+                        key={g.value}
                         style={[
                           styles.genderInnerView,
                           gender === g.value && styles.genderInnerActiveView,
@@ -575,6 +576,66 @@ export class TargetAudience extends Component {
                     ))}
                 </TouchableOpacity>
               )}
+          </View>
+          <View style={styles.audienceCard}>
+            <View
+              activeOpacity={1}
+              style={[
+                globalStyles.row,
+                { alignItems: "center", marginBottom: expandDevices ? 10 : 0 },
+              ]}
+            >
+              <Icon
+                name={`target-account`}
+                type="MaterialCommunityIcons"
+                style={[styles.iconDown, { color: globalColors.purple3 }]}
+                onPress={this.expandDevices}
+              />
+              <Text style={styles.audienceHeading}>
+                {translate("Auto target look-alike audience")}
+              </Text>
+              <Toggle
+                switchOn={mainState.campaignInfo.auto_targeting}
+                backgroundColorOff="#0001"
+                backgroundColorOn="#0001"
+                circleColorOff={globalColors.purple3}
+                circleColorOn={globalColors.purple}
+                onPress={this.props.handleAutoTargeting}
+                duration={500}
+                circleStyle={styles.toggleCircle}
+                containerStyle={styles.toggleStyle}
+              />
+            </View>
+          </View>
+          <View style={styles.audienceCard}>
+            <View
+              activeOpacity={1}
+              style={[
+                globalStyles.row,
+                { alignItems: "center", marginBottom: expandDevices ? 10 : 0 },
+              ]}
+            >
+              <Icon
+                name={`contacts`}
+                type="MaterialCommunityIcons"
+                style={[styles.iconDown, { color: globalColors.purple3 }]}
+                onPress={this.expandDevices}
+              />
+              <Text style={styles.audienceHeading}>
+                {translate("Remarket instagram behaviour")}
+              </Text>
+              <Toggle
+                switchOn={mainState.campaignInfo.instagram_custom_audience}
+                backgroundColorOff="#0001"
+                backgroundColorOn="#0001"
+                circleColorOff={globalColors.purple3}
+                circleColorOn={globalColors.purple}
+                onPress={this.props.handleCustomAudience}
+                duration={500}
+                circleStyle={styles.toggleCircle}
+                containerStyle={styles.toggleStyle}
+              />
+            </View>
           </View>
         </ScrollView>
 

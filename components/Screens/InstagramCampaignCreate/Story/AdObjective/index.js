@@ -7,9 +7,10 @@ import {
   BackHandler,
   ScrollView,
   StatusBar,
-  Modal,
   Text,
 } from "react-native";
+import Modal from "react-native-modal";
+
 import analytics from "@segment/analytics-react-native";
 import { Content, Container } from "native-base";
 import { BlurView } from "@react-native-community/blur";
@@ -29,7 +30,7 @@ import CampaignDuration from "../../../../MiniComponents/CampaignDurationField";
 // Style
 import styles from "../../styles/adObjectives.styles";
 //Data
-import { instagramAdObjectives } from "../../../../Data/instagramObjectives.data";
+// import { instagramAdObjectives } from "../../../../Data/instagramObjectives.data";
 
 //Redux
 import { connect } from "react-redux";
@@ -68,7 +69,7 @@ class AdObjective extends Component {
       modalVisible: false,
       objectiveLabel: "Select Objective",
       inputN: false,
-      objectives: instagramAdObjectives["InstagramStoryAd"],
+      objectives: this.props.instagramObjectives["InstagramStoryAd"],
       closedContinueModal: false,
       nameError: "",
       objectiveError: "",
@@ -128,7 +129,7 @@ class AdObjective extends Component {
             : campaignName,
         objective: this.props.data.objective
           ? this.props.data.objective
-          : instagramAdObjectives["InstagramStoryAd"][0].value,
+          : this.props.instagramObjectives["InstagramStoryAd"][0].value,
         start_time: this.props.data.start_time
           ? this.props.data.start_time
           : start_time.toISOString().split("T")[0],
@@ -142,7 +143,7 @@ class AdObjective extends Component {
         modalVisible: this.props.data.modalVisible,
         objectiveLabel: this.props.data.objectiveLabel
           ? this.props.data.objectiveLabel
-          : instagramAdObjectives["InstagramStoryAd"][0].label,
+          : this.props.instagramObjectives["InstagramStoryAd"][0].label,
         inputN: this.props.data.inputN,
         nameError: this.props.data.nameError,
         objectiveError: this.props.data.objectiveError,
@@ -158,7 +159,8 @@ class AdObjective extends Component {
           ad_account_id: this.props.mainBusiness.fb_ad_account_id,
           businessid: this.props.mainBusiness.businessid,
           name: campaignName,
-          objective: instagramAdObjectives["InstagramStoryAd"][0].value,
+          objective: this.props.instagramObjectives["InstagramStoryAd"][0]
+            .value,
           start_time: start_time.toISOString().split("T")[0],
           end_time: end_time.toISOString().split("T")[0],
         },
@@ -166,7 +168,8 @@ class AdObjective extends Component {
         maxValueBudget: 0,
         duration: 7,
         modalVisible: false,
-        objectiveLabel: instagramAdObjectives["InstagramStoryAd"][0].label,
+        objectiveLabel: this.props.instagramObjectives["InstagramStoryAd"][0]
+          .label,
         inputN: false,
         nameError: "",
         objectiveError: "",
@@ -451,7 +454,7 @@ class AdObjective extends Component {
     if (this.timer) clearTimeout(this.timer);
   };
   render() {
-    const list = instagramAdObjectives["InstagramStoryAd"].map((o) => (
+    const list = this.props.instagramObjectives["InstagramStoryAd"].map((o) => (
       <ObjectivesCard
         choice={o}
         // selected={this.state.campaignInfo.objective}
@@ -615,9 +618,12 @@ class AdObjective extends Component {
         />
         <Modal
           animationType={"slide"}
-          transparent={true}
           onDismiss={() => this.setModalVisible(false)}
-          visible={this.state.modalVisible}
+          isVisible={this.state.modalVisible}
+          hardwareAccelerated={true}
+          onBackdropPress={() => this.setModalVisible(false)}
+          onBackButtonPress={() => this.setModalVisible(false)}
+          backdropOpacity={0}
         >
           <View style={styles.objectiveModal}>
             <View style={styles.popupOverlay}>
@@ -662,6 +668,7 @@ const mapStateToProps = (state) => ({
   incompleteCampaign: state.instagramAds.incompleteCampaign,
   campaignProgressStarted: state.instagramAds.campaignProgressStarted,
   instastoryad: state.dashboard.instastoryad,
+  instagramObjectives: state.dashboard.instagramObjectives,
 });
 
 const mapDispatchToProps = (dispatch) => ({

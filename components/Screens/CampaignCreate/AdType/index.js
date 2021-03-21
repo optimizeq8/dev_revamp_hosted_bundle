@@ -280,6 +280,7 @@ class AdType extends Component {
       this.props.updateBusinessConnectedToFacebook({
         fb_connected: "1",
         fb_ad_account_id: fb_ad_account_id,
+        insta_handle: instagram_username,
       });
     }
   };

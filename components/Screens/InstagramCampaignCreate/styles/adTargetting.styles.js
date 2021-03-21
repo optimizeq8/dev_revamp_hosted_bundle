@@ -1,5 +1,8 @@
 import { StyleSheet, Platform, PixelRatio, I18nManager } from "react-native";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
 import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
@@ -347,6 +350,19 @@ const styles = StyleSheet.create({
   iconRight: {
     fontSize: RFValue(10, 414),
     color: globalColors.purple,
+  },
+  toggleStyle: {
+    alignSelf: "center",
+    marginTop: 10,
+    width: widthPercentageToDP("10"),
+    height: heightPercentageToDP("2"),
+    borderRadius: 25,
+    padding: 0,
+  },
+  toggleCircle: {
+    width: widthPercentageToDP("4"),
+    height: heightPercentageToDP("2"),
+    borderRadius: 50,
   },
 });
 

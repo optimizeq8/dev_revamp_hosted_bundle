@@ -311,7 +311,7 @@ class VerifyAccount extends Component {
         userid: this.props.userInfo.userid,
       },
       this.state.verifyByMobile ? "Mobile" : "Email",
-      source === "my_website_tutorial" ? "OptimizeWebsite" : "Dashboard"
+      source === "my_website_tutorial" ? "TutorialWeb" : "Dashboard"
     );
   };
 

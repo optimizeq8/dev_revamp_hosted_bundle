@@ -1,4 +1,5 @@
 import { StyleSheet, PixelRatio, I18nManager } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -6,9 +7,15 @@ export const colors = {
   background2: "#751AFF",
 };
 const styles = StyleSheet.create({
-  customStyleInput: { width: "95%", alignSelf: "flex-start" },
-  customAnimate: { width: "50%" },
+  customStyleInput: {
+    width: "100%",
+    alignSelf: "flex-start",
+  },
+  customAnimate: {
+    width: RFValue(90, 414),
+  },
   inputView: {
+    display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "center",
@@ -17,8 +24,8 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#FF9D00",
     alignSelf: "center",
-    width: 65,
-    height: 65,
+    width: RFValue(32.5, 414),
+    height: RFValue(32.5, 414),
     borderRadius: 32.5,
     // bottom: 45,
     alignItems: "center",
@@ -26,59 +33,59 @@ const styles = StyleSheet.create({
   },
   inputtext: {
     fontFamily: "montserrat-regular",
-    fontSize: 14 / PixelRatio.getFontScale(),
+    fontSize: RFValue(7 / PixelRatio.getFontScale(), 414),
     alignSelf: "center",
     textAlign: "center",
     // height: 40,
     color: "#FFF",
   },
   input: {
-    height: 60,
+    height: RFValue(30, 414),
     alignSelf: "center",
     justifyContent: "center",
-    width: 100,
+    width: RFValue(50, 414),
     borderColor: "#7039FF",
     flexDirection: "row",
     borderBottomWidth: 1.5,
   },
   contentScrollViewContainer: {
     paddingBottom: "70%",
-    paddingHorizontal: 26,
+    paddingHorizontal: RFValue(13, 414),
   },
   marginVertical: {
-    marginBottom: 25,
+    marginBottom: RFValue(12.5, 414),
   },
   callToActionLabelView: {
-    borderTopLeftRadius: 150,
-    borderTopRightRadius: 150,
-    borderBottomRightRadius: 20,
-    borderBottomLeftRadius: 20,
-    paddingTop: 8,
-    width: 150,
+    borderTopLeftRadius: RFValue(75, 414),
+    borderTopRightRadius: RFValue(75, 414),
+    borderBottomRightRadius: RFValue(10, 414),
+    borderBottomLeftRadius: RFValue(10, 414),
+    paddingTop: RFValue(4, 414),
+    width: RFValue(75, 414),
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
-    height: 15,
+    height: RFValue(7.5, 414),
     zIndex: 1,
   },
   input: {
     backgroundColor: "rgba(0,0,0,0.2)",
-    borderRadius: 150,
+    borderRadius: RFValue(75, 414),
     borderColor: "rgba(0,0,0,0)",
     alignSelf: "center",
-    width: 300,
+    width: RFValue(150, 414),
     borderWidth: 0,
-    height: 50,
+    height: RFValue(25, 414),
   },
   pickerText: {
     fontFamily: "montserrat-regular-english",
     color: "#FFFFFF",
     textAlign: "center",
-    fontSize: 12,
+    fontSize: RFValue(6, 414),
   },
   iconDown: {
     color: "#FFF",
-    fontSize: 20,
-    right: 15,
+    fontSize: RFValue(10, 414),
+    right: RFValue(7.5, 414),
   },
   itemView: {
     paddingHorizontal: 0,
@@ -88,16 +95,16 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontFamily: "montserrat-bold",
-    fontSize: 12 / PixelRatio.getFontScale(),
+    fontSize: RFValue(6 / PixelRatio.getFontScale(), 414),
     color: "#fff",
     alignSelf: "center",
     textAlign: "center",
-    borderRadius: 30,
+    borderRadius: RFValue(15, 414),
     marginBottom: -10,
     marginTop: I18nManager.isRTL ? -5 : 0,
   },
   locationIcon: {
-    marginLeft: 15,
+    marginLeft: RFValue(7.5, 414),
   },
 });
 

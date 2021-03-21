@@ -207,6 +207,23 @@ class AdDesign extends Component {
                 : "";
             destination = "link";
             break;
+          case "CONVERSIONS":
+            call_to_action =
+              list[
+                this.rejected
+                  ? this.props.instaRejCampaign["campaign_type"]
+                  : this.props.data["campaign_type"]
+              ][5].call_to_action_list[0];
+            link =
+              websitelink && websitelink !== ""
+                ? websitelink
+                : weburl && weburl !== ""
+                ? weburl.includes("https")
+                  ? weburl
+                  : `https://${weburl}.optimizeapp.com`
+                : "";
+            destination = "link";
+            break;
           case "LEAD_GENERATION":
             call_to_action =
               list[
@@ -723,6 +740,7 @@ class AdDesign extends Component {
                   adType={"InstagramStoryAd"}
                   closeAnimation={this.state.closeAnimation}
                   rejected={this.rejected}
+                  instagramObjectives={this.props.instagramObjectives}
                 />
               </View>
 
@@ -855,6 +873,7 @@ const mapStateToProps = (state) => ({
   carouselAdsArray: state.instagramAds.carouselAdsArray,
   loadingCarouselAdsArray: state.instagramAds.loadingCarouselAdsArray,
   instaRejCampaign: state.instagramAds.instaRejCampaign,
+  instagramObjectives: state.dashboard.instagramObjectives,
 });
 
 const mapDispatchToProps = (dispatch) => ({

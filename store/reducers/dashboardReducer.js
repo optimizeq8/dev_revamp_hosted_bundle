@@ -1,6 +1,10 @@
 import * as actionTypes from "../actions/actionTypes";
 import isUndefined from "lodash/isUndefined";
 import analytics from "@segment/analytics-react-native";
+import snapchatObjectives from "../../components/Data/snapchatObjectives.data";
+import instagramObjectives from "../../components/Data/instagramObjectives.data";
+
+import { AccessibilityInfo } from "react-native";
 const initialState = {
   campaignList: null,
   filteredCampaigns: [],
@@ -33,6 +37,10 @@ const initialState = {
   instafeedad: "0",
   instastoryad: "0",
   googlead: "0",
+  snapchatObjLoading: false,
+  snapchatObjectives: snapchatObjectives,
+  instagramObjLoading: false,
+  instagramObjectives: instagramObjectives,
 };
 
 const reducer = (state = initialState, action) => {
@@ -360,6 +368,30 @@ const reducer = (state = initialState, action) => {
         ...state,
         ...action.payload,
       };
+    case actionTypes.SNAPCHAT_OBJECTIVE_LIST_LOADING: {
+      return {
+        ...state,
+        snapchatObjLoading: action.payload,
+      };
+    }
+    case actionTypes.SET_SNAPCHAT_OBJECTIVE_LIST: {
+      return {
+        ...state,
+        snapchatObjectives: action.payload,
+      };
+    }
+    case actionTypes.INSTAGRAM_OBJECTIVE_LIST_LOADING: {
+      return {
+        ...state,
+        instagramObjLoading: action.payload,
+      };
+    }
+    case actionTypes.SET_INSTAGRAM_OBJECTIVE_LIST: {
+      return {
+        ...state,
+        instagramObjectives: action.payload,
+      };
+    }
     default:
       return state;
   }

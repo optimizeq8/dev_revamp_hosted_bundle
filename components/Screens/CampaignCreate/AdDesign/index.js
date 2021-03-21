@@ -308,6 +308,7 @@ class AdDesign extends Component {
         if (
           this.props.mainBusiness &&
           (savedObjective === "WEBSITE_TRAFFIC" ||
+            savedObjective === "WEB_CONVERSION" ||
             savedObjective === "LEAD_GENERATION")
         ) {
           const { websitelink, weburl } = this.props.mainBusiness;

@@ -35,19 +35,17 @@ export const formatStoryAd = async (
     storyAdAttachment.hasOwnProperty("longformvideo_media") &&
     storyAdAttachment.rejectionLongVidUpload
   ) {
-    let resVideo = storyAdAttachment.longformvideo_media.split("/ImagePicker/");
-    let formatVideo = resVideo[0].split(".");
+    let resVideo = storyAdAttachment.longformvideo_media.split("/");
+    resVideo = resVideo[resVideo.length - 1];
+    let formatVideo = resVideo.split(".")[1];
     var video = {
-      uri: card.longformvideo_media,
-      type: card.longformvideo_media_type + "/" + formatVideo[1],
-      name: resVideo[0],
+      uri: storyAdAttachment.longformvideo_media,
+      type: "VIDEO" + "/" + formatVideo,
+      name: resVideo,
     };
 
     storyBody.append("story_longformvideo_media", video);
-    storyBody.append(
-      "story_longformvideo_media_type",
-      storyAdAttachment.longformvideo_media_type
-    );
+    storyBody.append("story_longformvideo_media_type", "VIDEO");
   }
   storyBody.append(
     "story_longformvideo_media_upload",

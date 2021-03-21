@@ -7,7 +7,6 @@ import {
   BackHandler,
   ScrollView,
   StatusBar,
-  Modal,
   Text,
   InteractionManager,
 } from "react-native";
@@ -15,6 +14,7 @@ import { Content, Container } from "native-base";
 // import { Modal } from "react-native-paper";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
+import Modal from "react-native-modal";
 
 import analytics from "@segment/analytics-react-native";
 import * as Animatable from "react-native-animatable";
@@ -80,7 +80,7 @@ class AdObjective extends Component {
             ]
           ) + 1
         }`,
-        objective: snapchatObjectivesData[this.props.adType][0].value,
+        objective: this.props.snapchatObjectives[this.props.adType][0].value,
         start_time: "",
         end_time: "",
       },
@@ -88,9 +88,9 @@ class AdObjective extends Component {
       minValueBudget: 0,
       maxValueBudget: 0,
       modalVisible: false,
-      objectiveLabel: snapchatObjectivesData[this.props.adType][0].label,
+      objectiveLabel: this.props.snapchatObjectives[this.props.adType][0].label,
       inputN: false,
-      objectives: snapchatObjectivesData[this.props.adType],
+      objectives: this.props.snapchatObjectives[this.props.adType],
       closedContinueModal: false,
       nameError: "",
       objectiveError: "",
@@ -115,15 +115,15 @@ class AdObjective extends Component {
     const businessCountryIsKuwait =
       this.props.mainBusiness.country === "Kuwait";
     // Remove the objective label for non kuwait countries and if adtype is SnapAd
-    if (!businessCountryIsKuwait && this.props.adType === "SnapAd") {
-      let updatedList = snapchatObjectivesData;
-      updatedList["SnapAd"] = snapchatObjectivesData.SnapAd.filter(
-        (obj) => obj.value !== "POLITICAL_TRAFFIC"
-      );
-      this.setState({
-        objectivesList: updatedList,
-      });
-    }
+    // if (!businessCountryIsKuwait && this.props.adType === "SnapAd") {
+    //   let updatedList = snapchatObjectivesData;
+    //   updatedList["SnapAd"] = snapchatObjectivesData.SnapAd.filter(
+    //     (obj) => obj.value !== "POLITICAL_TRAFFIC"
+    //   );
+    //   this.setState({
+    //     objectivesList: updatedList,
+    //   });
+    // }
     InteractionManager.runAfterInteractions(() => {
       this.setState({
         isReady: true,
@@ -221,7 +221,7 @@ class AdObjective extends Component {
               : 0,
           minValueBudget: this.props.data.minValueBudget,
           maxValueBudget: this.props.data.maxValueBudget,
-          modalVisible: this.props.data.modalVisible,
+          modalVisible: this.props.data.modalVisible || false,
           objectiveLabel: this.props.data.objectiveLabel
             ? this.props.data.objectiveLabel
             : snapchatObjectivesData[this.props.adType][0].label,
@@ -231,7 +231,7 @@ class AdObjective extends Component {
           start_timeError: this.props.data.start_timeError,
           end_timeError: this.props.data.end_timeError,
           campaignInfo: { ...rep },
-          modalVisible: false,
+
           duration: this.props.data.duration ? this.props.data.duration : 7,
           savedObjective: this.props.data.hasOwnProperty("savedObjective")
             ? this.props.data.savedObjective
@@ -680,7 +680,7 @@ class AdObjective extends Component {
     let is_political =
       this.props.data && this.props.data.savedObjective === "POLITICAL_TRAFFIC";
     let minimumDuration = !is_political ? 3 : 1;
-    const list = this.state.objectivesList[this.props.adType].map((o) => (
+    const list = this.props.snapchatObjectives[this.props.adType].map((o) => (
       <ObjectivesCard
         choice={o}
         // selected={this.state.campaignInfo.objective}
@@ -940,11 +940,14 @@ class AdObjective extends Component {
           />
           <Modal
             animationType={"slide"}
-            transparent={true}
             onDismiss={() => this.setModalVisible(false)}
-            visible={this.state.modalVisible}
+            isVisible={this.state.modalVisible}
+            hardwareAccelerated={true}
+            onBackdropPress={() => this.setModalVisible(false)}
+            onBackButtonPress={() => this.setModalVisible(false)}
+            backdropOpacity={0}
           >
-            <View style={styles.objectiveModal}>
+            <SafeAreaView style={styles.objectiveModal}>
               <CustomHeader
                 screenProps={this.props.screenProps}
                 closeButton={true}
@@ -969,7 +972,7 @@ class AdObjective extends Component {
                   {list}
                 </Content>
               </View>
-            </View>
+            </SafeAreaView>
           </Modal>
         </View>
       );
@@ -992,6 +995,7 @@ const mapStateToProps = (state) => ({
   snapad: state.dashboard.snapad,
   snapcollectionad: state.dashboard.snapcollectionad,
   snapstoryad: state.dashboard.snapstoryad,
+  snapchatObjectives: state.dashboard.snapchatObjectives,
 });
 
 const mapDispatchToProps = (dispatch) => ({

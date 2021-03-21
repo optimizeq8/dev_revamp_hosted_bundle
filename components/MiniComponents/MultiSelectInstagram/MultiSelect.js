@@ -122,7 +122,6 @@ class MultiSelectList extends Component {
 
     if (customLocations.length > 0) {
       if (customLocations.some((loc) => country === loc.country)) {
-        console.log("countryGeos", countryGeos);
         customLocations.forEach((loc, index) => {
           console.log("loc.country", loc.country);
           if (country === loc.country) {
@@ -150,17 +149,13 @@ class MultiSelectList extends Component {
           {
             text: translate("Yes"),
             onPress: () => {
-              if (!this.props.instagramCampaign) {
-                this.props.onSelectedRegionChange(-1, null, null, true);
-              } else {
-                locIndecies.forEach((i) => this.props.deleteCustomLocation(i));
-                this.props.onSelectedCountryRegionChange(country);
-                this.props.onSelectedMapChange(
-                  filterdLocations,
-                  false,
-                  filteredLocationInfos
-                );
-              }
+              locIndecies.forEach((i) => this.props.deleteCustomLocation(i));
+              this.props.onSelectedCountryRegionChange(country);
+              this.props.onSelectedMapChange(
+                filterdLocations,
+                false,
+                filteredLocationInfos
+              );
             },
           },
         ]

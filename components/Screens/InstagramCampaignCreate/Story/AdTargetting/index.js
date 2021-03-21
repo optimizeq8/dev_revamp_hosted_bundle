@@ -94,6 +94,8 @@ class InstagramStoryAdTargetting extends Component {
           age_max: 65,
           age_min: 18,
         },
+        auto_targeting: 0,
+        instagram_custom_audience: 0,
       },
       selectedCountriesAndRegions: [],
       filteredRegions: [],
@@ -1052,12 +1054,38 @@ class InstagramStoryAdTargetting extends Component {
   // For picker not to crash
   onSelectedCountryRegionChange = (item) => {
     let replace = cloneDeep(this.state.campaignInfo);
-
-    // check if country exist in array remove it else add country and show regions for that country
+    if (
+      replace.targeting.geo_locations.countries.length === 1 &&
+      replace.targeting.geo_locations.countries[0] !== item &&
+      this.state.locationsInfo.length > 0 &&
+      this.state.locationsInfo[0].country_code !== item.toLowerCase() &&
+      (replace.auto_targeting === 1 || replace.instagram_custom_audience === 1)
+    ) {
+      replace.auto_targeting = 0;
+      replace.instagram_custom_audience = 0;
+      this.setState({
+        campaignInfo: {
+          ...replace,
+        },
+        multipleCountriesSelected: true,
+      });
+    } else if (
+      replace.targeting.geo_locations.countries[0] === item &&
+      !this.state.areAllLocationSame
+    ) {
+      this.setState({
+        multipleCountriesSelected: true,
+      });
+    } else {
+      this.setState({
+        multipleCountriesSelected: false,
+      });
+    }
     if (
       replace.targeting.geo_locations.countries &&
       replace.targeting.geo_locations.countries.length > 0
     ) {
+      // check if country exist in array remove it else add country and show regions for that country
       let countryExist = replace.targeting.geo_locations.countries.find(
         (ctry) => item === ctry
       );
@@ -1275,11 +1303,38 @@ class InstagramStoryAdTargetting extends Component {
     locationsInfo = []
   ) => {
     let stateRep = cloneDeep(this.state.campaignInfo);
+
+    let areAllLocationSame = false;
+    let multipleCountriesSelected = false;
+    if (stateRep.targeting.geo_locations.countries.length <= 1 && !unselect) {
+      areAllLocationSame = locationsInfo.every(
+        (loc) => locationsInfo[0].country_code === loc.country_code
+      );
+      if (
+        stateRep.targeting.geo_locations.countries.length > 0 &&
+        areAllLocationSame &&
+        (locationsInfo.length > 0 && locationsInfo[0].country_code) !==
+          stateRep.targeting.geo_locations.countries[0].toLowerCase()
+      ) {
+        stateRep.auto_targeting = 0;
+        stateRep.instagram_custom_audience = 0;
+        multipleCountriesSelected = true;
+      } else if (
+        stateRep.targeting.geo_locations.countries.length === 0 &&
+        !areAllLocationSame
+      ) {
+        stateRep.auto_targeting = 0;
+        stateRep.instagram_custom_audience = 0;
+        multipleCountriesSelected = true;
+      }
+    }
     if (unselect) {
       stateRep.targeting.geo_locations.custom_locations = [];
       this.props.save_campaign_info_instagram({
         markers: [],
         locationsInfo: [],
+        areAllLocationSame: false,
+        multipleCountriesSelected: false,
       });
     } else stateRep.targeting.geo_locations.custom_locations = selectedItems;
     analytics.track(`a_ad_map_locations`, {
@@ -1290,14 +1345,79 @@ class InstagramStoryAdTargetting extends Component {
     this.setState({
       campaignInfo: { ...stateRep },
       locationsInfo,
+      multipleCountriesSelected,
+      areAllLocationSame,
     });
     !this.editCampaign &&
       this.props.save_campaign_info_instagram({
         campaignInfo: { ...stateRep },
+        multipleCountriesSelected,
+        areAllLocationSame,
         locationsInfo,
       });
   };
 
+  handleAutoTargeting = () => {
+    let { translate } = this.props.screenProps;
+    if (
+      (this.state.campaignInfo.targeting.geo_locations.countries.length > 1 ||
+        this.state.multipleCountriesSelected) &&
+      this.state.campaignInfo.auto_targeting === 0
+    ) {
+      showMessage({
+        message: translate(
+          "Only one country selection is allowed to enable this option"
+        ),
+        type: "warning",
+      });
+    } else {
+      let stateRep = cloneDeep(this.state.campaignInfo);
+      stateRep.auto_targeting = !this.state.campaignInfo.auto_targeting ? 1 : 0;
+      stateRep.instagram_custom_audience = 0;
+
+      this.setState({
+        campaignInfo: { ...stateRep },
+      });
+      !this.editCampaign &&
+        this.props.save_campaign_info_instagram({
+          campaignInfo: { ...stateRep },
+        });
+    }
+  };
+  handleCustomAudience = () => {
+    let { translate } = this.props.screenProps;
+    console.log(
+      this.state.campaignInfo.targeting.geo_locations.countries,
+      this.state.multipleCountriesSelected
+    );
+    if (
+      (this.state.campaignInfo.targeting.geo_locations.countries.length > 1 ||
+        this.state.multipleCountriesSelected) &&
+      this.state.campaignInfo.instagram_custom_audience === 0
+    ) {
+      showMessage({
+        message: translate(
+          "Only one country selection is allowed to enable this option"
+        ),
+        type: "warning",
+      });
+    } else {
+      let stateRep = cloneDeep(this.state.campaignInfo);
+      stateRep.instagram_custom_audience = !this.state.campaignInfo
+        .instagram_custom_audience
+        ? 1
+        : 0;
+
+      stateRep.auto_targeting = 0;
+      this.setState({
+        campaignInfo: { ...stateRep },
+      });
+      !this.editCampaign &&
+        this.props.save_campaign_info_instagram({
+          campaignInfo: { ...stateRep },
+        });
+    }
+  };
   render() {
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing, showAudienceList } = this.state;
@@ -1402,7 +1522,6 @@ class InstagramStoryAdTargetting extends Component {
             data={this.props.data}
             _handleSideMenuState={this._handleSideMenuState}
             editCampaign={this.editCampaign}
-            instagramCampaign={true}
             countriesSelected={
               this.state.campaignInfo.targeting.geo_locations.countries
             }
@@ -1447,7 +1566,6 @@ class InstagramStoryAdTargetting extends Component {
             OSType={this.state.campaignInfo.targeting.user_os[0]}
             option={this.state.selectionOption}
             editCampaign={this.editCampaign}
-            instagramCampaign={true}
             circles={
               this.state.campaignInfo.targeting.geo_locations.custom_locations
             }
@@ -1807,6 +1925,8 @@ class InstagramStoryAdTargetting extends Component {
                         objectiveLabel={
                           this.props.data ? this.props.data.objectiveLabel : ""
                         }
+                        handleAutoTargeting={this.handleAutoTargeting}
+                        handleCustomAudience={this.handleCustomAudience}
                       />
                     )}
 

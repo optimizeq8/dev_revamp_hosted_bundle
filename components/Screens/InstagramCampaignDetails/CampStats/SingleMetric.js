@@ -48,6 +48,9 @@ export default class SingleMetric extends Component {
       case "eCPV":
         Icon = CPVIcon;
         break;
+      case "swipes":
+        Icon = SwipeUpsIcon;
+        break;
     }
     return (
       <View style={styles.metricsStylePurple}>
@@ -67,35 +70,41 @@ export default class SingleMetric extends Component {
               style={[styles.title, globalStyles.whiteTextColor]}
             >
               {translate(metric)}
+              {metric.toLowerCase() === "cpm" && translate("(USD)")}
             </Text>
             <View style={globalStyles.row}>
-              {metric.toLowerCase().includes("c") &&
+              {((metric.toLowerCase().includes("c") &&
                 metric.toLowerCase() !== "ctr" &&
                 metric.toLowerCase() !== "link click" &&
                 metric.toLowerCase() !== "reach" &&
                 metric.toLowerCase() !== "frequency" &&
                 metric.toLowerCase() !== "purchases" &&
-                metric.toLowerCase() !== "clicks" && (
-                  <Small
-                    style={[
-                      styles.numbers,
-                      {
-                        fontSize: RFValue(4.5, 414),
-                        fontFamily: "montserrat-regular",
-                      },
-                    ]}
-                  >
-                    $
-                  </Small>
-                )}
+                metric.toLowerCase() !== "clicks") ||
+                metric.toLowerCase() === "roas") && (
+                <Small
+                  style={[
+                    styles.numbers,
+                    {
+                      fontSize: RFValue(4.5, 414),
+                      fontFamily: "montserrat-regular",
+                    },
+                  ]}
+                >
+                  $
+                </Small>
+              )}
               <Text
                 style={[styles.numbers, { fontFamily: "montserrat-regular" }]}
               >
                 {formatNumber(
                   Number.isInteger(metricValue) ||
+                    metric.toLowerCase() === "clicks" ||
                     metric.toLowerCase() === "link click" ||
-                    metric.toLowerCase() === "impressions"
+                    metric.toLowerCase() === "impressions" ||
+                    metric.toLowerCase() === "reach"
                     ? metricValue
+                    : metric.toLowerCase() === "purchases"
+                    ? Math.round(parseFloat(metricValue))
                     : parseFloat(metricValue).toFixed(2),
                   true
                 )}

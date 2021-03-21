@@ -143,6 +143,9 @@ class InstagramAdDesignExistingPost extends Component {
           case "LINK_CLICKS":
             destination = "link";
             break;
+          case "CONVERSIONS":
+            destination = "link";
+            break;
           case "LEAD_GENERATION":
             destination = "link";
             break;
@@ -246,6 +249,22 @@ class InstagramAdDesignExistingPost extends Component {
         case "VIDEO_VIEWS":
           //   destination = "BLANK";
           break;
+        case "CONVERSIONS":
+          call_to_action =
+            list[
+              this.rejected
+                ? this.props.instaRejCampaign["campaign_type"]
+                : this.props.data["campaign_type"]
+            ][5].call_to_action_list[0];
+          link =
+            websitelink && websitelink !== ""
+              ? websitelink
+              : weburl && weburl !== ""
+              ? weburl.includes("https")
+                ? weburl
+                : `https://${weburl}.optimizeapp.com`
+              : "";
+          break;
         default:
           attachment =
             list[
@@ -307,10 +326,10 @@ class InstagramAdDesignExistingPost extends Component {
 
   validator = () => {
     const { translate } = this.props.screenProps;
-    const messageError = validateWrapper(
-      "mandatory",
-      this.state.campaignInfo.message
-    );
+    // const messageError = validateWrapper(
+    //   "mandatory",
+    //   this.state.campaignInfo.message
+    // );
 
     const mediaError = this.state.campaignInfo.media === "//";
 
@@ -333,13 +352,13 @@ class InstagramAdDesignExistingPost extends Component {
       swipeUpError = "Choose A Swipe Up Destination";
     }
 
-    if (messageError) {
-      showMessage({
-        message: translate("Please add caption to proceed"),
-        position: "top",
-        type: "warning",
-      });
-    }
+    // if (messageError) {
+    //   showMessage({
+    //     message: translate("Please add caption to proceed"),
+    //     position: "top",
+    //     type: "warning",
+    //   });
+    // }
     if (mediaError) {
       showMessage({
         message: translate("Please add media to proceed"),
@@ -349,12 +368,13 @@ class InstagramAdDesignExistingPost extends Component {
     }
 
     this.setState({
-      messageError,
+      //   messageError,
       mediaError,
       swipeUpError,
     });
 
-    return !mediaError && !swipeUpError && !messageError;
+    return !mediaError && !swipeUpError;
+    //  && !messageError;
   };
   handleUpload = () => {
     this.setState({ signal: Axios.CancelToken.source() });
@@ -793,6 +813,7 @@ class InstagramAdDesignExistingPost extends Component {
                 existingPosts={true}
                 adType={"InstagramFeedAd"}
                 closeAnimation={this.state.closeAnimation}
+                instagramObjectives={this.props.instagramObjectives}
               />
             </View>
             <View style={[styles.lowerBtn, existPostStyles.lowerBtn]}>
@@ -850,6 +871,7 @@ const mapStateToProps = (state) => ({
   instagramExistingPost: state.instagramAds.instagramExistingPost,
   paging: state.instagramAds.paging,
   postsLoading: state.instagramAds.postsLoading,
+  instagramObjectives: state.dashboard.instagramObjectives,
 });
 
 const mapDispatchToProps = (dispatch) => ({

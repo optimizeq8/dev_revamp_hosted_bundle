@@ -321,6 +321,28 @@ class Menu extends Component {
                 </Text>
               </TouchableOpacity>
 
+              {mainBusiness &&
+              mainBusiness.snap_pixel_id &&
+              mainBusiness.snap_pixel_id !== "NULL" ? (
+                <TouchableOpacity
+                  style={styles.options}
+                  onPress={() => {
+                    // this.props.navigation.navigate("BusinessInfo")
+                    this.props.navigation.navigate("PixelScreen", {
+                      editBusinessInfo: true,
+                      source: "open_hamburger",
+                      source_action: "a_open_pixel_info",
+                    });
+                  }}
+                >
+                  <Icons.ProgrammingIcon style={styles.icons} />
+                  <Text
+                    style={I18nManager.isRTL ? rtlStyles.text : styles.text}
+                  >
+                    {translate("Pixel Info")}
+                  </Text>
+                </TouchableOpacity>
+              ) : null}
               <TouchableOpacity
                 style={styles.options}
                 onPress={() =>
@@ -449,7 +471,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text selectable style={styles.version}>
                 {translate("Version:")}
-                {Constants.nativeAppVersion}/363/
+                {Constants.nativeAppVersion}/369/
                 {Constants.nativeBuildVersion}
               </Text>
             </ScrollView>
