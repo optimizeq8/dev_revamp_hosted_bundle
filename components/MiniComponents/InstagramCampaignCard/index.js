@@ -226,7 +226,6 @@ class CampaignCard extends Component {
                 />
 
                 {!this.campaignEndedOrNot(campaign, endDate) ? (
-                  // && false
                   <>
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
@@ -243,7 +242,9 @@ class CampaignCard extends Component {
                     style={styles.repeatButton}
                     onPress={() => this.handleRepeatModal(true)}
                   >
-                    <Text style={styles.repeatText}>{translate("Repeat")}</Text>
+                    <Text style={styles.repeatText}>
+                      {translate("Promote again")}
+                    </Text>
                   </TouchableOpacity>
                 )}
               </View>
