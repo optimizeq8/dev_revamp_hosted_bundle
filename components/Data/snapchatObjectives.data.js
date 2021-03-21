@@ -9,13 +9,13 @@ export default {
       icon: "BRAND_AWARENESS",
       color: "#4BD6C6",
     },
-    {
-      label: "Mother's Day",
-      value: "WEBSITE_TRAFFIC",
-      info: "SELL MOTHER'S DAY PRODUCTS",
-      icon: "Mother",
-      color: "#F26622",
-    },
+    // {
+    //   label: "Mother's Day",
+    //   value: "WEBSITE_TRAFFIC",
+    //   info: "SELL MOTHER'S DAY PRODUCTS",
+    //   icon: "Mother",
+    //   color: "#F26622",
+    // },
     {
       label: "Lead Generation",
       value: "LEAD_GENERATION",
@@ -69,13 +69,13 @@ export default {
       icon: "BRAND_AWARENESS",
       color: "#4BD6C6",
     },
-    {
-      label: "Mother's Day",
-      value: "WEBSITE_TRAFFIC",
-      info: "SELL MOTHER'S DAY PRODUCTS",
-      icon: "Mother",
-      color: "#F26622",
-    },
+    // {
+    //   label: "Mother's Day",
+    //   value: "WEBSITE_TRAFFIC",
+    //   info: "SELL MOTHER'S DAY PRODUCTS",
+    //   icon: "Mother",
+    //   color: "#F26622",
+    // },
     {
       label: "Sales Campaign",
       value: "WEB_CONVERSION",
