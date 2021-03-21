@@ -236,7 +236,7 @@ class CampaignCard extends Component {
                   screenProps={this.props.screenProps}
                 />
 
-                {!this.campaignEndedOrNot(campaign, endDate) ? (
+                {this.ad_status === "LIVE" ? (
                   <>
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
