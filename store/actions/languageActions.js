@@ -55,6 +55,10 @@ export const getLanguageListPOEdit = (language) => {
                   [language]: modifierJson,
                 };
 
+                dispatch({
+                  type: actionTypes.SET_LANGUAGE_CHANGE_LOADING,
+                  payload: false,
+                });
                 return dispatch({
                   type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
                   payload: {
@@ -82,6 +86,10 @@ export const getLanguageListPOEdit = (language) => {
                       [language]: data,
                     };
 
+                    dispatch({
+                      type: actionTypes.SET_LANGUAGE_CHANGE_LOADING,
+                      payload: false,
+                    });
                     return dispatch({
                       type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
                       payload: {
@@ -95,6 +103,10 @@ export const getLanguageListPOEdit = (language) => {
                         language === "ar" ? arabicStrings : englishStrings,
                     };
 
+                    dispatch({
+                      type: actionTypes.SET_LANGUAGE_CHANGE_LOADING,
+                      payload: false,
+                    });
                     return dispatch({
                       type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
                       payload: {
@@ -118,6 +130,10 @@ export const getLanguageListPOEdit = (language) => {
           [language]: language === "ar" ? arabicStrings : englishStrings,
         };
 
+        dispatch({
+          type: actionTypes.SET_LANGUAGE_CHANGE_LOADING,
+          payload: false,
+        });
         return dispatch({
           type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
           payload: {
