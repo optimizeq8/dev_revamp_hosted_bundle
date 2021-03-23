@@ -30,11 +30,14 @@ export const getLanguageListPOEdit = (language) => {
       axios
         .post(
           "https://api.poeditor.com/v2/terms/list",
-          qs.stringify({
-            api_token: "12aec028da2333797aaaa1768d444fb9",
-            id: "283545",
-            language,
-          })
+          qs.stringify(
+            {
+              api_token: "12aec028da2333797aaaa1768d444fb9",
+              id: "283545",
+              language,
+            },
+            { timeout: 10000 }
+          )
         )
         .then((response) => response.data)
         .then((data) => {
@@ -121,8 +124,7 @@ export const getLanguageListPOEdit = (language) => {
           }
         });
     } catch (error) {
-      console.log("translation error", error.response || error.message);
-
+      //   console.log("translation error", error.response || error.message);
       AsyncStorage.setItem("appLanguage", language).then((res) => {
         I18nManager.allowRTL(language === "ar");
         I18nManager.forceRTL(language === "ar");
