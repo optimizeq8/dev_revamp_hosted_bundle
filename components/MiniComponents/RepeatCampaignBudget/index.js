@@ -42,17 +42,19 @@ class RepeatCampaignBudget extends Component {
     let repeatingCampaginData = prevCampaignIsInstagram
       ? this.props.repeatingInstaCampaginData
       : this.props.repeatingCampaginData;
+
     let previousRepeatingCampaginData = prevCampaignIsInstagram
       ? prevProps.repeatingInstaCampaginData
       : prevProps.repeatingCampaginData;
+
     let prevTargeting = { geos: [] };
     let recBudget = prevTargeting.geos.length * 75;
-
     let minValueBudget = 25 * prevTargeting.geos.length;
     if (
-      previousRepeatingCampaginData &&
-      previousRepeatingCampaginData.campaign_id !==
-        repeatingCampaginData.campaign_id
+      (!previousRepeatingCampaginData && repeatingCampaginData) ||
+      (previousRepeatingCampaginData &&
+        previousRepeatingCampaginData.campaign_id) !==
+        (repeatingCampaginData && repeatingCampaginData.campaign_id)
     ) {
       if (repeatingCampaginData.hasOwnProperty("campaign_id")) {
         duration = repeatingCampaginData.duration;
