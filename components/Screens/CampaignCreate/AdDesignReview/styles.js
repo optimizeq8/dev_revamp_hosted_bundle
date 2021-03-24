@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     borderBottomWidth: 0,
     paddingTop: 0.1,
-    height: 35,
+    height: 45,
   },
   headerBody: {
     alignItems: "flex-start",
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 1,
     paddingLeft: 10,
+
     // flex: 1
   },
   content: {

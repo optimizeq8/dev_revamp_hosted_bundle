@@ -23,6 +23,7 @@ import globalStyles from "../../../GlobalStyles";
 import GradientButton from "../GradientButton";
 import NavigationService from "../../../NavigationService";
 import RepeatCampaignModal from "../RepeatCampaignModal";
+import ExtendCampaignModal from "../ExtendCampaignModal";
 
 whyDidYouRender(React);
 class CampaignCard extends Component {
@@ -30,7 +31,7 @@ class CampaignCard extends Component {
   campaign_status = this.props.campaign.status;
   ad_status_color = this.props.campaign.ad_status_color_code;
   ad_status = this.props.campaign.ad_status;
-  state = { showRepeatModal: false };
+  state = { showRepeatModal: false, showExtendModal: false };
   //New date returns the current date with a timezone of -3
   //So I add back the offset so the dates from the backend are compared properly
   currentDate = () => {
@@ -71,6 +72,11 @@ class CampaignCard extends Component {
   handleRepeatModal = (value) => {
     this.setState({
       showRepeatModal: value,
+    });
+  };
+  handleExtendModal = (value) => {
+    this.setState({
+      showExtendModal: value,
     });
   };
   componentDidMount() {
@@ -227,7 +233,7 @@ class CampaignCard extends Component {
                   />
                 </View>
               )}
-            {this.review_status.includes("APPROVED") && (
+            {!this.review_status.includes("APPROVED") && (
               <View style={styles.chartContainer}>
                 <CampaignCircleChart
                   channel={this.props.channel}
@@ -236,7 +242,7 @@ class CampaignCard extends Component {
                   screenProps={this.props.screenProps}
                 />
 
-                {this.ad_status === "LIVE" ? (
+                {this.ad_status !== "LIVE" ? (
                   <>
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
@@ -246,6 +252,15 @@ class CampaignCard extends Component {
                       <Text uppercase style={styles.cardText}>
                         {translate("Day(s) left")}
                       </Text>
+                      <TouchableOpacity
+                        style={[
+                          styles.repeatButton,
+                          { alignSelf: "center", marginTop: 10, width: "100%" },
+                        ]}
+                        onPress={() => this.handleExtendModal(true)}
+                      >
+                        <Text style={styles.repeatText}>{"Extend"}</Text>
+                      </TouchableOpacity>
                     </View>
                   </>
                 ) : (
@@ -264,6 +279,12 @@ class CampaignCard extends Component {
               showRepeatModal={this.state.showRepeatModal}
               screenProps={this.props.screenProps}
               handleRepeatModal={this.handleRepeatModal}
+              campaign={campaign}
+            />
+            <ExtendCampaignModal
+              showRepeatModal={this.state.showExtendModal}
+              screenProps={this.props.screenProps}
+              handleExtendModal={this.handleExtendModal}
               campaign={campaign}
             />
           </View>

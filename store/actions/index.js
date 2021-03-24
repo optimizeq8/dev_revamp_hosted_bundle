@@ -103,6 +103,8 @@ export {
   verifySnapchatOtp,
   repeatSnapCampagin,
   repeatSnapCampaginBudget,
+  extendSnapCampagin,
+  extendSnapCampaginBudget,
 } from "./campaignActions";
 
 export {
