@@ -36,6 +36,7 @@ const initialState = {
   snapstoryad: "0",
   instafeedad: "0",
   instastoryad: "0",
+  instaautoplacementad: "0",
   googlead: "0",
   snapchatObjLoading: false,
   snapchatObjectives: snapchatObjectives,
