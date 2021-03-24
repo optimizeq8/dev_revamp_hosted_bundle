@@ -187,4 +187,34 @@ export const instagramAds = [
       },
     ],
   },
+  {
+    id: 3,
+    mediaType: "instagram",
+    text: "Create Your Ad Now!",
+    rout: "InstagramFeedAdObjective",
+    createRout: "InstagramFeedAdObjective",
+    title: "Automatic Placement",
+    value: "InstagramAutoPlacementAd",
+    media: require("../../assets/images/AdTypes/Instagram/InstagramFeedAd.svg")
+      .default,
+    icon: AdIcons.InstagramFeed,
+    channelIcon: Instagram,
+    image: InstagramFeedAd,
+    description: " ",
+    //   "Feed Ads show up on the main page of Instagram among posts belonging to users followed accounts, blending in with user created content in a form of a single photo, a single video, or a carousel",
+    suitableFor: [
+      //   {
+      //     icon: Mortgage,
+      //     name: "Home Businesses",
+      //   },
+      //   {
+      //     icon: Hand,
+      //     name: "Service Providers",
+      //   },
+      //   {
+      //     icon: StartUp,
+      //     name: "Startups & SMEs",
+      //   },
+    ],
+  },
 ];
