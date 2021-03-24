@@ -146,7 +146,7 @@ class InstagramAdPaymentReview extends Component {
 
     const segmentInfo = {
       campaign_channel: "instagram",
-      campaign_ad_type: "InstagramFeedAd",
+      campaign_ad_type: "InstagramAutoPlacementAd",
       campaign_duration:
         Math.ceil(
           (new Date(this.props.data.end_time) -
@@ -188,12 +188,12 @@ class InstagramAdPaymentReview extends Component {
     });
     this.props.saveCampaignSteps([
       "Dashboard",
-      "InstagramFeedAdObjective",
+      "InstagramAutoPlacementAdObjective",
       this.props.data.existingPost === 0
-        ? "InstagramAdDesignExistingPost"
-        : "InstagramFeedAdDesign",
-      "InstagramFeedAdTargetting",
-      "InstagramAdPaymentReview",
+        ? "InstagramAutoPlaementAdDesignExistingPost"
+        : "InstagramAutoPlacementAdDesign",
+      "InstagramAutoPlacementAdTargetting",
+      "InstagramAutoPlacementAdPaymentReview",
     ]);
   };
   render() {
@@ -570,7 +570,7 @@ class InstagramAdPaymentReview extends Component {
                     } = this.formatAttributes();
                     const segmentInfo = {
                       campaign_channel: "instagram",
-                      campaign_ad_type: "InstagramFeedAd",
+                      campaign_ad_type: "InstagramAutoPlacementAd",
                       campaign_duration:
                         Math.ceil(
                           (new Date(this.props.data.end_time) -
@@ -608,7 +608,7 @@ class InstagramAdPaymentReview extends Component {
                       source: "ad_review",
                       source_action: `a_submit_ad_review`,
                       campaign_channel: "instagram",
-                      campaign_ad_type: "InstagramFeedAd",
+                      campaign_ad_type: "InstagramAutoPlacementAd",
                     });
                   }}
                   style={[styles.mainCard]}

@@ -491,7 +491,7 @@ class AdDesign extends Component {
       ) {
         const segmentInfo = {
           campaign_channel: "instagram",
-          campaign_ad_type: "InstagramFeedAd",
+          campaign_ad_type: "InstagramAutoPlacementAd",
           campaign_id: this.state.selectedCampaign.campaign_id,
           campaign_business_name: this.state.campaignInfo.brand_name,
           campaign_caption: this.state.campaignInfo.headline,
@@ -504,7 +504,7 @@ class AdDesign extends Component {
         };
         if (!this.props.loading) {
           await this.props.saveBrandMediaInstagram(
-            "InstagramFeedAdTargetting",
+            "InstagramAutoPlacementAdTargetting",
             this.state.formatted,
             this._getUploadState,
             this.onToggleModal,
@@ -514,7 +514,7 @@ class AdDesign extends Component {
           );
         }
       } else {
-        this.props.navigation.navigate("InstagramFeedAdTargetting", {
+        this.props.navigation.navigate("InstagramAutoPlacementAdTargetting", {
           source: "ad_design",
           source_action: "a_submit_ad_design",
         });
@@ -544,10 +544,10 @@ class AdDesign extends Component {
       source_action: "a_preview_ad",
       action_status: noError ? "success" : "failure",
       campaign_channel: "instagram",
-      campaign_ad_type: "InstagramFeedAd",
+      campaign_ad_type: "InstagramAutoPlacementAd",
     });
     if (noError) {
-      this.props.navigation.navigate("AdFeedDesignReview", {
+      this.props.navigation.navigate("AdAutoPlacementDesignReview", {
         source: "ad_objective",
         source_action: "a_preview_ad",
         rejected: this.rejected,
@@ -596,11 +596,15 @@ class AdDesign extends Component {
     );
   };
   onDidFocus = () => {
-    if (!this.props.currentCampaignSteps.includes("InstagramFeedAdDetails")) {
+    if (
+      !this.props.currentCampaignSteps.includes(
+        "InstagramAutoPlacementAdDetails"
+      )
+    ) {
       this.props.saveCampaignSteps([
         "Dashboard",
-        "InstagramFeedAdObjective",
-        "InstagramFeedAdDesign",
+        "InstagramAutoPlacementAdObjective",
+        "InstagramAutoPlacementAdDesign",
       ]);
     }
     const source = this.props.navigation.getParam(
@@ -615,7 +619,7 @@ class AdDesign extends Component {
       source,
       source_action,
       campaign_channel: "instagram",
-      campaign_ad_type: "InstagramFeedAd",
+      campaign_ad_type: "InstagramAutoPlacementAd",
       campaign_name: this.state.selectedCampaign.name,
       campaign_id: this.state.selectedCampaign.campaign_id,
       campaign_objective: this.state.selectedCampaign.objective,
@@ -814,7 +818,7 @@ class AdDesign extends Component {
                     translate={translate}
                     maxClickHeight={this.state.maxClickHeight}
                     setTheState={this.setTheState}
-                    adType={"InstagramFeedAd"}
+                    adType={"InstagramAutoPlacementAd"}
                     closeAnimation={this.state.closeAnimation}
                     rejected={this.rejected}
                     instagramObjectives={this.props.instagramObjectives}

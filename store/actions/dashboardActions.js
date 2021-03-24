@@ -398,8 +398,9 @@ export const getInstagramObjectiveList = () => {
           type: actionTypes.SET_INSTAGRAM_OBJECTIVE_LIST,
           payload:
             data.data && Object.keys(data.data).length > 0
-              ? data.data
-              : instagramObjectives,
+              ? instagramObjectives
+              : //   data.data
+                instagramObjectives,
         });
       })
       .catch((err) => {

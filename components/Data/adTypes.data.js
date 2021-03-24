@@ -191,8 +191,8 @@ export const instagramAds = [
     id: 3,
     mediaType: "instagram",
     text: "Create Your Ad Now!",
-    rout: "InstagramFeedAdObjective",
-    createRout: "InstagramFeedAdObjective",
+    rout: "InstagramAutoPlacementAdObjective",
+    createRout: "InstagramAutoPlacementAdObjective",
     title: "Automatic Placement",
     value: "InstagramAutoPlacementAd",
     media: require("../../assets/images/AdTypes/Instagram/InstagramFeedAd.svg")

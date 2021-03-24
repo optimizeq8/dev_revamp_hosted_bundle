@@ -64,8 +64,11 @@ class AdObjective extends Component {
     this.state = {
       campaignInfo: {
         ad_account_id: "",
-        name: `I_Feed_${parseInt(this.props.instafeedad) + 1}`,
-        objective: this.props.instagramObjectives["InstagramFeedAd"][0].value,
+        name: `I_Auto_Placement_${
+          parseInt(this.props.instaautoplacementad) + 1
+        }`,
+        objective: this.props.instagramObjectives["InstagramAutoPlacementAd"][0]
+          .value,
         start_time: "",
         end_time: "",
         existingPost: 0,
@@ -73,10 +76,11 @@ class AdObjective extends Component {
       minValueBudget: 0,
       maxValueBudget: 0,
       modalVisible: false,
-      objectiveLabel: this.props.instagramObjectives["InstagramFeedAd"][0]
-        .label,
+      objectiveLabel: this.props.instagramObjectives[
+        "InstagramAutoPlacementAd"
+      ][0].label,
       inputN: false,
-      objectives: this.props.instagramObjectives["InstagramFeedAd"],
+      objectives: this.props.instagramObjectives["InstagramAutoPlacementAd"],
       closedContinueModal: false,
       nameError: "",
       objectiveError: "",
@@ -97,7 +101,7 @@ class AdObjective extends Component {
     //     businessid: this.props.mainBusiness.businessid
     //   }
     // });
-    this.props.set_adType_instagram("InstagramFeedAd");
+    this.props.set_adType_instagram("InstagramAutoPlacementAd");
     this.setCampaignInfo();
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -117,7 +121,9 @@ class AdObjective extends Component {
     start_time.setDate(start_time.getDate() + 1);
     let end_time = new Date(start_time);
     end_time.setDate(end_time.getDate() + this.state.duration - 1);
-    const campaignName = `I_Feed_${parseInt(this.props.instafeedad) + 1}`;
+    const campaignName = `I_Auto_Placement_${
+      parseInt(this.props.instaautoplacementad) + 1
+    }`;
 
     if (
       this.props.data &&
@@ -137,7 +143,7 @@ class AdObjective extends Component {
             : campaignName,
         objective: this.props.data.objective
           ? this.props.data.objective
-          : this.props.instagramObjectives["InstagramFeedAd"][0].value,
+          : this.props.instagramObjectives["InstagramAutoPlacementAd"][0].value,
         start_time: this.props.data.start_time
           ? this.props.data.start_time
           : start_time.toISOString().split("T")[0],
@@ -152,7 +158,7 @@ class AdObjective extends Component {
         modalVisible: this.props.data.modalVisible,
         objectiveLabel: this.props.data.objectiveLabel
           ? this.props.data.objectiveLabel
-          : this.props.instagramObjectives["InstagramFeedAd"][0].label,
+          : this.props.instagramObjectives["InstagramAutoPlacementAd"][0].label,
         inputN: this.props.data.inputN,
         nameError: this.props.data.nameError,
         objectiveError: this.props.data.objectiveError,
@@ -167,7 +173,9 @@ class AdObjective extends Component {
           ad_account_id: this.props.mainBusiness.fb_ad_account_id,
           businessid: this.props.mainBusiness.businessid,
           name: campaignName,
-          objective: this.props.instagramObjectives["InstagramFeedAd"][0].value,
+          objective: this.props.instagramObjectives[
+            "InstagramAutoPlacementAd"
+          ][0].value,
           start_time: start_time.toISOString().split("T")[0],
           end_time: end_time.toISOString().split("T")[0],
           existingPost: 0,
@@ -176,8 +184,9 @@ class AdObjective extends Component {
         maxValueBudget: 0,
         duration: 7,
         modalVisible: false,
-        objectiveLabel: this.props.instagramObjectives["InstagramFeedAd"][0]
-          .label,
+        objectiveLabel: this.props.instagramObjectives[
+          "InstagramAutoPlacementAd"
+        ][0].label,
         inputN: false,
         nameError: "",
         objectiveError: "",
@@ -341,7 +350,10 @@ class AdObjective extends Component {
         this.props.resetCampaignInfo(false);
         this.props.set_adType_instagram(
           //Comes from choosing an adType from either the Dashboard or AdType screens
-          this.props.navigation.getParam("tempAdType", "InstagramFeedAd")
+          this.props.navigation.getParam(
+            "tempAdType",
+            "InstagramAutoPlacementAd"
+          )
         );
         this.props.save_campaign_info_instagram({
           reset: true,
@@ -359,7 +371,7 @@ class AdObjective extends Component {
         ...this.state.campaignInfo,
       });
       let info = {
-        campaign_type: "InstagramFeedAd",
+        campaign_type: "InstagramAutoPlacementAd",
         ...this.state.campaignInfo,
         duration: this.state.duration,
       };
@@ -374,8 +386,8 @@ class AdObjective extends Component {
             this.props.campaign_id !== "" ? this.props.campaign_id : 0,
         },
         this.state.campaignInfo.existingPost === 0
-          ? "InstagramAdDesignExistingPost"
-          : "InstagramFeedAdDesign",
+          ? "InstagramAutoPlacementAdDesignExistingPost"
+          : "InstagramAutoPlacementAdDesign",
         segmentInfo
       );
     } else {
@@ -481,16 +493,18 @@ class AdObjective extends Component {
     if (this.timer) clearTimeout(this.timer);
   };
   render() {
-    const list = this.props.instagramObjectives["InstagramFeedAd"].map((o) => (
-      <ObjectivesCard
-        choice={o}
-        // selected={this.state.campaignInfo.objective}
-        selected={this.state.objectiveLabel}
-        setObjective={this.setObjective}
-        key={o.label}
-        screenProps={this.props.screenProps}
-      />
-    ));
+    const list = this.props.instagramObjectives["InstagramAutoPlacementAd"].map(
+      (o) => (
+        <ObjectivesCard
+          choice={o}
+          // selected={this.state.campaignInfo.objective}
+          selected={this.state.objectiveLabel}
+          setObjective={this.setObjective}
+          key={o.label}
+          screenProps={this.props.screenProps}
+        />
+      )
+    );
     const { translate } = this.props.screenProps;
     return (
       <View style={styles.safeAreaView}>
@@ -512,7 +526,7 @@ class AdObjective extends Component {
               screenProps={this.props.screenProps}
               closeButton={false}
               segment={{
-                str: "Instagram Feed Ad Objective Back Button",
+                str: "Instagram Auto Placement Ad Objective Back Button",
                 obj: { businessname: this.props.mainBusiness.businessname },
                 source: "ad_objective",
                 source_action: "a_go_back",
@@ -520,7 +534,7 @@ class AdObjective extends Component {
               icon="instagram"
               actionButton={this.handleBackButton}
               currentScreen="Details"
-              title={"Instagram Feed"}
+              title={"Instagram Auto Placement"}
             />
 
             <ScrollView
@@ -668,7 +682,7 @@ class AdObjective extends Component {
         <ContinueCampaign
           tempAdType={this.props.navigation.getParam(
             "tempAdType",
-            "InstagramFeedAd"
+            "InstagramAutoPlacementAd"
           )}
           navigation={this.props.navigation}
           dateField={this.dateField}
@@ -732,7 +746,7 @@ const mapStateToProps = (state) => ({
   incompleteCampaign: state.instagramAds.incompleteCampaign,
   campaignProgressStarted: state.instagramAds.campaignProgressStarted,
   instagramObjectives: state.dashboard.instagramObjectives,
-  instafeedad: state.dashboard.instafeedad,
+  instaautoplacementad: state.dashboard.instaautoplacementad,
 });
 
 const mapDispatchToProps = (dispatch) => ({

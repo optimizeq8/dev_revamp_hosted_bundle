@@ -877,7 +877,7 @@ class InstagramFeedAdTargetting extends Component {
         source_action: "a_submit_ad_targeting",
         campaign_id: this.state.campaignInfo.campaign_id,
         campaign_channel: "instagram",
-        campaign_ad_type: "InstagramFeedAd",
+        campaign_ad_type: "InstagramAutoPlacementAd",
         error_description:
           countryRegionError ||
           validateWrapper(
@@ -963,7 +963,7 @@ class InstagramFeedAdTargetting extends Component {
       }
       rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
-        campaign_ad_type: "InstagramFeedAd",
+        campaign_ad_type: "InstagramAutoPlacementAd",
         campaign_id: this.props.campaign_id,
         campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
         campaign_gender:
@@ -1173,7 +1173,7 @@ class InstagramFeedAdTargetting extends Component {
       source: "audience_list",
       source_action: "a_create_audience_detail",
       audience_channel: "instagram",
-      audience_type: "InstagramFeedAdTargetting",
+      audience_type: "InstagramAutoPlacementAdTargetting",
     });
   };
   chooseExistingAudience = () => {
@@ -1661,7 +1661,7 @@ class InstagramFeedAdTargetting extends Component {
             screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
-              str: "Instagram Feed Ad Details Back Button",
+              str: "Instagram Auto Placement Ad Details Back Button",
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
@@ -1678,7 +1678,7 @@ class InstagramFeedAdTargetting extends Component {
             screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
-              str: "Instagram Feed Ad Details Back Button",
+              str: "Instagram Auto Placement Ad Details Back Button",
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
@@ -1734,7 +1734,7 @@ class InstagramFeedAdTargetting extends Component {
                         source,
                         source_action,
                         campaign_channel: "instagram",
-                        campaign_ad_type: "InstagramFeedAd",
+                        campaign_ad_type: "InstagramAutoPlacementAd",
                         campaign_existing_post:
                           this.props.data.existingPost === 0 ? true : false,
                         campaign_name: this.props.data.name,
@@ -1764,11 +1764,11 @@ class InstagramFeedAdTargetting extends Component {
                   ) {
                     this.props.saveCampaignSteps([
                       "Dashboard",
-                      "InstagramFeedAdObjective",
+                      "InstagramAutoPlacementAdObjective",
                       this.props.data.existingPost === 0
-                        ? "InstagramAdDesignExistingPost"
-                        : "InstagramFeedAdDesign",
-                      "InstagramFeedAdTargetting",
+                        ? "InstagramAutoPlacementAdDesignExistingPost"
+                        : "InstagramAutoPlacementAdDesign",
+                      "InstagramAutoPlacementAdTargetting",
                     ]);
                   }
                 }}
@@ -1941,7 +1941,7 @@ class InstagramFeedAdTargetting extends Component {
                       navigation={this.props.navigation}
                       chooseExistingAudience={this.chooseExistingAudience}
                       setSelectedAudience={this.setSelectedAudience}
-                      audience_type={"InstagramFeedAdTargetting"}
+                      audience_type={"InstagramAutoPlacementAdTargetting"}
                     />
                   )}
                   <ReachBar
