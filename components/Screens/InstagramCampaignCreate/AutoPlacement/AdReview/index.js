@@ -164,8 +164,7 @@ class AdFeedDesignReview extends React.Component {
               width={RFValue(16, 414)}
               height={RFValue(16, 414)}
               source={{
-                uri:
-                  "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-19/s150x150/90706392_196909181609127_2297844259690119168_n.jpg?tp=1&_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_ohc=L9FaT_r6JzkAX_xR8Gg&ccb=7-4&oh=5cfb3606e53ae27a67d0a5c7f95274ca&oe=6087FE5C&_nc_sid=7bff83https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-19/s150x150/90706392_196909181609127_2297844259690119168_n.jpg?tp=1&_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_ohc=L9FaT_r6JzkAX_xR8Gg&ccb=7-4&oh=5cfb3606e53ae27a67d0a5c7f95274ca&oe=6087FE5C&_nc_sid=7bff83",
+                uri: instagram_profile_pic,
               }}
             />
             <View style={styles.detailProfileView}>
@@ -252,8 +251,7 @@ class AdFeedDesignReview extends React.Component {
               width={RFValue(16, 414)}
               height={RFValue(16, 414)}
               source={{
-                uri:
-                  "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-19/s150x150/90706392_196909181609127_2297844259690119168_n.jpg?tp=1&_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_ohc=L9FaT_r6JzkAX_xR8Gg&ccb=7-4&oh=5cfb3606e53ae27a67d0a5c7f95274ca&oe=6087FE5C&_nc_sid=7bff83",
+                uri: instagram_profile_pic,
               }}
             />
             <View style={styles.detailProfileView}>
