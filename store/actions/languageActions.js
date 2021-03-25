@@ -35,8 +35,8 @@ export const getLanguageListPOEdit = (language) => {
               api_token: "12aec028da2333797aaaa1768d444fb9",
               id: "283545",
               language,
-            },
-            { timeout: 10000 }
+            }
+            // { timeout: 20000 }
           )
         )
         .then((response) => response.data)

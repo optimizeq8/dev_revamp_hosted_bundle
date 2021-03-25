@@ -5,6 +5,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { Transition } from "react-navigation-fluid-transitions";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { widthPercentageToDP } from "react-native-responsive-screen";
+import { ProgressBar } from "react-native-paper";
 
 import VideoPlayer from "../../../../MiniComponents/VideoPlayer";
 import CustomHeader from "../../../../MiniComponents/Header";
@@ -20,6 +21,9 @@ import ArchiveOutline from "../../../../../assets/SVGs/ArchiveOutline";
 import CommentOutline from "../../../../../assets/SVGs/CommentOutline";
 import SendArrowOutline from "../../../../../assets/SVGs/SendArrowOutline";
 import HeartOutline from "../../../../../assets/SVGs/HeartOutline";
+
+import ArrowUp from "../../../../../assets/SVGs/ArrowUp";
+import Close from "../../../../../assets/SVGs/Close";
 import HeartFilled from "../../../../../assets/SVGs/HeartFilled";
 import ArrowBlueForward from "../../../../../assets/SVGs/ArrowBlueForward";
 import globalStyles, { globalColors } from "../../../../../GlobalStyles";
@@ -30,7 +34,16 @@ class AdFeedDesignReview extends React.Component {
   state = {
     isVideoLoading: false,
     activeSlide: 0,
+    activeSlideMain: 0,
     AP: 1 / 1,
+    reviewSlides: [
+      {
+        id: "feed",
+      },
+      {
+        id: "story",
+      },
+    ],
   };
   videoIsLoading = (value) => {
     this.setState({
@@ -85,7 +98,8 @@ class AdFeedDesignReview extends React.Component {
     }
     return mediaView;
   };
-  render() {
+  SlideMain = ({ item }) => {
+    let view = null;
     let campaignDetails = this.props.navigation.getParam(
       "campaignDetails",
       false
@@ -94,7 +108,7 @@ class AdFeedDesignReview extends React.Component {
     let {
       instagram_business_name,
       instagram_profile_pic,
-      message,
+      message = "",
       call_to_action,
       media_type,
       media_option = "single",
@@ -106,6 +120,7 @@ class AdFeedDesignReview extends React.Component {
       : this.props.navigation.state.params;
     const { translate } = this.props.screenProps;
     let mediaView = null;
+
     if (media_option === "single") {
       if (media_type === "IMAGE" && media) {
         mediaView = (
@@ -119,7 +134,11 @@ class AdFeedDesignReview extends React.Component {
       }
       if (media_type === "VIDEO" && media) {
         mediaView = (
-          <VideoPlayer media={media} videoIsLoading={this.videoIsLoading} />
+          <VideoPlayer
+            isMuted={false}
+            media={media}
+            videoIsLoading={this.videoIsLoading}
+          />
         );
       }
     } else if (media_option === "carousel") {
@@ -135,7 +154,184 @@ class AdFeedDesignReview extends React.Component {
         />
       );
     }
+    const { id } = item;
+    if (id === "feed") {
+      view = (
+        <View style={styles.container}>
+          <View style={styles.profilePicView}>
+            <Image
+              style={{ borderRadius: 20 }}
+              width={RFValue(16, 414)}
+              height={RFValue(16, 414)}
+              source={{
+                uri:
+                  "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-19/s150x150/90706392_196909181609127_2297844259690119168_n.jpg?tp=1&_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_ohc=L9FaT_r6JzkAX_xR8Gg&ccb=7-4&oh=5cfb3606e53ae27a67d0a5c7f95274ca&oe=6087FE5C&_nc_sid=7bff83https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-19/s150x150/90706392_196909181609127_2297844259690119168_n.jpg?tp=1&_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_ohc=L9FaT_r6JzkAX_xR8Gg&ccb=7-4&oh=5cfb3606e53ae27a67d0a5c7f95274ca&oe=6087FE5C&_nc_sid=7bff83",
+              }}
+            />
+            <View style={styles.detailProfileView}>
+              <Text style={styles.instagramBusinessName}>
+                {instagram_business_name}
+              </Text>
+              <Text style={styles.sponsoredText}>{translate("Sponsored")}</Text>
+            </View>
+            <View style={styles.dotView}>
+              <Text style={styles.dot}>.</Text>
+              <Text style={styles.dot}>.</Text>
+              <Text style={styles.dot}>.</Text>
+            </View>
+          </View>
+          <View
+            style={[styles.mediaView, { aspectRatio: this.state.AP || 1 / 1 }]}
+          >
+            {mediaView}
+          </View>
+          {(call_to_action.value || call_to_action) !== "BLANK" && (
+            <View style={styles.swipeUpView}>
+              <Text style={styles.callToActionText}>
+                {call_to_action && call_to_action.hasOwnProperty("label")
+                  ? translate(call_to_action.label)
+                  : translate(call_to_action.replace(/_/gi, " "))}
+              </Text>
+              <ArrowBlueForward
+                style={[styles.icon, styles.archiveIcon, styles.forwadIcon]}
+              />
+            </View>
+          )}
+          <View style={styles.iconView}>
+            <HeartOutline style={styles.icon} />
+            <CommentOutline style={styles.icon} />
+            <SendArrowOutline style={styles.icon} />
+            {media_option === "carousel" && (
+              <Pagination
+                containerStyle={styles.paginationContainerStyle}
+                dotsLength={carouselAdsArray.length}
+                activeDotIndex={this.state.activeSlide}
+                dotStyle={styles.paginationDotStyle}
+                dotColor={"#0095f6"}
+                inactiveDotColor={"rgba(0, 0, 0, 0.2)"}
+                inactiveDotOpacity={1}
+                inactiveDotScale={1}
+              />
+            )}
+            <ArchiveOutline style={[styles.icon, styles.archiveIcon]} />
+          </View>
+          {/* <View style={styles.likeView}>
+              <HeartFilled style={styles.icon} /> */}
+          <Text style={[styles.likeView, styles.likeText]}>508 likes</Text>
+          {/* </View> */}
+          <Text style={styles.businessNameText}>
+            {instagram_business_name}
+            <Text style={styles.captionText}>
+              {` `}
+              {message}
+            </Text>
+          </Text>
+        </View>
+      );
+    }
+    if (id === "story") {
+      view = (
+        <View
+          style={[
+            styles.container,
+            styles.storyContainer,
+            {
+              backgroundColor: "rgba(0,0,0,0.16)",
+            },
+          ]}
+        >
+          <ProgressBar
+            progress={0.3}
+            color={"#FFF"}
+            indeterminate
+            style={styles.progressBar}
+          />
+          <View style={styles.profilePicView}>
+            <Image
+              style={styles.profileImage}
+              width={RFValue(16, 414)}
+              height={RFValue(16, 414)}
+              source={{
+                uri:
+                  "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-19/s150x150/90706392_196909181609127_2297844259690119168_n.jpg?tp=1&_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_ohc=L9FaT_r6JzkAX_xR8Gg&ccb=7-4&oh=5cfb3606e53ae27a67d0a5c7f95274ca&oe=6087FE5C&_nc_sid=7bff83",
+              }}
+            />
+            <View style={styles.detailProfileView}>
+              <Text
+                style={[
+                  styles.instagramBusinessName,
+                  globalStyles.whiteTextColor,
+                ]}
+              >
+                {instagram_business_name}
+              </Text>
+              <Text style={[styles.sponsoredText, globalStyles.whiteTextColor]}>
+                {translate("Sponsored")}
+              </Text>
+            </View>
+            <Close width={15} height={15} style={styles.closeIcon} />
+          </View>
+          <View
+            style={[
+              {
+                aspectRatio: this.state.AP || 1 / 1,
+                top:
+                  this.state.AP.toFixed(2) === (4 / 5).toFixed(2)
+                    ? "10%"
+                    : this.state.AP.toFixed(2) === (16 / 9).toFixed(2)
+                    ? "25%"
+                    : "15%",
+              },
+            ]}
+          >
+            {mediaView}
 
+            <Text
+              style={[
+                {
+                  backgroundColor: message.length > 0 ? "#000" : "#0000",
+                },
+                styles.storyCaption,
+              ]}
+              numberOfLines={1}
+            >
+              {message}
+            </Text>
+            {message.length >= 10 && (
+              <Text style={[styles.moreText]} numberOfLines={1}>
+                more
+              </Text>
+            )}
+          </View>
+          <View style={styles.callToActionView}>
+            {call_to_action && call_to_action.value !== "BLANK" && (
+              <View style={[styles.swipeUpView, styles.swipeUpViewStory]}>
+                <ArrowUp stroke={"#FFFF"} />
+
+                <Text
+                  style={[
+                    styles.callToActionText,
+                    styles.callToActionTextStory,
+                  ]}
+                >
+                  {call_to_action && call_to_action.label
+                    ? call_to_action.label
+                    : call_to_action.replace(/_/gi, " ")}
+                </Text>
+              </View>
+            )}
+            <View style={[styles.dotView, { flexDirection: "row" }]}>
+              <Text style={[styles.dot, globalStyles.whiteTextColor]}>.</Text>
+              <Text style={[styles.dot, globalStyles.whiteTextColor]}>.</Text>
+              <Text style={[styles.dot, globalStyles.whiteTextColor]}>.</Text>
+            </View>
+          </View>
+        </View>
+      );
+    }
+    return view;
+  };
+  render() {
     return (
       <Transition style={{ height: "100%" }} shared="image">
         <View>
@@ -147,7 +343,11 @@ class AdFeedDesignReview extends React.Component {
             screenProps={this.props.screenProps}
             closeButton={true}
             navigation={this.props.navigation}
-            title={"Preview"}
+            title={
+              this.state.activeSlideMain === 0
+                ? "Feed / Explore Preview"
+                : "Story Preview"
+            }
             segment={{
               source: "ad_preview",
               source_action: "a_go_back",
@@ -158,80 +358,24 @@ class AdFeedDesignReview extends React.Component {
             locations={[1, 0.3]}
             style={globalStyles.gradient}
           />
-          <View style={styles.container}>
-            <View style={styles.profilePicView}>
-              <Image
-                style={{ borderRadius: 20 }}
-                width={RFValue(16, 414)}
-                height={RFValue(16, 414)}
-                source={{
-                  uri: instagram_profile_pic,
-                }}
-              />
-              <View style={styles.detailProfileView}>
-                <Text style={styles.instagramBusinessName}>
-                  {instagram_business_name}
-                </Text>
-                <Text style={styles.sponsoredText}>
-                  {translate("Sponsored")}
-                </Text>
-              </View>
-              <View style={styles.dotView}>
-                <Text style={styles.dot}>.</Text>
-                <Text style={styles.dot}>.</Text>
-                <Text style={styles.dot}>.</Text>
-              </View>
-            </View>
-            <View
-              style={[
-                styles.mediaView,
-                { aspectRatio: this.state.AP || 1 / 1 },
-              ]}
-            >
-              {mediaView}
-            </View>
-            {(call_to_action.value || call_to_action) !== "BLANK" && (
-              <View style={styles.swipeUpView}>
-                <Text style={styles.callToActionText}>
-                  {call_to_action && call_to_action.hasOwnProperty("label")
-                    ? translate(call_to_action.label)
-                    : translate(call_to_action.replace(/_/gi, " "))}
-                </Text>
-                <ArrowBlueForward
-                  style={[styles.icon, styles.archiveIcon, styles.forwadIcon]}
-                />
-              </View>
-            )}
-            <View style={styles.iconView}>
-              <HeartOutline style={styles.icon} />
-              <CommentOutline style={styles.icon} />
-              <SendArrowOutline style={styles.icon} />
-              {media_option === "carousel" && (
-                <Pagination
-                  containerStyle={styles.paginationContainerStyle}
-                  dotsLength={carouselAdsArray.length}
-                  activeDotIndex={this.state.activeSlide}
-                  dotStyle={styles.paginationDotStyle}
-                  dotColor={"#0095f6"}
-                  inactiveDotColor={"rgba(0, 0, 0, 0.2)"}
-                  inactiveDotOpacity={1}
-                  inactiveDotScale={1}
-                />
-              )}
-              <ArchiveOutline style={[styles.icon, styles.archiveIcon]} />
-            </View>
-            {/* <View style={styles.likeView}>
-              <HeartFilled style={styles.icon} /> */}
-            <Text style={[styles.likeView, styles.likeText]}>508 likes</Text>
-            {/* </View> */}
-            <Text style={styles.businessNameText}>
-              {instagram_business_name}
-              <Text style={styles.captionText}>
-                {` `}
-                {message}
-              </Text>
-            </Text>
-          </View>
+          <Pagination
+            containerStyle={styles.paginationContainerStyle1}
+            dotsLength={2}
+            activeDotIndex={this.state.activeSlideMain}
+            // dotStyle={styles.paginationDotStyle1}
+            dotColor={globalColors.orange}
+            inactiveDotColor={"rgba(0, 0, 0, 0.2)"}
+            inactiveDotOpacity={1}
+            inactiveDotScale={1}
+          />
+          <Carousel
+            firstItem={0}
+            onSnapToItem={(index) => this.setState({ activeSlideMain: index })}
+            data={this.state.reviewSlides}
+            renderItem={this.SlideMain}
+            sliderWidth={widthPercentageToDP(100)}
+            itemWidth={widthPercentageToDP(100)}
+          />
         </View>
       </Transition>
     );

@@ -200,21 +200,21 @@ export const instagramAds = [
     icon: AdIcons.InstagramFeed,
     channelIcon: Instagram,
     image: InstagramFeedAd,
-    description: " ",
-    //   "Feed Ads show up on the main page of Instagram among posts belonging to users followed accounts, blending in with user created content in a form of a single photo, a single video, or a carousel",
+    description:
+      "Your ads will automatically be shown to your audience in the places they're likely to perform best",
     suitableFor: [
-      //   {
-      //     icon: Mortgage,
-      //     name: "Home Businesses",
-      //   },
-      //   {
-      //     icon: Hand,
-      //     name: "Service Providers",
-      //   },
-      //   {
-      //     icon: StartUp,
-      //     name: "Startups & SMEs",
-      //   },
+      {
+        icon: Mortgage,
+        name: "Home Businesses",
+      },
+      {
+        icon: Hand,
+        name: "Service Providers",
+      },
+      {
+        icon: StartUp,
+        name: "Startups & SMEs",
+      },
     ],
   },
 ];

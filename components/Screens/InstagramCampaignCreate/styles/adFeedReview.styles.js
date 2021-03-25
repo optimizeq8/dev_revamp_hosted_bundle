@@ -157,6 +157,10 @@ const styles = StyleSheet.create({
     // marginHorizontal: "-20%",
     width: RFValue(3, 414),
   },
+  paginationContainerStyle1: {
+    marginTop: RFValue(-15, 414),
+    marginBottom: RFValue(-7.5, 414),
+  },
   callToActionView: {
     display: "flex",
     flexDirection: "row",
@@ -189,5 +193,25 @@ const styles = StyleSheet.create({
   },
   progressBar: { marginHorizontal: RFValue(5, 414) },
   profileImage: { borderRadius: RFValue(10, 414) },
+  storyCaption: {
+    color: globalColors.white,
+    fontSize: RFValue(8, 414),
+    fontFamily: "montserrat-bold",
+    textAlign: "center",
+    alignSelf: "center",
+    marginTop: RFValue(15, 414),
+    marginHorizontal: RFValue(15, 414),
+  },
+  moreText: {
+    backgroundColor: "#000",
+    color: globalColors.white,
+    fontSize: RFValue(8, 414),
+    fontFamily: "montserrat-bold",
+    textAlign: "center",
+    alignSelf: "center",
+    marginHorizontal: RFValue(15, 414),
+    paddingHorizontal: RFValue(5, 414),
+    textDecorationLine: "underline",
+  },
 });
 export default styles;
