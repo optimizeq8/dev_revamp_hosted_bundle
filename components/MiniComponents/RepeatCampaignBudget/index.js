@@ -1,7 +1,7 @@
 import analytics from "@segment/analytics-react-native";
 import { Row } from "native-base";
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { Platform, Text, View } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import { RFValue } from "react-native-responsive-fontsize";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
@@ -35,6 +35,56 @@ class RepeatCampaignBudget extends Component {
   };
   componentDidMount() {
     this.props.get_languages();
+
+    let duration = 7;
+    let prevCampaignIsInstagram = this.props.campaign.channel === "instagram";
+    let repeatingCampaginData = prevCampaignIsInstagram
+      ? this.props.repeatingInstaCampaginData
+      : this.props.repeatingCampaginData;
+
+    let prevTargeting = { geos: [] };
+    let recBudget = prevTargeting.geos.length * 75;
+    let minValueBudget = 25 * prevTargeting.geos.length;
+    if (repeatingCampaginData && repeatingCampaginData.campaign_id) {
+      if (repeatingCampaginData.hasOwnProperty("campaign_id")) {
+        duration = repeatingCampaginData.duration;
+        prevTargeting = repeatingCampaginData.targeting;
+        if (prevCampaignIsInstagram) {
+          recBudget = prevTargeting.geo_locations.countries.length * 75;
+          minValueBudget = 25 * prevTargeting.geo_locations.countries.length;
+        } else {
+          recBudget = prevTargeting.geos.length * 75;
+          minValueBudget = 25 * prevTargeting.geos.length;
+        }
+      } else {
+        duration = Math.round(
+          Math.abs(
+            (new Date(this.props.start_time).getTime() -
+              new Date(this.props.end_time).getTime()) /
+              86400000
+          ) + 1
+        );
+      }
+
+      this.setState(
+        {
+          repeatingCampaginData,
+          lifetime_budget_micro: recBudget * 2,
+          value: this.formatNumber(recBudget * 2, true),
+          recBudget: recBudget,
+          duration,
+          minValueBudget,
+          prevCampaignIsInstagram,
+          budgetOption: 1,
+        },
+        () => {
+          if (repeatingCampaginData.hasOwnProperty("campaign_id"))
+            !prevCampaignIsInstagram
+              ? this._calcSnapReach(repeatingCampaginData)
+              : this._calcInstaReach(repeatingCampaginData);
+        }
+      );
+    }
   }
   componentDidUpdate(prevProps) {
     let duration = 7;
@@ -85,6 +135,7 @@ class RepeatCampaignBudget extends Component {
           duration,
           minValueBudget,
           prevCampaignIsInstagram,
+          budgetOption: 1,
         },
         () => {
           if (repeatingCampaginData.hasOwnProperty("campaign_id"))
@@ -406,7 +457,10 @@ class RepeatCampaignBudget extends Component {
           <ReachBar
             campaignInfo={campaign}
             screenProps={this.props.screenProps}
-            customContainerStyle={{ bottom: -50 }}
+            customContainerStyle={{
+              bottom: Platform.OS === "ios" ? -30 : 15,
+              height: "40%",
+            }}
           />
         )}
         {(
