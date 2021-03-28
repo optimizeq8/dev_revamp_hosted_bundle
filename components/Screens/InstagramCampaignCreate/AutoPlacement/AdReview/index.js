@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, FlatList } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 import { RFValue } from "react-native-responsive-fontsize";
 import { Transition } from "react-navigation-fluid-transitions";
@@ -29,6 +29,7 @@ import ArrowBlueForward from "../../../../../assets/SVGs/ArrowBlueForward";
 import globalStyles, { globalColors } from "../../../../../GlobalStyles";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../../../GradiantColors/colors";
+import { cloneDeep } from "lodash";
 
 class AdFeedDesignReview extends React.Component {
   state = {
@@ -36,6 +37,7 @@ class AdFeedDesignReview extends React.Component {
     activeSlide: 0,
     activeSlideMain: 0,
     AP: 1 / 1,
+    height: [],
     reviewSlides: [
       {
         id: "feed",
@@ -63,28 +65,52 @@ class AdFeedDesignReview extends React.Component {
         ? this.props.instaRejCampaign
         : this.props.data
       : this.props.navigation.state.params;
-    if (data.media) {
+    if (
+      data.media_option === "single" &&
+      data.media &&
+      data.media_type === "IMAGE"
+    ) {
       Image.getSize(data.media, (width, height) => {
         this.setState({
-          AP: width / height,
+          AP: (width / height).toFixed(2),
+          height: height,
         });
       });
     }
   }
+  onReadyForDisplay = ({ naturalSize }) => {
+    const { width, height } = naturalSize;
+    let AP = (width / height).toFixed(2);
+    this.setState({ AP });
+  };
 
   Slide = ({ item }) => {
+    // console.log("item", item);
     let mediaView = null;
     const { id, media, media_type } = item;
     if (media_type === "IMAGE" && media) {
+      Image.getSize(media, (width, height) => {
+        let heights = cloneDeep(this.state.height);
+        if (!heights[id]) {
+          heights[id] = height;
+          this.setState({
+            height: heights,
+          });
+        }
+      });
       mediaView = (
-        <View key={id}>
-          <Image
-            style={styles.imagePreview}
-            source={{
-              uri: media,
-            }}
-          />
-        </View>
+        <Image
+          key={id}
+          style={[
+            styles.imagePreview,
+            {
+              height: this.state.height[id],
+            },
+          ]}
+          source={{
+            uri: media,
+          }}
+        />
       );
     }
     if (media_type === "VIDEO" && media) {
@@ -93,9 +119,12 @@ class AdFeedDesignReview extends React.Component {
           key={id}
           media={media}
           videoIsLoading={this.videoIsLoading}
+          isMuted={false}
+          onReadyForDisplay={this.onReadyForDisplay}
         />
       );
     }
+
     return mediaView;
   };
   SlideMain = ({ item }) => {
@@ -135,6 +164,7 @@ class AdFeedDesignReview extends React.Component {
       if (media_type === "VIDEO" && media) {
         mediaView = (
           <VideoPlayer
+            onReadyForDisplay={this.onReadyForDisplay}
             isMuted={false}
             media={media}
             videoIsLoading={this.videoIsLoading}
@@ -144,15 +174,33 @@ class AdFeedDesignReview extends React.Component {
     } else if (media_option === "carousel") {
       var carouselAdsArray = this.getCarouselMedia();
       mediaView = (
-        <Carousel
-          firstItem={0}
-          onSnapToItem={(index) => this.setState({ activeSlide: index })}
+        <FlatList
           data={carouselAdsArray}
           renderItem={this.Slide}
-          sliderWidth={widthPercentageToDP(90)}
-          itemWidth={widthPercentageToDP(90)}
+          horizontal
+          style={{
+            width: widthPercentageToDP(90),
+            height: "100%",
+            overflow: "hidden",
+          }}
+          contentContainerStyle={{
+            width: widthPercentageToDP(90),
+            height: "100%",
+          }}
         />
       );
+
+      //   mediaView = (
+      //     <Carousel
+      //       horizontal
+      //       firstItem={0}
+      //       onSnapToItem={(index) => this.setState({ activeSlide: index })}
+      //       data={carouselAdsArray}
+      //       renderItem={this.Slide}
+      //       sliderWidth={widthPercentageToDP(90)}
+      //       itemWidth={widthPercentageToDP(90)}
+      //     />
+      //   );
     }
     const { id } = item;
     if (id === "feed") {
@@ -180,7 +228,10 @@ class AdFeedDesignReview extends React.Component {
             </View>
           </View>
           <View
-            style={[styles.mediaView, { aspectRatio: this.state.AP || 1 / 1 }]}
+            style={[
+              styles.mediaView,
+              { aspectRatio: parseFloat(this.state.AP) || 1 / 1 },
+            ]}
           >
             {mediaView}
           </View>
@@ -272,11 +323,11 @@ class AdFeedDesignReview extends React.Component {
           <View
             style={[
               {
-                aspectRatio: this.state.AP || 1 / 1,
+                aspectRatio: parseFloat(this.state.AP) || 1 / 1,
                 top:
-                  this.state.AP.toFixed(2) === (4 / 5).toFixed(2)
+                  parseFloat(this.state.AP) === 4 / 5
                     ? "10%"
-                    : this.state.AP.toFixed(2) === (16 / 9).toFixed(2)
+                    : parseFloat(this.state.AP) === 16 / 9
                     ? "25%"
                     : "15%",
               },

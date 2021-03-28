@@ -75,6 +75,7 @@ class InstagramAdDesignExistingPost extends Component {
         message: "",
         media_type: "",
       },
+      AP: 1 / 1,
       showPreview: false,
       media_type: "",
       fileReadyToUpload: false,
@@ -609,6 +610,21 @@ class InstagramAdDesignExistingPost extends Component {
       maxClickHeight: event.nativeEvent.layout.height,
     });
   };
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.campaignInfo.media !== this.state.campaignInfo.media) {
+      if (this.state.campaignInfo.media_type === "IMAGE")
+        RNImage.getSize(this.state.campaignInfo.media, (width, height) => {
+          this.setState({
+            AP: (width / height).toFixed(2),
+          });
+        });
+    }
+  }
+  onReadyForDisplay = ({ naturalSize }) => {
+    const { width, height } = naturalSize;
+    let AP = (width / height).toFixed(2);
+    this.setState({ AP });
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -723,7 +739,15 @@ class InstagramAdDesignExistingPost extends Component {
                   <Text style={previewStyles.dot}>.</Text>
                 </View>
               </View>
-              <View style={previewStyles.mediaViewExist}>
+              <View
+                style={[
+                  previewStyles.mediaViewExist,
+                  {
+                    aspectRatio: parseFloat(this.state.AP),
+                  },
+                ]}
+                // onLayout={this.setHeight}
+              >
                 {this.state.media_type === "IMAGE" ? (
                   <RNImage
                     style={previewStyles.imagePreview}
@@ -733,6 +757,7 @@ class InstagramAdDesignExistingPost extends Component {
                   />
                 ) : (
                   <VideoPlayer
+                    onReadyForDisplay={this.onReadyForDisplay}
                     shouldPlay={true}
                     media={media}
                     isMuted={false}

@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   mediaViewExist: {
-    height: hp(30),
+    // height: hp(30),
     width: "100%",
   },
   forwadIcon: {
