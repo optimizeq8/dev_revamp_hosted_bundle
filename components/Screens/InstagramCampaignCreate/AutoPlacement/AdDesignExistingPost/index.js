@@ -16,6 +16,9 @@ import analytics from "@segment/analytics-react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
+import Carousel, { Pagination } from "react-native-snap-carousel";
+import { widthPercentageToDP } from "react-native-responsive-screen";
+import { ProgressBar } from "react-native-paper";
 
 import { Transition } from "react-navigation-fluid-transitions";
 import { showMessage } from "react-native-flash-message";
@@ -51,6 +54,7 @@ import SendArrowOutline from "../../../../../assets/SVGs/SendArrowOutline";
 import HeartOutline from "../../../../../assets/SVGs/HeartOutline";
 import ArrowUp from "../../../../../assets/SVGs/ArrowUp";
 import ArrowBlueForward from "../../../../../assets/SVGs/ArrowBlueForward";
+import Close from "../../../../../assets/SVGs/Close";
 
 import globalStyles, { globalColors } from "../../../../../GlobalStyles";
 import AnimatedCircularProgress from "../../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
@@ -109,6 +113,15 @@ class InstagramAdDesignExistingPost extends Component {
       maxClickHeight: 0,
       swipeUpExpanded: false,
       closeAnimation: false,
+      reviewSlides: [
+        {
+          id: "feed",
+        },
+        {
+          id: "story",
+        },
+      ],
+      activeSlideMain: 0,
     };
   }
   componentWillUnmount() {
@@ -625,6 +638,301 @@ class InstagramAdDesignExistingPost extends Component {
     let AP = (width / height).toFixed(2);
     this.setState({ AP });
   };
+  SlideMain = ({ item }) => {
+    let view = null;
+    let campaignDetails = this.props.navigation.getParam(
+      "campaignDetails",
+      false
+    );
+    let rejected = this.props.navigation.getParam("rejected", false);
+    let {
+      instagram_business_name,
+      instagram_profile_pic,
+      message = "",
+      call_to_action,
+      media_type,
+      media_option = "single",
+      media = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+    } = !campaignDetails
+      ? !rejected
+        ? this.props.data
+        : this.props.instaRejCampaign
+      : this.props.navigation.state.params;
+    const { translate } = this.props.screenProps;
+    let mediaView = null;
+
+    if (media_option === "single") {
+      if (media_type === "IMAGE" && media) {
+        mediaView = (
+          <RNImage
+            style={previewStyles.imagePreview}
+            source={{
+              uri: media,
+            }}
+          />
+        );
+      }
+      if (media_type === "VIDEO" && media) {
+        mediaView = (
+          <VideoPlayer
+            onReadyForDisplay={this.onReadyForDisplay}
+            isMuted={false}
+            media={media}
+            videoIsLoading={this.videoIsLoading}
+          />
+        );
+      }
+    } else if (media_option === "carousel") {
+      var carouselAdsArray = this.getCarouselMedia();
+      mediaView = (
+        <FlatList
+          data={carouselAdsArray}
+          renderItem={this.Slide}
+          horizontal
+          style={{
+            width: widthPercentageToDP(90),
+            height: "100%",
+            overflow: "hidden",
+          }}
+          contentContainerStyle={{
+            width: widthPercentageToDP(90),
+            height: "100%",
+          }}
+        />
+      );
+
+      //   mediaView = (
+      //     <Carousel
+      //       horizontal
+      //       firstItem={0}
+      //       onSnapToItem={(index) => this.setState({ activeSlide: index })}
+      //       data={carouselAdsArray}
+      //       renderItem={this.Slide}
+      //       sliderWidth={widthPercentageToDP(90)}
+      //       itemWidth={widthPercentageToDP(90)}
+      //     />
+      //   );
+    }
+    const { id } = item;
+    if (id === "feed") {
+      view = (
+        <View
+          style={[previewStyles.container, existPostStyles.container]}
+          onLayout={this.setMaxClickHeight}
+        >
+          <View style={previewStyles.profilePicView}>
+            <RNImage
+              style={{ borderRadius: 20 }}
+              width={32}
+              height={32}
+              source={{
+                uri: this.state.campaignInfo.instagram_profile_pic,
+              }}
+            />
+            <View style={previewStyles.detailProfileView}>
+              <Text style={previewStyles.instagramBusinessName}>
+                {this.state.campaignInfo.instagram_business_name}
+              </Text>
+              <Text style={previewStyles.sponsoredText}>
+                {translate("Sponsored")}
+              </Text>
+            </View>
+            <View style={previewStyles.dotView}>
+              <Text style={previewStyles.dot}>.</Text>
+              <Text style={previewStyles.dot}>.</Text>
+              <Text style={previewStyles.dot}>.</Text>
+            </View>
+          </View>
+          <View
+            style={[
+              previewStyles.mediaViewExist,
+              {
+                aspectRatio: parseFloat(this.state.AP),
+              },
+            ]}
+            // onLayout={this.setHeight}
+          >
+            {this.state.media_type === "IMAGE" ? (
+              <RNImage
+                style={previewStyles.imagePreview}
+                source={{
+                  uri: this.state.campaignInfo.media,
+                }}
+              />
+            ) : (
+              <VideoPlayer
+                onReadyForDisplay={this.onReadyForDisplay}
+                shouldPlay={true}
+                media={media}
+                isMuted={false}
+              />
+            )}
+          </View>
+          {this.props.data &&
+            this.props.data.call_to_action &&
+            this.props.data.call_to_action.value &&
+            this.props.data.call_to_action !== "BLANK" &&
+            this.props.data.call_to_action.value !== "BLANK" && (
+              <View style={previewStyles.swipeUpView}>
+                <Text style={previewStyles.callToActionText}>
+                  {this.props.data.call_to_action.hasOwnProperty("label")
+                    ? translate(this.props.data.call_to_action.label)
+                    : translate(
+                        this.props.data.call_to_action.replace("_", " ")
+                      )}
+                </Text>
+                <ArrowBlueForward
+                  style={[
+                    previewStyles.icon,
+                    previewStyles.archiveIcon,
+                    previewStyles.forwadIcon,
+                  ]}
+                />
+              </View>
+            )}
+          <View style={previewStyles.iconView}>
+            <HeartOutline style={previewStyles.icon} />
+            <CommentOutline style={previewStyles.icon} />
+            <SendArrowOutline style={previewStyles.icon} />
+            {/* {this.state.media_option === "carousel" && (
+                <Pagination
+                  containerStyle={previewStyles.paginationContainerStyle}
+                  dotsLength={carouselAdsArray.length}
+                  activeDotIndex={this.state.activeSlide}
+                  dotStyle={previewStyles.paginationDotStyle}
+                  dotColor={"#0095f6"}
+                  inactiveDotColor={"rgba(0, 0, 0, 0.2)"}
+                  inactiveDotOpacity={1}
+                  inactiveDotScale={1}
+                />
+              )} */}
+            <ArchiveOutline
+              style={[previewStyles.icon, previewStyles.archiveIcon]}
+            />
+          </View>
+          {/* <View style={previewStyles.likeView}>
+              <HeartFilled style={previewStyles.icon} /> */}
+          <Text style={[previewStyles.likeView, previewStyles.likeText]}>
+            508 likes
+          </Text>
+          {/* </View> */}
+          <Text
+            style={[
+              previewStyles.businessNameText,
+              previewStyles.captionTextExist,
+            ]}
+            numberOfLines={2}
+          >
+            {this.state.campaignInfo.instagram_business_name}
+
+            <Text style={[previewStyles.captionText]}>
+              {` `}
+              {this.state.campaignInfo.message}
+            </Text>
+          </Text>
+        </View>
+      );
+    }
+    if (id === "story") {
+      view = (
+        <View
+          style={[
+            previewStyles.container,
+            previewStyles.storyContainer,
+            {
+              backgroundColor: "rgba(0,0,0,0.16)",
+            },
+          ]}
+        >
+          <ProgressBar
+            progress={0.3}
+            color={"#FFF"}
+            indeterminate
+            style={previewStyles.progressBar}
+          />
+          <View style={previewStyles.profilePicView}>
+            <RNImage
+              style={previewStyles.profileImage}
+              width={RFValue(16, 414)}
+              height={RFValue(16, 414)}
+              source={{
+                uri: instagram_profile_pic,
+              }}
+            />
+            <View style={previewStyles.detailProfileView}>
+              <Text
+                style={[
+                  previewStyles.instagramBusinessName,
+                  globalStyles.whiteTextColor,
+                ]}
+              >
+                {instagram_business_name}
+              </Text>
+              <Text
+                style={[
+                  previewStyles.sponsoredText,
+                  globalStyles.whiteTextColor,
+                ]}
+              >
+                {translate("Sponsored")}
+              </Text>
+            </View>
+            <Close width={15} height={15} style={previewStyles.closeIcon} />
+          </View>
+          <View
+            style={[
+              {
+                aspectRatio: parseFloat(this.state.AP) || 1 / 1,
+                top:
+                  parseFloat(this.state.AP) === 4 / 5
+                    ? "10%"
+                    : parseFloat(this.state.AP) === 16 / 9
+                    ? "25%"
+                    : "15%",
+              },
+            ]}
+          >
+            {mediaView}
+          </View>
+          <View style={previewStyles.callToActionView}>
+            {call_to_action && call_to_action.value !== "BLANK" && (
+              <View
+                style={[
+                  previewStyles.swipeUpView,
+                  previewStyles.swipeUpViewStory,
+                ]}
+              >
+                <ArrowUp stroke={"#FFFF"} />
+
+                <Text
+                  style={[
+                    previewStyles.callToActionText,
+                    previewStyles.callToActionTextStory,
+                  ]}
+                >
+                  {call_to_action && call_to_action.label
+                    ? call_to_action.label
+                    : call_to_action.replace(/_/gi, " ")}
+                </Text>
+              </View>
+            )}
+            <View style={[previewStyles.dotView, { flexDirection: "row" }]}>
+              <Text style={[previewStyles.dot, globalStyles.whiteTextColor]}>
+                .
+              </Text>
+              <Text style={[previewStyles.dot, globalStyles.whiteTextColor]}>
+                .
+              </Text>
+              <Text style={[previewStyles.dot, globalStyles.whiteTextColor]}>
+                .
+              </Text>
+            </View>
+          </View>
+        </View>
+      );
+    }
+    return view;
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -712,121 +1020,27 @@ class InstagramAdDesignExistingPost extends Component {
             style={existPostStyles.scrollView}
             contentContainerStyle={existPostStyles.scrollContent}
           >
-            <View
-              style={[previewStyles.container, existPostStyles.container]}
-              onLayout={this.setMaxClickHeight}
-            >
-              <View style={previewStyles.profilePicView}>
-                <RNImage
-                  style={{ borderRadius: 20 }}
-                  width={32}
-                  height={32}
-                  source={{
-                    uri: this.state.campaignInfo.instagram_profile_pic,
-                  }}
-                />
-                <View style={previewStyles.detailProfileView}>
-                  <Text style={previewStyles.instagramBusinessName}>
-                    {this.state.campaignInfo.instagram_business_name}
-                  </Text>
-                  <Text style={previewStyles.sponsoredText}>
-                    {translate("Sponsored")}
-                  </Text>
-                </View>
-                <View style={previewStyles.dotView}>
-                  <Text style={previewStyles.dot}>.</Text>
-                  <Text style={previewStyles.dot}>.</Text>
-                  <Text style={previewStyles.dot}>.</Text>
-                </View>
-              </View>
-              <View
-                style={[
-                  previewStyles.mediaViewExist,
-                  {
-                    aspectRatio: parseFloat(this.state.AP),
-                  },
-                ]}
-                // onLayout={this.setHeight}
-              >
-                {this.state.media_type === "IMAGE" ? (
-                  <RNImage
-                    style={previewStyles.imagePreview}
-                    source={{
-                      uri: this.state.campaignInfo.media,
-                    }}
-                  />
-                ) : (
-                  <VideoPlayer
-                    onReadyForDisplay={this.onReadyForDisplay}
-                    shouldPlay={true}
-                    media={media}
-                    isMuted={false}
-                  />
-                )}
-              </View>
-              {this.props.data &&
-                this.props.data.call_to_action &&
-                this.props.data.call_to_action.value &&
-                this.props.data.call_to_action !== "BLANK" &&
-                this.props.data.call_to_action.value !== "BLANK" && (
-                  <View style={previewStyles.swipeUpView}>
-                    <Text style={previewStyles.callToActionText}>
-                      {this.props.data.call_to_action.hasOwnProperty("label")
-                        ? translate(this.props.data.call_to_action.label)
-                        : translate(
-                            this.props.data.call_to_action.replace("_", " ")
-                          )}
-                    </Text>
-                    <ArrowBlueForward
-                      style={[
-                        previewStyles.icon,
-                        previewStyles.archiveIcon,
-                        previewStyles.forwadIcon,
-                      ]}
-                    />
-                  </View>
-                )}
-              <View style={previewStyles.iconView}>
-                <HeartOutline style={previewStyles.icon} />
-                <CommentOutline style={previewStyles.icon} />
-                <SendArrowOutline style={previewStyles.icon} />
-                {/* {this.state.media_option === "carousel" && (
-                <Pagination
-                  containerStyle={previewStyles.paginationContainerStyle}
-                  dotsLength={carouselAdsArray.length}
-                  activeDotIndex={this.state.activeSlide}
-                  dotStyle={previewStyles.paginationDotStyle}
-                  dotColor={"#0095f6"}
-                  inactiveDotColor={"rgba(0, 0, 0, 0.2)"}
-                  inactiveDotOpacity={1}
-                  inactiveDotScale={1}
-                />
-              )} */}
-                <ArchiveOutline
-                  style={[previewStyles.icon, previewStyles.archiveIcon]}
-                />
-              </View>
-              {/* <View style={previewStyles.likeView}>
-              <HeartFilled style={previewStyles.icon} /> */}
-              <Text style={[previewStyles.likeView, previewStyles.likeText]}>
-                508 likes
-              </Text>
-              {/* </View> */}
-              <Text
-                style={[
-                  previewStyles.businessNameText,
-                  previewStyles.captionTextExist,
-                ]}
-                numberOfLines={2}
-              >
-                {this.state.campaignInfo.instagram_business_name}
+            <Pagination
+              containerStyle={styles.paginationContainerStyle1}
+              dotsLength={2}
+              activeDotIndex={this.state.activeSlideMain}
+              // dotStyle={styles.paginationDotStyle1}
+              dotColor={globalColors.orange}
+              inactiveDotColor={"rgba(0, 0, 0, 0.2)"}
+              inactiveDotOpacity={1}
+              inactiveDotScale={1}
+            />
+            <Carousel
+              firstItem={0}
+              onSnapToItem={(index) =>
+                this.setState({ activeSlideMain: index })
+              }
+              data={this.state.reviewSlides}
+              renderItem={this.SlideMain}
+              sliderWidth={widthPercentageToDP(100)}
+              itemWidth={widthPercentageToDP(100)}
+            />
 
-                <Text style={[previewStyles.captionText]}>
-                  {` `}
-                  {this.state.campaignInfo.message}
-                </Text>
-              </Text>
-            </View>
             <View style={[styles.clickContainer]}>
               <ClickDestination
                 screenProps={this.props.screenProps}
