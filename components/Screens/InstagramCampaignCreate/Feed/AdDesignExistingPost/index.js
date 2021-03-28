@@ -515,7 +515,7 @@ class InstagramAdDesignExistingPost extends Component {
                 product.attachments.data[0].type === "album"
                   ? "IMAGE"
                   : "VIDEO",
-              message: product.message,
+              message: product.message ? product.message : "",
               instagram_post_id: product.promotable_id,
             },
             media_type:
@@ -535,7 +535,7 @@ class InstagramAdDesignExistingPost extends Component {
               product.attachments.data[0].type === "album"
                 ? "IMAGE"
                 : "VIDEO",
-            message: product.message,
+            message: product.message ? product.message : "",
             instagram_post_id: product.promotable_id,
           });
         }}
