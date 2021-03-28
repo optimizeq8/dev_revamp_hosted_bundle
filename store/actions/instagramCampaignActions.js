@@ -835,7 +835,7 @@ export const deleteCarouselCard = (story_id, card) => {
 };
 
 export const getInstagramExistingPost = (businessid) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.LOADING_INSTAGRAM_POSTS,
       payload: true,
@@ -847,10 +847,19 @@ export const getInstagramExistingPost = (businessid) => {
       })
       .then((data) => {
         if (data.success) {
+          let posts = data.data;
+          // if objective for existing campaign is video form keep all videos only
+          if (getState().instagramAds.data.objective === "VIDEO_VIEWS") {
+            if (posts && posts.length > 0) {
+              posts = posts.filter(
+                (post) => post.attachments.data[0].type == "video_inline"
+              );
+            }
+          }
           dispatch({
             type: actionTypes.GET_INSTAGRAM_POST_AD,
             payload: {
-              data: data.data,
+              data: posts,
               paging: data.paging,
             },
           });
@@ -1108,7 +1117,7 @@ export const repeatInstaCampagin = (previous_campaign_info, handleSwitch) => {
           type: actionTypes.SET_REPEAT_INSTA_CAMPAIGN_LOADING,
           payload: false,
         });
-       });
+      });
   };
 };
 export const geoLocationSearch = (
@@ -1148,7 +1157,7 @@ export const geoLocationSearch = (
           payload: false,
         });
         errorMessageHandler(err);
-       });
+      });
   };
 };
 
@@ -1199,7 +1208,7 @@ export const repeatInstaCampaginBudget = (
           payload: false,
         });
       });
-      };
+  };
 };
 export const deleteCustomLocation = (index, audienceUpdate) => {
   return (dispatch) => {
