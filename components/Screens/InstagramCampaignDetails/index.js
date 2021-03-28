@@ -570,15 +570,42 @@ class InstagramCampaignDetails extends Component {
                 {!loading &&
                 selectedCampaign &&
                 selectedCampaign.ad_status === "Ad Rejected" ? (
-                  <RejectedInstaInfo
-                    loading={loading}
-                    screenProps={this.props.screenProps}
-                    review_status_reason={
-                      selectedCampaign.review_status_reason || []
-                    }
-                    navigation={this.props.navigation}
-                    selectedCampaign={selectedCampaign}
-                  />
+                  <>
+                    <RejectedInstaInfo
+                      loading={loading}
+                      screenProps={this.props.screenProps}
+                      review_status_reason={
+                        selectedCampaign.review_status_reason || []
+                      }
+                      navigation={this.props.navigation}
+                      selectedCampaign={selectedCampaign}
+                    />
+                    {selectedCampaign.spends !== 0 && (
+                      <TouchableOpacity
+                        onLayout={this.onLayout}
+                        disabled={this.state.expand || !selectedCampaign}
+                        onPress={this.handleChartToggle}
+                      >
+                        {this.state.expand && (
+                          <ChartDateChoices
+                            selectedCampaign={selectedCampaign}
+                            dateField={this.dateField}
+                            durationChange={this.durationChange}
+                            screenProps={this.props.screenProps}
+                          />
+                        )}
+                        <CampaignCircleChart
+                          channel={"instagram"}
+                          campaign={selectedCampaign}
+                          detail={true}
+                          screenProps={this.props.screenProps}
+                          loading={loading}
+                          handleChartToggle={this.handleChartToggle}
+                          chartExpanded={this.state.expand}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </>
                 ) : (
                   <TouchableOpacity
                     onLayout={this.onLayout}
