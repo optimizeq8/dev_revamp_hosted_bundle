@@ -139,7 +139,8 @@ export class InstagramAudience extends Component {
         : null;
     const countryRegionError =
       rep.targeting.geo_locations.countries.length === 0 &&
-      rep.targeting.geo_locations.regions.length === 0;
+      rep.targeting.geo_locations.regions.length === 0 &&
+      rep.targeting.geo_locations.custom_locations.length === 0;
     if (audienceNameError) {
       showMessage({
         message: translate(audienceNameError),
@@ -165,7 +166,11 @@ export class InstagramAudience extends Component {
       });
     }
     if (!audienceNameError && !countryRegionError) {
-      if (rep.targeting.geo_locations.custom_locations.length > 0) {
+      if (
+        rep.targeting.geo_locations &&
+        rep.targeting.geo_locations.custom_locations &&
+        rep.targeting.geo_locations.custom_locations.length > 0
+      ) {
         rep.targeting.geo_locations.custom_locations = this.props.customLocations;
       } else {
         delete rep.targeting.geo_locations.custom_locations;
@@ -178,7 +183,11 @@ export class InstagramAudience extends Component {
           rep.targeting,
           this.state.locationsInfo,
           this.state.customInterests,
-          this.props.customLocations
+          this.props.customLocations,
+          this.props.navigation.getParam(
+            "audience_type",
+            "InstagramFeedAdTargetting"
+          )
         );
       } else {
         rep.targeting = JSON.stringify(rep.targeting);
@@ -804,6 +813,10 @@ export class InstagramAudience extends Component {
             _handleSideMenuState={this._handleSideMenuState}
             editCampaign={true}
             audience={true}
+            countriesSelected={
+              this.props.audience.targeting.geo_locations.countries
+            }
+            onSelectedCountryRegionChange={this.onSelectedCountryRegionChange}
           />
         );
         break;
@@ -876,6 +889,9 @@ export class InstagramAudience extends Component {
             OSType={targeting.user_os[0]}
             option={this.state.selectionOption}
             editCampaign={this.editCampaign}
+            audienceUpdate={true}
+            audienceCustomLocations={this.props.customLocations}
+            onSelectedMapChange={this.onSelectedMapChange}
           />
         );
         break;
@@ -1566,7 +1582,8 @@ const mapDispatchToProps = (dispatch) => ({
     targeting,
     locationInfo,
     custom_interest,
-    custom_location
+    custom_location,
+    navigationPath
   ) =>
     dispatch(
       actionCreators.updateInstagramAudience(
@@ -1575,7 +1592,8 @@ const mapDispatchToProps = (dispatch) => ({
         targeting,
         locationInfo,
         custom_interest,
-        custom_location
+        custom_location,
+        navigationPath
       )
     ),
   deleteCustomLocation: (index, audienceUpdate) =>
