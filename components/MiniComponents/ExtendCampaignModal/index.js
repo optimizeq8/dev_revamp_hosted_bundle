@@ -27,48 +27,15 @@ class ExtendCampaignModal extends Component {
     switchComponent: false,
   };
   componentDidMount() {
-    if (this.props.showRepeatModal) {
-      this.dateField && this.dateField.showModal();
-    }
-    let start_time = new Date();
-    start_time.setDate(start_time.getDate() + 1);
-    let end_time = new Date(start_time);
-    end_time.setDate(end_time.getDate() + this.state.duration - 1);
-    this.setState({
-      start_time: start_time.toISOString().split("T")[0],
-      end_time: end_time.toISOString().split("T")[0],
-    });
-  }
-  componentDidUpdate(prevProps) {
-    if (
-      prevProps.showRepeatModal !== this.props.showRepeatModal &&
-      this.props.showRepeatModal
-    ) {
-      this.dateField && this.dateField.showModal();
+    if (this.props.campaign) {
+      let end_time = new Date(this.props.campaign.end_time.split("T")[0]);
+      end_time.setDate(end_time.getDate() + this.state.duration - 1);
+      this.setState({
+        end_time: end_time.toISOString().split("T")[0],
+      });
     }
   }
-  handleStartDatePicked = (date) => {
-    this.setState({
-      start_time: date,
-    });
-    analytics.track(`a_extend_ad_start_date`, {
-      source: "snapcaht_campaign_card",
-      source_action: "a_extend_ad_start_date",
-      campaign_start_date: date,
-    });
-  };
-  handleEndDatePicked = (date) => {
-    let end_time = new Date(date);
-    end_time.setDate(end_time.getDate() + this.state.duration - 1);
-    this.setState({
-      end_time: end_time.toISOString().split("T")[0],
-    });
-    analytics.track(`a_ad_end_date`, {
-      campaign_end_date: date,
-      source: "ad_objective",
-      source_action: "a_ad_end_date",
-    });
-  };
+
   handleDuration = (subtract = false, onePress = false, time = 1) => {
     let minimumDuration = 3;
     let duration = subtract
@@ -114,15 +81,10 @@ class ExtendCampaignModal extends Component {
     );
   };
   handleDuration = (subtract = false, onePress = false, time = 1) => {
-    let minimumDuration = 3;
-    let duration = subtract
-      ? this.state.duration - 1 > minimumDuration
-        ? this.state.duration - 1
-        : minimumDuration
-      : this.state.duration + 1;
+    let duration = subtract ? this.state.duration - 1 : this.state.duration + 1;
 
-    let end_time = new Date(this.state.start_time.split("T")[0]);
-    end_time.setDate(end_time.getDate() + duration - 1);
+    let end_time = new Date(this.props.campaign.end_time.split("T")[0]);
+    end_time.setDate(end_time.getDate() + (duration - 1));
     this.setState({
       end_time: end_time.toISOString().split("T")[0],
       duration,
@@ -139,6 +101,7 @@ class ExtendCampaignModal extends Component {
     if (this.timer) clearTimeout(this.timer);
   };
   render() {
+    console.log(this.state.end_time);
     let {
       showRepeatModal = true,
       screenProps,
@@ -213,9 +176,9 @@ class ExtendCampaignModal extends Component {
                     }
                   >
                     <View style={styles.dateContainer}>
-                      <Text style={styles.titleStyle}>{"Start date"}:</Text>
+                      <Text style={styles.titleStyle}>{"End date"}:</Text>
                       <Text style={[styles.titleStyle, styles.dateStyle]}>
-                        {"  " + campaign.start_time.split("T")[0]}
+                        {"  " + campaign.end_time.split("T")[0]}
                       </Text>
                     </View>
                     <Text style={[styles.descStyle]}>
