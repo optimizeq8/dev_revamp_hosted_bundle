@@ -96,6 +96,7 @@ class AdDesign extends Component {
     super(props);
     this.state = {
       campaignInfo: {
+        instagram_business_name: "",
         media_option: "single", // Oneof[ "single, carousel"]
         destination: "BLANK",
         link: "",
