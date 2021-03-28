@@ -41,7 +41,7 @@ class SnapchatLocation extends Component {
         markers: this.props.data.markers,
         locationsInfo: this.props.data.locationsInfo,
       });
-    } else {
+    } else if (this.props.circles) {
       this.setState({
         markers: this.props.circles,
         locationsInfo: this.props.locationsInfo,
