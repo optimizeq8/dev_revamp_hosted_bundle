@@ -446,7 +446,7 @@ class AdDesign extends Component {
     }
 
     this.setState({
-      messageError,
+      //   messageError,
       mediaError,
       swipeUpError,
     });

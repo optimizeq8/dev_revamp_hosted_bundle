@@ -335,7 +335,7 @@ class AdFeedDesignReview extends React.Component {
           >
             {mediaView}
 
-            <Text
+            {/* <Text
               style={[
                 {
                   backgroundColor: message.length > 0 ? "#000" : "#0000",
@@ -350,7 +350,7 @@ class AdFeedDesignReview extends React.Component {
               <Text style={[styles.moreText]} numberOfLines={1}>
                 more
               </Text>
-            )}
+            )} */}
           </View>
           <View style={styles.callToActionView}>
             {call_to_action && call_to_action.value !== "BLANK" && (
