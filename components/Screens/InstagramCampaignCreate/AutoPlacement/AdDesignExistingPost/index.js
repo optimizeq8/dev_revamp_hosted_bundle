@@ -89,7 +89,7 @@ class InstagramAdDesignExistingPost extends Component {
         selectedCarouselAd: { media: "//", call_to_action: {} },
         // numOfAds: 0
       },
-
+      muteVideo: true,
       directory: "/ImagePicker/",
       result: "",
       signal: null,
@@ -581,6 +581,9 @@ class InstagramAdDesignExistingPost extends Component {
     return true;
   };
   onDidFocus = () => {
+    this.setState({
+      muteVideo: false,
+    });
     if (
       !this.props.currentCampaignSteps.includes(
         "InstagramAutoPlacementAdTargetting"
@@ -677,7 +680,7 @@ class InstagramAdDesignExistingPost extends Component {
         mediaView = (
           <VideoPlayer
             onReadyForDisplay={this.onReadyForDisplay}
-            isMuted={false}
+            isMuted={this.state.muteVideo}
             media={media}
             videoIsLoading={this.videoIsLoading}
           />
@@ -765,7 +768,7 @@ class InstagramAdDesignExistingPost extends Component {
                 onReadyForDisplay={this.onReadyForDisplay}
                 shouldPlay={true}
                 media={media}
-                isMuted={false}
+                isMuted={this.state.muteVideo}
               />
             )}
           </View>
@@ -958,7 +961,14 @@ class InstagramAdDesignExistingPost extends Component {
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}
         />
-        <NavigationEvents onDidFocus={this.onDidFocus} />
+        <NavigationEvents
+          onDidFocus={this.onDidFocus}
+          onDidBlur={() => {
+            this.setState({
+              muteVideo: true,
+            });
+          }}
+        />
         <TopStepsHeader
           screenProps={this.props.screenProps}
           closeButton={false}

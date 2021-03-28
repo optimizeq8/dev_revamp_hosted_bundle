@@ -6,6 +6,7 @@ import { Transition } from "react-navigation-fluid-transitions";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import { ProgressBar } from "react-native-paper";
+import { NavigationEvents } from "react-navigation";
 
 import VideoPlayer from "../../../../MiniComponents/VideoPlayer";
 import CustomHeader from "../../../../MiniComponents/Header";
@@ -46,6 +47,7 @@ class AdFeedDesignReview extends React.Component {
         id: "story",
       },
     ],
+    muteVideo: true,
   };
   videoIsLoading = (value) => {
     this.setState({
@@ -119,7 +121,7 @@ class AdFeedDesignReview extends React.Component {
           key={id}
           media={media}
           videoIsLoading={this.videoIsLoading}
-          isMuted={false}
+          isMuted={this.state.muteVideo}
           onReadyForDisplay={this.onReadyForDisplay}
         />
       );
@@ -165,7 +167,7 @@ class AdFeedDesignReview extends React.Component {
         mediaView = (
           <VideoPlayer
             onReadyForDisplay={this.onReadyForDisplay}
-            isMuted={false}
+            isMuted={this.state.muteVideo}
             media={media}
             videoIsLoading={this.videoIsLoading}
           />
@@ -387,6 +389,18 @@ class AdFeedDesignReview extends React.Component {
           <SafeAreaView
             style={{ flex: 1 }}
             forceInset={{ top: "always", bottom: "never" }}
+          />
+          <NavigationEvents
+            onDidFocus={() => {
+              this.setState({
+                muteVideo: false,
+              });
+            }}
+            onDidBlur={() => {
+              this.setState({
+                muteVideo: true,
+              });
+            }}
           />
           <CustomHeader
             screenProps={this.props.screenProps}
