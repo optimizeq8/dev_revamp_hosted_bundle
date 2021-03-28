@@ -179,7 +179,8 @@ export const updateInstagramAudience = (
   targeting,
   locationsInfo = [],
   custom_interest = [],
-  custom_location = []
+  custom_location = [],
+  navigationPath = "InstagramFeedAdTargetting"
 ) => {
   return (dispatch, getState) => {
     dispatch({
@@ -212,7 +213,7 @@ export const updateInstagramAudience = (
         });
         if (data.success) {
           dispatch(getInstagramAudienceList());
-          NavigationService.navigate("InstagramFeedAdTargetting", {
+          NavigationService.navigate(navigationPath, {
             source: "audience_detail",
             source_action: "a_update_audience",
           });
