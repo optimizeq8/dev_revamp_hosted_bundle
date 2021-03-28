@@ -66,7 +66,7 @@ export default class SingleMetric extends Component {
           <View style={{ width: "80%" }}>
             <Text
               adjustsFontSizeToFit
-              numberOfLines={2}
+              numberOfLines={1}
               style={[styles.title, globalStyles.whiteTextColor]}
             >
               {translate(metric)}

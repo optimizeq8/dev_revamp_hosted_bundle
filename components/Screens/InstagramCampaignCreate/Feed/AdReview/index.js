@@ -80,6 +80,7 @@ class AdFeedDesignReview extends React.Component {
           key={id}
           media={media}
           videoIsLoading={this.videoIsLoading}
+          isMuted={false}
         />
       );
     }
@@ -119,7 +120,11 @@ class AdFeedDesignReview extends React.Component {
       }
       if (media_type === "VIDEO" && media) {
         mediaView = (
-          <VideoPlayer media={media} videoIsLoading={this.videoIsLoading} />
+          <VideoPlayer
+            isMuted={false}
+            media={media}
+            videoIsLoading={this.videoIsLoading}
+          />
         );
       }
     } else if (media_option === "carousel") {

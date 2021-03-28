@@ -8,6 +8,7 @@ export default class VideoPlayer extends Component {
       media,
       videoIsLoading,
       isMuted = true,
+      onReadyForDisplay,
     } = this.props;
     return (
       <Video
@@ -21,8 +22,9 @@ export default class VideoPlayer extends Component {
         shouldPlay={shouldPlay}
         isLooping
         isMuted={isMuted}
-        resizeMode={"stretch"}
+        resizeMode={Video.RESIZE_MODE_CONTAIN}
         style={styles.video}
+        onReadyForDisplay={onReadyForDisplay}
       />
     );
   }

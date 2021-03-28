@@ -322,7 +322,7 @@ export const downloadCSV = (campaign_id, email, showModalMessage) => {
   };
 };
 
-export const getNumberOfCampaigns = (campaign_id, email, showModalMessage) => {
+export const getNumberOfCampaigns = () => {
   return (dispatch, getState) => {
     createBaseUrl()
       .get(`businesscampaigns/${getState().account.mainBusiness.businessid}`)
@@ -334,7 +334,9 @@ export const getNumberOfCampaigns = (campaign_id, email, showModalMessage) => {
             payload: data.business_campaigns,
           });
       })
-      .catch((err) => showModalMessage(err));
+      .catch((err) => {
+        //   showModalMessage(err)
+      });
   };
 };
 

@@ -339,6 +339,33 @@ export default createNativeStackNavigator(
       require: () =>
         require("../Screens/InstagramCampaignCreate/Feed/AdDesignExistingPost"),
     }),
+    InstagramAutoPlacementAdObjective: {
+      screen: register({
+        require: () =>
+          require("../Screens/InstagramCampaignCreate/AutoPlacement/AdObjective"),
+      }),
+      path: "InstagramAutoPlacementAdObjective",
+    },
+    InstagramAutoPlacementAdDesign: register({
+      require: () =>
+        require("../Screens/InstagramCampaignCreate/AutoPlacement/AdDesign"),
+    }),
+    InstagramAutoPlacementAdDesignExistingPost: register({
+      require: () =>
+        require("../Screens/InstagramCampaignCreate/AutoPlacement/AdDesignExistingPost"),
+    }),
+    InstagramAutoPlacementAdTargetting: register({
+      require: () =>
+        require("../Screens/InstagramCampaignCreate/AutoPlacement/AdTargetting"),
+    }),
+    AdAutoPlacementDesignReview: register({
+      require: () =>
+        require("../Screens/InstagramCampaignCreate/AutoPlacement/AdReview"),
+    }),
+    InstagramAutoPlacementAdPaymentReview: register({
+      require: () =>
+        require("../Screens/InstagramCampaignCreate/AutoPlacement/AdPaymentReview"),
+    }),
     EditProduct: register({
       require: () =>
         require("../Screens/OptimizeWebsite/EditProduct/EditProduct"),
