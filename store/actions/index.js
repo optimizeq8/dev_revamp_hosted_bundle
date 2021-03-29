@@ -103,6 +103,8 @@ export {
   verifySnapchatOtp,
   repeatSnapCampagin,
   repeatSnapCampaginBudget,
+  extendSnapCampagin,
+  extendSnapCampaginBudget,
 } from "./campaignActions";
 
 export {
@@ -242,6 +244,8 @@ export {
   downloadInstagramCSV,
   repeatInstaCampagin,
   repeatInstaCampaginBudget,
+  extendInstaCampagin,
+  extendInstaCampaginBudget,
   geoLocationSearch,
   deleteCustomLocation,
 } from "./instagramCampaignActions";

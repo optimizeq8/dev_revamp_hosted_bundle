@@ -25,6 +25,7 @@ import TimeDifferance from "../../Functions/TimeDifferance";
 import isEqual from "react-fast-compare";
 import globalStyles from "../../../GlobalStyles";
 import RepeatCampaignModal from "../RepeatCampaignModal";
+import ExtendCampaignModal from "../ExtendCampaignModal";
 
 whyDidYouRender(React);
 class CampaignCard extends Component {
@@ -34,7 +35,7 @@ class CampaignCard extends Component {
     // verbose: true
     // }); //verbose logs all functions and their time
   }
-  state = { showRepeatModal: false };
+  state = { showRepeatModal: false, showExtendModal: false };
   currentDate = () => {
     let date = new Date();
     date.setTime(date.getTime() - new Date().getTimezoneOffset() * 60 * 1000);
@@ -78,6 +79,11 @@ class CampaignCard extends Component {
   handleRepeatModal = (value) => {
     this.setState({
       showRepeatModal: value,
+    });
+  };
+  handleExtendModal = (value) => {
+    this.setState({
+      showExtendModal: value,
     });
   };
   componentDidMount() {
@@ -216,7 +222,7 @@ class CampaignCard extends Component {
               </Text>
             )}
 
-            {this.review_status === "APPROVED" && (
+            {this.review_status !== "APPROVED" && (
               <View style={styles.chartContainer}>
                 <CampaignCircleChart
                   channel={this.props.channel}
@@ -225,7 +231,7 @@ class CampaignCard extends Component {
                   screenProps={this.props.screenProps}
                 />
 
-                {this.ad_status === "LIVE" ? (
+                {this.ad_status !== "LIVE" ? (
                   <>
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
@@ -235,6 +241,15 @@ class CampaignCard extends Component {
                       <Text uppercase style={styles.cardText}>
                         {translate("Day(s) left")}
                       </Text>
+                      <TouchableOpacity
+                        style={[
+                          styles.repeatButton,
+                          { alignSelf: "center", marginTop: 10, width: "100%" },
+                        ]}
+                        onPress={() => this.handleExtendModal(true)}
+                      >
+                        <Text style={styles.repeatText}>{"Extend"}</Text>
+                      </TouchableOpacity>
                     </View>
                   </>
                 ) : (
@@ -254,6 +269,13 @@ class CampaignCard extends Component {
               screenProps={this.props.screenProps}
               handleRepeatModal={this.handleRepeatModal}
               campaign={campaign}
+            />
+            <ExtendCampaignModal
+              showRepeatModal={this.state.showExtendModal}
+              screenProps={this.props.screenProps}
+              handleExtendModal={this.handleExtendModal}
+              campaign={campaign}
+              instagramCampaign={true}
             />
           </View>
         </TouchableOpacity>

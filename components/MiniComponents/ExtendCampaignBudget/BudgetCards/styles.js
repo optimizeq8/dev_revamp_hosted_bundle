@@ -12,8 +12,7 @@ export default StyleSheet.create({
   budgetCardsStyle: {
     alignSelf: "center",
     // width: "100%",
-    height: "35%",
-    // maxHeight: "50%",
+    maxHeight: "50%",
   },
   budgetCardStyle: {
     justifyContent: "center",
