@@ -1896,7 +1896,6 @@ export const extendSnapCampagin = (previous_campaign_info, handleSwitch) => {
       })
       .then((res) => res.data)
       .then((data) => {
-        console.log(JSON.stringify(data, null, 2));
         if (data.success)
           dispatch({
             type: actionTypes.SET_EXTENDING_CAMPAIGN_INFO,
@@ -1937,7 +1936,6 @@ export const extendSnapCampaginBudget = (
             channel: "",
           })
         );
-        console.log(JSON.stringify(data, null, 2));
         if (data.success) {
           dispatch({
             type: actionTypes.SET_EXTEND_CAMPAIGN_LOADING,
