@@ -30,14 +30,18 @@ export const getLanguageListPOEdit = (language) => {
       axios
         .post(
           "https://api.poeditor.com/v2/terms/list",
-          qs.stringify({
-            api_token: "12aec028da2333797aaaa1768d444fb9",
-            id: "283545",
-            language,
-          })
+          qs.stringify(
+            {
+              api_token: "12aec028da2333797aaaa1768d444fb9",
+              id: "283545",
+              language,
+            }
+            // { timeout: 20000 }
+          )
         )
         .then((response) => response.data)
         .then((data) => {
+          console.log("data.response.status", data.response.status);
           if (data.response.status === "success") {
             AsyncStorage.setItem("appLanguage", language).then((res) => {
               const terms = data.result.terms;
@@ -55,6 +59,10 @@ export const getLanguageListPOEdit = (language) => {
                   [language]: modifierJson,
                 };
 
+                dispatch({
+                  type: actionTypes.SET_LANGUAGE_CHANGE_LOADING,
+                  payload: false,
+                });
                 return dispatch({
                   type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
                   payload: {
@@ -82,6 +90,10 @@ export const getLanguageListPOEdit = (language) => {
                       [language]: data,
                     };
 
+                    dispatch({
+                      type: actionTypes.SET_LANGUAGE_CHANGE_LOADING,
+                      payload: false,
+                    });
                     return dispatch({
                       type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
                       payload: {
@@ -95,6 +107,10 @@ export const getLanguageListPOEdit = (language) => {
                         language === "ar" ? arabicStrings : englishStrings,
                     };
 
+                    dispatch({
+                      type: actionTypes.SET_LANGUAGE_CHANGE_LOADING,
+                      payload: false,
+                    });
                     return dispatch({
                       type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
                       payload: {
@@ -107,10 +123,30 @@ export const getLanguageListPOEdit = (language) => {
                 });
               });
           }
+        })
+        .catch((err) => {
+          AsyncStorage.setItem("appLanguage", language).then((res) => {
+            I18nManager.allowRTL(language === "ar");
+            I18nManager.forceRTL(language === "ar");
+            i18n.translations = {
+              [language]: language === "ar" ? arabicStrings : englishStrings,
+            };
+
+            dispatch({
+              type: actionTypes.SET_LANGUAGE_CHANGE_LOADING,
+              payload: false,
+            });
+            return dispatch({
+              type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
+              payload: {
+                terms: language === "ar" ? arabicStrings : englishStrings,
+                language,
+              },
+            });
+          });
         });
     } catch (error) {
       console.log("translation error", error.response || error.message);
-
       AsyncStorage.setItem("appLanguage", language).then((res) => {
         I18nManager.allowRTL(language === "ar");
         I18nManager.forceRTL(language === "ar");
@@ -118,6 +154,10 @@ export const getLanguageListPOEdit = (language) => {
           [language]: language === "ar" ? arabicStrings : englishStrings,
         };
 
+        dispatch({
+          type: actionTypes.SET_LANGUAGE_CHANGE_LOADING,
+          payload: false,
+        });
         return dispatch({
           type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
           payload: {

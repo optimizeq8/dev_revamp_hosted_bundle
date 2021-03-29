@@ -2118,8 +2118,8 @@ const strings = {
   "Your account has been secured using": "Your account has been secured using",
   "not supported on this phone": "not supported on this phone",
   purchases: "purchases",
-  roas: "purchase roas",
-  "total purchase value": "purchase conversion value",
+  roas: "ROAS (USD)",
+  "total purchase value": "purchase value (usd)",
   "Would you like to enable FaceID with this account":
     "Would you like to enable FaceID with this account?",
   TouchID: "TouchID",
@@ -2153,6 +2153,23 @@ const strings = {
   "Please copy the snap pixel code and paste it on your website":
     "Please copy the snap pixel code and paste it on your website",
   "Snap Pixel copied to clipboard": "Snap Pixel copied to clipboard",
+  "Auto target look-alike audience": "Auto target look-alike audience",
+  Finish: "Finish",
+  "(USD)": "(USD)",
+  "purchase roas": "ROAS (USD)",
+  "purchase conversion value": "PURCHASE VALUE (USD)",
+  "Remarket instagram behaviour": "Remarket instagram behaviour",
+  "Only on country selection is allowed to enable this option":
+    "Only one country selection is allowed to enable this option",
+  "Only one country selection is allowed to enable this option":
+    "Only one country selection is allowed to enable this option",
+  "Extend Campaign": "Extend Campaign",
+  "Automatic Placement": "Auto Placement",
+  "Instagram Auto Placement": "Instagram Auto Placement",
+  "Feed / Explore Preview": "Feed / Explore Preview",
+  "Story Preview": "Story Preview",
+  "Your ads will automatically be shown to your audience in the places they're likely to perform best":
+    "Your ads will automatically be shown to your audience in the places they're likely to perform best",
 };
 
 export default strings;

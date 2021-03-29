@@ -1823,7 +1823,7 @@ export const repeatSnapCampagin = (previous_campaign_info, handleSwitch) => {
         handleSwitch(true);
       })
       .catch((err) => {
-        showModalMessage(err);
+        // showModalMessage(err);
         dispatch({
           type: actionTypes.SET_REPEAT_CAMPAIGN_LOADING,
           payload: false,
@@ -1874,7 +1874,7 @@ export const repeatSnapCampaginBudget = (
         handleSwitch(false);
       })
       .catch((err) => {
-        showModalMessage(err);
+        // showModalMessage(err);
         dispatch({
           type: actionTypes.SET_REPEAT_CAMPAIGN_LOADING,
           payload: false,
