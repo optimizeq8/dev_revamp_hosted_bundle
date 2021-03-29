@@ -101,7 +101,6 @@ class ExtendCampaignModal extends Component {
     if (this.timer) clearTimeout(this.timer);
   };
   render() {
-    console.log(this.state.end_time);
     let {
       showRepeatModal = true,
       screenProps,

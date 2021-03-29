@@ -41,7 +41,6 @@ class RepeatCampaignBudget extends Component {
     let extendedCampaginData = prevCampaignIsInstagram
       ? this.props.extendedInstaCampaginData
       : this.props.extendedCampaginData;
-
     let prevTargeting = { geos: [] };
     let recBudget = prevTargeting.geos.length * 75;
     let minValueBudget = 25 * prevTargeting.geos.length;
@@ -97,7 +96,6 @@ class RepeatCampaignBudget extends Component {
       : prevProps.extendedCampaginData;
     let prevTargeting = { geos: [] };
     let recBudget = prevTargeting.geos.length * 75;
-    console.log("prevTargeting.geos.length", prevTargeting.geos.length);
     let minValueBudget = 25 * prevTargeting.geos.length;
     if (
       (previousextendedCampaginData &&
@@ -500,7 +498,7 @@ class RepeatCampaignBudget extends Component {
 const mapStateToProps = (state) => ({
   extendedCampaginData: state.campaignC.extendedCampaginData,
   extendCampaignLoading: state.campaignC.extendCampaignLoading,
-  extendingInstaCampaginData: state.instagramAds.extendedInstaCampaginData,
+  extendedInstaCampaginData: state.instagramAds.extendedInstaCampaginData,
   extendInstaCampaignLoading: state.instagramAds.extendInstaCampaignLoading,
   languages: state.campaignC.languagesList,
   mainBusiness: state.account.mainBusiness,

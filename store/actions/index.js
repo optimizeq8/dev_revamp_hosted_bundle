@@ -244,6 +244,8 @@ export {
   downloadInstagramCSV,
   repeatInstaCampagin,
   repeatInstaCampaginBudget,
+  extendInstaCampagin,
+  extendInstaCampaginBudget,
   geoLocationSearch,
   deleteCustomLocation,
 } from "./instagramCampaignActions";
