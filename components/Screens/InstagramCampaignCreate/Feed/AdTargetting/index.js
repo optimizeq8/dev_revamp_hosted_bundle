@@ -1202,10 +1202,9 @@ class InstagramFeedAdTargetting extends Component {
     if (this.editCampaign) {
       campaignTargeting.geo_locations = editedCampaign.targeting.geo_locations;
     }
-    editedCampaign.targeting = {
-      ...editedCampaign.targeting,
-      ...campaignTargeting,
-    };
+    editedCampaign = deepmerge(editedCampaign, campaignTargeting, {
+      arrayMerge: overwriteMerge,
+    });
 
     // let editedCountryCodes = editedCampaign.targeting.geo_locations.map(
     //   (geo) => geo.country_code
