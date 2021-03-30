@@ -455,7 +455,10 @@ class RepeatCampaignBudget extends Component {
           <ReachBar
             campaignInfo={campaign}
             screenProps={this.props.screenProps}
-            customContainerStyle={{ bottom: -50 }}
+            customContainerStyle={{
+              bottom: Platform.OS === "ios" ? -30 : 15,
+              height: "40%",
+            }}
           />
         )}
         {(
