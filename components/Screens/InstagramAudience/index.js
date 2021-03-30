@@ -165,7 +165,10 @@ export class InstagramAudience extends Component {
       });
     }
     if (!audienceNameError && !countryRegionError) {
-      if (rep.targeting.geo_locations.custom_locations.length > 0) {
+      if (
+        rep.targeting.geo_locations.custom_locations &&
+        rep.targeting.geo_locations.custom_locations.length > 0
+      ) {
         rep.targeting.geo_locations.custom_locations = this.props.customLocations;
       } else {
         delete rep.targeting.geo_locations.custom_locations;
