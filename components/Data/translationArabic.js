@@ -304,7 +304,7 @@ const strings = {
   Interests: "الإهتمامات",
   Regions: "المناطق",
   Budget: "الميزانية",
-  "Potential Reach": "حجم الشريحة المستهدفة",
+  "Potential Reach": "عدد الوصول المحتمل",
   "Review your Selection": "مراجعة إختياراتك",
   "Payment Info": "بيانات الدفع",
   Media: "الملفات",
@@ -328,7 +328,7 @@ const strings = {
   Verification: "التحقق",
   "Business Info": "معلومات المشروع",
   "Please enter your\nMobile Number": "الرجاء إدخال رقم الهاتف",
-  "Please enter a valid number!": "يرجى التأكد من الرقم الذي أدخلته",
+  "Please enter a valid number!": "الرجاء إدخال رقم ساري المفعول",
   "Your Passwords don't match": "الكلمة السرية لا تتطابق",
   "Password must be at least 8 characters long":
     "يجب أن يكون الرقم السري مكون من ٨ أحرف على الأقل",
@@ -1540,7 +1540,7 @@ const strings = {
     "النسبة المطلوبة لمقطع الفيديو يجب أن يكون 6:19 أو 4:5 أو 1:1 مع الحد الأدنى للعرض وهو 500",
   "Minimum video duration is 1 second":
     "الحد الأدنى لمقطع الفيديو هو ثانية واحدة",
-  "link click": "ضغطات الرابط",
+  "link click": "عدد الضغطات على الرابط",
   frequency: "تكرار",
   "Click destination": "إعدادات وجهة الوصول",
   "Only one OS per campaign": "حدد نظام تشغيل واحد لكل حملة",
@@ -2050,31 +2050,29 @@ const strings = {
   "VISA/MASTER Oman": "فيزا\\ماستركارد عمان",
   "VISA/MASTER": "فيزا\\ماستركارد",
   MASTERCARD: "ماستركارد",
-  "Optimize Advertising & Marketing Company Wll":
-    "شركة أوبتيمايز للدعاية والتسويق ذ م م",
-  "This is where you should put your business name that your advertising":
-    "أدخل اسم المشروع المعلن عنه",
+  "Optimize Advertising & Marketing Company Wll": "",
+  "This is where you should put your business name that your advertising": "",
   "Here you need to add a promotional message related to what you're advertising eg New products now on sale":
-    'قم بإضافة الرسالة الترويجية التى تصف ما تعلن عنه. مثلا "لا تطوفكم عروض شهر رمضان"',
+    "",
   "Add your media here, It can be a video or an image Make sure your ad looks professional so that it can attract a lot of people":
-    "أضف ملفات الاعلان هنا ، يمكن أن يكون مقطع فيديو أو صورة تأكد من أن إعلانك يبدو احترافيًا حتى يتمكن من جذب الكثير من الأشخاص",
+    "",
   "You need to add a swipe up destination to send your audience to and select a call to action to push your audience into taking action":
-    "يرجى إدخال الوجهة التي سيدخل المشاهدين إليها بعد رفع الشاشة ، و إضافة الدعوة للإجراء التي تحفز المشاهد لإتخاذ الإجراء اللازم",
+    "",
   Previous: "السابق",
   "Enter your campaign's name Make sure you name it something descriptive so you can keep track of all your campaigns":
-    "قم بإضافة اسم وصفي الحملة لكي تميز ما بين حملاتك المختلفة. يرجى العلم بأن المشاهدين لا يرون هذا الاسم",
+    "",
   "Select your campaign's objective to choose what your audience should do eg download your app or visit your website etc":
-    "اختر الهدف الأساسي لحملتك ، مثلا زيادة الزيارات لموقعك أو تحميل تطبيقك إلخ",
+    "",
   "Select your campaign's duration and start date The longer the campaign’s duration is, the better the results":
-    "حدد المدة الزمنية لحملتك و تاريخ البدء. النتائج تكون أفضل كلما طالت مدة الحملة",
+    "",
   "Here you can create or select a saved audience for faster selection If you proceed without creating an audience you can find it here the next time you create a new campaign":
-    "هنا يمكنك إنشاء أو تحديد جمهور و حفظه للمستقبل لتسهيل إطلاق الحملات في المستقبل. يمكنك العثور عليه هنا وقت إطلاق أي حملة قادمة",
+    "",
   "Setting a good daily budget is very crucial to how successful your campaign will be The higher the budget the more people will see your ad":
-    "قم بتحديد ميزانية الحملة اليومية. يرجى العلم بأن عدد المشاهدات تعتمد مباشرة على الميزانية الإجمالية للحملة",
+    "",
   "You can choose who your ad gets shown to by selecting different combinations of options You can experiment with different combinations and see what best suits your business":
-    "حدد الفئة المستهدفة التي سترى إعلانك ، و من الأفضل أن تقم بتجارب مختلفة للإستهداف لتعرف أي من الفئات تأتي بالنتائج الأفضل لمشروعك",
+    "",
   "You can see the potential results of the ad based on the targeting options you select and how high your daily budget is":
-    "بإمكانك متابعة النتائج المتوقعة لإعلانك بناء على حجم الفئة المستهدفة المحددة من قبلك و الميزانية اليومية",
+    "",
   "Daily budget": "ميزانيتك اليومية",
   "Saved Audiences": "شريحة مستهدفة مسبقة",
   "Audience targeting": "الشريحة المستهدفة",
@@ -2110,8 +2108,8 @@ const strings = {
   "Your account has been secured using": "تم تأمين حسابك بواسطة",
   "not supported on this phone": "غير مدعوم على هذا الهاتف",
   purchases: "المشتريات",
-  roas: "العائد على الإنفاق (USD)",
-  "total purchase value": "قيمة المبيعات (USD)",
+  "purchase roas": "العائد على الإنفاق الإعلاني",
+  "purchase conversion value": "قيمة تحويل الشراء",
   "Would you like to enable FaceID with this account":
     "هل ترغب بتفعيل FaceID على هذا الحساب؟",
   TouchID: "TouchID",
@@ -2124,44 +2122,10 @@ const strings = {
     "تم تأمين حسابك بواسطة القياسات الحيوية",
   "Would you like to enable {{biometryType}} with this account":
     "هل ترغب بتفعيل القياسات الحيوية على هذا الحساب؟",
-  "Repeat Campaign": "كرر الحملة",
+  "Repeat Campaign": "",
   "Mother's Day": "يوم الأم",
   "SELL MOTHER'S DAY PRODUCTS": "لزيادة مبيعات منتجات يوم الأم",
-  Repeat: "أطلقها مرة أخرى",
-  Auto: "محددة مسبقا",
-  "Conversion Campaign": "حملة المبيعات",
-  "OPTIMIZE FOR SALES PURCHASES": "تحسين اداء مبيعات الإعلان",
-  "Promote again": "أطلقها مرة أخرى",
-  "Sales Campaign": "حملة المبيعات",
-  "Increase sales for my website": "زيادة مبيعات موقعي الالكتروني",
-  "Reset selected countries": "إعادة تعيين الدول المحددة",
-  'Selecting locations will overwrite and reset your selected countries, are you sure you want to continue"':
-    "تحديد المواقع سوف يتم استبداله وسوف يتم إعادة تعيين الدول المحددة، هل تود الاستكمال؟",
-  "Selecting this country will remove your selected location, are you sure you want to continue":
-    "تحديد هذه الدولة سوف يتم استبداله وسوف يتم إعادة تعيين المواقع المحددة، هل تود الاستكمال؟",
-  "Selecting locations will remove some of your selected countries, are you sure you want to continue":
-    "تحديد المواقع سوف يتم استبداله وسوف يتم إعادة تعيين الدول المحددة، هل تود الاستكمال؟",
-  "Pixel Info": "معلومات الpixel",
-  "Please copy the snap pixel code and paste it on your website":
-    "الرجاء نسخ رمز الpixel وإضافته على موقعك الالكتروني",
-  "Snap Pixel copied to clipboard": "تم نسخ الpixel",
-  "Auto target look-alike audience": "استهدف أسخاص مشابهين لزبائني",
-  Finish: "إنهاء",
-  "(USD)": "(USD)",
-  "purchase roas": "العائد على الإنفاق",
-  "purchase conversion value": "قيمة المبيعات",
-  "Remarket instagram behaviour": "إعادة استهداف زوار صفحة الانستقرام",
-  "Only on country selection is allowed to enable this option":
-    "يسمح بتحديد دولة واحده فقط مع هذه الخاصية",
-  "Only one country selection is allowed to enable this option":
-    "يسمح بتحديد دولة واحده فقط مع هذه الخاصية",
-  "Extend Campaign": "مدد الحملة",
-  "Automatic Placement": "Auto (Feed, Story & Explore)",
-  "Instagram Auto Placement": "",
-  "Feed / Explore Preview": "",
-  "Story Preview": "",
-  "Your ads will automatically be shown to your audience in the places they're likely to perform best":
-    "",
+  Repeat: "",
 };
 
 export default strings;
