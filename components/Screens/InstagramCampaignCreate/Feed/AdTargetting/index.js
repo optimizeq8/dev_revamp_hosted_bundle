@@ -993,6 +993,7 @@ class InstagramFeedAdTargetting extends Component {
       };
       if (this.editCampaign) {
         if (
+          this.state.campaignInfo.targeting.geo_locations.custom_locations &&
           this.state.campaignInfo.targeting.geo_locations.custom_locations
             .length === 0
         ) {
@@ -1131,7 +1132,10 @@ class InstagramFeedAdTargetting extends Component {
       let countryLength = this.state.campaignInfo.targeting.geo_locations
         .countries.length;
       let locationsLength = this.state.campaignInfo.targeting.geo_locations
-        .custom_locations.length;
+        .custom_locations
+        ? this.state.campaignInfo.targeting.geo_locations.custom_locations
+            .length
+        : 0;
       let recBudget =
         (countryLength > 0 ? countryLength : locationsLength) * 75;
 

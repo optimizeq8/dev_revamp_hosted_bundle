@@ -988,6 +988,7 @@ class InstagramStoryAdTargetting extends Component {
           delete rep.targeting.geo_locations.custom_locations;
         }
         if (
+          this.state.campaignInfo.targeting.geo_locations.custom_locations &&
           this.state.campaignInfo.targeting.geo_locations.custom_locations
             .length === 0
         ) {
@@ -1127,7 +1128,10 @@ class InstagramStoryAdTargetting extends Component {
       let countryLength = this.state.campaignInfo.targeting.geo_locations
         .countries.length;
       let locationsLength = this.state.campaignInfo.targeting.geo_locations
-        .custom_locations.length;
+        .custom_locations
+        ? this.state.campaignInfo.targeting.geo_locations.custom_locations
+            .length
+        : 0;
       let recBudget =
         (countryLength > 0 ? countryLength : locationsLength) * 75;
 
