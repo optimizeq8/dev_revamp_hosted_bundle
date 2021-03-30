@@ -222,14 +222,22 @@ class RepeatCampaignBudget extends Component {
       campaign.channel === "instagram"
         ? this.props.extendInstaCampaginBudget
         : this.props.extendSnapCampaginBudget;
-    extendCampaignAction(
-      {
-        campaign_id: this.state.extendedCampaginData.campaign_id,
-        lifetime_budget_micro:
-          this.state.duration * this.state.lifetime_budget_micro,
-      },
-      this.props.handleExtendModal
-    );
+    if (
+      this._handleBudget(
+        this.state.value,
+        this.state.lifetime_budget_micro,
+        true,
+        this.state.budgetOption
+      )
+    )
+      extendCampaignAction(
+        {
+          campaign_id: this.state.extendedCampaginData.campaign_id,
+          lifetime_budget_micro:
+            this.state.duration * this.state.lifetime_budget_micro,
+        },
+        this.props.handleExtendModal
+      );
   };
 
   _calcSnapReach = async (

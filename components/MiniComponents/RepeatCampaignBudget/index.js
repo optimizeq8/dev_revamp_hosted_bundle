@@ -404,7 +404,7 @@ class RepeatCampaignBudget extends Component {
 
         {campaign.channel !== "instagram" ? (
           <AudienceReach
-            _handleSubmission={this._handleSubmission}
+            _handleSubmission={this.handleSubmission}
             campaignInfo={campaign}
             screenProps={this.props.screenProps}
             customContainerStyle={styles.customAudienceReach}
