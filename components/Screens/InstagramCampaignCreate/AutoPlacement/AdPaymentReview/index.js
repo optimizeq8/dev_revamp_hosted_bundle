@@ -87,7 +87,11 @@ class InstagramAdPaymentReview extends Component {
       );
     });
 
-    if (targeting.geo_locations.hasOwnProperty("regions")) {
+    if (
+      targeting.geo_locations.hasOwnProperty("regions") &&
+      targeting.geo_locations.regions &&
+      targeting.geo_locations.regions.length > 0
+    ) {
       var regionNames = targeting.geo_locations.regions.map((reg) => {
         return reg.name;
       });
@@ -313,7 +317,11 @@ class InstagramAdPaymentReview extends Component {
         );
       });
 
-      if (targeting.geo_locations.hasOwnProperty("regions")) {
+      if (
+        targeting.geo_locations.hasOwnProperty("regions") &&
+        targeting.geo_locations.regions &&
+        targeting.geo_locations.regions.length > 0
+      ) {
         var regionNames = targeting.geo_locations.regions.map((reg) => {
           return translate(reg.name);
         });

@@ -1601,7 +1601,10 @@ class InstagramStoryAdTargetting extends Component {
     //     regions_names.push(translate(r.name));
     //   }
     // });
-    if (this.state.campaignInfo.targeting.geo_locations.regions.length > 0) {
+    if (
+      this.state.campaignInfo.targeting.geo_locations.regions &&
+      this.state.campaignInfo.targeting.geo_locations.regions.length > 0
+    ) {
       regions_names = this.state.campaignInfo.targeting.geo_locations.regions.map(
         (reg) => translate(reg.name)
       );
