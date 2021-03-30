@@ -729,8 +729,11 @@ export class InstagramAudience extends Component {
     countries_names = countries_names.join(", ");
 
     let regions_names = [];
-
-    if (targeting.geo_locations && targeting.geo_locations.regions.length > 0) {
+    if (
+      targeting.geo_locations &&
+      targeting.geo_locations.regions &&
+      targeting.geo_locations.regions.length > 0
+    ) {
       // GET COUNTRY then
       regions_names = targeting.geo_locations.regions.map((reg) =>
         translate(reg.name)
