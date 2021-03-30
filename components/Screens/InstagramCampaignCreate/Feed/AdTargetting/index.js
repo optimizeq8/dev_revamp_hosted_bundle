@@ -1989,7 +1989,8 @@ const mapDispatchToProps = (dispatch) => ({
     segmentInfo,
     locationsInfo,
     custom_interest,
-    custom_location
+    custom_location,
+    navigationPath
   ) =>
     dispatch(
       actionCreators.ad_details_instagram(
@@ -1998,7 +1999,8 @@ const mapDispatchToProps = (dispatch) => ({
         segmentInfo,
         locationsInfo,
         custom_interest,
-        custom_location
+        custom_location,
+        navigationPath
       )
     ),
   updateInstagramCampaign: (

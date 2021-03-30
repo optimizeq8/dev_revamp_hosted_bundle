@@ -1033,7 +1033,8 @@ class InstagramStoryAdTargetting extends Component {
           segmentInfo,
           this.state.locationsInfo,
           this.state.customInterests,
-          this.props.customLocations
+          this.props.customLocations,
+          "InstagramStoryAdPaymentReview"
         );
       }
     }
@@ -1750,7 +1751,7 @@ class InstagramStoryAdTargetting extends Component {
                   });
                   if (
                     !this.props.currentCampaignSteps.includes(
-                      "InstagramAdPaymentReview"
+                      "InstagramStoryAdPaymentReview"
                     ) &&
                     !this.editCampaign
                   ) {
@@ -1987,7 +1988,8 @@ const mapDispatchToProps = (dispatch) => ({
     segmentInfo,
     locationsInfo,
     custom_interest,
-    custom_location
+    custom_location,
+    navigationPath
   ) =>
     dispatch(
       actionCreators.ad_details_instagram(
@@ -1996,7 +1998,8 @@ const mapDispatchToProps = (dispatch) => ({
         segmentInfo,
         locationsInfo,
         custom_interest,
-        custom_location
+        custom_location,
+        navigationPath
       )
     ),
   updateInstagramCampaign: (

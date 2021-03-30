@@ -457,7 +457,8 @@ export const ad_details_instagram = (
   segmentInfo,
   locationsInfo,
   custom_interest = [],
-  custom_location = []
+  custom_location = [],
+  navigationPath = "InstagramAdPaymentReview"
 ) => {
   return (dispatch, getState) => {
     dispatch({
@@ -504,15 +505,10 @@ export const ad_details_instagram = (
       })
       .then(() => {
         // Ad the route here for
-        navigation.navigate(
-          segmentInfo.campaign_ad_type === "InstagramStoryAd"
-            ? "InstagramStoryAdPaymentReview"
-            : "InstagramAdPaymentReview",
-          {
-            source: "ad_targeting",
-            source_action: "a_submit_ad_targeting",
-          }
-        );
+        navigation.navigate(navigationPath, {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting",
+        });
       })
       .catch((err) => {
         // console.log("ad_details_instagram error", err.message || err.response);
