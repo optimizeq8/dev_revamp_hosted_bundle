@@ -963,8 +963,14 @@ export const resetInstagramRejectedCampaignData = () => {
 /**
  *  To move the amount to wallet when ad is rejected
  * @param {*} campaign_id
+ *  @param {*}  keep_campaign 1-> Amount is spend but ad is rejected and remaining budget to be moved to wallet but keep the campaign in list
+                            0-> No Amount is spend and ad is rejected so remaining budget to be moved to wallet and removve the campaign from list
+ 
  */
-export const moveRejectedAdAmountToWalletInstagram = (campaign_id) => {
+export const moveRejectedAdAmountToWalletInstagram = (
+  campaign_id,
+  keep_campaign
+) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.MOVING_AMOUNT_TO_WALLET_INSTAGRAM,
@@ -973,6 +979,7 @@ export const moveRejectedAdAmountToWalletInstagram = (campaign_id) => {
     InstagramBackendURL()
       .post(`moveAmountToWallet`, {
         campaign_id,
+        keep_campaign,
       })
       .then((res) => res.data)
       .then((data) => {

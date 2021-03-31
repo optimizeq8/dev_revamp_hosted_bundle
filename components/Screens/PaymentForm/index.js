@@ -55,6 +55,7 @@ class PaymentForm extends Component {
         "refundAmountToWallet",
         false
       ),
+      keep_campaign: this.props.navigation.getParam("keep_campaign", 0),
       selectedCampaign: this.props.navigation.getParam("selectedCampaign", {}),
       amount: this.props.navigation.getParam("amount", 0),
       payment_type: this.showKnet ? 1 : 3,
@@ -221,11 +222,13 @@ class PaymentForm extends Component {
     const channel = this.props.navigation.getParam("channel", "");
     if (channel === "instagram" && this.state.refundAmountToWallet) {
       this.props.moveRejectedAdAmountToWalletInstagram(
-        this.state.selectedCampaign.campaign_id
+        this.state.selectedCampaign.campaign_id,
+        this.state.keep_campaign
       );
     } else if (this.state.refundAmountToWallet) {
       this.props.moveRejectedAdAmountToWallet(
-        this.state.selectedCampaign.campaign_id
+        this.state.selectedCampaign.campaign_id,
+        this.state.keep_campaign
       );
     } else if (this.state.choice === 1) {
       if (this.props.wallet && this.props.wallet !== "0")
@@ -947,11 +950,18 @@ const mapDispatchToProps = (dispatch) => ({
         closeBrowserLoading
       )
     ),
-  moveRejectedAdAmountToWallet: (campaign_id) =>
-    dispatch(actionCreators.moveRejectedAdAmountToWallet(campaign_id)),
+  moveRejectedAdAmountToWallet: (campaign_id, keep_campaign) =>
+    dispatch(
+      actionCreators.moveRejectedAdAmountToWallet(campaign_id, keep_campaign)
+    ),
 
-  moveRejectedAdAmountToWalletInstagram: (campaign_id) =>
-    dispatch(actionCreators.moveRejectedAdAmountToWalletInstagram(campaign_id)),
+  moveRejectedAdAmountToWalletInstagram: (campaign_id, keep_campaign) =>
+    dispatch(
+      actionCreators.moveRejectedAdAmountToWalletInstagram(
+        campaign_id,
+        keep_campaign
+      )
+    ),
   getPaymentMethods: (businessCCountry, businessid, amount) =>
     dispatch(
       actionCreators.getPaymentMethods(businessCCountry, businessid, amount)
