@@ -1641,8 +1641,10 @@ export const verifyOTPCode = (code) => {
 /**
  *  To move the amount to wallet when ad is rejected
  * @param {*} campaign_id
+ * @param {*}  keep_campaign 1-> Amount is spend but ad is rejected and remaining budget to be moved to wallet but keep the campaign in list
+                            0-> No Amount is spend and ad is rejected so remaining budget to be moved to wallet and removve the campaign from list
  */
-export const moveRejectedAdAmountToWallet = (campaign_id) => {
+export const moveRejectedAdAmountToWallet = (campaign_id, keep_campaign) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.MOVING_AMOUNT_TO_WALLET,
@@ -1651,6 +1653,7 @@ export const moveRejectedAdAmountToWallet = (campaign_id) => {
     createBaseUrl()
       .post(`moveAmountToWallet`, {
         campaign_id,
+        keep_campaign,
       })
       .then((res) => res.data)
       .then((data) => {

@@ -80,6 +80,7 @@ export default (props) => {
                 amount: selectedCampaign.lifetime_budget_micro,
                 refundAmountToWallet: true,
                 selectedCampaign: selectedCampaign,
+                keep_campaign: selectedCampaign.spends > 0 ? 1 : 0,
                 source: "open_wallet",
                 source_action: "a_return_amount_to_wallet",
               });
