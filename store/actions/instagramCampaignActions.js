@@ -1146,6 +1146,13 @@ export const repeatInstaCampagin = (previous_campaign_info, handleSwitch) => {
       })
       .then((res) => res.data)
       .then((data) => {
+        analytics.track("a_repeat_campaign", {
+          source: "dashboard",
+          source_action: "a_repeat_campaign",
+          action_status: data.success ? "success" : "failure",
+          camapign_channel: "instagram",
+          previous_campaignId: previous_campaign_info.previous_campaign_id,
+        });
         console.log(JSON.stringify(data, null, 2));
         if (data.success)
           dispatch({
@@ -1186,6 +1193,13 @@ export const repeatInstaCampaginBudget = (
             channel: "instagram",
           })
         );
+        analytics.track("a_submit_repeat_campaign_budget", {
+          source: "dashboard",
+          source_action: "a_submit_repeat_campaign_budget",
+          action_status: data.success ? "success" : "failure",
+          campaign_channel: "instagram",
+          campaignId: data.campaign_id,
+        });
         if (data.success) {
           dispatch({
             type: actionTypes.SET_INSTA_REPEATING_CAMPAIGN_INFO_BUDGET,
@@ -1196,9 +1210,9 @@ export const repeatInstaCampaginBudget = (
             payload: false,
           });
           NavigationService.navigate("PaymentForm", {
-            source: "ad_review",
-            source_action: `a_submit_ad_review`,
-            campaign_channel: "snapchat",
+            source: "dashboard",
+            source_action: `a_submit_repeat_campaign_budget`,
+            campaign_channel: "instagram",
           });
         }
         handleSwitch(false);

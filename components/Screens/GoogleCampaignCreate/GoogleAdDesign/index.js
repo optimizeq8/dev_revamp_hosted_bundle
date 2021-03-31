@@ -251,7 +251,7 @@ class GoogleAdDesign extends Component {
         campaign_finalurl: this.state.finalurl,
         campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
-        campaign_id: this.props.campaign.id,
+        campaignId: this.props.campaign.id,
       };
       analytics.track(`a_error`, {
         error_page: "ad_design",
@@ -293,7 +293,7 @@ class GoogleAdDesign extends Component {
         campaign_finalurl: this.state.finalurl,
         campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
-        campaign_id: this.props.campaign.id,
+        campaignId: this.props.campaign.id,
       };
       /**
        * the screen is used to handle rejected ads as well, I send back rejected as a param
@@ -420,7 +420,7 @@ class GoogleAdDesign extends Component {
       campaign_end_date: this.props.campaign.end_time,
       campaign_location: this.props.campaign.location,
       campaign_country: this.props.campaign.country,
-      campaign_id: this.props.campaign.id,
+      campaignId: this.props.campaign.id,
     };
     analytics.track("ad_design", {
       timestamp: new Date().getTime(),

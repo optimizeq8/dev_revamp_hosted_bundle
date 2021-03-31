@@ -184,7 +184,7 @@ class GoogleAdTargetting extends Component {
       source: "ad_targeting",
       source_action: "a_ad_gender",
       campaign_type: "google",
-      campaign_id: this.props.campaign.id,
+      campaignId: this.props.campaign.id,
       campaign_gender: gender,
     });
     this.props.save_google_campaign_data({ gender: gender });
@@ -369,7 +369,7 @@ class GoogleAdTargetting extends Component {
       !keywordsError
     ) {
       const segmentInfo = {
-        campaign_id: this.props.campaign.id,
+        campaignId: this.props.campaign.id,
         campaign_budget: this.state.budget,
         campaign_age: this.state.age,
         campaign_gender: this.state.gender,
@@ -436,7 +436,7 @@ class GoogleAdTargetting extends Component {
       campaign_end_date: this.props.campaign.end_time,
       campaign_location: this.props.campaign.location,
       campaign_country: this.props.campaign.country,
-      campaign_id: this.props.campaign.id,
+      campaignId: this.props.campaign.id,
       campaign_headline1: this.props.campaign.headline1,
       campaign_headline2: this.props.campaign.headline2,
       campaign_headline3: this.props.campaign.headline3,

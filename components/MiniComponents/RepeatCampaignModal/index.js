@@ -81,7 +81,12 @@ class RepeatCampaignModal extends Component {
       end_time: end_time.toISOString().split("T")[0],
       duration,
     });
-
+    analytics.track(`a_repeat_duration`, {
+      source: "snapcaht_campaign_card",
+      source_action: "a_repeat_duration",
+      campaign_end_date: end_time,
+      campaign_duration: duration,
+    });
     if (!onePress) {
       this.timer = setTimeout(
         () => this.handleDuration(subtract, null, time + 1),
@@ -95,6 +100,12 @@ class RepeatCampaignModal extends Component {
 
   handleSwitch = (value) => {
     this.setState({ switchComponent: value });
+    analytics.track("a_toggle_date_modal", {
+      source: "dashboard",
+      source_action: "a_toggle_date_modal",
+      visible: value,
+      campaign_channel: campaign.channel,
+    });
     if (!value) {
       this.dateField.showModal();
     } else {

@@ -964,7 +964,7 @@ class InstagramFeedAdTargetting extends Component {
       rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
         campaign_ad_type: "InstagramFeedAd",
-        campaign_id: this.props.campaign_id,
+        campaignId: this.props.campaign_id,
         campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
         campaign_gender:
           this.state.campaignInfo.targeting.genders[0] === ""
@@ -1741,7 +1741,7 @@ class InstagramFeedAdTargetting extends Component {
                         campaign_existing_post:
                           this.props.data.existingPost === 0 ? true : false,
                         campaign_name: this.props.data.name,
-                        campaign_id: this.props.data.campaign_id,
+                        campaignId: this.props.data.campaign_id,
                         campaign_message: this.props.data.message,
                         campaign_attachment: this.props.data.attachment,
                         campaign_swipe_up_CTA: this.props.data.call_to_action,

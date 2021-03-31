@@ -147,7 +147,7 @@ class PaymentForm extends Component {
         // mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
         mode_of_payment: this.props.paymentMethods[this.state.choice - 2]
           .PaymentMethodEn,
-        campaign_id: this.props.campaign_id,
+        campaignId: this.props.campaign_id,
       });
       if (
         this.props.paymentMethods[this.state.choice - 2].payment_type === "1"
@@ -199,7 +199,7 @@ class PaymentForm extends Component {
           .PaymentMethodEn,
         action_status: "failure",
         error_description: "Something went wrong",
-        campaign_id: this.props.campaign_id,
+        campaignId: this.props.campaign_id,
       });
 
       showMessage({
@@ -296,7 +296,7 @@ class PaymentForm extends Component {
     analytics.track(`a_remove_wallet_amount`, {
       source: "payment_mode",
       source_action: "a_remove_wallet_amount",
-      campaign_id: this.props.campaign_id,
+      campaignId: this.props.campaign_id,
     });
     if (this.props.walletUsed) {
       this.props.removeWalletAmount(
@@ -400,7 +400,7 @@ class PaymentForm extends Component {
       analytics.track(`payment_mode`, {
         source,
         source_action,
-        campaign_id: this.props.campaign_id,
+        campaignId: this.props.campaign_id,
         campaign_ad_type,
         campaign_channel: this.state.addingCredits
           ? "wallet_top_up"

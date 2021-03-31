@@ -84,7 +84,7 @@ class AdPaymentReview extends Component {
             (1000 * 60 * 60 * 24)
         ) + 1,
       campaign_name: this.props.data.name,
-      campaign_id: this.props.data.campaign_id,
+      campaignId: this.props.data.campaign_id,
       campaign_brand_name: this.props.data.brand_name,
       campaign_headline: this.props.data.headline,
       campaign_attachment: this.props.data.attachment,
@@ -221,7 +221,7 @@ class AdPaymentReview extends Component {
             (1000 * 60 * 60 * 24)
         ) + 1,
       campaign_name: this.props.data.name,
-      campaign_id: this.props.data.campaign_id,
+      campaignId: this.props.data.campaign_id,
       campaign_brand_name: this.props.data.campaignbrand_name,
       campaign_end_date: this.props.data.end_time,
       campaign_start_date: this.props.data.start_time,

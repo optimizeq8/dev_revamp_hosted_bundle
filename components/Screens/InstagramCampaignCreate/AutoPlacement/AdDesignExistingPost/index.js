@@ -447,7 +447,7 @@ class InstagramAdDesignExistingPost extends Component {
       const segmentInfo = {
         campaign_channel: "instagram",
         campaign_ad_type: "InstagramAutoPlacementAd",
-        campaign_id: this.props.data.campaign_id,
+        campaignId: this.props.data.campaign_id,
         campaign_business_name: this.state.campaignInfo.instagram_business_name,
         campaign_caption: this.state.campaignInfo.message,
         campaign_attachment: this.state.campaignInfo.attachment,
@@ -610,7 +610,7 @@ class InstagramAdDesignExistingPost extends Component {
       campaign_ad_type: "InstagramAutoPlacementAd",
       campaign_existing_post: true,
       campaign_name: this.props.data.name,
-      campaign_id: this.props.data.campaign_id,
+      campaignId: this.props.data.campaign_id,
       campaign_objective: this.props.data.objective,
       campaign_duration:
         Math.ceil(

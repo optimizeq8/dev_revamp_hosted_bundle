@@ -201,7 +201,7 @@ class AdObjective extends Component {
     analytics.track(`a_select_ad_objective`, {
       source: "ad_objective_modal",
       source_action: "a_select_ad_objective",
-      campaign_id: this.props.campaign_id,
+      campaignId: this.props.campaign_id,
       campaign_objective: choice.value,
     });
     this.props.save_campaign_info_instagram({
@@ -392,7 +392,7 @@ class AdObjective extends Component {
     analytics.track(`a_ad_name`, {
       source: "ad_objective",
       source_action: "a_ad_name",
-      campaign_id: this.props.campaign_id,
+      campaignId: this.props.campaign_id,
       campaign_channel: "instagram",
       campaign_ad_type: this.props.adType,
       campaign_name: value,
