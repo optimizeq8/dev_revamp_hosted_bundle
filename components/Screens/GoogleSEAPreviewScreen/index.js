@@ -153,7 +153,7 @@ class GoogleSEAPreviewScreen extends Component {
         campaign_finalurl: this.state.campaign.finalurl,
         campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
-        campaign_id: this.props.campaign.id,
+        campaignId: this.props.campaign.id,
       };
       analytics.track(`a_error`, {
         error_page: "ad_preview",
@@ -195,7 +195,7 @@ class GoogleSEAPreviewScreen extends Component {
         campaign_finalurl: this.state.campaign.finalurl,
         campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
-        campaign_id: this.props.campaign.id,
+        campaignId: this.props.campaign.id,
       };
       /**
        * the screen is used to handle rejected ads as well, I send back rejected as a param

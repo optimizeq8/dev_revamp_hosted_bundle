@@ -863,7 +863,7 @@ class InstagramStoryAdTargetting extends Component {
       analytics.track(`a_error_form`, {
         error_page: "ad_targeting",
         source_action: "a_submit_ad_targeting",
-        campaign_id: this.props.data.campaign_id,
+        campaignId: this.props.data.campaign_id,
         campaign_channel: "instagram",
         campaign_ad_type: "InstagramStoryAd",
         error_description:
@@ -951,7 +951,7 @@ class InstagramStoryAdTargetting extends Component {
       rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
         campaign_ad_type: "InstagramStoryAd",
-        campaign_id: this.props.campaign_id,
+        campaignId: this.props.campaign_id,
         campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
         campaign_gender:
           this.state.campaignInfo.targeting.genders[0] === ""
@@ -1738,7 +1738,7 @@ class InstagramStoryAdTargetting extends Component {
                         campaign_channel: "instagram",
                         campaign_ad_type: "InstagramStoryAd",
                         campaign_name: this.props.data.name,
-                        campaign_id: this.props.data.campaign_id,
+                        campaignId: this.props.data.campaign_id,
                         campaign_message: this.props.data.message,
                         campaign_attachment: this.props.data.attachment,
                         campaign_swipe_up_CTA: this.props.data.call_to_action,

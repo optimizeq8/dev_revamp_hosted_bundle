@@ -90,7 +90,7 @@ class EditKeywords extends Component {
         : null;
     if (!keywordsError) {
       const segmentInfo = {
-        campaign_id: this.props.selectedCampaign.campaign.id,
+        campaignId: this.props.selectedCampaign.campaign.id,
         campaign_keywords: this.state.keywords,
         source: "ad_keywords",
         source_action: "a_update_ad_keywords",
