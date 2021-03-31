@@ -1864,6 +1864,13 @@ export const repeatSnapCampaginBudget = (
             channel: "",
           })
         );
+        analytics.track("a_submit_repeat_campaign_budget", {
+          source: "dashboard",
+          source_action: "a_submit_repeat_campaign_budget",
+          action_status: data.success ? "success" : "failure",
+          campaign_channel: "snapchat",
+          campaignId: data.campaign_id,
+        });
         console.log(JSON.stringify(data, null, 2));
         if (data.success) {
           dispatch({
@@ -1875,8 +1882,8 @@ export const repeatSnapCampaginBudget = (
             payload: false,
           });
           NavigationService.navigate("PaymentForm", {
-            source: "ad_review",
-            source_action: `a_submit_ad_review`,
+            source: "dashboard",
+            source_action: `a_submit_repeat_campaign_budget`,
             campaign_channel: "snapchat",
           });
         }
