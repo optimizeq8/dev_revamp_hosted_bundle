@@ -1146,6 +1146,13 @@ export const repeatInstaCampagin = (previous_campaign_info, handleSwitch) => {
       })
       .then((res) => res.data)
       .then((data) => {
+        analytics.track("a_repeat_campaign", {
+          source: "dashboard",
+          source_action: "a_repeat_campaign",
+          action_status: data.success ? "success" : "failure",
+          camapign_channel: "instagram",
+          previous_campaignId: previous_campaign_info.previous_campaign_id,
+        });
         console.log(JSON.stringify(data, null, 2));
         if (data.success)
           dispatch({

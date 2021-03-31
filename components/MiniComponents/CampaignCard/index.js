@@ -70,6 +70,13 @@ class CampaignCard extends Component {
     return campaignEndedOrNot;
   };
   handleRepeatModal = (value) => {
+    analytics.track("a_toggle_repeat_modal", {
+      source: "dashboard",
+      source_action: "a_toggle_repeat_modal",
+      visible: value,
+      campaign_channel: "snapchat",
+      campaignId: this.props.campaign.campaign_id,
+    });
     this.setState({
       showRepeatModal: value,
     });
