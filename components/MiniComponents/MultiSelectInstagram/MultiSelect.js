@@ -113,13 +113,16 @@ class MultiSelectList extends Component {
 
   handleCountrySelection = (country, countryGeos) => {
     let { translate } = this.props.screenProps;
-    let customLocations = cloneDeep(this.props.customLocations);
+    let customLocations = cloneDeep(
+      this.props.audienceUpdate
+        ? this.props.audienceCustomLocations
+        : this.props.customLocations
+    );
     let customLocationAndCountryExist = false;
 
     let locIndecies = [];
     let filterdLocations = cloneDeep(this.props.circles);
     let filteredLocationInfos = cloneDeep(this.props.locationsInfo);
-
     if (customLocations.length > 0) {
       if (customLocations.some((loc) => country === loc.country)) {
         customLocations.forEach((loc, index) => {
