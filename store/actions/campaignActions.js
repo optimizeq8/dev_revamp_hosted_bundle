@@ -1818,7 +1818,7 @@ export const repeatSnapCampagin = (previous_campaign_info, handleSwitch) => {
       .then((res) => res.data)
       .then((data) => {
         analytics.track("a_repeat_campaign", {
-          source: "dashboard",
+          source: "repeat_campaign_modal",
           source_action: "a_repeat_campaign",
           camapign_channel: "snapchat",
           previous_campaignId: previous_campaign_info.previous_campaign_id,
@@ -1865,7 +1865,7 @@ export const repeatSnapCampaginBudget = (
           })
         );
         analytics.track("a_submit_repeat_campaign_budget", {
-          source: "dashboard",
+          source: "repeat_campaign_modal",
           source_action: "a_submit_repeat_campaign_budget",
           action_status: data.success ? "success" : "failure",
           campaign_channel: "snapchat",
@@ -1912,6 +1912,13 @@ export const extendSnapCampagin = (previous_campaign_info, handleSwitch) => {
       })
       .then((res) => res.data)
       .then((data) => {
+        analytics.track("a_extend_campaign", {
+          source: "extend_campaign_modal",
+          source_action: "a_extend_campaign",
+          camapign_channel: "snapchat",
+          previous_campaignId: previous_campaign_info.previous_campaign_id,
+          action_status: data.success ? "success" : "failure",
+        });
         if (data.success)
           dispatch({
             type: actionTypes.SET_EXTENDING_CAMPAIGN_INFO,
@@ -1952,6 +1959,13 @@ export const extendSnapCampaginBudget = (
             channel: "",
           })
         );
+        analytics.track("a_submit_extend_campaign_budget", {
+          source: "dashboard",
+          source_action: "a_submit_extend_campaign_budget",
+          action_status: data.success ? "success" : "failure",
+          campaign_channel: "channel",
+          campaignId: data.campaign_id,
+        });
         if (data.success) {
           dispatch({
             type: actionTypes.SET_EXTEND_CAMPAIGN_LOADING,
