@@ -460,7 +460,7 @@ const reducer = (state = initialState, action) => {
           (action.payload.card.hasOwnProperty("item") &&
             action.payload.card.item.id !== ad.id) ||
           (action.payload.hasOwnProperty("data") &&
-            ad.carousel_id !== action.payload.data.carousel_id)
+            ad.carousel_id !== action.payload.data.story_id)
         ) {
           return ad;
         } else {

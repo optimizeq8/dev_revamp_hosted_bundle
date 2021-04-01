@@ -9,6 +9,7 @@ import { setCampaignInfoForTransaction } from "./transactionActions";
 import { getUniqueId } from "react-native-device-info";
 import NavigationService from "../../NavigationService";
 import { translate } from "i18n-js";
+import { handleAlreadyCreatedCampaigns } from "./genericActions";
 
 export const resetCampaignInfo = (resetAdType = false) => {
   return (dispatch) => {
@@ -110,37 +111,66 @@ export const ad_objective = (info, navigation, segmentInfo, objective) => {
         return res.data;
       })
       .then((data) => {
-        data.success
-          ? dispatch({
-              type: actionTypes.SET_AD_OBJECTIVE,
-              payload: {
-                ...data,
-                savedObjective: info.savedObjective,
-              },
-            })
-          : dispatch({
-              type: actionTypes.SET_AD_LOADING_OBJ,
-              payload: false,
-            });
+        if (data.data && data.data.campaign_already_created) {
+          dispatch(handleAlreadyCreatedCampaigns(data, "snapchat"));
+          analytics.track(`a_submit_ad_objective_campaign_already_created`, {
+            source: "ad_objective",
+            campaign_channel: "snapchat",
+            action_status: data.success ? "success" : "failure",
+            source_action: "a_submit_ad_objective",
+            timestamp: new Date().getTime(),
+            campaign_error: !data.success && data.message,
+            device_id: getUniqueId(),
+            ...segmentInfo,
+          });
+          dispatch({
+            type: actionTypes.SET_AD_LOADING_OBJ,
+            payload: false,
+          });
+        } else {
+          data.success
+            ? dispatch({
+                type: actionTypes.SET_AD_OBJECTIVE,
+                payload: {
+                  ...data,
+                  savedObjective: info.savedObjective,
+                },
+              })
+            : dispatch({
+                type: actionTypes.SET_AD_LOADING_OBJ,
+                payload: false,
+              });
+        }
         return data;
       })
       .then((data) => {
-        analytics.track(`a_submit_ad_objective`, {
-          source: "ad_objective",
-          campaign_channel: "snapchat",
-          action_status: data.success ? "success" : "failure",
-          source_action: "a_submit_ad_objective",
-          timestamp: new Date().getTime(),
-          campaign_error: !data.success && data.message,
-          device_id: getUniqueId(),
-          ...segmentInfo,
-        });
-        if (data.success) {
+        if (
+          data.success &&
+          data.data &&
+          (!data.data.hasOwnProperty("campaign_already_created") ||
+            data.data.campaign_already_created === 0)
+        ) {
+          analytics.track(`a_submit_ad_objective`, {
+            source: "ad_objective",
+            campaign_channel: "snapchat",
+            action_status: data.success ? "success" : "failure",
+            source_action: "a_submit_ad_objective",
+            timestamp: new Date().getTime(),
+            campaign_error: !data.success && data.message,
+            device_id: getUniqueId(),
+            ...segmentInfo,
+          });
           navigation.navigate("AdDesign", {
             source: "ad_objective",
             source_action: "a_submit_ad_objective",
           });
-        } else showMessage({ message: data.message, position: "top" });
+        } else
+          showMessage({
+            message: data.message,
+            position: "top",
+            type: "warning",
+            floating: false,
+          });
       })
       .catch((err) => {
         // console.log("ad_objective", err.message || err.response);
@@ -198,38 +228,61 @@ export const ad_design = (
         return res.data;
       })
       .then((data) => {
-        analytics.track(`a_submit_ad_design`, {
-          source: "ad_design",
-          source_action: "a_submit_ad_design",
-          resubmit: rejected,
-          action_status: data.success ? "success" : "failure",
-          campaign_error: !data.success && data.message,
-          ...segmentInfo,
-        });
-        rejected &&
-          showMessage({
-            message: data.message,
-            type: data.success ? "success" : "danger",
-            position: "top",
+        if (data.data && data.data.campaign_already_created) {
+          dispatch(handleAlreadyCreatedCampaigns(data, "snapchat"));
+          analytics.track(`a_submit_ad_design_campaign_already_created`, {
+            source: "ad_design",
+            source_action: "a_submit_ad_design",
+            resubmit: rejected,
+            action_status: data.success ? "success" : "failure",
+            campaign_error: !data.success && data.message,
+            ...segmentInfo,
           });
-        if (!rejected)
-          return dispatch({
-            type: actionTypes.SET_AD_DESIGN,
-            payload: data,
-          });
-        else
           dispatch({
             type: actionTypes.SET_AD_LOADING_DESIGN,
             payload: false,
           });
+        } else {
+          analytics.track(`a_submit_ad_design`, {
+            source: "ad_design",
+            source_action: "a_submit_ad_design",
+            resubmit: rejected,
+            action_status: data.success ? "success" : "failure",
+            campaign_error: !data.success && data.message,
+            ...segmentInfo,
+          });
+          rejected &&
+            showMessage({
+              message: data.message,
+              type: data.success ? "success" : "danger",
+              position: "top",
+            });
+          if (!rejected)
+            dispatch({
+              type: actionTypes.SET_AD_DESIGN,
+              payload: data,
+            });
+          else
+            dispatch({
+              type: actionTypes.SET_AD_LOADING_DESIGN,
+              payload: false,
+            });
+        }
+        return data;
       })
-      .then(() => {
+      .then((data) => {
         onToggleModal(false);
         //to not save the formatted data if it's for a rejection
         !rejected && dispatch(save_campaign_info({ formatted: info }));
+        return data;
       })
-      .then(() => {
-        if (!rejected)
+      .then((data) => {
+        if (
+          !rejected &&
+          data.data &&
+          (!data.data.hasOwnProperty("campaign_already_created") ||
+            data.data.campaign_already_created === 0)
+        )
           navigation.navigate(
             segmentInfo.campaign_savedObjective === "POLITICAL_TRAFFIC"
               ? "AdDetailsPolitical"
@@ -239,7 +292,11 @@ export const ad_design = (
               source_action: "a_submit_ad_design",
             }
           );
-        else {
+        else if (
+          data.data &&
+          (!data.data.hasOwnProperty("campaign_already_created") ||
+            data.data.campaign_already_created === 0)
+        ) {
           persistor.purge();
           dispatch({ type: actionTypes.RESET_REJECTED_CAMPAIGN });
           dispatch({
@@ -296,29 +353,51 @@ export const uploadStoryAdCover = (
         return res.data;
       })
       .then((data) => {
-        analytics.track(`a_submit_ad_cover`, {
-          source: "ad_cover",
-          source_action: "a_submit_ad_cover",
-          resubmit: rejected,
-          action_status: data.success ? "success" : "failure",
-          ...segmentInfo,
-        });
-        showMessage({
-          message: data.message,
-          type: data.success ? "success" : "danger",
-          position: "top",
-        });
-        return dispatch({
-          type: actionTypes.SET_COVER_DESIGN,
-          payload: data,
-        });
+        if (data.data && data.data.campaign_already_created) {
+          dispatch(handleAlreadyCreatedCampaigns(data, "snapchat"));
+          dispatch({
+            type: actionTypes.SET_COVER_LOADING_DESIGN,
+            payload: false,
+          });
+          analytics.track(`a_submit_ad_cover_campaign_already_created`, {
+            source: "ad_cover",
+            source_action: "a_submit_ad_cover",
+            resubmit: rejected,
+            action_status: data.success ? "success" : "failure",
+            ...segmentInfo,
+          });
+        } else {
+          analytics.track(`a_submit_ad_cover`, {
+            source: "ad_cover",
+            source_action: "a_submit_ad_cover",
+            resubmit: rejected,
+            action_status: data.success ? "success" : "failure",
+            ...segmentInfo,
+          });
+          showMessage({
+            message: data.message,
+            type: data.success ? "success" : "danger",
+            position: "top",
+          });
+          dispatch({
+            type: actionTypes.SET_COVER_DESIGN,
+            payload: data,
+          });
+        }
+        return data;
       })
-      .then(() => {
+      .then((data) => {
         onToggleModal(false);
         dispatch(save_campaign_info({ formattedCover: info }));
+        return data;
       })
-      .then(() => {
-        navigation.goBack();
+      .then((data) => {
+        if (
+          data.data &&
+          (!data.data.hasOwnProperty("campaign_already_created") ||
+            data.data.campaign_already_created === 0)
+        )
+          navigation.goBack();
         //   .navigate("AdDesign", {
         //     rejected,
         //     source: "ad_cover",
@@ -391,27 +470,36 @@ export const uploadStoryAdCard = (
         return res.data;
       })
       .then((data) => {
-        rejected &&
-          showMessage({
-            message: data.message,
-            type: data.success ? "success" : "danger",
-            position: "top",
+        if (data.data && data.data.campaign_already_created) {
+          dispatch(handleAlreadyCreatedCampaigns(data, "snapchat"));
+          dispatch({
+            type: actionTypes.SET_STORYADCARD_LOADING_DESIGN,
+            payload: { uploading: false, index: card.index, progress: 0.0 },
           });
+        } else {
+          rejected &&
+            showMessage({
+              message: data.message,
+              type: data.success ? "success" : "danger",
+              position: "top",
+            });
 
-        //This is to call the final upload process once all cards are done uploading
-        if (
-          getState().campaignC.loadingStoryAdsArray.length > 1 &&
-          getState().campaignC.loadingStoryAdsArray.reduce(
-            (n, x) => n + (x === true),
-            0
-          ) === 1
-        ) {
-          finalSubmision();
+          //This is to call the final upload process once all cards are done uploading
+          if (
+            getState().campaignC.loadingStoryAdsArray.length > 1 &&
+            getState().campaignC.loadingStoryAdsArray.reduce(
+              (n, x) => n + (x === true),
+              0
+            ) === 1
+          ) {
+            finalSubmision();
+          }
+          dispatch({
+            type: actionTypes.SET_STORYADMEDIA_DESIGN,
+            payload: { data: data.data, card },
+          });
         }
-        return dispatch({
-          type: actionTypes.SET_STORYADMEDIA_DESIGN,
-          payload: { data: data.data, card },
-        });
+        return data;
       })
       .catch((err) => {
         // loading(0);
@@ -445,10 +533,18 @@ export const deleteStoryAdCard = (story_id, card, removeCrad) => {
         return res.data;
       })
       .then((data) => {
-        return dispatch({
-          type: actionTypes.DELETE_STORY_AD_CARD,
-          payload: { data: data, card },
-        });
+        if (data.data && data.data.campaign_already_created) {
+          dispatch(handleAlreadyCreatedCampaigns(data, "snapchat"));
+          dispatch({
+            type: actionTypes.SET_DELETE_CARD_LOADING,
+            payload: { deleteing: false, index: card.index },
+          });
+        } else {
+          dispatch({
+            type: actionTypes.DELETE_STORY_AD_CARD,
+            payload: { data: data, card },
+          });
+        }
       })
 
       .catch((err) => {
@@ -606,34 +702,48 @@ export const ad_details = (
         return res.data;
       })
       .then((data) => {
-        dispatch(
-          setCampaignInfoForTransaction({
-            campaign_id: getState().campaignC.campaign_id,
-            campaign_budget: data.data.lifetime_budget_micro,
-            campaign_budget_kdamount: data.kdamount,
-            channel: "",
-          })
-        );
-        dispatch({
-          type: actionTypes.SET_AD_DETAILS,
-          payload: { data, names },
-        });
+        if (data.data && data.data.campaign_already_created) {
+          dispatch(handleAlreadyCreatedCampaigns(data, "snapchat"));
+          dispatch({
+            type: actionTypes.SET_AD_LOADING_DETAIL,
+            payload: false,
+          });
+        } else {
+          dispatch(
+            setCampaignInfoForTransaction({
+              campaign_id: getState().campaignC.campaign_id,
+              campaign_budget: data.data.lifetime_budget_micro,
+              campaign_budget_kdamount: data.kdamount,
+              channel: "",
+            })
+          );
+          dispatch({
+            type: actionTypes.SET_AD_DETAILS,
+            payload: { data, names },
+          });
+        }
         return data;
       })
       .then((data) => {
-        analytics.track(`a_submit_ad_targeting`, {
-          source: "ad_targeting",
-          source_action: "a_submit_ad_targeting",
-          timestamp: new Date().getTime(),
-          action_status: data.success ? "success" : "failure",
-          campaign_budget: data.data.lifetime_budget_micro,
-          campaign_error: !data.success && data.message,
-          ...segmentInfo,
-        });
-        navigation.navigate("AdPaymentReview", {
-          source: "ad_targeting",
-          source_action: "a_submit_ad_targeting",
-        });
+        if (
+          data.data &&
+          (!data.data.hasOwnProperty("campaign_already_created") ||
+            data.data.campaign_already_created === 0)
+        ) {
+          analytics.track(`a_submit_ad_targeting`, {
+            source: "ad_targeting",
+            source_action: "a_submit_ad_targeting",
+            timestamp: new Date().getTime(),
+            action_status: data.success ? "success" : "failure",
+            campaign_budget: data.data.lifetime_budget_micro,
+            campaign_error: !data.success && data.message,
+            ...segmentInfo,
+          });
+          navigation.navigate("AdPaymentReview", {
+            source: "ad_targeting",
+            source_action: "a_submit_ad_targeting",
+          });
+        }
       })
       .catch((err) => {
         // console.log("ad_details", err.message || err.response);
@@ -846,23 +956,31 @@ export const save_collection_media = (
         return res.data;
       })
       .then((data) => {
-        showMessage({
-          message: data.message,
-          type: data.success ? "success" : "danger",
-          position: "top",
-        });
-        onToggleModal(false);
-        if (data.success) {
-          navigation.navigate("AdDesign");
-          return dispatch({
-            type: actionTypes.SET_AD_COLLECTION_MEDIA,
-            payload: { ...data.data, localUri },
-          });
-        } else {
+        if (data.data && data.data.campaign_already_created) {
+          dispatch(handleAlreadyCreatedCampaigns(data, "snapchat"));
           dispatch({
             type: actionTypes.SET_AD_LOADING_COLLECTION_MEDIA,
             payload: false,
           });
+        } else {
+          showMessage({
+            message: data.message,
+            type: data.success ? "success" : "danger",
+            position: "top",
+          });
+          onToggleModal(false);
+          if (data.success) {
+            navigation.navigate("AdDesign");
+            return dispatch({
+              type: actionTypes.SET_AD_COLLECTION_MEDIA,
+              payload: { ...data.data, localUri },
+            });
+          } else {
+            dispatch({
+              type: actionTypes.SET_AD_LOADING_COLLECTION_MEDIA,
+              payload: false,
+            });
+          }
         }
       })
       .catch((err) => {
@@ -1823,7 +1941,6 @@ export const repeatSnapCampagin = (previous_campaign_info, handleSwitch) => {
           camapign_channel: "snapchat",
           previous_campaignId: previous_campaign_info.previous_campaign_id,
         });
-        console.log(JSON.stringify(data, null, 2));
         if (data.success)
           dispatch({
             type: actionTypes.SET_REPEATING_CAMPAIGN_INFO,
@@ -1871,7 +1988,6 @@ export const repeatSnapCampaginBudget = (
           campaign_channel: "snapchat",
           campaignId: data.campaign_id,
         });
-        console.log(JSON.stringify(data, null, 2));
         if (data.success) {
           dispatch({
             type: actionTypes.SET_REPEATING_CAMPAIGN_INFO_BUDGET,

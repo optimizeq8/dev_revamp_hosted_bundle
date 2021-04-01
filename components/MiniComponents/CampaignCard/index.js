@@ -249,7 +249,7 @@ class CampaignCard extends Component {
                   screenProps={this.props.screenProps}
                 />
 
-                {this.ad_status == "LIVE" ? (
+                {this.ad_status === "LIVE" ? (
                   <>
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
@@ -259,6 +259,8 @@ class CampaignCard extends Component {
                       <Text uppercase style={styles.cardText}>
                         {translate("Day(s) left")}
                       </Text>
+                      {/* 
+                      ----KEEP FOR LATER-----
                       <TouchableOpacity
                         style={[
                           styles.repeatButton,
@@ -267,7 +269,7 @@ class CampaignCard extends Component {
                         onPress={() => this.handleExtendModal(true)}
                       >
                         <Text style={styles.repeatText}>{"Extend"}</Text>
-                      </TouchableOpacity>
+                      </TouchableOpacity> */}
                     </View>
                   </>
                 ) : (

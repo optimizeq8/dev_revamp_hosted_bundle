@@ -104,7 +104,7 @@ class RepeatCampaignModal extends Component {
       source: "dashboard",
       source_action: "a_toggle_date_modal",
       visible: value,
-      campaign_channel: campaign.channel,
+      campaign_channel: this.props.campaign.channel,
     });
     if (!value) {
       this.dateField.showModal();

@@ -83,7 +83,7 @@ class CarouselCard extends Component {
               !this.props.loadingCarouselAdsArray[snapCardInfo.index]
             ) {
               this.props.deleteCarouselCard(
-                snapCardInfo.item.story_id,
+                snapCardInfo.item.carousel_id,
                 snapCardInfo,
                 removeSnapCard
               );
