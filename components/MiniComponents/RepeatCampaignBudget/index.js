@@ -110,7 +110,7 @@ class RepeatCampaignBudget extends Component {
       });
 
       analytics.track(`a_handle_budget`, {
-        source: "ad_targeting",
+        source: "repeat_campaign_modal",
         source_action: "a_handle_budget",
         custom_budget: false,
         campaign_budget: rawValue,
@@ -123,7 +123,7 @@ class RepeatCampaignBudget extends Component {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
           analytics.track(`a_error_form`, {
-            error_page: "ad_targeting",
+            error_page: "repeat_campaign_modal",
             source_action: "a_change_campaign_custom_budget",
             error_description:
               validateWrapper("Budget", rawValue) + " $" + this.props.campaign
@@ -150,7 +150,7 @@ class RepeatCampaignBudget extends Component {
         });
       }
       analytics.track(`a_handle_budget`, {
-        source: "ad_targeting",
+        source: "repeat_campaign_modal",
         source_action: "a_handle_budget",
         custom_budget: true,
         campaign_budget: rawValue,

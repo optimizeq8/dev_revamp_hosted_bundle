@@ -1334,6 +1334,13 @@ export const extendInstaCampagin = (previous_campaign_info, handleSwitch) => {
       })
       .then((res) => res.data)
       .then((data) => {
+        analytics.track("a_extend_campaign", {
+          source: "extend_campaign_modal",
+          source_action: "a_extend_campaign",
+          camapign_channel: "instagram",
+          previous_campaignId: previous_campaign_info.previous_campaign_id,
+          action_status: data.success ? "success" : "failure",
+        });
         if (data.success)
           dispatch({
             type: actionTypes.SET_INSTA_EXTENDING_CAMPAIGN_INFO,
@@ -1373,6 +1380,14 @@ export const extendInstaCampaginBudget = (
             channel: "instagram",
           })
         );
+        analytics.track("a_submit_extend_campaign_budget", {
+          source: "dashboard",
+          source_action: "a_submit_extend_campaign_budget",
+          action_status: data.success ? "success" : "failure",
+          campaign_channel: "instagram",
+          campaignId: data.campaign_id,
+        });
+
         if (data.success) {
           dispatch({
             type: actionTypes.SET_INSTA_EXTENDING_CAMPAIGN_INFO_BUDGET,
