@@ -5,8 +5,9 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 import * as SecureStore from "expo-secure-store";
 import { showMessage } from "react-native-flash-message";
-import store from "../index";
+import { persistor } from "../index";
 import createBaseUrl from "./createBaseUrl";
+import NavigationService from "../../NavigationService";
 
 export const setAuthToken = (token) => {
   if (token) {
@@ -211,5 +212,26 @@ export const setCounterForUnreadMessage = (count) => {
       type: actionTypes.SET_UNREAD_INTERCOM_MESSAGE_COUNT,
       payload: count,
     });
+  };
+};
+
+export const handleAlreadyCreatedCampaigns = (data, channel) => {
+  return (dispatch) => {
+    showMessage({
+      message: data.message,
+      position: "top",
+      type: "warning",
+      floating: false,
+    });
+    persistor.purge();
+    dispatch({
+      type:
+        actionTypes[
+          channel === "snapchat"
+            ? "RESET_CAMPAING_INFO"
+            : "RESET_CAMPAING_INFO_INSTAGRAM"
+        ],
+    });
+    NavigationService.navigate("AdType", { campaignCreationReset: true });
   };
 };

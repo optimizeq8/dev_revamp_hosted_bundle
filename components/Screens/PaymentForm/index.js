@@ -55,6 +55,7 @@ class PaymentForm extends Component {
         "refundAmountToWallet",
         false
       ),
+      keep_campaign: this.props.navigation.getParam("keep_campaign", 0),
       selectedCampaign: this.props.navigation.getParam("selectedCampaign", {}),
       amount: this.props.navigation.getParam("amount", 0),
       payment_type: this.showKnet ? 1 : 3,
@@ -146,7 +147,7 @@ class PaymentForm extends Component {
         // mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
         mode_of_payment: this.props.paymentMethods[this.state.choice - 2]
           .PaymentMethodEn,
-        campaign_id: this.props.campaign_id,
+        campaignId: this.props.campaign_id,
       });
       if (
         this.props.paymentMethods[this.state.choice - 2].payment_type === "1"
@@ -198,7 +199,7 @@ class PaymentForm extends Component {
           .PaymentMethodEn,
         action_status: "failure",
         error_description: "Something went wrong",
-        campaign_id: this.props.campaign_id,
+        campaignId: this.props.campaign_id,
       });
 
       showMessage({
@@ -221,11 +222,13 @@ class PaymentForm extends Component {
     const channel = this.props.navigation.getParam("channel", "");
     if (channel === "instagram" && this.state.refundAmountToWallet) {
       this.props.moveRejectedAdAmountToWalletInstagram(
-        this.state.selectedCampaign.campaign_id
+        this.state.selectedCampaign.campaign_id,
+        this.state.keep_campaign
       );
     } else if (this.state.refundAmountToWallet) {
       this.props.moveRejectedAdAmountToWallet(
-        this.state.selectedCampaign.campaign_id
+        this.state.selectedCampaign.campaign_id,
+        this.state.keep_campaign
       );
     } else if (this.state.choice === 1) {
       if (this.props.wallet && this.props.wallet !== "0")
@@ -293,7 +296,7 @@ class PaymentForm extends Component {
     analytics.track(`a_remove_wallet_amount`, {
       source: "payment_mode",
       source_action: "a_remove_wallet_amount",
-      campaign_id: this.props.campaign_id,
+      campaignId: this.props.campaign_id,
     });
     if (this.props.walletUsed) {
       this.props.removeWalletAmount(
@@ -397,7 +400,7 @@ class PaymentForm extends Component {
       analytics.track(`payment_mode`, {
         source,
         source_action,
-        campaign_id: this.props.campaign_id,
+        campaignId: this.props.campaign_id,
         campaign_ad_type,
         campaign_channel: this.state.addingCredits
           ? "wallet_top_up"
@@ -947,11 +950,18 @@ const mapDispatchToProps = (dispatch) => ({
         closeBrowserLoading
       )
     ),
-  moveRejectedAdAmountToWallet: (campaign_id) =>
-    dispatch(actionCreators.moveRejectedAdAmountToWallet(campaign_id)),
+  moveRejectedAdAmountToWallet: (campaign_id, keep_campaign) =>
+    dispatch(
+      actionCreators.moveRejectedAdAmountToWallet(campaign_id, keep_campaign)
+    ),
 
-  moveRejectedAdAmountToWalletInstagram: (campaign_id) =>
-    dispatch(actionCreators.moveRejectedAdAmountToWalletInstagram(campaign_id)),
+  moveRejectedAdAmountToWalletInstagram: (campaign_id, keep_campaign) =>
+    dispatch(
+      actionCreators.moveRejectedAdAmountToWalletInstagram(
+        campaign_id,
+        keep_campaign
+      )
+    ),
   getPaymentMethods: (businessCCountry, businessid, amount) =>
     dispatch(
       actionCreators.getPaymentMethods(businessCCountry, businessid, amount)

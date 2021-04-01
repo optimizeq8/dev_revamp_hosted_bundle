@@ -240,6 +240,8 @@ const initialState = {
   verifyEngagementNumberLoadingOTP: false,
   repeatingCampaginData: {},
   repeatCampaignLoading: false,
+  extendedCampaginData: {},
+  extendCampaignLoading: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -1234,6 +1236,19 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         repeatCampaignLoading: action.payload,
+      };
+    }
+    case actionTypes.SET_EXTENDING_CAMPAIGN_INFO: {
+      return {
+        ...state,
+        extendedCampaginData: action.payload.data,
+        extendCampaignLoading: false,
+      };
+    }
+    case actionTypes.SET_EXTEND_CAMPAIGN_LOADING: {
+      return {
+        ...state,
+        extendCampaignLoading: action.payload,
       };
     }
     default:

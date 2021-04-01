@@ -156,7 +156,7 @@ class InstagramAdPaymentReview extends Component {
             (1000 * 60 * 60 * 24)
         ) + 1,
       campaign_name: this.props.data.name,
-      campaign_id: this.props.data.campaign_id,
+      campaignId: this.props.data.campaign_id,
       campaign_caption: message,
       campaign_attachment: link,
       campaign_swipe_up_CTA: this.props.data.call_to_action,
@@ -564,7 +564,7 @@ class InstagramAdPaymentReview extends Component {
                             (1000 * 60 * 60 * 24)
                         ) + 1,
                       campaign_name: this.props.data.name,
-                      campaign_id: this.props.data.campaign_id,
+                      campaignId: this.props.data.campaign_id,
                       campaign_caption: message,
                       campaign_end_date: this.props.data.end_time,
                       campaign_start_date: this.props.data.start_time,

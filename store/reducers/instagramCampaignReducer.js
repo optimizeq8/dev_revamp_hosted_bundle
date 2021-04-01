@@ -108,6 +108,8 @@ const initialState = {
   customInterestsLoading: false,
   repeatingInstaCampaginData: {},
   repeatInstaCampaignLoading: false,
+  extendedInstaCampaginData: {},
+  extendInstaCampaignLoading: false,
   customLocations: [],
   audienceCustomLocations: [],
   customLocationLoading: false,
@@ -458,7 +460,7 @@ const reducer = (state = initialState, action) => {
           (action.payload.card.hasOwnProperty("item") &&
             action.payload.card.item.id !== ad.id) ||
           (action.payload.hasOwnProperty("data") &&
-            ad.carousel_id !== action.payload.data.carousel_id)
+            ad.carousel_id !== action.payload.data.story_id)
         ) {
           return ad;
         } else {
@@ -588,17 +590,17 @@ const reducer = (state = initialState, action) => {
         ...state,
         campaignEnded: action.payload,
       };
-    case actionTypes.SET_INSTA_REPEATING_CAMPAIGN_INFO: {
+    case actionTypes.SET_INSTA_EXTENDING_CAMPAIGN_INFO: {
       return {
         ...state,
-        repeatingInstaCampaginData: action.payload.data,
-        repeatInstaCampaignLoading: false,
+        extendedInstaCampaginData: action.payload.data,
+        extendInstaCampaignLoading: false,
       };
     }
-    case actionTypes.SET_REPEAT_INSTA_CAMPAIGN_LOADING: {
+    case actionTypes.SET_EXTEND_INSTA_CAMPAIGN_LOADING: {
       return {
         ...state,
-        repeatInstaCampaignLoading: action.payload,
+        extendInstaCampaignLoading: action.payload,
       };
     }
     case actionTypes.SET_INSTAGRAM_CUSTOM_LOCATION_LOADING:

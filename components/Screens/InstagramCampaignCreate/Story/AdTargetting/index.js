@@ -863,7 +863,7 @@ class InstagramStoryAdTargetting extends Component {
       analytics.track(`a_error_form`, {
         error_page: "ad_targeting",
         source_action: "a_submit_ad_targeting",
-        campaign_id: this.props.data.campaign_id,
+        campaignId: this.props.data.campaign_id,
         campaign_channel: "instagram",
         campaign_ad_type: "InstagramStoryAd",
         error_description:
@@ -951,7 +951,7 @@ class InstagramStoryAdTargetting extends Component {
       rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
         campaign_ad_type: "InstagramStoryAd",
-        campaign_id: this.props.campaign_id,
+        campaignId: this.props.campaign_id,
         campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
         campaign_gender:
           this.state.campaignInfo.targeting.genders[0] === ""
@@ -988,6 +988,7 @@ class InstagramStoryAdTargetting extends Component {
           delete rep.targeting.geo_locations.custom_locations;
         }
         if (
+          this.state.campaignInfo.targeting.geo_locations.custom_locations &&
           this.state.campaignInfo.targeting.geo_locations.custom_locations
             .length === 0
         ) {
@@ -1033,7 +1034,8 @@ class InstagramStoryAdTargetting extends Component {
           segmentInfo,
           this.state.locationsInfo,
           this.state.customInterests,
-          this.props.customLocations
+          this.props.customLocations,
+          "InstagramStoryAdPaymentReview"
         );
       }
     }
@@ -1603,7 +1605,10 @@ class InstagramStoryAdTargetting extends Component {
     //     regions_names.push(translate(r.name));
     //   }
     // });
-    if (this.state.campaignInfo.targeting.geo_locations.regions.length > 0) {
+    if (
+      this.state.campaignInfo.targeting.geo_locations.regions &&
+      this.state.campaignInfo.targeting.geo_locations.regions.length > 0
+    ) {
       regions_names = this.state.campaignInfo.targeting.geo_locations.regions.map(
         (reg) => translate(reg.name)
       );
@@ -1733,7 +1738,7 @@ class InstagramStoryAdTargetting extends Component {
                         campaign_channel: "instagram",
                         campaign_ad_type: "InstagramStoryAd",
                         campaign_name: this.props.data.name,
-                        campaign_id: this.props.data.campaign_id,
+                        campaignId: this.props.data.campaign_id,
                         campaign_message: this.props.data.message,
                         campaign_attachment: this.props.data.attachment,
                         campaign_swipe_up_CTA: this.props.data.call_to_action,
@@ -1753,7 +1758,7 @@ class InstagramStoryAdTargetting extends Component {
                   });
                   if (
                     !this.props.currentCampaignSteps.includes(
-                      "InstagramAdPaymentReview"
+                      "InstagramStoryAdPaymentReview"
                     ) &&
                     !this.editCampaign
                   ) {
@@ -1990,7 +1995,8 @@ const mapDispatchToProps = (dispatch) => ({
     segmentInfo,
     locationsInfo,
     custom_interest,
-    custom_location
+    custom_location,
+    navigationPath
   ) =>
     dispatch(
       actionCreators.ad_details_instagram(
@@ -1999,7 +2005,8 @@ const mapDispatchToProps = (dispatch) => ({
         segmentInfo,
         locationsInfo,
         custom_interest,
-        custom_location
+        custom_location,
+        navigationPath
       )
     ),
   updateInstagramCampaign: (

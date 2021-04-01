@@ -232,8 +232,14 @@ export const getWalletAmountInKwd = (amount, retries = 3) => {
       });
   };
 };
-export const useWallet = (campaign_id, setWalletModal, retries = 3) => {
+export const useWallet = (
+  campaign_id,
+  setWalletModal,
+  navigation,
+  retries = 3
+) => {
   return (dispatch, getState) => {
+    console.log("called", campaign_id);
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true,
@@ -250,28 +256,38 @@ export const useWallet = (campaign_id, setWalletModal, retries = 3) => {
         return res.data;
       })
       .then((data) => {
-        showMessage({
-          message: data.message,
-          type: "info",
-          position: "top",
-        });
-        if (!data.success) {
+        if (data.data && data.data.campaign_already_created) {
+          dispatch(checkoutwithWallet(data.campaign_id, navigation));
           return dispatch({
             type: actionTypes.SET_TRAN_LOADING,
             payload: false,
           });
-        } else
-          return dispatch({
-            type: actionTypes.USE_WALLET_AMOUNT,
-            payload: data,
+        } else {
+          showMessage({
+            message: data.message,
+            type: "info",
+            position: "top",
           });
+          if (!data.success) {
+            return dispatch({
+              type: actionTypes.SET_TRAN_LOADING,
+              payload: false,
+            });
+          } else
+            return dispatch({
+              type: actionTypes.USE_WALLET_AMOUNT,
+              payload: data,
+            });
+        }
       })
 
       .catch((err) => {
         // console.log("useWallet Error: ", err.message);
 
         if (retries > 0) {
-          dispatch(useWallet(campaign_id, setWalletModal, retries - 1));
+          dispatch(
+            useWallet(campaign_id, setWalletModal, navigation, retries - 1)
+          );
           return;
         }
         showMessage({

@@ -163,7 +163,7 @@ class RepeatCampaignBudget extends Component {
       });
 
       analytics.track(`a_handle_budget`, {
-        source: "ad_targeting",
+        source: "repeat_campaign_modal",
         source_action: "a_handle_budget",
         custom_budget: false,
         campaign_budget: rawValue,
@@ -176,7 +176,7 @@ class RepeatCampaignBudget extends Component {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
           analytics.track(`a_error_form`, {
-            error_page: "ad_targeting",
+            error_page: "repeat_campaign_modal",
             source_action: "a_change_campaign_custom_budget",
             error_description:
               validateWrapper("Budget", rawValue) + " $" + this.props.campaign
@@ -203,7 +203,7 @@ class RepeatCampaignBudget extends Component {
         });
       }
       analytics.track(`a_handle_budget`, {
-        source: "ad_targeting",
+        source: "repeat_campaign_modal",
         source_action: "a_handle_budget",
         custom_budget: true,
         campaign_budget: rawValue,
@@ -224,14 +224,23 @@ class RepeatCampaignBudget extends Component {
       campaign.channel === "instagram"
         ? this.props.repeatInstaCampaginBudget
         : this.props.repeatSnapCampaginBudget;
-    repeatCampaignAction(
-      {
-        campaign_id: this.state.repeatingCampaginData.campaign_id,
-        lifetime_budget_micro:
-          this.state.duration * this.state.lifetime_budget_micro,
-      },
-      this.props.handleRepeatModal
-    );
+    if (
+      this._handleBudget(
+        this.state.value,
+        this.state.lifetime_budget_micro,
+        true,
+        this.state.budgetOption
+      )
+    ) {
+      repeatCampaignAction(
+        {
+          campaign_id: this.state.repeatingCampaginData.campaign_id,
+          lifetime_budget_micro:
+            this.state.duration * this.state.lifetime_budget_micro,
+        },
+        this.props.handleRepeatModal
+      );
+    }
   };
 
   _calcSnapReach = async (
@@ -448,7 +457,7 @@ class RepeatCampaignBudget extends Component {
 
         {campaign.channel !== "instagram" ? (
           <AudienceReach
-            _handleSubmission={this._handleSubmission}
+            _handleSubmission={this.handleSubmission}
             campaignInfo={campaign}
             screenProps={this.props.screenProps}
             customContainerStyle={styles.customAudienceReach}

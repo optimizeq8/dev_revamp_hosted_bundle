@@ -51,20 +51,20 @@ class SuccessRedirect extends Component {
     let segmentInfo = {};
     if (this.props.navigation.getParam("isWallet") === "1") {
       segmentInfo = {
-        amount: parseFloat(this.props.navigation.getParam("amount", "null")),
+        amount: parseFloat(this.props.navigation.getParam("amount", "0.00")),
         payment_status: "success",
-        top_wallet_amount: this.props.navigation.getParam("amount", "null"),
+        top_wallet_amount: this.props.navigation.getParam("amount", "0.00"),
         type: "Wallet load",
       };
       analytics.identify(this.props.userInfo.userid, {
-        wallet_amount: this.props.navigation.getParam("amount", "null"),
+        wallet_amount: this.props.navigation.getParam("amount", "0.00"),
       });
     } else {
       segmentInfo = {
         payment_status: "success",
         campaign_channel:
           this.props.channel === "" ? "snapchat" : this.props.channel,
-        amount: parseFloat(this.props.navigation.getParam("amount", "null")),
+        amount: parseFloat(this.props.navigation.getParam("amount", "0.00")),
         campaign_ad_type:
           this.props.channel === "google"
             ? "GoogleSEAd"
@@ -73,13 +73,13 @@ class SuccessRedirect extends Component {
             : this.props.adType,
 
         campaign_ltv: parseFloat(
-          this.props.navigation.getParam("campaign_ltv", "null")
+          this.props.navigation.getParam("campaign_ltv", "0.00")
         ),
         campaign_revenue: parseFloat(
-          this.props.navigation.getParam("campaign_revenue", "null")
+          this.props.navigation.getParam("campaign_revenue", "0.00")
         ),
         type: "Campaign",
-        revenue: parseFloat(this.props.navigation.getParam("amount", "$0.00")),
+        revenue: parseFloat(this.props.navigation.getParam("amount", "0.00")),
       };
       if (
         this.props.navigation.getParam("payment_mode").toLowerCase() !==

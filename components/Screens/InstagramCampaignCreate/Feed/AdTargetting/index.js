@@ -964,7 +964,7 @@ class InstagramFeedAdTargetting extends Component {
       rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
         campaign_ad_type: "InstagramFeedAd",
-        campaign_id: this.props.campaign_id,
+        campaignId: this.props.campaign_id,
         campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
         campaign_gender:
           this.state.campaignInfo.targeting.genders[0] === ""
@@ -993,6 +993,7 @@ class InstagramFeedAdTargetting extends Component {
       };
       if (this.editCampaign) {
         if (
+          this.state.campaignInfo.targeting.geo_locations.custom_locations &&
           this.state.campaignInfo.targeting.geo_locations.custom_locations
             .length === 0
         ) {
@@ -1201,10 +1202,9 @@ class InstagramFeedAdTargetting extends Component {
     if (this.editCampaign) {
       campaignTargeting.geo_locations = editedCampaign.targeting.geo_locations;
     }
-    editedCampaign.targeting = {
-      ...editedCampaign.targeting,
-      ...campaignTargeting,
-    };
+    editedCampaign = deepmerge(editedCampaign, campaignTargeting, {
+      arrayMerge: overwriteMerge,
+    });
 
     // let editedCountryCodes = editedCampaign.targeting.geo_locations.map(
     //   (geo) => geo.country_code
@@ -1741,7 +1741,7 @@ class InstagramFeedAdTargetting extends Component {
                         campaign_existing_post:
                           this.props.data.existingPost === 0 ? true : false,
                         campaign_name: this.props.data.name,
-                        campaign_id: this.props.data.campaign_id,
+                        campaignId: this.props.data.campaign_id,
                         campaign_message: this.props.data.message,
                         campaign_attachment: this.props.data.attachment,
                         campaign_swipe_up_CTA: this.props.data.call_to_action,
@@ -1992,7 +1992,8 @@ const mapDispatchToProps = (dispatch) => ({
     segmentInfo,
     locationsInfo,
     custom_interest,
-    custom_location
+    custom_location,
+    navigationPath
   ) =>
     dispatch(
       actionCreators.ad_details_instagram(
@@ -2001,7 +2002,8 @@ const mapDispatchToProps = (dispatch) => ({
         segmentInfo,
         locationsInfo,
         custom_interest,
-        custom_location
+        custom_location,
+        navigationPath
       )
     ),
   updateInstagramCampaign: (

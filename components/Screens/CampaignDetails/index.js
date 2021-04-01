@@ -112,7 +112,7 @@ class CampaignDetails extends Component {
       campaign_start_date: date,
       source: "ad_detail",
       source_action: "a_ad_start_date",
-      campaign_id: this.props.selectedCampaign.campaign_id,
+      campaignId: this.props.selectedCampaign.campaign_id,
       campaign_start_date: date,
     });
     this.setState({
@@ -124,7 +124,7 @@ class CampaignDetails extends Component {
       campaign_end_date: date,
       source: "ad_detail",
       source_action: "a_ad_end_date",
-      campaign_id: this.props.selectedCampaign.campaign_id,
+      campaignId: this.props.selectedCampaign.campaign_id,
       campaign_end_date: date,
     });
     this.setState({
@@ -290,7 +290,7 @@ class CampaignDetails extends Component {
         campaign_channel: "snapchat",
         timestamp: new Date().getTime(),
         device_id: this.props.screenProps.device_id,
-        campaign_id: this.props.selectedCampaign.campaign_id,
+        campaignId: this.props.selectedCampaign.campaign_id,
       });
     }
   };

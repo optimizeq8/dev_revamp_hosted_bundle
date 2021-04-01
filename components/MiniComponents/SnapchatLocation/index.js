@@ -64,6 +64,7 @@ class SnapchatLocation extends Component {
     );
   };
   handleMapModal = (value, locationInfo, index) => {
+    console.log("handleMapModal this.state.markers", this.state.markers);
     if (locationInfo) {
       locationInfo.index = index;
       locationInfo.radius = this.state.markers[index].radius;

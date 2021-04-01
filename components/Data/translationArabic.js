@@ -2163,5 +2163,4 @@ const strings = {
   "Your ads will automatically be shown to your audience in the places they're likely to perform best":
     "",
 };
-
 export default strings;

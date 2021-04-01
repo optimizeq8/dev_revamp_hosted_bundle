@@ -108,6 +108,7 @@ class InstagramAdDesignExistingPost extends Component {
       maxClickHeight: 0,
       swipeUpExpanded: false,
       closeAnimation: false,
+      AP: 1 / 1,
     };
   }
   componentWillUnmount() {
@@ -432,7 +433,7 @@ class InstagramAdDesignExistingPost extends Component {
       const segmentInfo = {
         campaign_channel: "instagram",
         campaign_ad_type: "InstagramFeedAd",
-        campaign_id: this.props.data.campaign_id,
+        campaignId: this.props.data.campaign_id,
         campaign_business_name: this.state.campaignInfo.instagram_business_name,
         campaign_caption: this.state.campaignInfo.message,
         campaign_attachment: this.state.campaignInfo.attachment,
@@ -515,7 +516,7 @@ class InstagramAdDesignExistingPost extends Component {
                 product.attachments.data[0].type === "album"
                   ? "IMAGE"
                   : "VIDEO",
-              message: product.message,
+              message: product.message ? product.message : "",
               instagram_post_id: product.promotable_id,
             },
             media_type:
@@ -535,7 +536,7 @@ class InstagramAdDesignExistingPost extends Component {
               product.attachments.data[0].type === "album"
                 ? "IMAGE"
                 : "VIDEO",
-            message: product.message,
+            message: product.message ? product.message : "",
             instagram_post_id: product.promotable_id,
           });
         }}
@@ -593,7 +594,7 @@ class InstagramAdDesignExistingPost extends Component {
       campaign_ad_type: "InstagramFeedAd",
       campaign_existing_post: true,
       campaign_name: this.props.data.name,
-      campaign_id: this.props.data.campaign_id,
+      campaignId: this.props.data.campaign_id,
       campaign_objective: this.props.data.objective,
       campaign_duration:
         Math.ceil(
@@ -610,6 +611,21 @@ class InstagramAdDesignExistingPost extends Component {
       maxClickHeight: event.nativeEvent.layout.height,
     });
   };
+  onReadyForDisplay = ({ naturalSize }) => {
+    const { width, height } = naturalSize;
+    let AP = (width / height).toFixed(2);
+    this.setState({ AP });
+  };
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.campaignInfo.media !== this.state.campaignInfo.media) {
+      if (this.state.campaignInfo.media_type === "IMAGE")
+        RNImage.getSize(this.state.campaignInfo.media, (width, height) => {
+          this.setState({
+            AP: (width / height).toFixed(2),
+          });
+        });
+    }
+  }
   render() {
     const { translate } = this.props.screenProps;
 
@@ -731,7 +747,14 @@ class InstagramAdDesignExistingPost extends Component {
                   <Text style={previewStyles.dot}>.</Text>
                 </View>
               </View>
-              <View style={previewStyles.mediaViewExist}>
+              <View
+                style={[
+                  previewStyles.mediaViewExist,
+                  {
+                    aspectRatio: parseFloat(this.state.AP),
+                  },
+                ]}
+              >
                 {this.state.media_type === "IMAGE" ? (
                   <RNImage
                     style={previewStyles.imagePreview}
@@ -744,6 +767,7 @@ class InstagramAdDesignExistingPost extends Component {
                     shouldPlay={true}
                     media={media}
                     isMuted={this.state.muteVideo}
+                    onReadyForDisplay={this.onReadyForDisplay}
                   />
                 )}
               </View>

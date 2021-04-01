@@ -84,6 +84,7 @@ export default (props) => {
               source: "open_wallet",
               source_action: "a_return_amount_to_wallet",
               channel: "instagram",
+              keep_campaign: selectedCampaign.spends > 0 ? 1 : 0,
             });
           }}
         >

@@ -42,7 +42,8 @@ class UseWallet extends Component {
   _handleWallet = async () => {
     await this.props.useWallet(
       this.props.campaign_id,
-      this.props.setShowWalletModal
+      this.props.setShowWalletModal,
+      this.props.navigation
     );
     // this.props.setShowWalletModal(true);
     // this.setState({
@@ -180,8 +181,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  useWallet: (info, setShowWalletModal) =>
-    dispatch(actionCreators.useWallet(info, setShowWalletModal)),
+  useWallet: (info, setShowWalletModal, navigation) =>
+    dispatch(actionCreators.useWallet(info, setShowWalletModal, navigation)),
   removeWalletAmount: (info) =>
     dispatch(actionCreators.removeWalletAmount(info)),
   checkoutwithWallet: (info, navigation) =>

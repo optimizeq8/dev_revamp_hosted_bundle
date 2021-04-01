@@ -154,11 +154,12 @@ class MultiSelectList extends Component {
             onPress: () => {
               locIndecies.forEach((i) => this.props.deleteCustomLocation(i));
               this.props.onSelectedCountryRegionChange(country);
-              this.props.onSelectedMapChange(
-                filterdLocations,
-                false,
-                filteredLocationInfos
-              );
+              if (this.props.onSelectedMapChange)
+                this.props.onSelectedMapChange(
+                  filterdLocations,
+                  false,
+                  filteredLocationInfos
+                );
             },
           },
         ]

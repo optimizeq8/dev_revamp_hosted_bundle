@@ -1077,7 +1077,7 @@ class AdDetails extends Component {
         error_page: "ad_targeting",
         source_action: "a_submit_ad_targeting",
         timestamp: new Date().getTime(),
-        campaign_id: this.props.data.campaign_id,
+        campaignId: this.props.data.campaign_id,
         campaign_channel: "snapchat",
         campaign_ad_type: this.props.adType,
         error_description:
@@ -1166,7 +1166,7 @@ class AdDetails extends Component {
         this.state.interestNames.length > 0 &&
         this.state.interestNames.map((inter) => inter.name);
       const segmentInfo = {
-        campaign_id: this.props.campaign_id,
+        campaignId: this.props.campaign_id,
 
         business_name: this.props.mainBusiness.businessname,
         campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
@@ -1346,7 +1346,7 @@ class AdDetails extends Component {
           campaign_channel: "snapchat",
           campaign_ad_type: this.props.adType,
           campaign_name: this.props.data.name,
-          campaign_id: this.props.data.campaign_id,
+          campaignId: this.props.data.campaign_id,
           campaign_brand_name: this.props.data.brand_name,
           campaign_headline: this.props.data.headline,
           campaign_attachment: this.props.data.attachment,

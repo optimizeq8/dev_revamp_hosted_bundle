@@ -327,7 +327,16 @@ class AdType extends Component {
             source: "ad_type",
             source_action: "a_go_back",
           }}
-          navigation={this.props.navigation}
+          navigation={
+            !this.props.navigation.getParam("campaignCreationReset", false)
+              ? this.props.navigation
+              : undefined
+          }
+          actionButton={
+            this.props.navigation.getParam("campaignCreationReset", false)
+              ? () => this.props.navigation.replace("Dashboard")
+              : undefined
+          }
         />
 
         <View style={{ paddingHorizontal: 26 }}>
