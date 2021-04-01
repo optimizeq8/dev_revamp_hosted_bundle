@@ -148,25 +148,34 @@ class ContinueCampaign extends Component {
         channel: "instagram",
       };
       if (
-        this.props.currentCampaignSteps.includes("InstagramFeedAdObjective")
+        this.props.currentCampaignSteps.includes("InstagramFeedAdObjective") ||
+        this.props.currentCampaignSteps.includes("InstagramStoryAdObjective")
       ) {
         updated_transaction_data = {
           ...updated_transaction_data,
           campaign_id: this.props.data.campaign_id,
         };
       }
-      // if (this.props.currentCampaignSteps.includes("AdDetails")) {
-      //   updated_transaction_data = {
-      //     ...updated_transaction_data,
-      //     campaign_budget: this.props.data.lifetime_budget_micro
-      //   };
-      // }
-      // if (this.props.currentCampaignSteps.includes("AdPaymentReview")) {
-      //   updated_transaction_data = {
-      //     ...updated_transaction_data,
-      //     campaign_budget_kdamount: this.props.data.kdamount
-      //   };
-      // }
+      if (
+        this.props.currentCampaignSteps.includes("InstagramFeedAdTargetting") ||
+        this.props.currentCampaignSteps.includes("InstagramStoryAdTargetting")
+      ) {
+        updated_transaction_data = {
+          ...updated_transaction_data,
+          campaign_budget: this.props.data.lifetime_budget_micro,
+        };
+      }
+      if (
+        this.props.currentCampaignSteps.includes("InstagramAdPaymentReview") ||
+        this.props.currentCampaignSteps.includes(
+          "InstagramStoryAdPaymentReview"
+        )
+      ) {
+        updated_transaction_data = {
+          ...updated_transaction_data,
+          campaign_budget_kdamount: this.props.data.kdamount,
+        };
+      }
       this.props.setCampaignInfoForTransaction(updated_transaction_data);
       this.props.setCampaignInProgress(true);
       this.props.overWriteObjectiveData(); //overwrite this.props.data with what ever is in oldTempData

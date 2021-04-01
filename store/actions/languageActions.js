@@ -41,7 +41,6 @@ export const getLanguageListPOEdit = (language) => {
         )
         .then((response) => response.data)
         .then((data) => {
-          console.log("data.response.status", data.response.status);
           if (data.response.status === "success") {
             AsyncStorage.setItem("appLanguage", language).then((res) => {
               const terms = data.result.terms;
