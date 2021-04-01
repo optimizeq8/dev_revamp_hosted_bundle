@@ -76,13 +76,13 @@ export default {
     //   icon: "Mother",
     //   color: "#F26622",
     // },
-    // {
-    //   label: "Sales Campaign",
-    //   value: "WEB_CONVERSION",
-    //   info: "Increase sales for my website",
-    //   icon: "Sale",
-    //   color: "#42EB56",
-    // },
+    {
+      label: "Sales Campaign",
+      value: "WEB_CONVERSION",
+      info: "Increase sales for my website",
+      icon: "Sale",
+      color: "#42EB56",
+    },
     // {
     //   label: "Majlis 2020",
     //   value: "POLITICAL_TRAFFIC",
