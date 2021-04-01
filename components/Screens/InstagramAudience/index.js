@@ -65,6 +65,8 @@ import countries, {
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
+import deepmerge from "deepmerge";
+import combineMerge from "../InstagramCampaignCreate/Feed/AdTargetting/combineMerge";
 
 export class InstagramAudience extends Component {
   constructor(props) {
@@ -93,6 +95,34 @@ export class InstagramAudience extends Component {
     };
     this.editAudience = this.props.navigation.getParam("editAudience", false);
   }
+  componentDidMount() {
+    let originalTargeting = {
+      genders: [""],
+      flexible_spec: [
+        {
+          interests: [],
+        },
+      ],
+      user_os: [""],
+      user_device: [],
+      os_version_min: "",
+      os_version_max: "",
+      geo_locations: { countries: [], regions: [], custom_locations: [] },
+      age_max: 65,
+      age_min: 18,
+    };
+    let combinedMerge = deepmerge(
+      originalTargeting,
+      this.props.audience.targeting,
+      { arrayMerge: combineMerge }
+    );
+    let rep = cloneDeep(this.props.audience);
+    rep.targeting = combinedMerge;
+    console.log("rep.targeting", JSON.stringify(rep.targeting, null, 2));
+    this.props.setAudienceDetail({
+      ...rep,
+    });
+  }
   componentDidUpdate(prevProps) {
     if (
       prevProps.audienceDetailLoading !== this.props.audienceDetailLoading &&
@@ -120,7 +150,32 @@ export class InstagramAudience extends Component {
           this.props.audience.targeting.geo_locations.customLocations
         );
       }
-
+      let originalTargeting = {
+        genders: [""],
+        flexible_spec: [
+          {
+            interests: [],
+          },
+        ],
+        user_os: [""],
+        user_device: [],
+        os_version_min: "",
+        os_version_max: "",
+        geo_locations: { countries: [], regions: [], custom_locations: [] },
+        age_max: 65,
+        age_min: 18,
+      };
+      let combinedMerge = deepmerge(
+        originalTargeting,
+        this.props.audience.targeting,
+        { arrayMerge: combineMerge }
+      );
+      let rep = cloneDeep(this.props.audience);
+      rep.targeting = combinedMerge;
+      console.log("rep.targeting", JSON.stringify(rep.targeting, null, 2));
+      this.props.setAudienceDetail({
+        ...rep,
+      });
       this.setState({
         regions: countryRegions ? countryRegions : [],
         filteredRegions: countryRegions ? countryRegions : [],
@@ -513,8 +568,10 @@ export class InstagramAudience extends Component {
     const { targeting } = this.props.audience;
     let interestNames = [];
     let interests_names = [];
-
-    if (targeting.flexible_spec[0].interests.length > 0) {
+    if (
+      targeting.flexible_spec &&
+      targeting.flexible_spec[0].interests.length > 0
+    ) {
       interests_names = targeting.flexible_spec[0].interests.map(
         (interest) => interest.name
       );
@@ -865,7 +922,7 @@ export class InstagramAudience extends Component {
             onSelectedInterestsChange={this.onSelectedInterestsChange}
             onSelectedInterestsNamesChange={this.onSelectedInterestsNamesChange}
             selectedItems={this.selectedItemsId(
-              targeting.flexible_spec[0].interests
+              !!targeting.flexible_spec && targeting.flexible_spec[0].interests
             )}
             selectedCustomItems={this.selectedCustomItemsId(
               this.state.customInterests

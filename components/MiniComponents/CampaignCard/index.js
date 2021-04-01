@@ -240,7 +240,7 @@ class CampaignCard extends Component {
                   />
                 </View>
               )}
-            {!this.review_status.includes("APPROVED") && (
+            {this.review_status.includes("APPROVED") && (
               <View style={styles.chartContainer}>
                 <CampaignCircleChart
                   channel={this.props.channel}
@@ -249,7 +249,7 @@ class CampaignCard extends Component {
                   screenProps={this.props.screenProps}
                 />
 
-                {this.ad_status === "LIVE" ? (
+                {this.ad_status !== "Campaign ended" ? (
                   <>
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
