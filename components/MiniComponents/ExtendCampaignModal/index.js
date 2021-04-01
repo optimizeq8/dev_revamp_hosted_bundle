@@ -63,6 +63,12 @@ class ExtendCampaignModal extends Component {
   };
 
   handleSwitch = (value) => {
+    analytics.track("a_toggle_date_modal", {
+      source: "dashboard",
+      source_action: "a_toggle_date_modal",
+      visible: value,
+      campaign_channel: campaign.channel,
+    });
     this.setState({ switchComponent: value });
   };
   handleDateSubmition = () => {
