@@ -50,7 +50,7 @@ class RepeatCampaignModal extends Component {
       start_time: date,
     });
     analytics.track(`a_repeat_ad_start_date`, {
-      source: "snapcaht_campaign_card",
+      source: "repeat_campaign_modal",
       source_action: "a_repeat_ad_start_date",
       campaign_start_date: date,
     });
@@ -63,7 +63,7 @@ class RepeatCampaignModal extends Component {
     });
     analytics.track(`a_ad_end_date`, {
       campaign_end_date: date,
-      source: "ad_objective",
+      source: "repeat_campaign_modal",
       source_action: "a_ad_end_date",
     });
   };
@@ -82,7 +82,7 @@ class RepeatCampaignModal extends Component {
       duration,
     });
     analytics.track(`a_repeat_duration`, {
-      source: "snapcaht_campaign_card",
+      source: "repeat_campaign_modal",
       source_action: "a_repeat_duration",
       campaign_end_date: end_time,
       campaign_duration: duration,
@@ -101,10 +101,10 @@ class RepeatCampaignModal extends Component {
   handleSwitch = (value) => {
     this.setState({ switchComponent: value });
     analytics.track("a_toggle_date_modal", {
-      source: "dashboard",
+      source: "repeat_campaign_modal",
       source_action: "a_toggle_date_modal",
       visible: value,
-      campaign_channel: campaign.channel,
+      campaign_channel: this.props.campaign.channel,
     });
     if (!value) {
       this.dateField.showModal();
@@ -182,7 +182,7 @@ class RepeatCampaignModal extends Component {
                     closeButton={false}
                     segment={{
                       str: "Ad Details Back Button",
-                      source: "ad_targeting",
+                      source: "repeat_campaign_modal",
                       source_action: "a_go_back",
                     }}
                     actionButton={() => this.handleSwitch(false)}
