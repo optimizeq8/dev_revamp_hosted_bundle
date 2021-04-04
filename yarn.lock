@@ -3803,6 +3803,11 @@ create-react-context@^0.2.1, create-react-context@^0.2.3:
     fbjs "^0.8.0"
     gud "^1.0.0"
 
+create-react-native-app@^3.5.3:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/create-react-native-app/-/create-react-native-app-3.6.0.tgz#f9ec69ac47e60454443864fd7130447b4c8fc54d"
+  integrity sha512-DlhSk4dbD4V+8ZnIRi3WW/Y+F90slstYUzbnz21pKxvMW1Pkri+081q+zAY1+piBq1wqUE5VbKrkXUKg019lnw==
+
 cross-spawn@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"
@@ -8321,10 +8326,12 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-native-adjust@^4.23.1:
-  version "4.23.1"
-  resolved "https://registry.yarnpkg.com/react-native-adjust/-/react-native-adjust-4.23.1.tgz#b4ec1b19bf7e175f139aa0c4f5197df58501c75c"
-  integrity sha512-GJ75hQEYjSApgNT3lbtYsLZZqCpTXso6cvC7aaqf0HA8ypiExgNfNI70gOjh0MbMhmQ/+BAGutFw8tf5DIQfQQ==
+react-native-adjust@^4.28.0:
+  version "4.28.0"
+  resolved "https://registry.yarnpkg.com/react-native-adjust/-/react-native-adjust-4.28.0.tgz#a961afa9671adc7a45d442d1fcb59dbc5425ed16"
+  integrity sha512-opKYINKochtKtF6j6JLzKTq1w2JcYNDeud5aJda4Mkeb3n2PwzWbW5QFlNwGx13YzJu7Neq5+0t1XQ/TMDX5xg==
+  dependencies:
+    create-react-native-app "^3.5.3"
 
 react-native-advertising-id@^1.0.11:
   version "1.0.11"
