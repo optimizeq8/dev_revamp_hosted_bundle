@@ -37,7 +37,7 @@ export default (props) => {
               <Text style={[styles.subtext]}>
                 {TimeDifferance(currentDate, campaign.end_time) === 0
                   ? 1
-                  : TimeDifferance(currentDate, campaign.end_time )+1}{" "}
+                  : TimeDifferance(currentDate, campaign.end_time) + 1}{" "}
                 {translate("Day(s) left")}
               </Text>
             ) : (
