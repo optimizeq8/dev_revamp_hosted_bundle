@@ -400,7 +400,7 @@ class AdDesign extends Component {
             savedObjective === "APP_TRAFFIC" ? "DEEP_LINK" : "APP_INSTALL",
             list[
               this.props.adType === "StoryAd" ? "SnapAd" : this.props.adType
-            ][1].call_to_action_list[0],
+            ][savedObjective === "APP_TRAFFIC" ? 3 : 1].call_to_action_list[0],
             {
               app_name:
                 this.props.mainBusiness.appstorelink.app_name !== ""
