@@ -521,7 +521,10 @@ export const payment_request_knet = (
         : `makeknetpayment/${campaign_id}/${getState().transA.channel}`;
 
     createBaseUrl()
-      .get(url)
+      .get(url, {
+        timeout: 5000,
+        timeoutErrorMessage: "Something went wrong, please try again later.",
+      })
       .then((res) => {
         return res.data;
       })
@@ -597,7 +600,10 @@ export const payment_request_credit_card = (
         : `makeccpayment/${campaign_id}/${getState().transA.channel}`;
 
     createBaseUrl()
-      .post(url)
+      .post(url, {
+        timeout: 5000,
+        timeoutErrorMessage: "Something went wrong, please try again later.",
+      })
       .then((res) => {
         return res.data;
       })
@@ -752,9 +758,16 @@ export const payment_request_payment_method = (
         : `makemfpayment/${campaign_id}/${getState().transA.channel}`;
 
     createBaseUrl()
-      .post(url, {
-        PaymentMethodId: PaymentMethodId,
-      })
+      .post(
+        url,
+        {
+          PaymentMethodId: PaymentMethodId,
+        },
+        {
+          timeout: 5000,
+          timeoutErrorMessage: "Something went wrong, please try again later.",
+        }
+      )
       .then((res) => {
         return res.data;
       })
