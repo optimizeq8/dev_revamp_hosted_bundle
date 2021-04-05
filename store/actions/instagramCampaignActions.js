@@ -7,6 +7,7 @@ import { setCampaignInfoForTransaction } from "./transactionActions";
 import { errorMessageHandler } from "./ErrorActions";
 import NavigationService from "../../NavigationService";
 import { handleAlreadyCreatedCampaigns } from "./genericActions";
+import { updateBusinessConnectedToFacebook } from "./accountManagementActions";
 
 export default InstagramBackendURL = () =>
   axios.create({
@@ -23,6 +24,7 @@ export default InstagramBackendURL = () =>
  */
 export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
   return (dispatch, getState) => {
+    console.log("info", JSON.stringify(info, null, 2));
     dispatch({
       type: actionTypes.SET_INSTAGRAM_AD_LOADING_OBJ,
       payload: true,
@@ -33,7 +35,27 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
         return res.data;
       })
       .then((data) => {
-        if (data.data && data.data.campaign_already_created) {
+        if (data && data.fb_connected === 0) {
+          dispatch(
+            updateBusinessConnectedToFacebook({
+              fb_connected: "0",
+              fb_ad_account_id: null,
+            })
+          );
+          dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
+          analytics.track(`a_submit_ad_objective`, {
+            source: "ad_objective",
+            campaign_channel: "instagram",
+            action_status: data.success ? "success" : "failure",
+            source_action: "a_submit_ad_objective",
+            campaign_error: !data.success && data.message,
+            ...segmentInfo,
+          });
+          dispatch({
+            type: actionTypes.SET_INSTAGRAM_AD_LOADING_OBJ,
+            payload: false,
+          });
+        } else if (data.data && data.data.campaign_already_created) {
           dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
           analytics.track(`a_submit_ad_objective_campaign_already_created`, {
             source: "ad_objective",
@@ -221,7 +243,30 @@ export const saveBrandMediaInstagram = (
           type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
           payload: false,
         });
-        if (!rejected && data.data && data.data.campaign_already_created) {
+        if (data && data.fb_connected === 0) {
+          dispatch(
+            updateBusinessConnectedToFacebook({
+              fb_connected: "0",
+              fb_ad_account_id: null,
+            })
+          );
+          dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
+          analytics.track("a_submit_ad_design", {
+            source: "ad_design",
+            source_action: `a_submit_ad_design`,
+            action_status: data.success ? "success" : "failure",
+            campaign_error: !data.success && data.message,
+            ...segmentInfo,
+          });
+          dispatch({
+            type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
+            payload: false,
+          });
+        } else if (
+          !rejected &&
+          data.data &&
+          data.data.campaign_already_created
+        ) {
           dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
           analytics.track("a_submit_ad_design_campaign_already_created", {
             source: "ad_design",
@@ -515,7 +560,28 @@ export const ad_details_instagram = (
         return res.data;
       })
       .then((data) => {
-        if (data.data && data.data.campaign_already_created) {
+        if (data && data.fb_connected === 0) {
+          dispatch(
+            updateBusinessConnectedToFacebook({
+              fb_connected: "0",
+              fb_ad_account_id: null,
+            })
+          );
+          dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
+          analytics.track(`a_submit_ad_targeting`, {
+            source: "ad_targeting",
+            source_action: "a_submit_ad_targeting",
+            action_status: data.success ? "success" : "failure",
+            campaign_error: !data.success && data.message,
+            campaign_budget: data.data.lifetime_budget_micro,
+            campaign_error: !data.success && data.message,
+            ...segmentInfo,
+          });
+          dispatch({
+            type: actionTypes.SET_AD_LOADING_DETAIL_INSTAGRAM,
+            payload: false,
+          });
+        } else if (data.data && data.data.campaign_already_created) {
           dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
           analytics.track(`a_submit_ad_targeting_campaign_already_created`, {
             source: "ad_targeting",
@@ -565,6 +631,7 @@ export const ad_details_instagram = (
         if (
           data.success &&
           data.data &&
+          (!data.hasOwnProperty("fb_connected") || data.fb_connected !== 0) &&
           (!data.data.hasOwnProperty("campaign_already_created") ||
             data.data.campaign_already_created === 0)
         )
@@ -822,7 +889,19 @@ export const uploadCarouselAdCard = (info, card, rejected, finalSubmision) => {
         return res.data;
       })
       .then((data) => {
-        if (data.data && data.data.campaign_already_created) {
+        if (data && data.fb_connected === 0) {
+          dispatch(
+            updateBusinessConnectedToFacebook({
+              fb_connected: "0",
+              fb_ad_account_id: null,
+            })
+          );
+          dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
+          dispatch({
+            type: actionTypes.SET_CAROUSELADCARD_LOADING_DESIGN,
+            payload: { uploading: false, index: card.index, progress: 0.0 },
+          });
+        } else if (data.data && data.data.campaign_already_created) {
           dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
           dispatch({
             type: actionTypes.SET_CAROUSELADCARD_LOADING_DESIGN,
@@ -884,7 +963,23 @@ export const deleteCarouselCard = (story_id, card) => {
         return res.data;
       })
       .then((data) => {
-        if (data.success && data.data && data.data.campaign_already_created) {
+        if (data && data.fb_connected === 0) {
+          dispatch(
+            updateBusinessConnectedToFacebook({
+              fb_connected: "0",
+              fb_ad_account_id: null,
+            })
+          );
+          dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
+          dispatch({
+            type: actionTypes.SET_DELETE_CAROUSEL_CARD_LOADING,
+            payload: { deleteing: false, index: card.index },
+          });
+        } else if (
+          data.success &&
+          data.data &&
+          data.data.campaign_already_created
+        ) {
           dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
           dispatch({
             type: actionTypes.SET_DELETE_CAROUSEL_CARD_LOADING,
@@ -980,7 +1075,26 @@ export const saveInstgramExistpost = (
           type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
           payload: false,
         });
-        if (data.data && data.data.campaign_already_created) {
+        if (data && data.fb_connected === 0) {
+          dispatch(
+            updateBusinessConnectedToFacebook({
+              fb_connected: "0",
+              fb_ad_account_id: null,
+            })
+          );
+          dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
+          analytics.track("a_submit_ad_design_campaign", {
+            source: "ad_design",
+            source_action: `a_submit_ad_design`,
+            action_status: data.success ? "success" : "failure",
+            campaign_error: !data.success && data.message,
+            ...segmentInfo,
+          });
+          dispatch({
+            type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
+            payload: false,
+          });
+        } else if (data.data && data.data.campaign_already_created) {
           dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
           analytics.track("a_submit_ad_design_campaign_already_created", {
             source: "ad_design",
@@ -1247,7 +1361,20 @@ export const repeatInstaCampagin = (previous_campaign_info, handleSwitch) => {
           camapign_channel: "instagram",
           previous_campaignId: previous_campaign_info.previous_campaign_id,
         });
-        if (data.success)
+
+        if (data && data.fb_connected === 0) {
+          dispatch(
+            updateBusinessConnectedToFacebook({
+              fb_connected: "0",
+              fb_ad_account_id: null,
+            })
+          );
+          dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
+          dispatch({
+            type: actionTypes.SET_REPEAT_INSTA_CAMPAIGN_LOADING,
+            payload: false,
+          });
+        } else if (data.success)
           dispatch({
             type: actionTypes.SET_INSTA_REPEATING_CAMPAIGN_INFO,
             payload: data,
@@ -1293,7 +1420,19 @@ export const repeatInstaCampaginBudget = (
           campaign_channel: "instagram",
           campaignId: data.campaign_id,
         });
-        if (data.success) {
+        if (data && data.fb_connected === 0) {
+          dispatch(
+            updateBusinessConnectedToFacebook({
+              fb_connected: "0",
+              fb_ad_account_id: null,
+            })
+          );
+          dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
+          dispatch({
+            type: actionTypes.SET_REPEAT_INSTA_CAMPAIGN_LOADING,
+            payload: false,
+          });
+        } else if (data.success) {
           dispatch({
             type: actionTypes.SET_INSTA_REPEATING_CAMPAIGN_INFO_BUDGET,
             payload: data,
@@ -1341,7 +1480,19 @@ export const extendInstaCampagin = (previous_campaign_info, handleSwitch) => {
           previous_campaignId: previous_campaign_info.previous_campaign_id,
           action_status: data.success ? "success" : "failure",
         });
-        if (data.success)
+        if (data && data.fb_connected === 0) {
+          dispatch(
+            updateBusinessConnectedToFacebook({
+              fb_connected: "0",
+              fb_ad_account_id: null,
+            })
+          );
+          dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
+          dispatch({
+            type: actionTypes.SET_EXTEND_INSTA_CAMPAIGN_LOADING,
+            payload: false,
+          });
+        } else if (data.success)
           dispatch({
             type: actionTypes.SET_INSTA_EXTENDING_CAMPAIGN_INFO,
             payload: data,
@@ -1387,7 +1538,19 @@ export const extendInstaCampaginBudget = (
           campaign_channel: "instagram",
           campaignId: data.campaign_id,
         });
-
+        if (data && data.fb_connected === 0) {
+          dispatch(
+            updateBusinessConnectedToFacebook({
+              fb_connected: "0",
+              fb_ad_account_id: null,
+            })
+          );
+          dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
+          dispatch({
+            type: actionTypes.SET_EXTEND_INSTA_CAMPAIGN_LOADING,
+            payload: false,
+          });
+        }
         if (data.success) {
           dispatch({
             type: actionTypes.SET_INSTA_EXTENDING_CAMPAIGN_INFO_BUDGET,
