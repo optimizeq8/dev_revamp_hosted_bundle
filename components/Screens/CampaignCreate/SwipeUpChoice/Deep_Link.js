@@ -303,7 +303,6 @@ class Deep_Link extends Component {
           screenProps={this.props.screenProps}
           appSelections={{ iosAppSelected, androidAppSelected }}
           setTheState={this.setTheState}
-          socialMediaPlatform={this.props.adType}
         />
       </View>
     );
