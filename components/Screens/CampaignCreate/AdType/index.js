@@ -42,7 +42,10 @@ class AdType extends Component {
     header: null,
   };
   state = {
-    active: "Snapchat",
+    active:
+      this.props.navigation.getParam("channel", "snapchat") === "snapchat"
+        ? "Snapchat"
+        : "Instagram",
     ad_type_array: snapAds,
     socialMediaPlatforms:
       Platform.OS === "android" && I18nManager.isRTL

@@ -232,6 +232,9 @@ export const handleAlreadyCreatedCampaigns = (data, channel) => {
             : "RESET_CAMPAING_INFO_INSTAGRAM"
         ],
     });
-    NavigationService.navigate("AdType", { campaignCreationReset: true });
+    NavigationService.navigate("AdType", {
+      campaignCreationReset: true,
+      channel,
+    });
   };
 };
