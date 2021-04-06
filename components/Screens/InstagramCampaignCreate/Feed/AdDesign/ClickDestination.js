@@ -58,15 +58,15 @@ export default class ClickDestination extends Component {
             (this.props.existingPosts ? this.state.compHeight : 0),
           zIndex: 10,
         };
-
-    let SwipeIcon =
-      ObjectiveIcons[
-        this.props.instagramObjectives[this.props.adType].find(
-          (obj) =>
-            obj.value ===
-            (this.props.campaignInfo.objective || "BRAND_AWARENESS")
-        ).icon
-      ];
+    let instaObjective = this.props.instagramObjectives[this.props.adType].find(
+      (obj) =>
+        obj.value === (this.props.campaignInfo.objective || "BRAND_AWARENESS")
+    );
+    let SwipeIcon = {};
+    if (instaObjective) SwipeIcon = ObjectiveIcons[instaObjective.icon];
+    else {
+      SwipeIcon = ObjectiveIcons["Awareness"];
+    }
     return (
       <View
         style={{
