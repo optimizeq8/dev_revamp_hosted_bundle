@@ -187,34 +187,34 @@ export const instagramAds = [
       },
     ],
   },
-  {
-    id: 3,
-    mediaType: "instagram",
-    text: "Create Your Ad Now!",
-    rout: "InstagramAutoPlacementAdObjective",
-    createRout: "InstagramAutoPlacementAdObjective",
-    title: "Automatic Placement",
-    value: "InstagramAutoPlacementAd",
-    media: require("../../assets/images/AdTypes/Instagram/InstagramFeedAd.svg")
-      .default,
-    icon: AdIcons.InstagramFeed,
-    channelIcon: Instagram,
-    image: InstagramFeedAd,
-    description:
-      "Your ads will automatically be shown to your audience in the places they're likely to perform best",
-    suitableFor: [
-      {
-        icon: Mortgage,
-        name: "Home Businesses",
-      },
-      {
-        icon: Hand,
-        name: "Service Providers",
-      },
-      {
-        icon: StartUp,
-        name: "Startups & SMEs",
-      },
-    ],
-  },
+  // {
+  //   id: 3,
+  //   mediaType: "instagram",
+  //   text: "Create Your Ad Now!",
+  //   rout: "InstagramAutoPlacementAdObjective",
+  //   createRout: "InstagramAutoPlacementAdObjective",
+  //   title: "Automatic Placement",
+  //   value: "InstagramAutoPlacementAd",
+  //   media: require("../../assets/images/AdTypes/Instagram/InstagramFeedAd.svg")
+  //     .default,
+  //   icon: AdIcons.InstagramFeed,
+  //   channelIcon: Instagram,
+  //   image: InstagramFeedAd,
+  //   description:
+  //     "Your ads will automatically be shown to your audience in the places they're likely to perform best",
+  //   suitableFor: [
+  //     {
+  //       icon: Mortgage,
+  //       name: "Home Businesses",
+  //     },
+  //     {
+  //       icon: Hand,
+  //       name: "Service Providers",
+  //     },
+  //     {
+  //       icon: StartUp,
+  //       name: "Startups & SMEs",
+  //     },
+  //   ],
+  // },
 ];

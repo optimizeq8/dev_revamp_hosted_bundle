@@ -681,13 +681,25 @@ const reducer = (state = initialState, action) => {
         customLocationLoading: false,
       };
     case actionTypes.OVERWRITE_OBJ_DATA_INSTAGRAM:
-      console.log("overrtiew", JSON.stringify(state.oldTempData, null, 2));
       return {
         ...state,
         loadingDesign: false,
         loadingStoryAdsArray: [],
         collectionLoader: false,
       };
+    case actionTypes.SET_INSTA_REPEATING_CAMPAIGN_INFO: {
+      return {
+        ...state,
+        repeatingInstaCampaginData: action.payload.data,
+        repeatInstaCampaignLoading: false,
+      };
+    }
+    case actionTypes.SET_REPEAT_INSTA_CAMPAIGN_LOADING: {
+      return {
+        ...state,
+        repeatInstaCampaignLoading: action.payload,
+      };
+    }
     default:
       return state;
   }
