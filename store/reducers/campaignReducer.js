@@ -268,6 +268,7 @@ const reducer = (state = initialState, action) => {
         oldTempData: { ...state.data, ...action.payload.data },
         oldTempAdType: state.adType,
         savedObjective: action.payload.savedObjective,
+        loadingDesign: false,
       };
     case actionTypes.SET_MINIMUN_CASH:
       return {
@@ -848,6 +849,7 @@ const reducer = (state = initialState, action) => {
         },
         incompleteCampaign: incompleteCampaign,
         currentCampaignSteps: currentCampaignSteps,
+        loadingDesign: false,
       };
     case actionTypes.VERIFY_BUSINESSURL:
       return {
@@ -1136,6 +1138,9 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         data: { ...state.data, ...state.oldTempData, ...action.payload },
+        loadingDesign: false,
+        loadingStoryAdsArray: [],
+        collectionLoader: false,
       };
     case actionTypes.GET_LANGUAGES_LOADING: {
       return {

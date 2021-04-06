@@ -60,7 +60,6 @@
   #endif
 SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWithWriteKey:SEGMENT_WRITE_KEY];
 
-[config use:[SEGAdjustIntegrationFactory instance]];
 
 [SEGAnalytics setupWithConfiguration:config];
 /** LIVE */

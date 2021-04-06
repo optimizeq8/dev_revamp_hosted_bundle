@@ -137,6 +137,7 @@ const reducer = (state = initialState, action) => {
         //saves this part just in case anything is changed in AdObjective and not submitting
         oldTempData: { ...state.data, ...action.payload.data },
         oldTempAdType: state.adType,
+        loadingDesign: false,
       };
 
     case actionTypes.SET_AD_TYPE_INSTAGRAM:
@@ -345,6 +346,7 @@ const reducer = (state = initialState, action) => {
         ],
         loadingCarouselAdsArray: [],
         customLocations: stateCustomLocations,
+        loadingDesign: false,
       };
     case actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM:
       return {
@@ -677,6 +679,14 @@ const reducer = (state = initialState, action) => {
           ? customLocationsInState
           : state.audienceCustomLocations,
         customLocationLoading: false,
+      };
+    case actionTypes.OVERWRITE_OBJ_DATA_INSTAGRAM:
+      console.log("overrtiew", JSON.stringify(state.oldTempData, null, 2));
+      return {
+        ...state,
+        loadingDesign: false,
+        loadingStoryAdsArray: [],
+        collectionLoader: false,
       };
     default:
       return state;
