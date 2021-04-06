@@ -24,7 +24,6 @@ export default InstagramBackendURL = () =>
  */
 export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
   return (dispatch, getState) => {
-    console.log("info", JSON.stringify(info, null, 2));
     dispatch({
       type: actionTypes.SET_INSTAGRAM_AD_LOADING_OBJ,
       payload: true,
