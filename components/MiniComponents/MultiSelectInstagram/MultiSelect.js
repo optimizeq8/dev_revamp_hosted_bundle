@@ -124,10 +124,9 @@ class MultiSelectList extends Component {
     let filterdLocations = cloneDeep(this.props.circles);
     let filteredLocationInfos = cloneDeep(this.props.locationsInfo);
     if (customLocations.length > 0) {
-      if (customLocations.some((loc) => country === loc.country)) {
+      if (customLocations.some((loc) => loc && country === loc.country)) {
         customLocations.forEach((loc, index) => {
-          console.log("loc.country", loc.country);
-          if (country === loc.country) {
+          if (loc && country === loc.country) {
             locIndecies.push(index);
             customLocationAndCountryExist = true;
           }
