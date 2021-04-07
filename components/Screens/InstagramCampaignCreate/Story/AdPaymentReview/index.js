@@ -193,7 +193,7 @@ class InstagramAdPaymentReview extends Component {
       "InstagramStoryAdObjective",
       "InstagramStoryAdDesign",
       "InstagramStoryAdTargetting",
-      "InstagramAdPaymentReview",
+      "InstagramStoryAdPaymentReview",
     ]);
   };
   render() {

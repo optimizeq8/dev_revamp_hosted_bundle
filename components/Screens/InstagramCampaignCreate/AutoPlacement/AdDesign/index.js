@@ -600,7 +600,7 @@ class AdDesign extends Component {
   onDidFocus = () => {
     if (
       !this.props.currentCampaignSteps.includes(
-        "InstagramAutoPlacementAdDetails"
+        "InstagramAutoPlacementAdTargetting"
       )
     ) {
       this.props.saveCampaignSteps([

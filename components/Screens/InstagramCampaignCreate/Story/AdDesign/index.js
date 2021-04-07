@@ -542,7 +542,9 @@ class AdDesign extends Component {
     );
   };
   onDidFocus = () => {
-    if (!this.props.currentCampaignSteps.includes("InstagramStoryAdDetails")) {
+    if (
+      !this.props.currentCampaignSteps.includes("InstagramStoryAdTargetting")
+    ) {
       this.props.saveCampaignSteps([
         "Dashboard",
         "InstagramStoryAdObjective",
