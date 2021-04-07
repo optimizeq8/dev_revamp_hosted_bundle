@@ -341,13 +341,7 @@ class Dashboard extends Component {
     if (this.state.adTypeChanged && !this.props.incompleteCampaign) {
       this.props.resetCampaignInfo(true);
     }
-    if (
-      !this.props.incompleteCampaign ||
-      !this.props.instagramIncompleteCampaign
-    ) {
-      this.props.set_adType(adType.value);
-    }
-
+    this.props.set_adType(adType.value);
     if (
       !this.props.mainBusiness.snap_ad_account_id &&
       adType.mediaType === "snapchat"
