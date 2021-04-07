@@ -674,8 +674,9 @@ class InstagramStoryAdTargetting extends Component {
           description:
             this.state.campaignInfo.targeting.geo_locations.countries.length >
               1 ||
-            this.state.campaignInfo.targeting.geo_locations.custom_locations
-              .length > 1
+            (this.state.campaignInfo.targeting.geo_locations.custom_locations &&
+              this.state.campaignInfo.targeting.geo_locations.custom_locations
+                .length > 1)
               ? `$25 x ${translate("no of Countries")} = $${
                   this.state.minValueBudget
                 }`

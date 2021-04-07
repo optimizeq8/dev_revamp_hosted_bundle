@@ -124,10 +124,9 @@ class MultiSelectList extends Component {
     let filterdLocations = cloneDeep(this.props.circles);
     let filteredLocationInfos = cloneDeep(this.props.locationsInfo);
     if (customLocations.length > 0) {
-      if (customLocations.some((loc) => country === loc.country)) {
+      if (customLocations.some((loc) => loc && country === loc.country)) {
         customLocations.forEach((loc, index) => {
-          console.log("loc.country", loc.country);
-          if (country === loc.country) {
+          if (loc && country === loc.country) {
             locIndecies.push(index);
             customLocationAndCountryExist = true;
           }
@@ -135,8 +134,9 @@ class MultiSelectList extends Component {
       }
 
       if (customLocationAndCountryExist) {
-        let x = pullAt(filterdLocations, [locIndecies]);
-        let y = pullAt(filteredLocationInfos, [locIndecies]);
+        let x = pullAt(filterdLocations, locIndecies);
+        let y = pullAt(filteredLocationInfos, locIndecies);
+        //removes elements using array of indices
       }
     }
     if (!customLocationAndCountryExist) {
@@ -152,7 +152,9 @@ class MultiSelectList extends Component {
           {
             text: translate("Yes"),
             onPress: () => {
-              locIndecies.forEach((i) => this.props.deleteCustomLocation(i));
+              locIndecies.forEach((i, index) =>
+                this.props.deleteCustomLocation(i - index)
+              );
               this.props.onSelectedCountryRegionChange(country);
               if (this.props.onSelectedMapChange)
                 this.props.onSelectedMapChange(

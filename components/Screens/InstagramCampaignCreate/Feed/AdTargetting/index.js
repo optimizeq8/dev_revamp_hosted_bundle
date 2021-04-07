@@ -1197,14 +1197,19 @@ class InstagramFeedAdTargetting extends Component {
   ) => {
     customLocations = JSON.parse(customLocations);
     let editedCampaign = cloneDeep(this.state.campaignInfo);
-    let campaignTargeting = targeting;
+    let campaignTargeting = cloneDeep(targeting);
     let locationsInfo = JSON.parse(coordinates) || [];
     if (this.editCampaign) {
       campaignTargeting.geo_locations = editedCampaign.targeting.geo_locations;
     }
-    editedCampaign = deepmerge(editedCampaign, campaignTargeting, {
-      arrayMerge: overwriteMerge,
-    });
+    editedCampaign["targeting"] = deepmerge(
+      editedCampaign.targeting,
+      campaignTargeting,
+
+      {
+        arrayMerge: overwriteMerge,
+      }
+    );
 
     // let editedCountryCodes = editedCampaign.targeting.geo_locations.map(
     //   (geo) => geo.country_code
