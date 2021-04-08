@@ -1129,7 +1129,7 @@ class AdDetails extends Component {
         campaign_channel: "snapchat",
         campaign_ad_type: this.props.adType,
         error_description:
-          this.props.targeting_error ||
+          this.props.targeting_error_message ||
           countryError ||
           languagesError ||
           validateWrapper(
