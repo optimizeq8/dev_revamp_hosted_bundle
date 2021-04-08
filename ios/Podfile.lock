@@ -76,6 +76,20 @@ PODS:
     - React-Core (= 0.63.3)
     - React-jsi (= 0.63.3)
     - ReactCommon/turbomodule/core (= 0.63.3)
+  - FBSDKCoreKit (9.0.1):
+    - FBSDKCoreKit/Basics (= 9.0.1)
+    - FBSDKCoreKit/Core (= 9.0.1)
+  - FBSDKCoreKit/Basics (9.0.1)
+  - FBSDKCoreKit/Core (9.0.1):
+    - FBSDKCoreKit/Basics
+  - FBSDKLoginKit (9.0.1):
+    - FBSDKLoginKit/Login (= 9.0.1)
+  - FBSDKLoginKit/Login (9.0.1):
+    - FBSDKCoreKit (~> 9.0.1)
+  - FBSDKShareKit (9.0.1):
+    - FBSDKShareKit/Share (= 9.0.1)
+  - FBSDKShareKit/Share (9.0.1):
+    - FBSDKCoreKit (~> 9.0.1)
   - Folly (2020.01.13.00):
     - boost-for-react-native
     - DoubleConversion
@@ -292,6 +306,20 @@ PODS:
     - React
   - react-native-blur (0.8.0):
     - React
+  - react-native-fbsdk-next (4.0.0):
+    - React
+    - react-native-fbsdk-next/Core (= 4.0.0)
+    - react-native-fbsdk-next/Login (= 4.0.0)
+    - react-native-fbsdk-next/Share (= 4.0.0)
+  - react-native-fbsdk-next/Core (4.0.0):
+    - FBSDKCoreKit (~> 9.0.1)
+    - React
+  - react-native-fbsdk-next/Login (4.0.0):
+    - FBSDKLoginKit (~> 9.0.1)
+    - React
+  - react-native-fbsdk-next/Share (4.0.0):
+    - FBSDKShareKit (~> 9.0.1)
+    - React
   - react-native-ffmpeg/https-gpl-lts (0.4.4):
     - mobile-ffmpeg-https-gpl (= 4.3.1.LTS)
     - React
@@ -487,6 +515,7 @@ DEPENDENCIES:
   - react-native-advertising-id (from `../node_modules/react-native-advertising-id`)
   - react-native-biometrics (from `../node_modules/react-native-biometrics`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
+  - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - react-native-ffmpeg/https-gpl-lts (from `../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-intercom (from `../node_modules/react-native-intercom`)
@@ -540,6 +569,9 @@ SPEC REPOS:
     - Adjust
     - Analytics
     - boost-for-react-native
+    - FBSDKCoreKit
+    - FBSDKLoginKit
+    - FBSDKShareKit
     - Google-Maps-iOS-Utils
     - GoogleMaps
     - imglyKit
@@ -638,6 +670,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-biometrics"
   react-native-blur:
     :path: "../node_modules/@react-native-community/blur"
+  react-native-fbsdk-next:
+    :path: "../node_modules/react-native-fbsdk-next"
   react-native-ffmpeg:
     :podspec: "../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec"
   react-native-google-maps:
@@ -760,6 +794,9 @@ SPEC CHECKSUMS:
   EXUpdates: 74b39409f68eca207075d87b0077bdf37865a8bf
   FBLazyVector: 878b59e31113e289e275165efbe4b54fa614d43d
   FBReactNativeSpec: 7da9338acfb98d4ef9e5536805a0704572d33c2f
+  FBSDKCoreKit: fada1a6a0076724678993ff05a633848765ff18c
+  FBSDKLoginKit: d5ffe6d808897019ccf16feb6f0a7ab260bc5cd6
+  FBSDKShareKit: 6a85acb92eaf43a0b6dfa2ba6106eb74c7f10d30
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
@@ -785,6 +822,7 @@ SPEC CHECKSUMS:
   react-native-advertising-id: 91e0e65f5a1dd0667ce4b6e667ca7338e3c3414a
   react-native-biometrics: 9d3306e5d29c3bc4e6a3c912d759a94e76a2f683
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
+  react-native-fbsdk-next: f7c82b89362ce76911fc5655b027eab2cbbbcbf2
   react-native-ffmpeg: f9a60452aaa5d478aac205b248224994f3bde416
   react-native-google-maps: 0a989abda71059db2caa98b9dacca7a8f38a47d0
   react-native-intercom: c48e0e15877bf96ff4d461f7aa9b833d11188139

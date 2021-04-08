@@ -63,6 +63,7 @@
     "react-native-copilot": "mohebifar/react-native-copilot",
     "react-native-device-info": "^5.5.8",
     "react-native-expo-image-cache": "^4.0.8",
+    "react-native-fbsdk-next": "^4.0.0",
     "react-native-ffmpeg": "^0.4.4",
     "react-native-flash-message": "^0.1.15",
     "react-native-gesture-handler": "~1.7.0",

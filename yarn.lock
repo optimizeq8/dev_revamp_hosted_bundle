@@ -8424,6 +8424,11 @@ react-native-expo-image-cache@^4.0.8:
     crypto-js "^3.1.9-1"
     lodash "^4.17.4"
 
+react-native-fbsdk-next@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-fbsdk-next/-/react-native-fbsdk-next-4.0.0.tgz#b88f207d76c67db39cffda6e9b7c716cb6f92877"
+  integrity sha512-ql5Pbbxpp1kN2IK2AsYVoh2BJ7cMc4fT6oU7U04GLufikYuiul/rcwe4SXuEJzdzsce8idZ9oYcmPt1yHyZm1g==
+
 react-native-ffmpeg@^0.4.4:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/react-native-ffmpeg/-/react-native-ffmpeg-0.4.4.tgz#9f4dbda53c96078cecbbe83a866d4b535b957131"
