@@ -242,6 +242,8 @@ const initialState = {
   repeatCampaignLoading: false,
   extendedCampaginData: {},
   extendCampaignLoading: false,
+  targeting_error: 0,
+  targeting_error_message: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -428,6 +430,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_SNAP_AUDIENCE_SIZE:
       return {
         ...state,
+        targeting_error: action.payload.targeting_error,
+        targeting_error_message: action.payload.targeting_error_message,
         average_reach: action.payload.average_reach,
         estimated_metrics: action.payload.estimated_metrics,
         estimatedMetricsLoading: false,
