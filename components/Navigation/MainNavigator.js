@@ -416,6 +416,9 @@ export default createNativeStackNavigator(
     PixelScreen: register({
       require: () => require("../Screens/PixelScreen"),
     }),
+    ConnectToFacebook: register({
+      require: () => require("../Screens/ConnectToFacebook"),
+    }),
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }

@@ -341,11 +341,6 @@ class AdType extends Component {
     );
   };
   render() {
-    const isLogin = this.state.userInfo.name;
-    const buttonText = isLogin ? "Logout With Facebook" : "Login From Facebook";
-    const onPressButton = isLogin
-      ? this.logoutWithFacebook
-      : this.loginWithFacebook;
     const { translate } = this.props.screenProps;
     const {
       backgroundColor,
@@ -514,7 +509,10 @@ class AdType extends Component {
 
           {this.state.active === "Instagram" && (
             <GradientButton
-              onPressAction={onPressButton}
+              onPressAction={() => {
+                this.props.navigation.navigate("ConnectToFacebook");
+                // this.loginWithFacebook();
+              }}
               style={styles.loginBtn}
               uppercase
               text={translate("Login with Facebook")}
