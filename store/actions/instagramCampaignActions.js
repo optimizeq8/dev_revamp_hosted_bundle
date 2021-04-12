@@ -1621,3 +1621,42 @@ export const getFacebookPagesList = (accessToken, fb_user_id, permissions) => {
       });
   };
 };
+
+export const connectToInstagramPage = (
+  accessToken,
+  page_id,
+  page_token,
+  instagram_account_id,
+  instagram_user_id,
+  insta_handle
+) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.CONNECT_TO_INSTAGRAM_SAVING,
+      payload: true,
+    });
+    InstagramBackendURL()
+      .post(`saveFBPageData`, {
+        businessid: getState().account.mainBusiness.businessid,
+        accessToken,
+        page_id,
+        page_token,
+        instagram_account_id,
+        instagram_user_id,
+        insta_handle,
+      })
+      .then((response) => response.data)
+      .then((data) => {
+        dispatch({
+          type: actionTypes.CONNECT_TO_INSTAGRAM_SAVING,
+          payload: false,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: actionTypes.CONNECT_TO_INSTAGRAM_SAVING,
+          payload: false,
+        });
+      });
+  };
+};

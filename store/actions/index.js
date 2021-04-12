@@ -249,6 +249,7 @@ export {
   geoLocationSearch,
   deleteCustomLocation,
   getFacebookPagesList,
+  connectToInstagramPage,
 } from "./instagramCampaignActions";
 
 export {
