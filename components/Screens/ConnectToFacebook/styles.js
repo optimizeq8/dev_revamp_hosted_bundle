@@ -5,5 +5,9 @@ import {
   widthPercentageToDP,
 } from "react-native-responsive-screen";
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  gradient: {
+    ...StyleSheet.absoluteFillObject,
+  },
+});
 export default styles;
