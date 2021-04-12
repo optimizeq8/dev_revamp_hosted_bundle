@@ -138,7 +138,7 @@ class Dashboard extends Component {
     Intercom.handlePushMessage();
     Linking.addEventListener("url", this.handleDeepLinkListener);
     Linking.getInitialURL().then((url) => {
-      if (url && url.includes("adj")) {
+      if (url && (url.includes("adj") || url.includes("chatsupport"))) {
         this.handleDeepLinkListener({ url });
       }
     });
@@ -585,12 +585,16 @@ class Dashboard extends Component {
       let campaign_id = this.props.navigation.getParam("campaign_id", "");
       let urlParams = "";
       let func = "";
-      if (url.url.includes("function")) {
-        urlParams = url.url.split("?")[1];
-        func = urlParams.substring(
-          urlParams.lastIndexOf("function=") + "function=".length,
-          urlParams.indexOf("&")
-        );
+      if (url.url.includes("function") || url.url.includes("chatsupport")) {
+        if (url.url.includes("?")) {
+          urlParams = url.url.split("?")[1];
+          func = urlParams.substring(
+            urlParams.lastIndexOf("function=") + "function=".length,
+            urlParams.indexOf("&")
+          );
+        } else if (url.url.includes("chatsupport")) {
+          func = "openSupportChannel";
+        }
         switch (func) {
           case "openSupportChannel":
             setTimeout(() => {
