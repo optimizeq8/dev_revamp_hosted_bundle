@@ -19,6 +19,8 @@
 #import "Mixpanel/Mixpanel.h"
 #import <GoogleMaps/GoogleMaps.h>
 #import <Intercom/intercom.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+
 @interface AppDelegate ()
 
 @property (nonatomic, strong) NSDictionary *launchOptions;
@@ -47,6 +49,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+   [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
+
+//   [FBSDKApplicationDelegate initializeSDK:launchOptions];
   [GMSServices provideAPIKey:@"AIzaSyDxOd8PlgO-DjzmoVDaFmpGj2XcqhclrwM"];
   self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
   self.launchOptions = launchOptions;

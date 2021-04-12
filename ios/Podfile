@@ -57,6 +57,8 @@ target 'OptimizeApp' do
   pod 'react-native-intercom', :path => '../node_modules/react-native-intercom'
 
 
+  pod 'react-native-fbsdk-next', :path => '../node_modules/react-native-fbsdk-next'
+
 end
 
 post_install do |installer|

@@ -113,6 +113,8 @@ const initialState = {
   customLocations: [],
   audienceCustomLocations: [],
   customLocationLoading: false,
+  fbPageListLoading: false,
+  fbPageList: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -698,6 +700,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         repeatInstaCampaignLoading: action.payload,
+      };
+    }
+    case actionTypes.FACEBOOK_PAGE_LIST_LOADING: {
+      return {
+        ...state,
+        fbPageListLoading: action.payload,
+      };
+    }
+    case actionTypes.SET_FACEBOOK_PAGE_LIST: {
+      return {
+        ...state,
+        fbPageList: action.payload,
       };
     }
     default:
