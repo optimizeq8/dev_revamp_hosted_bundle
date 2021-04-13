@@ -115,6 +115,7 @@ const initialState = {
   customLocationLoading: false,
   fbPageListLoading: false,
   fbPageList: [],
+  fbAccessToken: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -712,6 +713,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         fbPageList: action.payload,
+      };
+    }
+    case actionTypes.SET_FB_ACCESS_TOKEN: {
+      return {
+        ...state,
+        fbAccessToken: action.payload,
       };
     }
     default:

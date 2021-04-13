@@ -1605,6 +1605,10 @@ export const getFacebookPagesList = (accessToken, fb_user_id, permissions) => {
           type: actionTypes.FACEBOOK_PAGE_LIST_LOADING,
           payload: false,
         });
+        dispatch({
+          type: actionTypes.SET_FB_ACCESS_TOKEN,
+          payload: accessToken,
+        });
         return dispatch({
           type: actionTypes.SET_FACEBOOK_PAGE_LIST,
           payload: data.success ? data.data : [],
@@ -1639,15 +1643,20 @@ export const connectToInstagramPage = (
     InstagramBackendURL()
       .post(`saveFBPageData`, {
         businessid: getState().account.mainBusiness.businessid,
-        accessToken,
-        page_id,
-        page_token,
-        instagram_account_id,
-        instagram_user_id,
-        insta_handle,
+        accessToken: accessToken,
+        page_id: page_id,
+        page_token: page_token,
+        instagram_account_id: instagram_account_id,
+        instagram_user_id: instagram_user_id,
+        insta_handle: insta_handle,
       })
       .then((response) => response.data)
       .then((data) => {
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "danger",
+          position: "top",
+        });
         dispatch({
           type: actionTypes.CONNECT_TO_INSTAGRAM_SAVING,
           payload: false,

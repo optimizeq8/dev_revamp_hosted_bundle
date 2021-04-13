@@ -10,6 +10,9 @@ const styles = StyleSheet.create({
   gradient: {
     ...StyleSheet.absoluteFillObject,
   },
+  itemDisableView: {
+    opacity: 0.6,
+  },
   outView: {
     flex: 1,
     backgroundColor: globalColors.offWhite,
@@ -55,6 +58,7 @@ const styles = StyleSheet.create({
     height: RFValue(25, 414),
     marginBottom: RFValue(10, 414),
     marginHorizontal: RFValue(10, 414),
+    // alignSelf: "flex-start",
   },
   radioButton: {
     width: 30,

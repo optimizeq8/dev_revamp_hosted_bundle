@@ -30,12 +30,18 @@ class ConnectToFacebook extends React.Component {
     return (
       <TouchableOpacity
         key={index}
-        style={styles.itemView}
+        style={[
+          styles.itemView,
+          !item.page_eligible_to_connect &&
+            !item.page_has_ig_connected &&
+            styles.itemDisableView,
+        ]}
         onPress={() => {
           this.setState({
             selectedItem: { ...item },
           });
         }}
+        disabled={!item.page_eligible_to_connect && !item.page_has_ig_connected}
       >
         <TouchableOpacity
           style={styles.radioButton}
@@ -44,6 +50,9 @@ class ConnectToFacebook extends React.Component {
               selectedItem: { ...item },
             });
           }}
+          disabled={
+            !item.page_eligible_to_connect && !item.page_has_ig_connected
+          }
         >
           <View
             style={
@@ -63,7 +72,7 @@ class ConnectToFacebook extends React.Component {
             <Text style={styles.description}>{item.insta_handle}</Text>
           </View>
 
-          {!item.page_eligible_to_connect && (
+          {!item.page_eligible_to_connect && !item.page_has_ig_connected && (
             <Text style={[styles.textView, styles.heading]}>
               {item.page_not_eligible_message}
             </Text>
@@ -73,7 +82,6 @@ class ConnectToFacebook extends React.Component {
     );
   };
   render() {
-    // console.log("fbPageList", JSON.stringify(this.props.fbPageList, null, 2));
     return (
       <View style={styles.outView}>
         <SafeAreaView
@@ -100,14 +108,30 @@ class ConnectToFacebook extends React.Component {
           keyExtractor={(item) => item.page_id}
           data={this.props.fbPageList}
           renderItem={this.renderItem}
-          contentContainerStyle={{
-            height: 100,
-          }}
         />
         <GradientButton
+          uppercase
+          disabled={!this.state.selectedItem.page_id}
           screenProps={this.props.screenProps}
           text={"Submit"}
           style={styles.submitButton}
+          onPressAction={() => {
+            const {
+              page_id,
+              page_token,
+              instagram_account_id,
+              instagram_user_id,
+              insta_handle,
+            } = this.state.selectedItem;
+            this.props.connectToInstagramPage(
+              this.props.fbAccessToken,
+              page_id,
+              page_token,
+              instagram_account_id,
+              instagram_user_id,
+              insta_handle
+            );
+          }}
         />
       </View>
     );
@@ -120,6 +144,7 @@ const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   userInfo: state.auth.userInfo,
   fbPageList: state.instagramAds.fbPageList,
+  fbAccessToken: state.instagramAds.fbAccessToken,
 });
 
 const mapDispatchToProps = (dispatch) => ({
