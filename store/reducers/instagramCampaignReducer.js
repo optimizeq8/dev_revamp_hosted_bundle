@@ -116,6 +116,7 @@ const initialState = {
   fbPageListLoading: false,
   fbPageList: [],
   fbAccessToken: null,
+  connectInstagramSaving: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -719,6 +720,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         fbAccessToken: action.payload,
+      };
+    }
+    case actionTypes.CONNECT_TO_INSTAGRAM_SAVING: {
+      return {
+        ...state,
+        connectInstagramSaving: action.payload,
       };
     }
     default:

@@ -162,11 +162,31 @@ class AdType extends Component {
           source_action: "a_campaign_ad_type",
         });
       } else if (adType.mediaType === "instagram" && fb_connected === "0") {
-        this.props.navigation.navigate("WebView", {
-          url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
-          title: "Instagram",
+        // this.props.navigation.navigate("WebView", {
+        //   url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
+        //   title: "Instagram",
+        //   source: "ad_type",
+        //   source_action: "a_campaign_ad_type",
+        // });
+        this.props.getFacebookPagesList(
+          "EAAEcZAuvmacIBAKIQR9muxgLwwMjp6oJXE6jSQcepRtoCXzfUt73ZAPXf3gjXliQO8yxqwsmLUZBZBO0KxZCDtmRNqBNmQVZAM1dOs0JguZBTovFnXtBAUu4VHVIXmW1BbSXvtjZA3XxRQ5eAbtQV0J1ikrwELgPtfSogvamrPvn0OnlMoJQeFY1klW9xx9Od4TH16Xoe7KnKRkXpXPpThZAnjTmVVmlnTG17kOoGQctkgY2krWAZA4No0",
+          "112241673965915",
+          [
+            "openid",
+            "business_management",
+            "instagram_basic",
+            "ads_read",
+            "pages_read_engagement",
+            "pages_read_user_content",
+            "public_profile",
+            "pages_manage_ads",
+            "ads_management",
+            "pages_manage_metadata",
+          ]
+        );
+        this.props.navigation.navigate("ConnectToFacebook", {
           source: "ad_type",
-          source_action: "a_campaign_ad_type",
+          source_action: "a_ad_type",
         });
       } else if (
         adType.mediaType === "instagram" &&
@@ -507,7 +527,7 @@ class AdType extends Component {
             />
           )} */}
 
-          {this.state.active === "Instagram" && (
+          {this.state.active === "Instagram" && fb_connected === "0" && (
             <GradientButton
               onPressAction={() => {
                 this.props.getFacebookPagesList(

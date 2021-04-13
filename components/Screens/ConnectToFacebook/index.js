@@ -42,7 +42,10 @@ class ConnectToFacebook extends React.Component {
             selectedItem: { ...item },
           });
         }}
-        disabled={!item.page_eligible_to_connect && !item.page_has_ig_connected}
+        disabled={
+          (!item.page_eligible_to_connect && !item.page_has_ig_connected) ||
+          this.props.connectInstagramSaving
+        }
       >
         <TouchableOpacity
           style={styles.radioButton}
@@ -122,7 +125,10 @@ class ConnectToFacebook extends React.Component {
         />
         <GradientButton
           uppercase
-          disabled={!this.state.selectedItem.page_id}
+          disabled={
+            !this.state.selectedItem.page_id ||
+            this.props.connectInstagramSaving
+          }
           screenProps={this.props.screenProps}
           text={"Submit"}
           style={styles.submitButton}
@@ -156,6 +162,7 @@ const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   fbPageList: state.instagramAds.fbPageList,
   fbAccessToken: state.instagramAds.fbAccessToken,
+  connectInstagramSaving: state.instagramAds.connectInstagramSaving,
 });
 
 const mapDispatchToProps = (dispatch) => ({

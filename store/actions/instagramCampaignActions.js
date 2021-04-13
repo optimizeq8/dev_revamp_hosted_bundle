@@ -1652,15 +1652,24 @@ export const connectToInstagramPage = (
       })
       .then((response) => response.data)
       .then((data) => {
-        showMessage({
-          message: data.message,
-          type: data.success ? "success" : "danger",
-          position: "top",
-        });
         dispatch({
           type: actionTypes.CONNECT_TO_INSTAGRAM_SAVING,
           payload: false,
         });
+        if (data.success) {
+          NavigationService.navigate("AdType", {
+            success: "true",
+            channel: "instagram",
+            instagram_username: insta_handle,
+            fb_ad_account_id: data.data.fb_ad_account_id,
+          });
+        } else {
+          showMessage({
+            message: data.message,
+            type: "danger",
+            position: "top",
+          });
+        }
       })
       .catch((err) => {
         dispatch({
