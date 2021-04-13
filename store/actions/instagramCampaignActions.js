@@ -1600,6 +1600,7 @@ export const getFacebookPagesList = (accessToken, fb_user_id, permissions) => {
       })
       .then((response) => response.data)
       .then((data) => {
+        console.log("getFacebookPagesList", JSON.stringify(data, null, 2));
         dispatch({
           type: actionTypes.FACEBOOK_PAGE_LIST_LOADING,
           payload: false,

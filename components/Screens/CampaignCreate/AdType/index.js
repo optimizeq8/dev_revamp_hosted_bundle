@@ -510,6 +510,22 @@ class AdType extends Component {
           {this.state.active === "Instagram" && (
             <GradientButton
               onPressAction={() => {
+                this.props.getFacebookPagesList(
+                  "EAAEcZAuvmacIBAKIQR9muxgLwwMjp6oJXE6jSQcepRtoCXzfUt73ZAPXf3gjXliQO8yxqwsmLUZBZBO0KxZCDtmRNqBNmQVZAM1dOs0JguZBTovFnXtBAUu4VHVIXmW1BbSXvtjZA3XxRQ5eAbtQV0J1ikrwELgPtfSogvamrPvn0OnlMoJQeFY1klW9xx9Od4TH16Xoe7KnKRkXpXPpThZAnjTmVVmlnTG17kOoGQctkgY2krWAZA4No0",
+                  "112241673965915",
+                  [
+                    "openid",
+                    "business_management",
+                    "instagram_basic",
+                    "ads_read",
+                    "pages_read_engagement",
+                    "pages_read_user_content",
+                    "public_profile",
+                    "pages_manage_ads",
+                    "ads_management",
+                    "pages_manage_metadata",
+                  ]
+                );
                 this.props.navigation.navigate("ConnectToFacebook");
                 // this.loginWithFacebook();
               }}
@@ -610,5 +626,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
   updateBusinessConnectedToFacebook: (data) =>
     dispatch(actionCreators.updateBusinessConnectedToFacebook(data)),
+  getFacebookPagesList: (accessToken, fb_user_id, permissions) =>
+    dispatch(
+      actionCreators.getFacebookPagesList(accessToken, fb_user_id, permissions)
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdType);
