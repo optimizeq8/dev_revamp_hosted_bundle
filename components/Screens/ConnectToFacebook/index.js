@@ -2,7 +2,7 @@
 import React from "react";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
-import { View, FlatList, Text, TouchableOpacity } from "react-native";
+import { View, FlatList, Text, TouchableOpacity, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 // MiniComponents
@@ -27,6 +27,7 @@ class ConnectToFacebook extends React.Component {
   }
 
   renderItem = ({ item, index }) => {
+    console.log("instagram_profile_pic", item.instagram_profile_pic);
     return (
       <TouchableOpacity
         key={index}
@@ -62,6 +63,12 @@ class ConnectToFacebook extends React.Component {
             }
           ></View>
         </TouchableOpacity>
+
+        <Image
+          style={styles.profilePic}
+          source={{ uri: item.instagram_profile_pic }}
+        />
+
         <View style={styles.infoView}>
           <View style={styles.textView}>
             <Text style={styles.heading}>Page Name: </Text>
@@ -69,11 +76,15 @@ class ConnectToFacebook extends React.Component {
           </View>
           <View style={styles.textView}>
             <Text style={styles.heading}>Insatgram Handle: </Text>
-            <Text style={styles.description}>{item.insta_handle}</Text>
+            {item.page_has_ig_connected && (
+              <Text style={styles.description}>@{item.insta_handle}</Text>
+            )}
           </View>
-
           {!item.page_eligible_to_connect && !item.page_has_ig_connected && (
-            <Text style={[styles.textView, styles.heading]}>
+            <Text
+              style={[styles.textView, styles.heading, { width: "70%" }]}
+              numberOfLines={2}
+            >
               {item.page_not_eligible_message}
             </Text>
           )}

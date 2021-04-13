@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
   },
   infoView: {
-    paddingHorizontal: 8,
+    marginHorizontal: 8,
   },
   submitButton: {
     height: RFValue(25, 414),
@@ -75,6 +75,12 @@ const styles = StyleSheet.create({
     height: 15,
     borderRadius: 30,
     backgroundColor: globalColors.orange,
+  },
+  profilePic: {
+    width: 30,
+    height: 30,
+    borderRadius: 30,
+    marginLeft: 15,
   },
 });
 export default styles;
