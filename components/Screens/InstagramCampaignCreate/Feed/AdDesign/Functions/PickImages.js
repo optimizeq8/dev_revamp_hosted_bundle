@@ -127,7 +127,6 @@ export const _pickImage = async (
               manipResult = await ImageManipulator.manipulateAsync(
                 manipResult.image
               );
-              console.log("man", JSON.stringify(manipResult, null, 2));
               if (
                 Math.floor(manipResult.width / 4) !==
                   Math.floor(manipResult.height / 5) &&
@@ -216,7 +215,6 @@ export const _pickImage = async (
                     compress: 1,
                   }
                 );
-                console.log("resize", JSON.stringify(manipResult, null, 2));
               }
               let newSize = await FileSystem.getInfoAsync(manipResult.uri, {
                 size: true,
