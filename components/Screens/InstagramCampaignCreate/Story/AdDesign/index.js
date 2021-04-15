@@ -371,9 +371,12 @@ class AdDesign extends Component {
     if (
       this.state.selectedCampaign.objective !== "BRAND_AWARENESS" &&
       this.state.selectedCampaign.objective !== "VIDEO_VIEWS" &&
-      this.state.selectedCampaign &&
-      this.state.selectedCampaign.call_to_action &&
-      this.state.selectedCampaign.call_to_action.label === "BLANK"
+      (!this.state.selectedCampaign.call_to_action ||
+        (this.state.selectedCampaign &&
+          this.state.selectedCampaign.call_to_action &&
+          this.state.selectedCampaign.call_to_action.label === "BLANK") ||
+        this.state.selectedCampaign.link === "BLANK" ||
+        this.state.selectedCampaign.link === "")
     ) {
       showMessage({
         message: translate("Choose A Swipe Up Destination"),
