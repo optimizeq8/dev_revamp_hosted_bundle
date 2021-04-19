@@ -115,5 +115,6 @@
 		<string>Your data will be used to provide you a better and more personalized experience</string>
 		<key>NSFaceIDUsageDescription</key>
 		<string>OptimizeApp requires FaceID/TouchId access to allow you quick and secure access</string>
+      
 	</dict>
 </plist>

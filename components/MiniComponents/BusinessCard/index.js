@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
+import CookieManager from "@react-native-cookies/cookies";
 import { RFValue } from "react-native-responsive-fontsize";
 import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
@@ -14,6 +15,9 @@ import { connect } from "react-redux";
 import businessList from "../../Data/newBusinessCategoryList.data";
 import isStringArabic from "../../isStringArabic";
 import Swipeout from "react-native-swipeout";
+
+const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking");
+
 class BusinessCard extends Component {
   translate = this.props.screenProps.translate;
   businessCategory = businessList.find(
@@ -63,6 +67,10 @@ class BusinessCard extends Component {
         timestamp: new Date().getTime(),
         action_status: "success",
       });
+
+      RCTNetworking.clearCookies(() => true);
+      CookieManager.clearAll(true).then((val) => true);
+
       this.props.changeBusiness(this.props.business);
       this.props.resetCampaignInfo();
       this.props.rest_google_campaign_data();

@@ -248,6 +248,8 @@ export {
   extendInstaCampaginBudget,
   geoLocationSearch,
   deleteCustomLocation,
+  getFacebookPagesList,
+  connectToInstagramPage,
 } from "./instagramCampaignActions";
 
 export {

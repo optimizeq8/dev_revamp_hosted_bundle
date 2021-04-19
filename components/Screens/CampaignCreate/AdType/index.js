@@ -546,5 +546,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
   updateBusinessConnectedToFacebook: (data) =>
     dispatch(actionCreators.updateBusinessConnectedToFacebook(data)),
+  getFacebookPagesList: (accessToken, fb_user_id, permissions) =>
+    dispatch(
+      actionCreators.getFacebookPagesList(accessToken, fb_user_id, permissions)
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdType);

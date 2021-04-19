@@ -1598,3 +1598,99 @@ export const deleteCustomLocation = (index, audienceUpdate) => {
     });
   };
 };
+
+export const getFacebookPagesList = (accessToken, fb_user_id, permissions) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.FACEBOOK_PAGE_LIST_LOADING,
+      payload: true,
+    });
+    InstagramBackendURL()
+      .post(`fbpages`, {
+        accessToken,
+        businessid: getState().account.mainBusiness.businessid,
+        fb_user_id,
+        permissions,
+      })
+      .then((response) => response.data)
+      .then((data) => {
+        console.log("getFacebookPagesList", JSON.stringify(data, null, 2));
+        dispatch({
+          type: actionTypes.FACEBOOK_PAGE_LIST_LOADING,
+          payload: false,
+        });
+        dispatch({
+          type: actionTypes.SET_FB_ACCESS_TOKEN,
+          payload: accessToken,
+        });
+        return dispatch({
+          type: actionTypes.SET_FACEBOOK_PAGE_LIST,
+          payload: data.success ? data.data : [],
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: actionTypes.FACEBOOK_PAGE_LIST_LOADING,
+          payload: false,
+        });
+        return dispatch({
+          type: actionTypes.SET_FACEBOOK_PAGE_LIST,
+          payload: [],
+        });
+      });
+  };
+};
+
+export const connectToInstagramPage = (
+  accessToken,
+  page_id,
+  page_token,
+  instagram_account_id,
+  instagram_user_id,
+  insta_handle
+) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.CONNECT_TO_INSTAGRAM_SAVING,
+      payload: true,
+    });
+    InstagramBackendURL()
+      .post(`saveFBPageData`, {
+        businessid: getState().account.mainBusiness.businessid,
+        accessToken: accessToken,
+        page_id: page_id,
+        page_token: page_token,
+        instagram_account_id: instagram_account_id,
+        instagram_user_id: instagram_user_id,
+        insta_handle: insta_handle,
+      })
+      .then((response) => response.data)
+      .then((data) => {
+        dispatch({
+          type: actionTypes.CONNECT_TO_INSTAGRAM_SAVING,
+          payload: false,
+        });
+        if (data.success) {
+          NavigationService.navigate("AdType", {
+            success: "true",
+            channel: "instagram",
+            instagram_username: insta_handle,
+            fb_ad_account_id: data.data.fb_ad_account_id,
+            campaignCreationReset: true,
+          });
+        } else {
+          showMessage({
+            message: data.message,
+            type: "danger",
+            position: "top",
+          });
+        }
+      })
+      .catch((err) => {
+        dispatch({
+          type: actionTypes.CONNECT_TO_INSTAGRAM_SAVING,
+          payload: false,
+        });
+      });
+  };
+};

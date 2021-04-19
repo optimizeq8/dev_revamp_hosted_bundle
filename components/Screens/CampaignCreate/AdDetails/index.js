@@ -1100,9 +1100,18 @@ class AdDetails extends Component {
         type: "warning",
         position: "top",
       });
+    } else if (this.props.targeting_error) {
+      showMessage({
+        message: translate(
+          "Targeting too specific, please change targeting for better results"
+        ),
+        type: "warning",
+        position: "top",
+      });
     }
     // segment track for error on final submit
     if (
+      this.props.targeting_error ||
       countryError ||
       languagesError ||
       !this._handleBudget(
@@ -1120,6 +1129,7 @@ class AdDetails extends Component {
         campaign_channel: "snapchat",
         campaign_ad_type: this.props.adType,
         error_description:
+          this.props.targeting_error_message ||
           countryError ||
           languagesError ||
           validateWrapper(
@@ -1129,6 +1139,7 @@ class AdDetails extends Component {
       });
     }
     if (
+      !this.props.targeting_error &&
       this._handleBudget(
         this.state.value,
         this.state.campaignInfo.lifetime_budget_micro,
@@ -2017,6 +2028,8 @@ const mapStateToProps = (state) => ({
   audienceList: state.audience.audienceList,
   audienceListLoading: state.audience.audienceListLoading,
   campaignList: state.dashboard.campaignList,
+  targeting_error: state.campaignC.targeting_error,
+  targeting_error_message: state.campaignC.targeting_error_message,
 });
 
 const mapDispatchToProps = (dispatch) => ({

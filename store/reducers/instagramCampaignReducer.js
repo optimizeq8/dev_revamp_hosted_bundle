@@ -113,6 +113,10 @@ const initialState = {
   customLocations: [],
   audienceCustomLocations: [],
   customLocationLoading: false,
+  fbPageListLoading: false,
+  fbPageList: [],
+  fbAccessToken: null,
+  connectInstagramSaving: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -698,6 +702,30 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         repeatInstaCampaignLoading: action.payload,
+      };
+    }
+    case actionTypes.FACEBOOK_PAGE_LIST_LOADING: {
+      return {
+        ...state,
+        fbPageListLoading: action.payload,
+      };
+    }
+    case actionTypes.SET_FACEBOOK_PAGE_LIST: {
+      return {
+        ...state,
+        fbPageList: action.payload,
+      };
+    }
+    case actionTypes.SET_FB_ACCESS_TOKEN: {
+      return {
+        ...state,
+        fbAccessToken: action.payload,
+      };
+    }
+    case actionTypes.CONNECT_TO_INSTAGRAM_SAVING: {
+      return {
+        ...state,
+        connectInstagramSaving: action.payload,
       };
     }
     default:

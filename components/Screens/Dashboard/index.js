@@ -12,6 +12,7 @@ import {
   Text,
   RefreshControl,
   Modal,
+  Platform,
 } from "react-native";
 import * as Notifications from "expo-notifications";
 import Intercom from "react-native-intercom";
@@ -72,7 +73,6 @@ import BiometricsAuth from "../BiometricsAuth";
 
 // import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import isNull from "lodash/isNull";
-import { Platform } from "react-native";
 import AlertModal from "../../MiniComponents/AlertModal";
 import { BlurView } from "@react-native-community/blur";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -341,13 +341,7 @@ class Dashboard extends Component {
     if (this.state.adTypeChanged && !this.props.incompleteCampaign) {
       this.props.resetCampaignInfo(true);
     }
-    if (
-      !this.props.incompleteCampaign ||
-      !this.props.instagramIncompleteCampaign
-    ) {
-      this.props.set_adType(adType.value);
-    }
-
+    this.props.set_adType(adType.value);
     if (
       !this.props.mainBusiness.snap_ad_account_id &&
       adType.mediaType === "snapchat"
@@ -1194,6 +1188,10 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.getSnapchatObjectiveList()),
   getInstagramObjectiveList: () =>
     dispatch(actionCreators.getInstagramObjectiveList()),
+  getFacebookPagesList: (accessToken, fb_user_id, permissions) =>
+    dispatch(
+      actionCreators.getFacebookPagesList(accessToken, fb_user_id, permissions)
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
 

@@ -1,6 +1,13 @@
 //Components
 import React, { Component } from "react";
-import { View, Text, ScrollView, BackHandler, Keyboard } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  BackHandler,
+  Keyboard,
+  TouchableOpacity,
+} from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import analytics from "@segment/analytics-react-native";
 import CustomHeader from "../../MiniComponents/Header";
@@ -940,6 +947,24 @@ class CreateBusinessAccount extends Component {
               appSelections={{ iosAppSelected, androidAppSelected }}
             />
           )} */}
+          {this.state.editBusinessInfo &&
+            this.props.mainBusiness &&
+            this.props.mainBusiness.fb_connected === "1" && (
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("WebView", {
+                    url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
+                    title: "Instagram",
+                    source: "open_business_info",
+                    source_action: "a_change_instagram_page",
+                  });
+                }}
+              >
+                <Text style={styles.changeInstagramPageText}>
+                  {translate("Change Instagram Page")}
+                </Text>
+              </TouchableOpacity>
+            )}
           {/* Added handle submision button for updating business info */}
           {this.state.editBusinessInfo &&
           this.props.loadingUpdateBusinessInfo ? (
