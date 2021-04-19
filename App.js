@@ -530,6 +530,7 @@ class App extends React.Component {
   );
 
   render() {
+    console.log("test");
     let opacityNeg = {
       opacity: this.state.loadingProgress.interpolate({
         inputRange: [0, 25, 50],
