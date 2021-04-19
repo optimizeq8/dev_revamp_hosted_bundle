@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.robinpowered.react.Intercom.IntercomPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 // import com.segment.analytics.reactnative.integration.adjust.RNAnalyticsIntegration_AdjustPackage;

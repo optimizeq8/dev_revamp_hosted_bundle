@@ -17,7 +17,6 @@ import {
 } from "react-native";
 import RNRestart from "react-native-restart";
 
-import { Settings } from "react-native-fbsdk-next";
 import Intercom from "react-native-intercom";
 import analytics from "@segment/analytics-react-native";
 // import AdjustIntegration from "@segment/analytics-react-native-adjust";
@@ -226,9 +225,6 @@ class App extends React.Component {
     return i18n.t(scope, { locale: this.state.locale, ...options });
   };
   componentDidMount() {
-    if (Platform.OS === "ios") {
-      Settings.initializeSDK();
-    }
     enableScreens();
 
     // FOR TEST ORG & PROJ ==> hNRRGVYYOxFiMXboexCvtPK7PSy2NgHp
