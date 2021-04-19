@@ -13,6 +13,7 @@ import WebView from "react-native-webview";
 import analytics from "@segment/analytics-react-native";
 import CustomHeader from "../Header";
 import SafeAreaView from "react-native-safe-area-view";
+import CookieManager from "@react-native-cookies/cookies";
 import Logo from "../../../assets/SVGs/OptimizePurpleBgLogo";
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -22,12 +23,15 @@ import Loading from "../LoadingScreen";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 const screen = Dimensions.get("window");
+const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking");
 export default class index extends Component {
   state = {
     appState: AppState.currentState,
     viewLoader: true,
   };
   componentDidMount() {
+    CookieManager.clearAll().then(() => true);
+    RCTNetworking.clearCookies(() => true);
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState
@@ -157,7 +161,7 @@ export default class index extends Component {
               uri: url,
             }}
             cacheEnabled={false}
-            incognito={true}
+            // incognito={true}
             scrollEnabled={scrollEnabled}
             injectedJavaScript={runFirst}
             onMessage={this.onMessage}

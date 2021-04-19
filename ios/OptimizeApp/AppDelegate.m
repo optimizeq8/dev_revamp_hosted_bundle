@@ -49,10 +49,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
-   [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
+    [FBSDKApplicationDelegate initializeSDK:launchOptions];
+    [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
 
-//   [FBSDKApplicationDelegate initializeSDK:launchOptions];
+
   [GMSServices provideAPIKey:@"AIzaSyDxOd8PlgO-DjzmoVDaFmpGj2XcqhclrwM"];
   self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
   self.launchOptions = launchOptions;

@@ -1662,6 +1662,7 @@ export const connectToInstagramPage = (
             channel: "instagram",
             instagram_username: insta_handle,
             fb_ad_account_id: data.data.fb_ad_account_id,
+            campaignCreationReset: true,
           });
         } else {
           showMessage({

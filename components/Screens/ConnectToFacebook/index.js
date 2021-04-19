@@ -27,7 +27,6 @@ class ConnectToFacebook extends React.Component {
   }
 
   renderItem = ({ item, index }) => {
-    console.log("instagram_profile_pic", item.instagram_profile_pic);
     return (
       <TouchableOpacity
         key={index}

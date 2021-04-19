@@ -12,12 +12,6 @@ import {
   ScrollView,
   Text,
 } from "react-native";
-import {
-  AccessToken,
-  LoginManager,
-  GraphRequest,
-  GraphRequestManager,
-} from "react-native-fbsdk-next";
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
 import isNull from "lodash/isNull";
@@ -61,9 +55,6 @@ class AdType extends Component {
   };
 
   componentDidMount() {
-    AccessToken.getCurrentAccessToken().then((token) =>
-      console.log("AccessToken", token)
-    );
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     if (
       (this.props.mainBusiness &&
@@ -162,31 +153,11 @@ class AdType extends Component {
           source_action: "a_campaign_ad_type",
         });
       } else if (adType.mediaType === "instagram" && fb_connected === "0") {
-        // this.props.navigation.navigate("WebView", {
-        //   url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
-        //   title: "Instagram",
-        //   source: "ad_type",
-        //   source_action: "a_campaign_ad_type",
-        // });
-        this.props.getFacebookPagesList(
-          "EAAEcZAuvmacIBAKIQR9muxgLwwMjp6oJXE6jSQcepRtoCXzfUt73ZAPXf3gjXliQO8yxqwsmLUZBZBO0KxZCDtmRNqBNmQVZAM1dOs0JguZBTovFnXtBAUu4VHVIXmW1BbSXvtjZA3XxRQ5eAbtQV0J1ikrwELgPtfSogvamrPvn0OnlMoJQeFY1klW9xx9Od4TH16Xoe7KnKRkXpXPpThZAnjTmVVmlnTG17kOoGQctkgY2krWAZA4No0",
-          "112241673965915",
-          [
-            "openid",
-            "business_management",
-            "instagram_basic",
-            "ads_read",
-            "pages_read_engagement",
-            "pages_read_user_content",
-            "public_profile",
-            "pages_manage_ads",
-            "ads_management",
-            "pages_manage_metadata",
-          ]
-        );
-        this.props.navigation.navigate("ConnectToFacebook", {
+        this.props.navigation.navigate("WebView", {
+          url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
+          title: "Instagram",
           source: "ad_type",
-          source_action: "a_ad_type",
+          source_action: "a_campaign_ad_type",
         });
       } else if (
         adType.mediaType === "instagram" &&
@@ -316,50 +287,7 @@ class AdType extends Component {
       });
     }
   };
-  logoutWithFacebook = () => {
-    LoginManager.logOut();
-    this.setState({ userInfo: {} });
-  };
 
-  getInfoFromToken = (token) => {
-    const PROFILE_REQUEST_PARAMS = {
-      fields: {
-        string: "id,name,first_name,last_name",
-      },
-    };
-    const profileRequest = new GraphRequest(
-      "/me",
-      { token, parameters: PROFILE_REQUEST_PARAMS },
-      (error, user) => {
-        if (error) {
-          console.log("login info has error: " + error);
-        } else {
-          this.setState({ userInfo: user });
-          console.log("result:", user);
-        }
-      }
-    );
-    new GraphRequestManager().addRequest(profileRequest).start();
-  };
-
-  loginWithFacebook = () => {
-    // Attempt a login using the Facebook login dialog asking for default permissions.
-    LoginManager.logInWithPermissions(["public_profile"]).then(
-      (login) => {
-        if (login.isCancelled) {
-          console.log("Login cancelled");
-        } else {
-          AccessToken.getCurrentAccessToken().then((data) => {
-            const accessToken = data.accessToken.toString();
-            this.getInfoFromToken(accessToken);
-          });
-        }
-      },
-      (error) => {
-        console.log("Login fail with error: " + error);
-      }
-    );
-  };
   render() {
     const { translate } = this.props.screenProps;
     const {
@@ -511,7 +439,7 @@ class AdType extends Component {
           )}
         </View>
         <View style={styles.mainView}>
-          {/* {this.state.active === "Instagram" && fb_connected === "0" && (
+          {this.state.active === "Instagram" && fb_connected === "0" && (
             <GradientButton
               onPressAction={() =>
                 this.props.navigation.navigate("WebView", {
@@ -521,34 +449,6 @@ class AdType extends Component {
                   source_action: "a_connect_to_facebook",
                 })
               }
-              style={styles.loginBtn}
-              uppercase
-              text={translate("Login with Facebook")}
-            />
-          )} */}
-
-          {this.state.active === "Instagram" && fb_connected === "0" && (
-            <GradientButton
-              onPressAction={() => {
-                this.props.getFacebookPagesList(
-                  "EAAEcZAuvmacIBAKIQR9muxgLwwMjp6oJXE6jSQcepRtoCXzfUt73ZAPXf3gjXliQO8yxqwsmLUZBZBO0KxZCDtmRNqBNmQVZAM1dOs0JguZBTovFnXtBAUu4VHVIXmW1BbSXvtjZA3XxRQ5eAbtQV0J1ikrwELgPtfSogvamrPvn0OnlMoJQeFY1klW9xx9Od4TH16Xoe7KnKRkXpXPpThZAnjTmVVmlnTG17kOoGQctkgY2krWAZA4No0",
-                  "112241673965915",
-                  [
-                    "openid",
-                    "business_management",
-                    "instagram_basic",
-                    "ads_read",
-                    "pages_read_engagement",
-                    "pages_read_user_content",
-                    "public_profile",
-                    "pages_manage_ads",
-                    "ads_management",
-                    "pages_manage_metadata",
-                  ]
-                );
-                this.props.navigation.navigate("ConnectToFacebook");
-                // this.loginWithFacebook();
-              }}
               style={styles.loginBtn}
               uppercase
               text={translate("Login with Facebook")}
