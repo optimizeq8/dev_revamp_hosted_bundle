@@ -137,6 +137,11 @@ class Dashboard extends Component {
     });
     Intercom.handlePushMessage();
     Linking.addEventListener("url", this.handleDeepLinkListener);
+    Linking.getInitialURL().then((url) => {
+      if (url && (url.includes("adj") || url.includes("chatsupport"))) {
+        this.handleDeepLinkListener({ url });
+      }
+    });
     if (
       this.props.mainBusiness &&
       this.props.mainBusiness.hasOwnProperty("businessid")
@@ -578,7 +583,28 @@ class Dashboard extends Component {
     if (url) {
       let deeplinkType = this.props.navigation.getParam("deeplinkType", "");
       let campaign_id = this.props.navigation.getParam("campaign_id", "");
-
+      let urlParams = "";
+      let func = "";
+      if (url.url.includes("function") || url.url.includes("chatsupport")) {
+        if (url.url.includes("?")) {
+          urlParams = url.url.split("?")[1];
+          func = urlParams.substring(
+            urlParams.lastIndexOf("function=") + "function=".length,
+            urlParams.indexOf("&")
+          );
+        } else if (url.url.includes("chatsupport")) {
+          func = "openSupportChannel";
+        }
+        switch (func) {
+          case "openSupportChannel":
+            setTimeout(() => {
+              this.openIntercom();
+            }, 1000);
+            break;
+          default:
+            break;
+        }
+      }
       switch (deeplinkType) {
         case "snapchatCampaignDetail":
           this.props.getCampaignDetails(campaign_id, this.props.navigation);

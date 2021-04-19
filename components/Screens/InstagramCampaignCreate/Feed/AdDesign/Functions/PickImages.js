@@ -166,8 +166,14 @@ export const _pickImage = async (
                   }.`,
                 });
               }
+              let size = {
+                width: manipResult.width,
+                height: manipResult.height,
+              };
+              let imageNeedsResizing = false;
               if (manipResult.height > 1936 || manipResult.width > 1936) {
-                let size =
+                imageNeedsResizing = true;
+                size =
                   media_option === "single"
                     ? manipResult.height > manipResult.width
                       ? {
@@ -181,6 +187,23 @@ export const _pickImage = async (
                             (manipResult.height / manipResult.width) * 1930,
                         }
                     : { width: 600, height: 600 };
+              } else if (manipResult.height < 500 || manipResult.width < 500) {
+                imageNeedsResizing = true;
+                size =
+                  media_option === "single"
+                    ? manipResult.height > manipResult.width
+                      ? {
+                          width: (manipResult.width / manipResult.height) * 500,
+                          height: 500,
+                        }
+                      : {
+                          width: 500,
+                          height:
+                            (manipResult.height / manipResult.width) * 500,
+                        }
+                    : { width: 500, height: 500 };
+              }
+              if (imageNeedsResizing) {
                 manipResult = await ImageManipulator.manipulateAsync(
                   manipResult.uri,
                   [
