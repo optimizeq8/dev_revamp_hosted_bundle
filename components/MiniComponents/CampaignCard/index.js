@@ -240,7 +240,7 @@ class CampaignCard extends Component {
                   />
                 </View>
               )}
-            {!this.review_status.includes("APPROVED") && (
+            {this.review_status.includes("APPROVED") && (
               <View style={styles.chartContainer}>
                 <CampaignCircleChart
                   channel={this.props.channel}
@@ -260,6 +260,8 @@ class CampaignCard extends Component {
                       <Text uppercase style={styles.cardText}>
                         {translate("Day(s) left")}
                       </Text>
+                      {/* 
+                      ----KEEP FOR LATER-----
                       <TouchableOpacity
                         style={[
                           styles.repeatButton,
@@ -268,7 +270,7 @@ class CampaignCard extends Component {
                         onPress={() => this.handleExtendModal(true)}
                       >
                         <Text style={styles.repeatText}>{"Extend"}</Text>
-                      </TouchableOpacity>
+                      </TouchableOpacity> */}
                     </View>
                   </>
                 ) : (
