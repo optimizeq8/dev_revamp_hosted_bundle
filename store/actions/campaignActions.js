@@ -2035,11 +2035,17 @@ export const extendSnapCampagin = (previous_campaign_info, handleSwitch) => {
           previous_campaignId: previous_campaign_info.previous_campaign_id,
           action_status: data.success ? "success" : "failure",
         });
-        if (data.success)
+        if (data.success) {
+          dispatch(
+            setCampaignInfoForTransaction({
+              extend_id: data.extend_id,
+            })
+          );
           dispatch({
             type: actionTypes.SET_EXTENDING_CAMPAIGN_INFO,
             payload: data,
           });
+        }
         handleSwitch(true);
       })
       .catch((err) => {
@@ -2061,9 +2067,18 @@ export const extendSnapCampaginBudget = (
       type: actionTypes.SET_EXTEND_CAMPAIGN_LOADING,
       payload: true,
     });
+
+    let extendInfo = { ...repeating_campaign_info };
+    if (getState().transA.hasOwnProperty("extend_id")) {
+      extendInfo = {
+        ...extendInfo,
+        extend_id: getState().transA.extend_id,
+      };
+    }
+
     createBaseUrl()
       .post(`extendcampaigntargeting`, {
-        ...repeating_campaign_info,
+        ...extendInfo,
       })
       .then((res) => res.data)
       .then((data) => {
@@ -2073,6 +2088,7 @@ export const extendSnapCampaginBudget = (
             campaign_budget: data.data.lifetime_budget_micro,
             campaign_budget_kdamount: data.kdamount,
             channel: "",
+            extend_id: getState().transA.extend_id,
           })
         );
         analytics.track("a_submit_extend_campaign_budget", {

@@ -403,9 +403,11 @@ export const checkoutwithWallet = (campaign_id, navigation, retries = 3) => {
       getState().transA.channel === "instagram"
     )
       info = { ...info, channel: getState().transA.channel };
-
+    if (getState().transA.hasOwnProperty("extend_id")) {
+      info = { ...info, extend_id: getState().transA.extend_id };
+    }
     createBaseUrl()
-      .post(`checkoutwithWallet`, info)
+      .post(`checkoutwithWallet`, { ...info })
       .then((res) => {
         return res.data;
       })
@@ -519,12 +521,21 @@ export const payment_request_knet = (
       getState().transA.channel === ""
         ? `makeknetpayment/${campaign_id}`
         : `makeknetpayment/${campaign_id}/${getState().transA.channel}`;
-
+    let info = {};
+    if (getState().transA.hasOwnProperty("extend_id")) {
+      info = { extend_id: getState().transA.extend_id };
+    }
     createBaseUrl()
-      .get(url, {
-        timeout: 5000,
-        timeoutErrorMessage: "Something went wrong, please try again later.",
-      })
+      .post(
+        url,
+        {
+          ...info,
+        },
+        {
+          timeout: 5000,
+          timeoutErrorMessage: "Something went wrong, please try again later.",
+        }
+      )
       .then((res) => {
         return res.data;
       })
@@ -598,12 +609,19 @@ export const payment_request_credit_card = (
       getState().transA.channel === ""
         ? `makeccpayment/${campaign_id}`
         : `makeccpayment/${campaign_id}/${getState().transA.channel}`;
-
+    let info = {};
+    if (getState().transA.hasOwnProperty("extend_id")) {
+      info = { extend_id: getState().transA.extend_id };
+    }
     createBaseUrl()
-      .post(url, {
-        timeout: 5000,
-        timeoutErrorMessage: "Something went wrong, please try again later.",
-      })
+      .post(
+        url,
+        {
+          timeout: 5000,
+          timeoutErrorMessage: "Something went wrong, please try again later.",
+        },
+        { ...info }
+      )
       .then((res) => {
         return res.data;
       })
@@ -756,12 +774,16 @@ export const payment_request_payment_method = (
       getState().transA.channel === ""
         ? `makemfpayment/${campaign_id}`
         : `makemfpayment/${campaign_id}/${getState().transA.channel}`;
-
+    let info = {};
+    if (getState().transA.hasOwnProperty("extend_id")) {
+      info = { extend_id: getState().transA.extend_id };
+    }
     createBaseUrl()
       .post(
         url,
         {
           PaymentMethodId: PaymentMethodId,
+          ...info,
         },
         {
           timeout: 5000,

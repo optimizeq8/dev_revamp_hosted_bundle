@@ -1491,11 +1491,17 @@ export const extendInstaCampagin = (previous_campaign_info, handleSwitch) => {
             type: actionTypes.SET_EXTEND_INSTA_CAMPAIGN_LOADING,
             payload: false,
           });
-        } else if (data.success)
+        } else if (data.success) {
+          dispatch(
+            setCampaignInfoForTransaction({
+              extend_id: data.extend_id,
+            })
+          );
           dispatch({
             type: actionTypes.SET_INSTA_EXTENDING_CAMPAIGN_INFO,
             payload: data,
           });
+        }
         handleSwitch(true);
       })
       .catch((err) => {
@@ -1516,9 +1522,16 @@ export const extendInstaCampaginBudget = (
       type: actionTypes.SET_EXTEND_INSTA_CAMPAIGN_LOADING,
       payload: true,
     });
+    let extendInfo = { ...repeating_campaign_info };
+    if (getState().transA.hasOwnProperty("extend_id")) {
+      extendInfo = {
+        ...extendInfo,
+        extend_id: getState().transA.extend_id,
+      };
+    }
     InstagramBackendURL()
       .post(`extendinstacampaigntargeting`, {
-        ...repeating_campaign_info,
+        ...extendInfo,
       })
       .then((res) => res.data)
       .then((data) => {
@@ -1528,6 +1541,7 @@ export const extendInstaCampaginBudget = (
             campaign_budget: data.data.lifetime_budget_micro,
             campaign_budget_kdamount: data.kdamount,
             channel: "instagram",
+            extend_id: getState().transA.extend_id,
           })
         );
         analytics.track("a_submit_extend_campaign_budget", {
