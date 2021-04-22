@@ -97,6 +97,21 @@ class CampaignCard extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
+  showRepeatButton = () => {
+    let campaign = this.props.campaign;
+    const { translate } = this.props.screenProps;
+    let button = null;
+    if (campaign.objective !== "ENGAGEMENT")
+      button = (
+        <TouchableOpacity
+          style={styles.repeatButton}
+          onPress={() => this.handleRepeatModal(true)}
+        >
+          <Text style={styles.repeatText}>{translate("Promote again")}</Text>
+        </TouchableOpacity>
+      );
+    return button;
+  };
   render() {
     const { translate } = this.props.screenProps;
     let campaign = this.props.campaign;
@@ -204,7 +219,6 @@ class CampaignCard extends Component {
                   />
                 )} */}
             </View>
-
             {this.ad_status && this.ad_status.includes("Ad Rejected") && (
               <Text style={[styles.subtext]}>
                 {translate("Tap to submit your Ad again")}
@@ -274,14 +288,7 @@ class CampaignCard extends Component {
                     </View>
                   </>
                 ) : (
-                  <TouchableOpacity
-                    style={styles.repeatButton}
-                    onPress={() => this.handleRepeatModal(true)}
-                  >
-                    <Text style={styles.repeatText}>
-                      {translate("Promote again")}
-                    </Text>
-                  </TouchableOpacity>
+                  this.showRepeatButton()
                 )}
               </View>
             )}
