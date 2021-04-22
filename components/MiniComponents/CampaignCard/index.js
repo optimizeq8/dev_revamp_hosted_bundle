@@ -99,6 +99,7 @@ class CampaignCard extends Component {
   }
   showRepeatButton = () => {
     let campaign = this.props.campaign;
+    const { translate } = this.props.screenProps;
     let button = null;
     if (campaign.objective !== "ENGAGEMENT")
       button = (
@@ -218,7 +219,6 @@ class CampaignCard extends Component {
                   />
                 )} */}
             </View>
-
             {this.ad_status && this.ad_status.includes("Ad Rejected") && (
               <Text style={[styles.subtext]}>
                 {translate("Tap to submit your Ad again")}
