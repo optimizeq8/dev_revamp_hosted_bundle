@@ -17,7 +17,7 @@
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
-		<string>0.4.380</string>
+		<string>0.4.3830</string>
 		<key>CFBundleSignature</key>
 		<string>????</string>
 		<key>CFBundleURLTypes</key>
@@ -34,7 +34,9 @@
 			</dict>
 		</array>
 		<key>CFBundleVersion</key>
-		<string>166</string>
+		<string>178</string>
+		<key>ITSAppUsesNonExemptEncryption</key>
+		<false/>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>NSAppTransportSecurity</key>
@@ -56,6 +58,8 @@
 		<string>Allow OptimizeApp to use the camera</string>
 		<key>NSContactsUsageDescription</key>
 		<string>Allow OptimizeApp experiences to access your contacts</string>
+		<key>NSFaceIDUsageDescription</key>
+		<string>OptimizeApp requires FaceID/TouchId access to allow you quick and secure access</string>
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 		<string>Allow OptimizeApp to use your location to help with campaign creation</string>
 		<key>NSLocationAlwaysUsageDescription</key>
@@ -65,13 +69,15 @@
 		<key>NSMicrophoneUsageDescription</key>
 		<string>Allow OptimizeApp to access your microphone</string>
 		<key>NSMotionUsageDescription</key>
-		<string>Allow OptimizeApp to access your device&apos;s accelerometer</string>
+		<string>Allow OptimizeApp to access your device's accelerometer</string>
 		<key>NSPhotoLibraryAddUsageDescription</key>
-		<string>OptimizeApp let&apos;s you save edited media to your gallery</string>
+		<string>OptimizeApp let's you save edited media to your gallery</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>OptimizeApp let&apos;s you choose your media files that you wish to use for campaigns or to share with our support team</string>
+		<string>OptimizeApp let's you choose your media files that you wish to use for campaigns or to share with our support team</string>
 		<key>NSRemindersUsageDescription</key>
 		<string>Allow OptimizeApp to access your reminders</string>
+		<key>NSUserTrackingUsageDescription</key>
+		<string>Your data will be used to provide you a better and more personalized experience</string>
 		<key>UIAppFonts</key>
 		<array>
 			<string>AntDesign.ttf</string>
@@ -94,6 +100,11 @@
 			<string>Roboto.ttf</string>
 			<string>rubicon-icon-font.ttf</string>
 		</array>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>fetch</string>
+			<string>remote-notification</string>
+		</array>
 		<key>UILaunchStoryboardName</key>
 		<string>SplashScreen</string>
 		<key>UIRequiredDeviceCapabilities</key>
@@ -109,12 +120,5 @@
 		</array>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
-		<key>ITSAppUsesNonExemptEncryption</key>
-		<false/>
-		<key>NSUserTrackingUsageDescription</key>
-		<string>Your data will be used to provide you a better and more personalized experience</string>
-		<key>NSFaceIDUsageDescription</key>
-		<string>OptimizeApp requires FaceID/TouchId access to allow you quick and secure access</string>
-      
 	</dict>
 </plist>

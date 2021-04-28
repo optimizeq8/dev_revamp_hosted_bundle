@@ -58,6 +58,8 @@ target 'OptimizeApp' do
 
 
 
+  pod 'react-native-onesignal', :path => '../node_modules/react-native-onesignal'
+
 end
 
 post_install do |installer|
@@ -66,4 +68,8 @@ post_install do |installer|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10'
     end
   end
+end
+
+target 'OneSignalNotificationServiceExtension' do
+  pod 'OneSignal', '>= 3.0', '< 4.0'
 end

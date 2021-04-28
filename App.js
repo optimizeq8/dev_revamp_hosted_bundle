@@ -14,6 +14,7 @@ import {
   I18nManager,
   AppState,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import RNRestart from "react-native-restart";
 
@@ -69,7 +70,7 @@ import { PESDK } from "react-native-photoeditorsdk";
 import { VESDK } from "react-native-videoeditorsdk";
 import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import RNBootSplash from "react-native-bootsplash";
-
+import OneSignal from "react-native-onesignal";
 import * as Sentry from "@sentry/react-native";
 if (!__DEV__) {
   Sentry.init({
@@ -226,7 +227,59 @@ class App extends React.Component {
   };
   componentDidMount() {
     enableScreens();
+    OneSignal.setAppId("ea9467a9-99e7-4e53-9ad7-a4910350df83");
+    OneSignal.setLogLevel(6, 0);
+    OneSignal.setRequiresUserPrivacyConsent(false);
+    OneSignal.promptForPushNotificationsWithUserResponse((response) => {
+      console.log("Prompt response:", response);
+    });
 
+    OneSignal.setNotificationWillShowInForegroundHandler(
+      (notifReceivedEvent) => {
+        console.log(
+          "OneSignal: notification will show in foreground:",
+          notifReceivedEvent
+        );
+        let notif = notifReceivedEvent.getNotification();
+
+        const button1 = {
+          text: "Cancel",
+          onPress: () => {
+            notifReceivedEvent.complete();
+          },
+          style: "cancel",
+        };
+
+        const button2 = {
+          text: "Complete",
+          onPress: () => {
+            notifReceivedEvent.complete(notif);
+          },
+        };
+
+        Alert.alert("Complete notification?", "Test", [button1, button2], {
+          cancelable: true,
+        });
+      }
+    );
+    OneSignal.setNotificationOpenedHandler((notification) => {
+      console.log("OneSignal: notification opened:", notification);
+    });
+    OneSignal.setInAppMessageClickHandler((event) => {
+      console.log("OneSignal IAM clicked:", event);
+    });
+    OneSignal.addEmailSubscriptionObserver((event) => {
+      console.log("OneSignal: email subscription changed: ", event);
+    });
+    OneSignal.addSubscriptionObserver((event) => {
+      Alert.alert(
+        "OneSignal: subscription changed:",
+        JSON.stringify(event, null, 2)
+      );
+    });
+    OneSignal.addPermissionObserver((event) => {
+      console.log("OneSignal: permission changed:", event);
+    });
     // FOR TEST ORG & PROJ ==> hNRRGVYYOxFiMXboexCvtPK7PSy2NgHp
     // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB

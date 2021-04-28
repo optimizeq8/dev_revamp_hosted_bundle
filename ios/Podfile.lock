@@ -107,7 +107,7 @@ PODS:
   - GoogleMaps/Base (3.5.0)
   - GoogleMaps/Maps (3.5.0):
     - GoogleMaps/Base
-  - imglyKit (10.21.6)
+  - imglyKit (10.23.1)
   - Intercom (8.0.0)
   - lottie-ios (3.1.9)
   - lottie-react-native (3.5.0):
@@ -115,8 +115,9 @@ PODS:
     - React
   - Mixpanel (3.6.5)
   - mobile-ffmpeg-https-gpl (4.3.1.LTS)
-  - PhotoEditorSDK (10.21.6):
-    - imglyKit (= 10.21.6)
+  - OneSignal (3.4.1)
+  - PhotoEditorSDK (10.23.1):
+    - imglyKit (= 10.23.1)
   - RCTRequired (0.63.3)
   - RCTTypeSafety (0.63.3):
     - FBLazyVector (= 0.63.3)
@@ -309,6 +310,9 @@ PODS:
   - react-native-mixpanel (1.2.5):
     - Mixpanel (~> 3.6.0)
     - React
+  - react-native-onesignal (4.0.7):
+    - OneSignal (= 3.4.1)
+    - React (< 1.0.0, >= 0.13.0)
   - react-native-restart (0.0.17):
     - React
   - react-native-safe-area-context (3.1.9):
@@ -412,8 +416,8 @@ PODS:
     - React
     - React-RCTImage
     - VideoEditorSDK (~> 10.18)
-  - Segment-Adjust (3.1.0):
-    - Adjust (~> 4.23)
+  - Segment-Adjust (3.1.1):
+    - Adjust (~> 4.28)
     - Analytics
   - Segment-Mixpanel (1.7.0):
     - Analytics
@@ -438,8 +442,8 @@ PODS:
     - UMFontInterface
   - UMSensorsInterface (5.3.0)
   - UMTaskManagerInterface (5.3.0)
-  - VideoEditorSDK (10.21.6):
-    - imglyKit (= 10.21.6)
+  - VideoEditorSDK (10.23.1):
+    - imglyKit (= 10.23.1)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -473,6 +477,7 @@ DEPENDENCIES:
   - Google-Maps-iOS-Utils (= 2.1.0)
   - GoogleMaps (= 3.5.0)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
+  - OneSignal (< 4.0, >= 3.0)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../node_modules/react-native/`)
@@ -495,6 +500,7 @@ DEPENDENCIES:
   - react-native-intercom (from `../node_modules/react-native-intercom`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-mixpanel (from `../node_modules/react-native-mixpanel`)
+  - react-native-onesignal (from `../node_modules/react-native-onesignal`)
   - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -550,6 +556,7 @@ SPEC REPOS:
     - lottie-ios
     - Mixpanel
     - mobile-ffmpeg-https-gpl
+    - OneSignal
     - PhotoEditorSDK
     - Segment-Adjust
     - Segment-Mixpanel
@@ -653,6 +660,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-mixpanel:
     :path: "../node_modules/react-native-mixpanel"
+  react-native-onesignal:
+    :path: "../node_modules/react-native-onesignal"
   react-native-restart:
     :path: "../node_modules/react-native-restart"
   react-native-safe-area-context:
@@ -769,13 +778,14 @@ SPEC CHECKSUMS:
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
-  imglyKit: cf341e6a4ed2fa0b8070df9f6ec1e71e579cd50f
+  imglyKit: 4ffe931831f12ccab5d41c8586687d8e04dd97ad
   Intercom: 5d8058e3476ab6b0350dea165338164364eb1acb
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   lottie-react-native: 1fb4ce21d6ad37dab8343eaff8719df76035bd93
   Mixpanel: de8296d8568806ab17bfced0f823c908b808e1e0
   mobile-ffmpeg-https-gpl: 40f773ba24431c12a0753a25676406a5f9406659
-  PhotoEditorSDK: 2ffaf5aa7477f1326ed6e9324b57aa5252e9ecad
+  OneSignal: 546f5d10df7277dd271a1c4cde80646167d55cc3
+  PhotoEditorSDK: a2e32374a7da6d4e45b97e8886cfb2096c698626
   RCTRequired: 48884c74035a0b5b76dbb7a998bd93bcfc5f2047
   RCTTypeSafety: edf4b618033c2f1c5b7bc3d90d8e085ed95ba2ab
   React: f36e90f3ceb976546e97df3403e37d226f79d0e3
@@ -796,6 +806,7 @@ SPEC CHECKSUMS:
   react-native-intercom: c48e0e15877bf96ff4d461f7aa9b833d11188139
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-mixpanel: 5d0bcea791fd938c35138be2d00e50e19b9de601
+  react-native-onesignal: c16207f75e6f8d750e5ef0124998f685d1636860
   react-native-restart: d19a0f8d053d065fe64cd2baebb6487111c77149
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-webview: 6edf4d6f71b9161fc3e96083726a538ee395304d
@@ -823,7 +834,7 @@ SPEC CHECKSUMS:
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: 368d6d8b8301224e5ffb6254191f4f8876c2be0d
   RNVideoEditorSDK: 9b84a33684827b42e6f49dcedb7fd681a11e7808
-  Segment-Adjust: 3dd5e37785aff1aed6103e4cd00ec445b5b88f12
+  Segment-Adjust: 5c45cd11f3ed647967c54e93c267f8e8c987f849
   Segment-Mixpanel: 18c35e15fa95ee61ee2254577cf2c968db42e68a
   Sentry: 8fa58a051237554f22507fb483b9a1de0171a2dc
   UMAppLoader: 5db5dc03176c6238da9c8b3657a370137882a4ad
@@ -839,9 +850,9 @@ SPEC CHECKSUMS:
   UMReactNativeAdapter: 61ae88818058b7849bbf5b79bf97872cb3c8e0eb
   UMSensorsInterface: 49bea41dcfcc041f0bbab27cfe4a6006f1dde0c0
   UMTaskManagerInterface: 6cad5929dbc0a5b986ad4d77caac497d4de730a7
-  VideoEditorSDK: 15d363aced2d7d221acca08a61709b331c02dca9
+  VideoEditorSDK: 251e32a43e98bbd6b4113551c74e9b607515f3c0
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
 
-PODFILE CHECKSUM: bf13a035ceabaa2ae068d312299e3eb668a76ce6
+PODFILE CHECKSUM: 589f3ac2b1a8e70e3d590ca8f96f2fdb0e75be93
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.9.3
