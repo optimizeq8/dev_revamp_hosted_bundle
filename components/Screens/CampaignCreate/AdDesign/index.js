@@ -1814,6 +1814,9 @@ class AdDesign extends Component {
           }
           screenProps={this.props.screenProps}
           rejected={this.rejected}
+          snapad={this.props.snapad}
+          snapcollectionad={this.props.snapcollectionad}
+          snapstoryad={this.props.snapstoryad}
         />
         <UploadMediaFromDifferentDevice
           setUploadFromDifferentDeviceModal={
