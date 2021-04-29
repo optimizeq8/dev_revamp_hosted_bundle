@@ -1857,6 +1857,10 @@ class AdDesign extends Component {
           screenProps={this.props.screenProps}
           existingMediaModal={this.state.existingMediaModal}
           setExistingMediaModal={this.setExistingMediaModal}
+          snapchatExistingMediaList={this.props.snapchatExistingMediaList}
+          snapchatExistingMediaListLoading={
+            this.props.snapchatExistingMediaListLoading
+          }
         />
         <ExampleModal
           title={""}

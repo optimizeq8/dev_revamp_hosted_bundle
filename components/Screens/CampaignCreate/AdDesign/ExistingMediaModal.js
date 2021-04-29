@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { View, Platform, ScrollView, Text } from "react-native";
+import {
+  View,
+  Platform,
+  Image,
+  Text,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { Modal } from "react-native-paper";
 import { BlurView } from "@react-native-community/blur";
 import SafeAreaView from "react-native-safe-area-view";
@@ -23,7 +30,39 @@ import styles from "./styles";
 import LowerButton from "../../../MiniComponents/LowerButton";
 
 class ExistingMediaModal extends React.Component {
+  renderMedia = ({ item }) => {
+    let { media, media_type, media_url } = item;
+    return (
+      <TouchableOpacity style={{ marginHorizontal: 20, marginVertical: 5 }}>
+        {media_type === "IMAGE" && (
+          <RNImageOrCacheImage
+            media={media_url}
+            style={{
+              width: 70,
+              height: 110,
+            }}
+          />
+        )}
+        {media_type === "VIDEO" && (
+          <Video
+            source={{
+              uri: media_url,
+            }}
+            style={{
+              width: 70,
+              height: 110,
+            }}
+          />
+        )}
+      </TouchableOpacity>
+    );
+  };
   render() {
+    const {
+      snapchatExistingMediaListLoading,
+      snapchatExistingMediaList,
+    } = this.props;
+
     return (
       <Modal
         animationType={"fade"}
@@ -46,6 +85,18 @@ class ExistingMediaModal extends React.Component {
                   source_action: "a_go_back",
                 }}
                 title={"Media Library"}
+              />
+              <FlatList
+                keyExtractor={(item) => item.media_url}
+                data={snapchatExistingMediaList}
+                renderItem={this.renderMedia}
+                numColumns={4}
+                contentContainerStyle={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                }}
               />
             </View>
           </SafeAreaView>
