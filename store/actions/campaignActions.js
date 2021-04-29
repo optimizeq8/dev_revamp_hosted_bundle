@@ -2121,3 +2121,42 @@ export const extendSnapCampaginBudget = (
       });
   };
 };
+
+export const getExistingMediaSnapchatList = (adType) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.GET_SNAP_MEDIA_LIST_LOADING,
+      payload: true,
+    });
+    dispatch({
+      type: actionTypes.GET_SNAP_MEDIA_LIST,
+      payload: [],
+    });
+    createBaseUrl()
+      .post(`medialist`, {
+        adType,
+        businessid: getState().account.mainBusiness.businessid,
+      })
+      .then((response) => response.data)
+      .then((data) => {
+        dispatch({
+          type: actionTypes.GET_SNAP_MEDIA_LIST_LOADING,
+          payload: false,
+        });
+        return dispatch({
+          type: actionTypes.GET_SNAP_MEDIA_LIST,
+          payload: data.success ? data.data : [],
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: actionTypes.GET_SNAP_MEDIA_LIST_LOADING,
+          payload: false,
+        });
+        return dispatch({
+          type: actionTypes.GET_SNAP_MEDIA_LIST,
+          payload: [],
+        });
+      });
+  };
+};
