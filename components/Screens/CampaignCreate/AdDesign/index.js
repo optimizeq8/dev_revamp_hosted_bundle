@@ -1892,6 +1892,9 @@ const mapStateToProps = (state) => ({
   ad_tutorial_link: state.generic.ad_tutorial_link,
   ad_tutorial_media_type: state.generic.ad_tutorial_media_type,
   campaignList: state.dashboard.campaignList,
+  snapad: state.dashboard.snapad,
+  snapcollectionad: state.dashboard.snapcollectionad,
+  snapstoryad: state.dashboard.snapstoryad,
 });
 
 const mapDispatchToProps = (dispatch) => ({
