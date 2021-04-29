@@ -91,6 +91,7 @@ class AdDesign extends Component {
         destination: "BLANK",
         call_to_action: { label: "BLANK", value: "BLANK" },
         attachment: "BLANK",
+        existing_media: 0,
       },
       storyAdCards: {
         storyAdSelected: false,
@@ -1320,7 +1321,27 @@ class AdDesign extends Component {
   setExistingMediaModal = (val) => {
     this.setState({
       existingMediaModal: val,
+      mediaModalVisible: false,
     });
+  };
+  setExistingMediaUrl = (item) => {
+    let { media, media_url, media_type } = item;
+    this.setState({
+      media: media_url,
+      type: media_type,
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        existing_media: 1,
+      },
+      existingMediaModal: false,
+    });
+
+    !this.rejected &&
+      this.props.save_campaign_info({
+        media: media_url,
+        type: media_type,
+        existing_media: 1,
+      });
   };
   render() {
     let {
@@ -1861,6 +1882,8 @@ class AdDesign extends Component {
           snapchatExistingMediaListLoading={
             this.props.snapchatExistingMediaListLoading
           }
+          setExistingMediaUrl={this.setExistingMediaUrl}
+          existing_media_url={this.props.data.media}
         />
         <ExampleModal
           title={""}

@@ -28,19 +28,46 @@ import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 //styles
 import styles from "./styles";
 import LowerButton from "../../../MiniComponents/LowerButton";
+import { globalColors } from "../../../../GlobalStyles";
 
 class ExistingMediaModal extends React.Component {
   renderMedia = ({ item }) => {
     let { media, media_type, media_url } = item;
+    const { existing_media_url } = this.props;
     return (
-      <TouchableOpacity style={{ marginHorizontal: 20, marginVertical: 5 }}>
+      <TouchableOpacity
+        style={[
+          {
+            marginHorizontal: 10,
+            marginVertical: 8,
+            borderWidth: 5,
+            borderColor: "#0000",
+            borderRadius: 10,
+          },
+          existing_media_url === media_url && {
+            borderColor: globalColors.orange,
+          },
+        ]}
+        onPress={() => this.props.setExistingMediaUrl(item)}
+      >
         {media_type === "IMAGE" && (
-          <RNImageOrCacheImage
-            media={media_url}
+          <Image
+            onLoadStart={() => {
+              console.log("1");
+            }}
+            onLoadEnd={() => {
+              console.log("end");
+            }}
+            source={{
+              uri: media_url,
+            }}
             style={{
               width: 70,
               height: 110,
+              borderRadius: 10,
             }}
+            width={70}
+            height={110}
           />
         )}
         {media_type === "VIDEO" && (
@@ -51,6 +78,7 @@ class ExistingMediaModal extends React.Component {
             style={{
               width: 70,
               height: 110,
+              borderRadius: 10,
             }}
           />
         )}

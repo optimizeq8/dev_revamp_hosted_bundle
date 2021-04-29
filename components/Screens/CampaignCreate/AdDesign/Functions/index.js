@@ -221,7 +221,7 @@ export const formatMedia = (
     //need to send as 1 whenever the user downloads media from different device
     fileReadyToUpload ? 0 : 1
   );
-
+  body.append("existing_media", campaignInfo.existing_media);
   if (allIosVideos && Platform.OS === "ios" && adType === "StoryAd") {
     let mediaLink = cardUrl.split("/");
     mediaLink = mediaLink[mediaLink.length - 1];
