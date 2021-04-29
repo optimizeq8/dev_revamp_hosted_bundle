@@ -239,11 +239,13 @@ export const _pickImage = async (
                 },
                 fileReadyToUpload: true,
                 type: result.type.toUpperCase(),
+                existing_media: 0,
               });
               save_campaign_info({
                 media: result.uri,
                 type: result.type.toUpperCase(),
                 fileReadyToUpload: true,
+                existing_media: 0,
               });
               onToggleModal(false);
             } else {
@@ -256,6 +258,7 @@ export const _pickImage = async (
                 fileReadyToUpload: true,
                 uneditedImageUri,
                 serialization: result.serialization,
+                existing_media: 0,
               });
 
               onToggleModal(false);
@@ -283,6 +286,7 @@ export const _pickImage = async (
                   fileReadyToUpload: true,
                   uneditedImageUri,
                   serialization: result.serialization,
+                  existing_media: 0,
                 });
             }
           })
@@ -444,6 +448,7 @@ export const _pickImage = async (
                   media: "//",
                   sourceChanging: true,
                   uneditedImageUri: "//",
+                  existing_media: 0,
                 });
                 !rejected &&
                   save_campaign_info({
@@ -479,6 +484,7 @@ export const _pickImage = async (
                   media: "//",
                   sourceChanging: true,
                   uneditedImageUri: "//",
+                  existing_media: 0,
                 });
                 !rejected &&
                   save_campaign_info({
@@ -518,6 +524,7 @@ export const _pickImage = async (
                   media: "//",
                   sourceChanging: true,
                   uneditedImageUri: "//",
+                  existing_media: 0,
                 });
                 !rejected &&
                   save_campaign_info({
@@ -549,6 +556,7 @@ export const _pickImage = async (
                   mediaError: "Allowed video size is up to 32 MBs.",
                   media: "//",
                   uneditedImageUri: "//",
+                  existing_media: 0,
                 });
                 !rejected &&
                   save_campaign_info({
@@ -629,12 +637,14 @@ export const _pickImage = async (
                 },
                 fileReadyToUpload: true,
                 type: result.type.toUpperCase(),
+                existing_media: 0,
               });
               !rejected &&
                 save_campaign_info({
                   media: result.uri,
                   type: result.type.toUpperCase(),
                   fileReadyToUpload: true,
+                  existing_media: 0,
                 });
               onToggleModal(false);
             } else {
@@ -648,6 +658,7 @@ export const _pickImage = async (
                   fileReadyToUpload: true,
                   uneditedImageUri,
                   serialization: result.serialization,
+                  existing_media: 0,
                 });
                 onToggleModal(false);
                 analytics.track(`a_media_editor`, {
@@ -670,6 +681,7 @@ export const _pickImage = async (
                     fileReadyToUpload: true,
                     uneditedImageUri,
                     serialization: result.serialization,
+                    existing_media: 0,
                   });
                 setTheState({ sourceChanging: false });
               } else {
