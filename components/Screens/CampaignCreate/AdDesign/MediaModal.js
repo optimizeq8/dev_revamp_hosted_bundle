@@ -54,6 +54,7 @@ export default class MediaModal extends Component {
           setMediaModalVisible={this.props.setMediaModalVisible}
           getWebUploadLinkMedia={this.props.getWebUploadLinkMedia}
           setDownloadMediaModal={this.props.setDownloadMediaModal}
+          setExistingMediaModal={this.props.setExistingMediaModal}
           getExistingMediaSnapchatList={this.props.getExistingMediaSnapchatList}
           adType={adType}
           screenProps={this.props.screenProps}

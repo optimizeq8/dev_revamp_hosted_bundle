@@ -2122,6 +2122,13 @@ export const extendSnapCampaginBudget = (
   };
 };
 
+/**
+ *
+ *  To get list of medias in previously created campaigns
+ *
+ * @param {*} adType One of [SnapAd, StoryAd, CollectionAd]
+ * @returns
+ */
 export const getExistingMediaSnapchatList = (adType) => {
   return (dispatch, getState) => {
     dispatch({
@@ -2133,8 +2140,8 @@ export const getExistingMediaSnapchatList = (adType) => {
       payload: [],
     });
     createBaseUrl()
-      .post(`medialist`, {
-        adType,
+      .post(`medialibrary`, {
+        campaign_type: adType,
         businessid: getState().account.mainBusiness.businessid,
       })
       .then((response) => response.data)

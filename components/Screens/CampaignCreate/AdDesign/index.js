@@ -25,6 +25,7 @@ import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProg
 import MediaModal from "./MediaModal";
 import UploadMediaFromDifferentDevice from "./UploadMediaFromDifferentDevice";
 import DownloadMediaFromDifferentDevice from "./DownloadMediaFromDifferentDevice";
+import ExistingMediaModal from "./ExistingMediaModal";
 import StoryAdCards from "./SnapAdCards/StoryAdCards";
 import * as IntentLauncher from "expo-intent-launcher";
 const preview = {
@@ -127,6 +128,7 @@ class AdDesign extends Component {
       uploadMediaDifferentDeviceModal: false,
       uploadMediaNotification: {},
       downloadMediaModal: false,
+      existingMediaModal: false,
       serialization: {},
       uneditedImageUri: "//",
       showExampleModal: false,
@@ -1315,6 +1317,11 @@ class AdDesign extends Component {
     });
     RNFFmpeg.cancel();
   };
+  setExistingMediaModal = (val) => {
+    this.setState({
+      existingMediaModal: val,
+    });
+  };
   render() {
     let {
       media,
@@ -1796,6 +1803,7 @@ class AdDesign extends Component {
           }
           getWebUploadLinkMedia={this.getWebUploadLinkMediaURL}
           setDownloadMediaModal={this.setDownloadMediaModal}
+          setExistingMediaModal={this.setExistingMediaModal}
           getExistingMediaSnapchatList={this.props.getExistingMediaSnapchatList}
           mediaUri={{
             media: storyAdCards.storyAdSelected
@@ -1844,6 +1852,11 @@ class AdDesign extends Component {
           handleDownloadMediaCollectionAds={
             this.handleDownloadMediaCollectionAds
           }
+        />
+        <ExistingMediaModal
+          screenProps={this.props.screenProps}
+          existingMediaModal={this.state.existingMediaModal}
+          setExistingMediaModal={this.setExistingMediaModal}
         />
         <ExampleModal
           title={""}

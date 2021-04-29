@@ -15,6 +15,7 @@ export default class MediaOptions extends Component {
   handleOptionSelect = () => {
     let { title, rejected, media_type, adType } = this.props;
     if (title === "Media Library") {
+      this.props.setExistingMediaModal(true);
       this.props.getExistingMediaSnapchatList(adType);
     } else if (title === "Upload media from a different device") {
       this.props.setUploadFromDifferentDeviceModal(true);
