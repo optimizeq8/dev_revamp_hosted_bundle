@@ -13,9 +13,10 @@ import { Icon } from "native-base";
 
 export default class MediaOptions extends Component {
   handleOptionSelect = () => {
-    let { title, rejected, media_type } = this.props;
-
-    if (title === "Upload media from a different device") {
+    let { title, rejected, media_type, adType } = this.props;
+    if (title === "Media Library") {
+      this.props.getExistingMediaSnapchatList(adType);
+    } else if (title === "Upload media from a different device") {
       this.props.setUploadFromDifferentDeviceModal(true);
       this.props.setMediaModalVisible(false);
     } else if (title === "Download media from a different device") {

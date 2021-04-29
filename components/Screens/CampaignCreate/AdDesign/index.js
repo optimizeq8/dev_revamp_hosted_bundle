@@ -1796,6 +1796,7 @@ class AdDesign extends Component {
           }
           getWebUploadLinkMedia={this.getWebUploadLinkMediaURL}
           setDownloadMediaModal={this.setDownloadMediaModal}
+          getExistingMediaSnapchatList={this.props.getExistingMediaSnapchatList}
           mediaUri={{
             media: storyAdCards.storyAdSelected
               ? storyAdCards.selectedStoryAd.uneditedImageUri
@@ -1898,6 +1899,9 @@ const mapStateToProps = (state) => ({
   snapad: state.dashboard.snapad,
   snapcollectionad: state.dashboard.snapcollectionad,
   snapstoryad: state.dashboard.snapstoryad,
+  snapchatExistingMediaList: state.campaignC.snapchatExistingMediaList,
+  snapchatExistingMediaListLoading:
+    state.campaignC.snapchatExistingMediaListLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1964,6 +1968,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
   verifyDestinationUrl: (url, submit, translate) =>
     dispatch(actionCreators.verifyDestinationUrl(url, submit, translate)),
+  getExistingMediaSnapchatList: (adType) =>
+    dispatch(actionCreators.getExistingMediaSnapchatList(adType)),
 });
 
 const StepNumberComponent = ({

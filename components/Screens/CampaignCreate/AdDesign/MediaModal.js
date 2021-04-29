@@ -40,7 +40,7 @@ export default class MediaModal extends Component {
     return optionsArr;
   };
   render() {
-    let { mediaUri, media_type, rejected } = this.props;
+    let { mediaUri, media_type, rejected, adType } = this.props;
     let optionArr = this.modifyOptionArr();
     options = optionArr.map((op) => {
       return (
@@ -54,6 +54,8 @@ export default class MediaModal extends Component {
           setMediaModalVisible={this.props.setMediaModalVisible}
           getWebUploadLinkMedia={this.props.getWebUploadLinkMedia}
           setDownloadMediaModal={this.props.setDownloadMediaModal}
+          getExistingMediaSnapchatList={this.props.getExistingMediaSnapchatList}
+          adType={adType}
           screenProps={this.props.screenProps}
           media_type={media_type}
           rejected={rejected}
