@@ -24,16 +24,16 @@ export default class MediaModal extends Component {
           optionsArr.splice(0, 0, "Media Library");
         }
         break;
-      case "StoryAd":
-        if (snapstoryad.length > 0) {
-          optionsArr.splice(0, 0, "Media Library");
-        }
-        break;
-      case "CollectionAd":
-        if (snapcollectionad.length > 0) {
-          optionsArr.splice(0, 0, "Media Library");
-        }
-        break;
+      //   case "StoryAd":
+      //     if (snapstoryad.length > 0) {
+      //       optionsArr.splice(0, 0, "Media Library");
+      //     }
+      //     break;
+      //   case "CollectionAd":
+      //     if (snapcollectionad.length > 0) {
+      //       optionsArr.splice(0, 0, "Media Library");
+      //     }
+      //     break;
       default:
         optionsArr;
     }
