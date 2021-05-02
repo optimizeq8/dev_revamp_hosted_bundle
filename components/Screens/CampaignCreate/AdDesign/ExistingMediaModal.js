@@ -32,7 +32,7 @@ import { globalColors } from "../../../../GlobalStyles";
 
 class ExistingMediaModal extends React.Component {
   renderMedia = ({ item }) => {
-    let { media, media_type, media_url } = item;
+    let { media_type, media_url } = item;
     const { existing_media_url } = this.props;
     return (
       <TouchableOpacity
@@ -45,10 +45,8 @@ class ExistingMediaModal extends React.Component {
         onPress={() => this.props.setExistingMediaUrl(item)}
       >
         {media_type === "IMAGE" && (
-          <Image
-            source={{
-              uri: media_url,
-            }}
+          <RNImageOrCacheImage
+            media={media_url}
             style={styles.image}
             width={70}
             height={110}
