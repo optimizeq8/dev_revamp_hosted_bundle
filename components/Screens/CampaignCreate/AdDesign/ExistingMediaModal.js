@@ -12,6 +12,7 @@ import { BlurView } from "@react-native-community/blur";
 import SafeAreaView from "react-native-safe-area-view";
 
 import { Video } from "expo-av";
+import { RFValue } from "react-native-responsive-fontsize";
 
 //Redux
 import { connect } from "react-redux";
@@ -133,21 +134,21 @@ export default connect(mapStateToProps, mapDispatchToProps)(ExistingMediaModal);
 
 const styles = StyleSheet.create({
   mediaView: {
-    marginHorizontal: 10,
-    marginVertical: 8,
-    borderWidth: 5,
+    marginHorizontal: RFValue(5, 414),
+    marginVertical: RFValue(4, 414),
+    borderWidth: RFValue(2.5, 414),
     borderColor: "#0000",
-    borderRadius: 10,
+    borderRadius: RFValue(5, 414),
   },
   image: {
-    width: 70,
-    height: 110,
-    borderRadius: 10,
+    width: RFValue(35, 414),
+    height: RFValue(55, 414),
+    borderRadius: RFValue(5, 414),
   },
   video: {
-    width: 70,
-    height: 110,
-    borderRadius: 10,
+    width: RFValue(35, 414),
+    height: RFValue(55, 414),
+    borderRadius: RFValue(5, 414),
   },
   flatListContainer: {
     width: "100%",

@@ -223,7 +223,6 @@ export const formatMedia = (
   );
   body.append("existing_media", campaignInfo.existing_media);
   if (campaignInfo.existing_media) {
-    console.log("media", media);
     let resVideo = media.split("/");
     resVideo = resVideo[resVideo.length - 1];
     body.append("media", resVideo);
