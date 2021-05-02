@@ -222,6 +222,13 @@ export const formatMedia = (
     fileReadyToUpload ? 0 : 1
   );
   body.append("existing_media", campaignInfo.existing_media);
+  if (campaignInfo.existing_media) {
+    console.log("media", media);
+    let resVideo = media.split("/");
+    resVideo = resVideo[resVideo.length - 1];
+    body.append("media", resVideo);
+    body.append("media_type", type);
+  }
   if (allIosVideos && Platform.OS === "ios" && adType === "StoryAd") {
     let mediaLink = cardUrl.split("/");
     mediaLink = mediaLink[mediaLink.length - 1];

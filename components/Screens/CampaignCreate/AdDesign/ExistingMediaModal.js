@@ -3,9 +3,9 @@ import {
   View,
   Platform,
   Image,
-  Text,
   FlatList,
   TouchableOpacity,
+  StyleSheet,
 } from "react-native";
 import { Modal } from "react-native-paper";
 import { BlurView } from "@react-native-community/blur";
@@ -26,7 +26,6 @@ import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 
 //styles
-import styles from "./styles";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import { globalColors } from "../../../../GlobalStyles";
 
@@ -37,13 +36,7 @@ class ExistingMediaModal extends React.Component {
     return (
       <TouchableOpacity
         style={[
-          {
-            marginHorizontal: 10,
-            marginVertical: 8,
-            borderWidth: 5,
-            borderColor: "#0000",
-            borderRadius: 10,
-          },
+          styles.mediaView,
           existing_media_url === media_url && {
             borderColor: globalColors.orange,
           },
@@ -52,20 +45,10 @@ class ExistingMediaModal extends React.Component {
       >
         {media_type === "IMAGE" && (
           <Image
-            onLoadStart={() => {
-              console.log("1");
-            }}
-            onLoadEnd={() => {
-              console.log("end");
-            }}
             source={{
               uri: media_url,
             }}
-            style={{
-              width: 70,
-              height: 110,
-              borderRadius: 10,
-            }}
+            style={styles.image}
             width={70}
             height={110}
           />
@@ -75,11 +58,7 @@ class ExistingMediaModal extends React.Component {
             source={{
               uri: media_url,
             }}
-            style={{
-              width: 70,
-              height: 110,
-              borderRadius: 10,
-            }}
+            style={styles.video}
           />
         )}
       </TouchableOpacity>
@@ -100,34 +79,29 @@ class ExistingMediaModal extends React.Component {
         visible={this.props.existingMediaModal}
       >
         <BlurView intensity={95} tint="dark">
-          <SafeAreaView forceInset={{ bottom: "never", top: "always" }}>
-            <View style={styles.popupOverlay}>
-              <CustomHeader
-                screenProps={this.props.screenProps}
-                closeButton={true}
-                actionButton={() => {
-                  this.props.setExistingMediaModal(false);
-                }}
-                segment={{
-                  source: "media_library_modal",
-                  source_action: "a_go_back",
-                }}
-                title={"Media Library"}
-              />
-              <FlatList
-                keyExtractor={(item) => item.media_url}
-                data={snapchatExistingMediaList}
-                renderItem={this.renderMedia}
-                numColumns={4}
-                contentContainerStyle={{
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-around",
-                }}
-              />
-            </View>
-          </SafeAreaView>
+          <View style={styles.popupOverlay}>
+            <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
+
+            <CustomHeader
+              screenProps={this.props.screenProps}
+              closeButton={true}
+              actionButton={() => {
+                this.props.setExistingMediaModal(false);
+              }}
+              segment={{
+                source: "media_library_modal",
+                source_action: "a_go_back",
+              }}
+              title={"Media Library"}
+            />
+            <FlatList
+              keyExtractor={(item, index) => index}
+              data={snapchatExistingMediaList}
+              renderItem={this.renderMedia}
+              numColumns={4}
+              contentContainerStyle={styles.flatListContainer}
+            />
+          </View>
         </BlurView>
       </Modal>
     );
@@ -156,3 +130,32 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExistingMediaModal);
+
+const styles = StyleSheet.create({
+  mediaView: {
+    marginHorizontal: 10,
+    marginVertical: 8,
+    borderWidth: 5,
+    borderColor: "#0000",
+    borderRadius: 10,
+  },
+  image: {
+    width: 70,
+    height: 110,
+    borderRadius: 10,
+  },
+  video: {
+    width: 70,
+    height: 110,
+    borderRadius: 10,
+  },
+  flatListContainer: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
+  popupOverlay: {
+    height: "100%",
+  },
+});
