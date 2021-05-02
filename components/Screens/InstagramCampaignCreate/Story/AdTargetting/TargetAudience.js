@@ -603,7 +603,7 @@ export class TargetAudience extends Component {
                 {translate("Auto target look-alike audience")}
               </Text>
               <Toggle
-                switchOn={mainState.campaignInfo.auto_targeting}
+                switchOn={parseInt(mainState.campaignInfo.auto_targeting) === 1}
                 backgroundColorOff="#0001"
                 backgroundColorOn="#0001"
                 circleColorOff={globalColors.purple3}
@@ -633,7 +633,10 @@ export class TargetAudience extends Component {
                 {translate("Remarket instagram behaviour")}
               </Text>
               <Toggle
-                switchOn={mainState.campaignInfo.instagram_custom_audience}
+                switchOn={
+                  parseInt(mainState.campaignInfo.instagram_custom_audience) ===
+                  1
+                }
                 backgroundColorOff="#0001"
                 backgroundColorOn="#0001"
                 circleColorOff={globalColors.purple3}
