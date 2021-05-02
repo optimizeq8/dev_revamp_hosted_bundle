@@ -277,7 +277,6 @@ class App extends React.Component {
         JSON.stringify(event, null, 2)
       );
     });
-    OneSignal.setLogLevel(6, 6);
 
     OneSignal.addPermissionObserver((event) => {
       console.log("OneSignal: permission changed:", event);
