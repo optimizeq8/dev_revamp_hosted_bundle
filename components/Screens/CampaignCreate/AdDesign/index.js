@@ -1,6 +1,6 @@
 //Components
 import React, { Component } from "react";
-import * as Notifications from "expo-notifications";
+// import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
@@ -156,9 +156,9 @@ class AdDesign extends Component {
   }
   async componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.toggleAdSelection);
-    this._notificationSubscription = Notifications.addNotificationReceivedListener(
-      this._handleNotification
-    );
+    // this._notificationSubscription = Notifications.addNotificationReceivedListener(
+    //   this._handleNotification
+    // );
 
     this.setState({
       campaignInfo: {

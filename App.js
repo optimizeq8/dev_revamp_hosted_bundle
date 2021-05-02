@@ -42,7 +42,7 @@ TextInputMask.defaultProps = TextInputMask.defaultProps || {};
 TextInputMask.defaultProps.allowFontScaling = false;
 import { showMessage } from "react-native-flash-message";
 
-import * as Notifications from "expo-notifications";
+// import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
 import * as Font from "expo-font";
@@ -70,7 +70,7 @@ import { PESDK } from "react-native-photoeditorsdk";
 import { VESDK } from "react-native-videoeditorsdk";
 import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import RNBootSplash from "react-native-bootsplash";
-import OneSignal from "react-native-onesignal";
+import OneSignal, { LogLevel } from "react-native-onesignal";
 import * as Sentry from "@sentry/react-native";
 if (!__DEV__) {
   Sentry.init({
@@ -225,7 +225,7 @@ class App extends React.Component {
   t = (scope, options) => {
     return i18n.t(scope, { locale: this.state.locale, ...options });
   };
-  componentDidMount() {
+  async componentDidMount() {
     enableScreens();
     OneSignal.setAppId("ea9467a9-99e7-4e53-9ad7-a4910350df83");
     OneSignal.setLogLevel(6, 0);
@@ -272,14 +272,19 @@ class App extends React.Component {
       console.log("OneSignal: email subscription changed: ", event);
     });
     OneSignal.addSubscriptionObserver((event) => {
-      Alert.alert(
+      console.log(
         "OneSignal: subscription changed:",
         JSON.stringify(event, null, 2)
       );
     });
+    OneSignal.setLogLevel(6, 6);
+
     OneSignal.addPermissionObserver((event) => {
       console.log("OneSignal: permission changed:", event);
     });
+
+    // OneSignal.setLogLevel(LogLevel, LOG_LEVEL.NONE);
+
     // FOR TEST ORG & PROJ ==> hNRRGVYYOxFiMXboexCvtPK7PSy2NgHp
     // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
@@ -319,18 +324,16 @@ class App extends React.Component {
 
     this._loadAsync();
     store.dispatch(actionCreators.checkForExpiredToken(NavigationService));
-    this._notificationSubscription = Notifications.addNotificationResponseReceivedListener(
-      this._handleNotification
-    );
+    // this._notificationSubscription = Notifications.addNotificationResponseReceivedListener(
+    //   this._handleNotification
+    // );
     AppState.addEventListener("change", this._handleAppStateChange);
     Platform.OS === "ios" && Intercom.registerForPush();
+    OneSignal.getDeviceState().then((info) => {
+      console.log("dev", JSON.stringify(info, null, 2));
 
-    Notifications.getDevicePushTokenAsync()
-      .then((token) => {
-        Intercom.sendTokenToIntercom(token.data);
-      })
-      .catch((err) => {});
-
+      Intercom.sendTokenToIntercom(info.pushToken);
+    });
     Intercom.addEventListener(
       Intercom.Notifications.UNREAD_COUNT,
       this._onUnreadChange
@@ -385,7 +388,7 @@ class App extends React.Component {
         timestamp: new Date().getTime(),
       });
       //   analytics.identify(null, { logged_out: false }); // To avoid creating user profile
-      Platform.OS === "ios" && Notifications.setBadgeCountAsync(0);
+      // Platform.OS === "ios" && Notifications.setBadgeCountAsync(0);
       // console.log("App has come to the foreground!");
     }
     this.setState({
@@ -506,7 +509,7 @@ class App extends React.Component {
     }
 
     if (handleScreen.origin === "received") {
-      Platform.OS === "ios" && Notifications.setBadgeCountAsync(0);
+      // Platform.OS === "ios" && Notifications.setBadgeCountAsync(0);
     }
     if (handleScreen.origin === "selected") {
       store.dispatch(
@@ -529,13 +532,13 @@ class App extends React.Component {
     // }
   };
   _registerForPushNotificationsAsync = async () => {
-    const permission = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-
-    if (permission.status !== "granted") {
-      const newPermission = await Permissions.askAsync(
-        Permissions.NOTIFICATIONS
-      );
+    const deviceState = await OneSignal.getDeviceState();
+    if (deviceState.isSubscribed == false) {
+      OneSignal.promptForPushNotificationsWithUserResponse((info) => {
+        console.log("ki", JSON.stringify(info, null, 2));
+      });
     }
+
     // else {
     // let anonId = getUniqueId();
     // let token = await Notifications.getDevicePushTokenAsync();
@@ -557,7 +560,7 @@ class App extends React.Component {
     // Adjust.componentWillUnmount();
   }
   _onUnreadChange = (data) => {
-    Notifications.setBadgeCountAsync(data.count);
+    // Notifications.setBadgeCountAsync(data.count);
     store.dispatch(actionCreators.setCounterForUnreadMessage(data.count));
   };
   getCurrentRouteName = (navigationState) => {

@@ -7,7 +7,7 @@ import { showMessage } from "react-native-flash-message";
 import analytics from "@segment/analytics-react-native";
 import { saveBusinessInvitee } from "./accountManagementActions";
 import { setAuthToken, getBusinessAccounts } from "./genericActions";
-import * as Notifications from "expo-notifications";
+// import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 import store from "../index";
 import * as SecureStore from "expo-secure-store";
@@ -17,7 +17,7 @@ import NavigationService from "../../NavigationService";
 import { errorMessageHandler } from "./ErrorActions";
 import AsyncStorage from "@react-native-community/async-storage";
 import ReactNativeBiometrics from "react-native-biometrics";
-
+import OneSignal from "react-native-onesignal";
 export const chanege_base_url = (admin) => {
   return (dispatch) => {
     if (admin)
@@ -32,13 +32,11 @@ export const send_push_notification = () => {
     Permissions.getAsync(Permissions.NOTIFICATIONS)
       .then((permission) => {
         if (permission.status === "granted") {
-          Notifications.getDevicePushTokenAsync({
-            gcmSenderId: "707133061105",
-          }).then((token) => {
+          OneSignal.getDeviceState().then((info) => {
             createBaseUrl()
               .post(`updatepushToken`, {
-                token: token.data,
-                token_type: token.type,
+                token: info.pushToken,
+                token_type: info.type,
                 userid: getState().auth.userInfo.userid,
               })
               .then((res) => {
@@ -119,7 +117,7 @@ export const checkForExpiredToken = (navigation) => {
                       )
                     )
                     .then(() => {
-                      dispatch(send_push_notification());
+                      // dispatch(send_push_notification());
                       dispatch(getBusinessAccounts());
                     })
                     .then(() => {
@@ -256,7 +254,7 @@ export const login = (userData, navigation) => {
           }
 
           dispatch(getBusinessAccounts());
-          dispatch(send_push_notification());
+          // dispatch(send_push_notification());
         }
       })
       .catch((err) => {

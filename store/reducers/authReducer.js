@@ -1,9 +1,9 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import * as actionTypes from "../actions/actionTypes";
 import analytics from "@segment/analytics-react-native";
-import * as Notifications from "expo-notifications";
+// import * as Notifications from "expo-notifications";
 import { MixpanelInstance } from "react-native-mixpanel";
-
+import OneSignal from "react-native-onesignal";
 const initialState = {
   userid: null,
   userInfo: null,
@@ -39,12 +39,12 @@ const reducer = (state = initialState, action) => {
             logged_out: false,
           };
           // NOTE: expo-notification not working for iOS
-          Notifications.getDevicePushTokenAsync()
-            .then((token) => {
+          OneSignal.getDeviceState()
+            .then((info) => {
               if (Platform.OS === "android") {
-                userTraits["$android_devices"] = [token.data];
+                userTraits["$android_devices"] = [info.pushToken.data];
               } else {
-                userTraits["$ios_devices"] = [token.data];
+                userTraits["$ios_devices"] = [info.pushToken.data];
               }
               analytics.identify(action.payload.user.userid, userTraits);
             })
