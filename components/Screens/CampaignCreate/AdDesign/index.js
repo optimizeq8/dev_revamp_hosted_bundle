@@ -25,6 +25,7 @@ import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProg
 import MediaModal from "./MediaModal";
 import UploadMediaFromDifferentDevice from "./UploadMediaFromDifferentDevice";
 import DownloadMediaFromDifferentDevice from "./DownloadMediaFromDifferentDevice";
+import ExistingMediaModal from "./ExistingMediaModal";
 import StoryAdCards from "./SnapAdCards/StoryAdCards";
 import * as IntentLauncher from "expo-intent-launcher";
 const preview = {
@@ -90,6 +91,7 @@ class AdDesign extends Component {
         destination: "BLANK",
         call_to_action: { label: "BLANK", value: "BLANK" },
         attachment: "BLANK",
+        existing_media: 0,
       },
       storyAdCards: {
         storyAdSelected: false,
@@ -127,6 +129,7 @@ class AdDesign extends Component {
       uploadMediaDifferentDeviceModal: false,
       uploadMediaNotification: {},
       downloadMediaModal: false,
+      existingMediaModal: false,
       serialization: {},
       uneditedImageUri: "//",
       showExampleModal: false,
@@ -1315,6 +1318,31 @@ class AdDesign extends Component {
     });
     RNFFmpeg.cancel();
   };
+  setExistingMediaModal = (val) => {
+    this.setState({
+      existingMediaModal: val,
+      mediaModalVisible: false,
+    });
+  };
+  setExistingMediaUrl = (item) => {
+    let { media, media_url, media_type } = item;
+    this.setState({
+      media: media_url,
+      type: media_type,
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        existing_media: 1,
+      },
+      existingMediaModal: false,
+    });
+
+    !this.rejected &&
+      this.props.save_campaign_info({
+        media: media_url,
+        type: media_type,
+        existing_media: 1,
+      });
+  };
   render() {
     let {
       media,
@@ -1796,6 +1824,8 @@ class AdDesign extends Component {
           }
           getWebUploadLinkMedia={this.getWebUploadLinkMediaURL}
           setDownloadMediaModal={this.setDownloadMediaModal}
+          setExistingMediaModal={this.setExistingMediaModal}
+          getExistingMediaSnapchatList={this.props.getExistingMediaSnapchatList}
           mediaUri={{
             media: storyAdCards.storyAdSelected
               ? storyAdCards.selectedStoryAd.uneditedImageUri
@@ -1814,6 +1844,9 @@ class AdDesign extends Component {
           }
           screenProps={this.props.screenProps}
           rejected={this.rejected}
+          snapad={this.props.snapad}
+          snapcollectionad={this.props.snapcollectionad}
+          snapstoryad={this.props.snapstoryad}
         />
         <UploadMediaFromDifferentDevice
           setUploadFromDifferentDeviceModal={
@@ -1840,6 +1873,17 @@ class AdDesign extends Component {
           handleDownloadMediaCollectionAds={
             this.handleDownloadMediaCollectionAds
           }
+        />
+        <ExistingMediaModal
+          screenProps={this.props.screenProps}
+          existingMediaModal={this.state.existingMediaModal}
+          setExistingMediaModal={this.setExistingMediaModal}
+          snapchatExistingMediaList={this.props.snapchatExistingMediaList}
+          snapchatExistingMediaListLoading={
+            this.props.snapchatExistingMediaListLoading
+          }
+          setExistingMediaUrl={this.setExistingMediaUrl}
+          existing_media_url={this.props.data.media}
         />
         <ExampleModal
           title={""}
@@ -1892,6 +1936,12 @@ const mapStateToProps = (state) => ({
   ad_tutorial_link: state.generic.ad_tutorial_link,
   ad_tutorial_media_type: state.generic.ad_tutorial_media_type,
   campaignList: state.dashboard.campaignList,
+  snapad: state.dashboard.snapad,
+  snapcollectionad: state.dashboard.snapcollectionad,
+  snapstoryad: state.dashboard.snapstoryad,
+  snapchatExistingMediaList: state.campaignC.snapchatExistingMediaList,
+  snapchatExistingMediaListLoading:
+    state.campaignC.snapchatExistingMediaListLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1958,6 +2008,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
   verifyDestinationUrl: (url, submit, translate) =>
     dispatch(actionCreators.verifyDestinationUrl(url, submit, translate)),
+  getExistingMediaSnapchatList: (adType) =>
+    dispatch(actionCreators.getExistingMediaSnapchatList(adType)),
 });
 
 const StepNumberComponent = ({

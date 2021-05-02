@@ -10,13 +10,39 @@ import styles from "./styles";
 import { BlurView } from "@react-native-community/blur";
 
 export default class MediaModal extends Component {
-  render() {
-    let { mediaUri, media_type, rejected } = this.props;
-    var options = [
+  modifyOptionArr = () => {
+    let optionsArr = [
       "Media",
       "Upload media from a different device",
       "Download media from a different device",
-    ].map((op) => {
+    ];
+
+    let { snapad, snapcollectionad, snapstoryad, adType } = this.props;
+    switch (adType) {
+      case "SnapAd":
+        if (snapad.length > 0) {
+          optionsArr.splice(0, 0, "Media Library");
+        }
+        break;
+      //   case "StoryAd":
+      //     if (snapstoryad.length > 0) {
+      //       optionsArr.splice(0, 0, "Media Library");
+      //     }
+      //     break;
+      //   case "CollectionAd":
+      //     if (snapcollectionad.length > 0) {
+      //       optionsArr.splice(0, 0, "Media Library");
+      //     }
+      //     break;
+      default:
+        optionsArr;
+    }
+    return optionsArr;
+  };
+  render() {
+    let { mediaUri, media_type, rejected, adType } = this.props;
+    let optionArr = this.modifyOptionArr();
+    options = optionArr.map((op) => {
       return (
         <MediaOptions
           _pickImage={this.props._pickImage}
@@ -28,6 +54,9 @@ export default class MediaModal extends Component {
           setMediaModalVisible={this.props.setMediaModalVisible}
           getWebUploadLinkMedia={this.props.getWebUploadLinkMedia}
           setDownloadMediaModal={this.props.setDownloadMediaModal}
+          setExistingMediaModal={this.props.setExistingMediaModal}
+          getExistingMediaSnapchatList={this.props.getExistingMediaSnapchatList}
+          adType={adType}
           screenProps={this.props.screenProps}
           media_type={media_type}
           rejected={rejected}
