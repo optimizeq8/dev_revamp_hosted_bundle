@@ -251,6 +251,7 @@ export {
   deleteCustomLocation,
   getFacebookPagesList,
   connectToInstagramPage,
+  getExistingMediaInstagramList,
 } from "./instagramCampaignActions";
 
 export {

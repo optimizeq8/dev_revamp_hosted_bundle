@@ -22,7 +22,10 @@ export default class MediaOptions extends Component {
     //   this.props.setDownloadMediaModal(true);
     //   this.props.getWebUploadLinkMedia();
     // } else
-    if (title === "Media") {
+    if (title === "Media Library") {
+      this.props.setExistingMediaModal(true);
+      this.props.getExistingMediaInstagramList(this.props.adType);
+    } else if (title === "Media") {
       this.props._pickImage("All");
     } else {
       this.props._pickImage(
@@ -36,11 +39,36 @@ export default class MediaOptions extends Component {
       );
     }
   };
+  descriptionText = () => {
+    let { title } = this.props;
+    const { translate } = this.props.screenProps;
+    let desctext = "";
+    switch (title) {
+      case "Media":
+        desctext = "Dimensions 1080x1920 Aspect Ratio 9:16";
+        break;
+      case "Video":
+        desctext = "Dimensions 1080x1920 Aspect Ratio 9:16";
+        break;
+      case "Upload media from a different device":
+        desctext = "Use any device to upload your media Aspect Ratio 9:16";
+        break;
+      case "Download media from a different device":
+        desctext = "Dimensions 1080x1920 Aspect Ratio 9:16";
+        break;
+      case "Media Library":
+        desctext = "Select an existing media from previously launched campaign";
+        break;
+      default:
+        desctext = "Dimensions 1080x1920 Aspect Ratio 9:16";
+    }
+    return translate(desctext);
+  };
   render() {
     let { title } = this.props;
     const { translate } = this.props.screenProps;
     let imageIcon = null;
-    if (title === "Media") {
+    if (title === "Media" || title === "Media Library") {
       imageIcon = (
         <CameraIcon width={30} height={25} fill={globalColors.orange} />
       );
@@ -74,11 +102,7 @@ export default class MediaOptions extends Component {
         <View style={{ flexDirection: "column", marginLeft: 10, flex: 1 }}>
           <Text style={styles.MediaOptionsTitle}>{translate(title)}</Text>
           <Text style={[styles.MediaOptionsDescription]}>
-            {title === "Upload media from a different device"
-              ? translate(
-                  "Use any device to upload your media Aspect Ratio 9:16"
-                )
-              : translate("Aspect Ratio 9:16 or 1:1 or 4:5")}
+            {this.descriptionText()}
           </Text>
         </View>
       </TouchableOpacity>

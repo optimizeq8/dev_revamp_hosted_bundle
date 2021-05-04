@@ -333,6 +333,7 @@ export const _pickImage = async (
               });
 
               save_campaign_info_instagram({
+                existing_media: 0,
                 media: result.uri,
                 media_type: result.type.toUpperCase(),
                 fileReadyToUpload: true,
@@ -699,6 +700,7 @@ export const _pickImage = async (
                   fileReadyToUpload: true,
                   uneditedImageUri,
                   serialization: result.serialization,
+                  existing_media: 0,
                 });
                 // onToggleModal((false);
                 analytics.track(`a_media_editor`, {
@@ -717,6 +719,7 @@ export const _pickImage = async (
                 });
 
                 save_campaign_info_instagram({
+                  existing_media: 0,
                   media: result.uri,
                   media_type: result.type.toUpperCase(),
                   fileReadyToUpload: true,
