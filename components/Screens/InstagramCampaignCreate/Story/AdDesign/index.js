@@ -36,6 +36,8 @@ import { formatMedia, _handleSubmission } from "./Functions/index";
 
 import SingleImage from "./SingleImage";
 import MediaModal from "./MediaModal";
+import ExistingMediaModal from "../../Feed/AdDesign/ExistingMediaModal";
+
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 import CarouselImage from "./Carousel/CarouselImage";
 import { formatCarouselAd } from "./Functions/formatCarouselAd";
@@ -106,6 +108,7 @@ class AdDesign extends Component {
         : this.props.data
         ? this.props.data
         : {},
+      existingMediaModal: false,
     };
     this.rejected = this.props.navigation.getParam("rejected", false);
   }
@@ -597,6 +600,33 @@ class AdDesign extends Component {
     let progress = (statisticsData.time / (duration * 1000)) * 100;
     this.setState({ progress });
   };
+  setExistingMediaModal = (val) => {
+    this.setState({
+      existingMediaModal: val,
+      mediaModalVisible: false,
+    });
+  };
+  setExistingMediaUrl = (item) => {
+    let { media, media_url, media_type, media_option } = item;
+    this.setState({
+      media: media_url,
+      media_type: media_type,
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        existing_media: 1,
+        media_option,
+      },
+      existingMediaModal: false,
+    });
+
+    !this.rejected &&
+      this.props.save_campaign_info_instagram({
+        media: media_url,
+        media_type: media_type,
+        media_option,
+        existing_media: 1,
+      });
+  };
   render() {
     const { translate } = this.props.screenProps;
     var {
@@ -861,6 +891,23 @@ class AdDesign extends Component {
               : this.state.carouselAdCards.selectedCarouselAd.serialization
           }
           screenProps={this.props.screenProps}
+          instastoryad={this.props.instastoryad}
+          adType={"InstagramStoryAd"}
+          setExistingMediaModal={this.setExistingMediaModal}
+          getExistingMediaInstagramList={
+            this.props.getExistingMediaInstagramList
+          }
+        />
+        <ExistingMediaModal
+          screenProps={this.props.screenProps}
+          existingMediaModal={this.state.existingMediaModal}
+          setExistingMediaModal={this.setExistingMediaModal}
+          instagramExistingMediaList={this.props.instagramExistingMediaList}
+          instagramExistingMediaListLoading={
+            this.props.instagramExistingMediaListLoading
+          }
+          setExistingMediaUrl={this.setExistingMediaUrl}
+          existing_media_url={this.props.data.media}
         />
       </View>
     );
@@ -880,6 +927,10 @@ const mapStateToProps = (state) => ({
   loadingCarouselAdsArray: state.instagramAds.loadingCarouselAdsArray,
   instaRejCampaign: state.instagramAds.instaRejCampaign,
   instagramObjectives: state.dashboard.instagramObjectives,
+  instastoryad: state.dashboard.instastoryad,
+  instagramExistingMediaList: state.instagramAds.instagramExistingMediaList,
+  instagramExistingMediaListLoading:
+    state.instagramAds.instagramExistingMediaListLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -931,5 +982,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.setRejectedCarouselAds(rejCampaign)),
   resetCampaignInfoInstagram: (resetAdType) =>
     dispatch(actionCreators.resetCampaignInfoInstagram(resetAdType)),
+  getExistingMediaInstagramList: (adType) =>
+    dispatch(actionCreators.getExistingMediaInstagramList(adType)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDesign);
