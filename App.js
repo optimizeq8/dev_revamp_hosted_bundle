@@ -230,9 +230,9 @@ class App extends React.Component {
     OneSignal.setAppId("ea9467a9-99e7-4e53-9ad7-a4910350df83");
     OneSignal.setLogLevel(6, 0);
     OneSignal.setRequiresUserPrivacyConsent(false);
-    OneSignal.promptForPushNotificationsWithUserResponse((response) => {
-      console.log("Prompt response:", response);
-    });
+    // OneSignal.promptForPushNotificationsWithUserResponse((response) => {
+    //   console.log("Prompt response:", response);
+    // });
 
     OneSignal.setNotificationWillShowInForegroundHandler(
       (notifReceivedEvent) => {
@@ -327,7 +327,7 @@ class App extends React.Component {
     //   this._handleNotification
     // );
     AppState.addEventListener("change", this._handleAppStateChange);
-    Platform.OS === "ios" && Intercom.registerForPush();
+    // Platform.OS === "ios" && Intercom.registerForPush();
     OneSignal.getDeviceState().then((info) => {
       console.log("dev", JSON.stringify(info, null, 2));
 
@@ -531,13 +531,12 @@ class App extends React.Component {
     // }
   };
   _registerForPushNotificationsAsync = async () => {
-    const deviceState = await OneSignal.getDeviceState();
-    if (deviceState.isSubscribed == false) {
-      OneSignal.promptForPushNotificationsWithUserResponse((info) => {
-        console.log("ki", JSON.stringify(info, null, 2));
-      });
-    }
-
+    // const deviceState = await OneSignal.getDeviceState();
+    // if (deviceState.isSubscribed == false) {
+    //   OneSignal.promptForPushNotificationsWithUserResponse((info) => {
+    //     console.log("ki", JSON.stringify(info, null, 2));
+    //   });
+    // }
     // else {
     // let anonId = getUniqueId();
     // let token = await Notifications.getDevicePushTokenAsync();
@@ -696,9 +695,8 @@ class App extends React.Component {
                 <Root>
                   <AppNavigator
                     onNavigationStateChange={(prevState, currentState) => {
-                      const currentScreen = this.getCurrentRouteName(
-                        currentState
-                      );
+                      const currentScreen =
+                        this.getCurrentRouteName(currentState);
                       this.setState({ currentScreen });
                       // console.log("screeen name", currentScreen);
                     }}

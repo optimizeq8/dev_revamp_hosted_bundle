@@ -11,9 +11,9 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		16BEFCF15120485712775E15 /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 39923280A21A24CEF240E153 /* libPods-OneSignalNotificationServiceExtension.a */; };
+		5A476A448FBC95560358E4C5 /* libPods-OptimizeApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 87924B2EF3D9FFDCDEBDE0A4 /* libPods-OptimizeApp.a */; };
 		99EC63CFB4B549BBAF093D10 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3ABB89D1E68496EB7D95742 /* SplashScreen.storyboard */; };
-		B750DE8A8040B0995266EE68 /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B40D3424B09C4EBD13655FE4 /* libPods-OneSignalNotificationServiceExtension.a */; };
-		BCB52C4EA3C19F005F054E4B /* libPods-OptimizeApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D69E0825EE98FD2C9AC0A02 /* libPods-OptimizeApp.a */; };
 		F755EFAC255144980005D6F4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F755EFAB255144980005D6F4 /* UIKit.framework */; };
 		F7656E0F25C0186D00D27984 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7656E0E25C0186D00D27984 /* AppTrackingTransparency.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F7656E1325C0189B00D27984 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7656E1225C0189B00D27984 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -63,21 +63,21 @@
 		1D71F99A0C154699B1B67F1B /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		22897644B3BF4DC483FC4FFD /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		456B895FD1EE1F4B8F687ED9 /* Pods-OptimizeApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OptimizeApp.release.xcconfig"; path = "Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp.release.xcconfig"; sourceTree = "<group>"; };
-		509BB88EF11790A63FCFAE0F /* Pods-OptimizeApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OptimizeApp.debug.xcconfig"; path = "Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp.debug.xcconfig"; sourceTree = "<group>"; };
-		5D69E0825EE98FD2C9AC0A02 /* libPods-OptimizeApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OptimizeApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		39923280A21A24CEF240E153 /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		524246C188948716A32EB446 /* Pods-OptimizeApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OptimizeApp.release.xcconfig"; path = "Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp.release.xcconfig"; sourceTree = "<group>"; };
+		5D89C98FD9258A4E0A6BFEAF /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		6A21538AFDDD4CDBA8DE05C5 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		6F7AACAD2BE742E0A3480757 /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
-		7E8BE1CC0CCB833509C9EA5E /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		87924B2EF3D9FFDCDEBDE0A4 /* libPods-OptimizeApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OptimizeApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EF594E3B27A44E0836A9AAB /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		924BF067D4584364803C63A9 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
-		982BD630CEB228BB11156C1F /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		993EDE2D7FDB460FA6A951E0 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		A00A8DF7296F6E37A162DE98 /* Pods-OptimizeApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OptimizeApp.debug.xcconfig"; path = "Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp.debug.xcconfig"; sourceTree = "<group>"; };
 		A05EB899DD404901B96BB8B5 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		AF391A9E361D4D92A1D04A8A /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		AFC72E96790D4795AAE54A63 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/native-base/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
-		B40D3424B09C4EBD13655FE4 /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7579F6CE0B84716A168FB4E /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/native-base/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
+		BBA05C00E7E98B151AF27C26 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		BFC3443756F547F7BF37A83A /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		C3BFF4CE3DEA460DB0BEE1A0 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		C3C3144225C148098CF4FF56 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
@@ -121,7 +121,7 @@
 				F7656E1325C0189B00D27984 /* AdSupport.framework in Frameworks */,
 				F7656E0F25C0186D00D27984 /* AppTrackingTransparency.framework in Frameworks */,
 				F755EFAC255144980005D6F4 /* UIKit.framework in Frameworks */,
-				BCB52C4EA3C19F005F054E4B /* libPods-OptimizeApp.a in Frameworks */,
+				5A476A448FBC95560358E4C5 /* libPods-OptimizeApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,7 +129,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B750DE8A8040B0995266EE68 /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */,
+				16BEFCF15120485712775E15 /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,8 +162,8 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				B40D3424B09C4EBD13655FE4 /* libPods-OneSignalNotificationServiceExtension.a */,
-				5D69E0825EE98FD2C9AC0A02 /* libPods-OptimizeApp.a */,
+				39923280A21A24CEF240E153 /* libPods-OneSignalNotificationServiceExtension.a */,
+				87924B2EF3D9FFDCDEBDE0A4 /* libPods-OptimizeApp.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -213,10 +213,10 @@
 		72E5486571395D51695C2A02 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				7E8BE1CC0CCB833509C9EA5E /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
-				982BD630CEB228BB11156C1F /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
-				509BB88EF11790A63FCFAE0F /* Pods-OptimizeApp.debug.xcconfig */,
-				456B895FD1EE1F4B8F687ED9 /* Pods-OptimizeApp.release.xcconfig */,
+				BBA05C00E7E98B151AF27C26 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
+				5D89C98FD9258A4E0A6BFEAF /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
+				A00A8DF7296F6E37A162DE98 /* Pods-OptimizeApp.debug.xcconfig */,
+				524246C188948716A32EB446 /* Pods-OptimizeApp.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -271,7 +271,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "OptimizeApp" */;
 			buildPhases = (
-				CBF54B28658F739DACEA2FB5 /* [CP] Check Pods Manifest.lock */,
+				A53EE3B024F869C39DA7B0B8 /* [CP] Check Pods Manifest.lock */,
 				FD4C38642228810C00325AF5 /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
@@ -279,8 +279,8 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				82EB6EF918ED4D898FA45EB5 /* Upload Debug Symbols to Sentry */,
 				F746E21726358987004AD4C4 /* Embed App Extensions */,
-				756C674044AC59E90E3AD29B /* [CP] Embed Pods Frameworks */,
-				9E12C3BE35164EFBC1AC96F0 /* [CP] Copy Pods Resources */,
+				FCB23BAFB95070EEA502A26A /* [CP] Embed Pods Frameworks */,
+				3ECFC46E3657AB646E145E66 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -296,7 +296,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F7AEF8AB2636048800F23F2E /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
 			buildPhases = (
-				1AF2CA4761279DD298560B25 /* [CP] Check Pods Manifest.lock */,
+				74794BC9E8D84598E00E043E /* [CP] Check Pods Manifest.lock */,
 				F7AEF89F2636048800F23F2E /* Sources */,
 				F7AEF8A02636048800F23F2E /* Frameworks */,
 				F7AEF8A12636048800F23F2E /* Resources */,
@@ -386,65 +386,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nexport BUNDLE_COMMAND=\"ram-bundle\"\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh\n../node_modules/expo-updates/scripts/create-manifest-ios.sh\n";
 		};
-		1AF2CA4761279DD298560B25 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-OneSignalNotificationServiceExtension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		756C674044AC59E90E3AD29B /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp-frameworks.sh",
-				"${PODS_ROOT}/PhotoEditorSDK/PhotoEditorSDK.framework",
-				"${PODS_ROOT}/VideoEditorSDK/VideoEditorSDK.framework",
-				"${PODS_ROOT}/imglyKit/ImglyKit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhotoEditorSDK.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VideoEditorSDK.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImglyKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		82EB6EF918ED4D898FA45EB5 /* Upload Debug Symbols to Sentry */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Upload Debug Symbols to Sentry";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym";
-		};
-		9E12C3BE35164EFBC1AC96F0 /* [CP] Copy Pods Resources */ = {
+		3ECFC46E3657AB646E145E66 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -534,7 +476,43 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CBF54B28658F739DACEA2FB5 /* [CP] Check Pods Manifest.lock */ = {
+		74794BC9E8D84598E00E043E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OneSignalNotificationServiceExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		82EB6EF918ED4D898FA45EB5 /* Upload Debug Symbols to Sentry */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Upload Debug Symbols to Sentry";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym";
+		};
+		A53EE3B024F869C39DA7B0B8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -554,6 +532,34 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FCB23BAFB95070EEA502A26A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp-frameworks.sh",
+				"${PODS_ROOT}/PhotoEditorSDK/PhotoEditorSDK.framework",
+				"${PODS_ROOT}/PhotoEditorSDK/PhotoEditorSDK.framework.dSYM",
+				"${PODS_ROOT}/VideoEditorSDK/VideoEditorSDK.framework",
+				"${PODS_ROOT}/VideoEditorSDK/VideoEditorSDK.framework.dSYM",
+				"${PODS_ROOT}/imglyKit/ImglyKit.framework",
+				"${PODS_ROOT}/imglyKit/ImglyKit.framework.dSYM",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhotoEditorSDK.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/PhotoEditorSDK.framework.dSYM",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VideoEditorSDK.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/VideoEditorSDK.framework.dSYM",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImglyKit.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/ImglyKit.framework.dSYM",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD4C38642228810C00325AF5 /* Start Packager */ = {
@@ -610,7 +616,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 509BB88EF11790A63FCFAE0F /* Pods-OptimizeApp.debug.xcconfig */;
+			baseConfigurationReference = A00A8DF7296F6E37A162DE98 /* Pods-OptimizeApp.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -618,7 +624,7 @@
 				CODE_SIGN_ENTITLEMENTS = OptimizeApp/optimizeapp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: OPTIMIZE ADVERTISING AND MARKETING COMPANY WLL (928C7U9LTT)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 178;
+				CURRENT_PROJECT_VERSION = 180;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 928C7U9LTT;
 				INFOPLIST_FILE = OptimizeApp/Info.plist;
@@ -631,7 +637,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.optimizeapp.optimizeapp;
 				PRODUCT_NAME = optimizeapp;
-				PROVISIONING_PROFILE_SPECIFIER = "AdHoc profile";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.optimizeapp.optimizeapp";
 				SWIFT_OBJC_BRIDGING_HEADER = "OptimizeApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -641,7 +647,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 456B895FD1EE1F4B8F687ED9 /* Pods-OptimizeApp.release.xcconfig */;
+			baseConfigurationReference = 524246C188948716A32EB446 /* Pods-OptimizeApp.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -649,7 +655,7 @@
 				CODE_SIGN_ENTITLEMENTS = OptimizeApp/optimizeapp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: OPTIMIZE ADVERTISING AND MARKETING COMPANY WLL (928C7U9LTT)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 178;
+				CURRENT_PROJECT_VERSION = 180;
 				DEVELOPMENT_TEAM = 928C7U9LTT;
 				INFOPLIST_FILE = OptimizeApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -661,7 +667,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.optimizeapp.optimizeapp;
 				PRODUCT_NAME = optimizeapp;
-				PROVISIONING_PROFILE_SPECIFIER = "AdHoc profile";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.optimizeapp.optimizeapp";
 				SWIFT_OBJC_BRIDGING_HEADER = "OptimizeApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -780,7 +786,7 @@
 		};
 		F7AEF8AC2636048800F23F2E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7E8BE1CC0CCB833509C9EA5E /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
+			baseConfigurationReference = BBA05C00E7E98B151AF27C26 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -800,7 +806,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.optimizeapp.optimizeapp.OneSignalNotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "OneSignal AdHoc";
+				PROVISIONING_PROFILE_SPECIFIER = "Profile for OneSignalNotification";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -811,7 +817,7 @@
 		};
 		F7AEF8AD2636048800F23F2E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 982BD630CEB228BB11156C1F /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
+			baseConfigurationReference = 5D89C98FD9258A4E0A6BFEAF /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -831,7 +837,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.optimizeapp.optimizeapp.OneSignalNotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "OneSignal AdHoc";
+				PROVISIONING_PROFILE_SPECIFIER = "Profile for OneSignalNotification";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;

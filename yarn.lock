@@ -8534,10 +8534,10 @@ react-native-modal@^11.5.6:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
 
-react-native-onesignal@^4.0.7:
-  version "4.0.7"
-  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-4.0.7.tgz#bbeb8a44b7f0f15c744eeff91c8ea7cf9c905f22"
-  integrity sha512-f9UCTIVRxCs+g3muFwIkdhnjnAy5Olc+U9DJj87iL4yE/2UeKNXuLkrQPKujy8c//IB4MoqOynlymPZd5DCulw==
+react-native-onesignal@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-4.1.0.tgz#01811e5934153de83d6d01d82c7b52b7a11e3df1"
+  integrity sha512-7NRU6eB3UnDyKCjyBHIw5UD0huhTjfDSs+BmerJPmg7DLXdkSoeUROg5MWBcFv3H5b6R3KC9q8gEmrgLaEFqcQ==
   dependencies:
     invariant "^2.2.2"
 
@@ -8562,10 +8562,10 @@ react-native-phone-input@^0.2.4:
     lodash "^4.17.4"
     prop-types "^15.5.10"
 
-react-native-photoeditorsdk@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/react-native-photoeditorsdk/-/react-native-photoeditorsdk-2.6.1.tgz#2443390d95748ffd8ea5300a896e5b0e076bddfe"
-  integrity sha512-kWwRPqYoKzOz/PaJD3OKxSW5XBiAGog54elLROJbAI2L3y7yhJlPIaa5lJLkXuVRPmrQUeIFsgsvhhCXWdHNEw==
+react-native-photoeditorsdk@^2.8.0:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-photoeditorsdk/-/react-native-photoeditorsdk-2.8.0.tgz#f12c28b56880635526ce2cd2ad0b213d720e389c"
+  integrity sha512-d96je6BHdzktV1UbpiQcoFNPK4OFmTIS5GggEsrzKcGshuo7FiJKrpkFsLrADRP6qiYRHMArs03OnRnmwDBvHg==
 
 react-native-power-translator@^1.1.1:
   version "1.1.1"
@@ -8732,10 +8732,10 @@ react-native-vector-icons@^7.0.0:
     prop-types "^15.7.2"
     yargs "^15.0.2"
 
-react-native-videoeditorsdk@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/react-native-videoeditorsdk/-/react-native-videoeditorsdk-2.6.1.tgz#6ba638154f707e7c313300569cf8ee8a6f657b9a"
-  integrity sha512-Tgybnl+MmTMtn64m+6/vvFZbkJ0FnQTTA/gH8+RihTpxMEBHvFajdjIepMh6m6IUxUwVIE4CPdRuyFsxMBuHZw==
+react-native-videoeditorsdk@^2.8.0:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-videoeditorsdk/-/react-native-videoeditorsdk-2.8.0.tgz#cc6a9314547dbcc7ef1a89b30dba912013b0ac93"
+  integrity sha512-ytjAXiL60KYo9jnUlhkIscj/w00aav4gt8SGKYV9iLNBwDpNth8Ki4VQ4cMCzBsW4T6GUSGIL7/p90I87rPUDQ==
 
 react-native-webview@10.7.0:
   version "10.7.0"
