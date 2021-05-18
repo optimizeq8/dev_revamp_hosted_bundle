@@ -247,6 +247,7 @@ export const _pickImage = async (
                 fileReadyToUpload: true,
                 uneditedImageUri,
                 serialization,
+                existing_media: 0,
               });
 
               analytics.track(`a_media_editor`, {
@@ -270,6 +271,7 @@ export const _pickImage = async (
                 media: result.uri,
                 media_type: result.type.toUpperCase(),
                 fileReadyToUpload: true,
+                existing_media: 0,
               });
             }
           })
@@ -613,6 +615,7 @@ export const _pickImage = async (
             } else {
               if (correct) {
                 setTheState({
+                  existing_media: 0,
                   media: result.uri,
                   media_type: result.type.toUpperCase(),
                   mediaError: null,
@@ -643,6 +646,8 @@ export const _pickImage = async (
                   fileReadyToUpload: true,
                   uneditedImageUri,
                   serialization: result.serialization,
+                  existing_media: 0,
+
                   //   rejected,
                 });
                 setTheState({ sourceChanging: false });

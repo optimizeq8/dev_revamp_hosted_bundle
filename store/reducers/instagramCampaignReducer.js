@@ -117,6 +117,8 @@ const initialState = {
   fbPageList: [],
   fbAccessToken: null,
   connectInstagramSaving: false,
+  instagramExistingMediaListLoading: false,
+  instagramExistingMediaList: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -726,6 +728,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         connectInstagramSaving: action.payload,
+      };
+    }
+    case actionTypes.GET_INSTA_MEDIA_LIST: {
+      return {
+        ...state,
+        instagramExistingMediaList: action.payload,
+      };
+    }
+    case actionTypes.GET_INSTA_MEDIA_LIST_LOADING: {
+      return {
+        ...state,
+        instagramExistingMediaListLoading: action.payload,
       };
     }
     default:
