@@ -24,6 +24,7 @@ import GradientButton from "../GradientButton";
 import NavigationService from "../../../NavigationService";
 import RepeatCampaignModal from "../RepeatCampaignModal";
 import ExtendCampaignModal from "../ExtendCampaignModal";
+import CampaignOptionsMenu from "../CampaignOptionsMenu";
 
 whyDidYouRender(React);
 class CampaignCard extends Component {
@@ -31,7 +32,11 @@ class CampaignCard extends Component {
   campaign_status = this.props.campaign.status;
   ad_status_color = this.props.campaign.ad_status_color_code;
   ad_status = this.props.campaign.ad_status;
-  state = { showRepeatModal: false, showExtendModal: false };
+  state = {
+    showRepeatModal: false,
+    showExtendModal: false,
+    showCampaignOptions: false,
+  };
   //New date returns the current date with a timezone of -3
   //So I add back the offset so the dates from the backend are compared properly
   currentDate = () => {
@@ -77,13 +82,34 @@ class CampaignCard extends Component {
       campaign_channel: "snapchat",
       campaignId: this.props.campaign.campaign_id,
     });
+    this.handleOptionsModal(false);
     this.setState({
       showRepeatModal: value,
     });
   };
   handleExtendModal = (value) => {
+    analytics.track("a_toggle_extend_modal", {
+      source: "dashboard",
+      source_action: "a_toggle_extend_modal",
+      visible: value,
+      campaign_channel: "snapchat",
+      campaignId: this.props.campaign.campaign_id,
+    });
+    this.handleOptionsModal(false);
     this.setState({
       showExtendModal: value,
+    });
+  };
+  handleOptionsModal = (value) => {
+    analytics.track("a_toggle_options_modal", {
+      source: "dashboard",
+      source_action: "a_toggle_options_modal",
+      visible: value,
+      campaign_channel: "snapchat",
+      campaignId: this.props.campaign.campaign_id,
+    });
+    this.setState({
+      showCampaignOptions: value,
     });
   };
   componentDidMount() {
@@ -101,15 +127,24 @@ class CampaignCard extends Component {
     let campaign = this.props.campaign;
     const { translate } = this.props.screenProps;
     let button = null;
-    if (campaign.objective !== "ENGAGEMENT")
-      button = (
+    button = (
+      <>
+        {campaign.objective !== "ENGAGEMENT" && (
+          <TouchableOpacity
+            style={styles.repeatButton}
+            onPress={() => this.handleRepeatModal(true)}
+          >
+            <Text style={styles.repeatText}>{translate("Promote again")}</Text>
+          </TouchableOpacity>
+        )}
         <TouchableOpacity
-          style={styles.repeatButton}
-          onPress={() => this.handleRepeatModal(true)}
+          style={[styles.repeatButton]}
+          onPress={() => this.handleExtendModal(true)}
         >
-          <Text style={styles.repeatText}>{translate("Promote again")}</Text>
+          <Text style={styles.repeatText}>{"Extend"}</Text>
         </TouchableOpacity>
-      );
+      </>
+    );
     return button;
   };
   render() {
@@ -254,7 +289,7 @@ class CampaignCard extends Component {
                   />
                 </View>
               )}
-            {this.review_status.includes("APPROVED") && (
+            {!this.review_status.includes("APPROVED") && (
               <View style={styles.chartContainer}>
                 <CampaignCircleChart
                   channel={this.props.channel}
@@ -262,8 +297,7 @@ class CampaignCard extends Component {
                   detail={false}
                   screenProps={this.props.screenProps}
                 />
-
-                {this.ad_status !== "Campaign ended" ? (
+                {this.ad_status === "Campaign ended" ? (
                   <>
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
@@ -287,7 +321,16 @@ class CampaignCard extends Component {
                     </View>
                   </>
                 ) : (
-                  this.showRepeatButton()
+                  <Icon
+                    name="options"
+                    type="SimpleLineIcons"
+                    onPress={() => this.handleOptionsModal(true)}
+                    style={{
+                      fontSize: 30,
+                      color: "#d4d4d4",
+                      alignSelf: "flex-end",
+                    }}
+                  />
                 )}
               </View>
             )}
@@ -302,6 +345,12 @@ class CampaignCard extends Component {
               screenProps={this.props.screenProps}
               handleExtendModal={this.handleExtendModal}
               campaign={campaign}
+            />
+            <CampaignOptionsMenu
+              showCampaignOptions={this.state.showCampaignOptions}
+              handleOptionsModal={this.handleOptionsModal}
+              translate={translate}
+              showRepeatButton={this.showRepeatButton}
             />
           </View>
         </TouchableOpacity>
