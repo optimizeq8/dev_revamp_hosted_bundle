@@ -107,9 +107,9 @@ PODS:
   - imglyKit (10.23.1)
   - Intercom (8.0.0)
   - lottie-ios (3.1.9)
-  - lottie-react-native (3.5.0):
+  - lottie-react-native (4.0.2):
     - lottie-ios (~> 3.1.8)
-    - React
+    - React-Core
   - Mixpanel (3.6.5)
   - mobile-ffmpeg-https-gpl (4.3.1.LTS)
   - OneSignal (3.4.3)
@@ -774,7 +774,7 @@ SPEC CHECKSUMS:
   imglyKit: 4ffe931831f12ccab5d41c8586687d8e04dd97ad
   Intercom: 5d8058e3476ab6b0350dea165338164364eb1acb
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
-  lottie-react-native: 1fb4ce21d6ad37dab8343eaff8719df76035bd93
+  lottie-react-native: 4dff8fe8d10ddef9e7880e770080f4a56121397e
   Mixpanel: de8296d8568806ab17bfced0f823c908b808e1e0
   mobile-ffmpeg-https-gpl: 40f773ba24431c12a0753a25676406a5f9406659
   OneSignal: e4dfb1912410f302dc9661ce98fc829f6c18ff6a

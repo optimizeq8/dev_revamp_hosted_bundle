@@ -331,7 +331,7 @@ class App extends React.Component {
     OneSignal.getDeviceState().then((info) => {
       console.log("dev", JSON.stringify(info, null, 2));
 
-      Intercom.sendTokenToIntercom(info.pushToken);
+      // Intercom.sendTokenToIntercom(info.pushToken);
     });
     Intercom.addEventListener(
       Intercom.Notifications.UNREAD_COUNT,
