@@ -104,7 +104,7 @@ PODS:
   - GoogleMaps/Base (3.5.0)
   - GoogleMaps/Maps (3.5.0):
     - GoogleMaps/Base
-  - imglyKit (10.23.1)
+  - imglyKit (10.22.0)
   - Intercom (8.0.0)
   - lottie-ios (3.1.9)
   - lottie-react-native (4.0.2):
@@ -113,8 +113,8 @@ PODS:
   - Mixpanel (3.6.5)
   - mobile-ffmpeg-https-gpl (4.3.1.LTS)
   - OneSignal (3.4.3)
-  - PhotoEditorSDK (10.23.1):
-    - imglyKit (= 10.23.1)
+  - PhotoEditorSDK (10.22.0):
+    - imglyKit (= 10.22.0)
   - RCTRequired (0.63.3)
   - RCTTypeSafety (0.63.3):
     - FBLazyVector (= 0.63.3)
@@ -396,8 +396,8 @@ PODS:
     - React
   - RNGestureHandler (1.7.0):
     - React
-  - RNPhotoEditorSDK (2.8.0):
-    - PhotoEditorSDK (~> 10.23)
+  - RNPhotoEditorSDK (2.7.0):
+    - PhotoEditorSDK (~> 10.22)
     - React
     - React-RCTImage
   - RNScreens (2.17.1):
@@ -409,10 +409,10 @@ PODS:
     - React
   - RNVectorIcons (6.7.0):
     - React
-  - RNVideoEditorSDK (2.8.0):
+  - RNVideoEditorSDK (2.7.0):
     - React
     - React-RCTImage
-    - VideoEditorSDK (~> 10.23)
+    - VideoEditorSDK (~> 10.22)
   - Segment-Adjust (3.1.1):
     - Adjust (~> 4.28)
     - Analytics
@@ -439,8 +439,8 @@ PODS:
     - UMFontInterface
   - UMSensorsInterface (5.3.0)
   - UMTaskManagerInterface (5.3.0)
-  - VideoEditorSDK (10.23.1):
-    - imglyKit (= 10.23.1)
+  - VideoEditorSDK (10.22.0):
+    - imglyKit (= 10.22.0)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -538,6 +538,7 @@ DEPENDENCIES:
   - "UMReactNativeAdapter (from `../node_modules/@unimodules/react-native-adapter/ios`)"
   - UMSensorsInterface (from `../node_modules/unimodules-sensors-interface/ios`)
   - UMTaskManagerInterface (from `../node_modules/unimodules-task-manager-interface/ios`)
+  - VideoEditorSDK (~> 10.22.0)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -771,14 +772,14 @@ SPEC CHECKSUMS:
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
-  imglyKit: 4ffe931831f12ccab5d41c8586687d8e04dd97ad
+  imglyKit: 9c97eabba2d42a6bd19108e42a48a4138d75e31a
   Intercom: 5d8058e3476ab6b0350dea165338164364eb1acb
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   lottie-react-native: 4dff8fe8d10ddef9e7880e770080f4a56121397e
   Mixpanel: de8296d8568806ab17bfced0f823c908b808e1e0
   mobile-ffmpeg-https-gpl: 40f773ba24431c12a0753a25676406a5f9406659
   OneSignal: e4dfb1912410f302dc9661ce98fc829f6c18ff6a
-  PhotoEditorSDK: a2e32374a7da6d4e45b97e8886cfb2096c698626
+  PhotoEditorSDK: 42d26ccb2aedf9bc5d2c0555d774907895fa53a4
   RCTRequired: 48884c74035a0b5b76dbb7a998bd93bcfc5f2047
   RCTTypeSafety: edf4b618033c2f1c5b7bc3d90d8e085ed95ba2ab
   React: f36e90f3ceb976546e97df3403e37d226f79d0e3
@@ -821,12 +822,12 @@ SPEC CHECKSUMS:
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDeviceInfo: c5f8f3a456adcbba405ace475254b08febc4c095
   RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
-  RNPhotoEditorSDK: d7bb1d0e979b88d8b30b47dd726181f893f67017
+  RNPhotoEditorSDK: 0dc9520e1e4158d26b108a5c0003d0f68de9ed07
   RNScreens: b6c9607e6fe47c1b6e2f1910d2acd46dd7ecea3a
   RNSentry: 1adaa43b01c6a3ab5091d4d1add66b7c58558898
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: 368d6d8b8301224e5ffb6254191f4f8876c2be0d
-  RNVideoEditorSDK: ec512a9244f892878aa9aa5b9a6705888f43f992
+  RNVideoEditorSDK: 02a5a9f8dc21ba69b26e39db50f511f72699dd0b
   Segment-Adjust: 5c45cd11f3ed647967c54e93c267f8e8c987f849
   Segment-Mixpanel: 18c35e15fa95ee61ee2254577cf2c968db42e68a
   Sentry: 8fa58a051237554f22507fb483b9a1de0171a2dc
@@ -843,9 +844,9 @@ SPEC CHECKSUMS:
   UMReactNativeAdapter: 61ae88818058b7849bbf5b79bf97872cb3c8e0eb
   UMSensorsInterface: 49bea41dcfcc041f0bbab27cfe4a6006f1dde0c0
   UMTaskManagerInterface: 6cad5929dbc0a5b986ad4d77caac497d4de730a7
-  VideoEditorSDK: 251e32a43e98bbd6b4113551c74e9b607515f3c0
+  VideoEditorSDK: 54574fecac368928e7cedd5fbd3e31b53b57dc72
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
 
-PODFILE CHECKSUM: 589f3ac2b1a8e70e3d590ca8f96f2fdb0e75be93
+PODFILE CHECKSUM: e5898600124c619138666934f36ab184cdaee7e8
 
 COCOAPODS: 1.9.3
