@@ -1694,3 +1694,49 @@ export const connectToInstagramPage = (
       });
   };
 };
+
+/**
+ *
+ *  To get list of medias in previously created campaigns
+ *
+ * @param {*} adType One of [InstgramFeedAd, InstagramStoryAd]
+ * @returns
+ */
+export const getExistingMediaInstagramList = (adType) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.GET_INSTA_MEDIA_LIST_LOADING,
+      payload: true,
+    });
+    dispatch({
+      type: actionTypes.GET_INSTA_MEDIA_LIST,
+      payload: [],
+    });
+    InstagramBackendURL()
+      .post(`medialibrary`, {
+        campaign_type: adType,
+        businessid: getState().account.mainBusiness.businessid,
+      })
+      .then((response) => response.data)
+      .then((data) => {
+        dispatch({
+          type: actionTypes.GET_INSTA_MEDIA_LIST_LOADING,
+          payload: false,
+        });
+        return dispatch({
+          type: actionTypes.GET_INSTA_MEDIA_LIST,
+          payload: data.success ? data.data : [],
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: actionTypes.GET_INSTA_MEDIA_LIST_LOADING,
+          payload: false,
+        });
+        return dispatch({
+          type: actionTypes.GET_INSTA_MEDIA_LIST,
+          payload: [],
+        });
+      });
+  };
+};

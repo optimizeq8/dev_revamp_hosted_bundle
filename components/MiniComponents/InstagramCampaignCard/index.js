@@ -26,6 +26,7 @@ import isEqual from "react-fast-compare";
 import globalStyles from "../../../GlobalStyles";
 import RepeatCampaignModal from "../RepeatCampaignModal";
 import ExtendCampaignModal from "../ExtendCampaignModal";
+import CampaignOptionsMenu from "../CampaignOptionsMenu";
 
 whyDidYouRender(React);
 class CampaignCard extends Component {
@@ -35,7 +36,11 @@ class CampaignCard extends Component {
     // verbose: true
     // }); //verbose logs all functions and their time
   }
-  state = { showRepeatModal: false, showExtendModal: false };
+  state = {
+    showRepeatModal: false,
+    showExtendModal: false,
+    showCampaignOptions: false,
+  };
   currentDate = () => {
     let date = new Date();
     date.setTime(date.getTime() - new Date().getTimezoneOffset() * 60 * 1000);
@@ -77,14 +82,68 @@ class CampaignCard extends Component {
     return campaignEndedOrNot;
   };
   handleRepeatModal = (value) => {
+    analytics.track("a_toggle_repeat_modal", {
+      source: "dashboard",
+      source_action: "a_toggle_options_modal",
+      visible: value,
+      campaign_channel: "instagram",
+      campaignId: this.props.campaign.campaign_id,
+    });
+    this.handleOptionsModal(false);
+
     this.setState({
       showRepeatModal: value,
     });
   };
   handleExtendModal = (value) => {
+    analytics.track("a_toggle_extend_modal", {
+      source: "dashboard",
+      source_action: "a_toggle_extend_modal",
+      visible: value,
+      campaign_channel: "instagram",
+      campaignId: this.props.campaign.campaign_id,
+    });
+    this.handleOptionsModal(false);
+
     this.setState({
       showExtendModal: value,
     });
+  };
+  handleOptionsModal = (value) => {
+    analytics.track("a_toggle_options_modal", {
+      source: "dashboard",
+      source_action: "a_toggle_options_modal",
+      visible: value,
+      campaign_channel: "instagram",
+      campaignId: this.props.campaign.campaign_id,
+    });
+    this.setState({
+      showCampaignOptions: value,
+    });
+  };
+  showRepeatButton = () => {
+    let campaign = this.props.campaign;
+    const { translate } = this.props.screenProps;
+    let button = null;
+    button = (
+      <>
+        {campaign.objective !== "ENGAGEMENT" && (
+          <TouchableOpacity
+            style={styles.repeatButton}
+            onPress={() => this.handleRepeatModal(true)}
+          >
+            <Text style={styles.repeatText}>{translate("Promote again")}</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          style={[styles.repeatButton]}
+          onPress={() => this.handleExtendModal(true)}
+        >
+          <Text style={styles.repeatText}>{"Extend"}</Text>
+        </TouchableOpacity>
+      </>
+    );
+    return button;
   };
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
@@ -241,7 +300,7 @@ class CampaignCard extends Component {
                       <Text uppercase style={styles.cardText}>
                         {translate("Day(s) left")}
                       </Text>
-                      {/* <TouchableOpacity
+                      <TouchableOpacity
                         style={[
                           styles.repeatButton,
                           { alignSelf: "center", marginTop: 10, width: "100%" },
@@ -249,18 +308,20 @@ class CampaignCard extends Component {
                         onPress={() => this.handleExtendModal(true)}
                       >
                         <Text style={styles.repeatText}>{"Extend"}</Text>
-                      </TouchableOpacity> */}
+                      </TouchableOpacity>
                     </View>
                   </>
                 ) : (
-                  <TouchableOpacity
-                    style={styles.repeatButton}
-                    onPress={() => this.handleRepeatModal(true)}
-                  >
-                    <Text style={styles.repeatText}>
-                      {translate("Promote again")}
-                    </Text>
-                  </TouchableOpacity>
+                  <Icon
+                    name="options"
+                    type="SimpleLineIcons"
+                    onPress={() => this.handleOptionsModal(true)}
+                    style={{
+                      fontSize: 30,
+                      color: "#d4d4d4",
+                      alignSelf: "flex-end",
+                    }}
+                  />
                 )}
               </View>
             )}
@@ -276,6 +337,12 @@ class CampaignCard extends Component {
               handleExtendModal={this.handleExtendModal}
               campaign={campaign}
               instagramCampaign={true}
+            />
+            <CampaignOptionsMenu
+              showCampaignOptions={this.state.showCampaignOptions}
+              handleOptionsModal={this.handleOptionsModal}
+              translate={translate}
+              showRepeatButton={this.showRepeatButton}
             />
           </View>
         </TouchableOpacity>

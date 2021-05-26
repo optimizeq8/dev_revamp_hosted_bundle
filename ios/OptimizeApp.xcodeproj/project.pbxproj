@@ -11,15 +11,27 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		3DE4DAD41476765101945408 /* libPods-OptimizeApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D43FF9D506E70904424FA7E9 /* libPods-OptimizeApp.a */; };
+		5A476A448FBC95560358E4C5 /* libPods-OptimizeApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 87924B2EF3D9FFDCDEBDE0A4 /* libPods-OptimizeApp.a */; };
 		99EC63CFB4B549BBAF093D10 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3ABB89D1E68496EB7D95742 /* SplashScreen.storyboard */; };
 		F755EFAC255144980005D6F4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F755EFAB255144980005D6F4 /* UIKit.framework */; };
 		F7656E0F25C0186D00D27984 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7656E0E25C0186D00D27984 /* AppTrackingTransparency.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		F7656E1125C0188C00D27984 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7656E1025C0188C00D27984 /* StoreKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F7656E1325C0189B00D27984 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7656E1225C0189B00D27984 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F7ECA56E247E98B1000976BB /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7ECA56D247E98B1000976BB /* File.swift */; };
 		F7FF7A612547FE2800050E9C /* MPTweakHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F7FF7A602547FE2800050E9C /* MPTweakHelper.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F746E21726358987004AD4C4 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -37,13 +49,14 @@
 		1D71F99A0C154699B1B67F1B /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		22897644B3BF4DC483FC4FFD /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B47C5AFCB8BDE514B7D1AC6 /* Pods-OptimizeApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OptimizeApp.debug.xcconfig"; path = "Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp.debug.xcconfig"; sourceTree = "<group>"; };
+		524246C188948716A32EB446 /* Pods-OptimizeApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OptimizeApp.release.xcconfig"; path = "Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp.release.xcconfig"; sourceTree = "<group>"; };
 		6A21538AFDDD4CDBA8DE05C5 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		6F7AACAD2BE742E0A3480757 /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
-		8AC623DBF3A3E2CB072F81F2 /* Pods-OptimizeApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OptimizeApp.release.xcconfig"; path = "Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp.release.xcconfig"; sourceTree = "<group>"; };
+		87924B2EF3D9FFDCDEBDE0A4 /* libPods-OptimizeApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OptimizeApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EF594E3B27A44E0836A9AAB /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		924BF067D4584364803C63A9 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		993EDE2D7FDB460FA6A951E0 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		A00A8DF7296F6E37A162DE98 /* Pods-OptimizeApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OptimizeApp.debug.xcconfig"; path = "Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp.debug.xcconfig"; sourceTree = "<group>"; };
 		A05EB899DD404901B96BB8B5 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		AF391A9E361D4D92A1D04A8A /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		AFC72E96790D4795AAE54A63 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/native-base/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
@@ -58,7 +71,6 @@
 		CE5FE2015B6D4CFEB16427E7 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		D0B5C22F8FCE492A8F8C0035 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		D177E96918B24943B0C336EF /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
-		D43FF9D506E70904424FA7E9 /* libPods-OptimizeApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OptimizeApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5A3BBBE62C140D7A8B8CC6E /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		DB984423A8504E7BA58C55EF /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		DFB950423D99401F81554F64 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
@@ -73,7 +85,6 @@
 		F680670523A0453A8B21A4D8 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/native-base/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		F755EFAB255144980005D6F4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F7656E0E25C0186D00D27984 /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
-		F7656E1025C0188C00D27984 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		F7656E1225C0189B00D27984 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		F7ECA56C247E98B1000976BB /* OptimizeApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OptimizeApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		F7ECA56D247E98B1000976BB /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
@@ -88,10 +99,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7656E1325C0189B00D27984 /* AdSupport.framework in Frameworks */,
-				F7656E1125C0188C00D27984 /* StoreKit.framework in Frameworks */,
 				F7656E0F25C0186D00D27984 /* AppTrackingTransparency.framework in Frameworks */,
 				F755EFAC255144980005D6F4 /* UIKit.framework in Frameworks */,
-				3DE4DAD41476765101945408 /* libPods-OptimizeApp.a in Frameworks */,
+				5A476A448FBC95560358E4C5 /* libPods-OptimizeApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,13 +129,12 @@
 			isa = PBXGroup;
 			children = (
 				F7656E1225C0189B00D27984 /* AdSupport.framework */,
-				F7656E1025C0188C00D27984 /* StoreKit.framework */,
 				F7656E0E25C0186D00D27984 /* AppTrackingTransparency.framework */,
 				F755EFAB255144980005D6F4 /* UIKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				D43FF9D506E70904424FA7E9 /* libPods-OptimizeApp.a */,
+				87924B2EF3D9FFDCDEBDE0A4 /* libPods-OptimizeApp.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -175,8 +184,8 @@
 		72E5486571395D51695C2A02 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B47C5AFCB8BDE514B7D1AC6 /* Pods-OptimizeApp.debug.xcconfig */,
-				8AC623DBF3A3E2CB072F81F2 /* Pods-OptimizeApp.release.xcconfig */,
+				A00A8DF7296F6E37A162DE98 /* Pods-OptimizeApp.debug.xcconfig */,
+				524246C188948716A32EB446 /* Pods-OptimizeApp.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -220,15 +229,16 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "OptimizeApp" */;
 			buildPhases = (
-				F8BC737F2AD7A05944D9E2A1 /* [CP] Check Pods Manifest.lock */,
+				A53EE3B024F869C39DA7B0B8 /* [CP] Check Pods Manifest.lock */,
 				FD4C38642228810C00325AF5 /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				526E88C5CFFC31ED7883745C /* [CP] Embed Pods Frameworks */,
 				82EB6EF918ED4D898FA45EB5 /* Upload Debug Symbols to Sentry */,
-				030DAA771C85BEF49377CE0E /* [CP] Copy Pods Resources */,
+				F746E21726358987004AD4C4 /* Embed App Extensions */,
+				FCB23BAFB95070EEA502A26A /* [CP] Embed Pods Frameworks */,
+				3ECFC46E3657AB646E145E66 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -245,7 +255,8 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1200;
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
@@ -301,7 +312,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nexport BUNDLE_COMMAND=\"ram-bundle\"\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh\n../node_modules/expo-updates/scripts/create-manifest-ios.sh\n";
 		};
-		030DAA771C85BEF49377CE0E /* [CP] Copy Pods Resources */ = {
+		3ECFC46E3657AB646E145E66 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -391,28 +402,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		526E88C5CFFC31ED7883745C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp-frameworks.sh",
-				"${PODS_ROOT}/PhotoEditorSDK/PhotoEditorSDK.framework",
-				"${PODS_ROOT}/VideoEditorSDK/VideoEditorSDK.framework",
-				"${PODS_ROOT}/imglyKit/ImglyKit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhotoEditorSDK.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VideoEditorSDK.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImglyKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		82EB6EF918ED4D898FA45EB5 /* Upload Debug Symbols to Sentry */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -427,7 +416,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym";
 		};
-		F8BC737F2AD7A05944D9E2A1 /* [CP] Check Pods Manifest.lock */ = {
+		A53EE3B024F869C39DA7B0B8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -447,6 +436,34 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FCB23BAFB95070EEA502A26A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp-frameworks.sh",
+				"${PODS_ROOT}/PhotoEditorSDK/PhotoEditorSDK.framework",
+				"${PODS_ROOT}/PhotoEditorSDK/PhotoEditorSDK.framework.dSYM",
+				"${PODS_ROOT}/VideoEditorSDK/VideoEditorSDK.framework",
+				"${PODS_ROOT}/VideoEditorSDK/VideoEditorSDK.framework.dSYM",
+				"${PODS_ROOT}/imglyKit/ImglyKit.framework",
+				"${PODS_ROOT}/imglyKit/ImglyKit.framework.dSYM",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhotoEditorSDK.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/PhotoEditorSDK.framework.dSYM",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VideoEditorSDK.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/VideoEditorSDK.framework.dSYM",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImglyKit.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/ImglyKit.framework.dSYM",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD4C38642228810C00325AF5 /* Start Packager */ = {
@@ -487,14 +504,15 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B47C5AFCB8BDE514B7D1AC6 /* Pods-OptimizeApp.debug.xcconfig */;
+			baseConfigurationReference = A00A8DF7296F6E37A162DE98 /* Pods-OptimizeApp.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = OptimizeApp/optimizeapp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: OPTIMIZE ADVERTISING AND MARKETING COMPANY WLL (928C7U9LTT)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 166;
+				CURRENT_PROJECT_VERSION = 180;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 928C7U9LTT;
 				INFOPLIST_FILE = OptimizeApp/Info.plist;
@@ -507,7 +525,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.optimizeapp.optimizeapp;
 				PRODUCT_NAME = optimizeapp;
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.optimizeapp.optimizeapp";
+				PROVISIONING_PROFILE_SPECIFIER = "AdHoc profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "OptimizeApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -517,14 +535,15 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8AC623DBF3A3E2CB072F81F2 /* Pods-OptimizeApp.release.xcconfig */;
+			baseConfigurationReference = 524246C188948716A32EB446 /* Pods-OptimizeApp.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = OptimizeApp/optimizeapp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: OPTIMIZE ADVERTISING AND MARKETING COMPANY WLL (928C7U9LTT)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 166;
+				CURRENT_PROJECT_VERSION = 180;
 				DEVELOPMENT_TEAM = 928C7U9LTT;
 				INFOPLIST_FILE = OptimizeApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -536,7 +555,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.optimizeapp.optimizeapp;
 				PRODUCT_NAME = optimizeapp;
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.optimizeapp.optimizeapp";
+				PROVISIONING_PROFILE_SPECIFIER = "AdHoc profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "OptimizeApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

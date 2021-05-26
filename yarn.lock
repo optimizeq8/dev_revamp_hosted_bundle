@@ -3156,10 +3156,15 @@ backo2@1.0.2:
   resolved "https://registry.yarnpkg.com/backo2/-/backo2-1.0.2.tgz#31ab1ac8b129363463e35b3ebb69f4dfcfba7947"
   integrity sha1-MasayLEpNjRj41s+u2n038+6eUc=
 
-badgin@^1.1.2, badgin@^1.1.5:
+badgin@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/badgin/-/badgin-1.2.0.tgz#34367eecfa91aeab81277fc084d5f6d095081202"
   integrity sha512-GHnusKmXE7zrZCWZVnTj7IDoBK0SjvrRpDiW0qf8h2I5Ai2V1aVBj1FTiLIUdVzq2be5hvNHSNIsgXR8eyav5g==
+
+badgin@^1.1.5:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/badgin/-/badgin-1.2.2.tgz#cbb0b71b047230c681a68911eb24136f0632adc6"
+  integrity sha512-XtoSjNhy2D09qGiLhFWBJmBwBlmleQuwyYyjddWNCJ3gqGRBOBR25VGcd8CAOSghpEUmghB3LD4NpHrUG89zCg==
 
 balanced-match@^1.0.0:
   version "1.0.0"
@@ -6870,20 +6875,14 @@ loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.3.1, loose-envify@^1.4
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
-lottie-ios@^3.1.8:
-  version "3.1.9"
-  resolved "https://registry.yarnpkg.com/lottie-ios/-/lottie-ios-3.1.9.tgz#592a8978cd679945c66a2b5fc087146c33e9d475"
-  integrity sha512-iB/jtMQiZnhNvPiQOkyRU3h8y+SKsIL8bqo8aAC9wTv2YStXSInmCPLw3JbIFy0HqW6YPwEFbqgFjtgo9vAHUg==
-
-lottie-react-native@^3.4.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/lottie-react-native/-/lottie-react-native-3.5.0.tgz#749fed964bdc9fabfae24ef81696f90f4d758f59"
-  integrity sha512-yKYj58xynDAG/BqJUhg9LTATBqwD4ATGXJKL2Ho6g4BTmPexOjDBNnPSeRBwjlpBxQ1nP4Qw//0zbuFsTFD1TA==
+lottie-react-native@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/lottie-react-native/-/lottie-react-native-4.0.2.tgz#d0b7a479995b4bfdf5402671e096f15b7ef2a7d8"
+  integrity sha512-8X5SV8X+es5dJwUGYcSyRIbHIPeWIcUH6PiRaReUEy+6s1d+NLBp3rj4+9I75F1ZN0nbFGNkrgypnGsXOAXBTw==
   dependencies:
     invariant "^2.2.2"
-    lottie-ios "^3.1.8"
     prop-types "^15.5.10"
-    react-native-safe-modules "^1.0.0"
+    react-native-safe-modules "^1.0.3"
 
 lru-cache@^4.0.1:
   version "4.1.5"
@@ -8565,10 +8564,10 @@ react-native-phone-input@^0.2.4:
     lodash "^4.17.4"
     prop-types "^15.5.10"
 
-react-native-photoeditorsdk@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/react-native-photoeditorsdk/-/react-native-photoeditorsdk-2.6.1.tgz#2443390d95748ffd8ea5300a896e5b0e076bddfe"
-  integrity sha512-kWwRPqYoKzOz/PaJD3OKxSW5XBiAGog54elLROJbAI2L3y7yhJlPIaa5lJLkXuVRPmrQUeIFsgsvhhCXWdHNEw==
+react-native-photoeditorsdk@~2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-photoeditorsdk/-/react-native-photoeditorsdk-2.7.0.tgz#4745d49ad92df96383626c9a5abb21f6934eb97d"
+  integrity sha512-OJej5SoXMKdjzlckVtAmoCoYrc80Nfc/qb5RQ2SsZmyhWEBV4+Vga1hA0e8/sFPrWfgk3IvQnMph3Xj89okMwg==
 
 react-native-power-translator@^1.1.1:
   version "1.1.1"
@@ -8623,10 +8622,10 @@ react-native-safe-area-view@^1.1.1:
   dependencies:
     hoist-non-react-statics "^2.3.1"
 
-react-native-safe-modules@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-safe-modules/-/react-native-safe-modules-1.0.0.tgz#10a918adf97da920adb1e33e0c852b1e80123b65"
-  integrity sha512-ShT8duWBT30W4OFcltZl+UvpPDikZFURvLDQqAsrvbyy6HzWPGJDCpdqM+6GqzPPs4DPEW31YfMNmdJcZ6zI2w==
+react-native-safe-modules@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-safe-modules/-/react-native-safe-modules-1.0.3.tgz#f5f29bb9d09d17581193843d4173ad3054f74890"
+  integrity sha512-DUxti4Z+AgJ/ZsO5U7p3uSCUBko8JT8GvFlCeOXk9bMd+4qjpoDvMYpfbixXKgL88M+HwmU/KI1YFN6gsQZyBA==
   dependencies:
     dedent "^0.6.0"
 
@@ -8735,10 +8734,10 @@ react-native-vector-icons@^7.0.0:
     prop-types "^15.7.2"
     yargs "^15.0.2"
 
-react-native-videoeditorsdk@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/react-native-videoeditorsdk/-/react-native-videoeditorsdk-2.6.1.tgz#6ba638154f707e7c313300569cf8ee8a6f657b9a"
-  integrity sha512-Tgybnl+MmTMtn64m+6/vvFZbkJ0FnQTTA/gH8+RihTpxMEBHvFajdjIepMh6m6IUxUwVIE4CPdRuyFsxMBuHZw==
+react-native-videoeditorsdk@~2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-videoeditorsdk/-/react-native-videoeditorsdk-2.7.0.tgz#2546a9a089237e7f05bc077a5d912aefca298989"
+  integrity sha512-An5YyTIkXFKaIM8Stx+ctq5ZrDkoDQLxmlsEPdnt3By6FaFITENITtj6XtBB6nlfuessGWE/zETBLLky6V1ykg==
 
 react-native-webview@10.7.0:
   version "10.7.0"

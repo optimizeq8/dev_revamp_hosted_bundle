@@ -69,7 +69,6 @@ import { PESDK } from "react-native-photoeditorsdk";
 import { VESDK } from "react-native-videoeditorsdk";
 import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import RNBootSplash from "react-native-bootsplash";
-
 import * as Sentry from "@sentry/react-native";
 if (!__DEV__) {
   Sentry.init({
@@ -266,9 +265,10 @@ class App extends React.Component {
 
     this._loadAsync();
     store.dispatch(actionCreators.checkForExpiredToken(NavigationService));
-    this._notificationSubscription = Notifications.addNotificationResponseReceivedListener(
-      this._handleNotification
-    );
+    this._notificationSubscription =
+      Notifications.addNotificationResponseReceivedListener(
+        this._handleNotification
+      );
     AppState.addEventListener("change", this._handleAppStateChange);
     Platform.OS === "ios" && Intercom.registerForPush();
 
@@ -641,9 +641,8 @@ class App extends React.Component {
                 <Root>
                   <AppNavigator
                     onNavigationStateChange={(prevState, currentState) => {
-                      const currentScreen = this.getCurrentRouteName(
-                        currentState
-                      );
+                      const currentScreen =
+                        this.getCurrentRouteName(currentState);
                       this.setState({ currentScreen });
                       // console.log("screeen name", currentScreen);
                     }}
