@@ -8528,6 +8528,13 @@ react-native-modal@^11.5.6:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
 
+react-native-onesignal@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-4.1.0.tgz#01811e5934153de83d6d01d82c7b52b7a11e3df1"
+  integrity sha512-7NRU6eB3UnDyKCjyBHIw5UD0huhTjfDSs+BmerJPmg7DLXdkSoeUROg5MWBcFv3H5b6R3KC9q8gEmrgLaEFqcQ==
+  dependencies:
+    invariant "^2.2.2"
+
 react-native-paper@^2.16.0:
   version "2.16.0"
   resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-2.16.0.tgz#5a9edd5615bb010ec0d29cbfd5524c2944b2505d"

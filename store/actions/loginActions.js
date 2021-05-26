@@ -17,7 +17,6 @@ import NavigationService from "../../NavigationService";
 import { errorMessageHandler } from "./ErrorActions";
 import AsyncStorage from "@react-native-community/async-storage";
 import ReactNativeBiometrics from "react-native-biometrics";
-import OneSignal from "react-native-onesignal";
 export const chanege_base_url = (admin) => {
   return (dispatch) => {
     if (admin)
@@ -32,11 +31,13 @@ export const send_push_notification = () => {
     Permissions.getAsync(Permissions.NOTIFICATIONS)
       .then((permission) => {
         if (permission.status === "granted") {
-          OneSignal.getDeviceState().then((info) => {
+          Notifications.getDevicePushTokenAsync({
+            gcmSenderId: "707133061105",
+          }).then((token) => {
             createBaseUrl()
               .post(`updatepushToken`, {
-                token: info.pushToken,
-                token_type: info.type,
+                token: token.data,
+                token_type: token.type,
                 userid: getState().auth.userInfo.userid,
               })
               .then((res) => {
@@ -117,7 +118,7 @@ export const checkForExpiredToken = (navigation) => {
                       )
                     )
                     .then(() => {
-                      // dispatch(send_push_notification());
+                      dispatch(send_push_notification());
                       dispatch(getBusinessAccounts());
                     })
                     .then(() => {
@@ -254,7 +255,7 @@ export const login = (userData, navigation) => {
           }
 
           dispatch(getBusinessAccounts());
-          // dispatch(send_push_notification());
+          dispatch(send_push_notification());
         }
       })
       .catch((err) => {

@@ -86,8 +86,6 @@
 		F755EFAB255144980005D6F4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F7656E0E25C0186D00D27984 /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 		F7656E1225C0189B00D27984 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
-		F7AEF8A52636048800F23F2E /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
-		F7AEF8A72636048800F23F2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F7ECA56C247E98B1000976BB /* OptimizeApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OptimizeApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		F7ECA56D247E98B1000976BB /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		F7FF7A5F2547FDF200050E9C /* MPTweakHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPTweakHelper.h; sourceTree = "<group>"; };
@@ -205,7 +203,6 @@
 				F7ECA56D247E98B1000976BB /* File.swift */,
 				13B07FAE1A68108700A75B9A /* OptimizeApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				F7AEF8A42636048800F23F2E /* OneSignalNotificationServiceExtension */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				72E5486571395D51695C2A02 /* Pods */,
@@ -223,15 +220,6 @@
 				13B07F961A680F5B00A75B9A /* optimizeapp.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		F7AEF8A42636048800F23F2E /* OneSignalNotificationServiceExtension */ = {
-			isa = PBXGroup;
-			children = (
-				F7AEF8A52636048800F23F2E /* NotificationService.swift */,
-				F7AEF8A72636048800F23F2E /* Info.plist */,
-			);
-			path = OneSignalNotificationServiceExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
