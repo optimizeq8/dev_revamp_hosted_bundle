@@ -14,7 +14,7 @@ import {
   Modal,
   Platform,
 } from "react-native";
-// import * as Notifications from "expo-notifications";
+import * as Notifications from "expo-notifications";
 import Intercom from "react-native-intercom";
 import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
@@ -131,7 +131,7 @@ class Dashboard extends Component {
 
     Intercom.getUnreadConversationCount().then((res) => {
       if (res !== this.props.count) {
-        // Notifications.setBadgeCountAsync(res);
+        Notifications.setBadgeCountAsync(res);
         this.props.setCounterForUnreadMessage(res);
       }
     });
@@ -283,7 +283,7 @@ class Dashboard extends Component {
             : [],
         });
         Intercom.getUnreadConversationCount().then((res) => {
-          // Notifications.setBadgeCountAsync(res);
+          Notifications.setBadgeCountAsync(res);
           this.props.setCounterForUnreadMessage(res);
         });
       });

@@ -7,7 +7,7 @@ import { showMessage } from "react-native-flash-message";
 import analytics from "@segment/analytics-react-native";
 import { saveBusinessInvitee } from "./accountManagementActions";
 import { setAuthToken, getBusinessAccounts } from "./genericActions";
-// import * as Notifications from "expo-notifications";
+import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 import store from "../index";
 import * as SecureStore from "expo-secure-store";
