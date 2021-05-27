@@ -115,7 +115,6 @@ PODS:
     - React-Core
   - Mixpanel (3.6.5)
   - mobile-ffmpeg-https-gpl (4.3.1.LTS)
-  - OneSignal (3.4.3)
   - PhotoEditorSDK (10.22.0):
     - imglyKit (= 10.22.0)
   - RCTRequired (0.63.3)
@@ -310,9 +309,6 @@ PODS:
   - react-native-mixpanel (1.2.5):
     - Mixpanel (~> 3.6.0)
     - React
-  - react-native-onesignal (4.1.0):
-    - OneSignal (= 3.4.3)
-    - React (< 1.0.0, >= 0.13.0)
   - react-native-restart (0.0.17):
     - React
   - react-native-safe-area-context (3.1.9):
@@ -499,7 +495,6 @@ DEPENDENCIES:
   - react-native-intercom (from `../node_modules/react-native-intercom`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-mixpanel (from `../node_modules/react-native-mixpanel`)
-  - react-native-onesignal (from `../node_modules/react-native-onesignal`)
   - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -556,7 +551,6 @@ SPEC REPOS:
     - lottie-ios
     - Mixpanel
     - mobile-ffmpeg-https-gpl
-    - OneSignal
     - PhotoEditorSDK
     - Segment-Adjust
     - Segment-Mixpanel
@@ -660,8 +654,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-mixpanel:
     :path: "../node_modules/react-native-mixpanel"
-  react-native-onesignal:
-    :path: "../node_modules/react-native-onesignal"
   react-native-restart:
     :path: "../node_modules/react-native-restart"
   react-native-safe-area-context:
@@ -784,7 +776,6 @@ SPEC CHECKSUMS:
   lottie-react-native: 4dff8fe8d10ddef9e7880e770080f4a56121397e
   Mixpanel: de8296d8568806ab17bfced0f823c908b808e1e0
   mobile-ffmpeg-https-gpl: 40f773ba24431c12a0753a25676406a5f9406659
-  OneSignal: e4dfb1912410f302dc9661ce98fc829f6c18ff6a
   PhotoEditorSDK: 42d26ccb2aedf9bc5d2c0555d774907895fa53a4
   RCTRequired: 48884c74035a0b5b76dbb7a998bd93bcfc5f2047
   RCTTypeSafety: edf4b618033c2f1c5b7bc3d90d8e085ed95ba2ab
@@ -806,7 +797,6 @@ SPEC CHECKSUMS:
   react-native-intercom: c48e0e15877bf96ff4d461f7aa9b833d11188139
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-mixpanel: 5d0bcea791fd938c35138be2d00e50e19b9de601
-  react-native-onesignal: 6d3d3ac10192c5694049ce8c1ba481e5392c1a73
   react-native-restart: d19a0f8d053d065fe64cd2baebb6487111c77149
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-webview: 6edf4d6f71b9161fc3e96083726a538ee395304d
@@ -853,6 +843,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: 54574fecac368928e7cedd5fbd3e31b53b57dc72
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
 
-PODFILE CHECKSUM: c979d6b62672d5de9b94d4ca6cf34bd2053be7c2
+PODFILE CHECKSUM: ed2998a934d7879e84c45fe2049918bc5b8c96d9
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.1

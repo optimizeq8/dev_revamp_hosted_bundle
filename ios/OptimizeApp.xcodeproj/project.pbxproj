@@ -446,20 +446,14 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp-frameworks.sh",
 				"${PODS_ROOT}/PhotoEditorSDK/PhotoEditorSDK.framework",
-				"${PODS_ROOT}/PhotoEditorSDK/PhotoEditorSDK.framework.dSYM",
 				"${PODS_ROOT}/VideoEditorSDK/VideoEditorSDK.framework",
-				"${PODS_ROOT}/VideoEditorSDK/VideoEditorSDK.framework.dSYM",
 				"${PODS_ROOT}/imglyKit/ImglyKit.framework",
-				"${PODS_ROOT}/imglyKit/ImglyKit.framework.dSYM",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhotoEditorSDK.framework",
-				"${DWARF_DSYM_FOLDER_PATH}/PhotoEditorSDK.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VideoEditorSDK.framework",
-				"${DWARF_DSYM_FOLDER_PATH}/VideoEditorSDK.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImglyKit.framework",
-				"${DWARF_DSYM_FOLDER_PATH}/ImglyKit.framework.dSYM",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
