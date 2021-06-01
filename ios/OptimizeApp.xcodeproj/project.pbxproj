@@ -83,6 +83,7 @@
 		F1A62BE52F7A4D6292D511EE /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		F2C5FD341214471BAB08960E /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
 		F680670523A0453A8B21A4D8 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/native-base/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
+		F748D27526652691000ECA29 /* optimizeapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = optimizeapp.entitlements; path = OptimizeApp/optimizeapp.entitlements; sourceTree = "<group>"; };
 		F755EFAB255144980005D6F4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F7656E0E25C0186D00D27984 /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 		F7656E1225C0189B00D27984 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -111,6 +112,7 @@
 		13B07FAE1A68108700A75B9A /* OptimizeApp */ = {
 			isa = PBXGroup;
 			children = (
+				F748D27526652691000ECA29 /* optimizeapp.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -446,20 +448,14 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-OptimizeApp/Pods-OptimizeApp-frameworks.sh",
 				"${PODS_ROOT}/PhotoEditorSDK/PhotoEditorSDK.framework",
-				"${PODS_ROOT}/PhotoEditorSDK/PhotoEditorSDK.framework.dSYM",
 				"${PODS_ROOT}/VideoEditorSDK/VideoEditorSDK.framework",
-				"${PODS_ROOT}/VideoEditorSDK/VideoEditorSDK.framework.dSYM",
 				"${PODS_ROOT}/imglyKit/ImglyKit.framework",
-				"${PODS_ROOT}/imglyKit/ImglyKit.framework.dSYM",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhotoEditorSDK.framework",
-				"${DWARF_DSYM_FOLDER_PATH}/PhotoEditorSDK.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VideoEditorSDK.framework",
-				"${DWARF_DSYM_FOLDER_PATH}/VideoEditorSDK.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImglyKit.framework",
-				"${DWARF_DSYM_FOLDER_PATH}/ImglyKit.framework.dSYM",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -525,7 +521,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.optimizeapp.optimizeapp;
 				PRODUCT_NAME = optimizeapp;
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.optimizeapp.optimizeapp";
+				PROVISIONING_PROFILE_SPECIFIER = "AdHoc profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "OptimizeApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -555,7 +551,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.optimizeapp.optimizeapp;
 				PRODUCT_NAME = optimizeapp;
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.optimizeapp.optimizeapp";
+				PROVISIONING_PROFILE_SPECIFIER = "AdHoc profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "OptimizeApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
