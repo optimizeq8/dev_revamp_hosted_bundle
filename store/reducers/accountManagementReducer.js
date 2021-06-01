@@ -79,6 +79,15 @@ const reducer = (state = initialState, action) => {
           ltv: main.ltv,
           wallet_amount: main.wallet_amount,
         });
+        analytics.group(main.businessid, {
+          businessid: main.businessid,
+          [`$name`]: main.businessname,
+          company: main.businessname,
+          revenue: main.revenue,
+          ltv: main.ltv,
+          wallet_amount: main.wallet_amount,
+          userId: action.payload.userid,
+        });
       }
       AsyncStorage.setItem("selectedBusinessId", main.businessid);
       return {

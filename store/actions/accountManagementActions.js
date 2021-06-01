@@ -23,6 +23,16 @@ export const changeBusiness = (business) => {
       ltv: business.ltv,
       wallet_amount: business.wallet_amount,
     });
+
+    analytics.group(business.businessid, {
+      businessid: business.businessid,
+      [`$name`]: business.businessname,
+      company: business.businessname,
+      revenue: business.revenue,
+      ltv: business.ltv,
+      wallet_amount: business.wallet_amount,
+      userId: getState().auth.userid,
+    });
     dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
       payload: { ...business },
