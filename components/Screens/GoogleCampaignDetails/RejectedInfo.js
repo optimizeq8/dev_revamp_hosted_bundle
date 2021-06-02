@@ -74,6 +74,7 @@ export default RejectedInfo = (props) => {
               source: "campaign_details",
               source_action: "a_help",
               support_type: "intercom",
+              businessid: this.props.mainBusiness.businessid,
             });
             // Intercom.displayMessageComposer();
             Intercom.displayConversationsList();

@@ -306,6 +306,7 @@ class AdObjective extends Component {
       source_action: "a_select_ad_objective",
       campaignId: this.props.campaign_id,
       campaign_objective: choice.value,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.props.save_campaign_info({
@@ -346,6 +347,7 @@ class AdObjective extends Component {
       source: "ad_objective",
       source_action: "a_ad_start_date",
       campaign_start_date: date,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.props.save_campaign_info({ start_time: date });
@@ -363,6 +365,7 @@ class AdObjective extends Component {
       campaign_end_date: date,
       source: "ad_objective",
       source_action: "a_ad_end_date",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.save_campaign_info({
       end_time: date,
@@ -375,6 +378,7 @@ class AdObjective extends Component {
       source: "ad_objective",
       source_action: "a_toggle_modal",
       modal_visible: visible,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.setState({ modalVisible: visible });
@@ -399,6 +403,7 @@ class AdObjective extends Component {
       source: "ad_objective",
       source_action: "a_change_collection_ad_link_form",
       campaign_collectionAdLinkForm: val === 2 ? "Website" : "App DeepLinks",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ ...this.state, collectionAdLinkForm: val });
   };
@@ -446,6 +451,8 @@ class AdObjective extends Component {
           objectiveError ||
           dateErrors.start_timeError ||
           dateErrors.end_timeError,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
     if (
@@ -565,6 +572,7 @@ class AdObjective extends Component {
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
       campaign_name: value,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ campaignInfo: { ...this.state.campaignInfo, ...state } });
     this.props.save_campaign_info({ name: value });
@@ -582,6 +590,8 @@ class AdObjective extends Component {
         source_action: "a_ad_name",
         campaign_channel: "snapchat",
         campaign_ad_type: this.props.adType,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
 
@@ -610,6 +620,7 @@ class AdObjective extends Component {
       source_action,
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     AsyncStorage.getItem("AdObjectiveTutorialOpened").then((value) => {
       if (!value && this.props.campaignList.length === 0) {

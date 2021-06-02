@@ -177,6 +177,7 @@ class Messenger extends Component {
             source_action: "a_select_media",
             image_for: "Messenger chat",
             ...result,
+            businessid: this.props.mainBusiness.businessid,
           });
           this.props.navigation.navigate("ImagePreview", {
             image: this.state.media.uri,
@@ -251,6 +252,7 @@ class Messenger extends Component {
       source_action,
       support_type: "intercom",
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness.businessid,
     });
     // let adjustSupportTrackeer = new AdjustEvent("9nk8ku");
     // Adjust.trackEvent(adjustSupportTrackeer);
@@ -431,6 +433,7 @@ const mapStateToProps = (state) => ({
   subscribed: state.messenger.subscribed,
   open_conversation: state.messenger.open_conversation,
   conversation_id: state.messenger.conversation_id,
+  mainBusiness: state.account.mainBusiness,
 });
 
 const mapDispatchToProps = (dispatch) => ({

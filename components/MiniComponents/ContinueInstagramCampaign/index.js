@@ -31,6 +31,7 @@ class ContinueCampaign extends Component {
         // source_action: ""
         campaign_channel: "instagram",
         campaign_ad_type: this.props.adType,
+        businessid: this.props.mainBusiness.businessid,
       });
       if (
         this.props.navigation.getParam(

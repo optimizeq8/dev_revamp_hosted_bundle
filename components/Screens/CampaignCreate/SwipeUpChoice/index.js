@@ -40,6 +40,8 @@ class SwipeUpChoice extends Component {
           campaign_objective: this.props.objective,
           campaign_channel: "snapchat",
           campaign_ad_type,
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         break;
       case "LEAD_GENERATION":
@@ -51,6 +53,8 @@ class SwipeUpChoice extends Component {
           campaign_objective: this.props.objective,
           campaign_channel: "snapchat",
           campaign_ad_type,
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         break;
       case "VIDEO_VIEWS":
@@ -62,6 +66,8 @@ class SwipeUpChoice extends Component {
           campaign_objective: this.props.objective,
           campaign_channel: "snapchat",
           campaign_ad_type,
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         break;
       case "WEB_CONVERSION":
@@ -73,6 +79,8 @@ class SwipeUpChoice extends Component {
           campaign_objective: this.props.objective,
           campaign_channel: "snapchat",
           campaign_ad_type,
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         break;
       default:
@@ -84,6 +92,8 @@ class SwipeUpChoice extends Component {
           campaign_objective: this.props.objective,
           campaign_channel: "snapchat",
           campaign_ad_type,
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
     }
   };
@@ -256,6 +266,7 @@ const mapStateToProps = (state) => ({
   adType: state.campaignC.adType,
   savedObjective: state.campaignC.savedObjective,
   rejCampaign: state.dashboard.rejCampaign,
+  mainBusiness: state.account.mainBusiness,
 });
 
 export default connect(mapStateToProps, null)(SwipeUpChoice);

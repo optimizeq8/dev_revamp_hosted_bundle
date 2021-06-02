@@ -49,6 +49,7 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
             source_action: "a_submit_ad_objective",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_INSTAGRAM_AD_LOADING_OBJ,
@@ -63,6 +64,7 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
             source_action: "a_submit_ad_objective",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_INSTAGRAM_AD_LOADING_OBJ,
@@ -76,6 +78,7 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
             source_action: "a_submit_ad_objective",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           data.success
             ? dispatch({
@@ -223,7 +226,7 @@ export const saveBrandMediaInstagram = (
   segmentInfo,
   rejected
 ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
       payload: true,
@@ -256,6 +259,7 @@ export const saveBrandMediaInstagram = (
             action_status: data.success ? "success" : "failure",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
@@ -273,6 +277,7 @@ export const saveBrandMediaInstagram = (
             action_status: data.success ? "success" : "failure",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
@@ -285,6 +290,7 @@ export const saveBrandMediaInstagram = (
             action_status: data.success ? "success" : "failure",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           if (data.success) {
             onToggleModal(false);
@@ -575,6 +581,7 @@ export const ad_details_instagram = (
             campaign_budget: data.data.lifetime_budget_micro,
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DETAIL_INSTAGRAM,
@@ -590,6 +597,7 @@ export const ad_details_instagram = (
             campaign_budget: data.data.lifetime_budget_micro,
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DETAIL_INSTAGRAM,
@@ -604,6 +612,7 @@ export const ad_details_instagram = (
             campaign_budget: data.data.lifetime_budget_micro,
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           showMessage({
             message: data.message,
@@ -764,6 +773,7 @@ export const updateInstagramCampaign = (
           ...segmentInfo,
           action_status: data.success ? "success" : "failure",
           campaign_error: !data.success && data.message,
+          businessid: getState().account.mainBusiness.businessid,
         });
         showMessage({
           type: data.success ? "success" : "warning",
@@ -1054,7 +1064,7 @@ export const saveInstgramExistpost = (
   cancelUplaod,
   segmentInfo
 ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
       payload: true,
@@ -1088,6 +1098,7 @@ export const saveInstgramExistpost = (
             action_status: data.success ? "success" : "failure",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
@@ -1101,6 +1112,7 @@ export const saveInstgramExistpost = (
             action_status: data.success ? "success" : "failure",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
@@ -1113,6 +1125,7 @@ export const saveInstgramExistpost = (
             action_status: data.success ? "success" : "failure",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           if (data.success) {
             onToggleModal(false);
@@ -1197,6 +1210,7 @@ export const moveRejectedAdAmountToWalletInstagram = (
           campaign_id: campaign_id,
           action_status: data.success ? "success" : "failure",
           campaign_error: !data.success && data.message,
+          businessid: getState().account.mainBusiness.businessid,
         });
         dispatch({
           type: actionTypes.MOVING_AMOUNT_TO_WALLET_INSTAGRAM,
@@ -1235,6 +1249,7 @@ export const updateInstagramStatus = (info, handleToggle) => {
           campaign_error: !data.success && data.message,
           source: "campaign_detail",
           source_action: "a_update_campaign_status",
+          businessid: getState().account.mainBusiness.businessid,
         });
         handleToggle(data.status);
         if (data.message) {
@@ -1249,7 +1264,7 @@ export const updateInstagramStatus = (info, handleToggle) => {
 };
 
 export const endInstagramCampaign = (info, handleToggle) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     InstagramBackendURL()
       .put(`endCampaign`, info)
       .then((res) => {
@@ -1265,6 +1280,7 @@ export const endInstagramCampaign = (info, handleToggle) => {
           campaign_error: !data.success && data.message,
           source: "campaign_detail",
           source_action: "a_update_campaign_status",
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.message) {
           showMessage({ message: data.message, type: "info", position: "top" });
@@ -1282,7 +1298,7 @@ export const endInstagramCampaign = (info, handleToggle) => {
 };
 
 export const downloadInstagramCSV = (campaign_id, email, showModalMessage) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     InstagramBackendURL()
       .post(`exportData`, { campaign_id, email })
       .then((res) => res.data)
@@ -1293,6 +1309,7 @@ export const downloadInstagramCSV = (campaign_id, email, showModalMessage) => {
           source_action: "a_share_csv",
           campaign_channel: "instagram",
           action_status: data.success ? "success" : "failure",
+          businessid: getState().account.mainBusiness.businessid,
         });
         showModalMessage(data.message, data.success ? "success" : "warning");
       })
@@ -1359,6 +1376,7 @@ export const repeatInstaCampagin = (previous_campaign_info, handleSwitch) => {
           action_status: data.success ? "success" : "failure",
           camapign_channel: "instagram",
           previous_campaignId: previous_campaign_info.previous_campaign_id,
+          businessid: getState().account.mainBusiness.businessid,
         });
 
         if (data && data.fb_connected === 0) {
@@ -1418,6 +1436,7 @@ export const repeatInstaCampaginBudget = (
           action_status: data.success ? "success" : "failure",
           campaign_channel: "instagram",
           campaignId: data.campaign_id,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data && data.fb_connected === 0) {
           dispatch(
@@ -1478,6 +1497,7 @@ export const extendInstaCampagin = (previous_campaign_info, handleSwitch) => {
           camapign_channel: "instagram",
           previous_campaignId: previous_campaign_info.previous_campaign_id,
           action_status: data.success ? "success" : "failure",
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data && data.fb_connected === 0) {
           dispatch(
@@ -1550,6 +1570,7 @@ export const extendInstaCampaginBudget = (
           action_status: data.success ? "success" : "failure",
           campaign_channel: "instagram",
           campaignId: data.campaign_id,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data && data.fb_connected === 0) {
           dispatch(

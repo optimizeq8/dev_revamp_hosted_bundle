@@ -580,6 +580,7 @@ class CollectionMedia extends Component {
           analytics.track("a_error", {
             error_page: "collection_media",
             error_description: !validUrl || !validImage,
+            businessid: this.props.mainBusiness.businessid,
           });
         }
         if (validUrl && validImage) {
@@ -600,6 +601,7 @@ class CollectionMedia extends Component {
           analytics.track("a_error", {
             error_page: "collection_media",
             error_description: !validDeepLinkURL || !validImage,
+            businessid: this.props.mainBusiness.businessid,
           });
         }
         if (validDeepLinkURL && validImage) {
@@ -699,6 +701,7 @@ class CollectionMedia extends Component {
         source: "ad_swipe_up_destination",
         source_action: "a_deep_link_uri",
         campaign_deep_link_url: this.state.deep_link_uri,
+        businessid: this.props.mainBusiness.businessid,
       });
 
       if (error) {
@@ -707,6 +710,7 @@ class CollectionMedia extends Component {
           error_page: "ad_swipe_up_destination",
           source_action: "a_deep_link_uri",
           error_description: this.state.deep_link_uriError,
+          businessid: this.props.mainBusiness.businessid,
         });
       }
     }

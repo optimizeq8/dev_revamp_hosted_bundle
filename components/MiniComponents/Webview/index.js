@@ -5,12 +5,13 @@ import analytics from "@segment/analytics-react-native";
 import CustomHeader from "../Header";
 import { Container } from "native-base";
 import SafeAreaView from "react-native-safe-area-view";
+import { connect } from "react-redux";
 
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";
 import styles from "./styles";
 import Loading from "../LoadingScreen";
-export default class index extends Component {
+class index extends Component {
   componentDidMount() {
     const source = this.props.navigation.getParam(
       "source",
@@ -24,6 +25,7 @@ export default class index extends Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     AppState.addEventListener("change", this._handleAppStateChange);
@@ -132,3 +134,9 @@ export default class index extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  mainBusiness: state.account.mainBusiness,
+});
+
+export default connect(mapStateToProps, null)(index);

@@ -265,10 +265,9 @@ class App extends React.Component {
 
     this._loadAsync();
     store.dispatch(actionCreators.checkForExpiredToken(NavigationService));
-    this._notificationSubscription =
-      Notifications.addNotificationResponseReceivedListener(
-        this._handleNotification
-      );
+    this._notificationSubscription = Notifications.addNotificationResponseReceivedListener(
+      this._handleNotification
+    );
     AppState.addEventListener("change", this._handleAppStateChange);
     Platform.OS === "ios" && Intercom.registerForPush();
 
@@ -323,6 +322,11 @@ class App extends React.Component {
         anonymous_userId: this.state.anonymous_userId,
         source: this.state.appState,
         device_id: getUniqueId(),
+        businessid:
+          (store.getState().account &&
+            store.getState().account.mainBusiness &&
+            store.getState().account.mainBusiness.businessid) ||
+          null,
         context: {
           device: {
             id: getUniqueId(),
@@ -641,8 +645,9 @@ class App extends React.Component {
                 <Root>
                   <AppNavigator
                     onNavigationStateChange={(prevState, currentState) => {
-                      const currentScreen =
-                        this.getCurrentRouteName(currentState);
+                      const currentScreen = this.getCurrentRouteName(
+                        currentState
+                      );
                       this.setState({ currentScreen });
                       // console.log("screeen name", currentScreen);
                     }}

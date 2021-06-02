@@ -145,6 +145,8 @@ class RegisterForm extends Component {
           this.state.insta_handleError ||
           this.state.googleMapLinkError ||
           this.state.snapchat_handleError,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
   };
@@ -169,6 +171,8 @@ class RegisterForm extends Component {
           this.props.errorInstaHandle ||
           this.state.insta_handleError ||
           this.state.googleMapLinkError,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     } else if (
       valid
@@ -229,6 +233,8 @@ class RegisterForm extends Component {
           new: false,
           action_status: "failure",
           error_description: "No changes to update",
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         showMessage({
           type: "warning",
@@ -246,6 +252,7 @@ class RegisterForm extends Component {
       new: this.props.edit ? false : true,
       whatsappnumber: value,
       action_status: validNumber ? "success" : "failure",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.setState({
@@ -260,6 +267,7 @@ class RegisterForm extends Component {
       new: this.props.edit ? false : true,
       callnumber: value,
       action_status: validNumber ? "success" : "failure",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       callnumber: validNumber ? value : "",
@@ -371,6 +379,8 @@ class RegisterForm extends Component {
         source_action: "a_business_insta_handle",
         new: this.props.edit ? false : true,
         insta_handle: this.state.insta_handle,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       //   await this.props.verifyInstagramHandle(this.state.insta_handle);
       //   if (this.props.errorInstaHandle) {
@@ -390,6 +400,8 @@ class RegisterForm extends Component {
         source_action: "a_business_snapchat_handle",
         new: this.props.edit ? false : true,
         snapchat_handle: this.state.snapchat_handle,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
 
       if (this.state.snapchat_handleError) {
@@ -400,6 +412,8 @@ class RegisterForm extends Component {
           new: this.props.edit ? false : true,
           snapchat_handle: this.state.snapchat_handle,
           error_description: this.state.snapchat_handleError,
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
       }
     }
@@ -504,6 +518,9 @@ class RegisterForm extends Component {
                     source_action: "a_business_googlemaplink",
                     new: this.props.edit ? false : true,
                     googlemaplink: this.state.googlemaplink,
+                    businessid:
+                      this.props.mainBusiness &&
+                      this.props.mainBusiness.businessid,
                   });
                   await this.validateUrl();
                   if (this.state.googleMapLinkError) {
@@ -514,6 +531,9 @@ class RegisterForm extends Component {
                       new: this.props.edit ? false : true,
                       googlemaplink: this.state.insta_handle,
                       error_description: this.state.googleMapLinkError,
+                      businessid:
+                        this.props.mainBusiness &&
+                        this.props.mainBusiness.businessid,
                     });
                   }
                 }}

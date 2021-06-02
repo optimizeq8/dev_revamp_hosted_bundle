@@ -61,6 +61,7 @@ class Transactions extends Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.getTransactions();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);

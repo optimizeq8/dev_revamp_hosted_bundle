@@ -14,7 +14,7 @@ OptimizeWebsiteBackendURL = () =>
   });
 
 export const verifyInstagramHandleWebsite = (insta_handle) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
       dispatch({
         type: actionTypes.SET_INSTAGRAM_POST_LOADING,
@@ -60,6 +60,7 @@ export const verifyInstagramHandleWebsite = (insta_handle) => {
         insta_handle: insta_handle,
         source: "my_website_detail",
         source_action: "a_verify_InstagramHandle_Website",
+        businessid: getState().account.mainBusiness.businessid,
       });
       return dispatch({
         type: actionTypes.ERROR_GET_INSTAGRAM_POSTS,
@@ -166,7 +167,7 @@ export const getInstagramPostInitialWebsite = (insta_handle) => {
 };
 
 export const loadMoreInstagramPostWebsite = (instaHandleId, instaEndCursor) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
       dispatch({
         type: actionTypes.LOADING_MORE_INSTAGRAM_POSTS,
@@ -192,6 +193,7 @@ export const loadMoreInstagramPostWebsite = (instaHandleId, instaEndCursor) => {
         source_action: "a_load_more_posts",
         action_status:
           mediaArray && mediaArray.length > 0 ? "success" : "failure",
+        businessid: getState().account.mainBusiness.businessid,
       });
       if (mediaArray && mediaArray.length > 0) {
         var imagesList = mediaArray.map((media) => {
@@ -280,6 +282,7 @@ export const saveWebProductsToHide = (
             businesslogo,
             products_to_hide_id,
             insta_handle,
+            businessid: getState().account.mainBusiness.businessid,
           });
           showMessage({
             type: data.success ? "success" : "warning",
@@ -327,6 +330,7 @@ export const saveWebProductsToHide = (
             businesslogo,
             insta_handle,
             weburl: data.weburl,
+            businessid: getState().account.mainBusiness.businessid,
           });
 
           if (data.success) {
@@ -418,7 +422,7 @@ export const getWebProductsToHide = (businessid) => {
  * @param {*} webproductsToHide list of products to be added
  */
 export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const info = {
       business_id: businessid,
       products: webproductsToAdd,
@@ -444,6 +448,7 @@ export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
           action_status: data.data ? "success" : "failure",
           // error_description: !data.success && data.message,
           webproductsToAdd,
+          businessid: getState().account.mainBusiness.businessid,
         });
 
         NavigationService.navigate("MyWebsiteECommerce", {
@@ -494,7 +499,7 @@ export const getWebProductsList = (businessid) => {
 };
 
 export const deleteWebProduct = (product_id) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     delete axios.defaults.headers.common["Authorization"];
 
     OptimizeWebsiteBackendURL()
@@ -507,6 +512,8 @@ export const deleteWebProduct = (product_id) => {
           source: "open_edit_product",
           source_action: "a_delete_product",
           action_status: data === 204 ? "success" : "failure",
+          businessid: getState().account.mainBusiness.businessid,
+
           // error_description:  data.message,
         });
         if (data === 204) {
@@ -531,7 +538,7 @@ export const saveSingleWebProduct = (product_id, info) => {
   // console.log("product_id", product_id);
 
   // console.log("info", JSON.stringify(info, null, 2));
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
       payload: true,
@@ -547,6 +554,7 @@ export const saveSingleWebProduct = (product_id, info) => {
           product_id,
           product: info,
           action_status: data.data ? "success" : "failure",
+          businessid: getState().account.mainBusiness.businessid,
         });
         // console.log("data save product", JSON.stringify(data, null, 2));
         NavigationService.navigate("MyWebsiteECommerce", {
@@ -582,7 +590,7 @@ export const saveSingleMedia = (
   onToggleModal(true);
 
   // console.log("media save", media);
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SAVE_PRODUCT_MEDIA,
       payload: {},
@@ -608,6 +616,7 @@ export const saveSingleMedia = (
           source_action: "a_add_product_media",
           media,
           action_status: data.data ? "success" : "failure",
+          businessid: getState().account.mainBusiness.businessid,
         });
         onToggleModal(false);
         return dispatch({
@@ -624,6 +633,7 @@ export const saveSingleMedia = (
           media,
           action_status: "failure",
           error_description: err.response || err.message,
+          businessid: getState().account.mainBusiness.businessid,
         });
         // console.log("saveSingleWebProduct error", err.response || err.message);
       });
@@ -654,7 +664,7 @@ export const addNewProduct = (info) => {
         analytics.track(`a_save_product_detail`, {
           source: "open_add_product",
           source_action: "a_save_product_detail",
-
+          businessid: getState().account.mainBusiness.businessid,
           product: info,
           action_status: data.data ? "success" : "failure",
         });
@@ -725,7 +735,7 @@ export const getAllCategories = () => {
  */
 export const addCategory = (info, loading, cancelUplaod) => {
   // console.log("product_id", product_id);
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SAVE_WEB_CATEGORY_LOADER,
       payload: true,
@@ -749,6 +759,7 @@ export const addCategory = (info, loading, cancelUplaod) => {
           source_action: "a_save_category_detail",
           category: info,
           action_status: data.data ? "success" : "failure",
+          businessid: getState().account.mainBusiness.businessid,
         });
         // console.log("data save category", data);
         dispatch({
@@ -788,7 +799,7 @@ export const addCategory = (info, loading, cancelUplaod) => {
  *  }
  */
 export const editCategory = (info, loading, cancelUplaod) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SAVE_WEB_CATEGORY_LOADER,
       payload: true,
@@ -811,6 +822,7 @@ export const editCategory = (info, loading, cancelUplaod) => {
           source_action: "a_save_category_detail",
           category: info,
           action_status: data.data ? "success" : "failure",
+          businessid: getState().account.mainBusiness.businessid,
         });
         // console.log("data save category", data);
         dispatch({
@@ -847,7 +859,7 @@ export const uploadCategoryImage = (
   onToggleModal(true);
 
   // console.log("media save", media);
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SAVE_PRODUCT_MEDIA,
       payload: {},
@@ -873,6 +885,7 @@ export const uploadCategoryImage = (
           source_action: "a_add_category_media",
           media,
           action_status: data.data ? "success" : "failure",
+          businessid: getState().account.mainBusiness.businessid,
         });
         onToggleModal(false);
         return dispatch({
@@ -889,6 +902,7 @@ export const uploadCategoryImage = (
           media,
           action_status: "failure",
           error_description: err.response || err.message,
+          businessid: getState().account.mainBusiness.businessid,
         });
         // console.log("saveSingleWebProduct error", err.response || err.message);
       });

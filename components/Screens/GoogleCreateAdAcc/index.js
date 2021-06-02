@@ -53,6 +53,7 @@ class GoogleCreateAdAcc extends Component {
       source_action,
       campaign_channel: "google",
       campaign_ad_type: "GoogleSEAd",
+      businessid: this.props.mainBusiness.businessid,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }

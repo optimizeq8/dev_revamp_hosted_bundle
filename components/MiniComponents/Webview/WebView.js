@@ -10,6 +10,7 @@ import {
   Platform,
 } from "react-native";
 import WebView from "react-native-webview";
+import { connect } from "react-redux";
 import analytics from "@segment/analytics-react-native";
 import CustomHeader from "../Header";
 import SafeAreaView from "react-native-safe-area-view";
@@ -24,7 +25,7 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 const screen = Dimensions.get("window");
 const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking");
-export default class index extends Component {
+class index extends Component {
   state = {
     appState: AppState.currentState,
     viewLoader: true,
@@ -44,6 +45,7 @@ export default class index extends Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     AppState.addEventListener("change", this._handleAppStateChange);
   }
@@ -221,3 +223,9 @@ export default class index extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  mainBusiness: state.account.mainBusiness,
+});
+
+export default connect(mapStateToProps, null)(index);

@@ -84,6 +84,7 @@ class AddressForm extends Component {
       source_action,
       timestamp: new Date().getTime(),
       ...this.props.address,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       from: this.props.navigation.getParam("from", null),
@@ -192,6 +193,7 @@ const mapStateToProps = (state) => ({
   saving: state.account.savingBillingAddress,
   errorLoading: state.account.errorLoadingBillingAddress,
   progressSaving: state.account.progressSaving,
+  mainBusiness: state.account.mainBusiness,
 });
 
 const mapDispatchToProps = (dispatch) => ({

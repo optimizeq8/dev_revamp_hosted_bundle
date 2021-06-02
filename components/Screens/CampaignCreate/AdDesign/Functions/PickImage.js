@@ -74,7 +74,9 @@ export const _pickImage = async (
   mediaEditor = {},
   editImage,
   videoIsExporting,
-  statisticsCallback
+  statisticsCallback,
+  story_creatives = [],
+  mainBusiness
 ) => {
   try {
     let result = {};
@@ -126,6 +128,7 @@ export const _pickImage = async (
                   });
                 onToggleModal(false);
                 analytics.track(`a_error`, {
+                  businessid: mainBusiness && mainBusiness.businessid,
                   campaign_channel: "snapchat",
                   campaign_ad_type: adType,
                   error_page: "ad_design",
@@ -184,6 +187,7 @@ export const _pickImage = async (
                   campaign_ad_type: adType,
                   error_page: "ad_design",
                   error_description: "Image must be less than 5 MBs",
+                  businessid: mainBusiness && mainBusiness.businessid,
                 });
                 return Promise.reject("Image must be less than 5 MBs");
               }
@@ -226,6 +230,7 @@ export const _pickImage = async (
                 source: "ad_design",
                 source_action: "a_media_editor",
                 image_for: "campaign_story_ad",
+                businessid: mainBusiness && mainBusiness.businessid,
               });
 
               cards[storyAdCards.selectedStoryAd.index] = card;
@@ -277,6 +282,7 @@ export const _pickImage = async (
                 media_type: "IMAGE",
                 ...result.serialization,
                 image_for: "campaign_ad",
+                businessid: mainBusiness && mainBusiness.businessid,
               });
 
               !rejected &&
@@ -305,6 +311,7 @@ export const _pickImage = async (
                 ? error.message
                 : (typeof error === "string" && error) ||
                   "The dimensions are too large, please choose a different image",
+              businessid: mainBusiness && mainBusiness.businessid,
             });
             showMessage({
               message: error.wrongAspect
@@ -442,6 +449,7 @@ export const _pickImage = async (
                 analytics.track(`a_error`, {
                   error_page: "ad_design",
                   error_description: "Maximum video duration  is 30 seconds.",
+                  businessid: mainBusiness && mainBusiness.businessid,
                 });
                 setTheState({
                   mediaError: "Maximum video duration  is 30 seconds.",
@@ -478,6 +486,7 @@ export const _pickImage = async (
                   campaign_ad_type: adType,
                   error_page: "ad_design",
                   error_description: "Minimum video duration  is 3 seconds.",
+                  businessid: mainBusiness && mainBusiness.businessid,
                 });
                 setTheState({
                   mediaError: "Minimum video duration  is 3 seconds.",
@@ -517,6 +526,7 @@ export const _pickImage = async (
                   error_page: "ad_design",
                   error_description:
                     "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+                  businessid: mainBusiness && mainBusiness.businessid,
                 });
                 setTheState({
                   mediaError:
@@ -551,6 +561,7 @@ export const _pickImage = async (
                   campaign_ad_type: adType,
                   error_page: "ad_design",
                   error_description: "Allowed video size is up to 32 MBs",
+                  businessid: mainBusiness && mainBusiness.businessid,
                 });
                 setTheState({
                   mediaError: "Allowed video size is up to 32 MBs.",
@@ -593,6 +604,7 @@ export const _pickImage = async (
                 campaign_ad_type: adType,
                 error_page: "ad_design",
                 error_description: "Editing canceled",
+                businessid: mainBusiness && mainBusiness.businessid,
               });
               videoIsExporting(false);
 
@@ -626,6 +638,7 @@ export const _pickImage = async (
                 tool_used: "VESDK",
                 media_type: result.type.toUpperCase(),
                 ...result.serialization,
+                businessid: mainBusiness && mainBusiness.businessid,
               });
               setTheState({
                 storyAdCards: {
@@ -668,6 +681,7 @@ export const _pickImage = async (
                   tool_used: "VESDK",
                   media_type: result.type.toUpperCase(),
                   ...result.serialization,
+                  businessid: mainBusiness && mainBusiness.businessid,
                 });
                 showMessage({
                   message: translate("Video has been selected successfully"),
@@ -690,6 +704,7 @@ export const _pickImage = async (
                   error_description: "Selected Video Unsuccessfully",
                   campaign_channel: "snapchat",
                   campaign_ad_type: adType,
+                  businessid: mainBusiness && mainBusiness.businessid,
                 });
                 setTheState({
                   media: "//",
@@ -723,6 +738,7 @@ export const _pickImage = async (
       analytics.track(`a_error_form`, {
         error_page: "ad_design",
         error_description: "Image Picker closed without selecting a media file",
+        businessid: mainBusiness && mainBusiness.businessid,
       });
 
       setTheState({
@@ -749,6 +765,7 @@ export const _pickImage = async (
       campaign_ad_type: adType,
       error_page: "ad_design",
       error_description: error.response || error.message || error,
+      businessid: mainBusiness && mainBusiness.businessid,
     });
   }
 };

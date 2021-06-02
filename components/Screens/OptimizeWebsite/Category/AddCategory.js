@@ -79,6 +79,7 @@ class AddCategory extends Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness.businessid,
     });
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
@@ -158,6 +159,7 @@ class AddCategory extends Component {
       source_action: "a_delete_single_media",
       category_id: this.state.category.id,
       media_id: media[index].id,
+      businessid: this.props.mainBusiness.businessid,
     });
     media.splice(index, 1);
     this.setState({
@@ -174,6 +176,7 @@ class AddCategory extends Component {
       source_action: "a_toggle_products_modal",
       category_id: this.state.category.id,
       open: false,
+      businessid: this.props.mainBusiness.businessid,
     });
 
     this.setState({
@@ -186,6 +189,7 @@ class AddCategory extends Component {
       source_action: "a_toggle_products_modal",
       category_id: this.state.category.id,
       open: true,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       showProductModal: true,
@@ -314,6 +318,7 @@ class AddCategory extends Component {
                       source_action: "a_category_name",
                       category_id: this.state.category.id,
                       category_name: text,
+                      businessid: this.props.mainBusiness.businessid,
                     });
                     this.setState({
                       category: {

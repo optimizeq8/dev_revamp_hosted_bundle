@@ -230,7 +230,7 @@ export const verifyMobileCode = (
   verification_channel,
   navigationPath = "Dashboard"
 ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     createBaseUrl()
       .post(`verifyMobileCode`, mobileAuth)
       .then((res) => {
@@ -250,6 +250,9 @@ export const verifyMobileCode = (
             timestamp: new Date().getTime(),
             verification_channel,
             action_status: "failure",
+            businessid:
+              getState().account.mainBusiness &&
+              getState().account.mainBusiness.businessid,
           });
           return dispatch({
             type: actionTypes.VERIFY_MOBILE_NUMBER,
@@ -280,6 +283,9 @@ export const verifyMobileCode = (
             userId: decodedUser.user.userid,
             verification_channel,
             action_status: "success",
+            businessid:
+              getState().account.mainBusiness &&
+              getState().account.mainBusiness.businessid,
           });
           dispatch(setCurrentUser(decodedUser));
         }
@@ -307,6 +313,9 @@ export const verifyMobileCode = (
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
+          businessid:
+            getState().account.mainBusiness &&
+            getState().account.mainBusiness.businessid,
         });
         showMessage({
           message:

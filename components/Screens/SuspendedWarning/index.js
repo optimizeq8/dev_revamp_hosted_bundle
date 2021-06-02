@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { RFValue } from "react-native-responsive-fontsize";
+import { connect } from "react-redux";
 import Intercom from "react-native-intercom";
 import {
   NavigationActions,
@@ -16,13 +17,14 @@ import GradientButton from "../../MiniComponents/GradientButton";
 
 //styles
 import styles from "./styles";
-export default class SuspendedWarning extends Component {
+class SuspendedWarning extends Component {
   onDidFocus = () => {
     const source = this.props.navigation.getParam("source", "");
     const source_action = this.props.navigation.getParam("source_action", "");
     analytics.track("suspended_warning", {
       source,
       source_action,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
   };
   render() {
@@ -108,3 +110,9 @@ export default class SuspendedWarning extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  mainBusiness: state.account.mainBusiness,
+});
+
+export default connect(mapStateToProps, null)(SuspendedWarning);

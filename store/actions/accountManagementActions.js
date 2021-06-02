@@ -23,6 +23,16 @@ export const changeBusiness = (business) => {
       ltv: business.ltv,
       wallet_amount: business.wallet_amount,
     });
+
+    analytics.group(business.businessid, {
+      businessid: business.businessid,
+      [`$name`]: business.businessname,
+      company: business.businessname,
+      revenue: business.revenue,
+      ltv: business.ltv,
+      wallet_amount: business.wallet_amount,
+      userId: getState().auth.userid,
+    });
     dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
       payload: { ...business },
@@ -131,6 +141,7 @@ export const addressForm = (address, navigation, addressId, translate) => {
             : null,
           action_status: respData.data.success ? "success" : "failed",
           ...address,
+          businessid: getState().account.mainBusiness.businessid,
         });
         Animated.timing(time, {
           toValue: 1,
@@ -168,6 +179,7 @@ export const addressForm = (address, navigation, addressId, translate) => {
               : null,
             ...address,
             action_status: response.data.success ? "success" : "failed",
+            businessid: getState().account.mainBusiness.businessid,
           });
           showMessage({
             message: translate(response.data.message),
@@ -250,7 +262,7 @@ export const getAddressForm = () => {
  */
 // IS NOT IN THE AUTH TOKEN SO MIGHT NEED ANOTHER API TO FETCH ALL IDS
 export const create_snapchat_ad_account = (info, navigation) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
       payload: true,
@@ -269,6 +281,7 @@ export const create_snapchat_ad_account = (info, navigation) => {
           device_id: getUniqueId(),
           ...info,
           action_status: data.success ? "success" : "failure",
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           // let adjustSnapAdAccTracker = new AdjustEvent("vsf6z0");
@@ -305,6 +318,7 @@ export const create_snapchat_ad_account = (info, navigation) => {
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
+          businessid: getState().account.mainBusiness.businessid,
         });
         errorMessageHandler(err);
 
@@ -336,6 +350,7 @@ export const updateUserInfo = (info, navigation) => {
           action_status: data.success ? "success" : "failure",
           error_description: !data.success ? data.message : null,
           ...info,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           setAuthToken(data.accessToken);
@@ -448,7 +463,7 @@ export const deleteBusinessAccount = (business_id) => {
  */
 
 export const inviteTeamMember = (info, resend) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const source = resend
       ? "team_management_members_list"
       : "team_management_members_details";
@@ -465,6 +480,7 @@ export const inviteTeamMember = (info, resend) => {
           resend_invite: resend,
           action_status: data.success ? "success" : "failure",
           ...info,
+          businessid: getState().account.mainBusiness.businessid,
         });
         showMessage({
           message: data.message,
@@ -490,6 +506,7 @@ export const inviteTeamMember = (info, resend) => {
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
+          businessid: getState().account.mainBusiness.businessid,
         });
         errorMessageHandler(err);
       });
@@ -513,7 +530,7 @@ export const inviteTeamMember = (info, resend) => {
  * @returns for success navigates back to menu screen
  */
 export const updateBusinessInfo = (userid, info, navigation) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.UPDATE_BUSINESS_INFO_LOADING,
       payload: true,
@@ -539,6 +556,7 @@ export const updateBusinessInfo = (userid, info, navigation) => {
           action_status: data.success ? "success" : "failure",
           timestamp: new Date().getTime(),
           ...info,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           navigation.navigate("Dashboard", {
@@ -647,6 +665,9 @@ export const handleTeamInvite = (status, segmentInfo) => {
         analytics.track("a_handle_team_invite", {
           ...segmentInfo,
           action_status: data.success ? "success" : "failure",
+          businessid:
+            getState().account.mainBusiness &&
+            getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch(getBusinessAccounts());
@@ -718,7 +739,7 @@ export const getTeamMembers = (business_id) => {
  */
 
 export const updateTeamMembers = (memberInfo) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: actionTypes.SET_TEAM_MEMBERS_LOADING, payload: true });
     createBaseUrl()
       .put(`userRole`, { ...memberInfo })
@@ -730,6 +751,7 @@ export const updateTeamMembers = (memberInfo) => {
           timestamp: new Date().getTime(),
           action_status: data.success ? "success" : "failure",
           ...memberInfo,
+          businessid: getState().account.mainBusiness.businessid,
         });
 
         showMessage({
@@ -785,7 +807,7 @@ export const deleteTeamMembers = (memberId, businessid, navigation) => {
           timestamp: new Date().getTime(),
           action_status: data.success ? "success" : "failure",
           member_id: memberId,
-          business_id: businessid,
+          businessid: businessid,
         });
 
         showMessage({
@@ -817,6 +839,7 @@ export const deleteTeamMembers = (memberId, businessid, navigation) => {
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
+          businessid: businessid,
         });
         errorMessageHandler(err);
 
@@ -897,7 +920,7 @@ export const resetBusinessInvitee = () => {
  * @param {*} submitNextStep Needed to go to next step of registration
  */
 export const updateWebInfoForBusiness = (info, submitNextStep = false) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.UPDATE_BUSINESS_INFO_LOADING,
       payload: true,
@@ -921,6 +944,9 @@ export const updateWebInfoForBusiness = (info, submitNextStep = false) => {
           action_status: data.success ? "success" : "failure",
           error_description: !data.success && data.message,
           ...info,
+          businessid:
+            getState().account.mainBusiness &&
+            getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch({
@@ -974,7 +1000,7 @@ export const changeBusinessLogo = (
   onToggleModal
 ) => {
   onToggleModal(true);
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.UPDATE_BUSINESS_INFO_LOADING,
       payload: true,
@@ -1006,6 +1032,9 @@ export const changeBusinessLogo = (
           ...info,
           action_status: data.success ? data.success : "failure",
           error_description: !data.success && data.message,
+          businessid:
+            getState().account.mainBusiness &&
+            getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           return dispatch({
@@ -1032,6 +1061,9 @@ export const changeBusinessLogo = (
           source_action: "a_upload_business_logo",
           action_status: "failure",
           error_description: error.response || error.message,
+          businessid:
+            getState().account.mainBusiness &&
+            getState().account.mainBusiness.businessid,
         });
         // console.log(
         //   "changeBusinessLogo error",
@@ -1063,7 +1095,7 @@ export const updateBusinessConnectedToFacebook = (data) => {
 };
 
 export const crashAppForSpamUser = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch({
       type: actionTypes.CRASH_APP,
       payload: false,
@@ -1081,6 +1113,9 @@ export const crashAppForSpamUser = () => {
           analytics.track("app_crash", {
             source: "suspicous_user",
             source_action: "a_app_crash",
+            businessid:
+              getState().account.mainBusiness &&
+              getState().account.mainBusiness.businessid,
           });
           NavigationService.navigate("SuspendedWarning", {
             source: "app_crash",

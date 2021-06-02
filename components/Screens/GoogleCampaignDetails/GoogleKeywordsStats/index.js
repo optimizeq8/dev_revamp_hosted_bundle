@@ -66,6 +66,7 @@ class GoogleKeywordsStats extends Component {
       source: "ad_keywords_performance",
       source_action: "a_open_keyword_performance",
       ...keyword,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState(
       {
@@ -96,6 +97,7 @@ class GoogleKeywordsStats extends Component {
         this.props.screenProps.prevAppState
       ),
       keywords_performance: this.state.filteredKeywords,
+      businessid: this.props.mainBusiness.businessid,
     });
   };
   render() {
@@ -286,5 +288,6 @@ class GoogleKeywordsStats extends Component {
 }
 const mapStateToProps = (state) => ({
   selectedCampaign: state.dashboard.selectedCampaign,
+  mainBusiness: state.account.mainBusiness,
 });
 export default connect(mapStateToProps)(GoogleKeywordsStats);

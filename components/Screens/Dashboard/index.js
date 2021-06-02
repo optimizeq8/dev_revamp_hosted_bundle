@@ -341,6 +341,7 @@ class Dashboard extends Component {
       campaign_channel: adType.mediaType,
       campaign_ad_type: adType.value,
       device_id: this.props.screenProps.device_id,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     if (this.state.adTypeChanged && !this.props.incompleteCampaign) {
@@ -439,6 +440,7 @@ class Dashboard extends Component {
       source: "dashboard",
       source_action: "a_refresh_list",
       refresh_type: "campaigns",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     // this.props.connect_user_to_intercom(this.props.userInfo.userid);
     // this.props.set_as_seen(false);
@@ -460,6 +462,7 @@ class Dashboard extends Component {
           navigation={this.props.navigation}
           key={item.campaign_id}
           screenProps={this.props.screenProps}
+          mainBusiness={this.props.mainBusiness}
         />
       );
     } else if (item.channel === "instagram") {
@@ -470,6 +473,7 @@ class Dashboard extends Component {
           navigation={this.props.navigation}
           key={item.campaign_id}
           screenProps={this.props.screenProps}
+          mainBusiness={this.props.mainBusiness}
         />
       );
     } else
@@ -480,6 +484,7 @@ class Dashboard extends Component {
           navigation={this.props.navigation}
           key={item.campaign_id}
           screenProps={this.props.screenProps}
+          mainBusiness={this.props.mainBusiness}
         />
       );
   };
@@ -498,6 +503,7 @@ class Dashboard extends Component {
       timestamp: new Date().getTime(),
       userId: this.props.userInfo.userid,
       device_id,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.props.navigation.navigate("AdType", {
       source: "dashboard",
@@ -565,6 +571,7 @@ class Dashboard extends Component {
       source_action,
       timestamp: new Date().getTime(),
       device_id: this.props.screenProps.device_id,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     if (
       source_action === "a_move_amount_to_wallet" &&
@@ -645,6 +652,7 @@ class Dashboard extends Component {
       source_action: "a_change_language",
       prev_langauage: this.props.appLanguage,
       selected_language: this.props.appLanguage === "en" ? "ar" : "en",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.navigation.navigate("SwitchLanguageLoading", {
       source: "dashboard",
@@ -676,6 +684,7 @@ class Dashboard extends Component {
       source: "dashboard",
       source_action: "a_help",
       support_type: "intercom",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     Intercom.displayConversationsList();
   };

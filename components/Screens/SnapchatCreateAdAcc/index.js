@@ -63,6 +63,7 @@ class SnapchatCreateAdAcc extends Component {
       campaign_ad_type: this.props.adType,
       timestamp: new Date().getTime(),
       device_id: this.props.screenProps.device_id,
+      businessid: this.props.mainBusiness.businessid,
     });
   }
 
@@ -93,6 +94,7 @@ class SnapchatCreateAdAcc extends Component {
         error_description:
           "Please confirm if your ad account will be used for political and advocacy or not",
         campaign_channel: "snapchat",
+        businessid: this.props.mainBusiness.businessid,
       });
       showMessage({
         type: "warning",
@@ -106,6 +108,7 @@ class SnapchatCreateAdAcc extends Component {
           error_page: "ad_TNC",
           error_description: "Please enter paying advertiser name",
           campaign_channel: "snapchat",
+          businessid: this.props.mainBusiness.businessid,
         });
         this.setState({
           paying_advertiser_nameError: "Please enter paying advertiser name",

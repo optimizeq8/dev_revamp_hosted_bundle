@@ -68,6 +68,7 @@ class ExtendCampaignModal extends Component {
       source_action: "a_toggle_date_modal",
       visible: value,
       campaign_channel: this.props.campaign.channel,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({ switchComponent: value });
   };
@@ -239,6 +240,7 @@ class ExtendCampaignModal extends Component {
 const mapStateToProps = (state) => ({
   extendCampaignLoading: state.campaignC.extendCampaignLoading,
   extendInstaCampaignLoading: state.instagramAds.extendInstaCampaignLoading,
+  mainBusiness: state.account.mainBusiness,
 });
 const mapDispatchToProps = (dispatch) => ({
   extendSnapCampagin: (campaignInfo, handleSwitch) =>

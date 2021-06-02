@@ -166,6 +166,7 @@ const reducer = (state = initialState, action) => {
         keywords: action.payload.value,
         start_date: startSearch,
         end_date: endSearch,
+        businessid: action.payload.businessid,
       });
       return {
         ...state,
