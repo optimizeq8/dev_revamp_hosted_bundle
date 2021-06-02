@@ -19,6 +19,8 @@
 #import "Mixpanel/Mixpanel.h"
 #import <GoogleMaps/GoogleMaps.h>
 #import <Intercom/intercom.h>
+#import "RNNotifications.h"
+
 @interface AppDelegate ()
 
 @property (nonatomic, strong) NSDictionary *launchOptions;
@@ -51,13 +53,13 @@
   self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
   self.launchOptions = launchOptions;
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  #ifdef DEBUG
-    NSString *const SEGMENT_WRITE_KEY = @"fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh";
-    [Intercom setApiKey:@"ios_sdk-e2493179152d82a4976b580fd1ec442cf2a1e018" forAppId:@"qf7uj8rc"];
-  #else
+  // #ifdef DEBUG
+  //   NSString *const SEGMENT_WRITE_KEY = @"fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh";
+  //   [Intercom setApiKey:@"ios_sdk-e2493179152d82a4976b580fd1ec442cf2a1e018" forAppId:@"qf7uj8rc"];
+  // #else
     NSString *const SEGMENT_WRITE_KEY = @"ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB";
     [Intercom setApiKey:@"ios_sdk-345d9b5af6cf6662f16b5d47798d2473c0e0b617" forAppId:@"k5yqpre9"];
-  #endif
+  // #endif
 SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWithWriteKey:SEGMENT_WRITE_KEY];
 
 
@@ -100,6 +102,7 @@ if (notification != nil) {
   }
 }
   [super application:application didFinishLaunchingWithOptions:launchOptions];
+  [RNNotifications startMonitorNotifications];
   return YES;
 }
 
@@ -155,6 +158,8 @@ if (notification != nil) {
     // Intercom
     [Intercom setDeviceToken:deviceToken];
     [[SEGAnalytics sharedAnalytics] registeredForRemoteNotificationsWithDeviceToken:deviceToken];
+    [RNNotifications didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+
 
 }
 
@@ -164,8 +169,9 @@ if (notification != nil) {
          withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
   completionHandler(UNNotificationPresentationOptionAlert + UNNotificationPresentationOptionSound + UNNotificationPresentationOptionBadge);
 }
-
-
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+  [RNNotifications didFailToRegisterForRemoteNotificationsWithError:error];
+}
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center
         didReceiveNotificationResponse:(UNNotificationResponse *)response
          withCompletionHandler:(void(^)(void))completionHandler  {
