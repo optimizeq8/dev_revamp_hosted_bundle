@@ -592,6 +592,13 @@ class Dashboard extends Component {
       let campaign_id = this.props.navigation.getParam("campaign_id", "");
       let urlParams = "";
       let func = "";
+      if (url.url.includes("free_consultation")) {
+        Intercom.updateUser({
+          custom_attributes: { userType: "free_consultation" },
+        })
+          .then(() => console.log("Updated"))
+          .catch((err) => console.log("Err updateing", err));
+      }
       if (url.url.includes("function") || url.url.includes("chatsupport")) {
         if (url.url.includes("?")) {
           urlParams = url.url.split("?")[1];

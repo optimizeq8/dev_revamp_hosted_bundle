@@ -97,6 +97,7 @@ import { enableScreens } from "react-native-screens";
 import MaskedView from "@react-native-community/masked-view";
 import Logo from "./assets/Logo.svg";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Notifications as RNNotifications } from "react-native-notifications";
 
 const defaultErrorHandler = ErrorUtils.getGlobalHandler();
 
@@ -132,6 +133,7 @@ ErrorUtils.setGlobalHandler(myErrorHandler);
 //don't think we can get back the trial version once this was triggered
 if (!__DEV__) PESDK.unlockWithLicense(require("./img.ly/pesdk_license"));
 if (!__DEV__) VESDK.unlockWithLicense(require("./img.ly/vesdk_license"));
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -248,7 +250,43 @@ class App extends React.Component {
     });
 
     Adjust.create(adjustConfig);
+    RNNotifications.events().registerNotificationReceivedForeground(
+      (
+        notification: Notification,
+        completion: (response: NotificationCompletion) => void
+      ) => {
+        console.log("Notification Received - Foreground", notification.payload);
 
+        // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
+        completion({ alert: true, sound: true, badge: false });
+      }
+    );
+
+    RNNotifications.events().registerNotificationOpened(
+      (
+        notification: Notification,
+        completion: () => void,
+        action: NotificationActionResponse
+      ) => {
+        console.log("Notification opened by device user", notification.payload);
+        console.log(
+          `Notification opened with an action identifier: ${action.identifier} and response text: ${action.text}`
+        );
+        completion();
+      }
+    );
+
+    RNNotifications.events().registerNotificationReceivedBackground(
+      (
+        notification: Notification,
+        completion: (response: NotificationCompletion) => void
+      ) => {
+        console.log("Notification Received - Background", notification.payload);
+
+        // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
+        completion({ alert: true, sound: true, badge: false });
+      }
+    );
     // if (Platform.OS === "android") {
     //   if (UIManager.setLayoutAnimationEnabledExperimental) {
     //     UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -279,7 +317,7 @@ class App extends React.Component {
   };
   componentDidMount() {
     enableScreens();
-    Linking.addEventListener("url", this.handleDeeplink);
+    // Linking.addEventListener("url", this.handleDeeplink);
 
     RNBootSplash.hide();
 
@@ -293,10 +331,9 @@ class App extends React.Component {
 
     this._loadAsync();
     store.dispatch(actionCreators.checkForExpiredToken(NavigationService));
-    this._notificationSubscription =
-      Notifications.addNotificationResponseReceivedListener(
-        this._handleNotification
-      );
+    Notifications.addNotificationResponseReceivedListener(
+      this._handleNotification
+    );
     AppState.addEventListener("change", this._handleAppStateChange);
     Platform.OS === "ios" && Intercom.registerForPush();
 
@@ -326,6 +363,9 @@ class App extends React.Component {
   }
   componentDidUpdate(prevProps, prevState) {
     // to navigate from a deep link from a notification if the app is killed on iOS
+    Notifications.addNotificationResponseReceivedListener(
+      this._handleNotification
+    );
     if (store.getState().auth.userInfo && Platform.OS === "ios") {
       if (
         this.state.mounted !== prevState.mounted &&
@@ -339,7 +379,7 @@ class App extends React.Component {
     }
   }
   handleDeeplink = (url) => {
-    Linking.openURL(url.url);
+    // Linking.openURL(url.url);
     console.log("URL", url.url);
   };
   _handleAppStateChange = (nextAppState) => {
