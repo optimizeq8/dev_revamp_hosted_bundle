@@ -14,6 +14,7 @@ import {
   I18nManager,
   AppState,
   ActivityIndicator,
+  Linking,
 } from "react-native";
 import RNRestart from "react-native-restart";
 
@@ -82,7 +83,7 @@ import LottieView from "lottie-react-native";
 //DEV TOKEN FOR MIXPANEL ====> c9ade508d045eb648f95add033dfb017
 //LIVE TOKEN FOR MIXPANEL ====> ef78d7f5f4160b74fda35568224f6cfa
 const MixpanelSDK = new MixpanelInstance(
-  __DEV__
+  !__DEV__
     ? "c9ade508d045eb648f95add033dfb017"
     : "ef78d7f5f4160b74fda35568224f6cfa",
   false,
@@ -278,6 +279,7 @@ class App extends React.Component {
   };
   componentDidMount() {
     enableScreens();
+    Linking.addEventListener("url", this.handleDeeplink);
 
     RNBootSplash.hide();
 
@@ -300,6 +302,7 @@ class App extends React.Component {
 
     Notifications.getDevicePushTokenAsync()
       .then((token) => {
+        console.log("tokenn", token);
         Intercom.sendTokenToIntercom(token.data);
       })
       .catch((err) => {});
@@ -335,6 +338,10 @@ class App extends React.Component {
       }
     }
   }
+  handleDeeplink = (url) => {
+    Linking.openURL(url.url);
+    console.log("URL", url.url);
+  };
   _handleAppStateChange = (nextAppState) => {
     if (
       this.state.appState.match(/inactive|background/) &&
@@ -373,7 +380,7 @@ class App extends React.Component {
   };
 
   _handleNotification = async (handleScreen) => {
-    // console.log("handleScreen app", JSON.stringify(handleScreen, null, 2));
+    console.log("handleScreen app", JSON.stringify(handleScreen, null, 2));
     // console.log(handleScreen.notification.request.content.data.screenName);
     this.setState({ notificationData: handleScreen });
     if (handleScreen.data) {
