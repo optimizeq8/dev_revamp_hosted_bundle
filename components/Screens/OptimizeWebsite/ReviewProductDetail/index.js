@@ -58,6 +58,7 @@ class ReviewProductDetail extends Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness.businessid,
     });
     const product = this.props.navigation.getParam("product", {});
     this.setState({

@@ -78,6 +78,7 @@ class MyWebsite extends Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -126,7 +127,12 @@ class MyWebsite extends Component {
   };
 
   uploadPhoto = () => {
-    _pickImage("Images", this.props.screenProps, this.startUpload);
+    _pickImage(
+      "Images",
+      this.props.screenProps,
+      this.startUpload,
+      this.props.mainBusiness
+    );
   };
   onToggleModal = (visibile) => {
     this.setState({ isVisible: visibile });
@@ -237,6 +243,9 @@ class MyWebsite extends Component {
                   source: "open_my_website",
                   source_action: "a_copy_my_website_url",
                   weburl: website,
+                  businessid:
+                    this.props.mainBusiness &&
+                    this.props.mainBusiness.businessid,
                 });
                 Clipboard.setString(website);
               }}

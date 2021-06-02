@@ -59,6 +59,7 @@ class AppSearchModal extends Component {
           source: "ad_swipe_up_destination",
           source_action: "a_app_search_modal",
           campaign_app_OS: "ANDROID",
+          businessid: this.props.mainBusiness.businessid,
         });
         this.refs.modalFlash.showMessage({
           message:
@@ -106,6 +107,7 @@ class AppSearchModal extends Component {
           source: "ad_swipe_up_destination",
           source_action: "a_app_search_modal",
           campaign_app_OS: "iOS",
+          businessid: this.props.mainBusiness.businessid,
         });
         this.refs.modalFlash.showMessage({
           message: "Something went wrong!",
@@ -257,6 +259,7 @@ class AppSearchModal extends Component {
                           source: "app_search_modal",
                           source_action: "a_app_search",
                           campaign_app_OS: appSelection,
+                          businessid: this.props.mainBusiness.businessid,
                         });
                         switch (appSelection) {
                           case "iOS":
@@ -355,5 +358,6 @@ class AppSearchModal extends Component {
 const mapStateToProps = (state) => ({
   FBAccessTokenForAppSearch: state.generic.FBAccessTokenForAppSearch,
   FBAdAccountIDForAppSearch: state.generic.FBAdAccountIDForAppSearch,
+  mainBusiness: state.account.mainBusiness,
 });
 export default connect(mapStateToProps, null)(AppSearchModal);

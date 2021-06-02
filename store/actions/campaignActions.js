@@ -122,6 +122,7 @@ export const ad_objective = (info, navigation, segmentInfo, objective) => {
             campaign_error: !data.success && data.message,
             device_id: getUniqueId(),
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_OBJ,
@@ -159,6 +160,7 @@ export const ad_objective = (info, navigation, segmentInfo, objective) => {
             campaign_error: !data.success && data.message,
             device_id: getUniqueId(),
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           navigation.navigate("AdDesign", {
             source: "ad_objective",
@@ -209,7 +211,7 @@ export const ad_design = (
   segmentInfo
 ) => {
   onToggleModal(true);
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DESIGN,
       payload: true,
@@ -237,6 +239,7 @@ export const ad_design = (
             action_status: data.success ? "success" : "failure",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DESIGN,
@@ -250,6 +253,7 @@ export const ad_design = (
             action_status: data.success ? "success" : "failure",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           rejected &&
             showMessage({
@@ -334,7 +338,7 @@ export const uploadStoryAdCover = (
   segmentInfo
 ) => {
   onToggleModal(true);
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_COVER_LOADING_DESIGN,
       payload: true,
@@ -365,6 +369,7 @@ export const uploadStoryAdCover = (
             resubmit: rejected,
             action_status: data.success ? "success" : "failure",
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
         } else {
           analytics.track(`a_submit_ad_cover`, {
@@ -373,6 +378,7 @@ export const uploadStoryAdCover = (
             resubmit: rejected,
             action_status: data.success ? "success" : "failure",
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           showMessage({
             message: data.message,
@@ -738,6 +744,7 @@ export const ad_details = (
             campaign_budget: data.data.lifetime_budget_micro,
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           navigation.navigate("AdPaymentReview", {
             source: "ad_targeting",
@@ -781,6 +788,7 @@ export const updateCampaign = (
           ...segmentInfo,
           action_status: data.success ? "success" : "failure",
           campaign_error: !data.success && data.message,
+          businessid: getState().account.mainBusiness.businessid,
         });
         showMessage({
           type: data.success ? "success" : "warning",
@@ -822,6 +830,7 @@ export const updateStatus = (info, handleToggle) => {
           campaign_error: !data.success && data.message,
           source: "campaign_detail",
           source_action: "a_update_campaign_status",
+          businessid: getState().account.mainBusiness.businessid,
         });
         handleToggle(data.status);
         if (data.message) {
@@ -840,7 +849,7 @@ export const updateStatus = (info, handleToggle) => {
 };
 
 export const endCampaign = (info, handleToggle) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     createBaseUrl()
       .put(`endCampaign`, info)
       .then((res) => {
@@ -856,6 +865,7 @@ export const endCampaign = (info, handleToggle) => {
           campaign_error: !data.success && data.message,
           source: "campaign_detail",
           source_action: "a_update_campaign_status",
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.message) {
           showMessage({ message: data.message, type: "info", position: "top" });
@@ -1655,7 +1665,7 @@ export const overWriteObjectiveData = (value) => {
  * @param {*} translate
  */
 export const verifyDestinationUrl = (url, submit, translate) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.VERIFY_DESTINATION_URL,
       payload: {
@@ -1681,6 +1691,7 @@ export const verifyDestinationUrl = (url, submit, translate) => {
           source_action: "a_verify_destination_url",
           action_status: data.success ? "success" : "failure",
           campaign_url: url,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           submit(url);
@@ -1692,6 +1703,7 @@ export const verifyDestinationUrl = (url, submit, translate) => {
               "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media",
             campaign_channel: "snapchat",
             campaign_url: url,
+            businessid: getState().account.mainBusiness.businessid,
           });
           showMessage({
             type: "warning",
@@ -1779,9 +1791,10 @@ export const moveRejectedAdAmountToWallet = (campaign_id, keep_campaign) => {
           source: "ad_detail",
           source_action: "a_move_amount_to_wallet",
           camapign_channel: "snapchat",
-          campaign_id: campaign_id,
+          campaignId: campaign_id,
           action_status: data.success ? "success" : "failure",
           campaign_error: !data.success && data.message,
+          businessid: getState().account.mainBusiness.businessid,
         });
         dispatch({
           type: actionTypes.MOVING_AMOUNT_TO_WALLET,
@@ -1881,7 +1894,7 @@ export const verifySnapchatOtp = (
   verification_code,
   otpVerified
 ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.VERIFY_ENGAGMENT_NUMBER_OTP_LOADING,
       payload: true,
@@ -1900,10 +1913,12 @@ export const verifySnapchatOtp = (
           verification_channel: "Mobile",
           action_status: data.success ? "success" : "failure",
           action_message: data.message,
-          campaign_id,
+          campaignId: campaign_id,
           campaign_phone_number_id: phone_number_id,
           campaign_verification_code: verification_code,
           campaign_error: !data.success && data.message,
+          campaignId: campaign_id,
+          businessid: getState().account.mainBusiness.businessid,
         });
         showMessage({
           message: data.message,
@@ -1940,6 +1955,7 @@ export const repeatSnapCampagin = (previous_campaign_info, handleSwitch) => {
           source_action: "a_repeat_campaign",
           camapign_channel: "snapchat",
           previous_campaignId: previous_campaign_info.previous_campaign_id,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.success)
           dispatch({
@@ -1987,6 +2003,7 @@ export const repeatSnapCampaginBudget = (
           action_status: data.success ? "success" : "failure",
           campaign_channel: "snapchat",
           campaignId: data.campaign_id,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch({
@@ -2034,6 +2051,7 @@ export const extendSnapCampagin = (previous_campaign_info, handleSwitch) => {
           camapign_channel: "snapchat",
           previous_campaignId: previous_campaign_info.previous_campaign_id,
           action_status: data.success ? "success" : "failure",
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch(
@@ -2097,6 +2115,7 @@ export const extendSnapCampaginBudget = (
           action_status: data.success ? "success" : "failure",
           campaign_channel: "channel",
           campaignId: data.campaign_id,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch({

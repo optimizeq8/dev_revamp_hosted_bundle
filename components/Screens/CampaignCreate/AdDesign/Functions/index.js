@@ -248,7 +248,8 @@ export const _changeDestination = (
   setStoryAdAttachment,
   campaignInfo,
   save_campaign_info,
-  setTheState
+  setTheState,
+  mainBusiness
 ) => {
   let newData = {};
   if (adType === "StoryAd") {
@@ -261,6 +262,7 @@ export const _changeDestination = (
       campaign_attachment: attachment,
       campaign_swipe_up_CTA: call_to_action,
       campaign_swipe_up_destination: destination,
+      businessid: mainBusiness && mainBusiness.businessid,
     });
     if (whatsAppCampaign) {
       !store.getState().dashboard.rejCampaign
@@ -311,6 +313,7 @@ export const _changeDestination = (
       },
       campaign_swipe_up_CTA: call_to_action,
       campaign_swipe_up_destination: destination,
+      businessid: mainBusiness && mainBusiness.businessid,
     });
     setTheState(newData);
 
@@ -352,6 +355,7 @@ export const _changeDestination = (
       campaign_swipe_up_CTA: call_to_action,
       campaign_swipe_up_destination: destination,
       campaign_app_choice: appChoice,
+      businessid: mainBusiness && mainBusiness.businessid,
     });
     if (whatsAppCampaign) {
       newData = {

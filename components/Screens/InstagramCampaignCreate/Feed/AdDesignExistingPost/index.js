@@ -473,6 +473,7 @@ class InstagramAdDesignExistingPost extends Component {
       action_status: noError ? "success" : "failure",
       campaign_channel: "instagram",
       campaign_ad_type: "InstagramFeedAd",
+      businessid: this.props.mainBusiness.businessid,
     });
     if (noError) {
       this.props.navigation.navigate("AdFeedDesignReview", {
@@ -604,6 +605,7 @@ class InstagramAdDesignExistingPost extends Component {
         ) + 1,
       campaign_start_date: this.props.data.start_time,
       campaign_end_date: this.props.data.end_time,
+      businessid: this.props.mainBusiness.businessid,
     });
   };
   setMaxClickHeight = (event) => {

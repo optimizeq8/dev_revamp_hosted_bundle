@@ -333,6 +333,7 @@ class AdCover extends Component {
             error_page: "ad_cover",
             error_description:
               "Wrong aspect ratio for logo, Please crop the image to the correct size",
+            businessid: this.props.mainBusiness.businessid,
           });
 
           showMessage({
@@ -363,6 +364,7 @@ class AdCover extends Component {
           ...serialization,
           action_status: editedLogo.uri !== "" ? "success" : "failure",
           image_for: "campaign_cover_logo",
+          businessid: this.props.mainBusiness.businessid,
         });
         editedLogo.uri !== "" &&
           analytics.track(`a_error`, {
@@ -370,6 +372,7 @@ class AdCover extends Component {
             campaign_ad_type: "StoryAd",
             error_page: "ad_cover",
             error_description: "Logo must be exactly 993px by 284px",
+            businessid: this.props.mainBusiness.businessid,
           });
         showMessage({
           message:
@@ -483,6 +486,7 @@ class AdCover extends Component {
                   campaign_ad_type: "StoryAd",
                   error_page: "ad_cover",
                   error_description: "Image must be less than 2 MBs",
+                  businessid: this.props.mainBusiness.businessid,
                 });
                 showMessage({
                   message: translate(
@@ -515,6 +519,7 @@ class AdCover extends Component {
                 source: "ad_cover",
                 source_action: "a_media_editor",
                 image_for: "campaign_cover",
+                businessid: this.props.mainBusiness.businessid,
               });
 
               showMessage({
@@ -543,6 +548,7 @@ class AdCover extends Component {
                 error_description: error.wrongAspect
                   ? "Wrong aspect ratio for logo, Please crop the image to the correct size "
                   : "Please choose an image",
+                businessid: this.props.mainBusiness.businessid,
               });
 
               showMessage({
@@ -565,6 +571,7 @@ class AdCover extends Component {
             campaign_ad_type: "StoryAd",
             error_page: "ad_cover",
             error_description: "Please make sure the image is in png format",
+            businessid: this.props.mainBusiness.businessid,
           });
         }
       } else if (result && !result.cancelled && isNull(this.state.cover)) {
@@ -573,6 +580,7 @@ class AdCover extends Component {
           campaign_ad_type: "StoryAd",
           error_page: "ad_cover",
           error_description: "Please choose a media file",
+          businessid: this.props.mainBusiness.businessid,
         });
         showMessage({
           message: translate("Please choose a media file"),
@@ -685,6 +693,7 @@ class AdCover extends Component {
           this.state.coverHeadlineError ||
           this.state.logoError ||
           this.state.coverError,
+        businessid: this.props.mainBusiness.businessid,
       });
     }
     if (
@@ -750,6 +759,7 @@ class AdCover extends Component {
       source: "ad_cover",
       source_action: "a_help",
       support_type: "optimize_website",
+      businessid: this.props.mainBusiness.businessid,
     });
     analytics.track(`open_support`, {
       source: "ad_cover",
@@ -758,7 +768,7 @@ class AdCover extends Component {
       timestamp: new Date().getTime(),
       campaign_channel: "snapchat",
       campaign_ad_type: "StoryAd",
-      campaign_id: this.selectedCampaign.campaign_id,
+      campaignId: this.selectedCampaign.campaign_id,
     });
     this.props.navigation.push("WebView", {
       url: "https://www.optimizeapp.com/ad_requirements",
@@ -801,6 +811,7 @@ class AdCover extends Component {
       source_action,
       campaign_channel: "snapchat",
       campaign_ad_type: "StoryAd",
+      businessid: this.props.mainBusiness.businessid,
     });
 
     // let adjustAdCoverTracker = new AdjustEvent("s62u9o");

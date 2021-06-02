@@ -186,6 +186,8 @@ class Website extends Component {
         error_description: this.state.urlError,
         campaign_channel: "snapchat",
         campaign_url: this.state.campaignInfo.attachment,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
     if (this.validateUrl()) {
@@ -217,6 +219,7 @@ class Website extends Component {
       source: "ad_swipe_up_destination",
       source_action: "a_toggle_cta_modal",
       visible: false,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       inputCallToAction: false,
@@ -229,6 +232,8 @@ class Website extends Component {
         source: "ad_swipe_up_destination",
         source_action: "a_change_cta",
         campaign_swipe_up_CTA: value,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.setState(
         {
@@ -258,6 +263,7 @@ class Website extends Component {
       source: "ad_swipe_up_destination",
       source_action: "a_toggle_cta_modal",
       visible: true,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ inputCallToAction: true });
   };

@@ -431,6 +431,9 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
             timestamp: new Date().getTime(),
             action_status: response.data.success ? "success" : "failure",
             error_description: !response.data.success && response.data.message,
+            businessid:
+              getState().account.mainBusiness &&
+              getState().account.mainBusiness.businessid,
           });
           showMessage({
             message: response.data.message,
@@ -472,6 +475,9 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
             timestamp: new Date().getTime(),
             action_status: response.data.success ? "success" : "failure",
             error_description: !response.data.success && response.data.message,
+            businessid:
+              getState().account.mainBusiness &&
+              getState().account.mainBusiness.businessid,
           });
 
           showMessage({

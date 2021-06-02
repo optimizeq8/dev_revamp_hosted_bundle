@@ -62,11 +62,15 @@ class OptimizeWebsite extends Component {
       analytics.track(`a_go_back`, {
         source: "my_website_detail",
         source_action: "a_go_back",
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     } else {
       analytics.track(`a_go_back`, {
         source: "my_website_products",
         source_action: "a_go_back",
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
     this.props.navigation.navigate("TutorialWeb", {
@@ -89,6 +93,7 @@ class OptimizeWebsite extends Component {
       source_action,
       new: true,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -97,6 +102,7 @@ class OptimizeWebsite extends Component {
     analytics.track(`a_go_to_my_website_products`, {
       source: "my_website_detail",
       source_action: "a_submit_my_website_detail",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       activeStep,
@@ -108,6 +114,8 @@ class OptimizeWebsite extends Component {
         source: "my_website_detail",
         source_action: "a_submit_my_website_detail",
         timestamp: new Date().getTime(),
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
   }
@@ -128,6 +136,7 @@ class OptimizeWebsite extends Component {
     analytics.track(`my_website_detail`, {
       source,
       source_action,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     const changeFbConnectStatus = this.props.navigation.getParam(
       "success",

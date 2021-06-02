@@ -23,7 +23,7 @@ GoogleBackendURL = () =>
  * @returns {Function} returns an action to create an ad account under google
  */
 export const create_google_ad_account = (info, navigation) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
       payload: true,
@@ -42,6 +42,7 @@ export const create_google_ad_account = (info, navigation) => {
           device_id: getUniqueId(),
           businessid: info.businessid,
           action_status: data.error ? "failure" : "success",
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.error) {
           showMessage({
@@ -82,6 +83,7 @@ export const create_google_ad_account = (info, navigation) => {
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
+          businessid: getState().account.mainBusiness.businessid,
         });
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
@@ -172,7 +174,7 @@ export const create_google_SE_campaign_info = (
   navigation,
   segmentInfo
 ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
       payload: true,
@@ -192,6 +194,7 @@ export const create_google_SE_campaign_info = (
           campaign_error: data.error,
           device_id: getUniqueId(),
           ...segmentInfo,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.error) {
           showMessage({
@@ -256,7 +259,7 @@ export const create_google_SE_campaign_ad_design = (
   rejected,
   segmentInfo
 ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
       payload: true,
@@ -275,6 +278,7 @@ export const create_google_SE_campaign_ad_design = (
           action_status: !data.error ? "success" : "failure",
           campaign_resumbit: rejected,
           campaign_error: data.error,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (!data.error) {
           //do not set the reducer if it is a rejected data
@@ -343,7 +347,7 @@ export const get_google_SE_keywords = (
   businessid,
   segmentInfo
 ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_GOOGLE_LOADING,
       payload: true,
@@ -364,6 +368,7 @@ export const get_google_SE_keywords = (
           keywords: keyword,
           no_of_results: data.keywords && data.keywords.length,
           error_description: data.error,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (!data.error) {
           return dispatch({
@@ -411,7 +416,7 @@ export const get_google_SE_keywords = (
  * @returns {Function} an action to set the targeting info and the campaign transactions info
  */
 export const create_google_SE_campaign_ad_targeting = (info, segmentInfo) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
       payload: true,
@@ -426,6 +431,7 @@ export const create_google_SE_campaign_ad_targeting = (info, segmentInfo) => {
           ...segmentInfo,
           action_status: data.error ? "failure" : "success",
           campaign_error: data.error,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (!data.error) {
           dispatch({
@@ -447,6 +453,7 @@ export const create_google_SE_campaign_ad_targeting = (info, segmentInfo) => {
             source_action: "a_submit_ad_targeting",
             error_description:
               data.error || "Something went wrong. Please try again",
+            businessid: getState().account.mainBusiness.businessid,
           });
           showMessage({
             message: data.error,
@@ -527,6 +534,7 @@ export const get_google_campiagn_details = (
           campaign_type: "google",
           campaign_ad_type: "GoogleSEAd",
           error_description: data.error,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.error) {
           showMessage({
@@ -644,7 +652,7 @@ export const rest_google_campaign_data = () => {
  * @param {Object} info (gender/age/location/language/campiagnid)
  */
 export const update_google_audience_targeting = (info, segmentInfo) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
       payload: true,
@@ -666,6 +674,7 @@ export const update_google_audience_targeting = (info, segmentInfo) => {
           error_description:
             data.error &&
             (data.error || "Oops! Something went wrong. Please try again"),
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (!data.error) {
           NavigationService.navigate("Dashboard", {
@@ -687,6 +696,7 @@ export const update_google_audience_targeting = (info, segmentInfo) => {
           error_page: segmentInfo.source,
           action_status: "failure",
           error_description: err.message || err.response,
+          businessid: getState().account.mainBusiness.businessid,
         });
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
@@ -710,7 +720,7 @@ export const update_google_audience_targeting = (info, segmentInfo) => {
  * @param {Boolean} info.completed this was created to keep track of the rejection process
  */
 export const update_google_keywords = (info, segmentInfo) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
       payload: true,
@@ -732,6 +742,7 @@ export const update_google_keywords = (info, segmentInfo) => {
           error_description:
             data.error &&
             (data.error || "Oops! Something went wrong. Please try again"),
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (!data.error) {
           NavigationService.navigate("Dashboard", {
@@ -746,6 +757,7 @@ export const update_google_keywords = (info, segmentInfo) => {
             error_description:
               data.error &&
               (data.error || "Oops! Something went wrong. Please try again"),
+            businessid: getState().account.mainBusiness.businessid,
           });
           showMessage({
             message: "Oops! Something went wrong. Please try again.",
@@ -761,6 +773,7 @@ export const update_google_keywords = (info, segmentInfo) => {
           error_page: segmentInfo.source,
           action_status: !data.error ? "success" : "failure",
           error_description: err.message || err.response,
+          businessid: getState().account.mainBusiness.businessid,
         });
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
@@ -784,7 +797,7 @@ export const update_google_keywords = (info, segmentInfo) => {
  * @param {Object} info
  */
 export const create_google_keywords = (info, segmentInfo) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     GoogleBackendURL()
       .post(`keywords/`, info)
       .then((res) => res.data)
@@ -801,6 +814,7 @@ export const create_google_keywords = (info, segmentInfo) => {
           action_status: data.error ? "failure" : "success",
           campaign_error: data.error,
           ...segmentInfo,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (!data.error) {
           NavigationService.navigate("GoogleAdPaymentReview", {
@@ -813,6 +827,7 @@ export const create_google_keywords = (info, segmentInfo) => {
             source_action: "a_ad_keywords",
             error_description:
               data.error || "Something went wrong. Please try again",
+            businessid: getState().account.mainBusiness.businessid,
           });
           showMessage({
             message: "Oops! Something went wrong. Please try again.",
@@ -869,7 +884,7 @@ export const enable_end_or_pause_google_campaign = (
       .then((res) => res.data)
       .then((data) => {
         analytics.track(`a_update_campaign_status`, {
-          campaign_id: campaign_id,
+          campaignId: campaign_id,
           campaign_status: endCampaign
             ? "END"
             : pauseOrEnable
@@ -879,6 +894,7 @@ export const enable_end_or_pause_google_campaign = (
           source: "campaign_detail",
           source_action: "a_update_campaign_status",
           campaign_error: data.error,
+          businessid: getState().account.mainBusiness.businessid,
         });
         dispatch({
           type: actionTypes.UPDATE_GOOGLE_CAMPAIGN_STATUS,
@@ -901,7 +917,7 @@ export const enable_end_or_pause_google_campaign = (
 };
 
 export const get_budget = (info, segmentInfo, navigation) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     GoogleBackendURL()
       .post(`campaign/budget/`, info)
       .then((res) => res.data)
@@ -921,6 +937,7 @@ export const get_budget = (info, segmentInfo, navigation) => {
           source_action: "a_get_budget",
           timestamp: new Date().getTime(),
           campaign_error: data.error,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (!data.error) {
           dispatch({
@@ -971,6 +988,7 @@ export const downloadGoogleCSV = (campaign_id, email, showModalMessage) => {
           campaign_channel: "google",
           action_status: data.message ? "success" : "failure",
           campaign_error: data.error,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.message) showModalMessage(data.message, "success");
       })

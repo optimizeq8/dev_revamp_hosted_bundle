@@ -98,6 +98,7 @@ class TeamInvite extends Component {
       source,
       source_action,
       invite_business: businessInvitee,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.checkTeamInvite();
   };
@@ -199,6 +200,7 @@ const mapStateToProps = (state) => ({
   tempInviteId: state.account.tempInviteId,
   invitedEmail: state.account.invitedEmail,
   teamInviteLoading: state.account.teamInviteLoading,
+  mainBusiness: state.account.mainBusiness,
 });
 
 const mapDispatchToProps = (dispatch) => ({

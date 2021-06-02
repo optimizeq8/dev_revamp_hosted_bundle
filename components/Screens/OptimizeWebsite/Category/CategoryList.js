@@ -64,6 +64,7 @@ class MyWebsite extends Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness.businessid,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -102,6 +103,7 @@ class MyWebsite extends Component {
     analytics.track(`a_add_more_categories`, {
       source: "open_my_category",
       source_action: "a_add_more_categories",
+      businessid: this.props.mainBusiness.businessid,
     });
     // MyWebsiteSelectProducts
     this.props.navigation.navigate("AddCategory", {
@@ -128,6 +130,7 @@ class MyWebsite extends Component {
             source: "open_my_category",
             source_action: "a_select_category_to_edit",
             product_id: item.id,
+            businessid: this.props.mainBusiness.businessid,
           });
           this.props.navigation.navigate("EditCategory", {
             product: item,

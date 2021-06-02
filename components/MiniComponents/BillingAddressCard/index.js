@@ -3,6 +3,7 @@ import { View, ScrollView } from "react-native";
 import isUndefined from "lodash/isUndefined";
 import analytics from "@segment/analytics-react-native";
 import InputScrollView from "react-native-input-scroll-view";
+import { connect } from "react-redux";
 
 import CustomHeader from "../Header";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
@@ -177,6 +178,8 @@ class BillingAddressCard extends React.Component {
         source_action: "a_business_address",
         error_desctiption: "Please complete the mandatory fields",
         action_status: "failure",
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
   };
@@ -398,4 +401,8 @@ class BillingAddressCard extends React.Component {
   }
 }
 
-export default BillingAddressCard;
+const mapStateToProps = (state) => ({
+  mainBusiness: state.account.mainBusiness,
+});
+
+export default connect(mapStateToProps, null)(BillingAddressCard);

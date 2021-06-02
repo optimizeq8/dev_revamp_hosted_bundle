@@ -479,6 +479,7 @@ class AdDesign extends Component {
       visibile: value,
       source: "ad_design",
       source_action: "a_toggle_caption",
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState(
       {
@@ -498,6 +499,7 @@ class AdDesign extends Component {
       action_status: noError ? "success" : "failure",
       campaign_channel: "instagram",
       campaign_ad_type: "InstagramStoryAd",
+      businessid: this.props.mainBusiness.businessid,
     });
     if (noError) {
       this.props.navigation.navigate("AdStoryDesignReview", {
@@ -544,7 +546,8 @@ class AdDesign extends Component {
       this.props.carouselAdsArray,
       this.state.campaignInfo.media_option,
       this.statisticsCallback,
-      this.rejected
+      this.rejected,
+      this.props.mainBusiness
       // this.adType,
     );
   };
@@ -582,6 +585,7 @@ class AdDesign extends Component {
         ) + 1,
       campaign_start_date: this.state.selectedCampaign.start_time,
       campaign_end_date: this.state.selectedCampaign.end_time,
+      businessid: this.props.mainBusiness.businessid,
     });
   };
   setMaxClickHeight = (event) => {

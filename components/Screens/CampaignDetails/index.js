@@ -114,6 +114,7 @@ class CampaignDetails extends Component {
       source_action: "a_ad_start_date",
       campaignId: this.props.selectedCampaign.campaign_id,
       campaign_start_date: date,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       start_time: date,
@@ -126,6 +127,7 @@ class CampaignDetails extends Component {
       source_action: "a_ad_end_date",
       campaignId: this.props.selectedCampaign.campaign_id,
       campaign_end_date: date,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       end_time: date,
@@ -168,6 +170,7 @@ class CampaignDetails extends Component {
       source: "campaign_detail",
       campaign_channel: "snapchat",
       source_action: "a_update_campaign_status",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ modalVisible: visible });
   };
@@ -225,6 +228,7 @@ class CampaignDetails extends Component {
       source: "ad_detail",
       source_action: "a_toggle_csv_modal",
       campaign_channel: "snapchat",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ CSVModalVisible: isVisible });
   };
@@ -273,13 +277,15 @@ class CampaignDetails extends Component {
         campaign_channel: "snapchat",
         timestamp: new Date().getTime(),
         device_id: this.props.screenProps.device_id,
-        campaign_id: "error",
+        campaignId: "error",
         error_description:
           (!this.props.loading &&
             !this.props.languagesListLoading &&
             !this.props.selectedCampaign) ||
           this.props.campaignError ||
           this.props.languagesListError,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
 
@@ -291,6 +297,8 @@ class CampaignDetails extends Component {
         timestamp: new Date().getTime(),
         device_id: this.props.screenProps.device_id,
         campaignId: this.props.selectedCampaign.campaign_id,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
   };
@@ -697,6 +705,7 @@ class CampaignDetails extends Component {
                       loading={loading}
                       screenProps={this.props.screenProps}
                       source={"campaign_detail"}
+                      mainBusiness={this.props.mainBusiness}
                     />
                     <AudienceOverview
                       screenProps={this.props.screenProps}

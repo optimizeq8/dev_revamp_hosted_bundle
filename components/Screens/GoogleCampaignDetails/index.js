@@ -116,6 +116,7 @@ class GoogleCampaignDetails extends Component {
       source_action: "a_ad_start_date",
       campaignId: this.props.campaign.id,
       campaign_start_date: date,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       start_time: date,
@@ -129,6 +130,7 @@ class GoogleCampaignDetails extends Component {
       source_action: "a_ad_end_date",
       campaignId: this.props.campaign.id,
       campaign_end_date: date,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       end_time: date,
@@ -141,6 +143,7 @@ class GoogleCampaignDetails extends Component {
       visible,
       source: "campaign_detail",
       source_action: "a_update_campaign_status",
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({ modalVisible: visible });
   };
@@ -179,6 +182,7 @@ class GoogleCampaignDetails extends Component {
       visible: false,
       source: "campaign_detail",
       source_action: "a_update_campaign_status",
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       toggle: status !== "PAUSED",
@@ -200,6 +204,7 @@ class GoogleCampaignDetails extends Component {
       source: "ad_detail",
       source_action: "a_toggle_csv_modal",
       campaign_channel: "google",
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({ CSVModalVisible: isVisible });
   };
@@ -229,6 +234,7 @@ class GoogleCampaignDetails extends Component {
         campaign_id: "error",
         error_description: this.props.campaignError,
         campaign_channel: "google",
+        businessid: this.props.mainBusiness.businessid,
       });
     }
     if (
@@ -243,6 +249,7 @@ class GoogleCampaignDetails extends Component {
         device_id: this.props.screenProps.device_id,
         campaignId: this.props.selectedCampaign.campaign.id,
         campaign_channel: "google",
+        businessid: this.props.mainBusiness.businessid,
       });
     }
   };
@@ -589,6 +596,7 @@ class GoogleCampaignDetails extends Component {
                     ad={selectedCampaign.ad}
                     error_type={selectedCampaign.error_type}
                     errors={selectedCampaign.errors}
+                    mainBusiness={this.props.mainBusiness}
                   />
                 )}
                 {loading ? (
@@ -713,6 +721,8 @@ class GoogleCampaignDetails extends Component {
                                                   source: "campaign_detail",
                                                   source_action:
                                                     "a_update_campaign_status",
+                                                  businessid: this.props
+                                                    .mainBusiness.businessid,
                                                 }
                                               );
                                             }
@@ -799,6 +809,7 @@ const mapStateToProps = (state) => ({
   loading: state.dashboard.loadingCampaignDetails,
   campaignStatusLoading: state.googleAds.campaignStatusLoading,
   campaignError: state.dashboard.campaignError,
+  mainBusiness: state.account.mainBusiness,
 });
 const mapDispatchToProps = (dispatch) => ({
   get_google_campiagn_details: (id, start_time, end_time, getStats) =>

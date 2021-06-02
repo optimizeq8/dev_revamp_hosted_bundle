@@ -429,6 +429,7 @@ class AdDetails extends Component {
       source_action: "a_ad_age",
       campaign_min_age: parseInt(values[0]),
       campaign_max_age: parseInt(values[1]),
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       campaignInfo: rep,
@@ -534,6 +535,8 @@ class AdDetails extends Component {
         source: "ad_targeting",
         source_action: "a_ad_country",
         campaign_country_name: countryName,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       let showRegions = false;
       this.setState(
@@ -584,6 +587,7 @@ class AdDetails extends Component {
       source_action: "a_ad_devices",
       campaign_devices_name:
         selectedItems.length > 0 ? selectedItems.join(", ") : "",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.setState({
@@ -604,6 +608,7 @@ class AdDetails extends Component {
       source: "ad_targeting",
       source_action: "a_ad_interests",
       campaign_interests_names: names && names.length > 0 && names.join(", "),
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     !this.editCampaign &&
       this.props.save_campaign_info({
@@ -628,6 +633,8 @@ class AdDetails extends Component {
         source: "ad_targeting",
         source_action: "a_ad_languages",
         campaign_languages: langs.join(", "),
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     } else {
       if (replace.targeting.geos.length > 1) {
@@ -638,6 +645,8 @@ class AdDetails extends Component {
         source: "ad_targeting",
         source_action: "a_ad_languages",
         campaign_languages: langs.join(", "),
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
 
@@ -646,6 +655,8 @@ class AdDetails extends Component {
         error_page: "ad_targeting",
         source_action: "a_ad_languages",
         error_description: "Please choose a language",
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
 
       showMessage({
@@ -676,6 +687,7 @@ class AdDetails extends Component {
       campaign_os_type: selectedItem === "" ? "ALL" : selectedItem,
       campaign_os_min_ver: "",
       campaign_os_max_ver: "",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       campaignInfo: { ...replace },
@@ -695,6 +707,7 @@ class AdDetails extends Component {
       source_action: "a_ad_OS_version",
       campaign_os_min_ver: selectedItem[0],
       campaign_os_max_ver: selectedItem[1],
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       campaignInfo: { ...replace },
@@ -715,6 +728,7 @@ class AdDetails extends Component {
       source: "ad_targeting",
       source_action: "a_ad_map_locations",
       campaign_map_locations: selectedItems,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       campaignInfo: { ...stateRep },
@@ -780,6 +794,8 @@ class AdDetails extends Component {
           source: "ad_targeting",
           source_action: "a_ad_regions",
           campaign_region_names: [],
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         rNamesSelected = [];
         this.setState({
@@ -818,6 +834,8 @@ class AdDetails extends Component {
           source: "ad_targeting",
           source_action: "a_ad_regions",
           campaign_region_names: rNamesSelected.join(", "),
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         this.setState({
           regionNames: rNamesSelected,
@@ -851,6 +869,8 @@ class AdDetails extends Component {
         source: "ad_targeting",
         source_action: "a_ad_regions",
         campaign_region_names: rNamesSelected.join(", "),
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.setState({
         campaignInfo: replace,
@@ -891,6 +911,8 @@ class AdDetails extends Component {
         source_action: "a_handle_budget",
         custom_budget: false,
         campaign_budget: rawValue,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       !this.editCampaign &&
         this.props.save_campaign_info({
@@ -911,6 +933,8 @@ class AdDetails extends Component {
               validateWrapper("Budget", rawValue) +
               " $" +
               this.props.campaign.minValueBudget,
+            businessid:
+              this.props.mainBusiness && this.props.mainBusiness.businessid,
           });
         }
         showMessage({
@@ -932,6 +956,8 @@ class AdDetails extends Component {
         source_action: "a_handle_budget",
         custom_budget: true,
         campaign_budget: rawValue,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
 
       this.setState({
@@ -960,6 +986,7 @@ class AdDetails extends Component {
     replace.targeting.demographics[0].gender = gender;
     analytics.track(`a_ad_gender`, {
       campaign_gender: gender === "" ? "ALL" : gender,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ campaignInfo: { ...replace } });
     !this.editCampaign &&
@@ -1087,6 +1114,8 @@ class AdDetails extends Component {
             "Budget",
             this.state.campaignInfo.lifetime_budget_micro
           ),
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
     if (
@@ -1363,6 +1392,7 @@ class AdDetails extends Component {
       source,
       source_action,
       ...segmentInfo,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     if (!this.editCampaign) {
       this.props.saveCampaignSteps(

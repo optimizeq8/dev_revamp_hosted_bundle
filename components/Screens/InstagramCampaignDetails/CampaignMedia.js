@@ -32,6 +32,7 @@ export const previewHandler = (
     action_status: "success",
     campaign_channel: "instagram",
     campaign_ad_type: selectedCampaign.campaign_type,
+    businessid: this.props.mainBusiness.businessid,
   });
   navigation.navigate(
     selectedCampaign.campaign_type !== "InstagramStoryAd"

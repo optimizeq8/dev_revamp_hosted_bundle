@@ -55,7 +55,8 @@ export const pick = async (mediaTypes, screenProps) => {
 export const _pickImage = async (
   mediaTypes = "Images",
   screenProps,
-  startUpload
+  startUpload,
+  mainBusiness
 ) => {
   try {
     let result = {};
@@ -117,6 +118,7 @@ export const _pickImage = async (
                 source_action: "a_select_media",
                 error_description: "Image must be less than 5 MBs",
                 image_for: "Business Logo",
+                businessid: mainBusiness && mainBusiness.businessid,
               });
 
               showMessage({
@@ -140,6 +142,7 @@ export const _pickImage = async (
               source_action: "a_select_media",
               action_status: "failure",
               image_for: "Business Logo",
+              businessid: mainBusiness && mainBusiness.businessid,
             });
             return Promise.reject("Editing canceled");
           }
@@ -150,6 +153,7 @@ export const _pickImage = async (
             source_action: "a_select_media",
             action_status: "success",
             image_for: "Business Logo",
+            businessid: mainBusiness && mainBusiness.businessid,
           });
 
           showMessage({
@@ -179,6 +183,7 @@ export const _pickImage = async (
                   "The dimensions are too large, please choose a different image"
                 ),
             image_for: "Business Logo",
+            businessid: mainBusiness && mainBusiness.businessid,
           });
 
           showMessage({
@@ -265,6 +270,7 @@ export const _pickImageMedia = async (
                 source_action: "a_select_media",
                 error_description: "Image must be less than 5 MBs",
                 image_for: "Business Logo",
+                businessid: mainBusiness && mainBusiness.businessid,
               });
 
               showMessage({
@@ -288,6 +294,7 @@ export const _pickImageMedia = async (
               source_action: "a_select_media",
               action_status: "failure",
               image_for: "Business Logo",
+              businessid: mainBusiness && mainBusiness.businessid,
             });
             return Promise.reject("Editing canceled");
           }
@@ -298,6 +305,7 @@ export const _pickImageMedia = async (
             source_action: "a_select_media",
             action_status: "success",
             image_for: "Business Logo",
+            businessid: mainBusiness && mainBusiness.businessid,
           });
 
           showMessage({
@@ -327,6 +335,7 @@ export const _pickImageMedia = async (
                   "The dimensions are too large, please choose a different image"
                 ),
             image_for: "Business Logo",
+            businessid: mainBusiness && mainBusiness.businessid,
           });
 
           showMessage({

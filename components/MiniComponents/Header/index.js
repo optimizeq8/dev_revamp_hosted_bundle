@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Image, I18nManager, Text } from "react-native";
 import { Icon } from "native-base";
+import { connect } from "react-redux";
 import { RFValue } from "react-native-responsive-fontsize";
 import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
@@ -20,7 +21,7 @@ import BinIcon from "../../../assets/SVGs/Bin";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
 
-export default class Header extends Component {
+class Header extends Component {
   render() {
     let {
       segment,
@@ -68,6 +69,9 @@ export default class Header extends Component {
                 analytics.track(segment.source_action, {
                   source: segment.source,
                   source_action: segment.source_action,
+                  businessid:
+                    this.props.mainBusiness &&
+                    this.props.mainBusiness.businessid,
                 });
               }
               if (!isUndefined(navigation)) navigation.goBack();
@@ -222,3 +226,8 @@ export default class Header extends Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+  mainBusiness: state.account.mainBusiness,
+});
+
+export default connect(mapStateToProps, null)(Header);

@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, I18nManager } from "react-native";
 import { Badge } from "native-base";
 import isUndefined from "lodash/isUndefined";
 import analytics from "@segment/analytics-react-native";
+import { connect } from "react-redux";
 
 //icons
 import BackIcon from "../../../assets/SVGs/BackButtonPurple";
@@ -15,13 +16,15 @@ import GoogleSE from "../../../assets/SVGs/GoogleAds";
 import styles from "./styles";
 import isStringArabic from "../../isStringArabic";
 
-export default class TopStepsHeader extends Component {
+class TopStepsHeader extends Component {
   handleTouchableOpacity = () => {
     let { segment, navigation, actionButton } = this.props;
     if (!isUndefined(segment)) {
       analytics.track(segment.source_action, {
         source: segment.source,
         source_action: segment.source_action,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
     if (!isUndefined(navigation)) navigation.goBack();
@@ -145,3 +148,9 @@ export default class TopStepsHeader extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  mainBusiness: state.account.mainBusiness,
+});
+
+export default connect(mapStateToProps, null)(TopStepsHeader);

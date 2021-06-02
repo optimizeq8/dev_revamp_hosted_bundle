@@ -99,6 +99,7 @@ class VerifyAccount extends Component {
       timestamp: new Date().getTime(),
       verification_channel: "Mobile",
       channel_changed: false,
+      businessid: this.props.mainBusiness.businessid,
     });
     // USING APP STATE To see if screen is focused or not
     AppState.addEventListener("change", this.handleDidFocusLink);
@@ -145,6 +146,7 @@ class VerifyAccount extends Component {
             }`,
             channel_changed: true,
             userId: this.props.userInfo.userid,
+            businessid: this.props.mainBusiness.businessid,
           }
         );
       }
@@ -162,6 +164,7 @@ class VerifyAccount extends Component {
       source: "start_verify",
       source_action: "a_change_mobile_number",
       mobile: number,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       phoneNum: number,
@@ -231,6 +234,7 @@ class VerifyAccount extends Component {
         verification_channel: "Mobile",
         channel_changed: true,
         userId: this.props.userInfo.userid,
+        businessid: this.props.mainBusiness.businessid,
       });
     } else if (
       !this.props.successNo &&
@@ -245,6 +249,7 @@ class VerifyAccount extends Component {
         verification_channel: "Email",
         channel_changed: true,
         userId: this.props.userInfo.userid,
+        businessid: this.props.mainBusiness.businessid,
       });
     } else if (!prevProps.successNo && this.props.successNo) {
       analytics.track(`otp_verify`, {
@@ -257,6 +262,7 @@ class VerifyAccount extends Component {
         verification_channel: verifyByMobile ? "Mobile" : "Email",
         userId: this.props.userInfo.userid,
         resend_otp: this.state.resend_otp,
+        businessid: this.props.mainBusiness.businessid,
       });
     }
   }
@@ -273,6 +279,7 @@ class VerifyAccount extends Component {
       verification_channel: this.state.verifyByMobile ? "Mobile" : "Email",
       userId: this.props.userInfo.userid,
       resend_otp: true,
+      businessid: this.props.mainBusiness.businessid,
     });
     analytics.track(`a_resend_otp`, {
       source: "otp_verify",
@@ -281,6 +288,7 @@ class VerifyAccount extends Component {
       device_id: this.props.screenProps.device_id,
       verification_channel: this.state.verifyByMobile ? "Mobile" : "Email",
       userId: this.props.userInfo.userid,
+      businessid: this.props.mainBusiness.businessid,
     });
     if (this.state.verifyByMobile) {
       this.props.resendVerifyMobileCode({

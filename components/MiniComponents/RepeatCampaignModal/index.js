@@ -53,6 +53,7 @@ class RepeatCampaignModal extends Component {
       source: "repeat_campaign_modal",
       source_action: "a_repeat_ad_start_date",
       campaign_start_date: date,
+      businessid: this.props.mainBusiness.businessid,
     });
   };
   handleEndDatePicked = (date) => {
@@ -65,6 +66,7 @@ class RepeatCampaignModal extends Component {
       campaign_end_date: date,
       source: "repeat_campaign_modal",
       source_action: "a_ad_end_date",
+      businessid: this.props.mainBusiness.businessid,
     });
   };
   handleDuration = (subtract = false, onePress = false, time = 1) => {
@@ -86,6 +88,7 @@ class RepeatCampaignModal extends Component {
       source_action: "a_repeat_duration",
       campaign_end_date: end_time,
       campaign_duration: duration,
+      businessid: this.props.mainBusiness.businessid,
     });
     if (!onePress) {
       this.timer = setTimeout(
@@ -105,6 +108,7 @@ class RepeatCampaignModal extends Component {
       source_action: "a_toggle_date_modal",
       visible: value,
       campaign_channel: this.props.campaign.channel,
+      businessid: this.props.mainBusiness.businessid,
     });
     if (!value) {
       this.dateField.showModal();
@@ -234,6 +238,7 @@ class RepeatCampaignModal extends Component {
 const mapStateToProps = (state) => ({
   repeatCampaignLoading: state.campaignC.repeatCampaignLoading,
   repeatInstaCampaignLoading: state.instagramAds.repeatInstaCampaignLoading,
+  mainBusiness: state.account.mainBusiness,
 });
 const mapDispatchToProps = (dispatch) => ({
   repeatSnapCampagin: (campaignInfo, handleSwitch) =>

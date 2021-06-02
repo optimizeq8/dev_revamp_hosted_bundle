@@ -89,6 +89,7 @@ class AddOrEditTeamMember extends Component {
       source_action: "a_change_team_member_role",
       timestamp: new Date().getTime(),
       user_role: userRole === this.state.userRole ? 0 : userRole,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       //if none of the switches are selected then set the state to 0
@@ -218,6 +219,7 @@ class AddOrEditTeamMember extends Component {
       timestamp: new Date().getTime(),
       new_team_member: this.props.navigation.getParam("editTeamMember", false),
       ...teamMeber,
+      businessid: this.props.mainBusiness.businessid,
     });
   };
 

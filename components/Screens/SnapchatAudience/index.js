@@ -169,6 +169,7 @@ export class SnapchatAudience extends Component {
         // campaign_channel: "snapchat",
         // campaign_ad_type: this.props.adType,
         error_description: countryError || languagesError || audienceNameError,
+        businessid: this.props.mainBusiness.businessid,
       });
     }
     if (!languagesError && !countryError && !audienceNameError) {
@@ -299,6 +300,7 @@ export class SnapchatAudience extends Component {
       source_action: "a_audience_age",
       audience_max_age: parseInt(values[0]),
       audience_min_age: parseInt(values[1]),
+      businessid: this.props.mainBusiness.businessid,
     });
     this.props.setAudienceDetail({ ...rep });
   };
@@ -453,6 +455,7 @@ export class SnapchatAudience extends Component {
       source_action: "a_audience_devices",
       audience_devices_name:
         selectedItems.length > 0 ? selectedItems.join(", ") : "",
+      businessid: this.props.mainBusiness.businessid,
     });
 
     this.props.setAudienceDetail({
@@ -466,6 +469,7 @@ export class SnapchatAudience extends Component {
       source: "audience_detail",
       source_action: "a_audience_interests",
       audience_interests_names: names && names.length > 0 && names.join(", "),
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       interestNames: names,
@@ -502,6 +506,7 @@ export class SnapchatAudience extends Component {
         source: "audience_detail",
         source_action: "a_audience_languages",
         audience_languages: langs.join(", "),
+        businessid: this.props.mainBusiness.businessid,
       });
     }
 
@@ -510,6 +515,7 @@ export class SnapchatAudience extends Component {
         error_page: "audience_detail",
         source_action: "a_audience_languages",
         error_description: "Please choose a language",
+        businessid: this.props.mainBusiness.businessid,
       });
 
       showMessage({
@@ -538,6 +544,7 @@ export class SnapchatAudience extends Component {
       audience_os_type: selectedItem === "" ? "ALL" : selectedItem,
       audience_os_min_ver: "",
       audience_os_max_ver: "",
+      businessid: this.props.mainBusiness.businessid,
     });
 
     this.props.setAudienceDetail({
@@ -554,6 +561,7 @@ export class SnapchatAudience extends Component {
       source_action: "a_audience_OS_version",
       audience_os_min_ver: selectedItem[0],
       audience_os_max_ver: selectedItem[1],
+      businessid: this.props.mainBusiness.businessid,
     });
 
     this.props.setAudienceDetail({
@@ -571,6 +579,7 @@ export class SnapchatAudience extends Component {
       source: "audience_detail",
       source_action: "a_audience_map_locations",
       audience_map_locations: selectedItems,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       // campaignInfo: { ...stateRep },
@@ -618,6 +627,7 @@ export class SnapchatAudience extends Component {
           source: "audience_detail",
           source_action: "a_audience_regions",
           audience_region_names: [],
+          businessid: this.props.mainBusiness.businessid,
         });
         rNamesSelected = [];
         this.setState({
@@ -656,6 +666,7 @@ export class SnapchatAudience extends Component {
           source: "audience_detail",
           source_action: "a_audience_regions",
           audience_region_names: rNamesSelected.join(", "),
+          businessid: this.props.mainBusiness.businessid,
         });
         this.setState({
           regionNames: rNamesSelected,
@@ -687,6 +698,7 @@ export class SnapchatAudience extends Component {
         source: "audience_detail",
         source_action: "a_audience_regions",
         audience_region_names: rNamesSelected.join(", "),
+        businessid: this.props.mainBusiness.businessid,
       });
       this.setState({
         regionNames: rNamesSelected,
@@ -703,6 +715,7 @@ export class SnapchatAudience extends Component {
     replace.targeting.demographics[0].gender = gender;
     analytics.track(`a_audience_gender`, {
       audience_gender: gender === "" ? "ALL" : gender,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({ targeting: { ...replace } });
 
@@ -730,6 +743,7 @@ export class SnapchatAudience extends Component {
   setAudienceName = (stateName, value) => {
     analytics.track("a_audience_name", {
       audience_name: value,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.props.setAudienceDetail({ name: value });
   };
@@ -850,6 +864,7 @@ export class SnapchatAudience extends Component {
     analytics.track("go_back_warning", {
       source: "audience_detail",
       source_action: "a_go_back",
+      businessid: this.props.mainBusiness.businessid,
     });
     Alert.alert(
       translate("Warning"),
@@ -863,6 +878,7 @@ export class SnapchatAudience extends Component {
             analytics.track("a_cancel_go_back", {
               source: "audience_detail",
               source_action: "a_go_back",
+              businessid: this.props.mainBusiness.businessid,
             });
           },
           style: "cancel",
@@ -873,6 +889,7 @@ export class SnapchatAudience extends Component {
             analytics.track("a_go_back", {
               source: "audience_detail",
               source_action: "a_go_back",
+              businessid: this.props.mainBusiness.businessid,
             });
             this.props.navigation.goBack();
           },
@@ -895,6 +912,7 @@ export class SnapchatAudience extends Component {
       source_action,
       new: !this.editAudience,
       audience_channel: "snapchat",
+      businessid: this.props.mainBusiness.businessid,
     });
   };
   expandLocation = () => {

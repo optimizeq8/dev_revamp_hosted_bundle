@@ -60,6 +60,7 @@ class BusinessCard extends Component {
   handleSwitchBusiness = () => {
     if (!this.props.manageTeam) {
       analytics.track(`a_switch_account`, {
+        businessid: this.props.mainBusiness.businessid,
         prev_businessid: this.props.mainBusiness.businessid,
         new_businessid: this.props.business.businessid,
         source: "open_hamburger",

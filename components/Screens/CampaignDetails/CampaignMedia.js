@@ -47,6 +47,7 @@ export const previewHandler = (selectedCampaign, navigation, source) => {
     action_status: "success",
     campaign_channel: "snapchat",
     campaign_ad_type: selectedCampaign.campaign_type,
+    businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
   });
 
   navigation.push(

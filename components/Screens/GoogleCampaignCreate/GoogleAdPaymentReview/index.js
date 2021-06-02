@@ -185,6 +185,7 @@ class AdPaymentReview extends Component {
       source_action,
       timestamp: new Date().getTime(),
       ...segmentInfo,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.save_google_campaign_steps([
       "Dashboard",
@@ -234,6 +235,7 @@ class AdPaymentReview extends Component {
       action_status: "success",
       timestamp: new Date().getTime(),
       ...segmentInfo,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.props.navigation.navigate("PaymentForm", {

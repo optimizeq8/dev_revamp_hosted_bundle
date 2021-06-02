@@ -54,6 +54,7 @@ class CampaignCard extends Component {
       timestamp: new Date().getTime(),
       campaignId: this.props.campaign.campaign_id,
       campaign_channel: "snapchat",
+      businessid: this.props.mainBusiness.businessid,
     });
     this.props.getCampaignDetails(
       this.props.campaign.campaign_id,
@@ -81,6 +82,7 @@ class CampaignCard extends Component {
       visible: value,
       campaign_channel: "snapchat",
       campaignId: this.props.campaign.campaign_id,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.handleOptionsModal(false);
     this.setState({
@@ -94,6 +96,7 @@ class CampaignCard extends Component {
       visible: value,
       campaign_channel: "snapchat",
       campaignId: this.props.campaign.campaign_id,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.handleOptionsModal(false);
     this.setState({
@@ -107,6 +110,7 @@ class CampaignCard extends Component {
       visible: value,
       campaign_channel: "snapchat",
       campaignId: this.props.campaign.campaign_id,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       showCampaignOptions: value,
@@ -359,9 +363,12 @@ class CampaignCard extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  mainBusiness: state.account.mainBusiness,
+});
 const mapDispatchToProps = (dispatch) => ({
   getCampaignDetails: (id, naviagtion) =>
     dispatch(actionCreators.getCampaignDetails(id, naviagtion)),
 });
-export default connect(null, mapDispatchToProps)(CampaignCard);
+export default connect(mapStateToProps, mapDispatchToProps)(CampaignCard);
 CampaignCard.whyDidYouRender = false;

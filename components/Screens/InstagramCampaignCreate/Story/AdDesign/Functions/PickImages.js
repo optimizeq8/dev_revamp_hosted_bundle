@@ -75,7 +75,8 @@ export const _pickImage = async (
   carouselAdsArray,
   media_option = "single",
   statisticsCallback,
-  cancelled
+  cancelled,
+  mainBusiness
 ) => {
   try {
     let result = {};
@@ -218,6 +219,7 @@ export const _pickImage = async (
                 source: "ad_design",
                 source_action: "a_media_editor",
                 image_for: "campaign_story_ad",
+                businessid: mainBusiness && mainBusiness.businessid,
               });
 
               cards[carouselAdCards.selectedCarouselAd.index] = card;
@@ -260,6 +262,7 @@ export const _pickImage = async (
                 media_type: "IMAGE",
                 ...serialization,
                 image_for: "campaign_ad",
+                businessid: mainBusiness && mainBusiness.businessid,
               });
               showMessage({
                 message: translate("Image has been selected successfully"),
@@ -284,6 +287,7 @@ export const _pickImage = async (
                 ? error.message
                 : error ||
                   "The dimensions are too large, please choose a different image",
+              businessid: mainBusiness && mainBusiness.businessid,
             });
 
             showMessage({
@@ -421,6 +425,7 @@ export const _pickImage = async (
                 analytics.track(`a_error`, {
                   error_page: "ad_design",
                   error_description: "Maximum video duration  is 120 seconds.",
+                  businessid: mainBusiness && mainBusiness.businessid,
                 });
                 setTheState({
                   mediaError: "Maximum video duration  is 120 seconds.",
@@ -454,6 +459,7 @@ export const _pickImage = async (
                   campaign_ad_type: "InstagramStoryAd",
                   error_page: "ad_design",
                   error_description: "Minimum video duration  is 1 second",
+                  businessid: mainBusiness && mainBusiness.businessid,
                 });
                 setTheState({
                   mediaError: "Minimum video duration  is 1 second",
@@ -487,6 +493,7 @@ export const _pickImage = async (
                   error_page: "ad_design",
                   error_description:
                     "Video's aspect ratio must be 16:9 or 4:5\nwith a minimum width size of 500",
+                  businessid: mainBusiness && mainBusiness.businessid,
                 });
                 setTheState({
                   mediaError:
@@ -518,6 +525,7 @@ export const _pickImage = async (
                   campaign_ad_type: "InstagramStoryAd",
                   error_page: "ad_design",
                   error_description: "Allowed video size is up to 32 MBs",
+                  businessid: mainBusiness && mainBusiness.businessid,
                 });
                 setTheState({
                   mediaError: "Allowed video size is up to 32 MBs.",
@@ -558,6 +566,7 @@ export const _pickImage = async (
                 campaign_ad_type: "InstagramStoryAd",
                 error_page: "ad_design",
                 error_description: "Editing canceled",
+                businessid: mainBusiness && mainBusiness.businessid,
               });
               return Promise.reject("Editing canceled");
             }
@@ -593,6 +602,7 @@ export const _pickImage = async (
                 tool_used: "VESDK",
                 media_type: result.type.toUpperCase(),
                 ...result.serialization,
+                businessid: mainBusiness && mainBusiness.businessid,
               });
               setTheState({
                 carouselAdCards: {
@@ -633,6 +643,7 @@ export const _pickImage = async (
                   tool_used: "VESDK",
                   media_type: result.type.toUpperCase(),
                   ...result.serialization,
+                  businessid: mainBusiness && mainBusiness.businessid,
                 });
 
                 showMessage({
@@ -658,6 +669,7 @@ export const _pickImage = async (
 
                   campaign_channel: "instagram",
                   campaign_ad_type: "InstagramStoryAd",
+                  businessid: mainBusiness && mainBusiness.businessid,
                 });
 
                 setTheState({
@@ -676,6 +688,7 @@ export const _pickImage = async (
               error_description: err,
               campaign_channel: "instagram",
               campaign_ad_type: "InstagramStoryAd",
+              businessid: mainBusiness && mainBusiness.businessid,
             });
 
             showMessage({
@@ -696,6 +709,7 @@ export const _pickImage = async (
         campaign_ad_type: "InstagramStoryAd",
         error_page: "ad_design",
         error_description: "Image Picker closed without selecting a media file",
+        businessid: mainBusiness && mainBusiness.businessid,
       });
 
       setTheState({

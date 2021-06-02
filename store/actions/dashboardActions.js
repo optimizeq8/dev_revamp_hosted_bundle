@@ -18,7 +18,7 @@ export const filterCampaigns = (query) => {
 };
 
 export const getCampaignDetails = (id, navigation) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch(get_languages());
     dispatch({
       type: actionTypes.SET_CAMPAIGN_LOADING,
@@ -47,10 +47,11 @@ export const getCampaignDetails = (id, navigation) => {
           source: "dashboard",
           source_action: "a_open_campaign_details",
           action_status: data.success ? "success" : "failure",
-          campaign_id: id,
+          campaignId: id,
           campaign_type: "snapchat",
           campaign_ad_type: data.data && data.data.campaign_type,
           error_description: !data.success && data.message,
+          businessid: getState().account.mainBusiness.businessid,
         });
         dispatch({
           type: actionTypes.SET_CAMPAIGN,
@@ -86,6 +87,7 @@ export const getCampaignDetails = (id, navigation) => {
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
+          businessid: getState().account.mainBusiness.businessid,
         });
         // console.log("getCampaignDetails error", err.message || err.response);
         showMessage({
@@ -304,7 +306,7 @@ export const resetRejectedCampaignData = () => {
   };
 };
 export const downloadCSV = (campaign_id, email, showModalMessage) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     createBaseUrl()
       .post(`exportData`, { campaign_id, email })
       .then((res) => res.data)
@@ -315,6 +317,7 @@ export const downloadCSV = (campaign_id, email, showModalMessage) => {
           source_action: "a_share_csv",
           campaign_channel: "snapchat",
           action_status: data.success ? "success" : "failure",
+          businessid: getState().account.mainBusiness.businessid,
         });
         showModalMessage(data.message, data.success ? "success" : "warning");
       })

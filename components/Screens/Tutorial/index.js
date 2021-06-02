@@ -86,6 +86,8 @@ class Tutorial extends Component {
               source_action,
               timestamp: new Date().getTime(),
               device_id,
+              businessid:
+                this.props.mainBusiness && this.props.mainBusiness.businessid,
               // location: "",
               // country: ""
             });
@@ -102,6 +104,9 @@ class Tutorial extends Component {
             source_action,
             timestamp: new Date().getTime(),
             device_id,
+            businessid:
+              this.props.mainBusiness && this.props.mainBusiness.businessid,
+
             // location: "",
             // country: ""
           });
@@ -185,6 +190,7 @@ class Tutorial extends Component {
       source: `tutorial_${index}`,
       source_action: `a_tutorial_${index}`,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       activeSlide: index,
@@ -202,6 +208,7 @@ class Tutorial extends Component {
       timestamp: new Date().getTime(),
       anonymous_userId,
       device_id,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     AsyncStorage.getItem("tutorialOpened")
       .then((value) => {
@@ -231,6 +238,8 @@ class Tutorial extends Component {
       source_action: `a_skip_after_${this.state.activeSlide + 1}`,
       timestamp: new Date().getTime(),
       device_id,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+
       // location: "",
       // country: ""
     });
@@ -335,7 +344,9 @@ class Tutorial extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  mainBusiness: state.account.mainBusiness,
+});
 
 const mapDispatchToProps = (dispatch) => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(Tutorial);

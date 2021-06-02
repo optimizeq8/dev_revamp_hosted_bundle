@@ -61,6 +61,7 @@ class CampaignCard extends Component {
       timestamp: new Date().getTime(),
       campaignId: this.props.campaign.campaign_id,
       campaign_channel: "instagram",
+      businessid: this.props.mainBusiness.businessid,
     });
     this.props.getInstagramCampaignDetails(
       this.props.campaign.campaign_id,
@@ -88,6 +89,7 @@ class CampaignCard extends Component {
       visible: value,
       campaign_channel: "instagram",
       campaignId: this.props.campaign.campaign_id,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.handleOptionsModal(false);
 
@@ -102,6 +104,7 @@ class CampaignCard extends Component {
       visible: value,
       campaign_channel: "instagram",
       campaignId: this.props.campaign.campaign_id,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.handleOptionsModal(false);
 
@@ -116,6 +119,7 @@ class CampaignCard extends Component {
       visible: value,
       campaign_channel: "instagram",
       campaignId: this.props.campaign.campaign_id,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       showCampaignOptions: value,
@@ -351,9 +355,13 @@ class CampaignCard extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  mainBusiness: state.account.mainBusiness,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   getInstagramCampaignDetails: (id, naviagtion) =>
     dispatch(actionCreators.getInstagramCampaignDetails(id, naviagtion)),
 });
-export default connect(null, mapDispatchToProps)(CampaignCard);
+export default connect(mapStateToProps, mapDispatchToProps)(CampaignCard);
 CampaignCard.whyDidYouRender = false;

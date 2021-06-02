@@ -55,6 +55,7 @@ class MainForm extends Component {
       anonymous_userId,
       timestamp: new Date().getTime(),
       email: this.props.userInfo && this.props.userInfo.email,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
   }
   /**
@@ -164,6 +165,7 @@ const mapStateToProps = (state) => ({
   registered: state.register.registered,
   userInfo: state.register.userInfo,
   successPersonalInfo: state.register.successPersonalInfo,
+  mainBusiness: state.account.mainBusiness,
 });
 
 const mapDispatchToProps = (dispatch) => ({

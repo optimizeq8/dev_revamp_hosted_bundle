@@ -119,6 +119,7 @@ export const createInstagramAudience = (
           action_description: data.message,
           audience_name: audience.name,
           audience_targeting: audience.targeting,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch(getInstagramAudienceList());
@@ -145,7 +146,7 @@ export const createInstagramAudience = (
  * @param {*} audienceId
  */
 export const deleteInstagramAudience = (audienceId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     InstagramBackendURL()
       .delete(`/instagramsavedaudience/${audienceId}`)
       .then((res) => res.data)
@@ -156,6 +157,7 @@ export const deleteInstagramAudience = (audienceId) => {
           action_status: data.success ? "success" : "failure",
           action_description: data.message,
           audience_id: audienceId,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch(getInstagramAudienceList());
@@ -210,6 +212,7 @@ export const updateInstagramAudience = (
           audience_id: audienceId,
           audience_name: audienceName,
           audience_targeting: targeting,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch(getInstagramAudienceList());

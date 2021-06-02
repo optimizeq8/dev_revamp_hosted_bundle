@@ -171,6 +171,7 @@ class GoogleAdTargetting extends Component {
       menu_component: component,
       source: "ad_targeting",
       source_action: "a_open_side_menu",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ sidemenu: component, selectionOption: option }, () =>
       this._handleSideMenuState(true)
@@ -186,6 +187,7 @@ class GoogleAdTargetting extends Component {
       campaign_type: "google",
       campaignId: this.props.campaign.id,
       campaign_gender: gender,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.save_google_campaign_data({ gender: gender });
   };
@@ -196,6 +198,8 @@ class GoogleAdTargetting extends Component {
         source: "ad_targeting",
         source_action: "a_ad_age",
         campaign_age: [val],
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.setState({ age: [val] });
       this.props.save_google_campaign_data({ age: [val] });
@@ -210,6 +214,8 @@ class GoogleAdTargetting extends Component {
           source: "ad_targeting",
           source_action: "a_ad_age",
           campaign_age: [...res, val],
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         this.props.save_google_campaign_data({ age: [...res, val] });
       } else {
@@ -223,6 +229,8 @@ class GoogleAdTargetting extends Component {
           source: "ad_targeting",
           source_action: "a_ad_age",
           campaign_age: res,
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         this.setState({ age: res });
         this.props.save_google_campaign_data({ age: res });
@@ -238,6 +246,8 @@ class GoogleAdTargetting extends Component {
         campaign_keywords: [],
         campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.setState({ keywords: [] });
       this.props.save_google_campaign_data({ keywords: [] });
@@ -252,6 +262,8 @@ class GoogleAdTargetting extends Component {
         campaign_keywords: [...res, keyword],
         campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.props.save_google_campaign_data({
         keywords: [...res, keyword],
@@ -263,6 +275,8 @@ class GoogleAdTargetting extends Component {
         campaign_keywords: res,
         campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
 
       this.setState({ keywords: res });
@@ -289,6 +303,8 @@ class GoogleAdTargetting extends Component {
         source_action: "a_handle_budget",
         custom_budget: false,
         campaign_budget: rawValue,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.props.save_google_campaign_data({
         budget: rawValue,
@@ -302,6 +318,8 @@ class GoogleAdTargetting extends Component {
             error_page: "ad_targeting",
             source_action: "a_change_campaign_custom_budget",
             error_description: validateWrapper("Budget", rawValue) + " $" + 25,
+            businessid:
+              this.props.mainBusiness && this.props.mainBusiness.businessid,
           });
         }
         showMessage({
@@ -318,6 +336,8 @@ class GoogleAdTargetting extends Component {
         source_action: "a_handle_budget",
         custom_budget: true,
         campaign_budget: rawValue,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
 
       this.setState({
@@ -397,6 +417,8 @@ class GoogleAdTargetting extends Component {
         error_description: isNull(keywordsError)
           ? "Budget can't be less than the minimum"
           : keywordsError,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       showMessage({
         message: isNull(keywordsError)
@@ -450,6 +472,7 @@ class GoogleAdTargetting extends Component {
       source,
       source_action,
       ...segmentInfo,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.props.save_google_campaign_steps([

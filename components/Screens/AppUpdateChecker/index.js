@@ -53,6 +53,8 @@ class AppUpdateChecker extends PureComponent {
       analytics.track("app_update_checker", {
         source: "app_update_available",
         source_action: "app_update_checker",
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.setState({ updateIsAvalible: true });
     }
@@ -70,6 +72,8 @@ class AppUpdateChecker extends PureComponent {
         analytics.track("app_update_checker", {
           source: "ota_available",
           source_action: "app_update_checker",
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         this.setState({
           status: translate("New update found"),
@@ -266,6 +270,7 @@ const mapStateToProps = (state) => ({
   customMessage_en: state.generic.customMessage_en,
   customMessage_ar: state.generic.customMessage_ar,
   loadingChecker: state.generic.loadingChecker,
+  mainBusiness: state.account.mainBusiness,
 });
 
 const mapDispatchToProps = (dispatch) => ({

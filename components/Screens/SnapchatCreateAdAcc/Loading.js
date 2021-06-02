@@ -32,6 +32,7 @@ class AcceptTermsConditionLoading extends Component {
       campaign_ad_type: this.props.adType,
       timestamp: new Date().getTime(),
       device_id: this.props.screenProps.device_id,
+      businessid: this.props.mainBusiness.businessid,
     });
   }
   componentDidUpdate(prevProps, prevState) {

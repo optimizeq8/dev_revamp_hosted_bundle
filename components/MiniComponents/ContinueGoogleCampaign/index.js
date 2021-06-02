@@ -38,6 +38,7 @@ class ContinueCampaign extends Component {
         campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
         timestamp: new Date().getTime(),
+        businessid: this.props.mainBusiness.businessid,
       });
       this.continueCampaign();
     }

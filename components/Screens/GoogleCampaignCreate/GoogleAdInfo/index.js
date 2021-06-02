@@ -174,6 +174,7 @@ class GoogleAdInfo extends Component {
       source: "ad_objective",
       source_action: "a_ad_start_date",
       campaign_start_date: date,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       start_time: date,
@@ -189,6 +190,7 @@ class GoogleAdInfo extends Component {
       source: "ad_objective",
       source_action: "a_ad_end_date",
       campaign_end_date: date,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     end_time = end_time.toISOString().split("T")[0];
     this.setState({
@@ -209,6 +211,7 @@ class GoogleAdInfo extends Component {
       visible,
       campaign_channel: "google",
       campaign_ad_type: "GoogleSEAd",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.setState({ modalVisible: visible });
@@ -232,6 +235,7 @@ class GoogleAdInfo extends Component {
       source_action: `a_ad_languages`,
       source: "ad_objective",
       campaign_language: val === "1000" ? "English" : "Arabic",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ language: val });
     this.props.save_google_campaign_data({ language: val });
@@ -244,6 +248,7 @@ class GoogleAdInfo extends Component {
       source: "ad_objective",
       source_action: "a_ad_country",
       campaign_country_name: val,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.save_google_campaign_data({ country: val, location: [val] });
   };
@@ -262,6 +267,8 @@ class GoogleAdInfo extends Component {
         source: "ad_objective",
         source_action: "a_ad_regions",
         campaign_region_names: val,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.props.save_google_campaign_data({
         country: val,
@@ -281,6 +288,8 @@ class GoogleAdInfo extends Component {
             source: "ad_objective",
             source_action: "a_ad_regions",
             campaign_region_names: [...res, val],
+            businessid:
+              this.props.mainBusiness && this.props.mainBusiness.businessid,
           });
         });
         this.props.save_google_campaign_data({
@@ -303,6 +312,8 @@ class GoogleAdInfo extends Component {
           source: "ad_objective",
           source_action: "a_ad_regions",
           campaign_region_names: res,
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
 
         this.setState({ location: res });
@@ -355,6 +366,8 @@ class GoogleAdInfo extends Component {
           countryError ||
           dateErrors.start_timeError ||
           dateErrors.end_timeError,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
     if (
@@ -431,6 +444,7 @@ class GoogleAdInfo extends Component {
       source_action,
       campaign_channel: "google",
       campaign_ad_type: "GoogleSEAd",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     if (this.props.campaign.campaignResumed) {
       this.props.save_google_campaign_steps(["Dashboard", "GoogleAdInfo"]);
@@ -451,6 +465,8 @@ class GoogleAdInfo extends Component {
         source_action: "a_ad_name",
         campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
     let state = {};
@@ -468,6 +484,7 @@ class GoogleAdInfo extends Component {
       campaign_channel: "google",
       campaign_ad_type: "GoogleSEAd",
       campaign_name: value,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ ...state });
     this.props.save_google_campaign_data({ name: value });
@@ -797,6 +814,9 @@ class GoogleAdInfo extends Component {
                             source: "ad_objective",
                             source_action: "a_ad_country",
                             campaign_country_name: this.state.country,
+                            businessid:
+                              this.props.mainBusiness &&
+                              this.props.mainBusiness.businessid,
                           });
 
                           this.props.get_google_SE_location_list_reach(
@@ -811,6 +831,9 @@ class GoogleAdInfo extends Component {
                                 source: "ad_objective",
                                 source_action: "a_open_region_modal",
                                 visible: true,
+                                businessid:
+                                  this.props.mainBusiness &&
+                                  this.props.mainBusiness.businessid,
                               });
                             }
                           );

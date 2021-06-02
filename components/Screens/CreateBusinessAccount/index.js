@@ -400,6 +400,8 @@ class CreateBusinessAccount extends Component {
                     ? null
                     : this.state.businessAccount.otherBusinessCategory, // to handle other business category field
                 error_description: "No changes to update",
+                businessid:
+                  this.props.mainBusiness && this.props.mainBusiness.businessid,
               });
               showMessage({
                 type: "warning",
@@ -438,6 +440,8 @@ class CreateBusinessAccount extends Component {
             action_status: "failure",
             timestamp: new Date().getTime(),
             error_description: "Please complete all the required fields",
+            businessid:
+              this.props.mainBusiness && this.props.mainBusiness.businessid,
           }
         );
         showMessage({

@@ -25,6 +25,7 @@ class GoogleCampaignCard extends Component {
       timestamp: new Date().getTime(),
       campaignId: this.props.campaign.campaign_id,
       campaign_channel: "google",
+      businessid: this.props.mainBusiness.businessid,
     });
     this.props.get_google_campiagn_details(
       this.props.campaign.campaign_id,
@@ -230,7 +231,9 @@ class GoogleCampaignCard extends Component {
     );
   }
 }
-
+const mapStateToProps = (state) => ({
+  mainBusiness: state.account.mainBusiness,
+});
 const mapDispatchToProps = (dispatch) => ({
   get_google_campiagn_details: (
     id,
@@ -249,4 +252,5 @@ const mapDispatchToProps = (dispatch) => ({
       )
     ),
 });
-export default connect(null, mapDispatchToProps)(GoogleCampaignCard);
+
+export default connect(mapStateToProps, mapDispatchToProps)(GoogleCampaignCard);

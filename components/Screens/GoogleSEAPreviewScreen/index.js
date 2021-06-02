@@ -162,6 +162,7 @@ class GoogleSEAPreviewScreen extends Component {
         ...segmentInfo,
         error_description:
           headline1Error || headline2Error || descriptionError || finalurlError,
+        businessid: this.props.mainBusiness.businessid,
       });
     }
     if (
