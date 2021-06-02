@@ -74,6 +74,31 @@ SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWith
   [controller startAndShowLaunchScreen:self.window];
 #endif
 
+ if ([UNUserNotificationCenter class] != nil) {
+    [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+    UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
+    [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
+
+      if (granted) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+    [application registerForRemoteNotifications];
+        });
+      }
+
+      if (error != nil) {
+        NSLog( @"Notiication initialize failed, %@ - %@", error.localizedFailureReason, error.localizedDescription );
+      }
+    }];
+  }
+
+NSDictionary* notification = [launchOptions valueForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+if (notification != nil) {
+  NSString* link = [notification valueForKeyPath:@"aps.link"];
+  
+  if (link != nil) {
+    [launchOptions setValue:link forKey:UIApplicationLaunchOptionsURLKey];
+  }
+}
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   return YES;
 }
@@ -133,5 +158,34 @@ SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWith
 
 }
 
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+         willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
+  completionHandler(UNNotificationPresentationOptionAlert + UNNotificationPresentationOptionSound + UNNotificationPresentationOptionBadge);
+}
+
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+        didReceiveNotificationResponse:(UNNotificationResponse *)response
+         withCompletionHandler:(void(^)(void))completionHandler  {
+  // on tap the notification
+  NSDictionary *userInfo = response.notification.request.content.userInfo;
+  
+  NSString *uri = [userInfo valueForKeyPath:@"uri"];
+  NSLog( @"Notiication response, %@",userInfo);
+  if (uri != nil) {
+    [RCTLinkingManager application:UIApplication.sharedApplication openURL:[NSURL URLWithString:uri] options: [NSDictionary alloc]];
+  }else{
+    NSDictionary *userInfo = response.notification.request.content.userInfo;
+    
+    NSString *uri = [userInfo valueForKeyPath:@"mp_ontap.uri"];
+    if (uri != nil) {
+      [RCTLinkingManager application:UIApplication.sharedApplication openURL:[NSURL URLWithString:uri] options: [NSDictionary alloc]];
+    }
+  }
+  
+  completionHandler();
+}
 
 @end
