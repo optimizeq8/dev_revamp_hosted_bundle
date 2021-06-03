@@ -1116,9 +1116,9 @@ class AdDetails extends Component {
     const impressions = this.props.estimated_metrics.impressions;
     if (impressions < 25000) {
       showMessage({
-        message: translate("The estimated impressions are too low"),
+        message: translate("The targeted audience size is too small"),
         description: translate(
-          "Please adjust the targeting so that it's above 25,000 impressions for best results"
+          "Please broaden your demographic or geographic targeting"
         ),
         type: "warning",
         duration: 7000,
