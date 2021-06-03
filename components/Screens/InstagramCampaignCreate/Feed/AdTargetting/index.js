@@ -189,15 +189,14 @@ class InstagramFeedAdTargetting extends Component {
         (country) =>
           countries.find((count) => country.toLowerCase() === count.value)
       ).label;
-      let editCountryAndRegionSelection = editedCampaign.targeting.geo_locations.regions.map(
-        (reg, i) => {
+      let editCountryAndRegionSelection =
+        editedCampaign.targeting.geo_locations.regions.map((reg, i) => {
           if (i === 0) {
             return reg.country;
           } else {
             return reg.key;
           }
-        }
-      );
+        });
       let editCountryRegions = [];
       //this is to get all the regions of a country since countries is passed only with
       //the country keys when editing a campiagn
@@ -909,9 +908,10 @@ class InstagramFeedAdTargetting extends Component {
         this.state.campaignInfo.targeting.flexible_spec[0].interests &&
         this.state.campaignInfo.targeting.flexible_spec[0].interests.length > 0
       ) {
-        interestNamesList = this.state.campaignInfo.targeting.flexible_spec[0].interests.map(
-          (interest) => interest.name
-        );
+        interestNamesList =
+          this.state.campaignInfo.targeting.flexible_spec[0].interests.map(
+            (interest) => interest.name
+          );
       }
 
       let rep = cloneDeep(this.state.campaignInfo);
@@ -922,9 +922,10 @@ class InstagramFeedAdTargetting extends Component {
         this.state.customInterests &&
         this.state.customInterests.length > 0
       )
-        rep.targeting.flexible_spec[0].interests = rep.targeting.flexible_spec[0].interests.concat(
-          this.state.customInterests
-        );
+        rep.targeting.flexible_spec[0].interests =
+          rep.targeting.flexible_spec[0].interests.concat(
+            this.state.customInterests
+          );
       else if (
         this.state.customInterests &&
         this.state.customInterests.length > 0
@@ -934,6 +935,13 @@ class InstagramFeedAdTargetting extends Component {
       if (rep.targeting.genders[0] === "") {
         delete rep.targeting.genders;
       }
+      if (
+        rep.targeting.geo_locations.countries &&
+        rep.targeting.geo_locations.countries.length === 0
+      ) {
+        delete rep.targeting.geo_locations.countries;
+      }
+
       if (
         rep.targeting.geo_locations.hasOwnProperty("regions") &&
         rep.targeting.geo_locations.regions.length === 0
@@ -966,10 +974,15 @@ class InstagramFeedAdTargetting extends Component {
         rep.targeting.geo_locations.custom_locations.length > 0 &&
         !this.editCampaign
       ) {
-        rep.targeting.geo_locations.custom_locations = this.props.customLocations;
+        rep.targeting.geo_locations.custom_locations =
+          this.props.customLocations;
       } else if (!this.editCampaign) {
         delete rep.targeting.geo_locations.custom_locations;
       }
+      console.log(
+        "rep.targeting.geo_locations",
+        JSON.stringify(rep.targeting.geo_locations, null, 2)
+      );
       rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
         campaign_ad_type: "InstagramFeedAd",
@@ -1105,14 +1118,16 @@ class InstagramFeedAdTargetting extends Component {
         (ctry) => item === ctry
       );
       if (countryExist) {
-        replace.targeting.geo_locations.countries = replace.targeting.geo_locations.countries.filter(
-          (ctr) => ctr !== countryExist
-        );
+        replace.targeting.geo_locations.countries =
+          replace.targeting.geo_locations.countries.filter(
+            (ctr) => ctr !== countryExist
+          );
 
         // remove all regions of those countries
-        replace.targeting.geo_locations.regions = replace.targeting.geo_locations.regions.filter(
-          (ctr) => ctr.country !== countryExist
-        );
+        replace.targeting.geo_locations.regions =
+          replace.targeting.geo_locations.regions.filter(
+            (ctr) => ctr.country !== countryExist
+          );
       } else {
         replace.targeting.geo_locations.countries.push(item);
       }
@@ -1138,8 +1153,8 @@ class InstagramFeedAdTargetting extends Component {
   };
   handleMultipleCountrySelection = () => {
     if (!this.editCampaign) {
-      let countryLength = this.state.campaignInfo.targeting.geo_locations
-        .countries.length;
+      let countryLength =
+        this.state.campaignInfo.targeting.geo_locations.countries.length;
       let locationsLength = this.state.campaignInfo.targeting.geo_locations
         .custom_locations
         ? this.state.campaignInfo.targeting.geo_locations.custom_locations
@@ -1521,8 +1536,8 @@ class InstagramFeedAdTargetting extends Component {
       }
       case "map": {
         if (!LocationMap) {
-          LocationMap = require("../../../../MiniComponents/LocationMap")
-            .default;
+          LocationMap =
+            require("../../../../MiniComponents/LocationMap").default;
         }
         menu = (
           <SnapchatLocation
@@ -1625,9 +1640,10 @@ class InstagramFeedAdTargetting extends Component {
     // );
     if (this.state.campaignInfo.targeting.geo_locations.regions.length > 0) {
       // GET COUNTRY then
-      regions_names = this.state.campaignInfo.targeting.geo_locations.regions.map(
-        (reg) => translate(reg.name)
-      );
+      regions_names =
+        this.state.campaignInfo.targeting.geo_locations.regions.map((reg) =>
+          translate(reg.name)
+        );
     }
     regions_names = regions_names.join(", ");
 
@@ -1760,8 +1776,8 @@ class InstagramFeedAdTargetting extends Component {
                         campaign_message: this.props.data.message,
                         campaign_attachment: this.props.data.attachment,
                         campaign_swipe_up_CTA: this.props.data.call_to_action,
-                        campaign_swipe_up_destination: this.props.data
-                          .destination,
+                        campaign_swipe_up_destination:
+                          this.props.data.destination,
                         campaign_media: this.props.data.media,
                         campaign_media_type: this.props.data.media_type,
                         campaign_appChoice: this.props.data.appChoice,
