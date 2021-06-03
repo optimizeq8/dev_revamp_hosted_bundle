@@ -558,6 +558,12 @@ class AdDesign extends Component {
   };
 
   setMediaModalVisible = (visible) => {
+    analytics.track(`a_media_options_modal`, {
+      visible: val,
+      source: "a_media_options_modal",
+      source_action: "ad_design",
+      businessid: this.props.mainBusiness.businessid,
+    });
     this.setState({ mediaModalVisible: visible });
   };
 
@@ -1085,6 +1091,12 @@ class AdDesign extends Component {
   };
 
   setUploadFromDifferentDeviceModal = (val) => {
+    analytics.track(`a_upload_media_from_different_device_modal`, {
+      visible: val,
+      source: "a_upload_media_from_different_device_modal",
+      source_action: "ad_design",
+      businessid: this.props.mainBusiness.businessid,
+    });
     this.setState({
       uploadMediaDifferentDeviceModal: val,
     });
@@ -1099,6 +1111,12 @@ class AdDesign extends Component {
     this.setMediaModalVisible(false);
   };
   setDownloadMediaModal = (val) => {
+    analytics.track(`a_download_media_from_different_device_modal`, {
+      visible: val,
+      source: "a_download_media_from_different_device_modal",
+      source_action: "ad_design",
+      businessid: this.props.mainBusiness.businessid,
+    });
     this.setState({
       downloadMediaModal: val,
     });
@@ -1333,6 +1351,12 @@ class AdDesign extends Component {
     RNFFmpeg.cancel();
   };
   setExistingMediaModal = (val) => {
+    analytics.track(`a_existing_media_modal`, {
+      visible: val,
+      source: "a_existing_media_modal",
+      source_action: "ad_design",
+      businessid: this.props.mainBusiness.businessid,
+    });
     this.setState(
       {
         mediaModalVisible: false,
@@ -1345,6 +1369,14 @@ class AdDesign extends Component {
     );
   };
   setExistingMediaUrl = (item) => {
+    analytics.track(`a_set_existing_media`, {
+      visible: val,
+      source: "a_set_existing_media",
+      source_action: "ad_design",
+      media: media_url,
+      type: media_type,
+      businessid: this.props.mainBusiness.businessid,
+    });
     let { media, media_url, media_type } = item;
     this.setState({
       media: media_url,

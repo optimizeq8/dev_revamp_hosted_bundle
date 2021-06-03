@@ -506,6 +506,7 @@ class AdDesign extends Component {
           campaign_swipe_up_destination: this.state.campaignInfo.destination,
           campaign_media: this.state.media,
           campaign_media_type: this.state.type,
+          campaign_existing_media: this.state.campaignInfo.existing_media,
           // campaign_appChoice: this.state.appChoice,
         };
         if (!this.props.loading) {
