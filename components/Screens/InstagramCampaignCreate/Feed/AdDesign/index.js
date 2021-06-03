@@ -1048,7 +1048,7 @@ class AdDesign extends Component {
             this.props.instagramExistingMediaListLoading
           }
           setExistingMediaUrl={this.setExistingMediaUrl}
-          existing_media_url={this.props.data.media}
+          existing_media_url={this.props.data ? this.props.data.media : ""}
         />
       </View>
     );

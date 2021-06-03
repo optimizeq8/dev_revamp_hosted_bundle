@@ -87,7 +87,15 @@ class index extends Component {
           > */}
           <WebView
             // startInLoadingState={true}
+            onLoadStart={() => {
+              RCTNetworking.clearCookies(() => true);
+            }}
             onLoad={() => this.hideLoader()}
+            onLoadEnd={() => {
+              CookieManager.clearAll(true).then((val) => {
+                // console.log("clearAll", val);
+              });
+            }}
             androidHardwareAccelerationDisabled={true}
             // renderLoading={() => (
             //   <View style={{ height: "100%", backgroundColor: "#0000" }}>
@@ -99,7 +107,8 @@ class index extends Component {
             ref={(ref) => (this.webview = ref)}
             source={{ uri: url }}
             cacheEnabled={false}
-            incognito={true}
+            sharedCookiesEnabled={false}
+            // incognito={true}
             onNavigationStateChange={(navState) => {
               if (
                 Platform.OS === "ios" &&

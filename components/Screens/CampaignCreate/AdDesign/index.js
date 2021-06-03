@@ -1332,10 +1332,16 @@ class AdDesign extends Component {
     RNFFmpeg.cancel();
   };
   setExistingMediaModal = (val) => {
-    this.setState({
-      existingMediaModal: val,
-      mediaModalVisible: false,
-    });
+    this.setState(
+      {
+        mediaModalVisible: false,
+      },
+      () => {
+        this.setState({
+          existingMediaModal: val,
+        });
+      }
+    );
   };
   setExistingMediaUrl = (item) => {
     let { media, media_url, media_type } = item;
@@ -1897,7 +1903,7 @@ class AdDesign extends Component {
             this.props.snapchatExistingMediaListLoading
           }
           setExistingMediaUrl={this.setExistingMediaUrl}
-          existing_media_url={this.props.data.media}
+          existing_media_url={this.props.data ? this.props.data.media : ""}
         />
         <ExampleModal
           title={""}

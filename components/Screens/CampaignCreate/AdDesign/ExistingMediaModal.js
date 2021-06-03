@@ -1,14 +1,7 @@
 import React, { Component } from "react";
-import {
-  View,
-  Platform,
-  Image,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
-import { Modal } from "react-native-paper";
-import { BlurView } from "@react-native-community/blur";
+import { View, FlatList, TouchableOpacity, StyleSheet } from "react-native";
+import Modal from "react-native-modal";
+// import { BlurView } from "@react-native-community/blur";
 import SafeAreaView from "react-native-safe-area-view";
 
 import { Video } from "expo-av";
@@ -18,16 +11,10 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
-//icons
-import CameraIcon from "../../../../assets/SVGs/Camera";
-import CloseCircle from "../../../../assets/SVGs/CloseCircle";
-
 import CustomHeader from "../../../MiniComponents/Header";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 
 //styles
-import LowerButton from "../../../MiniComponents/LowerButton";
 import { globalColors } from "../../../../GlobalStyles";
 
 class ExistingMediaModal extends React.Component {
@@ -68,40 +55,39 @@ class ExistingMediaModal extends React.Component {
       snapchatExistingMediaListLoading,
       snapchatExistingMediaList,
     } = this.props;
-
     return (
       <Modal
-        animationType={"fade"}
-        transparent={Platform.OS === "ios"}
-        onRequestClose={() => this.props.setExistingMediaModal(false)}
-        onDismiss={() => this.props.setExistingMediaModal(false)}
-        visible={this.props.existingMediaModal}
+        animationIn="fadeIn"
+        animationOut="fadeOut"
+        isVisible={this.props.existingMediaModal}
+        style={{ margin: 0 }}
       >
-        <BlurView intensity={95} tint="dark">
-          <View style={styles.popupOverlay}>
-            <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
+        <View style={styles.popupOverlay}>
+          <SafeAreaView
+            style={styles.safeAreaView}
+            forceInset={{ bottom: "never", top: "always" }}
+          />
+          <CustomHeader
+            screenProps={this.props.screenProps}
+            closeButton={true}
+            actionButton={() => {
+              this.props.setExistingMediaModal(false);
+            }}
+            segment={{
+              source: "media_library_modal",
+              source_action: "a_go_back",
+            }}
+            title={"Media Library"}
+          />
 
-            <CustomHeader
-              screenProps={this.props.screenProps}
-              closeButton={true}
-              actionButton={() => {
-                this.props.setExistingMediaModal(false);
-              }}
-              segment={{
-                source: "media_library_modal",
-                source_action: "a_go_back",
-              }}
-              title={"Media Library"}
-            />
-            <FlatList
-              keyExtractor={(item, index) => index}
-              data={snapchatExistingMediaList}
-              renderItem={this.renderMedia}
-              numColumns={4}
-              contentContainerStyle={styles.flatListContainer}
-            />
-          </View>
-        </BlurView>
+          <FlatList
+            keyExtractor={(item, index) => index}
+            data={snapchatExistingMediaList}
+            renderItem={this.renderMedia}
+            numColumns={4}
+            contentContainerStyle={styles.flatListContainer}
+          />
+        </View>
       </Modal>
     );
   }
@@ -149,12 +135,15 @@ const styles = StyleSheet.create({
     borderRadius: RFValue(5, 414),
   },
   flatListContainer: {
-    width: "100%",
+    // width: "100%",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-around",
   },
   popupOverlay: {
     height: "100%",
+  },
+  safeAreaView: {
+    backgroundColor: "#0000",
   },
 });

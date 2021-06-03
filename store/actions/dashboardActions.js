@@ -317,6 +317,8 @@ export const downloadCSV = (campaign_id, email, showModalMessage) => {
           source_action: "a_share_csv",
           campaign_channel: "snapchat",
           action_status: data.success ? "success" : "failure",
+          campaignId: campaign_id,
+          export_email: email,
           businessid: getState().account.mainBusiness.businessid,
         });
         showModalMessage(data.message, data.success ? "success" : "warning");
