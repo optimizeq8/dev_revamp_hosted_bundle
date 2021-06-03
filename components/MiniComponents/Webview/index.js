@@ -16,7 +16,9 @@ const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking");
 
 class index extends Component {
   componentDidMount() {
-    CookieManager.clearAll().then(() => true);
+    CookieManager.clearAll().then((val) =>
+      console.log("webviewCookieManager", val)
+    );
     RCTNetworking.clearCookies(() => true);
     const source = this.props.navigation.getParam(
       "source",
@@ -91,11 +93,6 @@ class index extends Component {
               RCTNetworking.clearCookies(() => true);
             }}
             onLoad={() => this.hideLoader()}
-            onLoadEnd={() => {
-              //   CookieManager.clearAll(true).then((val) => {
-              //     // console.log("clearAll", val);
-              //   });
-            }}
             androidHardwareAccelerationDisabled={true}
             // renderLoading={() => (
             //   <View style={{ height: "100%", backgroundColor: "#0000" }}>
@@ -110,7 +107,12 @@ class index extends Component {
             sharedCookiesEnabled={false}
             // incognito={true}
             onNavigationStateChange={(navState) => {
-              console.log("navState.url", navState.url);
+              //   console.log("navState.url", navState.url);
+              if (navState.url.includes("choosepage.php")) {
+                CookieManager.clearAll(true).then((val) => {
+                  console.log("onNavigationStateChangeclearAll", val);
+                });
+              }
               if (
                 Platform.OS === "ios" &&
                 (this.state.appState === "background" ||
