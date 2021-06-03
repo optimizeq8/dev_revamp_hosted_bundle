@@ -988,6 +988,8 @@ export const downloadGoogleCSV = (campaign_id, email, showModalMessage) => {
           campaign_channel: "google",
           action_status: data.message ? "success" : "failure",
           campaign_error: data.error,
+          campaignId: campaign_id,
+          export_email: email,
           businessid: getState().account.mainBusiness.businessid,
         });
         if (data.message) showModalMessage(data.message, "success");

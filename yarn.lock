@@ -8739,10 +8739,10 @@ react-native-videoeditorsdk@~2.7.0:
   resolved "https://registry.yarnpkg.com/react-native-videoeditorsdk/-/react-native-videoeditorsdk-2.7.0.tgz#2546a9a089237e7f05bc077a5d912aefca298989"
   integrity sha512-An5YyTIkXFKaIM8Stx+ctq5ZrDkoDQLxmlsEPdnt3By6FaFITENITtj6XtBB6nlfuessGWE/zETBLLky6V1ykg==
 
-react-native-webview@10.7.0:
-  version "10.7.0"
-  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-10.7.0.tgz#b96e152ffdae4eeffaa74f43671a35733885b52d"
-  integrity sha512-4TSYwJqMBUTKB9+xqGbPwx+eLXbp6RRD7lQ2BumT8eSTfuuqr2rXNqcrlKU1VRla7QGGYowmYmxl2aXIx5k9wA==
+react-native-webview@11.6.2:
+  version "11.6.2"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-11.6.2.tgz#e19b3325d6777caee29d04eb2edf9b70f0b29915"
+  integrity sha512-7e5ltLBgqt1mX0gdTTS2nFPIjfS6y300wqJ4rLWqU71lDO+8ZeayfsF5qo83qxo2Go74CtLnSeWae4pdGwUqYw==
   dependencies:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"

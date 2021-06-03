@@ -4,6 +4,7 @@ import WebView from "react-native-webview";
 import analytics from "@segment/analytics-react-native";
 import CustomHeader from "../Header";
 import { Container } from "native-base";
+import CookieManager from "@react-native-cookies/cookies";
 import SafeAreaView from "react-native-safe-area-view";
 import { connect } from "react-redux";
 
@@ -11,8 +12,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";
 import styles from "./styles";
 import Loading from "../LoadingScreen";
+const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking");
+
 class index extends Component {
   componentDidMount() {
+    CookieManager.clearAll().then(() => true);
+    RCTNetworking.clearCookies(() => true);
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState
@@ -82,7 +87,15 @@ class index extends Component {
           > */}
           <WebView
             // startInLoadingState={true}
+            onLoadStart={() => {
+              RCTNetworking.clearCookies(() => true);
+            }}
             onLoad={() => this.hideLoader()}
+            onLoadEnd={() => {
+              CookieManager.clearAll(true).then((val) => {
+                // console.log("clearAll", val);
+              });
+            }}
             androidHardwareAccelerationDisabled={true}
             // renderLoading={() => (
             //   <View style={{ height: "100%", backgroundColor: "#0000" }}>
@@ -94,7 +107,8 @@ class index extends Component {
             ref={(ref) => (this.webview = ref)}
             source={{ uri: url }}
             cacheEnabled={false}
-            incognito={true}
+            sharedCookiesEnabled={false}
+            // incognito={true}
             onNavigationStateChange={(navState) => {
               if (
                 Platform.OS === "ios" &&
