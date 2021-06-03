@@ -740,7 +740,7 @@ SPEC CHECKSUMS:
   Adjust: 131c77905f67b26e946d1b831fad20ed2b41134c
   Analytics: 7bdc735c456434b4eaa2eacdcf122bb03d51ede7
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  DoubleConversion: cde416483dac037923206447da6e1454df403714
+  DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   EXApplication: 4797b8b37f0b0470f587fdccf6407f44b50d18b5
   EXAV: e32adf44c10a82f723172d5b01d5693890888dd6
   EXBlur: 569d38c2b0b7b000866d928bc36acadfdc02ea8e
@@ -765,7 +765,7 @@ SPEC CHECKSUMS:
   FBLazyVector: 3bb422f41b18121b71783a905c10e58606f7dc3e
   FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
-  glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
+  glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
   imglyKit: 9c97eabba2d42a6bd19108e42a48a4138d75e31a

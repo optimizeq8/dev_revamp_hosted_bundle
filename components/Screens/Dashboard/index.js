@@ -76,6 +76,9 @@ import isNull from "lodash/isNull";
 import AlertModal from "../../MiniComponents/AlertModal";
 import { BlurView } from "@react-native-community/blur";
 import AsyncStorage from "@react-native-community/async-storage";
+import CustomerIOAddDevice from "../../Functions/CustomerIOAddDevice";
+import { Notifications as RNNotifications } from "react-native-notifications";
+
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
 
@@ -195,6 +198,8 @@ class Dashboard extends Component {
         this.setState({ showBiometricsModal: true });
       }, 3000);
     }
+
+    CustomerIOAddDevice(this.props.userInfo.userid);
   }
   handleBackPress = () => {
     // this.props.navigation.goBack();
@@ -243,6 +248,23 @@ class Dashboard extends Component {
           this.signal.token
         );
       }
+      RNNotifications.getInitialNotification()
+        .then((notification) => {
+          if (notification) {
+            analytics.track(
+              "Notification opened by device user from killed state",
+              {
+                notification: JSON.stringify(notification.payload, null, 2),
+                platform: Platform.OS,
+              }
+            );
+
+            if (notification.payload.hasOwnProperty("screenName")) {
+              this.props.navigation.navigate(notification.payload.screenName);
+            }
+          }
+        })
+        .catch((err) => console.error("getInitialNotifiation() failed", err));
     }
     if (
       this.state.open &&
