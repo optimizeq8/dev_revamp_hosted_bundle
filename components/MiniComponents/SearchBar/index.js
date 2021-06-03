@@ -152,7 +152,6 @@ class SearchBar extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  campaignList: state.dashboard.campaignList,
   filterStatus: state.dashboard.filterStatus,
   campaignStartSearch: state.dashboard.campaignStartSearch,
   campaignEndSearch: state.dashboard.campaignEndSearch,
