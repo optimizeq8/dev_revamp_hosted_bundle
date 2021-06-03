@@ -662,15 +662,42 @@ class CampaignDetails extends Component {
               <View style={[styles.mainCard]}>
                 {selectedCampaign &&
                 selectedCampaign.review_status === "REJECTED" ? (
-                  <RejectedSnapchatInfo
-                    loading={loading}
-                    screenProps={this.props.screenProps}
-                    review_status_reason={
-                      selectedCampaign.review_status_reason || []
-                    }
-                    navigation={this.props.navigation}
-                    selectedCampaign={selectedCampaign}
-                  />
+                  <>
+                    <RejectedSnapchatInfo
+                      loading={loading}
+                      screenProps={this.props.screenProps}
+                      review_status_reason={
+                        selectedCampaign.review_status_reason || []
+                      }
+                      navigation={this.props.navigation}
+                      selectedCampaign={selectedCampaign}
+                    />
+                    {selectedCampaign.spends !== 0 && (
+                      <TouchableOpacity
+                        onLayout={this.onLayout}
+                        disabled={this.state.expand || loading}
+                        onPress={this.handleChartToggle}
+                      >
+                        {this.state.expand && (
+                          <ChartDateChoices
+                            selectedCampaign={selectedCampaign}
+                            dateField={this.dateField}
+                            durationChange={this.durationChange}
+                            screenProps={this.props.screenProps}
+                          />
+                        )}
+                        <CampaignCircleChart
+                          channel={"snapchat"}
+                          campaign={selectedCampaign}
+                          detail={true}
+                          screenProps={this.props.screenProps}
+                          loading={loading}
+                          handleChartToggle={this.handleChartToggle}
+                          chartExpanded={this.state.expand}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </>
                 ) : (
                   <TouchableOpacity
                     onLayout={this.onLayout}
