@@ -1004,6 +1004,7 @@ class AdDesign extends Component {
           campaign_media_type: this.state.type,
           campaign_appChoice: this.state.appChoice,
           campaign_savedObjective: this.selectedCampaign.savedObjective,
+          campaign_existing_media: this.state.campaignInfo.existing_media,
         };
 
         if (!this.props.loading) {
