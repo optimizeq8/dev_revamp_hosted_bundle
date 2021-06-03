@@ -1113,8 +1113,7 @@ class AdDetails extends Component {
       "mandatory",
       this.state.campaignInfo.targeting.geos[0].country_code
     );
-    const impressions = this.props.estimated_metrics.impressions;
-    if (impressions < 25000) {
+    if (this.props.average_reach < 25000) {
       showMessage({
         message: translate("The targeted audience size is too small"),
         description: translate(
