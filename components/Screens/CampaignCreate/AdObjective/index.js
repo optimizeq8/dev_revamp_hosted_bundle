@@ -112,8 +112,8 @@ class AdObjective extends Component {
   }
   async componentDidMount() {
     await this.setCampaignInfo();
-    const businessCountryIsKuwait =
-      this.props.mainBusiness.country === "Kuwait";
+    // const businessCountryIsKuwait =
+    //   this.props.mainBusiness.country === "Kuwait";
     // Remove the objective label for non kuwait countries and if adtype is SnapAd
     // if (!businessCountryIsKuwait && this.props.adType === "SnapAd") {
     //   let updatedList = snapchatObjectivesData;

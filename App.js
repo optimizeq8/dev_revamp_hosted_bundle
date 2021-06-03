@@ -250,12 +250,14 @@ class App extends React.Component {
     });
 
     Adjust.create(adjustConfig);
+    RNNotifications.registerRemoteNotifications();
     RNNotifications.events().registerNotificationReceivedForeground(
-      (
-        notification: Notification,
-        completion: (response: NotificationCompletion) => void
-      ) => {
-        console.log("Notification Received - Foreground", notification.payload);
+      (notification, completion) => {
+        if (notification)
+          analytics.track("Notification Received - Foreground", {
+            notification: notification.payload,
+            platform: Platform.OS,
+          });
 
         // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
         completion({ alert: true, sound: true, badge: false });
@@ -263,28 +265,19 @@ class App extends React.Component {
     );
 
     RNNotifications.events().registerNotificationOpened(
-      (
-        notification: Notification,
-        completion: () => void,
-        action: NotificationActionResponse
-      ) => {
-        console.log("Notification opened by device user", notification.payload);
-        console.log(
-          `Notification opened with an action identifier: ${action.identifier} and response text: ${action.text}`
-        );
+      (notification, completion, action) => {
+        if (notification) {
+          analytics.track("Notification opened by device user", {
+            notification: notification.payload,
+            platform: Platform.OS,
+          });
+          if (notification.payload.hasOwnProperty("screenName")) {
+            NavigationService.navigate(notification.payload.screenName);
+          } else if (notification.payload.hasOwnProperty("appUri")) {
+            Linking.openURL(notification.payload.appUri);
+          }
+        }
         completion();
-      }
-    );
-
-    RNNotifications.events().registerNotificationReceivedBackground(
-      (
-        notification: Notification,
-        completion: (response: NotificationCompletion) => void
-      ) => {
-        console.log("Notification Received - Background", notification.payload);
-
-        // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
-        completion({ alert: true, sound: true, badge: false });
       }
     );
     // if (Platform.OS === "android") {
@@ -337,13 +330,9 @@ class App extends React.Component {
     AppState.addEventListener("change", this._handleAppStateChange);
     Platform.OS === "ios" && Intercom.registerForPush();
 
-    Notifications.getDevicePushTokenAsync()
-      .then((token) => {
-        console.log("tokenn", token);
-        Intercom.sendTokenToIntercom(token.data);
-      })
-      .catch((err) => {});
-
+    RNNotifications.events().registerRemoteNotificationsRegistered((event) => {
+      Intercom.sendTokenToIntercom(event.deviceToken);
+    });
     Intercom.addEventListener(
       Intercom.Notifications.UNREAD_COUNT,
       this._onUnreadChange
@@ -379,7 +368,7 @@ class App extends React.Component {
     }
   }
   handleDeeplink = (url) => {
-    // Linking.openURL(url.url);
+    Linking.openURL(url.url);
     console.log("URL", url.url);
   };
   _handleAppStateChange = (nextAppState) => {
