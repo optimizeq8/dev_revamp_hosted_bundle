@@ -70,7 +70,9 @@ class BusinessCard extends Component {
       });
 
       RCTNetworking.clearCookies(() => true);
-      CookieManager.clearAll(true).then((val) => true);
+      CookieManager.clearAll(true).then((val) => {
+        // console.log("CookieManager", val)
+      });
 
       this.props.changeBusiness(this.props.business);
       this.props.resetCampaignInfo();

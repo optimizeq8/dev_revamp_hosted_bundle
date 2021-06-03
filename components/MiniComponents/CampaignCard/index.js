@@ -145,7 +145,7 @@ class CampaignCard extends Component {
           style={[styles.repeatButton]}
           onPress={() => this.handleExtendModal(true)}
         >
-          <Text style={styles.repeatText}>{"Extend"}</Text>
+          <Text style={styles.repeatText}>{translate("Extend")}</Text>
         </TouchableOpacity>
       </>
     );
@@ -320,7 +320,9 @@ class CampaignCard extends Component {
                         ]}
                         onPress={() => this.handleExtendModal(true)}
                       >
-                        <Text style={styles.repeatText}>{"Extend"}</Text>
+                        <Text style={styles.repeatText}>
+                          {translate("Extend")}
+                        </Text>
                       </TouchableOpacity>
                     </View>
                   </>

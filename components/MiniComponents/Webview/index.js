@@ -92,9 +92,9 @@ class index extends Component {
             }}
             onLoad={() => this.hideLoader()}
             onLoadEnd={() => {
-              CookieManager.clearAll(true).then((val) => {
-                // console.log("clearAll", val);
-              });
+              //   CookieManager.clearAll(true).then((val) => {
+              //     // console.log("clearAll", val);
+              //   });
             }}
             androidHardwareAccelerationDisabled={true}
             // renderLoading={() => (
@@ -110,6 +110,7 @@ class index extends Component {
             sharedCookiesEnabled={false}
             // incognito={true}
             onNavigationStateChange={(navState) => {
+              console.log("navState.url", navState.url);
               if (
                 Platform.OS === "ios" &&
                 (this.state.appState === "background" ||
