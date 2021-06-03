@@ -29,7 +29,8 @@ import ExistingMediaModal from "./ExistingMediaModal";
 import StoryAdCards from "./SnapAdCards/StoryAdCards";
 import * as IntentLauncher from "expo-intent-launcher";
 const preview = {
-  uri: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+  uri:
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
 };
 //Redux
 import { connect } from "react-redux";
@@ -158,8 +159,9 @@ class AdDesign extends Component {
   }
   async componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.toggleAdSelection);
-    this._notificationSubscription =
-      Notifications.addNotificationReceivedListener(this._handleNotification);
+    this._notificationSubscription = Notifications.addNotificationReceivedListener(
+      this._handleNotification
+    );
 
     this.setState({
       campaignInfo: {
@@ -413,8 +415,8 @@ class AdDesign extends Component {
                   ? this.props.mainBusiness.playstorelink.app_name
                   : "",
               ios_app_id: this.props.mainBusiness.appstorelink.ios_app_id,
-              android_app_url:
-                this.props.mainBusiness.playstorelink.android_app_url,
+              android_app_url: this.props.mainBusiness.playstorelink
+                .android_app_url,
               icon_media_id:
                 this.props.mainBusiness.appstorelink.icon_media_url !== ""
                   ? this.props.mainBusiness.appstorelink.icon_media_url
@@ -1367,15 +1369,15 @@ class AdDesign extends Component {
     );
   };
   setExistingMediaUrl = (item) => {
+    let { media, media_url, media_type } = item;
+
     analytics.track(`a_set_existing_media`, {
-      visible: val,
       source: "a_set_existing_media",
       source_action: "ad_design",
       media: media_url,
       type: media_type,
       businessid: this.props.mainBusiness.businessid,
     });
-    let { media, media_url, media_type } = item;
     this.setState({
       media: media_url,
       type: media_type,
@@ -1418,8 +1420,13 @@ class AdDesign extends Component {
           : this.props.storyAdsArray.filter((ad) => ad.media !== "//")
         : 3;
 
-    let { brand_name, headline, destination, attachment, call_to_action } =
-      this.state.campaignInfo;
+    let {
+      brand_name,
+      headline,
+      destination,
+      attachment,
+      call_to_action,
+    } = this.state.campaignInfo;
 
     let inputFields = [
       {
