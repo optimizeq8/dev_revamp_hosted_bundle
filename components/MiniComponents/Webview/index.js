@@ -88,6 +88,9 @@ class index extends Component {
             // padder
           > */}
           <WebView
+            userAgent={
+              "Mozilla/5.0 (Windows Mobile; Opera Mini/5.1.21594/28.2725; U; en) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.149 Mobile Safari/537.36"
+            }
             // startInLoadingState={true}
             onLoadStart={() => {
               RCTNetworking.clearCookies(() => true);
