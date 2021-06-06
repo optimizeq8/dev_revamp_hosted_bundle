@@ -98,6 +98,16 @@ class index extends Component {
             onLoadStart={() => {
               RCTNetworking.clearCookies(() => true);
             }}
+            onError={() => {
+              analytics.track("a_error", {
+                source: "web_view",
+                source_action: this.props.navigation.getParam(
+                  "source_action",
+                  this.props.screenProps.prevAppState
+                ),
+                url,
+              });
+            }}
             onLoad={() => this.hideLoader()}
             androidHardwareAccelerationDisabled={true}
             // renderLoading={() => (
