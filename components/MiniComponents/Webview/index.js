@@ -88,9 +88,25 @@ class index extends Component {
             // padder
           > */}
           <WebView
+            userAgent={
+              url.includes("facebooklogin/login.php") &&
+              Platform.OS === "android"
+                ? "Mozilla/5.0 (Windows Mobile; Opera Mini/5.1.21594/28.2725; U; en) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.149 Mobile Safari/537.36"
+                : ""
+            }
             // startInLoadingState={true}
             onLoadStart={() => {
               RCTNetworking.clearCookies(() => true);
+            }}
+            onError={() => {
+              analytics.track("a_error", {
+                source: "web_view",
+                source_action: this.props.navigation.getParam(
+                  "source_action",
+                  this.props.screenProps.prevAppState
+                ),
+                url,
+              });
             }}
             onLoad={() => this.hideLoader()}
             androidHardwareAccelerationDisabled={true}
