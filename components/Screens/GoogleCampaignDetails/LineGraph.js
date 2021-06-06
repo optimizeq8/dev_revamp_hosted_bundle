@@ -60,42 +60,46 @@ class LineGraph extends Component {
     let tickValues = 0;
     let independentTickValues = [];
     if (this.props.campaignStats.length > 0) {
-      data = this.props.campaignStats.map((stat, i) => {
-        let date = new Date(stat.report_date);
+      data = this.props.campaignStats
+        .sort((firstElm, secondElm) =>
+          firstElm.report_date < secondElm.report_date ? -1 : 1
+        )
+        .map((stat, i) => {
+          let date = new Date(stat.report_date);
 
-        let day = date.getDate();
-        let month = date.getMonth();
-        //For Clicks/ CPC check the clicks/cpc  values so that it can be formatted proper as 0.5K,1K... when majority values greater than 999
-        if (
-          ((this.props.chartChoice === "Clicks" &&
-            stat.clicks !== 0 &&
-            stat.clicks > 999) ||
-            (this.props.chartChoice === "CPC" &&
-              stat.cpc !== 0 &&
-              stat.cpc > 999)) &&
-          !this.state.valuesGreaterThanThousand
-        ) {
-          this.setState({
-            valuesGreaterThanThousand: true,
-          });
-        }
-        tickValues =
-          this.props.chartChoice === "Spend"
-            ? stat.spend
-            : this.props.chartChoice === "Clicks"
-            ? stat.clicks
-            : this.props.chartChoice === "CPC"
-            ? stat.cpc
-            : this.props.chartChoice === "ctr"
-            ? stat.ctr
-            : 0;
-        independentTickValues.push(tickValues);
+          let day = date.getDate();
+          let month = date.getMonth();
+          //For Clicks/ CPC check the clicks/cpc  values so that it can be formatted proper as 0.5K,1K... when majority values greater than 999
+          if (
+            ((this.props.chartChoice === "Clicks" &&
+              stat.clicks !== 0 &&
+              stat.clicks > 999) ||
+              (this.props.chartChoice === "CPC" &&
+                stat.cpc !== 0 &&
+                stat.cpc > 999)) &&
+            !this.state.valuesGreaterThanThousand
+          ) {
+            this.setState({
+              valuesGreaterThanThousand: true,
+            });
+          }
+          tickValues =
+            this.props.chartChoice === "Spend"
+              ? stat.spend
+              : this.props.chartChoice === "Clicks"
+              ? stat.clicks
+              : this.props.chartChoice === "CPC"
+              ? stat.cpc
+              : this.props.chartChoice === "ctr"
+              ? stat.ctr
+              : 0;
+          independentTickValues.push(tickValues);
 
-        return {
-          x: `${day}/${shortMonths[month]}`,
-          y: tickValues,
-        };
-      });
+          return {
+            x: `${day}/${shortMonths[month]}`,
+            y: tickValues,
+          };
+        });
     }
 
     return (
