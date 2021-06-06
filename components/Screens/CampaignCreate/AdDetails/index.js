@@ -662,9 +662,10 @@ class AdDetails extends Component {
         (r) => r === selectedItem
       )
     ) {
-      replace.targeting.demographics[0].languages = replace.targeting.demographics[0].languages.filter(
-        (r) => r !== selectedItem
-      );
+      replace.targeting.demographics[0].languages =
+        replace.targeting.demographics[0].languages.filter(
+          (r) => r !== selectedItem
+        );
       langs = replace.targeting.demographics[0].languages;
       analytics.track(`a_ad_languages`, {
         source: "ad_targeting",
@@ -1112,8 +1113,17 @@ class AdDetails extends Component {
       "mandatory",
       this.state.campaignInfo.targeting.geos[0].country_code
     );
-
-    if (countryError) {
+    if (this.props.average_reach < 25000) {
+      showMessage({
+        message: translate("The targeted audience size is too small"),
+        description: translate(
+          "Please broaden your demographic or geographic targeting"
+        ),
+        type: "warning",
+        duration: 7000,
+        position: "top",
+      });
+    } else if (countryError) {
       showMessage({
         message: translate("Please choose a country"),
         type: "warning",
@@ -1256,10 +1266,10 @@ class AdDetails extends Component {
           this.state.campaignInfo.targeting.demographics[0].gender === ""
             ? "ALL"
             : this.state.campaignInfo.targeting.demographics[0].gender,
-        campaign_max_age: this.state.campaignInfo.targeting.demographics[0]
-          .max_age,
-        campaign_min_age: this.state.campaignInfo.targeting.demographics[0]
-          .min_age,
+        campaign_max_age:
+          this.state.campaignInfo.targeting.demographics[0].max_age,
+        campaign_min_age:
+          this.state.campaignInfo.targeting.demographics[0].min_age,
         campaign_country_name: this.state.countryName,
         campaign_region_names:
           this.state.regionNames && this.state.regionNames.length > 0
@@ -1272,10 +1282,10 @@ class AdDetails extends Component {
                 ", "
               )
             : null,
-        campaign_min_version: this.state.campaignInfo.targeting.devices[0]
-          .os_version_min,
-        campaign_max_version: this.state.campaignInfo.targeting.devices[0]
-          .os_version_max,
+        campaign_min_version:
+          this.state.campaignInfo.targeting.devices[0].os_version_min,
+        campaign_max_version:
+          this.state.campaignInfo.targeting.devices[0].os_version_max,
         campaign_os_type:
           this.state.campaignInfo.targeting.devices[0].os_type === ""
             ? "ALL"
@@ -1629,8 +1639,8 @@ class AdDetails extends Component {
                   this.props.data.attachment.android_app_url !== ""))
                 ? [
                     {
-                      value: this.state.campaignInfo.targeting.devices[0]
-                        .os_type,
+                      value:
+                        this.state.campaignInfo.targeting.devices[0].os_type,
                       label:
                         this.state.campaignInfo.targeting.devices[0].os_type ===
                         ""
@@ -1700,15 +1710,16 @@ class AdDetails extends Component {
 
     let interests_names = [];
     if (this.state.campaignInfo.targeting.interests[0].category_id.length > 0) {
-      interests_names = this.state.campaignInfo.targeting.interests[0].category_id.map(
-        (interest) => {
-          const nameItem = find(
-            this.props.interests,
-            (intrst) => interest === intrst.id
-          );
-          if (nameItem) return translate(nameItem.name);
-        }
-      );
+      interests_names =
+        this.state.campaignInfo.targeting.interests[0].category_id.map(
+          (interest) => {
+            const nameItem = find(
+              this.props.interests,
+              (intrst) => interest === intrst.id
+            );
+            if (nameItem) return translate(nameItem.name);
+          }
+        );
     }
     interests_names = interests_names.join(", ");
 
@@ -2058,6 +2069,7 @@ const mapStateToProps = (state) => ({
   campaignList: state.dashboard.campaignList,
   targeting_error: state.campaignC.targeting_error,
   targeting_error_message: state.campaignC.targeting_error_message,
+  estimated_metrics: state.campaignC.estimated_metrics,
 });
 
 const mapDispatchToProps = (dispatch) => ({
