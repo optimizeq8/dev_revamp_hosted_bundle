@@ -2170,6 +2170,19 @@ const strings = {
   "Story Preview": "Story Preview",
   "Your ads will automatically be shown to your audience in the places they're likely to perform best":
     "Your ads will automatically be shown to your audience in the places they're likely to perform best",
+  "Targeting too specific, please change targeting for better results":
+    "Targeting too specific, please change targeting for better results",
+  "Connect To Facebook": "Connect To Facebook",
+  "Change Instagram Page": "Change Instagram Page",
+  "Media Library": "Media Library",
+  "Select an existing media from previously launched campaign":
+    "Select an existing media from previously launched campaign",
+  "Campaign Options": "Campaign Options",
+  Extend: "Extend",
+  "The targeted audience size is too small":
+    "The targeted audience size is too small",
+  "Please broaden your demographic or geographic targeting":
+    "Please broaden your demographic or geographic targeting",
 };
 
 export default strings;
