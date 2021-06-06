@@ -11,7 +11,12 @@ const preview = {
   uri:
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
 };
-export const previewHandler = (selectedCampaign, navigation, source) => {
+export const previewHandler = (
+  selectedCampaign,
+  navigation,
+  source,
+  mainBusiness
+) => {
   let media =
     selectedCampaign.campaign_type !== "StoryAd"
       ? { media: selectedCampaign.media }
@@ -47,7 +52,7 @@ export const previewHandler = (selectedCampaign, navigation, source) => {
     action_status: "success",
     campaign_channel: "snapchat",
     campaign_ad_type: selectedCampaign.campaign_type,
-    businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    businessid: mainBusiness.businessid,
   });
 
   navigation.push(
@@ -73,7 +78,7 @@ export const previewHandler = (selectedCampaign, navigation, source) => {
   );
 };
 export default (props) => {
-  let { loading, selectedCampaign, navigation, source } = props;
+  let { loading, selectedCampaign, navigation, source, mainBusiness } = props;
   const { translate } = props.screenProps;
   let storyOrCollection =
     !loading &&
@@ -114,7 +119,12 @@ export default (props) => {
           !selectedCampaign.media.includes(".png") ? (
             <TouchableOpacity
               onPress={() =>
-                previewHandler(selectedCampaign, navigation, source)
+                previewHandler(
+                  selectedCampaign,
+                  navigation,
+                  source,
+                  mainBusiness
+                )
               }
               style={[styles.backgroundViewWrapper]}
             >
@@ -138,7 +148,12 @@ export default (props) => {
           ) : (
             <TouchableOpacity
               onPress={() =>
-                previewHandler(selectedCampaign, navigation, source)
+                previewHandler(
+                  selectedCampaign,
+                  navigation,
+                  source,
+                  mainBusiness
+                )
               }
               style={styles.backgroundViewWrapper}
             >
