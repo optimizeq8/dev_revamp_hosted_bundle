@@ -5,6 +5,7 @@ import styles from "./Styles";
 import PenIcon from "../../../assets/SVGs/Pen";
 import { showMessage } from "react-native-flash-message";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
+import { RFValue } from "react-native-responsive-fontsize";
 
 export default class TeamMember extends Component {
   resendInvite = () => {
@@ -71,7 +72,7 @@ export default class TeamMember extends Component {
             <Text style={styles.resendStyle}>{translate("resend")}</Text>
           </TouchableOpacity>
         ) : (
-          <PenIcon width={20} height={20} />
+          <PenIcon width={RFValue(10, 414)} height={RFValue(10, 414)} />
         )}
       </TouchableOpacity>
     );

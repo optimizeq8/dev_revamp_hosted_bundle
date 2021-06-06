@@ -241,7 +241,6 @@ export const useWallet = (
   retries = 3
 ) => {
   return (dispatch, getState) => {
-    console.log("called", campaign_id);
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true,
