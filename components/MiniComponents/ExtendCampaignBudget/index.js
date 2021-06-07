@@ -49,8 +49,14 @@ class RepeatCampaignBudget extends Component {
         duration = extendedCampaginData.duration;
         prevTargeting = extendedCampaginData.targeting;
         if (prevCampaignIsInstagram) {
-          recBudget = prevTargeting.geo_locations.countries.length * 75;
-          minValueBudget = 25 * prevTargeting.geo_locations.countries.length;
+          recBudget =
+            (prevTargeting.geo_locations.countries.length +
+              prevTargeting.geo_locations.custom_locations.length) *
+            75;
+          minValueBudget =
+            25 *
+            (prevTargeting.geo_locations.countries.length +
+              prevTargeting.geo_locations.custom_locations.length);
         } else {
           recBudget = prevTargeting.geos.length * 75;
           minValueBudget = 25 * prevTargeting.geos.length;
@@ -108,8 +114,14 @@ class RepeatCampaignBudget extends Component {
         duration = extendedCampaginData.duration;
         prevTargeting = extendedCampaginData.targeting;
         if (prevCampaignIsInstagram) {
-          recBudget = prevTargeting.geo_locations.countries.length * 75;
-          minValueBudget = 25 * prevTargeting.geo_locations.countries.length;
+          recBudget =
+            (prevTargeting.geo_locations.countries.length +
+              prevTargeting.geo_locations.custom_locations.length) *
+            75;
+          minValueBudget =
+            25 *
+            (prevTargeting.geo_locations.countries.length +
+              prevTargeting.geo_locations.custom_locations.length);
         } else {
           recBudget = prevTargeting.geos.length * 75;
           minValueBudget = 25 * prevTargeting.geos.length;
