@@ -62,7 +62,7 @@ class index extends Component {
   render() {
     let url = this.props.navigation.getParam("url", "");
     let title = this.props.navigation.getParam("title", "");
-
+    console.log("userAgent", this.state.userAgent);
     return (
       <SafeAreaView
         // style={styles.mainSafeArea}
@@ -95,19 +95,24 @@ class index extends Component {
             scrollEnabled={false}
             // padder
           > */}
+
           <WebView
             userAgent={
               url.includes("facebooklogin/login.php") &&
               Platform.OS === "android"
-                ? this.state.userAgent
-                : //  "Mozilla/5.0 (Windows Mobile; Opera Mini/5.1.21594/28.2725; U; en) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.149 Mobile Safari/537.36"
+                ? "Mozilla/5.0 (Windows Mobile; Opera Mini/5.1.21594/28.2725; U; en) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.149 Mobile Safari/537.36"
+                : //   this.state.userAgent
+                  //Mozilla/5.0 (Linux; Android 9; Android SDK built for x86 Build/PSR1.180720.093; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/69.0.3497.100 Mobile Safari/537.36
+
+                  //  "Mozilla/5.0 (Windows Mobile; Opera Mini/5.1.21594/28.2725; U; en) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.149 Mobile Safari/537.36"
                   ""
             }
             // startInLoadingState={true}
             onLoadStart={() => {
               RCTNetworking.clearCookies(() => true);
             }}
-            onError={() => {
+            onError={(error) => {
+              console.log("error loading url", error);
               analytics.track("a_error", {
                 source: "web_view",
                 source_action: this.props.navigation.getParam(
