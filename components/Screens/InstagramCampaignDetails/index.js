@@ -408,11 +408,29 @@ class InstagramCampaignDetails extends Component {
           flexible_spec && flexible_spec.hasOwnProperty("interests")
             ? flexible_spec.interests.map((interest) => interest.name)
             : [];
-        countryName = targeting.geo_locations.countries.map((country) => {
-          return countries.find(
-            (count) => country.toLowerCase() === count.value
-          ).label;
-        });
+
+        countryName =
+          targeting.geo_locations &&
+          targeting.geo_locations.countries &&
+          targeting.geo_locations.countries.map((country) => {
+            return countries.find(
+              (count) => country.toLowerCase() === count.value
+            ).label;
+          });
+        // To show customLocations countries when actual countries are missing
+        if (
+          targeting.geo_locations &&
+          !targeting.geo_locations.countries &&
+          targeting.geo_locations.custom_locations
+        ) {
+          countryName = targeting.geo_locations.custom_locations.map(
+            (country) => {
+              return countries.find(
+                (count) => country.country.toLowerCase() === count.value
+              ).label;
+            }
+          );
+        }
         audienceOverViewData.push({
           heading: "Location",
           icon: (
