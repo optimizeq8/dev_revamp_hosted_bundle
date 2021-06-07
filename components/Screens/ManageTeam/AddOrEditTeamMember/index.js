@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { View, Alert, Text, ScrollView, TouchableOpacity } from "react-native";
+import {
+  BackHandler,
+  View,
+  Alert,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
 
@@ -46,7 +53,15 @@ class AddOrEditTeamMember extends Component {
         userRole: parseInt(teamMeber.user_role),
       });
     }
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  handleBackPress = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
 
   /**
    * Gets passed to a child component so that the parent's sate can
