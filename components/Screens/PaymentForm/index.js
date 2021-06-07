@@ -725,10 +725,12 @@ class PaymentForm extends Component {
                         ? this.props.walletAmountInKwd
                         : this.props.walletUsed
                         ? this.props.campaign_balance_amount_kwd
-                        : this.props.navigation.getParam(
-                            "kdamount",
-                            this.props.campaign_budget_kdamount
-                          )}
+                        : parseFloat(
+                            this.props.navigation.getParam(
+                              "kdamount",
+                              this.props.campaign_budget_kdamount
+                            )
+                          ).toFixed(3)}
                     </Text>
                   </View>
                   {!this.state.addingCredits && (
