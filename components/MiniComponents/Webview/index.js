@@ -7,7 +7,7 @@ import { Container } from "native-base";
 import CookieManager from "@react-native-cookies/cookies";
 import SafeAreaView from "react-native-safe-area-view";
 import { connect } from "react-redux";
-
+import { getUserAgent } from "react-native-device-info";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";
 import styles from "./styles";
@@ -15,7 +15,15 @@ import Loading from "../LoadingScreen";
 const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking");
 
 class index extends Component {
+  state = {
+    userAgent: "",
+  };
   componentDidMount() {
+    getUserAgent().then((userAgent) => {
+      this.setState({
+        userAgent,
+      });
+    });
     CookieManager.clearAll().then((val) =>
       console.log("webviewCookieManager", val)
     );
@@ -91,8 +99,9 @@ class index extends Component {
             userAgent={
               url.includes("facebooklogin/login.php") &&
               Platform.OS === "android"
-                ? "Mozilla/5.0 (Windows Mobile; Opera Mini/5.1.21594/28.2725; U; en) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.149 Mobile Safari/537.36"
-                : ""
+                ? this.state.userAgent
+                : //  "Mozilla/5.0 (Windows Mobile; Opera Mini/5.1.21594/28.2725; U; en) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.149 Mobile Safari/537.36"
+                  ""
             }
             // startInLoadingState={true}
             onLoadStart={() => {
