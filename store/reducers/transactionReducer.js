@@ -125,9 +125,10 @@ const reducer = (state = initialState, action) => {
         errorTransactionList: false,
       };
     case actionTypes.FILTER_TRANSACTION:
-      let filtered =
+      let filtered = [...state.transactionList];
+      filtered =
         state.transactionList && action.payload && action.payload.value
-          ? state.transactionList.filter(
+          ? filtered.filter(
               (transaction) =>
                 (transaction.campaign_name &&
                   transaction.campaign_name
@@ -143,7 +144,7 @@ const reducer = (state = initialState, action) => {
                   .toLowerCase()
                   .includes(action.payload.value.toLowerCase())
             )
-          : [];
+          : filtered;
       let startSearch = "";
       let endSearch = "";
       if (action.payload.dateRange && action.payload.dateRange[0] !== "") {
