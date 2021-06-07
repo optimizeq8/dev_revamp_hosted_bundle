@@ -261,6 +261,7 @@ export const country_regions = [
   },
   {
     country_code: "bh",
+    country_name: "Bahrain",
     regions: [
       {
         id: "25180",

@@ -16,14 +16,14 @@ const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking");
 
 class index extends Component {
   state = {
-    userAgent: "",
+    // userAgent: "",
   };
   componentDidMount() {
-    getUserAgent().then((userAgent) => {
-      this.setState({
-        userAgent,
-      });
-    });
+    // getUserAgent().then((userAgent) => {
+    //   this.setState({
+    //     userAgent,
+    //   });
+    // });
     CookieManager.clearAll().then((val) =>
       console.log("webviewCookieManager", val)
     );
@@ -62,7 +62,7 @@ class index extends Component {
   render() {
     let url = this.props.navigation.getParam("url", "");
     let title = this.props.navigation.getParam("title", "");
-    console.log("userAgent", this.state.userAgent);
+    // console.log("userAgent", this.state.userAgent);
     return (
       <SafeAreaView
         // style={styles.mainSafeArea}
@@ -101,7 +101,7 @@ class index extends Component {
               url.includes("facebooklogin/login.php") &&
               Platform.OS === "android"
                 ? "Mozilla/5.0 (Windows Mobile; Opera Mini/5.1.21594/28.2725; U; en) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.149 Mobile Safari/537.36"
-                : //   this.state.userAgent
+                : //   this.state.f
                   //Mozilla/5.0 (Linux; Android 9; Android SDK built for x86 Build/PSR1.180720.093; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/69.0.3497.100 Mobile Safari/537.36
 
                   //  "Mozilla/5.0 (Windows Mobile; Opera Mini/5.1.21594/28.2725; U; en) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.149 Mobile Safari/537.36"
