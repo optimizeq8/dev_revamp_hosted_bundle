@@ -434,6 +434,8 @@ class GoogleCampaignDetails extends Component {
               {selectedCampaign &&
                 !selectedCampaign.campaign.completed &&
                 selectedCampaign.campaign.status === "REMOVED" &&
+                selectedCampaign.campaign.budget >
+                  selectedCampaign.overall.spend &&
                 !this.state.expand && (
                   <View style={styles.remainingBudgetContainer}>
                     <Icon

@@ -575,6 +575,8 @@ class CampaignDetails extends Component {
             {selectedCampaign &&
               selectedCampaign.campaign_end === "0" &&
               this.campaignEndedOrNot(selectedCampaign) &&
+              selectedCampaign.lifetime_budget_micro >
+                selectedCampaign.spends &&
               !this.state.expand && (
                 <View style={styles.remainingBudgetContainer}>
                   <Icon
