@@ -293,7 +293,7 @@ class CampaignCard extends Component {
                   />
                 </View>
               )}
-            {this.review_status.includes("APPROVED") && (
+            {!this.review_status.includes("APPROVED") && (
               <View style={styles.chartContainer}>
                 <CampaignCircleChart
                   channel={this.props.channel}
@@ -301,7 +301,7 @@ class CampaignCard extends Component {
                   detail={false}
                   screenProps={this.props.screenProps}
                 />
-                {this.ad_status !== "Campaign ended" ? (
+                {this.ad_status == "Campaign ended" ? (
                   <>
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
@@ -340,18 +340,24 @@ class CampaignCard extends Component {
                 )}
               </View>
             )}
-            <RepeatCampaignModal
-              showRepeatModal={this.state.showRepeatModal}
-              screenProps={this.props.screenProps}
-              handleRepeatModal={this.handleRepeatModal}
-              campaign={campaign}
-            />
-            <ExtendCampaignModal
-              showRepeatModal={this.state.showExtendModal}
-              screenProps={this.props.screenProps}
-              handleExtendModal={this.handleExtendModal}
-              campaign={campaign}
-            />
+            {this.state.showRepeatModal && (
+              <RepeatCampaignModal
+                showRepeatModal={this.state.showRepeatModal}
+                screenProps={this.props.screenProps}
+                handleRepeatModal={this.handleRepeatModal}
+                campaign={campaign}
+                screenProps={this.props.screenProps}
+              />
+            )}
+            {this.state.showExtendModal && (
+              <ExtendCampaignModal
+                showRepeatModal={this.state.showExtendModal}
+                screenProps={this.props.screenProps}
+                handleExtendModal={this.handleExtendModal}
+                campaign={campaign}
+                screenProps={this.props.screenProps}
+              />
+            )}
             <CampaignOptionsMenu
               showCampaignOptions={this.state.showCampaignOptions}
               handleOptionsModal={this.handleOptionsModal}

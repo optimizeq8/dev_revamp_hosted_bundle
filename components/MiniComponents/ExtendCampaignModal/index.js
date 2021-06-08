@@ -20,7 +20,7 @@ import LowerButton from "../LowerButton";
 class ExtendCampaignModal extends Component {
   state = {
     start_time: "",
-    end_time: "",
+    end_time: new Date(),
     showDatePicker: false,
     showBudgetSelector: false,
     duration: 7,
@@ -28,7 +28,11 @@ class ExtendCampaignModal extends Component {
   };
   componentDidMount() {
     if (this.props.campaign) {
-      let end_time = new Date(this.props.campaign.end_time.split("T")[0]);
+      let endDateCondition =
+        this.ad_status === "Campaign ended"
+          ? new Date().toISOString().split("T")[0]
+          : this.props.campaign.end_time.split("T")[0];
+      let end_time = new Date(endDateCondition);
       end_time.setDate(end_time.getDate() + this.state.duration - 1);
       this.setState({
         end_time: end_time.toISOString().split("T")[0],
@@ -36,28 +40,6 @@ class ExtendCampaignModal extends Component {
     }
   }
 
-  handleDuration = (subtract = false, onePress = false, time = 1) => {
-    let minimumDuration = 3;
-    let duration = subtract
-      ? this.state.duration - 1 > minimumDuration
-        ? this.state.duration - 1
-        : minimumDuration
-      : this.state.duration + 1;
-
-    let end_time = new Date(this.state.start_time.split("T")[0]);
-    end_time.setDate(end_time.getDate() + duration - 1);
-    this.setState({
-      end_time: end_time.toISOString().split("T")[0],
-      duration,
-    });
-
-    if (!onePress) {
-      this.timer = setTimeout(
-        () => this.handleDuration(subtract, null, time + 1),
-        time > 10 ? 50 : 150 //to increase the speed when pressing for a longer time
-      );
-    }
-  };
   stopTimer = () => {
     if (this.timer) clearTimeout(this.timer);
   };
@@ -89,8 +71,11 @@ class ExtendCampaignModal extends Component {
   };
   handleDuration = (subtract = false, onePress = false, time = 1) => {
     let duration = subtract ? this.state.duration - 1 : this.state.duration + 1;
-
-    let end_time = new Date(this.props.campaign.end_time.split("T")[0]);
+    let endDateCondition =
+      this.ad_status === "Campaign ended"
+        ? new Date().toISOString().split("T")[0]
+        : this.props.campaign.end_time.split("T")[0];
+    let end_time = new Date(endDateCondition);
     end_time.setDate(end_time.getDate() + (duration - 1));
     this.setState({
       end_time: end_time.toISOString().split("T")[0],
@@ -110,11 +95,13 @@ class ExtendCampaignModal extends Component {
   render() {
     let {
       showRepeatModal = true,
-      screenProps,
       handleExtendModal,
       campaign,
+      screenProps,
     } = this.props;
     let { switchComponent } = this.state;
+    let { translate } = screenProps;
+    let newEndDate = new Date(this.state.end_time);
     return (
       <Modal
         visible={showRepeatModal}
@@ -182,13 +169,31 @@ class ExtendCampaignModal extends Component {
                     }
                   >
                     <View style={styles.dateContainer}>
-                      <Text style={styles.titleStyle}>{"End date"}:</Text>
+                      <Text style={[styles.titleStyle]}>
+                        {translate("New end date")}:
+                      </Text>
                       <Text style={[styles.titleStyle, styles.dateStyle]}>
-                        {"  " + campaign.end_time.split("T")[0]}
+                        {"  " + newEndDate.toISOString().split("T")[0]}
+                      </Text>
+                    </View>
+                    <View style={styles.dateContainer}>
+                      <Text style={[styles.titleStyle, { fontSize: 12 }]}>
+                        {translate("Previous end date")}:
+                      </Text>
+                      <Text
+                        style={[
+                          styles.titleStyle,
+                          styles.dateStyle,
+                          { fontSize: 12 },
+                        ]}
+                      >
+                        {campaign.end_time.split("T")[0]}
                       </Text>
                     </View>
                     <Text style={[styles.descStyle]}>
-                      Choose how many days you want to extend the campaign by
+                      {translate(
+                        "Choose how many days you want to extend the campaign by"
+                      )}
                     </Text>
                     <View style={{ flexDirection: "row" }}>
                       <CampaignDuration

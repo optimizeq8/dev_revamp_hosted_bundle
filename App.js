@@ -19,7 +19,7 @@ import RNRestart from "react-native-restart";
 
 import Intercom from "react-native-intercom";
 import analytics from "@segment/analytics-react-native";
-// import AdjustIntegration from "@segment/analytics-react-native-adjust";
+import AdjustIntegration from "@segment/analytics-react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
 TextReactNative.defaultProps.allowFontScaling = false;
@@ -156,6 +156,32 @@ class App extends React.Component {
     this.interval = null;
     // Instruct SplashScreen not to hide yet
     // SplashScreen.preventAutoHide();
+    // FOR TEST ORG & PROJ ==> hNRRGVYYOxFiMXboexCvtPK7PSy2NgHp
+    // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
+    // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
+    analytics.setup(
+      __DEV__
+        ? "fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh"
+        : "ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB",
+      {
+        using: [AdjustIntegration],
+        // Record screen views automatically!
+        recordScreenViews: true,
+        // Record certain application events automatically!
+        trackAppLifecycleEvents: true,
+        trackAttributionData: true,
+        android: {
+          flushInterval: 60,
+          collectDeviceId: true,
+        },
+        ios: {
+          trackAdvertising: true,
+          trackDeepLinks: true,
+          trackPushNotifications: true,
+        },
+        debug: true,
+      }
+    );
     const adjustConfig = new AdjustConfig(
       "c698tyk65u68",
       !__DEV__
@@ -164,35 +190,62 @@ class App extends React.Component {
     );
     adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
 
-    // Adjust.requestTrackingAuthorizationWithCompletionHandler((status) => {
-    //   switch (status) {
-    //     case 0:
-    //       // ATTrackingManagerAuthorizationStatusNotDetermined case
+    Adjust.requestTrackingAuthorizationWithCompletionHandler((status) => {
+      switch (status) {
+        case 0:
+          // ATTrackingManagerAuthorizationStatusNotDetermined case
 
-    //       analytics.track("Authorization status", {
-    //         status: "ATTrackingManagerAuthorizationStatusNotDetermined",
-    //       });
-    //       break;
-    //     case 1:
-    //       // ATTrackingManagerAuthorizationStatusRestricted case
-    //       analytics.track("Authorization status", {
-    //         status: "ATTrackingManagerAuthorizationStatusRestricted",
-    //       });
-    //       break;
-    //     case 2:
-    //       // ATTrackingManagerAuthorizationStatusDenied case
-    //       analytics.track("Authorization status", {
-    //         status: "ATTrackingManagerAuthorizationStatusDenied",
-    //       });
-    //       break;
-    //     case 3:
-    //       // ATTrackingManagerAuthorizationStatusAuthorized case
-    //       analytics.track("Authorization status", {
-    //         status: "ATTrackingManagerAuthorizationStatusAuthorized",
-    //       });
-    //       break;
-    //   }
-    // });
+          analytics.track("Authorization status", {
+            status: "ATTrackingManagerAuthorizationStatusNotDetermined",
+          });
+          break;
+        case 1:
+          // ATTrackingManagerAuthorizationStatusRestricted case
+          analytics.track("Authorization status", {
+            status: "ATTrackingManagerAuthorizationStatusRestricted",
+          });
+          break;
+        case 2:
+          // ATTrackingManagerAuthorizationStatusDenied case
+          analytics.track("Authorization status", {
+            status: "ATTrackingManagerAuthorizationStatusDenied",
+          });
+          break;
+        case 3:
+          // ATTrackingManagerAuthorizationStatusAuthorized case
+          analytics.track("Authorization status", {
+            status: "ATTrackingManagerAuthorizationStatusAuthorized",
+          });
+          break;
+      }
+    });
+
+    adjustConfig.setAttributionCallbackListener((attribution) => {
+      // Printing all attribution properties.
+      analytics.identify({
+        trackerToken,
+        trackerName: attribution.trackerName,
+        network: attribution.network,
+        campaign: attribution.campaign,
+        adgroup: attribution.adgroup,
+        creative: attribution.creative,
+        clickLabel: attribution.clickLabel,
+        adid: attribution.adid,
+      });
+      console.log("Attribution changed!");
+      console.log(attribution.trackerToken);
+      console.log(attribution.trackerName);
+      console.log(attribution.network);
+      console.log(attribution.campaign);
+      console.log(attribution.adgroup);
+      console.log(attribution.creative);
+      console.log(attribution.clickLabel);
+      console.log(attribution.adid);
+      console.log(attribution.costType);
+      console.log(attribution.costAmount);
+      console.log(attribution.costCurrency);
+    });
+
     Adjust.create(adjustConfig);
 
     // if (Platform.OS === "android") {
@@ -226,33 +279,6 @@ class App extends React.Component {
   componentDidMount() {
     enableScreens();
 
-    // FOR TEST ORG & PROJ ==> hNRRGVYYOxFiMXboexCvtPK7PSy2NgHp
-    // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
-    // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
-    RNAdvertisingId.getAdvertisingId();
-    analytics.setup(
-      __DEV__
-        ? "fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh"
-        : "ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB",
-      {
-        // using: [AdjustIntegration],
-        // Record screen views automatically!
-        recordScreenViews: true,
-        // Record certain application events automatically!
-        trackAppLifecycleEvents: true,
-        trackAttributionData: true,
-        android: {
-          flushInterval: 60,
-          collectDeviceId: true,
-        },
-        ios: {
-          trackAdvertising: true,
-          trackDeepLinks: true,
-          trackPushNotifications: true,
-        },
-        debug: true,
-      }
-    );
     RNBootSplash.hide();
 
     analytics.getAnonymousId().then((anonId) => {
@@ -265,9 +291,10 @@ class App extends React.Component {
 
     this._loadAsync();
     store.dispatch(actionCreators.checkForExpiredToken(NavigationService));
-    this._notificationSubscription = Notifications.addNotificationResponseReceivedListener(
-      this._handleNotification
-    );
+    this._notificationSubscription =
+      Notifications.addNotificationResponseReceivedListener(
+        this._handleNotification
+      );
     AppState.addEventListener("change", this._handleAppStateChange);
     Platform.OS === "ios" && Intercom.registerForPush();
 
@@ -645,9 +672,8 @@ class App extends React.Component {
                 <Root>
                   <AppNavigator
                     onNavigationStateChange={(prevState, currentState) => {
-                      const currentScreen = this.getCurrentRouteName(
-                        currentState
-                      );
+                      const currentScreen =
+                        this.getCurrentRouteName(currentState);
                       this.setState({ currentScreen });
                       // console.log("screeen name", currentScreen);
                     }}
