@@ -482,7 +482,7 @@ class AdPaymentReview extends Component {
               <View style={styles.kdAmountContainer}>
                 <Text style={[styles.money, styles.kdText]}>KD{}</Text>
                 <Text style={[styles.money, styles.kdAmountText]}>
-                  {this.props.kdamount}
+                  {parseFloat(this.props.kdamount).toFixed(3)}
                 </Text>
               </View>
 

@@ -51,6 +51,7 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 import { LinearGradient } from "expo-linear-gradient";
 import ChartDateChoices from "./ChartDateChoices";
 import CSVModal from "./CSVModal";
+import { showMessage } from "react-native-flash-message";
 
 class CampaignDetails extends Component {
   static navigationOptions = {
