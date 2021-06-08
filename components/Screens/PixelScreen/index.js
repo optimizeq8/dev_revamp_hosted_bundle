@@ -1,5 +1,7 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Clipboard } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
+import Clipboard from "@react-native-clipboard/clipboard";
+
 import { connect } from "react-redux";
 import SafeAreaView from "react-native-safe-area-view";
 import { LinearGradient } from "expo-linear-gradient";

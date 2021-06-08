@@ -104,6 +104,13 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     textAlign: "left",
   },
+  urlText: {
+    fontSize: RFValue(6, 414),
+    color: "#fff",
+    paddingVertical: RFValue(5, 414),
+    fontFamily: "montserrat-regular",
+    textAlign: "left",
+  },
   chartTitle: {
     color: "#fff",
     fontFamily: "montserrat-bold",
@@ -537,6 +544,34 @@ const styles = StyleSheet.create({
     fontSize: RFValue(6.5, 414),
     width: "85%",
     textAlign: "left",
+  },
+  destinationView: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "rgba(0,0,0,0.16)",
+    paddingHorizontal: RFValue(15, 414),
+    paddingVertical: RFValue(7.5, 414),
+    borderRadius: RFValue(15, 414),
+    marginHorizontal: RFValue(5, 414),
+  },
+  destinationText: {
+    color: "#FFFFFF",
+    fontSize: RFValue(6, 414),
+    fontFamily: "montserrat-regular",
+  },
+  attachementText: {
+    color: "#FFFFFF",
+    fontSize: RFValue(7, 414),
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
+    paddingHorizontal: 20,
+    paddingBottom: 4,
+  },
+  copyIcon: {
+    alignSelf: "flex-end",
+    left: RFValue(4, 414),
   },
 });
 export default styles;

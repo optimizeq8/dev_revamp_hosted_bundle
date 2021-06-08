@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.clipboard.ClipboardPackage;
 import com.horcrux.svg.SvgPackage;
 import com.robinpowered.react.Intercom.IntercomPackage;
 import com.airbnb.android.react.lottie.LottiePackage;

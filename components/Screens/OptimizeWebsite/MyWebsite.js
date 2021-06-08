@@ -4,11 +4,12 @@ import {
   Image,
   BackHandler,
   Text,
-  Clipboard,
   TouchableOpacity,
   ScrollView,
   Platform,
 } from "react-native";
+import Clipboard from "@react-native-clipboard/clipboard";
+
 import WebView from "react-native-webview";
 import analytics from "@segment/analytics-react-native";
 import SafeAreaView from "react-native-safe-area-view";

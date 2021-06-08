@@ -2139,6 +2139,11 @@
   resolved "https://registry.yarnpkg.com/@ptomasroos/react-native-multi-slider/-/react-native-multi-slider-1.0.0.tgz#a4ea27b1320b93a1db9f696c24789695df6c9f30"
   integrity sha512-NpX22rQLArg9widwMzGf7XsInTDf6mfY/D1XaDVjglNkVphj3NSN37+nF6MofArCxC++1P+jHv0SGWbmJQwy4g==
 
+"@react-native-clipboard/clipboard@^1.8.1":
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/@react-native-clipboard/clipboard/-/clipboard-1.8.1.tgz#3fa6a92f82cadd51c63c5de0e2b0993a9442a07a"
+  integrity sha512-1kFA5TEf7iUPR/T4/jFfYMe38iy6HOx7DsLjMHYuAISsGgUElZa+bnW+gIebfLebpFcQZKROC5sB61LWe4MTMQ==
+
 "@react-native-community/async-storage@~1.12.0":
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.12.1.tgz#25f821b4f6b13abe005ad67e47c6f1cee9f27b24"

@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import Clipboard from "@react-native-clipboard/clipboard";
 import { Container, Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import DateFields from "../../MiniComponents/DatePicker/DateFields";
@@ -26,6 +27,7 @@ import RejectedSnapchatInfo from "./RejectedInfoComp/RejectedSnapchatInfo";
 //icons
 import LocationIcon from "../../../assets/SVGs/Location";
 import GenderIcon from "../../../assets/SVGs/Gender";
+import CopyIcon from "../../../assets/SVGs/CopyIcon";
 
 // Style
 import styles from "./styles";
@@ -49,6 +51,7 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 import { LinearGradient } from "expo-linear-gradient";
 import ChartDateChoices from "./ChartDateChoices";
 import CSVModal from "./CSVModal";
+import { showMessage } from "react-native-flash-message";
 
 class CampaignDetails extends Component {
   static navigationOptions = {
@@ -305,6 +308,7 @@ class CampaignDetails extends Component {
   render() {
     let loading = this.props.loading;
     const { translate } = this.props.screenProps;
+    let attachment = {};
     if (
       (!loading &&
         !this.props.languagesListLoading &&
@@ -494,6 +498,35 @@ class CampaignDetails extends Component {
           end_time = dateFormat(end_time, "d mmm");
           start_time = dateFormat(start_time, "d mmm");
         }
+        if (
+          selectedCampaign.attachment &&
+          selectedCampaign.attachment !== "BLANK"
+        ) {
+          attachment = JSON.parse(selectedCampaign.attachment);
+          if (attachment && attachment.url) {
+            if (attachment.url.includes("?utm_source"))
+              attachment.url = attachment.url.split("?utm_source")[0];
+            if (attachment.url.includes("&utm_source")) {
+              attachment.url = attachment.url.split("&utm_source")[0];
+            }
+          }
+        }
+        if (
+          selectedCampaign.story_creatives &&
+          selectedCampaign.story_creatives.length > 0
+        ) {
+          let firstStory = selectedCampaign.story_creatives[0];
+          if (firstStory.attachment && firstStory.attachment !== "BLANK") {
+            attachment = JSON.parse(firstStory.attachment);
+            if (attachment && attachment.url) {
+              if (attachment.url.includes("?utm_source"))
+                attachment.url = attachment.url.split("?utm_source")[0];
+              if (attachment.url.includes("&utm_source")) {
+                attachment.url = attachment.url.split("&utm_source")[0];
+              }
+            }
+          }
+        }
       }
 
       return (
@@ -575,6 +608,8 @@ class CampaignDetails extends Component {
             {selectedCampaign &&
               selectedCampaign.campaign_end === "0" &&
               this.campaignEndedOrNot(selectedCampaign) &&
+              selectedCampaign.lifetime_budget_micro >
+                selectedCampaign.spends &&
               !this.state.expand && (
                 <View style={styles.remainingBudgetContainer}>
                   <Icon
@@ -749,6 +784,35 @@ class CampaignDetails extends Component {
                       selectedCampaign={selectedCampaign}
                     />
                   </View>
+                )}
+                {loading ? (
+                  <View style={{ margin: 5 }}>
+                    <PlaceholderLine />
+                  </View>
+                ) : (
+                  attachment.url && (
+                    <>
+                      <Text style={styles.attachementText}>
+                        {translate("Attachment URL")}
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          Clipboard.setString(attachment.url);
+                          showMessage({
+                            type: "warning",
+                            message: translate("URL copied to clipboard"),
+                          });
+                        }}
+                        activeOpacity={0.8}
+                        style={styles.destinationView}
+                      >
+                        <Text style={styles.destinationText}>
+                          {attachment.url}
+                        </Text>
+                        <CopyIcon fill={"#FFF"} style={styles.copyIcon} />
+                      </TouchableOpacity>
+                    </>
+                  )
                 )}
                 {loading ? (
                   <View style={{ margin: 5 }}>

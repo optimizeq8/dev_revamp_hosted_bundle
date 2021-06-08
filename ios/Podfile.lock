@@ -394,6 +394,8 @@ PODS:
     - React-Core
   - RNCCheckbox (0.4.2):
     - React
+  - RNCClipboard (1.8.1):
+    - React-Core
   - RNCMaskedView (0.1.10):
     - React
   - RNDeviceInfo (5.6.5):
@@ -519,6 +521,7 @@ DEPENDENCIES:
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCCheckbox (from `../node_modules/@react-native-community/checkbox`)"
+  - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -698,6 +701,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCCheckbox:
     :path: "../node_modules/@react-native-community/checkbox"
+  RNCClipboard:
+    :path: "../node_modules/@react-native-clipboard/clipboard"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
   RNDeviceInfo:
@@ -824,6 +829,7 @@ SPEC CHECKSUMS:
   RNBootSplash: a902017918cfd3e1f016ec7faef78fdf4c4e3cd0
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCCheckbox: 357578d3b42652c78ee9a1bb9bcfc3195af6e161
+  RNCClipboard: 4935717a8e86273de4a45f113d01dad949b5374b
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDeviceInfo: c5f8f3a456adcbba405ace475254b08febc4c095
   RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
@@ -852,6 +858,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: 54574fecac368928e7cedd5fbd3e31b53b57dc72
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
 
-PODFILE CHECKSUM: ed2998a934d7879e84c45fe2049918bc5b8c96d9
+PODFILE CHECKSUM: 6c97ba486c34f21cece22c32fdee64efc2f241b1
 
 COCOAPODS: 1.10.1

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ptomasroos/react-native-multi-slider": "^1.0.0",
+    "@react-native-clipboard/clipboard": "^1.8.1",
     "@react-native-community/async-storage": "~1.12.0",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/checkbox": "^0.4.2",
