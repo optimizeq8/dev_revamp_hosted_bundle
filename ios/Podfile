@@ -63,6 +63,8 @@ target 'OptimizeApp' do
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
+  pod 'RNCClipboard', :path => '../node_modules/@react-native-clipboard/clipboard'
+
 end
 
 post_install do |installer|

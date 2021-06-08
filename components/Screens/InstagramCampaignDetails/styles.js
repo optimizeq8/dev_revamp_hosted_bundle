@@ -551,6 +551,34 @@ const styles = StyleSheet.create({
     width: "85%",
     textAlign: "left",
   },
+  destinationView: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "rgba(0,0,0,0.16)",
+    paddingHorizontal: RFValue(15, 414),
+    paddingVertical: RFValue(7.5, 414),
+    borderRadius: RFValue(15, 414),
+    marginHorizontal: RFValue(5, 414),
+  },
+  destinationText: {
+    color: "#FFFFFF",
+    fontSize: RFValue(6, 414),
+    fontFamily: "montserrat-regular",
+  },
+  attachementText: {
+    color: "#FFFFFF",
+    fontSize: RFValue(7, 414),
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
+    paddingHorizontal: 20,
+    paddingBottom: 4,
+  },
+  copyIcon: {
+    alignSelf: "flex-end",
+    left: RFValue(4, 414),
+  },
 });
 
 export default styles;

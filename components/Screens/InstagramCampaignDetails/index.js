@@ -6,6 +6,7 @@ import {
   BackHandler,
   TouchableOpacity,
 } from "react-native";
+import Clipboard from "@react-native-clipboard/clipboard";
 import { RFValue } from "react-native-responsive-fontsize";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { Container, Icon } from "native-base";
@@ -28,6 +29,7 @@ import LocationIcon from "../../../assets/SVGs/Location";
 import GenderIcon from "../../../assets/SVGs/Gender";
 import InterestsIcon from "../../../assets/SVGs/Interests";
 import DeviceMakeIcon from "../../../assets/SVGs/DeviceMake";
+import CopyIcon from "../../../assets/SVGs/CopyIcon";
 
 // Style
 import styles from "./styles";
@@ -50,6 +52,7 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 import { LinearGradient } from "expo-linear-gradient";
 import ChartDateChoices from "./ChartDateChoices";
 import CSVModal from "./CSVModal";
+import { showMessage } from "react-native-flash-message";
 
 class InstagramCampaignDetails extends Component {
   static navigationOptions = {
@@ -305,6 +308,7 @@ class InstagramCampaignDetails extends Component {
   render() {
     let loading = this.props.loading;
     const { translate } = this.props.screenProps;
+    let attachment = null;
 
     if (
       (!loading &&
@@ -340,6 +344,14 @@ class InstagramCampaignDetails extends Component {
       let media = [];
       if (!loading && this.props.selectedCampaign) {
         selectedCampaign = this.props.selectedCampaign;
+        attachment = selectedCampaign.link;
+        if (attachment) {
+          if (attachment.includes("?utm_source"))
+            attachment = attachment.split("?utm_source")[0];
+          if (attachment.includes("&utm_source")) {
+            attachment = attachment.split("&utm_source")[0];
+          }
+        }
         if (
           selectedCampaign.hasOwnProperty("story_creatives") ||
           selectedCampaign.hasOwnProperty("collection_creatives")
@@ -684,6 +696,33 @@ class InstagramCampaignDetails extends Component {
                       selectedCampaign={selectedCampaign}
                     />
                   </View>
+                )}
+                {loading ? (
+                  <View style={{ margin: 5 }}>
+                    <PlaceholderLine />
+                  </View>
+                ) : (
+                  attachment !== "BLANK" && (
+                    <>
+                      <Text style={styles.attachementText}>
+                        {translate("Attachment URL")}
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          Clipboard.setString(attachment);
+                          showMessage({
+                            type: "warning",
+                            message: translate("URL copied to clipboard"),
+                          });
+                        }}
+                        activeOpacity={0.8}
+                        style={styles.destinationView}
+                      >
+                        <Text style={styles.destinationText}>{attachment}</Text>
+                        <CopyIcon fill={"#FFF"} style={styles.copyIcon} />
+                      </TouchableOpacity>
+                    </>
+                  )
                 )}
                 {loading ? (
                   <View style={styles.placeholderView}>

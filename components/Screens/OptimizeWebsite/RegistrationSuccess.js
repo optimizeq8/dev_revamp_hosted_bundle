@@ -1,7 +1,9 @@
 import React from "react";
 import SafeAreaView from "react-native-safe-area-view";
 
-import { Text, Clipboard, TouchableOpacity, ScrollView } from "react-native";
+import { Text, TouchableOpacity, ScrollView } from "react-native";
+import Clipboard from "@react-native-clipboard/clipboard";
+
 import analytics from "@segment/analytics-react-native";
 import {
   widthPercentageToDP,
