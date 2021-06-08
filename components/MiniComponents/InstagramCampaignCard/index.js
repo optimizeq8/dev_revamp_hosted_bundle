@@ -329,19 +329,23 @@ class CampaignCard extends Component {
                 )}
               </View>
             )}
-            <RepeatCampaignModal
-              showRepeatModal={this.state.showRepeatModal}
-              screenProps={this.props.screenProps}
-              handleRepeatModal={this.handleRepeatModal}
-              campaign={campaign}
-            />
-            <ExtendCampaignModal
-              showRepeatModal={this.state.showExtendModal}
-              screenProps={this.props.screenProps}
-              handleExtendModal={this.handleExtendModal}
-              campaign={campaign}
-              instagramCampaign={true}
-            />
+            {this.state.showRepeatModal && (
+              <RepeatCampaignModal
+                showRepeatModal={this.state.showRepeatModal}
+                screenProps={this.props.screenProps}
+                handleRepeatModal={this.handleRepeatModal}
+                campaign={campaign}
+              />
+            )}
+            {this.state.showExtendModal && (
+              <ExtendCampaignModal
+                showRepeatModal={this.state.showExtendModal}
+                screenProps={this.props.screenProps}
+                handleExtendModal={this.handleExtendModal}
+                campaign={campaign}
+                instagramCampaign={true}
+              />
+            )}
             <CampaignOptionsMenu
               showCampaignOptions={this.state.showCampaignOptions}
               handleOptionsModal={this.handleOptionsModal}
