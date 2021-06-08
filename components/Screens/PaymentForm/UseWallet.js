@@ -135,7 +135,7 @@ class UseWallet extends Component {
                       {parseFloat(this.props.wallet_balance_amount).toFixed(2)}
                     </Text>
                     <Text style={styles.walletInfo}>
-                      {translate("New Budget Total:")}{" "}
+                      {translate("Amount to be paid:")}{" "}
                       {parseFloat(this.props.campaign_balance_amount).toFixed(
                         2
                       )}
