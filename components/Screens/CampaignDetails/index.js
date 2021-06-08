@@ -795,7 +795,13 @@ class CampaignDetails extends Component {
                         {translate("Attachment URL")}
                       </Text>
                       <TouchableOpacity
-                        //   onPress={this.copyPixel}
+                        onPress={() => {
+                          Clipboard.setString(attachment.url);
+                          showMessage({
+                            type: "warning",
+                            message: translate("URL copied to clipboard"),
+                          });
+                        }}
                         activeOpacity={0.8}
                         style={styles.destinationView}
                       >
