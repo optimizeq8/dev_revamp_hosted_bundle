@@ -700,19 +700,21 @@ class InstagramCampaignDetails extends Component {
                     <PlaceholderLine />
                   </View>
                 ) : (
-                  <>
-                    <Text style={styles.attachementText}>
-                      {translate("Attachment URL")}
-                    </Text>
-                    <TouchableOpacity
-                      //   onPress={this.copyPixel}
-                      activeOpacity={0.8}
-                      style={styles.destinationView}
-                    >
-                      <Text style={styles.destinationText}>{attachment}</Text>
-                      <CopyIcon fill={"#FFF"} style={styles.copyIcon} />
-                    </TouchableOpacity>
-                  </>
+                  attachment !== "BLANK" && (
+                    <>
+                      <Text style={styles.attachementText}>
+                        {translate("Attachment URL")}
+                      </Text>
+                      <TouchableOpacity
+                        //   onPress={this.copyPixel}
+                        activeOpacity={0.8}
+                        style={styles.destinationView}
+                      >
+                        <Text style={styles.destinationText}>{attachment}</Text>
+                        <CopyIcon fill={"#FFF"} style={styles.copyIcon} />
+                      </TouchableOpacity>
+                    </>
+                  )
                 )}
                 {loading ? (
                   <View style={styles.placeholderView}>
