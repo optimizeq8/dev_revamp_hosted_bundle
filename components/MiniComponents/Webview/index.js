@@ -97,16 +97,16 @@ class index extends Component {
           > */}
 
           <WebView
-            // userAgent={
-            //   url.includes("facebooklogin/login.php") &&
-            //   Platform.OS === "android"
-            //     ? "Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19"
-            //     : // "Mozilla/5.0 (Windows Mobile; Opera Mini/5.1.21594/28.2725; U; en) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.149 Mobile Safari/537.36"
-            //       //   this.state.f
-            //       //Mozilla/5.0 (Linux; Android 9; Android SDK built for x86 Build/PSR1.180720.093; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/69.0.3497.100 Mobile Safari/537.36
-            //       // Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19
-            //       ""
-            // }
+            userAgent={
+              url.includes("facebooklogin/login.php") &&
+              Platform.OS === "android"
+                ? "Mozilla/5.0 (Windows Mobile; Opera Mini/5.1.21594/28.2725; U; en) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.149 Mobile Safari/537.36"
+                : // "Mozilla/5.0 (Windows Mobile; Opera Mini/5.1.21594/28.2725; U; en) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.149 Mobile Safari/537.36"
+                  //   this.state.f
+                  //Mozilla/5.0 (Linux; Android 9; Android SDK built for x86 Build/PSR1.180720.093; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/69.0.3497.100 Mobile Safari/537.36
+                  // Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19
+                  ""
+            }
             // startInLoadingState={true}
             onLoadStart={() => {
               RCTNetworking.clearCookies(() => true);
@@ -135,7 +135,7 @@ class index extends Component {
             source={{ uri: url }}
             cacheEnabled={false}
             sharedCookiesEnabled={false}
-            incognito={Platform.OS === "android"}
+            // incognito={Platform.OS === "android"}
             onNavigationStateChange={(navState) => {
               //   console.log("navState.url", navState.url);
               if (navState.url.includes("choosepage.php")) {
