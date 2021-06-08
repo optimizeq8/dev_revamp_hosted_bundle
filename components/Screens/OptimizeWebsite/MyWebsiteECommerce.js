@@ -4,10 +4,10 @@ import {
   Image,
   BackHandler,
   Text,
-  Clipboard,
   TouchableOpacity,
   FlatList,
 } from "react-native";
+import Clipboard from "@react-native-clipboard/clipboard";
 import analytics from "@segment/analytics-react-native";
 import SafeAreaView from "react-native-safe-area-view";
 

@@ -28,6 +28,7 @@ import LocationIcon from "../../../assets/SVGs/Location";
 import GenderIcon from "../../../assets/SVGs/Gender";
 import InterestsIcon from "../../../assets/SVGs/Interests";
 import DeviceMakeIcon from "../../../assets/SVGs/DeviceMake";
+import CopyIcon from "../../../assets/SVGs/CopyIcon";
 
 // Style
 import styles from "./styles";
@@ -305,6 +306,7 @@ class InstagramCampaignDetails extends Component {
   render() {
     let loading = this.props.loading;
     const { translate } = this.props.screenProps;
+    let attachment = null;
 
     if (
       (!loading &&
@@ -340,6 +342,14 @@ class InstagramCampaignDetails extends Component {
       let media = [];
       if (!loading && this.props.selectedCampaign) {
         selectedCampaign = this.props.selectedCampaign;
+        attachment = selectedCampaign.link;
+        if (attachment) {
+          if (attachment.includes("?utm_source"))
+            attachment = attachment.split("?utm_source")[0];
+          if (attachment.includes("&utm_source")) {
+            attachment = attachment.split("&utm_source")[0];
+          }
+        }
         if (
           selectedCampaign.hasOwnProperty("story_creatives") ||
           selectedCampaign.hasOwnProperty("collection_creatives")
@@ -684,6 +694,25 @@ class InstagramCampaignDetails extends Component {
                       selectedCampaign={selectedCampaign}
                     />
                   </View>
+                )}
+                {loading ? (
+                  <View style={{ margin: 5 }}>
+                    <PlaceholderLine />
+                  </View>
+                ) : (
+                  <>
+                    <Text style={styles.attachementText}>
+                      {translate("Attachment URL")}
+                    </Text>
+                    <TouchableOpacity
+                      //   onPress={this.copyPixel}
+                      activeOpacity={0.8}
+                      style={styles.destinationView}
+                    >
+                      <Text style={styles.destinationText}>{attachment}</Text>
+                      <CopyIcon fill={"#FFF"} style={styles.copyIcon} />
+                    </TouchableOpacity>
+                  </>
                 )}
                 {loading ? (
                   <View style={styles.placeholderView}>
