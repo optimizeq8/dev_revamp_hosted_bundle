@@ -179,6 +179,12 @@ const styles = StyleSheet.create({
     color: "#0008",
     fontFamily: "montserrat-bold",
   },
+  dotsContainer: {
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor: "rgba(0, 0, 0, 0.25)",
+    alignSelf: "flex-end",
+  },
 });
 
 export default styles;
