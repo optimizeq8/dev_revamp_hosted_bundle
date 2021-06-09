@@ -790,6 +790,7 @@ class CampaignDetails extends Component {
                     <PlaceholderLine />
                   </View>
                 ) : (
+                  !this.state.expand &&
                   attachment.url && (
                     <>
                       <Text style={styles.attachementText}>

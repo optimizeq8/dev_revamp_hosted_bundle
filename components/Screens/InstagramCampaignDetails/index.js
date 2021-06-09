@@ -702,6 +702,7 @@ class InstagramCampaignDetails extends Component {
                     <PlaceholderLine />
                   </View>
                 ) : (
+                  !this.state.expand &&
                   attachment !== "BLANK" && (
                     <>
                       <Text style={styles.attachementText}>
