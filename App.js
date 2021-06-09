@@ -223,7 +223,7 @@ class App extends React.Component {
     adjustConfig.setAttributionCallbackListener((attribution) => {
       // Printing all attribution properties.
       analytics.identify({
-        trackerToken,
+        trackerToken: attribution.trackerToken,
         trackerName: attribution.trackerName,
         network: attribution.network,
         campaign: attribution.campaign,
