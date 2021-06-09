@@ -417,15 +417,18 @@ class AdDesign extends Component {
 
     let swipeUpError = null;
     if (
-      this.state.selectedCampaign.objective !== "BRAND_AWARENESS" &&
-      this.state.selectedCampaign.objective !== "VIDEO_VIEWS" &&
-      (!this.state.selectedCampaign.call_to_action ||
-        (this.state.selectedCampaign &&
-          this.state.selectedCampaign.call_to_action &&
-          this.state.selectedCampaign.call_to_action.label === "BLANK") ||
-        this.state.selectedCampaign.link === "BLANK" ||
-        this.state.selectedCampaign.link === "" ||
-        this.state.selectedCampaign.link.toLowerCase() === "https://")
+      (this.state.selectedCampaign.objective === "APP_INSTALLS" &&
+        (!this.state.selectedCampaign.attachment.app_name ||
+          this.state.selectedCampaign.attachment.app_name === "")) ||
+      (this.state.selectedCampaign.objective !== "BRAND_AWARENESS" &&
+        this.state.selectedCampaign.objective !== "VIDEO_VIEWS" &&
+        (!this.state.selectedCampaign.call_to_action ||
+          (this.state.selectedCampaign &&
+            this.state.selectedCampaign.call_to_action &&
+            this.state.selectedCampaign.call_to_action.label === "BLANK") ||
+          this.state.selectedCampaign.link === "BLANK" ||
+          this.state.selectedCampaign.link === "" ||
+          this.state.selectedCampaign.link.toLowerCase() === "https://"))
     ) {
       showMessage({
         message: translate("Choose A Swipe Up Destination"),
