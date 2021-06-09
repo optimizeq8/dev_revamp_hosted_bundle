@@ -2312,11 +2312,6 @@
     hoist-non-react-statics "^3.3.2"
     react-native-safe-area-view "^0.14.9"
 
-"@segment/analytics-react-native-adjust@^1.4.8":
-  version "1.4.8"
-  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-adjust/-/analytics-react-native-adjust-1.4.8.tgz#4f950d3d8e100ffe002457e42391a38490c83031"
-  integrity sha512-g8kN4pQFT3lemwxECPAnP6EU+oOmmfPe3Cj6vz49SZfEH13ey1Z8jl48NYLsTfkfZAMZa/j+1W9wbuyzmHWwmA==
-
 "@segment/analytics-react-native-mixpanel@^1.1.1-beta.5":
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-mixpanel/-/analytics-react-native-mixpanel-1.3.2.tgz#bd2cdab239e220353901766094f54cf858fbd74f"
@@ -2707,6 +2702,24 @@ acorn@^7.1.0:
   version "7.4.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.4.1.tgz#feaed255973d2e77555b83dbc08851a6c63520fa"
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
+
+adjust-engine@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/adjust-engine/-/adjust-engine-2.0.4.tgz#31ac43911325020c273453822ec04bc2d769fd01"
+  integrity sha1-MaxDkRMlAgwnNFOCLsBLwtdp/QE=
+  dependencies:
+    object-assign "^3.0.0"
+
+adjust@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/adjust/-/adjust-2.1.1.tgz#17d96e0f43b58780027596b2be919b317b7bbaea"
+  integrity sha1-F9luD0O1h4ACdZayvpGbMXt7uuo=
+  dependencies:
+    adjust-engine "^2.0.4"
+    component-raf "^1.2.0"
+    right-now "^1.0.0"
+    scrollparent "^0.1.0"
+    translate-component "0.0.1"
 
 after@0.8.2:
   version "0.8.2"
@@ -3713,6 +3726,11 @@ component-inherit@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/component-inherit/-/component-inherit-0.0.3.tgz#645fc4adf58b72b649d5cae65135619db26ff143"
   integrity sha1-ZF/ErfWLcrZJ1crmUTVhnbJv8UM=
+
+component-raf@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/component-raf/-/component-raf-1.2.0.tgz#b2bc72d43f1b014fde7a4b3c447c764bc73ccbaa"
+  integrity sha1-srxy1D8bAU/eeks8RHx2S8c8y6o=
 
 compressible@~2.0.16:
   version "2.0.18"
@@ -5336,6 +5354,13 @@ has-symbols@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/has-symbols/-/has-symbols-1.0.1.tgz#9f5214758a44196c406d9bd76cebf81ec2dd31e8"
   integrity sha512-PLcsoqu++dmEIZB+6totNFKq/7Do+Z0u4oT0zKOJNl3lYK6vGwwu2hjHs+68OEZbTjiUE9bgOABXbP/GvrS0Kg==
+
+has-translate3d@*:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/has-translate3d/-/has-translate3d-0.0.3.tgz#ee0157ad5b4ca8a1a33514a9e7ef45415a132103"
+  integrity sha1-7gFXrVtMqKGjNRSp5+9FQVoTIQM=
+  dependencies:
+    transform-property "0.0.1"
 
 has-value@^0.3.1:
   version "0.3.1"
@@ -7647,6 +7672,11 @@ ob1@0.59.0:
   resolved "https://registry.yarnpkg.com/ob1/-/ob1-0.59.0.tgz#ee103619ef5cb697f2866e3577da6f0ecd565a36"
   integrity sha512-opXMTxyWJ9m68ZglCxwo0OPRESIC/iGmKFPXEXzMZqsVIrgoRXOHmoMDkQzz4y3irVjbyPJRAh5pI9fd0MJTFQ==
 
+object-assign@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-3.0.0.tgz#9bedd5ca0897949bca47e7ff408062d549f587f2"
+  integrity sha1-m+3VygiXlJvKR+f/QIBi1Un1h/I=
+
 object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
@@ -9145,6 +9175,11 @@ ret@~0.1.10:
   resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
   integrity sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==
 
+right-now@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/right-now/-/right-now-1.0.0.tgz#6e89609deebd7dcdaf8daecc9aea39cf585a0918"
+  integrity sha1-bolgne69fc2vja7Mmuo5z1haCRg=
+
 rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.3:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.7.1.tgz#35797f13a7fdadc566142c29d4f07ccad483e3ec"
@@ -9274,6 +9309,11 @@ scheduler@0.19.1, scheduler@^0.19.1:
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
+
+scrollparent@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/scrollparent/-/scrollparent-0.1.0.tgz#e7a0460e9920372eb3cc0182add0e0e356f6349e"
+  integrity sha1-56BGDpkgNy6zzAGCrdDg41b2NJ4=
 
 "semver@2 || 3 || 4 || 5", semver@^5.1.0, semver@^5.4.1, semver@^5.5.0, semver@^5.5.1, semver@^5.6.0:
   version "5.7.1"
@@ -10013,6 +10053,19 @@ tr46@^1.0.1:
   integrity sha1-qLE/1r/SSJUZZ0zN5VujaTtwbQk=
   dependencies:
     punycode "^2.1.0"
+
+transform-property@*, transform-property@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/transform-property/-/transform-property-0.0.1.tgz#4863662f9d5e5bb8f0c00648eff08beb14fd65f2"
+  integrity sha1-SGNmL51eW7jwwAZI7/CL6xT9ZfI=
+
+translate-component@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/translate-component/-/translate-component-0.0.1.tgz#64a992cfaa03e77c97a4c833222d46d3a9c09076"
+  integrity sha1-ZKmSz6oD53yXpMgzIi1G06nAkHY=
+  dependencies:
+    has-translate3d "*"
+    transform-property "*"
 
 tslib@^1.9.0, tslib@^1.9.3:
   version "1.14.1"
