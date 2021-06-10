@@ -706,7 +706,7 @@ class InstagramCampaignDetails extends Component {
                   attachment !== "BLANK" && (
                     <>
                       <Text style={styles.attachementText}>
-                        {translate("Attachment URL")}
+                        {translate("Ad Destination")}
                       </Text>
                       <TouchableOpacity
                         onPress={() => {
