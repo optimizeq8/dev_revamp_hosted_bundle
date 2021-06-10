@@ -327,11 +327,13 @@ class CampaignCard extends Component {
                     </View>
                   </>
                 ) : (
-                  <TouchableOpacity style={styles.dotsContainer}>
+                  <TouchableOpacity
+                    style={styles.dotsContainer}
+                    onPress={() => this.handleOptionsModal(true)}
+                  >
                     <Icon
                       name="options"
                       type="SimpleLineIcons"
-                      onPress={() => this.handleOptionsModal(true)}
                       style={{
                         fontSize: 20,
                         color: "#d4d4d4",

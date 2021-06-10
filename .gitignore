@@ -174,3 +174,7 @@ buck-out/
 # Expo
 .expo/*
 web-build/
+
+# Dist
+
+Dist/

@@ -33,7 +33,7 @@ class ExtendCampaignModal extends Component {
           ? new Date().toISOString().split("T")[0]
           : this.props.campaign.end_time.split("T")[0];
       let end_time = new Date(endDateCondition);
-      end_time.setDate(end_time.getDate() + this.state.duration - 1);
+      end_time.setDate(end_time.getDate() + this.state.duration);
       this.setState({
         end_time: end_time.toISOString().split("T")[0],
       });
@@ -71,22 +71,24 @@ class ExtendCampaignModal extends Component {
   };
   handleDuration = (subtract = false, onePress = false, time = 1) => {
     let duration = subtract ? this.state.duration - 1 : this.state.duration + 1;
-    let endDateCondition =
-      this.ad_status !== "Campaign ended"
-        ? new Date().toISOString().split("T")[0]
-        : this.props.campaign.end_time.split("T")[0];
-    let end_time = new Date(endDateCondition);
-    end_time.setDate(end_time.getDate() + (duration - 1));
-    this.setState({
-      end_time: end_time.toISOString().split("T")[0],
-      duration,
-    });
+    if (duration > 0) {
+      let endDateCondition =
+        this.ad_status !== "Campaign ended"
+          ? new Date().toISOString().split("T")[0]
+          : this.props.campaign.end_time.split("T")[0];
+      let end_time = new Date(endDateCondition);
+      end_time.setDate(end_time.getDate() + duration);
+      this.setState({
+        end_time: end_time.toISOString().split("T")[0],
+        duration,
+      });
 
-    if (!onePress) {
-      this.timer = setTimeout(
-        () => this.handleDuration(subtract, null, time + 1),
-        time > 10 ? 50 : 150 //to increase the speed when pressing for a longer time
-      );
+      if (!onePress) {
+        this.timer = setTimeout(
+          () => this.handleDuration(subtract, null, time + 1),
+          time > 10 ? 50 : 150 //to increase the speed when pressing for a longer time
+        );
+      }
     }
   };
   stopTimer = () => {
@@ -201,7 +203,7 @@ class ExtendCampaignModal extends Component {
                         stopTimer={this.stopTimer}
                         handleDuration={this.handleDuration}
                         duration={this.state.duration}
-                        disabled={this.state.duration === 3}
+                        disabled={this.state.duration === 1}
                         customContainerStyle={
                           styles.campaignDurationContainerStyle
                         }
