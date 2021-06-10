@@ -794,7 +794,7 @@ class CampaignDetails extends Component {
                   attachment.url && (
                     <>
                       <Text style={styles.attachementText}>
-                        {translate("Attachment URL")}
+                        {translate("Ad Destination")}
                       </Text>
                       <TouchableOpacity
                         onPress={() => {
