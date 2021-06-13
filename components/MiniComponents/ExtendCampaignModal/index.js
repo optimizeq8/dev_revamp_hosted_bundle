@@ -26,10 +26,11 @@ class ExtendCampaignModal extends Component {
     duration: 7,
     switchComponent: false,
   };
+  ad_status = this.props.campaign.ad_status;
   componentDidMount() {
     if (this.props.campaign) {
       let endDateCondition =
-        this.ad_status !== "Campaign ended"
+        this.ad_status === "Campaign ended"
           ? new Date().toISOString().split("T")[0]
           : this.props.campaign.end_time.split("T")[0];
       let end_time = new Date(endDateCondition);
@@ -73,7 +74,7 @@ class ExtendCampaignModal extends Component {
     let duration = subtract ? this.state.duration - 1 : this.state.duration + 1;
     if (duration > 0) {
       let endDateCondition =
-        this.ad_status !== "Campaign ended"
+        this.ad_status === "Campaign ended"
           ? new Date().toISOString().split("T")[0]
           : this.props.campaign.end_time.split("T")[0];
       let end_time = new Date(endDateCondition);
