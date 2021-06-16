@@ -215,11 +215,7 @@ class AdObjective extends Component {
       source: "ad_objective",
       source_action: "a_ad_start_date",
     });
-    this.props.save_campaign_info_instagram({
-      start_time: date,
-      campaignDateChanged: true,
-    });
-    this._handleSubmission();
+    this.props.save_campaign_info_instagram({ start_time: date });
   };
   handleEndDatePicked = (date) => {
     let end_time = new Date(date);
@@ -239,6 +235,7 @@ class AdObjective extends Component {
       end_time: date,
       campaignDateChanged: true,
     });
+    this._handleSubmission();
   };
   setModalVisible = (visible) => {
     analytics.track(`ad_objective_modal`, {
