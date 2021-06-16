@@ -148,8 +148,10 @@ class GoogleAdInfo extends Component {
       data.location = [countryCode];
       data.country = countryCode;
     }
-    data.start_time = start_time.toISOString().split("T")[0];
-    data.end_time = end_time.toISOString().split("T")[0];
+    if (data.start_time === "") {
+      data.start_time = start_time.toISOString().split("T")[0];
+      data.end_time = end_time.toISOString().split("T")[0];
+    }
     this.setState({ ...data });
   };
 
