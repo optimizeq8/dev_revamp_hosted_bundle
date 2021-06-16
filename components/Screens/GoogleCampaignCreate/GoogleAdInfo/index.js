@@ -148,8 +148,11 @@ class GoogleAdInfo extends Component {
       data.location = [countryCode];
       data.country = countryCode;
     }
-    data.start_time = start_time.toISOString().split("T")[0];
-    data.end_time = end_time.toISOString().split("T")[0];
+    // Set the start time to the next date only for the first time
+    if (data.start_time === "") {
+      data.start_time = start_time.toISOString().split("T")[0];
+      data.end_time = end_time.toISOString().split("T")[0];
+    }
     this.setState({ ...data });
   };
 
