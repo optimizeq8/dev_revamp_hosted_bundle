@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import Clipboard from "@react-native-clipboard/clipboard";
 import { Container, Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import DateFields from "../../MiniComponents/DatePicker/DateFields";
@@ -26,6 +27,7 @@ import RejectedSnapchatInfo from "./RejectedInfoComp/RejectedSnapchatInfo";
 //icons
 import LocationIcon from "../../../assets/SVGs/Location";
 import GenderIcon from "../../../assets/SVGs/Gender";
+import CopyIcon from "../../../assets/SVGs/CopyIcon";
 
 // Style
 import styles from "./styles";
@@ -49,6 +51,7 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 import { LinearGradient } from "expo-linear-gradient";
 import ChartDateChoices from "./ChartDateChoices";
 import CSVModal from "./CSVModal";
+import { showMessage } from "react-native-flash-message";
 
 class CampaignDetails extends Component {
   static navigationOptions = {
@@ -114,6 +117,7 @@ class CampaignDetails extends Component {
       source_action: "a_ad_start_date",
       campaignId: this.props.selectedCampaign.campaign_id,
       campaign_start_date: date,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       start_time: date,
@@ -126,6 +130,7 @@ class CampaignDetails extends Component {
       source_action: "a_ad_end_date",
       campaignId: this.props.selectedCampaign.campaign_id,
       campaign_end_date: date,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       end_time: date,
@@ -168,6 +173,7 @@ class CampaignDetails extends Component {
       source: "campaign_detail",
       campaign_channel: "snapchat",
       source_action: "a_update_campaign_status",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ modalVisible: visible });
   };
@@ -225,6 +231,7 @@ class CampaignDetails extends Component {
       source: "ad_detail",
       source_action: "a_toggle_csv_modal",
       campaign_channel: "snapchat",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ CSVModalVisible: isVisible });
   };
@@ -273,13 +280,15 @@ class CampaignDetails extends Component {
         campaign_channel: "snapchat",
         timestamp: new Date().getTime(),
         device_id: this.props.screenProps.device_id,
-        campaign_id: "error",
+        campaignId: "error",
         error_description:
           (!this.props.loading &&
             !this.props.languagesListLoading &&
             !this.props.selectedCampaign) ||
           this.props.campaignError ||
           this.props.languagesListError,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
 
@@ -291,12 +300,15 @@ class CampaignDetails extends Component {
         timestamp: new Date().getTime(),
         device_id: this.props.screenProps.device_id,
         campaignId: this.props.selectedCampaign.campaign_id,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
   };
   render() {
     let loading = this.props.loading;
     const { translate } = this.props.screenProps;
+    let attachment = {};
     if (
       (!loading &&
         !this.props.languagesListLoading &&
@@ -486,6 +498,35 @@ class CampaignDetails extends Component {
           end_time = dateFormat(end_time, "d mmm");
           start_time = dateFormat(start_time, "d mmm");
         }
+        if (
+          selectedCampaign.attachment &&
+          selectedCampaign.attachment !== "BLANK"
+        ) {
+          attachment = JSON.parse(selectedCampaign.attachment);
+          if (attachment && attachment.url) {
+            if (attachment.url.includes("?utm_source"))
+              attachment.url = attachment.url.split("?utm_source")[0];
+            if (attachment.url.includes("&utm_source")) {
+              attachment.url = attachment.url.split("&utm_source")[0];
+            }
+          }
+        }
+        if (
+          selectedCampaign.story_creatives &&
+          selectedCampaign.story_creatives.length > 0
+        ) {
+          let firstStory = selectedCampaign.story_creatives[0];
+          if (firstStory.attachment && firstStory.attachment !== "BLANK") {
+            attachment = JSON.parse(firstStory.attachment);
+            if (attachment && attachment.url) {
+              if (attachment.url.includes("?utm_source"))
+                attachment.url = attachment.url.split("?utm_source")[0];
+              if (attachment.url.includes("&utm_source")) {
+                attachment.url = attachment.url.split("&utm_source")[0];
+              }
+            }
+          }
+        }
       }
 
       return (
@@ -567,6 +608,8 @@ class CampaignDetails extends Component {
             {selectedCampaign &&
               selectedCampaign.campaign_end === "0" &&
               this.campaignEndedOrNot(selectedCampaign) &&
+              selectedCampaign.lifetime_budget_micro >
+                selectedCampaign.spends &&
               !this.state.expand && (
                 <View style={styles.remainingBudgetContainer}>
                   <Icon
@@ -654,15 +697,42 @@ class CampaignDetails extends Component {
               <View style={[styles.mainCard]}>
                 {selectedCampaign &&
                 selectedCampaign.review_status === "REJECTED" ? (
-                  <RejectedSnapchatInfo
-                    loading={loading}
-                    screenProps={this.props.screenProps}
-                    review_status_reason={
-                      selectedCampaign.review_status_reason || []
-                    }
-                    navigation={this.props.navigation}
-                    selectedCampaign={selectedCampaign}
-                  />
+                  <>
+                    <RejectedSnapchatInfo
+                      loading={loading}
+                      screenProps={this.props.screenProps}
+                      review_status_reason={
+                        selectedCampaign.review_status_reason || []
+                      }
+                      navigation={this.props.navigation}
+                      selectedCampaign={selectedCampaign}
+                    />
+                    {selectedCampaign.spends !== 0 && (
+                      <TouchableOpacity
+                        onLayout={this.onLayout}
+                        disabled={this.state.expand || loading}
+                        onPress={this.handleChartToggle}
+                      >
+                        {this.state.expand && (
+                          <ChartDateChoices
+                            selectedCampaign={selectedCampaign}
+                            dateField={this.dateField}
+                            durationChange={this.durationChange}
+                            screenProps={this.props.screenProps}
+                          />
+                        )}
+                        <CampaignCircleChart
+                          channel={"snapchat"}
+                          campaign={selectedCampaign}
+                          detail={true}
+                          screenProps={this.props.screenProps}
+                          loading={loading}
+                          handleChartToggle={this.handleChartToggle}
+                          chartExpanded={this.state.expand}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </>
                 ) : (
                   <TouchableOpacity
                     onLayout={this.onLayout}
@@ -697,6 +767,7 @@ class CampaignDetails extends Component {
                       loading={loading}
                       screenProps={this.props.screenProps}
                       source={"campaign_detail"}
+                      mainBusiness={this.props.mainBusiness}
                     />
                     <AudienceOverview
                       screenProps={this.props.screenProps}
@@ -713,6 +784,36 @@ class CampaignDetails extends Component {
                       selectedCampaign={selectedCampaign}
                     />
                   </View>
+                )}
+                {loading ? (
+                  <View style={{ margin: 5 }}>
+                    <PlaceholderLine />
+                  </View>
+                ) : (
+                  !this.state.expand &&
+                  attachment.url && (
+                    <>
+                      <Text style={styles.attachementText}>
+                        {translate("Ad Destination")}
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          Clipboard.setString(attachment.url);
+                          showMessage({
+                            type: "warning",
+                            message: translate("URL copied to clipboard"),
+                          });
+                        }}
+                        activeOpacity={0.8}
+                        style={styles.destinationView}
+                      >
+                        <Text style={styles.destinationText}>
+                          {attachment.url}
+                        </Text>
+                        <CopyIcon fill={"#FFF"} style={styles.copyIcon} />
+                      </TouchableOpacity>
+                    </>
+                  )
                 )}
                 {loading ? (
                   <View style={{ margin: 5 }}>

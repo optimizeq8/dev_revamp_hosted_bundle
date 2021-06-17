@@ -80,6 +80,7 @@ class EditCategory extends Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness.businessid,
     });
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
@@ -131,6 +132,7 @@ class EditCategory extends Component {
       category_name: this.state.category.name,
       category_price: this.state.category.prices,
       category_description: this.state.category.description_en,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.props.navigation.navigate("ReviewProductDetail", {
       category: this.state.category,
@@ -198,6 +200,7 @@ class EditCategory extends Component {
       source_action: "a_delete_single_media",
       category_id: this.state.category.id,
       media_id: media[index].id,
+      businessid: this.props.mainBusiness.businessid,
     });
     media.splice(index, 1);
     this.setState({
@@ -214,6 +217,7 @@ class EditCategory extends Component {
       source_action: "a_toggle_categories_modal",
       category_id: this.state.category.id,
       open: false,
+      businessid: this.props.mainBusiness.businessid,
     });
 
     this.setState({
@@ -226,6 +230,7 @@ class EditCategory extends Component {
       source_action: "a_toggle_categories_modal",
       category_id: this.state.category.id,
       open: true,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       showProductModal: true,
@@ -255,6 +260,7 @@ class EditCategory extends Component {
       source: "open_edit_category",
       source_action: "a_delete_category",
       category_id: this.state.category.id,
+      businessid: this.props.mainBusiness.businessid,
     });
     return Alert.alert(
       "Delete Category",
@@ -377,6 +383,7 @@ class EditCategory extends Component {
                       source_action: "a_category_name",
                       category_id: this.state.category.id,
                       category_name: text,
+                      businessid: this.props.mainBusiness.businessid,
                     });
                     this.setState({
                       category: {

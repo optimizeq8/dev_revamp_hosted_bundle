@@ -24,6 +24,7 @@ import GradientButton from "../GradientButton";
 import NavigationService from "../../../NavigationService";
 import RepeatCampaignModal from "../RepeatCampaignModal";
 import ExtendCampaignModal from "../ExtendCampaignModal";
+import CampaignOptionsMenu from "../CampaignOptionsMenu";
 
 whyDidYouRender(React);
 class CampaignCard extends Component {
@@ -31,7 +32,11 @@ class CampaignCard extends Component {
   campaign_status = this.props.campaign.status;
   ad_status_color = this.props.campaign.ad_status_color_code;
   ad_status = this.props.campaign.ad_status;
-  state = { showRepeatModal: false, showExtendModal: false };
+  state = {
+    showRepeatModal: false,
+    showExtendModal: false,
+    showCampaignOptions: false,
+  };
   //New date returns the current date with a timezone of -3
   //So I add back the offset so the dates from the backend are compared properly
   currentDate = () => {
@@ -49,6 +54,7 @@ class CampaignCard extends Component {
       timestamp: new Date().getTime(),
       campaignId: this.props.campaign.campaign_id,
       campaign_channel: "snapchat",
+      businessid: this.props.mainBusiness.businessid,
     });
     this.props.getCampaignDetails(
       this.props.campaign.campaign_id,
@@ -76,14 +82,38 @@ class CampaignCard extends Component {
       visible: value,
       campaign_channel: "snapchat",
       campaignId: this.props.campaign.campaign_id,
+      businessid: this.props.mainBusiness.businessid,
     });
+    this.handleOptionsModal(false);
     this.setState({
       showRepeatModal: value,
     });
   };
   handleExtendModal = (value) => {
+    analytics.track("a_toggle_extend_modal", {
+      source: "dashboard",
+      source_action: "a_toggle_extend_modal",
+      visible: value,
+      campaign_channel: "snapchat",
+      campaignId: this.props.campaign.campaign_id,
+      businessid: this.props.mainBusiness.businessid,
+    });
+    this.handleOptionsModal(false);
     this.setState({
       showExtendModal: value,
+    });
+  };
+  handleOptionsModal = (value) => {
+    analytics.track("a_toggle_options_modal", {
+      source: "dashboard",
+      source_action: "a_toggle_options_modal",
+      visible: value,
+      campaign_channel: "snapchat",
+      campaignId: this.props.campaign.campaign_id,
+      businessid: this.props.mainBusiness.businessid,
+    });
+    this.setState({
+      showCampaignOptions: value,
     });
   };
   componentDidMount() {
@@ -97,6 +127,30 @@ class CampaignCard extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
+  showRepeatButton = () => {
+    let campaign = this.props.campaign;
+    const { translate } = this.props.screenProps;
+    let button = null;
+    button = (
+      <>
+        {campaign.objective !== "ENGAGEMENT" && (
+          <TouchableOpacity
+            style={styles.repeatButton}
+            onPress={() => this.handleRepeatModal(true)}
+          >
+            <Text style={styles.repeatText}>{translate("Promote again")}</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          style={[styles.repeatButton]}
+          onPress={() => this.handleExtendModal(true)}
+        >
+          <Text style={styles.repeatText}>{translate("Extend")}</Text>
+        </TouchableOpacity>
+      </>
+    );
+    return button;
+  };
   render() {
     const { translate } = this.props.screenProps;
     let campaign = this.props.campaign;
@@ -204,7 +258,6 @@ class CampaignCard extends Component {
                   />
                 )} */}
             </View>
-
             {this.ad_status && this.ad_status.includes("Ad Rejected") && (
               <Text style={[styles.subtext]}>
                 {translate("Tap to submit your Ad again")}
@@ -248,7 +301,6 @@ class CampaignCard extends Component {
                   detail={false}
                   screenProps={this.props.screenProps}
                 />
-
                 {this.ad_status !== "Campaign ended" ? (
                   <>
                     <View style={styles.horizontalLineView} />
@@ -260,8 +312,7 @@ class CampaignCard extends Component {
                       <Text uppercase style={styles.cardText}>
                         {translate("Day(s) left")}
                       </Text>
-                      {/* 
-                      ----KEEP FOR LATER-----
+
                       <TouchableOpacity
                         style={[
                           styles.repeatButton,
@@ -269,33 +320,52 @@ class CampaignCard extends Component {
                         ]}
                         onPress={() => this.handleExtendModal(true)}
                       >
-                        <Text style={styles.repeatText}>{"Extend"}</Text>
-                      </TouchableOpacity> */}
+                        <Text style={styles.repeatText}>
+                          {translate("Extend")}
+                        </Text>
+                      </TouchableOpacity>
                     </View>
                   </>
                 ) : (
                   <TouchableOpacity
-                    style={styles.repeatButton}
-                    onPress={() => this.handleRepeatModal(true)}
+                    style={styles.dotsContainer}
+                    onPress={() => this.handleOptionsModal(true)}
                   >
-                    <Text style={styles.repeatText}>
-                      {translate("Promote again")}
-                    </Text>
+                    <Icon
+                      name="options"
+                      type="SimpleLineIcons"
+                      style={{
+                        fontSize: 20,
+                        color: "#d4d4d4",
+                      }}
+                    />
                   </TouchableOpacity>
                 )}
               </View>
             )}
-            <RepeatCampaignModal
-              showRepeatModal={this.state.showRepeatModal}
-              screenProps={this.props.screenProps}
-              handleRepeatModal={this.handleRepeatModal}
-              campaign={campaign}
-            />
-            <ExtendCampaignModal
-              showRepeatModal={this.state.showExtendModal}
-              screenProps={this.props.screenProps}
-              handleExtendModal={this.handleExtendModal}
-              campaign={campaign}
+            {this.state.showRepeatModal && (
+              <RepeatCampaignModal
+                showRepeatModal={this.state.showRepeatModal}
+                screenProps={this.props.screenProps}
+                handleRepeatModal={this.handleRepeatModal}
+                campaign={campaign}
+                screenProps={this.props.screenProps}
+              />
+            )}
+            {this.state.showExtendModal && (
+              <ExtendCampaignModal
+                showRepeatModal={this.state.showExtendModal}
+                screenProps={this.props.screenProps}
+                handleExtendModal={this.handleExtendModal}
+                campaign={campaign}
+                screenProps={this.props.screenProps}
+              />
+            )}
+            <CampaignOptionsMenu
+              showCampaignOptions={this.state.showCampaignOptions}
+              handleOptionsModal={this.handleOptionsModal}
+              translate={translate}
+              showRepeatButton={this.showRepeatButton}
             />
           </View>
         </TouchableOpacity>
@@ -304,9 +374,12 @@ class CampaignCard extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  mainBusiness: state.account.mainBusiness,
+});
 const mapDispatchToProps = (dispatch) => ({
   getCampaignDetails: (id, naviagtion) =>
     dispatch(actionCreators.getCampaignDetails(id, naviagtion)),
 });
-export default connect(null, mapDispatchToProps)(CampaignCard);
+export default connect(mapStateToProps, mapDispatchToProps)(CampaignCard);
 CampaignCard.whyDidYouRender = false;

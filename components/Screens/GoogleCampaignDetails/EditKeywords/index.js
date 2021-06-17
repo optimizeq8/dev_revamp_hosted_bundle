@@ -78,6 +78,7 @@ class EditKeywords extends Component {
       visible: !this.state.modalVisible,
       source: "ad_keywords",
       source_action: "a_toggle_modal",
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({ modalVisible: !this.state.modalVisible });
   };
@@ -118,6 +119,7 @@ class EditKeywords extends Component {
         error_description: keywordsError,
         source: "ad_targeting",
         source_action: "a_update_ad_keywords",
+        businessid: this.props.mainBusiness.businessid,
       });
       showMessage({
         message: translate(keywordsError),
@@ -142,6 +144,7 @@ class EditKeywords extends Component {
       campaign_keywords: this.props.selectedCampaign.keywords.map(
         (k) => k.keyword
       ),
+      businessid: this.props.mainBusiness.businessid,
     });
   };
   render() {

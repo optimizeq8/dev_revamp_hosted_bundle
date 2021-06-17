@@ -775,11 +775,11 @@ const strings = {
   "Edit team member": "تحديث عضو الفريق",
   Update: "تحديث",
   Delete: "حذف",
-  "Campaign manager": "مدير الحملة",
+  "Campaign manager": "مدير الحملات",
   Admin: "مشرف",
   Client: "عميل",
   Preview: "معاينة",
-  "{null}": " ",
+  "{null}": "{باطل}",
   "Continue Ad Creation": "متابعة إنشاء الإعلان",
   "You were in the middle of creating an ad, would you like to continue":
     "كنت في منتصف إنشاء إعلان. هل ترغب في المتابعة؟",
@@ -1771,7 +1771,7 @@ const strings = {
   "New Preset": "شريحة مستهدفة جديد",
   "Edit Preset": "التعديل على الشريحة المستهدفة",
   "Select Audience": "اختر الشريحة المستهدفه",
-  "Lifetime budget": "ميزانية مدى الحياة",
+  "Lifetime budget": "الميزانية الإجمالية",
   "Choose Preset": "شريحة مستهدفة مسبقة",
   Recommended: "الموصى به",
   "(Daily)": "يومي",
@@ -2141,10 +2141,10 @@ const strings = {
     "تحديد هذه الدولة سوف يتم استبداله وسوف يتم إعادة تعيين المواقع المحددة، هل تود الاستكمال؟",
   "Selecting locations will remove some of your selected countries, are you sure you want to continue":
     "تحديد المواقع سوف يتم استبداله وسوف يتم إعادة تعيين الدول المحددة، هل تود الاستكمال؟",
-  "Pixel Info": "معلومات الpixel",
+  "Pixel Info": "معلومات البكسل",
   "Please copy the snap pixel code and paste it on your website":
-    "الرجاء نسخ رمز الpixel وإضافته على موقعك الالكتروني",
-  "Snap Pixel copied to clipboard": "تم نسخ الpixel",
+    "الرجاء نسخ رمز البكسل وإضافته على موقعك الالكتروني",
+  "Snap Pixel copied to clipboard": "تم نسخ البكسل",
   "Auto target look-alike audience": "استهدف أسخاص مشابهين لزبائني",
   Finish: "إنهاء",
   "(USD)": "(USD)",
@@ -2157,10 +2157,21 @@ const strings = {
     "يسمح بتحديد دولة واحده فقط مع هذه الخاصية",
   "Extend Campaign": "مدد الحملة",
   "Automatic Placement": "Auto (Feed, Story & Explore)",
-  "Instagram Auto Placement": "",
-  "Feed / Explore Preview": "",
-  "Story Preview": "",
+  "Instagram Auto Placement": "Instagram Auto Placement",
+  "Feed / Explore Preview": "تغذية / استكشاف معاينة",
+  "Story Preview": "معاينة القصة",
   "Your ads will automatically be shown to your audience in the places they're likely to perform best":
-    "",
+    "سيتم عرض إعلاناتك تلقائيًا لجمهورك في الأماكن التي يُرجح أن يقدموا فيها أفضل أداء",
+  "Targeting too specific, please change targeting for better results":
+    "الاستهداف محدد للغاية ، يرجى تغيير الاستهداف لتحقيق نتائج أفضل",
+  "Connect To Facebook": "الاتصال الفيسبوك",
+  "Change Instagram Page": "تغيير صفحة Instagram",
+  "Media Library": "مكتبة الوسائط",
+  "Select an existing media from previously launched campaign":
+    "حدد وسائط موجودة من حملة تم إطلاقها مسبقًا",
+  "Campaign Options": "خيارات الحملة",
+  Extend: "",
+  "The targeted audience size is too small": "",
+  "Please broaden your demographic or geographic targeting": "",
 };
 export default strings;

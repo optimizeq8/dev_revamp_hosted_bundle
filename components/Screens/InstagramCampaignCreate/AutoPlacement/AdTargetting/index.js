@@ -414,6 +414,7 @@ class InstagramFeedAdTargetting extends Component {
       source_action: "a_ad_devices",
       campaign_devices_name:
         selectedItems.length > 0 ? selectedItems.join(", ") : "",
+      businessid: this.props.mainBusiness.businessid,
     });
 
     this.setState({
@@ -450,6 +451,7 @@ class InstagramFeedAdTargetting extends Component {
       source: "ad_targeting",
       source_action: "a_ad_interests",
       campaign_interests_names: names && names.length > 0 && names.join(", "),
+      businessid: this.props.mainBusiness.businessid,
     });
     // if (names && names.length > 0)
     !this.editCampaign &&
@@ -513,6 +515,7 @@ class InstagramFeedAdTargetting extends Component {
       campaign_os_type: selectedItem === "" ? "ALL" : selectedItem,
       campaign_os_min_ver: "",
       campaign_os_max_ver: "",
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       campaignInfo: { ...replace },
@@ -532,6 +535,7 @@ class InstagramFeedAdTargetting extends Component {
       source_action: "a_ad_OS_version",
       campaign_os_min_ver: selectedItem[0],
       campaign_os_max_ver: selectedItem[1],
+      businessid: this.props.mainBusiness.businessid,
     });
 
     this.setState({
@@ -635,6 +639,7 @@ class InstagramFeedAdTargetting extends Component {
         source_action: "a_handle_budget",
         custom_budget: false,
         campaign_budget: rawValue,
+        businessid: this.props.mainBusiness.businessid,
       });
       !this.editCampaign &&
         this.props.save_campaign_info_instagram({
@@ -655,6 +660,7 @@ class InstagramFeedAdTargetting extends Component {
               validateWrapper("Budget", rawValue) +
               " $" +
               this.state.minValueBudget,
+            businessid: this.props.mainBusiness.businessid,
           });
         }
         showMessage({
@@ -716,6 +722,7 @@ class InstagramFeedAdTargetting extends Component {
       source: "ad_targeting",
       source_action: "a_ad_gender",
       campaign_gender: replace.targeting.genders,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({ campaignInfo: { ...replace }, selectedGender: gender });
     !this.editCampaign &&
@@ -733,6 +740,7 @@ class InstagramFeedAdTargetting extends Component {
       source_action: "a_ad_age",
       campaign_min_age: parseInt(values[0]),
       campaign_max_age: parseInt(values[1]),
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       campaignInfo: rep,
@@ -884,6 +892,7 @@ class InstagramFeedAdTargetting extends Component {
             "Budget",
             this.state.campaignInfo.lifetime_budget_micro
           ),
+        businessid: this.props.mainBusiness.businessid,
       });
     }
     if (
@@ -1353,6 +1362,7 @@ class InstagramFeedAdTargetting extends Component {
       source: "ad_targeting",
       source_action: "a_ad_map_locations",
       campaign_map_locations: selectedItems,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       campaignInfo: { ...stateRep },
@@ -1760,6 +1770,7 @@ class InstagramFeedAdTargetting extends Component {
                     source,
                     source_action,
                     ...segmentInfo,
+                    businessid: this.props.mainBusiness.businessid,
                   });
                   if (
                     !this.props.currentCampaignSteps.includes(

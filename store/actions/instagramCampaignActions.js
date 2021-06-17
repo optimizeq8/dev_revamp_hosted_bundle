@@ -49,6 +49,7 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
             source_action: "a_submit_ad_objective",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_INSTAGRAM_AD_LOADING_OBJ,
@@ -63,6 +64,7 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
             source_action: "a_submit_ad_objective",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_INSTAGRAM_AD_LOADING_OBJ,
@@ -76,6 +78,7 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
             source_action: "a_submit_ad_objective",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           data.success
             ? dispatch({
@@ -223,7 +226,7 @@ export const saveBrandMediaInstagram = (
   segmentInfo,
   rejected
 ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
       payload: true,
@@ -256,6 +259,7 @@ export const saveBrandMediaInstagram = (
             action_status: data.success ? "success" : "failure",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
@@ -273,6 +277,7 @@ export const saveBrandMediaInstagram = (
             action_status: data.success ? "success" : "failure",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
@@ -285,6 +290,7 @@ export const saveBrandMediaInstagram = (
             action_status: data.success ? "success" : "failure",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           if (data.success) {
             onToggleModal(false);
@@ -575,6 +581,7 @@ export const ad_details_instagram = (
             campaign_budget: data.data.lifetime_budget_micro,
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DETAIL_INSTAGRAM,
@@ -590,6 +597,7 @@ export const ad_details_instagram = (
             campaign_budget: data.data.lifetime_budget_micro,
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DETAIL_INSTAGRAM,
@@ -604,6 +612,7 @@ export const ad_details_instagram = (
             campaign_budget: data.data.lifetime_budget_micro,
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           showMessage({
             message: data.message,
@@ -764,6 +773,7 @@ export const updateInstagramCampaign = (
           ...segmentInfo,
           action_status: data.success ? "success" : "failure",
           campaign_error: !data.success && data.message,
+          businessid: getState().account.mainBusiness.businessid,
         });
         showMessage({
           type: data.success ? "success" : "warning",
@@ -1054,7 +1064,7 @@ export const saveInstgramExistpost = (
   cancelUplaod,
   segmentInfo
 ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
       payload: true,
@@ -1088,6 +1098,7 @@ export const saveInstgramExistpost = (
             action_status: data.success ? "success" : "failure",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
@@ -1101,6 +1112,7 @@ export const saveInstgramExistpost = (
             action_status: data.success ? "success" : "failure",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
@@ -1113,6 +1125,7 @@ export const saveInstgramExistpost = (
             action_status: data.success ? "success" : "failure",
             campaign_error: !data.success && data.message,
             ...segmentInfo,
+            businessid: getState().account.mainBusiness.businessid,
           });
           if (data.success) {
             onToggleModal(false);
@@ -1197,6 +1210,7 @@ export const moveRejectedAdAmountToWalletInstagram = (
           campaign_id: campaign_id,
           action_status: data.success ? "success" : "failure",
           campaign_error: !data.success && data.message,
+          businessid: getState().account.mainBusiness.businessid,
         });
         dispatch({
           type: actionTypes.MOVING_AMOUNT_TO_WALLET_INSTAGRAM,
@@ -1235,6 +1249,7 @@ export const updateInstagramStatus = (info, handleToggle) => {
           campaign_error: !data.success && data.message,
           source: "campaign_detail",
           source_action: "a_update_campaign_status",
+          businessid: getState().account.mainBusiness.businessid,
         });
         handleToggle(data.status);
         if (data.message) {
@@ -1249,7 +1264,7 @@ export const updateInstagramStatus = (info, handleToggle) => {
 };
 
 export const endInstagramCampaign = (info, handleToggle) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     InstagramBackendURL()
       .put(`endCampaign`, info)
       .then((res) => {
@@ -1265,6 +1280,7 @@ export const endInstagramCampaign = (info, handleToggle) => {
           campaign_error: !data.success && data.message,
           source: "campaign_detail",
           source_action: "a_update_campaign_status",
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.message) {
           showMessage({ message: data.message, type: "info", position: "top" });
@@ -1282,7 +1298,7 @@ export const endInstagramCampaign = (info, handleToggle) => {
 };
 
 export const downloadInstagramCSV = (campaign_id, email, showModalMessage) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     InstagramBackendURL()
       .post(`exportData`, { campaign_id, email })
       .then((res) => res.data)
@@ -1293,6 +1309,9 @@ export const downloadInstagramCSV = (campaign_id, email, showModalMessage) => {
           source_action: "a_share_csv",
           campaign_channel: "instagram",
           action_status: data.success ? "success" : "failure",
+          campaignId: campaign_id,
+          export_email: email,
+          businessid: getState().account.mainBusiness.businessid,
         });
         showModalMessage(data.message, data.success ? "success" : "warning");
       })
@@ -1359,6 +1378,7 @@ export const repeatInstaCampagin = (previous_campaign_info, handleSwitch) => {
           action_status: data.success ? "success" : "failure",
           camapign_channel: "instagram",
           previous_campaignId: previous_campaign_info.previous_campaign_id,
+          businessid: getState().account.mainBusiness.businessid,
         });
 
         if (data && data.fb_connected === 0) {
@@ -1418,6 +1438,7 @@ export const repeatInstaCampaginBudget = (
           action_status: data.success ? "success" : "failure",
           campaign_channel: "instagram",
           campaignId: data.campaign_id,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data && data.fb_connected === 0) {
           dispatch(
@@ -1478,6 +1499,7 @@ export const extendInstaCampagin = (previous_campaign_info, handleSwitch) => {
           camapign_channel: "instagram",
           previous_campaignId: previous_campaign_info.previous_campaign_id,
           action_status: data.success ? "success" : "failure",
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data && data.fb_connected === 0) {
           dispatch(
@@ -1491,11 +1513,17 @@ export const extendInstaCampagin = (previous_campaign_info, handleSwitch) => {
             type: actionTypes.SET_EXTEND_INSTA_CAMPAIGN_LOADING,
             payload: false,
           });
-        } else if (data.success)
+        } else if (data.success) {
+          dispatch(
+            setCampaignInfoForTransaction({
+              extend_id: data.extend_id,
+            })
+          );
           dispatch({
             type: actionTypes.SET_INSTA_EXTENDING_CAMPAIGN_INFO,
             payload: data,
           });
+        }
         handleSwitch(true);
       })
       .catch((err) => {
@@ -1516,9 +1544,16 @@ export const extendInstaCampaginBudget = (
       type: actionTypes.SET_EXTEND_INSTA_CAMPAIGN_LOADING,
       payload: true,
     });
+    let extendInfo = { ...repeating_campaign_info };
+    if (getState().transA.hasOwnProperty("extend_id")) {
+      extendInfo = {
+        ...extendInfo,
+        extend_id: getState().transA.extend_id,
+      };
+    }
     InstagramBackendURL()
       .post(`extendinstacampaigntargeting`, {
-        ...repeating_campaign_info,
+        ...extendInfo,
       })
       .then((res) => res.data)
       .then((data) => {
@@ -1528,6 +1563,7 @@ export const extendInstaCampaginBudget = (
             campaign_budget: data.data.lifetime_budget_micro,
             campaign_budget_kdamount: data.kdamount,
             channel: "instagram",
+            extend_id: getState().transA.extend_id,
           })
         );
         analytics.track("a_submit_extend_campaign_budget", {
@@ -1536,6 +1572,7 @@ export const extendInstaCampaginBudget = (
           action_status: data.success ? "success" : "failure",
           campaign_channel: "instagram",
           campaignId: data.campaign_id,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data && data.fb_connected === 0) {
           dispatch(
@@ -1582,5 +1619,147 @@ export const deleteCustomLocation = (index, audienceUpdate) => {
       type: actionTypes.DELETE_INSTAGRAM_CUSTOM_LOCATION_LOADING,
       payload: { index, audienceUpdate },
     });
+  };
+};
+
+export const getFacebookPagesList = (accessToken, fb_user_id, permissions) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.FACEBOOK_PAGE_LIST_LOADING,
+      payload: true,
+    });
+    InstagramBackendURL()
+      .post(`fbpages`, {
+        accessToken,
+        businessid: getState().account.mainBusiness.businessid,
+        fb_user_id,
+        permissions,
+      })
+      .then((response) => response.data)
+      .then((data) => {
+        console.log("getFacebookPagesList", JSON.stringify(data, null, 2));
+        dispatch({
+          type: actionTypes.FACEBOOK_PAGE_LIST_LOADING,
+          payload: false,
+        });
+        dispatch({
+          type: actionTypes.SET_FB_ACCESS_TOKEN,
+          payload: accessToken,
+        });
+        return dispatch({
+          type: actionTypes.SET_FACEBOOK_PAGE_LIST,
+          payload: data.success ? data.data : [],
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: actionTypes.FACEBOOK_PAGE_LIST_LOADING,
+          payload: false,
+        });
+        return dispatch({
+          type: actionTypes.SET_FACEBOOK_PAGE_LIST,
+          payload: [],
+        });
+      });
+  };
+};
+
+export const connectToInstagramPage = (
+  accessToken,
+  page_id,
+  page_token,
+  instagram_account_id,
+  instagram_user_id,
+  insta_handle
+) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.CONNECT_TO_INSTAGRAM_SAVING,
+      payload: true,
+    });
+    InstagramBackendURL()
+      .post(`saveFBPageData`, {
+        businessid: getState().account.mainBusiness.businessid,
+        accessToken: accessToken,
+        page_id: page_id,
+        page_token: page_token,
+        instagram_account_id: instagram_account_id,
+        instagram_user_id: instagram_user_id,
+        insta_handle: insta_handle,
+      })
+      .then((response) => response.data)
+      .then((data) => {
+        dispatch({
+          type: actionTypes.CONNECT_TO_INSTAGRAM_SAVING,
+          payload: false,
+        });
+        if (data.success) {
+          NavigationService.navigate("AdType", {
+            success: "true",
+            channel: "instagram",
+            instagram_username: insta_handle,
+            fb_ad_account_id: data.data.fb_ad_account_id,
+            campaignCreationReset: true,
+          });
+        } else {
+          showMessage({
+            message: data.message,
+            type: "danger",
+            position: "top",
+          });
+        }
+      })
+      .catch((err) => {
+        dispatch({
+          type: actionTypes.CONNECT_TO_INSTAGRAM_SAVING,
+          payload: false,
+        });
+      });
+  };
+};
+
+/**
+ *
+ *  To get list of medias in previously created campaigns
+ *
+ * @param {*} adType One of [InstgramFeedAd, InstagramStoryAd]
+ * @returns
+ */
+export const getExistingMediaInstagramList = (adType) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.GET_INSTA_MEDIA_LIST_LOADING,
+      payload: true,
+    });
+    dispatch({
+      type: actionTypes.GET_INSTA_MEDIA_LIST,
+      payload: [],
+    });
+    InstagramBackendURL()
+      .post(`medialibrary`, {
+        campaign_type: adType,
+        businessid: getState().account.mainBusiness.businessid,
+      })
+      .then((response) => response.data)
+      .then((data) => {
+        dispatch({
+          type: actionTypes.GET_INSTA_MEDIA_LIST_LOADING,
+          payload: false,
+        });
+        return dispatch({
+          type: actionTypes.GET_INSTA_MEDIA_LIST,
+          payload: data.success ? data.data : [],
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: actionTypes.GET_INSTA_MEDIA_LIST_LOADING,
+          payload: false,
+        });
+        return dispatch({
+          type: actionTypes.GET_INSTA_MEDIA_LIST,
+          payload: [],
+        });
+      });
   };
 };

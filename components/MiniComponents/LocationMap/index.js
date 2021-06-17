@@ -90,7 +90,10 @@ class LocaionMap extends Component {
       if (this.state.marker.radius > 500)
         radius = this.state.marker.radius - 500;
     } else {
-      if (this.state.marker.radius < 100000)
+      if (
+        this.state.marker.radius <
+        (this.props.adType.toLowerCase().includes("instagram") ? 80000 : 100000)
+      )
         radius = this.state.marker.radius + 500;
     }
     let marker = this.state.marker;

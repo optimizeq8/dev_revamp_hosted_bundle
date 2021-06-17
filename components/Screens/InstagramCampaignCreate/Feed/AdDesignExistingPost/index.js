@@ -336,14 +336,18 @@ class InstagramAdDesignExistingPost extends Component {
 
     let swipeUpError = null;
     if (
-      this.props.data.objective !== "BRAND_AWARENESS" &&
-      this.props.data.objective !== "VIDEO_VIEWS" &&
-      (!this.props.data.call_to_action ||
-        (this.props.data &&
-          this.props.data.call_to_action &&
-          this.props.data.call_to_action.label === "BLANK") ||
-        this.props.data.link === "" ||
-        this.props.data.link === "BLANK")
+      (this.props.data.objective === "APP_INSTALLS" &&
+        (!this.props.data.attachment.app_name ||
+          this.props.data.attachment.app_name === "")) ||
+      (this.props.data.objective !== "BRAND_AWARENESS" &&
+        this.props.data.objective !== "VIDEO_VIEWS" &&
+        (!this.props.data.call_to_action ||
+          (this.props.data &&
+            this.props.data.call_to_action &&
+            this.props.data.call_to_action.label === "BLANK") ||
+          this.props.data.link === "BLANK" ||
+          this.props.data.link === "" ||
+          this.props.data.link.toLowerCase() === "https://"))
     ) {
       showMessage({
         message: translate("Choose A Swipe Up Destination"),
@@ -473,6 +477,7 @@ class InstagramAdDesignExistingPost extends Component {
       action_status: noError ? "success" : "failure",
       campaign_channel: "instagram",
       campaign_ad_type: "InstagramFeedAd",
+      businessid: this.props.mainBusiness.businessid,
     });
     if (noError) {
       this.props.navigation.navigate("AdFeedDesignReview", {
@@ -604,6 +609,7 @@ class InstagramAdDesignExistingPost extends Component {
         ) + 1,
       campaign_start_date: this.props.data.start_time,
       campaign_end_date: this.props.data.end_time,
+      businessid: this.props.mainBusiness.businessid,
     });
   };
   setMaxClickHeight = (event) => {

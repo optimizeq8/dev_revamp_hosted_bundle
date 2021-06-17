@@ -18,7 +18,8 @@ export const previewHandler = (
   selectedCampaign,
   navigation,
   source,
-  campaignDetails
+  campaignDetails,
+  mainBusiness
 ) => {
   let media = { media: selectedCampaign.media };
 
@@ -32,6 +33,7 @@ export const previewHandler = (
     action_status: "success",
     campaign_channel: "instagram",
     campaign_ad_type: selectedCampaign.campaign_type,
+    businessid: mainBusiness.businessid,
   });
   navigation.navigate(
     selectedCampaign.campaign_type !== "InstagramStoryAd"
@@ -63,6 +65,7 @@ export default (props) => {
     navigation,
     source,
     campaignDetails,
+    mainBusiness,
   } = props;
 
   const { translate } = props.screenProps;
@@ -111,7 +114,8 @@ export default (props) => {
                   selectedCampaign,
                   navigation,
                   source,
-                  campaignDetails
+                  campaignDetails,
+                  mainBusiness
                 )
               }
               style={[styles.backgroundViewWrapper]}
@@ -140,7 +144,8 @@ export default (props) => {
                   selectedCampaign,
                   navigation,
                   source,
-                  campaignDetails
+                  campaignDetails,
+                  mainBusiness
                 )
               }
               style={styles.backgroundViewWrapper}

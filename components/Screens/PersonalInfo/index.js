@@ -76,6 +76,7 @@ class PersonalInfo extends Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -158,6 +159,8 @@ class PersonalInfo extends Component {
           source_action: "a_update_personal_info",
           action_status: "failure",
           error_description: "No changes to update",
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         showMessage({
           type: "warning",
@@ -171,6 +174,8 @@ class PersonalInfo extends Component {
         source_action: "a_update_personal_info",
         action_status: "failure",
         error_description: "Please complete required fields",
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
   };
@@ -282,6 +287,7 @@ class PersonalInfo extends Component {
 const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   loadingUpdateInfo: state.auth.loadingUpdateInfo,
+  mainBusiness: state.account.mainBusiness,
 });
 
 const mapDispatchToProps = (dispatch) => ({

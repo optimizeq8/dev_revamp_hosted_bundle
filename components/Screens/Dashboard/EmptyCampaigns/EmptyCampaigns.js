@@ -33,6 +33,8 @@ export default class EmptyCampaigns extends Component {
         timestamp: new Date().getTime(),
         userId: userInfo.userid,
         device_id,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.props.navigation.navigate("AdType", {
         source: "dashboard",
@@ -52,6 +54,7 @@ export default class EmptyCampaigns extends Component {
       timestamp: new Date().getTime(),
       device_id,
       userId: userInfo.userid,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.navigation.navigate("VerifyAccount", {
       source: "dashboard",

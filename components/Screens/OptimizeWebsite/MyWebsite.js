@@ -4,11 +4,12 @@ import {
   Image,
   BackHandler,
   Text,
-  Clipboard,
   TouchableOpacity,
   ScrollView,
   Platform,
 } from "react-native";
+import Clipboard from "@react-native-clipboard/clipboard";
+
 import WebView from "react-native-webview";
 import analytics from "@segment/analytics-react-native";
 import SafeAreaView from "react-native-safe-area-view";
@@ -78,6 +79,7 @@ class MyWebsite extends Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -126,7 +128,12 @@ class MyWebsite extends Component {
   };
 
   uploadPhoto = () => {
-    _pickImage("Images", this.props.screenProps, this.startUpload);
+    _pickImage(
+      "Images",
+      this.props.screenProps,
+      this.startUpload,
+      this.props.mainBusiness
+    );
   };
   onToggleModal = (visibile) => {
     this.setState({ isVisible: visibile });
@@ -237,6 +244,9 @@ class MyWebsite extends Component {
                   source: "open_my_website",
                   source_action: "a_copy_my_website_url",
                   weburl: website,
+                  businessid:
+                    this.props.mainBusiness &&
+                    this.props.mainBusiness.businessid,
                 });
                 Clipboard.setString(website);
               }}

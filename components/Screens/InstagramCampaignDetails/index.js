@@ -6,6 +6,7 @@ import {
   BackHandler,
   TouchableOpacity,
 } from "react-native";
+import Clipboard from "@react-native-clipboard/clipboard";
 import { RFValue } from "react-native-responsive-fontsize";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { Container, Icon } from "native-base";
@@ -28,6 +29,7 @@ import LocationIcon from "../../../assets/SVGs/Location";
 import GenderIcon from "../../../assets/SVGs/Gender";
 import InterestsIcon from "../../../assets/SVGs/Interests";
 import DeviceMakeIcon from "../../../assets/SVGs/DeviceMake";
+import CopyIcon from "../../../assets/SVGs/CopyIcon";
 
 // Style
 import styles from "./styles";
@@ -50,6 +52,7 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 import { LinearGradient } from "expo-linear-gradient";
 import ChartDateChoices from "./ChartDateChoices";
 import CSVModal from "./CSVModal";
+import { showMessage } from "react-native-flash-message";
 
 class InstagramCampaignDetails extends Component {
   static navigationOptions = {
@@ -116,6 +119,7 @@ class InstagramCampaignDetails extends Component {
       source_action: "a_ad_start_date",
       campaignId: this.props.selectedCampaign.campaign_id,
       campaign_start_date: date,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       start_time: date,
@@ -128,6 +132,7 @@ class InstagramCampaignDetails extends Component {
       source_action: "a_ad_end_date",
       campaignId: this.props.selectedCampaign.campaign_id,
       campaign_end_date: date,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       end_time: date,
@@ -170,6 +175,7 @@ class InstagramCampaignDetails extends Component {
       source: "campaign_detail",
       campaign_channel: "instagram",
       source_action: "a_update_campaign_status",
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({ modalVisible: visible });
   };
@@ -227,6 +233,7 @@ class InstagramCampaignDetails extends Component {
       source: "ad_detail",
       source_action: "a_toggle_csv_modal",
       campaign_channel: "instagram",
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({ CSVModalVisible: isVisible });
   };
@@ -282,6 +289,7 @@ class InstagramCampaignDetails extends Component {
             !this.props.selectedCampaign) ||
           this.props.campaignError ||
           this.props.languagesListError,
+        businessid: this.props.mainBusiness.businessid,
       });
     }
 
@@ -293,12 +301,14 @@ class InstagramCampaignDetails extends Component {
         timestamp: new Date().getTime(),
         device_id: this.props.screenProps.device_id,
         campaignId: this.props.selectedCampaign.campaign_id,
+        businessid: this.props.mainBusiness.businessid,
       });
     }
   };
   render() {
     let loading = this.props.loading;
     const { translate } = this.props.screenProps;
+    let attachment = null;
 
     if (
       (!loading &&
@@ -334,6 +344,14 @@ class InstagramCampaignDetails extends Component {
       let media = [];
       if (!loading && this.props.selectedCampaign) {
         selectedCampaign = this.props.selectedCampaign;
+        attachment = selectedCampaign.link;
+        if (attachment) {
+          if (attachment.includes("?utm_source"))
+            attachment = attachment.split("?utm_source")[0];
+          if (attachment.includes("&utm_source")) {
+            attachment = attachment.split("&utm_source")[0];
+          }
+        }
         if (
           selectedCampaign.hasOwnProperty("story_creatives") ||
           selectedCampaign.hasOwnProperty("collection_creatives")
@@ -402,11 +420,29 @@ class InstagramCampaignDetails extends Component {
           flexible_spec && flexible_spec.hasOwnProperty("interests")
             ? flexible_spec.interests.map((interest) => interest.name)
             : [];
-        countryName = targeting.geo_locations.countries.map((country) => {
-          return countries.find(
-            (count) => country.toLowerCase() === count.value
-          ).label;
-        });
+
+        countryName =
+          targeting.geo_locations &&
+          targeting.geo_locations.countries &&
+          targeting.geo_locations.countries.map((country) => {
+            return countries.find(
+              (count) => country.toLowerCase() === count.value
+            ).label;
+          });
+        // To show customLocations countries when actual countries are missing
+        if (
+          targeting.geo_locations &&
+          !targeting.geo_locations.countries &&
+          targeting.geo_locations.custom_locations
+        ) {
+          countryName = targeting.geo_locations.custom_locations.map(
+            (country) => {
+              return countries.find(
+                (count) => country.country.toLowerCase() === count.value
+              ).label;
+            }
+          );
+        }
         audienceOverViewData.push({
           heading: "Location",
           icon: (
@@ -512,6 +548,8 @@ class InstagramCampaignDetails extends Component {
             {selectedCampaign &&
               selectedCampaign.campaign_end === "0" &&
               this.campaignEndedOrNot(selectedCampaign) &&
+              selectedCampaign.lifetime_budget_micro >
+                selectedCampaign.spends &&
               !this.state.expand && (
                 <View style={styles.remainingBudgetContainer}>
                   <Icon
@@ -641,6 +679,7 @@ class InstagramCampaignDetails extends Component {
                       screenProps={this.props.screenProps}
                       campaignDetails={true}
                       source={"campaign_detail"}
+                      mainBusiness={this.props.mainBusiness}
                     />
                     <AudienceOverview
                       screenProps={this.props.screenProps}
@@ -657,6 +696,34 @@ class InstagramCampaignDetails extends Component {
                       selectedCampaign={selectedCampaign}
                     />
                   </View>
+                )}
+                {loading ? (
+                  <View style={{ margin: 5 }}>
+                    <PlaceholderLine />
+                  </View>
+                ) : (
+                  !this.state.expand &&
+                  attachment !== "BLANK" && (
+                    <>
+                      <Text style={styles.attachementText}>
+                        {translate("Ad Destination")}
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          Clipboard.setString(attachment);
+                          showMessage({
+                            type: "warning",
+                            message: translate("URL copied to clipboard"),
+                          });
+                        }}
+                        activeOpacity={0.8}
+                        style={styles.destinationView}
+                      >
+                        <Text style={styles.destinationText}>{attachment}</Text>
+                        <CopyIcon fill={"#FFF"} style={styles.copyIcon} />
+                      </TouchableOpacity>
+                    </>
+                  )
                 )}
                 {loading ? (
                   <View style={styles.placeholderView}>

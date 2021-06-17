@@ -244,6 +244,8 @@ const initialState = {
   extendCampaignLoading: false,
   targeting_error: 0,
   targeting_error_message: null,
+  snapchatExistingMediaListLoading: false,
+  snapchatExistingMediaList: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -270,6 +272,7 @@ const reducer = (state = initialState, action) => {
         oldTempData: { ...state.data, ...action.payload.data },
         oldTempAdType: state.adType,
         savedObjective: action.payload.savedObjective,
+        loadingDesign: false,
       };
     case actionTypes.SET_MINIMUN_CASH:
       return {
@@ -852,6 +855,7 @@ const reducer = (state = initialState, action) => {
         },
         incompleteCampaign: incompleteCampaign,
         currentCampaignSteps: currentCampaignSteps,
+        loadingDesign: false,
       };
     case actionTypes.VERIFY_BUSINESSURL:
       return {
@@ -1140,6 +1144,9 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         data: { ...state.data, ...state.oldTempData, ...action.payload },
+        loadingDesign: false,
+        loadingStoryAdsArray: [],
+        collectionLoader: false,
       };
     case actionTypes.GET_LANGUAGES_LOADING: {
       return {
@@ -1253,6 +1260,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         extendCampaignLoading: action.payload,
+      };
+    }
+    case actionTypes.GET_SNAP_MEDIA_LIST: {
+      return {
+        ...state,
+        snapchatExistingMediaList: action.payload,
+      };
+    }
+    case actionTypes.GET_SNAP_MEDIA_LIST_LOADING: {
+      return {
+        ...state,
+        snapchatExistingMediaListLoading: action.payload,
       };
     }
     default:

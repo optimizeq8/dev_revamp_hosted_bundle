@@ -43,85 +43,83 @@ class UploadMediaFromDifferentDevice extends Component {
         onDismiss={() => this.props.setUploadFromDifferentDeviceModal(false)}
         visible={this.props.uploadMediaDifferentDeviceModal}
       >
-        <BlurView>
-          <View style={{ backgroundColor: "#0000", height: "100%" }}>
-            <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
-            <View style={styles.popupOverlay}>
-              <CustomHeader
-                screenProps={this.props.screenProps}
-                closeButton={true}
-                actionButton={() => {
-                  this.props.setUploadFromDifferentDeviceModal(false);
-                }}
-                title={"UPLOAD MEDIA"}
-                segment={{
-                  source: "upload_media",
-                  source_action: "a_go_back",
-                }}
-              />
-              <Text style={styles.uploadDifferentDeviceHeader}>
-                {translate("from a different device")}
-              </Text>
+        <View style={{ backgroundColor: "#0009", height: "100%" }}>
+          <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
+          <View style={styles.popupOverlay}>
+            <CustomHeader
+              screenProps={this.props.screenProps}
+              closeButton={true}
+              actionButton={() => {
+                this.props.setUploadFromDifferentDeviceModal(false);
+              }}
+              title={"UPLOAD MEDIA"}
+              segment={{
+                source: "upload_media",
+                source_action: "a_go_back",
+              }}
+            />
+            <Text style={styles.uploadDifferentDeviceHeader}>
+              {translate("from a different device")}
+            </Text>
 
-              <Content
-                padder
-                indicatorStyle="white"
-                contentContainerStyle={
-                  styles.uploadDifferentDeviceContentContainer
-                }
-              >
-                <View style={styles.uploadDifferentDeviceRowView}>
-                  <View style={styles.uploadDifferentDeviceIndex}>
-                    <Text style={styles.uploadDifferentDeviceIndexText}>1</Text>
-                  </View>
-                  <View style={styles.uploadDifferentDeviceColView}>
-                    <Text style={styles.uploadDifferentDeviceTitleText}>
-                      {translate(
-                        "Please access the link below on your Other device"
-                      )}
-                    </Text>
-                    <Text
-                      selectable={true}
-                      style={styles.uploadMediaFromDifferentDeviceSubtitleText}
-                    >
-                      {this.props.uploadMediaDifferentDeviceURL}
-                    </Text>
-                  </View>
+            <Content
+              padder
+              indicatorStyle="white"
+              contentContainerStyle={
+                styles.uploadDifferentDeviceContentContainer
+              }
+            >
+              <View style={styles.uploadDifferentDeviceRowView}>
+                <View style={styles.uploadDifferentDeviceIndex}>
+                  <Text style={styles.uploadDifferentDeviceIndexText}>1</Text>
                 </View>
+                <View style={styles.uploadDifferentDeviceColView}>
+                  <Text style={styles.uploadDifferentDeviceTitleText}>
+                    {translate(
+                      "Please access the link below on your Other device"
+                    )}
+                  </Text>
+                  <Text
+                    selectable={true}
+                    style={styles.uploadMediaFromDifferentDeviceSubtitleText}
+                  >
+                    {this.props.uploadMediaDifferentDeviceURL}
+                  </Text>
+                </View>
+              </View>
 
-                <View style={styles.uploadDifferentDeviceRowView}>
-                  <View style={styles.uploadDifferentDeviceIndex}>
-                    <Text style={styles.uploadDifferentDeviceIndexText}>2</Text>
-                  </View>
-                  <View style={styles.uploadDifferentDeviceColView}>
-                    <Text style={styles.uploadDifferentDeviceTitleText}>
-                      {translate("Enter your Access code")}
-                    </Text>
-                    <Text
-                      selectable={true}
-                      style={styles.uploadMediaFromDifferentDeviceSubtitleText}
-                    >
-                      {this.props.uploadMediaDifferentDeviceAccessCode}
-                    </Text>
-                  </View>
+              <View style={styles.uploadDifferentDeviceRowView}>
+                <View style={styles.uploadDifferentDeviceIndex}>
+                  <Text style={styles.uploadDifferentDeviceIndexText}>2</Text>
                 </View>
+                <View style={styles.uploadDifferentDeviceColView}>
+                  <Text style={styles.uploadDifferentDeviceTitleText}>
+                    {translate("Enter your Access code")}
+                  </Text>
+                  <Text
+                    selectable={true}
+                    style={styles.uploadMediaFromDifferentDeviceSubtitleText}
+                  >
+                    {this.props.uploadMediaDifferentDeviceAccessCode}
+                  </Text>
+                </View>
+              </View>
 
-                <View style={styles.uploadDifferentDeviceRowView}>
-                  <View style={styles.uploadDifferentDeviceIndex}>
-                    <Text style={styles.uploadDifferentDeviceIndexText}>3</Text>
-                  </View>
-                  <View style={styles.uploadDifferentDeviceColView}>
-                    <Text style={styles.uploadDifferentDeviceTitleText}>
-                      {translate(
-                        "Keep this page open until your media is Uploaded on the other device"
-                      )}
-                    </Text>
-                  </View>
+              <View style={styles.uploadDifferentDeviceRowView}>
+                <View style={styles.uploadDifferentDeviceIndex}>
+                  <Text style={styles.uploadDifferentDeviceIndexText}>3</Text>
                 </View>
-              </Content>
-            </View>
+                <View style={styles.uploadDifferentDeviceColView}>
+                  <Text style={styles.uploadDifferentDeviceTitleText}>
+                    {translate(
+                      "Keep this page open until your media is Uploaded on the other device"
+                    )}
+                  </Text>
+                </View>
+              </View>
+            </Content>
           </View>
-        </BlurView>
+        </View>
       </Modal>
     );
   }

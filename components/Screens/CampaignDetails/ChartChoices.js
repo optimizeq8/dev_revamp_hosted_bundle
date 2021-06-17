@@ -4,7 +4,7 @@ import styles from "./styles";
 import { RFValue } from "react-native-responsive-fontsize";
 import GradientButton from "../../MiniComponents/GradientButton";
 import { globalColors } from "../../../GlobalStyles";
-
+import analytics from "@segment/analytics-react-native";
 export default class ChartChoices extends Component {
   state = {
     selectedChoice:
@@ -38,6 +38,10 @@ export default class ChartChoices extends Component {
         onPressAction={() => {
           this.props.changeChart(choice);
           this.setState({ selectedChoice: choice });
+          analytics.track(`a_${choice}`, {
+            source: "campaign_detail",
+            source_action: `a_${choice}`,
+          });
         }}
         style={[styles.chartChoiceButtons]}
         purpleViolet={this.state.selectedChoice === choice}

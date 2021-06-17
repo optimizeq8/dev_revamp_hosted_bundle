@@ -118,6 +118,7 @@ class AddProduct extends Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness.businessid,
     });
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
@@ -164,6 +165,7 @@ class AddProduct extends Component {
       product_name: this.state.product.name,
       product_price: this.state.product.prices,
       product_description: this.state.product.description_en,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.props.navigation.navigate("ReviewProductDetail", {
       product: this.state.product,
@@ -177,6 +179,7 @@ class AddProduct extends Component {
       source_action: "a_toggle_price_modal",
       product_id: this.state.product.id,
       open: false,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       showPriceModal: false,
@@ -188,6 +191,7 @@ class AddProduct extends Component {
       source_action: "a_toggle_price_modal",
       product_id: this.state.product.id,
       open: true,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       showPriceModal: true,
@@ -199,6 +203,7 @@ class AddProduct extends Component {
       source_action: "a_toggle_sizes_modal",
       product_id: this.state.product.id,
       open: false,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       showSizeModal: false,
@@ -210,6 +215,7 @@ class AddProduct extends Component {
       source_action: "a_toggle_sizes_modal",
       product_id: this.state.product.id,
       open: true,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       showSizeModal: true,
@@ -221,6 +227,7 @@ class AddProduct extends Component {
       source_action: "a_toggle_categories_modal",
       product_id: this.state.product.id,
       open: false,
+      businessid: this.props.mainBusiness.businessid,
     });
 
     this.setState({
@@ -233,6 +240,7 @@ class AddProduct extends Component {
       source_action: "a_toggle_categories_modal",
       product_id: this.state.product.id,
       open: true,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       showCategoryModal: true,
@@ -245,6 +253,7 @@ class AddProduct extends Component {
       product_id: this.state.product.id,
       open: false,
       product_prices: this.state.prices,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       showPriceModal: false,
@@ -261,6 +270,7 @@ class AddProduct extends Component {
       product_id: this.state.product.id,
       open: false,
       product_sizes: this.state.sizes,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       showSizeModal: false,
@@ -325,6 +335,7 @@ class AddProduct extends Component {
       source_action: "a_delete_single_media",
       product_id: this.state.product.id,
       media_id: media[index].id,
+      businessid: this.props.mainBusiness.businessid,
     });
     media.splice(index, 1);
     this.setState({
@@ -526,6 +537,7 @@ class AddProduct extends Component {
                         source_action: "a_product_name",
                         product_id: this.state.product.id,
                         product_name: text,
+                        businessid: this.props.mainBusiness.businessid,
                       });
                       this.setState({
                         product: {
@@ -598,6 +610,7 @@ class AddProduct extends Component {
                         source_action: "a_product_description",
                         product_id: this.state.product.id,
                         product_description: text,
+                        businessid: this.props.mainBusiness.businessid,
                       });
                       this.setState({
                         product: {
@@ -664,6 +677,7 @@ class AddProduct extends Component {
                     product_id: this.state.product.id,
                     product_is_featured:
                       this.state.product.is_featured === 0 ? 1 : 0,
+                    businessid: this.props.mainBusiness.businessid,
                   });
                   this.setState({
                     product: {
@@ -681,6 +695,7 @@ class AddProduct extends Component {
                       source_action: `a_toggle_is_featured`,
                       product_id: this.state.product.id,
                       product_is_featured: newValue ? 1 : 0,
+                      businessid: this.props.mainBusiness.businessid,
                     });
                     this.setState({
                       product: {
@@ -794,6 +809,7 @@ class AddProduct extends Component {
                       source: "open_add_product",
                       source_action: "a_switch_country",
                       product_country: ctr.country,
+                      businessid: this.props.mainBusiness.businessid,
                     });
                     // check if the value for that field is empty then clean the input field
                     const priceExist =
@@ -871,6 +887,7 @@ class AddProduct extends Component {
                     source_action: "a_product_price",
                     product_country: this.state.activeCountryCurrency,
                     product_price: text,
+                    businessid: this.props.mainBusiness.businessid,
                   });
                   const elementsIndex =
                     this.state.prices &&

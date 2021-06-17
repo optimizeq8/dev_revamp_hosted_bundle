@@ -38,6 +38,7 @@ class RegistartionSuccess extends React.Component {
       timestamp: new Date().getTime(),
       userId: userInfo.userid,
       ...userInfo,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     // let adjustRegiserTracker = new AdjustEvent("z1mpdo");
@@ -54,6 +55,7 @@ class RegistartionSuccess extends React.Component {
       userId: this.props.userInfo.userid,
       device_id,
       anonymous_userId,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.navigation.navigate("Dashboard", {
       source: "success_registration",
@@ -104,6 +106,7 @@ class RegistartionSuccess extends React.Component {
 
 const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
+  mainBusiness: state.account.mainBusiness,
 });
 
 export default connect(mapStateToProps, null)(RegistartionSuccess);

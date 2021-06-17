@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Text, View, Platform } from "react-native";
+import { View, Platform } from "react-native";
 import { Content } from "native-base";
-import { RFValue } from "react-native-responsive-fontsize";
 import { Modal } from "react-native-paper";
 import { BlurView } from "@react-native-community/blur";
 import SafeAreaView from "react-native-safe-area-view";
@@ -11,8 +10,31 @@ import MediaOptions from "./MediaOptions";
 import styles from "../../styles/mediaModal.styles";
 
 export default class MediaModal extends Component {
+  modifyOptionArr = () => {
+    let optionsArr = ["Media"];
+
+    let { instastoryad, adType } = this.props;
+    switch (adType) {
+      case "InstagramFeedAd":
+        if (instafeedad.length > 0) {
+          optionsArr.splice(0, 0, "Media Library");
+        }
+        break;
+      case "InstagramStoryAd":
+        if (instastoryad.length > 0) {
+          optionsArr.splice(0, 0, "Media Library");
+        }
+        break;
+      default:
+        optionsArr;
+    }
+    return optionsArr;
+  };
   render() {
-    var options = ["Media"].map((op) => {
+    let { mediaUri, media_type, adType } = this.props;
+    let { media } = mediaUri;
+    let optionArr = this.modifyOptionArr();
+    var options = optionArr.map((op) => {
       return (
         <MediaOptions
           getVideoUploadUrl={this.props.getVideoUploadUrl}
@@ -27,11 +49,14 @@ export default class MediaModal extends Component {
           setDownloadMediaModal={this.props.setDownloadMediaModal}
           screenProps={this.props.screenProps}
           media_type={media_type}
+          setExistingMediaModal={this.props.setExistingMediaModal}
+          getExistingMediaInstagramList={
+            this.props.getExistingMediaInstagramList
+          }
+          adType={adType}
         />
       );
     });
-    let { mediaUri, media_type } = this.props;
-    let { media } = mediaUri;
 
     return (
       <Modal
@@ -62,9 +87,9 @@ export default class MediaModal extends Component {
               <Content
                 indicatorStyle="white"
                 contentContainerStyle={{
-                  marginTop: RFValue(7.5, 414),
-                  paddingTop: RFValue(7.5, 414),
-                  marginBottom: RFValue(7.5, 414),
+                  marginTop: 15,
+                  paddingTop: 15,
+                  marginBottom: 15,
                 }}
               >
                 {options}

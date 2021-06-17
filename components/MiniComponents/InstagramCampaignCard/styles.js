@@ -167,20 +167,23 @@ const styles = StyleSheet.create({
   },
   repeatButton: {
     backgroundColor: "#d4d4d4",
-    paddingVertical: RFValue(4, 414),
-    paddingHorizontal: RFValue(7, 414),
     borderRadius: RFValue(10, 414),
-    // width: "25%",
-    height: "40%",
+    height: "25%",
     justifyContent: "center",
     alignItems: "center",
-    alignSelf: "flex-end",
-    opacity: 0.8,
+    marginTop: 10,
+    width: "100%",
   },
   repeatText: {
-    fontSize: RFValue(5.5, 414),
+    fontSize: RFValue(7, 414),
     color: "#0008",
     fontFamily: "montserrat-bold",
+  },
+  dotsContainer: {
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor: "rgba(0, 0, 0, 0.25)",
+    alignSelf: "flex-end",
   },
 });
 

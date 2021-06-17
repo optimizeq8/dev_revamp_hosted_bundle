@@ -32,6 +32,7 @@ class ContinueCampaign extends Component {
         campaign_channel: "snapchat",
         campaign_ad_type: this.props.adType,
         timestamp: new Date().getTime(),
+        businessid: this.props.mainBusiness.businessid,
       });
       this.continueCampaign();
     }

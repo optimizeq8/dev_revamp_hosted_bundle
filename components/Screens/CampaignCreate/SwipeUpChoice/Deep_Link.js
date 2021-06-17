@@ -139,6 +139,7 @@ class Deep_Link extends Component {
       source: "ad_swipe_up_destination",
       source_action: "a_change_cta",
       campaign_swipe_up_CTA: callaction,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       callaction,
@@ -160,6 +161,8 @@ class Deep_Link extends Component {
         error_page: "ad_swipe_up_destination",
         error_description: nameError || callActionError,
         campaign_swipe_up_destination: "Deep Link",
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
     if (!nameError && !callActionError) {
@@ -169,6 +172,8 @@ class Deep_Link extends Component {
         campaign_swipe_up_destination: "Deep Link",
         campaign_app_OS: appChoice,
         campaign_app_name: appChoice === "iOS" ? iosApp_name : androidApp_name,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
 
       this.setState({
@@ -240,6 +245,8 @@ class Deep_Link extends Component {
         error_page: "ad_swipe_up_destination",
         campaign_swipe_up_destination: "Deep Link",
         error_description: appError,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
     let attachment = this.state.attachment;
@@ -303,6 +310,7 @@ class Deep_Link extends Component {
           screenProps={this.props.screenProps}
           appSelections={{ iosAppSelected, androidAppSelected }}
           setTheState={this.setTheState}
+          socialMediaPlatform={this.props.adType}
         />
       </View>
     );

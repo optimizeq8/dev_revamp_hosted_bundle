@@ -138,6 +138,7 @@ export const addWalletAmount = (
           mode_of_payment: payment_mode,
           action_status: data.success ? "success" : "failure",
           error_description: !data.success ? data.message : null,
+          businessid: getState().account.mainBusiness.businessid,
         });
         return dispatch({
           type: actionTypes.ADD_WALLET_AMOUNT,
@@ -162,6 +163,7 @@ export const addWalletAmount = (
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (retries > 0) {
           dispatch(addWalletAmount(info, openBrowser, retries - 1));
@@ -239,7 +241,6 @@ export const useWallet = (
   retries = 3
 ) => {
   return (dispatch, getState) => {
-    console.log("called", campaign_id);
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true,
@@ -340,9 +341,10 @@ export const removeWalletAmount = (
           source: "payment_mode",
           source_action: "a_remove_wallet_amount",
           action_status: data.success ? "success" : "failure",
-          campaign_id,
+          campaignId: campaign_id,
           campaign_channel:
             getState().transA.channel === "google" ? "google" : "snapchat",
+          businessid: getState().account.mainBusiness.businessid,
         });
         return dispatch({
           type: actionTypes.REMOVE_WALLET_AMOUNT,
@@ -403,9 +405,11 @@ export const checkoutwithWallet = (campaign_id, navigation, retries = 3) => {
       getState().transA.channel === "instagram"
     )
       info = { ...info, channel: getState().transA.channel };
-
+    if (getState().transA.hasOwnProperty("extend_id")) {
+      info = { ...info, extend_id: getState().transA.extend_id };
+    }
     createBaseUrl()
-      .post(`checkoutwithWallet`, info)
+      .post(`checkoutwithWallet`, { ...info })
       .then((res) => {
         return res.data;
       })
@@ -415,8 +419,9 @@ export const checkoutwithWallet = (campaign_id, navigation, retries = 3) => {
           source_action: "a_payment_processing",
           mode_of_payment: "WALLET",
           amount: data.amount,
-          campaign_id,
+          campaignId: campaign_id,
           action_status: data.success ? "success" : "failure",
+          businessid: getState().account.mainBusiness.businessid,
         });
 
         // Update the new wallet amount for that user's profile buiness
@@ -456,7 +461,7 @@ export const checkoutwithWallet = (campaign_id, navigation, retries = 3) => {
           error_page: "payment_mode",
           source_action: "a_payment_processing",
           mode_of_payment: "WALLET",
-          campaign_id,
+          campaignId: campaign_id,
           action_status: "failure",
           error_description:
             (err.message &&
@@ -467,6 +472,7 @@ export const checkoutwithWallet = (campaign_id, navigation, retries = 3) => {
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (retries > 0) {
           checkoutwithWallet(campaign_id, retries - 1);
@@ -492,16 +498,21 @@ export const checkoutwithWallet = (campaign_id, navigation, retries = 3) => {
   };
 };
 export const filterTransactions = (query, source, source_action) => {
-  analytics.track(`a_filter`, {
-    source,
-    source_action,
-    query,
-  });
-  return (dispatch) =>
+  return (dispatch, getState) => {
+    analytics.track(`a_filter`, {
+      source,
+      source_action,
+      query,
+      businessid: getState().account.mainBusiness.businessid,
+    });
     dispatch({
       type: actionTypes.FILTER_TRANSACTION,
-      payload: query,
+      payload: {
+        ...query,
+        businessid: getState().account.mainBusiness.businessid,
+      },
     });
+  };
 };
 
 export const payment_request_knet = (
@@ -519,9 +530,21 @@ export const payment_request_knet = (
       getState().transA.channel === ""
         ? `makeknetpayment/${campaign_id}`
         : `makeknetpayment/${campaign_id}/${getState().transA.channel}`;
-
+    let info = {};
+    if (getState().transA.hasOwnProperty("extend_id")) {
+      info = { extend_id: getState().transA.extend_id };
+    }
     createBaseUrl()
-      .get(url)
+      .post(
+        url,
+        {
+          ...info,
+        },
+        {
+          timeout: 5000,
+          timeoutErrorMessage: "Something went wrong, please try again later.",
+        }
+      )
       .then((res) => {
         return res.data;
       })
@@ -536,10 +559,11 @@ export const payment_request_knet = (
             source: "payment_mode",
             source_action: "a_payment_processing",
             mode_of_payment: "KNET",
-            campaign_id,
+            campaignId: campaign_id,
             amount: data.amount,
             action_status: data.success ? "success" : "failure",
             error_description: !data.success ? data.status : null,
+            businessid: getState().account.mainBusiness.businessid,
           });
           navigation.navigate("SuccessRedirect", {
             ...data,
@@ -595,9 +619,19 @@ export const payment_request_credit_card = (
       getState().transA.channel === ""
         ? `makeccpayment/${campaign_id}`
         : `makeccpayment/${campaign_id}/${getState().transA.channel}`;
-
+    let info = {};
+    if (getState().transA.hasOwnProperty("extend_id")) {
+      info = { extend_id: getState().transA.extend_id };
+    }
     createBaseUrl()
-      .post(url)
+      .post(
+        url,
+        {
+          timeout: 5000,
+          timeoutErrorMessage: "Something went wrong, please try again later.",
+        },
+        { ...info }
+      )
       .then((res) => {
         return res.data;
       })
@@ -613,9 +647,10 @@ export const payment_request_credit_card = (
             source_action: "a_payment_processing",
             mode_of_payment: "CREDIT CARD",
             amount: data.amount,
-            campaign_id,
+            campaignId: campaign_id,
             action_status: data.success ? "success" : "failure",
             error_description: !data.success ? data.status : null,
+            businessid: getState().account.mainBusiness.businessid,
           });
           navigation.navigate("SuccessRedirect", {
             ...data,
@@ -750,11 +785,22 @@ export const payment_request_payment_method = (
       getState().transA.channel === ""
         ? `makemfpayment/${campaign_id}`
         : `makemfpayment/${campaign_id}/${getState().transA.channel}`;
-
+    let info = {};
+    if (getState().transA.hasOwnProperty("extend_id")) {
+      info = { extend_id: getState().transA.extend_id };
+    }
     createBaseUrl()
-      .post(url, {
-        PaymentMethodId: PaymentMethodId,
-      })
+      .post(
+        url,
+        {
+          PaymentMethodId: PaymentMethodId,
+          ...info,
+        },
+        {
+          timeout: 5000,
+          timeoutErrorMessage: "Something went wrong, please try again later.",
+        }
+      )
       .then((res) => {
         return res.data;
       })
@@ -770,9 +816,10 @@ export const payment_request_payment_method = (
             source_action: "a_payment_processing",
             mode_of_payment: "CREDIT CARD",
             amount: data.amount,
-            campaign_id,
+            campaignId: campaign_id,
             action_status: data.success ? "success" : "failure",
             error_description: !data.success ? data.status : null,
+            businessid: getState().account.mainBusiness.businessid,
           });
           navigation.navigate("SuccessRedirect", {
             ...data,

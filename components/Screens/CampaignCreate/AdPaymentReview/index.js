@@ -106,6 +106,7 @@ class AdPaymentReview extends Component {
       source_action,
       timestamp: new Date().getTime(),
       ...segmentInfo,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.saveCampaignSteps(
       this.props.adType === "StoryAd"
@@ -246,6 +247,7 @@ class AdPaymentReview extends Component {
       action_status: "success",
       timestamp: new Date().getTime(),
       ...segmentInfo,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.props.navigation.navigate("PaymentForm", {
@@ -480,7 +482,7 @@ class AdPaymentReview extends Component {
               <View style={styles.kdAmountContainer}>
                 <Text style={[styles.money, styles.kdText]}>KD{}</Text>
                 <Text style={[styles.money, styles.kdAmountText]}>
-                  {this.props.kdamount}
+                  {parseFloat(this.props.kdamount).toFixed(3)}
                 </Text>
               </View>
 

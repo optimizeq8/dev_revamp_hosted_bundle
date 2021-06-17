@@ -1,7 +1,9 @@
 import React from "react";
 import SafeAreaView from "react-native-safe-area-view";
 
-import { Text, Clipboard, TouchableOpacity, ScrollView } from "react-native";
+import { Text, TouchableOpacity, ScrollView } from "react-native";
+import Clipboard from "@react-native-clipboard/clipboard";
+
 import analytics from "@segment/analytics-react-native";
 import {
   widthPercentageToDP,
@@ -31,12 +33,14 @@ class WebsiteRegistartionSuccess extends React.Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness.businessid,
     });
   }
   goToMyWebsite = () => {
     analytics.track(`a_open_my_website`, {
       source: "my_website_success_registration",
       source_action: "a_open_my_website",
+      businessid: this.props.mainBusiness.businessid,
     });
     this.props.navigation.navigate("MyWebsite", {
       source: "my_website_success_registration",
@@ -74,6 +78,7 @@ class WebsiteRegistartionSuccess extends React.Component {
                 source: "my_website_success_registration",
                 source_action: "a_copy_my_website_url",
                 weburl: mainBusiness.weburl,
+                businessid: this.props.mainBusiness.businessid,
               });
               Clipboard.setString(mainBusiness.weburl);
             }}

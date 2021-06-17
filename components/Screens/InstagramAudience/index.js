@@ -130,8 +130,8 @@ export class InstagramAudience extends Component {
       this.props.audience.targeting.geo_locations.countries.length !== 0
     ) {
       let showRegions = false;
-      let countryRegions = this.props.audience.targeting.geo_locations.countries.map(
-        (cou) => {
+      let countryRegions =
+        this.props.audience.targeting.geo_locations.countries.map((cou) => {
           let foundCountryReg = find(
             country_regions,
             (country) => country.key === cou.value
@@ -139,8 +139,7 @@ export class InstagramAudience extends Component {
           //   showRegions = foundCountryReg.regions.length > 3;
 
           return foundCountryReg;
-        }
-      );
+        });
 
       let locationsInfo = [];
       let markers = [];
@@ -218,6 +217,7 @@ export class InstagramAudience extends Component {
         // campaign_channel: "snapchat",
         // campaign_ad_type: this.props.adType,
         error_description: countryRegionError || audienceNameError,
+        businessid: this.props.mainBusiness.businessid,
       });
     }
     if (!audienceNameError && !countryRegionError) {
@@ -226,7 +226,8 @@ export class InstagramAudience extends Component {
         rep.targeting.geo_locations.custom_locations &&
         rep.targeting.geo_locations.custom_locations.length > 0
       ) {
-        rep.targeting.geo_locations.custom_locations = this.props.customLocations;
+        rep.targeting.geo_locations.custom_locations =
+          this.props.customLocations;
       } else {
         delete rep.targeting.geo_locations.custom_locations;
       }
@@ -277,6 +278,7 @@ export class InstagramAudience extends Component {
       source_action: "a_audience_age",
       audience_max_age: parseInt(values[0]),
       audience_min_age: parseInt(values[1]),
+      businessid: this.props.mainBusiness.businessid,
     });
     this.props.setAudienceDetail({ ...rep });
   };
@@ -294,6 +296,7 @@ export class InstagramAudience extends Component {
       source_action: "a_audience_devices",
       audience_devices_name:
         selectedItems.length > 0 ? selectedItems.join(", ") : "",
+      businessid: this.props.mainBusiness.businessid,
     });
 
     this.props.setAudienceDetail({
@@ -326,6 +329,7 @@ export class InstagramAudience extends Component {
       source_action: "a_audience_interests",
       audience_interests_names:
         selectedItems && selectedItems.length > 0 && selectedItems.join(", "),
+      businessid: this.props.mainBusiness.businessid,
     });
     this.props.setAudienceDetail({
       ...replace,
@@ -345,14 +349,16 @@ export class InstagramAudience extends Component {
         (r) => r === selectedItem
       )
     ) {
-      replace.targeting.demographics[0].languages = replace.targeting.demographics[0].languages.filter(
-        (r) => r !== selectedItem
-      );
+      replace.targeting.demographics[0].languages =
+        replace.targeting.demographics[0].languages.filter(
+          (r) => r !== selectedItem
+        );
       langs = replace.targeting.demographics[0].languages;
       analytics.track(`a_audience_languages`, {
         source: "audience_detail",
         source_action: "a_audience_languages",
         audience_languages: langs.join(", "),
+        businessid: this.props.mainBusiness.businessid,
       });
     } else {
       if (replace.targeting.geos.length > 1) {
@@ -363,6 +369,7 @@ export class InstagramAudience extends Component {
         source: "audience_detail",
         source_action: "a_audience_languages",
         audience_languages: langs.join(", "),
+        businessid: this.props.mainBusiness.businessid,
       });
     }
 
@@ -371,6 +378,7 @@ export class InstagramAudience extends Component {
         error_page: "audience_detail",
         source_action: "a_audience_languages",
         error_description: "Please choose a language",
+        businessid: this.props.mainBusiness.businessid,
       });
 
       showMessage({
@@ -400,6 +408,7 @@ export class InstagramAudience extends Component {
       audience_os_type: selectedItem === "" ? "ALL" : selectedItem,
       audience_os_min_ver: "",
       audience_os_max_ver: "",
+      businessid: this.props.mainBusiness.businessid,
     });
 
     this.props.setAudienceDetail({
@@ -416,6 +425,7 @@ export class InstagramAudience extends Component {
       source_action: "a_audience_OS_version",
       audience_os_min_ver: selectedItem[0],
       audience_os_max_ver: selectedItem[1],
+      businessid: this.props.mainBusiness.businessid,
     });
 
     this.props.setAudienceDetail({
@@ -436,6 +446,7 @@ export class InstagramAudience extends Component {
       source: "ad_targeting",
       source_action: "a_ad_map_locations",
       campaign_map_locations: selectedItems,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       //   campaignInfo: { ...stateRep },
@@ -506,6 +517,7 @@ export class InstagramAudience extends Component {
       source: "audience_detail",
       source_action: "a_audience_gender",
       audience_gender: replace.targeting.genders,
+      businessid: this.props.mainBusiness.businessid,
     });
 
     this.props.setAudienceDetail({
@@ -534,6 +546,7 @@ export class InstagramAudience extends Component {
   setAudienceName = (stateName, value) => {
     analytics.track("a_audience_name", {
       audience_name: value,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.props.setAudienceDetail({ name: value });
   };
@@ -662,6 +675,7 @@ export class InstagramAudience extends Component {
     analytics.track("go_back_warning", {
       source: "audience_detail",
       source_action: "a_go_back",
+      businessid: this.props.mainBusiness.businessid,
     });
     Alert.alert(
       translate("Warning"),
@@ -675,6 +689,7 @@ export class InstagramAudience extends Component {
             analytics.track("a_cancel_go_back", {
               source: "audience_detail",
               source_action: "a_go_back",
+              businessid: this.props.mainBusiness.businessid,
             });
           },
           style: "cancel",
@@ -685,6 +700,7 @@ export class InstagramAudience extends Component {
             analytics.track("a_go_back", {
               source: "audience_detail",
               source_action: "a_go_back",
+              businessid: this.props.mainBusiness.businessid,
             });
             this.props.deleteCustomLocation("all", true);
             this.props.navigation.goBack();
@@ -707,7 +723,8 @@ export class InstagramAudience extends Component {
       source,
       source_action,
       new: !this.editAudience,
-      audience_channel: "snapchat",
+      audience_channel: "instagram",
+      businessid: this.props.mainBusiness.businessid,
     });
   };
   expandLocation = () => {
@@ -750,14 +767,16 @@ export class InstagramAudience extends Component {
         (ctry) => item === ctry
       );
       if (countryExist) {
-        replace.targeting.geo_locations.countries = replace.targeting.geo_locations.countries.filter(
-          (ctr) => ctr !== countryExist
-        );
+        replace.targeting.geo_locations.countries =
+          replace.targeting.geo_locations.countries.filter(
+            (ctr) => ctr !== countryExist
+          );
 
         // remove all regions of those countries
-        replace.targeting.geo_locations.regions = replace.targeting.geo_locations.regions.filter(
-          (ctr) => ctr.country !== countryExist
-        );
+        replace.targeting.geo_locations.regions =
+          replace.targeting.geo_locations.regions.filter(
+            (ctr) => ctr.country !== countryExist
+          );
       } else {
         replace.targeting.geo_locations.countries.push(item);
       }
@@ -1063,8 +1082,8 @@ export class InstagramAudience extends Component {
                         {translate("Location")}
                       </Text>
                       <Icon
-                        name={`ios-arrow-drop${expandLocation ? "up" : "down"}`}
-                        type="MaterialUIIcons"
+                        name={`keyboard-arrow${expandLocation ? "up" : "down"}`}
+                        type="MaterialIcons"
                         style={styles.iconDown}
                         onPress={this.expandLocation}
                       />
@@ -1204,10 +1223,10 @@ export class InstagramAudience extends Component {
                         {translate("Demographic")}
                       </Text>
                       <Icon
-                        name={`ios-arrow-drop${
+                        name={`keyboard-arrow${
                           expandDemographics ? "up" : "down"
                         }`}
-                        type="MaterialUIIcons"
+                        type="MaterialIcons"
                         style={styles.iconDown}
                         onPress={this.expandDemographics}
                       />
@@ -1447,8 +1466,8 @@ export class InstagramAudience extends Component {
                         {translate("Devices")}
                       </Text>
                       <Icon
-                        name={`ios-arrow-drop${expandDevices ? "up" : "down"}`}
-                        type="MaterialUIIcons"
+                        name={`keyboard-arrow${expandDevices ? "up" : "down"}`}
+                        type="MaterialIcons"
                         style={styles.iconDown}
                         onPress={this.expandDevices}
                       />

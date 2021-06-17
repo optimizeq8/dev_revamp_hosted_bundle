@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
     fontSize: RFValue(6.5 / PixelRatio.getFontScale(), 414),
     color: "#fff",
     marginLeft: RFValue(4, 414),
+    textAlign: "left",
     // height: "100%",
   },
 
@@ -246,11 +247,13 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     color: globalColors.orange,
     fontSize: RFValue(8, 414),
+    textAlign: "left",
   },
   MediaOptionsDescription: {
     fontFamily: "montserrat-light",
     color: "#fff",
     fontSize: RFValue(6.5, 414),
+    textAlign: "left",
   },
   subText: {
     textAlign: "center",

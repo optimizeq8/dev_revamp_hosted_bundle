@@ -41,6 +41,7 @@ class SwitchLanguageLoading extends Component {
         "source_action",
         this.props.screenProps.prevAppState
       ),
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     await this.props.getLanguageListPOEdit(
       this.props.appLanguage === "en" ? "ar" : "en"
@@ -86,6 +87,7 @@ const mapStateToProps = (state) => ({
   languageChangeLoading: state.language.languageChangeLoading,
   appLanguage: state.language.phoneLanguage,
   terms: state.language.terms,
+  mainBusiness: state.account.mainBusiness,
 });
 
 const mapDispatchToProps = (dispatch) => ({

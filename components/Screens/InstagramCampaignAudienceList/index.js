@@ -38,6 +38,7 @@ class InstagramCampaignAudience extends React.Component {
       source_action: "a_delete_audience",
       audience_id: audience.id,
       audience_name: audience.name,
+      businessid: this.props.mainBusiness.businessid,
     });
     Alert.alert(
       translate("Delete"),
@@ -51,6 +52,7 @@ class InstagramCampaignAudience extends React.Component {
             analytics.track("a_cancel_delete", {
               source: "audience_list",
               source_action: "a_cancel_delete",
+              businessid: this.props.mainBusiness.businessid,
             });
           },
           style: "cancel",
@@ -129,6 +131,7 @@ const mapStateToProps = (state) => ({
   audienceList: state.instagramAudience.audienceList,
   audienceListLoading: state.instagramAudience.audienceListLoading,
   data: state.instagramAds.data,
+  mainBusiness: state.account.mainBusiness,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -167,6 +167,7 @@ class RepeatCampaignBudget extends Component {
         source_action: "a_handle_budget",
         custom_budget: false,
         campaign_budget: rawValue,
+        businessid: this.props.mainBusiness.businessid,
       });
       !this.state.prevCampaignIsInstagram
         ? this._calcSnapReach(this.state.repeatingCampaginData, rawValue)
@@ -182,6 +183,7 @@ class RepeatCampaignBudget extends Component {
               validateWrapper("Budget", rawValue) + " $" + this.props.campaign
                 ? this.props.campaign && this.props.campaign.minValueBudget
                 : "error",
+            businessid: this.props.mainBusiness.businessid,
           });
         }
         let repeatingCampaginData = this.state.repeatingCampaginData;
@@ -207,6 +209,7 @@ class RepeatCampaignBudget extends Component {
         source_action: "a_handle_budget",
         custom_budget: true,
         campaign_budget: rawValue,
+        businessid: this.props.mainBusiness.businessid,
       });
 
       this.setState({

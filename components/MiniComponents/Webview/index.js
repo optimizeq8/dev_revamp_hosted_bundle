@@ -4,14 +4,30 @@ import WebView from "react-native-webview";
 import analytics from "@segment/analytics-react-native";
 import CustomHeader from "../Header";
 import { Container } from "native-base";
+import CookieManager from "@react-native-cookies/cookies";
 import SafeAreaView from "react-native-safe-area-view";
-
+import { connect } from "react-redux";
+import { getUserAgent } from "react-native-device-info";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";
 import styles from "./styles";
 import Loading from "../LoadingScreen";
-export default class index extends Component {
+const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking");
+
+class index extends Component {
+  state = {
+    // userAgent: "",
+  };
   componentDidMount() {
+    // getUserAgent().then((userAgent) => {
+    //   this.setState({
+    //     userAgent,
+    //   });
+    // });
+    CookieManager.clearAll().then((val) =>
+      console.log("webviewCookieManager", val)
+    );
+    RCTNetworking.clearCookies(() => true);
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState
@@ -24,6 +40,7 @@ export default class index extends Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     AppState.addEventListener("change", this._handleAppStateChange);
@@ -45,7 +62,7 @@ export default class index extends Component {
   render() {
     let url = this.props.navigation.getParam("url", "");
     let title = this.props.navigation.getParam("title", "");
-
+    // console.log("userAgent", this.state.userAgent);
     return (
       <SafeAreaView
         // style={styles.mainSafeArea}
@@ -78,8 +95,33 @@ export default class index extends Component {
             scrollEnabled={false}
             // padder
           > */}
+
           <WebView
+            userAgent={
+              url.includes("facebooklogin/login.php") &&
+              Platform.OS === "android"
+                ? "Mozilla/5.0 (Windows Mobile; Opera Mini/5.1.21594/28.2725; U; en) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.149 Mobile Safari/537.36"
+                : // "Mozilla/5.0 (Windows Mobile; Opera Mini/5.1.21594/28.2725; U; en) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.149 Mobile Safari/537.36"
+                  //   this.state.f
+                  //Mozilla/5.0 (Linux; Android 9; Android SDK built for x86 Build/PSR1.180720.093; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/69.0.3497.100 Mobile Safari/537.36
+                  // Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19
+                  ""
+            }
             // startInLoadingState={true}
+            onLoadStart={() => {
+              RCTNetworking.clearCookies(() => true);
+            }}
+            onError={(error) => {
+              console.log("error loading url", error);
+              analytics.track("a_error", {
+                source: "web_view",
+                source_action: this.props.navigation.getParam(
+                  "source_action",
+                  this.props.screenProps.prevAppState
+                ),
+                url,
+              });
+            }}
             onLoad={() => this.hideLoader()}
             androidHardwareAccelerationDisabled={true}
             // renderLoading={() => (
@@ -92,8 +134,15 @@ export default class index extends Component {
             ref={(ref) => (this.webview = ref)}
             source={{ uri: url }}
             cacheEnabled={false}
-            incognito={true}
+            sharedCookiesEnabled={false}
+            // incognito={Platform.OS === "android"}
             onNavigationStateChange={(navState) => {
+              //   console.log("navState.url", navState.url);
+              if (navState.url.includes("choosepage.php")) {
+                CookieManager.clearAll(true).then((val) => {
+                  console.log("onNavigationStateChangeclearAll", val);
+                });
+              }
               if (
                 Platform.OS === "ios" &&
                 (this.state.appState === "background" ||
@@ -132,3 +181,9 @@ export default class index extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  mainBusiness: state.account.mainBusiness,
+});
+
+export default connect(mapStateToProps, null)(index);

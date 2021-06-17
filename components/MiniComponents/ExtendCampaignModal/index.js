@@ -20,44 +20,27 @@ import LowerButton from "../LowerButton";
 class ExtendCampaignModal extends Component {
   state = {
     start_time: "",
-    end_time: "",
+    end_time: new Date(),
     showDatePicker: false,
     showBudgetSelector: false,
     duration: 7,
     switchComponent: false,
   };
+  ad_status = this.props.campaign.ad_status;
   componentDidMount() {
     if (this.props.campaign) {
-      let end_time = new Date(this.props.campaign.end_time.split("T")[0]);
-      end_time.setDate(end_time.getDate() + this.state.duration - 1);
+      let endDateCondition =
+        this.ad_status === "Campaign ended"
+          ? new Date().toISOString().split("T")[0]
+          : this.props.campaign.end_time.split("T")[0];
+      let end_time = new Date(endDateCondition);
+      end_time.setDate(end_time.getDate() + this.state.duration);
       this.setState({
         end_time: end_time.toISOString().split("T")[0],
       });
     }
   }
 
-  handleDuration = (subtract = false, onePress = false, time = 1) => {
-    let minimumDuration = 3;
-    let duration = subtract
-      ? this.state.duration - 1 > minimumDuration
-        ? this.state.duration - 1
-        : minimumDuration
-      : this.state.duration + 1;
-
-    let end_time = new Date(this.state.start_time.split("T")[0]);
-    end_time.setDate(end_time.getDate() + duration - 1);
-    this.setState({
-      end_time: end_time.toISOString().split("T")[0],
-      duration,
-    });
-
-    if (!onePress) {
-      this.timer = setTimeout(
-        () => this.handleDuration(subtract, null, time + 1),
-        time > 10 ? 50 : 150 //to increase the speed when pressing for a longer time
-      );
-    }
-  };
   stopTimer = () => {
     if (this.timer) clearTimeout(this.timer);
   };
@@ -68,6 +51,7 @@ class ExtendCampaignModal extends Component {
       source_action: "a_toggle_date_modal",
       visible: value,
       campaign_channel: this.props.campaign.channel,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({ switchComponent: value });
   };
@@ -88,19 +72,24 @@ class ExtendCampaignModal extends Component {
   };
   handleDuration = (subtract = false, onePress = false, time = 1) => {
     let duration = subtract ? this.state.duration - 1 : this.state.duration + 1;
+    if (duration > 0) {
+      let endDateCondition =
+        this.ad_status === "Campaign ended"
+          ? new Date().toISOString().split("T")[0]
+          : this.props.campaign.end_time.split("T")[0];
+      let end_time = new Date(endDateCondition);
+      end_time.setDate(end_time.getDate() + duration);
+      this.setState({
+        end_time: end_time.toISOString().split("T")[0],
+        duration,
+      });
 
-    let end_time = new Date(this.props.campaign.end_time.split("T")[0]);
-    end_time.setDate(end_time.getDate() + (duration - 1));
-    this.setState({
-      end_time: end_time.toISOString().split("T")[0],
-      duration,
-    });
-
-    if (!onePress) {
-      this.timer = setTimeout(
-        () => this.handleDuration(subtract, null, time + 1),
-        time > 10 ? 50 : 150 //to increase the speed when pressing for a longer time
-      );
+      if (!onePress) {
+        this.timer = setTimeout(
+          () => this.handleDuration(subtract, null, time + 1),
+          time > 10 ? 50 : 150 //to increase the speed when pressing for a longer time
+        );
+      }
     }
   };
   stopTimer = () => {
@@ -109,11 +98,13 @@ class ExtendCampaignModal extends Component {
   render() {
     let {
       showRepeatModal = true,
-      screenProps,
       handleExtendModal,
       campaign,
+      screenProps,
     } = this.props;
     let { switchComponent } = this.state;
+    let { translate } = screenProps;
+    let newEndDate = new Date(this.state.end_time);
     return (
       <Modal
         visible={showRepeatModal}
@@ -150,7 +141,12 @@ class ExtendCampaignModal extends Component {
               <View
                 style={[
                   styles.datePickerContainer,
-                  { top: RFValue(!switchComponent ? 330 : 250, 414) },
+                  {
+                    top: RFValue(
+                      !switchComponent ? heightPercentageToDP(40) : 250,
+                      414
+                    ),
+                  },
                 ]}
               >
                 <CustomHeader
@@ -181,13 +177,31 @@ class ExtendCampaignModal extends Component {
                     }
                   >
                     <View style={styles.dateContainer}>
-                      <Text style={styles.titleStyle}>{"End date"}:</Text>
+                      <Text style={[styles.titleStyle]}>
+                        {translate("New end date")}:
+                      </Text>
                       <Text style={[styles.titleStyle, styles.dateStyle]}>
-                        {"  " + campaign.end_time.split("T")[0]}
+                        {"  " + newEndDate.toISOString().split("T")[0]}
+                      </Text>
+                    </View>
+                    <View style={styles.dateContainer}>
+                      <Text style={[styles.titleStyle, { fontSize: 12 }]}>
+                        {translate("Previous end date")}:
+                      </Text>
+                      <Text
+                        style={[
+                          styles.titleStyle,
+                          styles.dateStyle,
+                          { fontSize: 12 },
+                        ]}
+                      >
+                        {campaign.end_time.split("T")[0]}
                       </Text>
                     </View>
                     <Text style={[styles.descStyle]}>
-                      Choose how many days you want to extend the campaign by
+                      {translate(
+                        "Choose how many days you want to extend the campaign by"
+                      )}
                     </Text>
                     <View style={{ flexDirection: "row" }}>
                       <CampaignDuration
@@ -195,7 +209,7 @@ class ExtendCampaignModal extends Component {
                         stopTimer={this.stopTimer}
                         handleDuration={this.handleDuration}
                         duration={this.state.duration}
-                        disabled={this.state.duration === 3}
+                        disabled={this.state.duration === 1}
                         customContainerStyle={
                           styles.campaignDurationContainerStyle
                         }
@@ -239,6 +253,7 @@ class ExtendCampaignModal extends Component {
 const mapStateToProps = (state) => ({
   extendCampaignLoading: state.campaignC.extendCampaignLoading,
   extendInstaCampaignLoading: state.instagramAds.extendInstaCampaignLoading,
+  mainBusiness: state.account.mainBusiness,
 });
 const mapDispatchToProps = (dispatch) => ({
   extendSnapCampagin: (campaignInfo, handleSwitch) =>

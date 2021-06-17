@@ -128,15 +128,17 @@ class UseWallet extends Component {
                     </Text>
                     <Text style={styles.walletInfo}>
                       {translate("Amount taken from wallet:")}{" "}
-                      {this.props.wallet_amount_applied}
+                      {parseFloat(this.props.wallet_amount_applied).toFixed(2)}
                     </Text>
                     <Text style={styles.walletInfo}>
                       {translate("New Wallet Balance:")}{" "}
-                      {this.props.wallet_balance_amount}
+                      {parseFloat(this.props.wallet_balance_amount).toFixed(2)}
                     </Text>
                     <Text style={styles.walletInfo}>
-                      {translate("New Budget Total:")}{" "}
-                      {this.props.campaign_balance_amount}
+                      {translate("Amount to be paid:")}{" "}
+                      {parseFloat(this.props.campaign_balance_amount).toFixed(
+                        2
+                      )}
                     </Text>
                     <GradientButton
                       onPressAction={() => this._handleConfirm()}

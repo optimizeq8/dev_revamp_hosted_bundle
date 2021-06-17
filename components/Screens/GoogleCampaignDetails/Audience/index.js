@@ -96,6 +96,7 @@ class GoogleAdTargetting extends Component {
     analytics.track(`a_go_back`, {
       source: "ad_targeting",
       source_action: "a_go_back",
+      businessid: this.props.mainBusiness.businessid,
     });
     this.props.navigation.goBack();
     return true;
@@ -348,6 +349,7 @@ class GoogleAdTargetting extends Component {
       source_action,
       campaign_channel: "google",
       campaign_ad_type: "GoogleSEAd",
+      businessid: this.props.mainBusiness.businessid,
     });
   };
   render() {

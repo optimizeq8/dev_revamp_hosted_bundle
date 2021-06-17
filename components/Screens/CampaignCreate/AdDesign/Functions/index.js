@@ -221,7 +221,13 @@ export const formatMedia = (
     //need to send as 1 whenever the user downloads media from different device
     fileReadyToUpload ? 0 : 1
   );
-
+  body.append("existing_media", campaignInfo.existing_media);
+  if (campaignInfo.existing_media) {
+    let resVideo = media.split("/");
+    resVideo = resVideo[resVideo.length - 1];
+    body.append("media", resVideo);
+    body.append("media_type", type);
+  }
   if (allIosVideos && Platform.OS === "ios" && adType === "StoryAd") {
     let mediaLink = cardUrl.split("/");
     mediaLink = mediaLink[mediaLink.length - 1];
@@ -242,7 +248,8 @@ export const _changeDestination = (
   setStoryAdAttachment,
   campaignInfo,
   save_campaign_info,
-  setTheState
+  setTheState,
+  mainBusiness
 ) => {
   let newData = {};
   if (adType === "StoryAd") {
@@ -255,6 +262,7 @@ export const _changeDestination = (
       campaign_attachment: attachment,
       campaign_swipe_up_CTA: call_to_action,
       campaign_swipe_up_destination: destination,
+      businessid: mainBusiness && mainBusiness.businessid,
     });
     if (whatsAppCampaign) {
       !store.getState().dashboard.rejCampaign
@@ -305,6 +313,7 @@ export const _changeDestination = (
       },
       campaign_swipe_up_CTA: call_to_action,
       campaign_swipe_up_destination: destination,
+      businessid: mainBusiness && mainBusiness.businessid,
     });
     setTheState(newData);
 
@@ -346,6 +355,7 @@ export const _changeDestination = (
       campaign_swipe_up_CTA: call_to_action,
       campaign_swipe_up_destination: destination,
       campaign_app_choice: appChoice,
+      businessid: mainBusiness && mainBusiness.businessid,
     });
     if (whatsAppCampaign) {
       newData = {

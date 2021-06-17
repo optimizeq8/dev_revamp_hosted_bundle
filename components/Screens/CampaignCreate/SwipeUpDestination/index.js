@@ -68,6 +68,7 @@ class SwipeUpDestination extends Component {
       source_action,
       campaign_channel: "snapchat",
       campaign_ad_type,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     let storyAdAttachment = this.props.storyAdAttachment;
     this.setState({
@@ -97,6 +98,7 @@ class SwipeUpDestination extends Component {
     analytics.track(`a_toggle_side_menu`, {
       source: "ad_swipe_up_destination",
       source_action: "a_toggle_side_menu",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       sidemenustate: false,
@@ -118,6 +120,8 @@ class SwipeUpDestination extends Component {
             ? this.props.data.objective
             : this.props.navigation.getParam("objective", "objective"),
           campaign_ad_type: this.props.navigation.getParam("adType", "SnapAd"),
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
       }
     );
@@ -135,6 +139,8 @@ class SwipeUpDestination extends Component {
             "objective",
             "objective"
           ),
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
       });
     else {
@@ -149,6 +155,8 @@ class SwipeUpDestination extends Component {
             "objective",
             "objective"
           ),
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
       else
         analytics.track(`ad_swipe_up_destination`, {
@@ -161,6 +169,8 @@ class SwipeUpDestination extends Component {
             "objective",
             "objective"
           ),
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
     }
   };
@@ -315,6 +325,7 @@ const mapStateToProps = (state) => ({
   adType: state.campaignC.adType,
   storyAdAttachment: state.campaignC.storyAdAttachment,
   rejCampaign: state.dashboard.rejCampaign,
+  mainBusiness: state.account.mainBusiness,
 });
 
 const mapDispatchToProps = (dispatch) => ({});

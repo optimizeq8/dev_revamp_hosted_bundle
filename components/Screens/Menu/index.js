@@ -418,7 +418,7 @@ class Menu extends Component {
                 }
               >
                 <Icon
-                  name="file-document-box"
+                  name="file"
                   type="MaterialCommunityIcons"
                   style={[
                     styles.icons,
@@ -456,6 +456,7 @@ class Menu extends Component {
                   analytics.track(`a_logout`, {
                     source: "open_hamburger",
                     source_action: "a_logout",
+                    businessid: this.props.mainBusiness.businessid,
                   });
                   this.props.clearPushToken(
                     this.props.navigation,
@@ -471,7 +472,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text selectable style={styles.version}>
                 {translate("Version:")}
-                {Constants.nativeAppVersion}/390/
+                {Constants.nativeAppVersion}/416/
                 {Constants.nativeBuildVersion}
               </Text>
             </ScrollView>

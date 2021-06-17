@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import { RFValue } from "react-native-responsive-fontsize";
+import { globalColors } from "../../../GlobalStyles";
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
@@ -32,6 +33,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // paddingHorizontal: 26,
     marginVertical: RFValue(7.5, 414),
+  },
+  changeInstagramPageText: {
+    textAlign: "center",
+    color: globalColors.white,
+    fontSize: RFValue(7, 414),
+    paddingBottom: RFValue(10, 414),
+    fontFamily: "montserrat-bold",
+    textDecorationLine: "underline",
   },
 });
 

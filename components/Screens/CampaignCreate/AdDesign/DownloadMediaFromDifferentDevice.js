@@ -318,29 +318,26 @@ class DownloadMediaFromDifferentDevice extends Component {
         onDismiss={() => this.props.setDownloadMediaModal(false)}
         visible={this.props.downloadMediaModal}
       >
-        <BlurView intensity={95} tint="dark">
-          <SafeAreaView forceInset={{ bottom: "never", top: "always" }}>
-            <View style={styles.popupOverlay}>
-              <CustomHeader
-                screenProps={this.props.screenProps}
-                closeButton={true}
-                actionButton={() => {
-                  this.props.setDownloadMediaModal(false);
-                }}
-                segment={{
-                  source: "download_media_modal",
-                  source_action: "a_go_back",
-                }}
-                title={"DOWNLOAD MEDIA"}
-              />
-              {this.props.webUploadLinkMediaLoading ? (
-                <LoadingScreen top={50} />
-              ) : (
-                screen
-              )}
-            </View>
-          </SafeAreaView>
-        </BlurView>
+        <View style={[styles.popupOverlay, { backgroundColor: "#0009" }]}>
+          <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
+          <CustomHeader
+            screenProps={this.props.screenProps}
+            closeButton={true}
+            actionButton={() => {
+              this.props.setDownloadMediaModal(false);
+            }}
+            segment={{
+              source: "download_media_modal",
+              source_action: "a_go_back",
+            }}
+            title={"DOWNLOAD MEDIA"}
+          />
+          {this.props.webUploadLinkMediaLoading ? (
+            <LoadingScreen top={50} />
+          ) : (
+            screen
+          )}
+        </View>
       </Modal>
     );
   }

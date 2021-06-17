@@ -57,6 +57,8 @@ class SwitchLanguage extends Component {
               // source_action: "", Not sure what will come here
               timestamp: new Date().getTime(),
               device_id,
+              businessid:
+                this.props.mainBusiness && this.props.mainBusiness.businessid,
               // country: "",
             });
             analytics.track("app_language", {
@@ -66,6 +68,8 @@ class SwitchLanguage extends Component {
               // source_action: "", // Not sure what will come here ??
               timestamp: new Date().getTime(),
               anonymous_userId,
+              businessid:
+                this.props.mainBusiness && this.props.mainBusiness.businessid,
             });
             this.setState({
               languageOpened: false,
@@ -79,6 +83,8 @@ class SwitchLanguage extends Component {
             timestamp: new Date().getTime(),
             anonymous_userId,
             device_id,
+            businessid:
+              this.props.mainBusiness && this.props.mainBusiness.businessid,
             // county: "",
             // locations: //,
           });
@@ -94,6 +100,8 @@ class SwitchLanguage extends Component {
             // source_action: "", // Not sure what will come here ??
             timestamp: new Date().getTime(),
             anonymous_userId,
+            businessid:
+              this.props.mainBusiness && this.props.mainBusiness.businessid,
           });
           this.setState({
             languageOpened: false,
@@ -117,6 +125,7 @@ class SwitchLanguage extends Component {
       source_action: `a_change_language`,
       anonymous_userId: this.props.screenProps.anonymous_userId,
       device_id: this.props.screenProps.device_id,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       language,
@@ -142,6 +151,8 @@ class SwitchLanguage extends Component {
         timestamp: new Date().getTime(),
         anonymous_userId,
         device_id,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
         // county: "",
         // locations: //,
       });
@@ -262,7 +273,9 @@ class SwitchLanguage extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  mainBusiness: state.account.mainBusiness,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   getLanguageListPOEdit: (language) =>

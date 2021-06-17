@@ -1,6 +1,6 @@
 //Components
 import React, { Component } from "react";
-import * as Notifications from "expo-notifications";
+import { Notifications as RNNotifications } from "react-native-notifications";
 import { LinearGradient } from "expo-linear-gradient";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
@@ -25,11 +25,11 @@ import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProg
 import MediaModal from "./MediaModal";
 import UploadMediaFromDifferentDevice from "./UploadMediaFromDifferentDevice";
 import DownloadMediaFromDifferentDevice from "./DownloadMediaFromDifferentDevice";
+import ExistingMediaModal from "./ExistingMediaModal";
 import StoryAdCards from "./SnapAdCards/StoryAdCards";
 import * as IntentLauncher from "expo-intent-launcher";
 const preview = {
-  uri:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+  uri: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
 };
 //Redux
 import { connect } from "react-redux";
@@ -90,6 +90,7 @@ class AdDesign extends Component {
         destination: "BLANK",
         call_to_action: { label: "BLANK", value: "BLANK" },
         attachment: "BLANK",
+        existing_media: 0,
       },
       storyAdCards: {
         storyAdSelected: false,
@@ -127,6 +128,7 @@ class AdDesign extends Component {
       uploadMediaDifferentDeviceModal: false,
       uploadMediaNotification: {},
       downloadMediaModal: false,
+      existingMediaModal: false,
       serialization: {},
       uneditedImageUri: "//",
       showExampleModal: false,
@@ -156,9 +158,12 @@ class AdDesign extends Component {
   }
   async componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.toggleAdSelection);
-    this._notificationSubscription = Notifications.addNotificationReceivedListener(
-      this._handleNotification
-    );
+    this._notificationSubscription =
+      RNNotifications.events().registerNotificationOpened(
+        (notification, completion, action) => {
+          this._handleNotification(notification);
+        }
+      );
 
     this.setState({
       campaignInfo: {
@@ -330,7 +335,8 @@ class AdDesign extends Component {
               this.props.setStoryAdAttachment,
               this.state.campaignInfo,
               this.props.save_campaign_info,
-              this.setTheState
+              this.setTheState,
+              this.props.mainBusiness
             );
           } else if (weburl && weburl !== "") {
             _changeDestination(
@@ -352,7 +358,8 @@ class AdDesign extends Component {
               this.props.setStoryAdAttachment,
               this.state.campaignInfo,
               this.props.save_campaign_info,
-              this.setTheState
+              this.setTheState,
+              this.props.mainBusiness
             );
           }
         }
@@ -373,7 +380,8 @@ class AdDesign extends Component {
             this.props.setStoryAdAttachment,
             this.state.campaignInfo,
             this.props.save_campaign_info,
-            this.setTheState
+            this.setTheState,
+            this.props.mainBusiness
           );
         }
         if (
@@ -409,8 +417,8 @@ class AdDesign extends Component {
                   ? this.props.mainBusiness.playstorelink.app_name
                   : "",
               ios_app_id: this.props.mainBusiness.appstorelink.ios_app_id,
-              android_app_url: this.props.mainBusiness.playstorelink
-                .android_app_url,
+              android_app_url:
+                this.props.mainBusiness.playstorelink.android_app_url,
               icon_media_id:
                 this.props.mainBusiness.appstorelink.icon_media_url !== ""
                   ? this.props.mainBusiness.appstorelink.icon_media_url
@@ -436,7 +444,8 @@ class AdDesign extends Component {
             this.props.setStoryAdAttachment,
             this.state.campaignInfo,
             this.props.save_campaign_info,
-            this.setTheState
+            this.setTheState,
+            this.props.mainBusiness
           );
         }
       }
@@ -551,6 +560,12 @@ class AdDesign extends Component {
   };
 
   setMediaModalVisible = (visible) => {
+    analytics.track(`a_media_options_modal`, {
+      visible: visible,
+      source: "a_media_options_modal",
+      source_action: "ad_design",
+      businessid: this.props.mainBusiness.businessid,
+    });
     this.setState({ mediaModalVisible: visible });
   };
 
@@ -574,6 +589,7 @@ class AdDesign extends Component {
       timestamp: new Date().getTime(),
       campaign_ad_type: this.props.adType,
       campaign_channel: "snapchat",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     !this.rejected &&
       this.props.save_campaign_info({
@@ -600,6 +616,7 @@ class AdDesign extends Component {
       timestamp: new Date().getTime(),
       campaign_ad_type: this.props.adType,
       campaign_channel: "snapchat",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     !this.rejected &&
       this.props.save_campaign_info({ headline: headline.replace("@", "") });
@@ -622,7 +639,8 @@ class AdDesign extends Component {
       this.statisticsCallback,
       this.selectedCampaign.hasOwnProperty("story_creatives")
         ? this.props.rejCampaign.story_creatives
-        : []
+        : [],
+      this.props.mainBusiness
     );
 
   _getUploadState = (loading) => {
@@ -659,6 +677,8 @@ class AdDesign extends Component {
         action_status: "success",
         campaign_channel: "snapchat",
         campaign_ad_type: this.adType,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.props.navigation.push(
         this.adType === "StoryAd" ? "StoryAdDesignReview" : "AdDesignReview",
@@ -921,7 +941,7 @@ class AdDesign extends Component {
       analytics.track(`a_error_form`, {
         source: "ad_design",
         source_action: "a_submit_ad_design",
-        campaign_id: this.selectedCampaign.campaign_id,
+        campaignId: this.selectedCampaign.campaign_id,
         error_description:
           this.state.brand_nameError ||
           this.state.headlineError ||
@@ -965,7 +985,9 @@ class AdDesign extends Component {
           error_description: "Please crop the image to the right dimensions",
           campaign_channel: "snapchat",
           campaign_ad_type: this.adType,
-          campaign_id: this.selectedCampaign.campaign_id,
+          campaignId: this.selectedCampaign.campaign_id,
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         showMessage({
           message: "Please crop the image to the right dimensions",
@@ -990,6 +1012,7 @@ class AdDesign extends Component {
           campaign_media_type: this.state.type,
           campaign_appChoice: this.state.appChoice,
           campaign_savedObjective: this.selectedCampaign.savedObjective,
+          campaign_existing_media: this.state.campaignInfo.existing_media,
         };
 
         if (!this.props.loading) {
@@ -1070,6 +1093,12 @@ class AdDesign extends Component {
   };
 
   setUploadFromDifferentDeviceModal = (val) => {
+    analytics.track(`a_upload_media_from_different_device_modal`, {
+      visible: val,
+      source: "a_upload_media_from_different_device_modal",
+      source_action: "ad_design",
+      businessid: this.props.mainBusiness.businessid,
+    });
     this.setState({
       uploadMediaDifferentDeviceModal: val,
     });
@@ -1084,6 +1113,12 @@ class AdDesign extends Component {
     this.setMediaModalVisible(false);
   };
   setDownloadMediaModal = (val) => {
+    analytics.track(`a_download_media_from_different_device_modal`, {
+      visible: val,
+      source: "a_download_media_from_different_device_modal",
+      source_action: "ad_design",
+      businessid: this.props.mainBusiness.businessid,
+    });
     this.setState({
       downloadMediaModal: val,
     });
@@ -1182,7 +1217,8 @@ class AdDesign extends Component {
       timestamp: new Date().getTime(),
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
-      campaign_id: this.selectedCampaign.campaign_id,
+      campaignId: this.selectedCampaign.campaign_id,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.props.navigation.push("WebView", {
@@ -1252,7 +1288,7 @@ class AdDesign extends Component {
       campaign_name: this.rejected
         ? this.selectedCampaign.name
         : this.props.data.name,
-      campaign_id: this.rejected
+      campaignId: this.rejected
         ? this.selectedCampaign.campaign_id
         : this.props.data.campaign_id,
       campaign_objective: this.rejected
@@ -1281,6 +1317,7 @@ class AdDesign extends Component {
       campaign_collectionAdLinkForm: this.rejected
         ? this.selectedCampaign.campaign_collectionAdLinkForm
         : this.props.data.campaign_collectionAdLinkForm,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     AsyncStorage.getItem("AdDesignTutorialOpened").then((value) => {
       if (!value && this.props.campaignList.length === 0) {
@@ -1315,6 +1352,51 @@ class AdDesign extends Component {
     });
     RNFFmpeg.cancel();
   };
+  setExistingMediaModal = (val) => {
+    analytics.track(`a_existing_media_modal`, {
+      visible: val,
+      source: "a_existing_media_modal",
+      source_action: "ad_design",
+      businessid: this.props.mainBusiness.businessid,
+    });
+    this.setState(
+      {
+        mediaModalVisible: false,
+      },
+      () => {
+        this.setState({
+          existingMediaModal: val,
+        });
+      }
+    );
+  };
+  setExistingMediaUrl = (item) => {
+    let { media, media_url, media_type } = item;
+
+    analytics.track(`a_set_existing_media`, {
+      source: "a_set_existing_media",
+      source_action: "ad_design",
+      media: media_url,
+      type: media_type,
+      businessid: this.props.mainBusiness.businessid,
+    });
+    this.setState({
+      media: media_url,
+      type: media_type,
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        existing_media: 1,
+      },
+      existingMediaModal: false,
+    });
+
+    !this.rejected &&
+      this.props.save_campaign_info({
+        media: media_url,
+        type: media_type,
+        existing_media: 1,
+      });
+  };
   render() {
     let {
       media,
@@ -1340,13 +1422,8 @@ class AdDesign extends Component {
           : this.props.storyAdsArray.filter((ad) => ad.media !== "//")
         : 3;
 
-    let {
-      brand_name,
-      headline,
-      destination,
-      attachment,
-      call_to_action,
-    } = this.state.campaignInfo;
+    let { brand_name, headline, destination, attachment, call_to_action } =
+      this.state.campaignInfo;
 
     let inputFields = [
       {
@@ -1586,7 +1663,8 @@ class AdDesign extends Component {
                           this.props.setStoryAdAttachment,
                           this.state.campaignInfo,
                           this.props.save_campaign_info,
-                          this.setTheState
+                          this.setTheState,
+                          this.props.mainBusiness
                         )
                       }
                       navigation={this.props.navigation}
@@ -1796,6 +1874,8 @@ class AdDesign extends Component {
           }
           getWebUploadLinkMedia={this.getWebUploadLinkMediaURL}
           setDownloadMediaModal={this.setDownloadMediaModal}
+          setExistingMediaModal={this.setExistingMediaModal}
+          getExistingMediaSnapchatList={this.props.getExistingMediaSnapchatList}
           mediaUri={{
             media: storyAdCards.storyAdSelected
               ? storyAdCards.selectedStoryAd.uneditedImageUri
@@ -1814,6 +1894,9 @@ class AdDesign extends Component {
           }
           screenProps={this.props.screenProps}
           rejected={this.rejected}
+          snapad={this.props.snapad}
+          snapcollectionad={this.props.snapcollectionad}
+          snapstoryad={this.props.snapstoryad}
         />
         <UploadMediaFromDifferentDevice
           setUploadFromDifferentDeviceModal={
@@ -1840,6 +1923,17 @@ class AdDesign extends Component {
           handleDownloadMediaCollectionAds={
             this.handleDownloadMediaCollectionAds
           }
+        />
+        <ExistingMediaModal
+          screenProps={this.props.screenProps}
+          existingMediaModal={this.state.existingMediaModal}
+          setExistingMediaModal={this.setExistingMediaModal}
+          snapchatExistingMediaList={this.props.snapchatExistingMediaList}
+          snapchatExistingMediaListLoading={
+            this.props.snapchatExistingMediaListLoading
+          }
+          setExistingMediaUrl={this.setExistingMediaUrl}
+          existing_media_url={this.props.data ? this.props.data.media : ""}
         />
         <ExampleModal
           title={""}
@@ -1892,6 +1986,12 @@ const mapStateToProps = (state) => ({
   ad_tutorial_link: state.generic.ad_tutorial_link,
   ad_tutorial_media_type: state.generic.ad_tutorial_media_type,
   campaignList: state.dashboard.campaignList,
+  snapad: state.dashboard.snapad,
+  snapcollectionad: state.dashboard.snapcollectionad,
+  snapstoryad: state.dashboard.snapstoryad,
+  snapchatExistingMediaList: state.campaignC.snapchatExistingMediaList,
+  snapchatExistingMediaListLoading:
+    state.campaignC.snapchatExistingMediaListLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1958,6 +2058,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
   verifyDestinationUrl: (url, submit, translate) =>
     dispatch(actionCreators.verifyDestinationUrl(url, submit, translate)),
+  getExistingMediaSnapchatList: (adType) =>
+    dispatch(actionCreators.getExistingMediaSnapchatList(adType)),
 });
 
 const StepNumberComponent = ({

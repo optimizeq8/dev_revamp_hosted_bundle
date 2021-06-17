@@ -10,8 +10,26 @@ import MediaOptions from "./MediaOptions";
 import styles from "../../styles/mediaModal.styles";
 
 export default class MediaModal extends Component {
+  modifyOptionArr = () => {
+    let optionsArr = ["Media"];
+
+    let { instafeedad, adType } = this.props;
+    switch (adType) {
+      case "InstagramFeedAd":
+        if (instafeedad.length > 0) {
+          optionsArr.splice(0, 0, "Media Library");
+        }
+        break;
+      default:
+        optionsArr;
+    }
+    return optionsArr;
+  };
   render() {
-    var options = ["Media"].map((op) => {
+    let { mediaUri, media_type, adType } = this.props;
+    let { media } = mediaUri;
+    let optionArr = this.modifyOptionArr();
+    var options = optionArr.map((op) => {
       return (
         <MediaOptions
           getVideoUploadUrl={this.props.getVideoUploadUrl}
@@ -26,11 +44,14 @@ export default class MediaModal extends Component {
           setDownloadMediaModal={this.props.setDownloadMediaModal}
           screenProps={this.props.screenProps}
           media_type={media_type}
+          setExistingMediaModal={this.props.setExistingMediaModal}
+          getExistingMediaInstagramList={
+            this.props.getExistingMediaInstagramList
+          }
+          adType={adType}
         />
       );
     });
-    let { mediaUri, media_type } = this.props;
-    let { media } = mediaUri;
 
     return (
       <Modal

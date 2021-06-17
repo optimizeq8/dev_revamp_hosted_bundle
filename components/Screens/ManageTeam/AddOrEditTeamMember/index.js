@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { View, Alert, Text, ScrollView, TouchableOpacity } from "react-native";
+import {
+  BackHandler,
+  View,
+  Alert,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
 
@@ -46,7 +53,15 @@ class AddOrEditTeamMember extends Component {
         userRole: parseInt(teamMeber.user_role),
       });
     }
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  handleBackPress = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
 
   /**
    * Gets passed to a child component so that the parent's sate can
@@ -89,6 +104,7 @@ class AddOrEditTeamMember extends Component {
       source_action: "a_change_team_member_role",
       timestamp: new Date().getTime(),
       user_role: userRole === this.state.userRole ? 0 : userRole,
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({
       //if none of the switches are selected then set the state to 0
@@ -218,6 +234,7 @@ class AddOrEditTeamMember extends Component {
       timestamp: new Date().getTime(),
       new_team_member: this.props.navigation.getParam("editTeamMember", false),
       ...teamMeber,
+      businessid: this.props.mainBusiness.businessid,
     });
   };
 

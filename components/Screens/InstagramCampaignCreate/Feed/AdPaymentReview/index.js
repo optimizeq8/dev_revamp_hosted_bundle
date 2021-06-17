@@ -185,6 +185,7 @@ class InstagramAdPaymentReview extends Component {
       source_action,
       timestamp: new Date().getTime(),
       ...segmentInfo,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.saveCampaignSteps([
       "Dashboard",
@@ -541,7 +542,7 @@ class InstagramAdPaymentReview extends Component {
                   <View style={styles.kdAmountContainer}>
                     <Text style={[styles.money, styles.kdText]}>KD{}</Text>
                     <Text style={[styles.money, styles.kdAmountText]}>
-                      {this.props.kdamount}
+                      {parseFloat(this.props.kdamount).toFixed(3)}
                     </Text>
                   </View>
 
@@ -600,7 +601,9 @@ class InstagramAdPaymentReview extends Component {
                       source: "ad_review",
                       source_action: "a_submit_ad_review",
                       action_status: "success",
-
+                      businessid:
+                        this.props.mainBusiness &&
+                        this.props.mainBusiness.businessid,
                       ...segmentInfo,
                     });
 

@@ -260,6 +260,7 @@ class GoogleAdDesign extends Component {
         ...segmentInfo,
         error_description:
           headline1Error || headline2Error || descriptionError || finalurlError,
+        businessid: this.props.mainBusiness.businessid,
       });
     }
     if (
@@ -360,6 +361,7 @@ class GoogleAdDesign extends Component {
       source: "ad_design",
       source_action: `a_ad_${value}`,
       [campaign_]: this.state[value],
+      businessid: this.props.mainBusiness.businessid,
     });
     this.setState({ [booleanKey]: false });
     this.setState(
@@ -378,6 +380,7 @@ class GoogleAdDesign extends Component {
             error_page: "ad_targeting",
             error_description: this.state[error],
             source_action: `a_ad_${value}`,
+            businessid: this.props.mainBusiness.businessid,
           });
         }
         if (value === "finalurl") this.validatePaths();
@@ -427,6 +430,7 @@ class GoogleAdDesign extends Component {
       source,
       source_action,
       ...segmentInfo,
+      businessid: this.props.mainBusiness.businessid,
     });
 
     if (!this.props.navigation.getParam("rejected", false))
@@ -504,6 +508,7 @@ class GoogleAdDesign extends Component {
       action_status: "success",
       campaign_channel: "google",
       campaign_ad_type: "GoogleSEAd",
+      businessid: this.props.mainBusiness.businessid,
     });
     this.props.navigation.push("GoogleSEAPreviewScreen", {
       campaign: {

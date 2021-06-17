@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, RefreshControl } from "react-native";
+import { Text, View, RefreshControl, BackHandler } from "react-native";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 import { ScrollView, NavigationEvents } from "react-navigation";
@@ -19,7 +19,15 @@ class ManageTeam extends Component {
   translate = this.props.screenProps.translate;
   componentDidMount() {
     this.props.getTeamMembers(this.props.mainBusiness.businessid);
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  handleBackPress = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
   onDidFocus = () => {
     const source = this.props.navigation.getParam(
       "source",
@@ -33,6 +41,7 @@ class ManageTeam extends Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness.businessid,
     });
   };
 
@@ -45,6 +54,7 @@ class ManageTeam extends Component {
       source_action,
       timestamp: new Date().getTime(),
       refresh_type: "members",
+      businessid: this.props.mainBusiness.businessid,
     });
     this.props.getTeamMembers(this.props.mainBusiness.businessid);
   };

@@ -100,6 +100,7 @@ class Wallet extends Component {
         source_action: "a_top_up_wallet",
         action_status: "failure",
         error_description: amountError,
+        businessid: this.props.mainBusiness.businessid,
       });
     }
   };
@@ -110,6 +111,7 @@ class Wallet extends Component {
           source: "open_wallet",
           source_action: "a_open_wallet_top_up_modal",
           timestamp: new Date().getTime(),
+          businessid: this.props.mainBusiness.businessid,
         });
       }
     });
@@ -127,6 +129,7 @@ class Wallet extends Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness.businessid,
     });
   };
   render() {
@@ -385,6 +388,7 @@ const mapStateToProps = (state) => ({
   loading: state.transA.loading,
   walletTransactionList: state.transA.walletTransactionList,
   walletTransactionListLoading: state.transA.walletTransactionListLoading,
+  mainBusiness: state.account.mainBusiness,
 });
 
 const mapDispatchToProps = (dispatch) => ({

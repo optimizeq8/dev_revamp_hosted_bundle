@@ -112,6 +112,7 @@ export const createAudience = (
           action_description: data.message,
           audience_name: audience.name,
           audience_targeting: audience.targeting,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch(getAudienceList());
@@ -134,7 +135,7 @@ export const createAudience = (
  * @param {*} audienceId
  */
 export const deleteAudience = (audienceId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     createBaseUrl()
       .delete(`/snapchatsavedaudience/${audienceId}`)
       .then((res) => res.data)
@@ -145,6 +146,7 @@ export const deleteAudience = (audienceId) => {
           action_status: data.success ? "success" : "failure",
           action_description: data.message,
           audience_id: audienceId,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch(getAudienceList());
@@ -194,6 +196,7 @@ export const updateAudience = (
           audience_id: audienceId,
           audience_name: audienceName,
           audience_targeting: targeting,
+          businessid: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch(getAudienceList());

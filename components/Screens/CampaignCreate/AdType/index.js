@@ -105,6 +105,7 @@ class AdType extends Component {
         device_id: device_id,
         type: Platform.OS,
       },
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     //Check if account is verified or not
     const { fb_connected, fb_ad_account_id } = this.props.mainBusiness;
@@ -227,6 +228,7 @@ class AdType extends Component {
       device_id,
       userId: this.props.userInfo.userid,
       campaign_channel: title,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     analytics.track(`ad_type`, {
       source,
@@ -235,6 +237,7 @@ class AdType extends Component {
       device_id,
       userId: this.props.userInfo.userid,
       campaign_channel: title.toLowerCase(),
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       active: title,
@@ -256,6 +259,7 @@ class AdType extends Component {
       source,
       source_action,
       campaign_channel: this.state.active.toLowerCase(),
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     const changeFbConnectStatus = this.props.navigation.getParam(
       "success",
@@ -546,5 +550,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
   updateBusinessConnectedToFacebook: (data) =>
     dispatch(actionCreators.updateBusinessConnectedToFacebook(data)),
+  getFacebookPagesList: (accessToken, fb_user_id, permissions) =>
+    dispatch(
+      actionCreators.getFacebookPagesList(accessToken, fb_user_id, permissions)
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdType);

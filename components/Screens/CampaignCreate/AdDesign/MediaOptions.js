@@ -13,9 +13,11 @@ import { Icon } from "native-base";
 
 export default class MediaOptions extends Component {
   handleOptionSelect = () => {
-    let { title, rejected, media_type } = this.props;
-
-    if (title === "Upload media from a different device") {
+    let { title, rejected, media_type, adType } = this.props;
+    if (title === "Media Library") {
+      this.props.setExistingMediaModal(true);
+      this.props.getExistingMediaSnapchatList(adType);
+    } else if (title === "Upload media from a different device") {
       this.props.setUploadFromDifferentDeviceModal(true);
       this.props.setMediaModalVisible(false);
     } else if (title === "Download media from a different device") {
@@ -37,11 +39,44 @@ export default class MediaOptions extends Component {
       );
     }
   };
+  descriptionText = () => {
+    let { title } = this.props;
+    const { translate } = this.props.screenProps;
+    let desctext = "";
+    switch (title) {
+      case "Media":
+        desctext = "Dimensions 1080x1920 Aspect Ratio 9:16";
+        break;
+      case "Video":
+        desctext = "Dimensions 1080x1920 Aspect Ratio 9:16";
+        break;
+      case "Upload media from a different device":
+        desctext = "Use any device to upload your media Aspect Ratio 9:16";
+        break;
+      case "Download media from a different device":
+        desctext = "Dimensions 1080x1920 Aspect Ratio 9:16";
+        break;
+      case "Media Library":
+        desctext = "Select an existing media from previously launched campaign";
+        break;
+      default:
+        desctext = "Dimensions 1080x1920 Aspect Ratio 9:16";
+    }
+    return translate(desctext);
+  };
   render() {
     let { title } = this.props;
     const { translate } = this.props.screenProps;
     let imageIcon = null;
-    if (title === "Media") {
+    if (title === "Media Library") {
+      imageIcon = (
+        <CameraIcon
+          width={RFValue(15, 414)}
+          height={RFValue(12.5, 414)}
+          fill={globalColors.orange}
+        />
+      );
+    } else if (title === "Media") {
       imageIcon = (
         <CameraIcon
           width={RFValue(15, 414)}
@@ -97,11 +132,7 @@ export default class MediaOptions extends Component {
         >
           <Text style={styles.MediaOptionsTitle}>{translate(title)}</Text>
           <Text style={[styles.MediaOptionsDescription]}>
-            {title === "Upload media from a different device"
-              ? translate(
-                  "Use any device to upload your media Aspect Ratio 9:16"
-                )
-              : translate("Dimensions 1080x1920 Aspect Ratio 9:16")}
+            {this.descriptionText()}
           </Text>
         </View>
       </TouchableOpacity>

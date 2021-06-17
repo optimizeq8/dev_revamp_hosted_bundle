@@ -14,7 +14,7 @@ import {
   getAnonymousUserId,
 } from "./genericActions";
 import { setCurrentUser, chanege_base_url } from "./loginActions";
-import { send_push_notification } from "./loginActions";
+// import { send_push_notification } from "./loginActions";
 import { connect_user_to_intercom } from "./messengerActions";
 import createBaseUrl from "./createBaseUrl";
 
@@ -165,7 +165,7 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
             payload: false,
           });
           navigation.navigate("RegistrationSuccess");
-          dispatch(send_push_notification());
+          // dispatch(send_push_notification());
           dispatch(getBusinessAccounts());
           // dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
           AsyncStorage.setItem("registeredWithInvite", "true");
@@ -230,7 +230,7 @@ export const verifyMobileCode = (
   verification_channel,
   navigationPath = "Dashboard"
 ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     createBaseUrl()
       .post(`verifyMobileCode`, mobileAuth)
       .then((res) => {
@@ -250,6 +250,9 @@ export const verifyMobileCode = (
             timestamp: new Date().getTime(),
             verification_channel,
             action_status: "failure",
+            businessid:
+              getState().account.mainBusiness &&
+              getState().account.mainBusiness.businessid,
           });
           return dispatch({
             type: actionTypes.VERIFY_MOBILE_NUMBER,
@@ -280,6 +283,9 @@ export const verifyMobileCode = (
             userId: decodedUser.user.userid,
             verification_channel,
             action_status: "success",
+            businessid:
+              getState().account.mainBusiness &&
+              getState().account.mainBusiness.businessid,
           });
           dispatch(setCurrentUser(decodedUser));
         }
@@ -307,6 +313,9 @@ export const verifyMobileCode = (
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
+          businessid:
+            getState().account.mainBusiness &&
+            getState().account.mainBusiness.businessid,
         });
         showMessage({
           message:
@@ -657,7 +666,7 @@ export const registerGuestUser = (
             source: "registration_detail",
             source_action: "a_sign_up",
           });
-          dispatch(send_push_notification());
+          // dispatch(send_push_notification());
           dispatch(getBusinessAccounts());
           // dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
           AsyncStorage.setItem("registeredWithInvite", "true");

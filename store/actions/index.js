@@ -105,6 +105,7 @@ export {
   repeatSnapCampaginBudget,
   extendSnapCampagin,
   extendSnapCampaginBudget,
+  getExistingMediaSnapchatList,
 } from "./campaignActions";
 
 export {
@@ -248,6 +249,9 @@ export {
   extendInstaCampaginBudget,
   geoLocationSearch,
   deleteCustomLocation,
+  getFacebookPagesList,
+  connectToInstagramPage,
+  getExistingMediaInstagramList,
 } from "./instagramCampaignActions";
 
 export {
