@@ -130,8 +130,8 @@ export class InstagramAudience extends Component {
       this.props.audience.targeting.geo_locations.countries.length !== 0
     ) {
       let showRegions = false;
-      let countryRegions = this.props.audience.targeting.geo_locations.countries.map(
-        (cou) => {
+      let countryRegions =
+        this.props.audience.targeting.geo_locations.countries.map((cou) => {
           let foundCountryReg = find(
             country_regions,
             (country) => country.key === cou.value
@@ -139,8 +139,7 @@ export class InstagramAudience extends Component {
           //   showRegions = foundCountryReg.regions.length > 3;
 
           return foundCountryReg;
-        }
-      );
+        });
 
       let locationsInfo = [];
       let markers = [];
@@ -227,7 +226,8 @@ export class InstagramAudience extends Component {
         rep.targeting.geo_locations.custom_locations &&
         rep.targeting.geo_locations.custom_locations.length > 0
       ) {
-        rep.targeting.geo_locations.custom_locations = this.props.customLocations;
+        rep.targeting.geo_locations.custom_locations =
+          this.props.customLocations;
       } else {
         delete rep.targeting.geo_locations.custom_locations;
       }
@@ -349,9 +349,10 @@ export class InstagramAudience extends Component {
         (r) => r === selectedItem
       )
     ) {
-      replace.targeting.demographics[0].languages = replace.targeting.demographics[0].languages.filter(
-        (r) => r !== selectedItem
-      );
+      replace.targeting.demographics[0].languages =
+        replace.targeting.demographics[0].languages.filter(
+          (r) => r !== selectedItem
+        );
       langs = replace.targeting.demographics[0].languages;
       analytics.track(`a_audience_languages`, {
         source: "audience_detail",
@@ -766,14 +767,16 @@ export class InstagramAudience extends Component {
         (ctry) => item === ctry
       );
       if (countryExist) {
-        replace.targeting.geo_locations.countries = replace.targeting.geo_locations.countries.filter(
-          (ctr) => ctr !== countryExist
-        );
+        replace.targeting.geo_locations.countries =
+          replace.targeting.geo_locations.countries.filter(
+            (ctr) => ctr !== countryExist
+          );
 
         // remove all regions of those countries
-        replace.targeting.geo_locations.regions = replace.targeting.geo_locations.regions.filter(
-          (ctr) => ctr.country !== countryExist
-        );
+        replace.targeting.geo_locations.regions =
+          replace.targeting.geo_locations.regions.filter(
+            (ctr) => ctr.country !== countryExist
+          );
       } else {
         replace.targeting.geo_locations.countries.push(item);
       }
@@ -1079,8 +1082,8 @@ export class InstagramAudience extends Component {
                         {translate("Location")}
                       </Text>
                       <Icon
-                        name={`ios-arrow-drop${expandLocation ? "up" : "down"}`}
-                        type="MaterialUIIcons"
+                        name={`keyboard-arrow${expandLocation ? "up" : "down"}`}
+                        type="MaterialIcons"
                         style={styles.iconDown}
                         onPress={this.expandLocation}
                       />
@@ -1220,10 +1223,10 @@ export class InstagramAudience extends Component {
                         {translate("Demographic")}
                       </Text>
                       <Icon
-                        name={`ios-arrow-drop${
+                        name={`keyboard-arrow${
                           expandDemographics ? "up" : "down"
                         }`}
-                        type="MaterialUIIcons"
+                        type="MaterialIcons"
                         style={styles.iconDown}
                         onPress={this.expandDemographics}
                       />
@@ -1463,8 +1466,8 @@ export class InstagramAudience extends Component {
                         {translate("Devices")}
                       </Text>
                       <Icon
-                        name={`ios-arrow-drop${expandDevices ? "up" : "down"}`}
-                        type="MaterialUIIcons"
+                        name={`keyboard-arrow${expandDevices ? "up" : "down"}`}
+                        type="MaterialIcons"
                         style={styles.iconDown}
                         onPress={this.expandDevices}
                       />

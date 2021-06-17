@@ -488,9 +488,10 @@ export class SnapchatAudience extends Component {
         (r) => r === selectedItem
       )
     ) {
-      replace.targeting.demographics[0].languages = replace.targeting.demographics[0].languages.filter(
-        (r) => r !== selectedItem
-      );
+      replace.targeting.demographics[0].languages =
+        replace.targeting.demographics[0].languages.filter(
+          (r) => r !== selectedItem
+        );
       langs = replace.targeting.demographics[0].languages;
       analytics.track(`a_audience_languages`, {
         source: "audience_detail",
@@ -1178,8 +1179,8 @@ export class SnapchatAudience extends Component {
                         {translate("Location")}
                       </Text>
                       <Icon
-                        name={`ios-arrow-drop${expandLocation ? "up" : "down"}`}
-                        type="MaterialUIIcons"
+                        name={`keyboard-arrow${expandLocation ? "up" : "down"}`}
+                        type="MaterialIcons"
                         style={styles.iconDown}
                         onPress={this.expandLocation}
                       />
@@ -1294,10 +1295,10 @@ export class SnapchatAudience extends Component {
                         {translate("Demographic")}
                       </Text>
                       <Icon
-                        name={`ios-arrow-drop${
+                        name={`keyboard-arrow${
                           expandDemographics ? "up" : "down"
                         }`}
-                        type="MaterialUIIcons"
+                        type="MaterialIcons"
                         style={styles.iconDown}
                         onPress={this.expandDemographics}
                       />
@@ -1508,8 +1509,8 @@ export class SnapchatAudience extends Component {
                         {translate("Devices")}
                       </Text>
                       <Icon
-                        name={`ios-arrow-drop${expandDevices ? "up" : "down"}`}
-                        type="MaterialUIIcons"
+                        name={`keyboard-arrow${expandDevices ? "up" : "down"}`}
+                        type="MaterialIcons"
                         style={styles.iconDown}
                         onPress={this.expandDevices}
                       />

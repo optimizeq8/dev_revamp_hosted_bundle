@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { Modal, Text, TouchableWithoutFeedback, View } from "react-native";
+import {
+  Modal,
+  Platform,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import styles from "./styles";
 
 export default class index extends Component {
@@ -13,7 +19,7 @@ export default class index extends Component {
     return (
       <Modal
         visible={showCampaignOptions}
-        animationType="slide"
+        animationType={Platform.OS === "ios" ? "slide" : "fade"}
         transparent
         hardwareAccelerated={true}
         onRequestClose={() => {
