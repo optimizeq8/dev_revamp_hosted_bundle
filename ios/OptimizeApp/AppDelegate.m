@@ -53,13 +53,13 @@
   self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
   self.launchOptions = launchOptions;
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  // #ifdef DEBUG
-  //   NSString *const SEGMENT_WRITE_KEY = @"fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh";
-  //   [Intercom setApiKey:@"ios_sdk-e2493179152d82a4976b580fd1ec442cf2a1e018" forAppId:@"qf7uj8rc"];
-  // #else
+  #ifdef DEBUG
+    NSString *const SEGMENT_WRITE_KEY = @"fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh";
+    [Intercom setApiKey:@"ios_sdk-e2493179152d82a4976b580fd1ec442cf2a1e018" forAppId:@"qf7uj8rc"];
+  #else
     NSString *const SEGMENT_WRITE_KEY = @"ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB";
     [Intercom setApiKey:@"ios_sdk-345d9b5af6cf6662f16b5d47798d2473c0e0b617" forAppId:@"k5yqpre9"];
-  // #endif
+  #endif
 SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWithWriteKey:SEGMENT_WRITE_KEY];
 
 
@@ -88,7 +88,7 @@ SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWith
       }
 
       if (error != nil) {
-        NSLog( @"Notiication initialize failed, %@ - %@", error.localizedFailureReason, error.localizedDescription );
+        // NSLog( @"Notiication initialize failed, %@ - %@", error.localizedFailureReason, error.localizedDescription );
       }
     }];
   }
@@ -179,7 +179,7 @@ if (notification != nil) {
   NSDictionary *userInfo = response.notification.request.content.userInfo;
   
   NSString *uri = [userInfo valueForKeyPath:@"uri"];
-  NSLog( @"Notiication response, %@",userInfo);
+  // NSLog( @"Notiication response, %@",userInfo);
   if (uri != nil) {
     [RCTLinkingManager application:UIApplication.sharedApplication openURL:[NSURL URLWithString:uri] options: [NSDictionary alloc]];
   }else{
