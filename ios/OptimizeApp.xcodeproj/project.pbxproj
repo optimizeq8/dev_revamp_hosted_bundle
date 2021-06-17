@@ -16,9 +16,21 @@
 		F755EFAC255144980005D6F4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F755EFAB255144980005D6F4 /* UIKit.framework */; };
 		F7656E0F25C0186D00D27984 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7656E0E25C0186D00D27984 /* AppTrackingTransparency.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F7656E1325C0189B00D27984 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7656E1225C0189B00D27984 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F7796C3A2666709400430447 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = F7796C392666709400430447 /* NotificationService.m */; };
+		F7796C3E2666709400430447 /* OptimizeAppNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F7796C362666709400430447 /* OptimizeAppNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F7ECA56E247E98B1000976BB /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7ECA56D247E98B1000976BB /* File.swift */; };
 		F7FF7A612547FE2800050E9C /* MPTweakHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F7FF7A602547FE2800050E9C /* MPTweakHelper.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F7796C3C2666709400430447 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F7796C352666709400430447;
+			remoteInfo = OptimizeAppNotificationServiceExtension;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		F746E21726358987004AD4C4 /* Embed App Extensions */ = {
@@ -27,6 +39,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				F7796C3E2666709400430447 /* OptimizeAppNotificationServiceExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -87,6 +100,10 @@
 		F755EFAB255144980005D6F4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F7656E0E25C0186D00D27984 /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 		F7656E1225C0189B00D27984 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		F7796C362666709400430447 /* OptimizeAppNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OptimizeAppNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7796C382666709400430447 /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
+		F7796C392666709400430447 /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
+		F7796C3B2666709400430447 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F7ECA56C247E98B1000976BB /* OptimizeApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OptimizeApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		F7ECA56D247E98B1000976BB /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		F7FF7A5F2547FDF200050E9C /* MPTweakHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPTweakHelper.h; sourceTree = "<group>"; };
@@ -103,6 +120,13 @@
 				F7656E0F25C0186D00D27984 /* AppTrackingTransparency.framework in Frameworks */,
 				F755EFAC255144980005D6F4 /* UIKit.framework in Frameworks */,
 				5A476A448FBC95560358E4C5 /* libPods-OptimizeApp.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7796C332666709400430447 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,6 +229,7 @@
 				F7ECA56D247E98B1000976BB /* File.swift */,
 				13B07FAE1A68108700A75B9A /* OptimizeApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
+				F7796C372666709400430447 /* OptimizeAppNotificationServiceExtension */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				72E5486571395D51695C2A02 /* Pods */,
@@ -220,8 +245,19 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* optimizeapp.app */,
+				F7796C362666709400430447 /* OptimizeAppNotificationServiceExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F7796C372666709400430447 /* OptimizeAppNotificationServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				F7796C382666709400430447 /* NotificationService.h */,
+				F7796C392666709400430447 /* NotificationService.m */,
+				F7796C3B2666709400430447 /* Info.plist */,
+			);
+			path = OptimizeAppNotificationServiceExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -245,11 +281,29 @@
 			buildRules = (
 			);
 			dependencies = (
+				F7796C3D2666709400430447 /* PBXTargetDependency */,
 			);
 			name = OptimizeApp;
 			productName = "Hello World";
 			productReference = 13B07F961A680F5B00A75B9A /* optimizeapp.app */;
 			productType = "com.apple.product-type.application";
+		};
+		F7796C352666709400430447 /* OptimizeAppNotificationServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F7796C412666709400430447 /* Build configuration list for PBXNativeTarget "OptimizeAppNotificationServiceExtension" */;
+			buildPhases = (
+				F7796C322666709400430447 /* Sources */,
+				F7796C332666709400430447 /* Frameworks */,
+				F7796C342666709400430447 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OptimizeAppNotificationServiceExtension;
+			productName = OptimizeAppNotificationServiceExtension;
+			productReference = F7796C362666709400430447 /* OptimizeAppNotificationServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -264,6 +318,11 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 928C7U9LTT;
 						LastSwiftMigration = 1130;
+						ProvisioningStyle = Manual;
+					};
+					F7796C352666709400430447 = {
+						CreatedOnToolsVersion = 12.5;
+						DevelopmentTeam = 928C7U9LTT;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -282,6 +341,7 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* OptimizeApp */,
+				F7796C352666709400430447 /* OptimizeAppNotificationServiceExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -294,6 +354,13 @@
 				0731D3B824204D62009CAE85 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				99EC63CFB4B549BBAF093D10 /* SplashScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7796C342666709400430447 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,7 +562,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F7796C322666709400430447 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F7796C3A2666709400430447 /* NotificationService.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F7796C3D2666709400430447 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F7796C352666709400430447 /* OptimizeAppNotificationServiceExtension */;
+			targetProxy = F7796C3C2666709400430447 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
@@ -521,7 +604,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.optimizeapp.optimizeapp;
 				PRODUCT_NAME = optimizeapp;
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.optimizeapp.optimizeapp";
+				PROVISIONING_PROFILE_SPECIFIER = "AdHoc profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "OptimizeApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -551,7 +634,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.optimizeapp.optimizeapp;
 				PRODUCT_NAME = optimizeapp;
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.optimizeapp.optimizeapp";
+				PROVISIONING_PROFILE_SPECIFIER = "AdHoc profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "OptimizeApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -668,6 +751,60 @@
 			};
 			name = Release;
 		};
+		F7796C3F2666709400430447 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Distribution: OPTIMIZE ADVERTISING AND MARKETING COMPANY WLL (928C7U9LTT)";
+				CODE_SIGN_STYLE = Manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 928C7U9LTT;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = OptimizeAppNotificationServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.optimizeapp.optimizeapp.OptimizeAppServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "OptimizeApp service extension AdHoc";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F7796C402666709400430447 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Distribution: OPTIMIZE ADVERTISING AND MARKETING COMPANY WLL (928C7U9LTT)";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 928C7U9LTT;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = OptimizeAppNotificationServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.optimizeapp.optimizeapp.OptimizeAppServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "OptimizeApp service extension AdHoc";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -685,6 +822,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F7796C412666709400430447 /* Build configuration list for PBXNativeTarget "OptimizeAppNotificationServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F7796C3F2666709400430447 /* Debug */,
+				F7796C402666709400430447 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

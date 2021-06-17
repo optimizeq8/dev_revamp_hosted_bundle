@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import * as actionTypes from "../actions/actionTypes";
 import analytics from "@segment/analytics-react-native";
-import * as Notifications from "expo-notifications";
 import { MixpanelInstance } from "react-native-mixpanel";
 
 const initialState = {
@@ -39,23 +38,25 @@ const reducer = (state = initialState, action) => {
             logged_out: false,
           };
           // NOTE: expo-notification not working for iOS
-          Notifications.getDevicePushTokenAsync()
-            .then((token) => {
-              if (Platform.OS === "android") {
-                userTraits["$android_devices"] = [token.data];
-              } else {
-                userTraits["$ios_devices"] = [token.data];
+          try {
+            RNNotifications.events().registerRemoteNotificationsRegistered(
+              (event) => {
+                if (Platform.OS === "android") {
+                  userTraits["$android_devices"] = [token.data];
+                } else {
+                  userTraits["$ios_devices"] = [token.data];
+                }
+                analytics.identify(action.payload.user.userid, userTraits);
               }
-              analytics.identify(action.payload.user.userid, userTraits);
-            })
-            .catch((err) => {
-              // console.log(err);
-              analytics.track(`a_error`, {
-                error_page: "a_error_token",
-                error_description: err.response || err.message,
-              });
-              analytics.identify(action.payload.user.userid, userTraits);
+            );
+          } catch (err) {
+            // console.log(err);
+            analytics.track(`a_error`, {
+              error_page: "a_error_token",
+              error_description: err.response || err.message,
             });
+            analytics.identify(action.payload.user.userid, userTraits);
+          }
           // MixpanelSDK.identify(action.payload.user.userid);
         })
         .catch((error) => {

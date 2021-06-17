@@ -418,7 +418,7 @@ class Menu extends Component {
                 }
               >
                 <Icon
-                  name="file-document-box"
+                  name="file"
                   type="MaterialCommunityIcons"
                   style={[
                     styles.icons,

@@ -236,6 +236,7 @@ dependencies {
     implementation project(':react-native-device-info')
     // compile 'com.segment.analytics.android.integrations:adjust:+'
     implementation project(':react-native-advertising-id')
+    implementation project(':react-native-notifications')
 
 //    implementation project(':@segment_analytics-react-native')
     implementation project(':react-native-bootsplash')

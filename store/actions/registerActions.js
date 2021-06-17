@@ -14,7 +14,7 @@ import {
   getAnonymousUserId,
 } from "./genericActions";
 import { setCurrentUser, chanege_base_url } from "./loginActions";
-import { send_push_notification } from "./loginActions";
+// import { send_push_notification } from "./loginActions";
 import { connect_user_to_intercom } from "./messengerActions";
 import createBaseUrl from "./createBaseUrl";
 
@@ -165,7 +165,7 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
             payload: false,
           });
           navigation.navigate("RegistrationSuccess");
-          dispatch(send_push_notification());
+          // dispatch(send_push_notification());
           dispatch(getBusinessAccounts());
           // dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
           AsyncStorage.setItem("registeredWithInvite", "true");
@@ -666,7 +666,7 @@ export const registerGuestUser = (
             source: "registration_detail",
             source_action: "a_sign_up",
           });
-          dispatch(send_push_notification());
+          // dispatch(send_push_notification());
           dispatch(getBusinessAccounts());
           // dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
           AsyncStorage.setItem("registeredWithInvite", "true");

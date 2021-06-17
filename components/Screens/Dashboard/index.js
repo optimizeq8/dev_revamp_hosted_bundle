@@ -14,7 +14,7 @@ import {
   Modal,
   Platform,
 } from "react-native";
-import * as Notifications from "expo-notifications";
+import RNLocalize from "react-native-localize";
 import Intercom from "react-native-intercom";
 import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
@@ -68,7 +68,7 @@ import AppUpdateChecker from "../AppUpdateChecker";
 import GradientButton from "../../MiniComponents/GradientButton";
 import LowerButton from "../../MiniComponents/LowerButton";
 import PlaceHolderLine from "../../MiniComponents/PlaceholderLine";
-import * as moment from "moment-timezone";
+import * as momentTZ from "moment-timezone";
 import BiometricsAuth from "../BiometricsAuth";
 
 // import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
@@ -76,6 +76,9 @@ import isNull from "lodash/isNull";
 import AlertModal from "../../MiniComponents/AlertModal";
 import { BlurView } from "@react-native-community/blur";
 import AsyncStorage from "@react-native-community/async-storage";
+import CustomerIOAddDevice from "../../Functions/CustomerIOAddDevice";
+import { Notifications as RNNotifications } from "react-native-notifications";
+
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
 
@@ -131,7 +134,7 @@ class Dashboard extends Component {
 
     Intercom.getUnreadConversationCount().then((res) => {
       if (res !== this.props.count) {
-        Notifications.setBadgeCountAsync(res);
+        RNNotifications.ios.setBadgeCount(res);
         this.props.setCounterForUnreadMessage(res);
       }
     });
@@ -195,6 +198,8 @@ class Dashboard extends Component {
         this.setState({ showBiometricsModal: true });
       }, 3000);
     }
+
+    CustomerIOAddDevice(this.props.userInfo.userid);
   }
   handleBackPress = () => {
     // this.props.navigation.goBack();
@@ -243,6 +248,23 @@ class Dashboard extends Component {
           this.signal.token
         );
       }
+      RNNotifications.getInitialNotification()
+        .then((notification) => {
+          if (notification) {
+            analytics.track(
+              "Notification opened by device user from killed state",
+              {
+                notification: JSON.stringify(notification.payload, null, 2),
+                platform: Platform.OS,
+              }
+            );
+
+            if (notification.payload.hasOwnProperty("screenName")) {
+              this.props.navigation.navigate(notification.payload.screenName);
+            }
+          }
+        })
+        .catch((err) => console.error("getInitialNotifiation() failed", err));
     }
     if (
       this.state.open &&
@@ -283,7 +305,7 @@ class Dashboard extends Component {
             : [],
         });
         Intercom.getUnreadConversationCount().then((res) => {
-          Notifications.setBadgeCountAsync(res);
+          RNNotifications.ios.setBadgeCount(res);
           this.props.setCounterForUnreadMessage(res);
         });
       });
@@ -592,6 +614,13 @@ class Dashboard extends Component {
       let campaign_id = this.props.navigation.getParam("campaign_id", "");
       let urlParams = "";
       let func = "";
+      if (url.url.includes("free_consultation")) {
+        Intercom.updateUser({
+          custom_attributes: { userType: "free_consultation" },
+        })
+          .then(() => console.log("Updated"))
+          .catch((err) => console.log("Err updateing", err));
+      }
       if (url.url.includes("function") || url.url.includes("chatsupport")) {
         if (url.url.includes("?")) {
           urlParams = url.url.split("?")[1];
@@ -665,7 +694,10 @@ class Dashboard extends Component {
   };
   handleIntercom = () => {
     let userCurrentTime = new Date(
-      moment.utc(new Date()).tz("Asia/Kuwait").format("YYYY-MM-DDTHH:mm:ss")
+      momentTZ
+        .utc(new Date())
+        .tz(RNLocalize.getTimeZone())
+        .format("YYYY-MM-DDTHH:mm:ss")
     );
     if (
       userCurrentTime.getDay() < 0 ||

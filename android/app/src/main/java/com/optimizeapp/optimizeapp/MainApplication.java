@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+import com.wix.reactnativenotifications.RNNotificationsPackage;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;

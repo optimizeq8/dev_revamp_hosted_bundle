@@ -19,6 +19,8 @@
 #import "Mixpanel/Mixpanel.h"
 #import <GoogleMaps/GoogleMaps.h>
 #import <Intercom/intercom.h>
+#import "RNNotifications.h"
+
 @interface AppDelegate ()
 
 @property (nonatomic, strong) NSDictionary *launchOptions;
@@ -51,13 +53,13 @@
   self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
   self.launchOptions = launchOptions;
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  #ifdef DEBUG
-    NSString *const SEGMENT_WRITE_KEY = @"fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh";
-    [Intercom setApiKey:@"ios_sdk-e2493179152d82a4976b580fd1ec442cf2a1e018" forAppId:@"qf7uj8rc"];
-  #else
+  // #ifdef DEBUG
+  //   NSString *const SEGMENT_WRITE_KEY = @"fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh";
+  //   [Intercom setApiKey:@"ios_sdk-e2493179152d82a4976b580fd1ec442cf2a1e018" forAppId:@"qf7uj8rc"];
+  // #else
     NSString *const SEGMENT_WRITE_KEY = @"ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB";
     [Intercom setApiKey:@"ios_sdk-345d9b5af6cf6662f16b5d47798d2473c0e0b617" forAppId:@"k5yqpre9"];
-  #endif
+  // #endif
 SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWithWriteKey:SEGMENT_WRITE_KEY];
 
 
@@ -74,7 +76,33 @@ SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWith
   [controller startAndShowLaunchScreen:self.window];
 #endif
 
+ if ([UNUserNotificationCenter class] != nil) {
+    [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+    UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
+    [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
+
+      if (granted) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+    [application registerForRemoteNotifications];
+        });
+      }
+
+      if (error != nil) {
+        NSLog( @"Notiication initialize failed, %@ - %@", error.localizedFailureReason, error.localizedDescription );
+      }
+    }];
+  }
+
+NSDictionary* notification = [launchOptions valueForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+if (notification != nil) {
+  NSString* link = [notification valueForKeyPath:@"aps.link"];
+  
+  if (link != nil) {
+    [launchOptions setValue:link forKey:UIApplicationLaunchOptionsURLKey];
+  }
+}
   [super application:application didFinishLaunchingWithOptions:launchOptions];
+  [RNNotifications startMonitorNotifications];
   return YES;
 }
 
@@ -130,8 +158,40 @@ SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWith
     // Intercom
     [Intercom setDeviceToken:deviceToken];
     [[SEGAnalytics sharedAnalytics] registeredForRemoteNotificationsWithDeviceToken:deviceToken];
+    [RNNotifications didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+
 
 }
 
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+         willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
+  completionHandler(UNNotificationPresentationOptionAlert + UNNotificationPresentationOptionSound + UNNotificationPresentationOptionBadge);
+}
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+  [RNNotifications didFailToRegisterForRemoteNotificationsWithError:error];
+}
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+        didReceiveNotificationResponse:(UNNotificationResponse *)response
+         withCompletionHandler:(void(^)(void))completionHandler  {
+  // on tap the notification
+  NSDictionary *userInfo = response.notification.request.content.userInfo;
+  
+  NSString *uri = [userInfo valueForKeyPath:@"uri"];
+  NSLog( @"Notiication response, %@",userInfo);
+  if (uri != nil) {
+    [RCTLinkingManager application:UIApplication.sharedApplication openURL:[NSURL URLWithString:uri] options: [NSDictionary alloc]];
+  }else{
+    NSDictionary *userInfo = response.notification.request.content.userInfo;
+    
+    NSString *uri = [userInfo valueForKeyPath:@"mp_ontap.uri"];
+    if (uri != nil) {
+      [RCTLinkingManager application:UIApplication.sharedApplication openURL:[NSURL URLWithString:uri] options: [NSDictionary alloc]];
+    }
+  }
+  
+  completionHandler();
+}
 
 @end
