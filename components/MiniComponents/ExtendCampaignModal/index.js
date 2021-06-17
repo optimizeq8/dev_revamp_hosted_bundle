@@ -141,7 +141,12 @@ class ExtendCampaignModal extends Component {
               <View
                 style={[
                   styles.datePickerContainer,
-                  { top: RFValue(!switchComponent ? 330 : 250, 414) },
+                  {
+                    top: RFValue(
+                      !switchComponent ? heightPercentageToDP(40) : 250,
+                      414
+                    ),
+                  },
                 ]}
               >
                 <CustomHeader
