@@ -42,7 +42,6 @@ TextInputMask.defaultProps = TextInputMask.defaultProps || {};
 TextInputMask.defaultProps.allowFontScaling = false;
 import { showMessage } from "react-native-flash-message";
 
-import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
 import * as Font from "expo-font";
@@ -275,6 +274,53 @@ class App extends React.Component {
             NavigationService.navigate(notification.payload.screenName);
           } else if (notification.payload.hasOwnProperty("appUri")) {
             Linking.openURL(notification.payload.appUri);
+          } else if (notification.payload.hasOwnProperty("deeplinkType")) {
+            let deeplinkType = notification.payload.deeplinkType;
+            let campaign_id = notification.payload.campaign_id;
+
+            switch (deeplinkType) {
+              case "snapchatCampaignDetail":
+                store.dispatch(
+                  actionCreators.getCampaignDetails(
+                    campaign_id,
+                    NavigationService
+                  )
+                );
+                break;
+              case "googleCampaignDetail":
+                let start_time =
+                  handleScreen.notification.request.content.data.start_time;
+                let end_time =
+                  handleScreen.notification.request.content.data.end_time;
+                store.dispatch(
+                  actionCreators.get_google_campiagn_details(
+                    campaign_id,
+                    start_time,
+                    end_time,
+                    false,
+                    {
+                      source: "dashboard",
+                      source_action: "a_open_campaign_details",
+                    }
+                  )
+                );
+                NavigationService.navigate("GoogleCampaignDetails", {
+                  campaign: campaign_id,
+                  source: "dashboard",
+                  source_action: "a_open_campaign_details",
+                });
+                break;
+              case "instagramCampaignDetail":
+                store.dispatch(
+                  actionCreators.getInstagramCampaignDetails(
+                    campaign_id,
+                    NavigationService
+                  )
+                );
+                break;
+              default:
+                break;
+            }
           }
         }
         completion();
@@ -324,9 +370,6 @@ class App extends React.Component {
 
     this._loadAsync();
     store.dispatch(actionCreators.checkForExpiredToken(NavigationService));
-    Notifications.addNotificationResponseReceivedListener(
-      this._handleNotification
-    );
     AppState.addEventListener("change", this._handleAppStateChange);
     Platform.OS === "ios" && Intercom.registerForPush();
 
@@ -351,10 +394,6 @@ class App extends React.Component {
     //       );
   }
   componentDidUpdate(prevProps, prevState) {
-    // to navigate from a deep link from a notification if the app is killed on iOS
-    Notifications.addNotificationResponseReceivedListener(
-      this._handleNotification
-    );
     if (store.getState().auth.userInfo && Platform.OS === "ios") {
       if (
         this.state.mounted !== prevState.mounted &&
@@ -363,7 +402,7 @@ class App extends React.Component {
         this.navigatorRef &&
         this.state.notificationData
       ) {
-        this._handleNotification(this.state.notificationData);
+        // this._handleNotification(this.state.notificationData);
       }
     }
   }
@@ -399,7 +438,7 @@ class App extends React.Component {
         timestamp: new Date().getTime(),
       });
       //   analytics.identify(null, { logged_out: false }); // To avoid creating user profile
-      Platform.OS === "ios" && Notifications.setBadgeCountAsync(0);
+      Platform.OS === "ios" && RNNotifications.ios.setBadgeCount(0);
       // console.log("App has come to the foreground!");
     }
     this.setState({
@@ -520,7 +559,7 @@ class App extends React.Component {
     }
 
     if (handleScreen.origin === "received") {
-      Platform.OS === "ios" && Notifications.setBadgeCountAsync(0);
+      Platform.OS === "ios" && RNNotifications.ios.setBadgeCount(0);
     }
     if (handleScreen.origin === "selected") {
       store.dispatch(
@@ -571,7 +610,7 @@ class App extends React.Component {
     // Adjust.componentWillUnmount();
   }
   _onUnreadChange = (data) => {
-    Notifications.setBadgeCountAsync(data.count);
+    RNNotifications.ios.setBadgeCount(data.count);
     store.dispatch(actionCreators.setCounterForUnreadMessage(data.count));
   };
   getCurrentRouteName = (navigationState) => {

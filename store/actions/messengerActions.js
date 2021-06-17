@@ -6,7 +6,7 @@ import * as actionTypes from "./actionTypes";
 import isNull from "lodash/isNull";
 import analytics from "@segment/analytics-react-native";
 import { showMessage } from "react-native-flash-message";
-import { send_push_notification } from "./loginActions";
+// import { send_push_notification } from "./loginActions";
 import { update_app_status_chat_notification } from "./genericActions";
 
 NodeBackendURL = () =>
@@ -269,7 +269,7 @@ export const reply = (message, upload) => {
         attachment_urls: upload,
       })
       .then((response) => {
-        dispatch(send_push_notification());
+        // dispatch(send_push_notification());
         return dispatch({
           type: actionTypes.ADD_MESSAGE,
           payload: response.data,

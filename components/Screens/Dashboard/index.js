@@ -14,7 +14,7 @@ import {
   Modal,
   Platform,
 } from "react-native";
-import * as Notifications from "expo-notifications";
+import RNLocalize from "react-native-localize";
 import Intercom from "react-native-intercom";
 import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
@@ -68,7 +68,7 @@ import AppUpdateChecker from "../AppUpdateChecker";
 import GradientButton from "../../MiniComponents/GradientButton";
 import LowerButton from "../../MiniComponents/LowerButton";
 import PlaceHolderLine from "../../MiniComponents/PlaceholderLine";
-import * as moment from "moment-timezone";
+import * as momentTZ from "moment-timezone";
 import BiometricsAuth from "../BiometricsAuth";
 
 // import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
@@ -134,7 +134,7 @@ class Dashboard extends Component {
 
     Intercom.getUnreadConversationCount().then((res) => {
       if (res !== this.props.count) {
-        Notifications.setBadgeCountAsync(res);
+        RNNotifications.ios.setBadgeCount(res);
         this.props.setCounterForUnreadMessage(res);
       }
     });
@@ -305,7 +305,7 @@ class Dashboard extends Component {
             : [],
         });
         Intercom.getUnreadConversationCount().then((res) => {
-          Notifications.setBadgeCountAsync(res);
+          RNNotifications.ios.setBadgeCount(res);
           this.props.setCounterForUnreadMessage(res);
         });
       });
@@ -694,7 +694,10 @@ class Dashboard extends Component {
   };
   handleIntercom = () => {
     let userCurrentTime = new Date(
-      moment.utc(new Date()).tz("Asia/Kuwait").format("YYYY-MM-DDTHH:mm:ss")
+      momentTZ
+        .utc(new Date())
+        .tz(RNLocalize.getTimeZone())
+        .format("YYYY-MM-DDTHH:mm:ss")
     );
     if (
       userCurrentTime.getDay() < 0 ||

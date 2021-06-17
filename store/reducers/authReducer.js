@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import * as actionTypes from "../actions/actionTypes";
 import analytics from "@segment/analytics-react-native";
-import * as Notifications from "expo-notifications";
 import { MixpanelInstance } from "react-native-mixpanel";
 
 const initialState = {
