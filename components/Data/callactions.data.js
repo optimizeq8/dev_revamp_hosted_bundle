@@ -596,6 +596,244 @@ var list = {
       ],
     },
   ],
+  StoryAd: [
+    {
+      type: "WEB_VIEW",
+      call_to_action_list: [
+        {
+          label: "SHOP NOW",
+          value: "SHOP_NOW",
+        },
+        {
+          label: "MORE",
+          value: "MORE",
+        },
+        {
+          label: "ORDER NOW",
+          value: "ORDER_NOW",
+        },
+        {
+          label: "VIEW",
+          value: "VIEW",
+        },
+        {
+          label: "GET NOW",
+          value: "GET_NOW",
+        },
+        {
+          label: "APPLY NOW",
+          value: "APPLY_NOW",
+        },
+        {
+          label: "SIGN UP",
+          value: "SIGN_UP",
+        },
+        {
+          label: "BOOK NOW",
+          value: "BOOK_NOW",
+        },
+        {
+          label: "BUY TICKETS",
+          value: "BUY_TICKETS",
+        },
+        {
+          label: "WATCH",
+          value: "WATCH",
+        },
+        {
+          label: "READ",
+          value: "READ",
+        },
+        {
+          label: "LISTEN",
+          value: "LISTEN",
+        },
+        {
+          label: "PLAY",
+          value: "PLAY",
+        },
+        {
+          label: "SHOW",
+          value: "SHOW",
+        },
+        {
+          label: "SHOWTIMES",
+          value: "SHOWTIMES",
+        },
+      ],
+    },
+    {
+      type: "APP_INSTALL",
+      call_to_action_list: [
+        {
+          label: "DOWNLOAD",
+          value: "DOWNLOAD",
+        },
+        {
+          label: "INSTALL NOW",
+          value: "INSTALL_NOW",
+        },
+        {
+          label: "SHOP NOW",
+          value: "SHOP_NOW",
+        },
+        {
+          label: "ORDER NOW",
+          value: "ORDER NOW",
+        },
+        {
+          label: "GET NOW",
+          value: "GET_NOW",
+        },
+        {
+          label: "SIGN UP",
+          value: "SIGN_UP",
+        },
+        {
+          label: "BOOK NOW",
+          value: "BOOK_NOW",
+        },
+        {
+          label: "PLAY",
+          value: "PLAY",
+        },
+        {
+          label: "WATCH",
+          value: "WATCH",
+        },
+      ],
+    },
+    {
+      type: "LONGFORM_VIDEO",
+      call_to_action_list: [
+        {
+          label: "WATCH",
+          value: "WATCH",
+        },
+        {
+          label: "WATCH EPISODE",
+          value: "WATCH_EPISODE",
+        },
+      ],
+    },
+    {
+      type: "DEEP_LINK",
+      call_to_action_list: [
+        {
+          label: "USE APP",
+          value: "USE_APP",
+        },
+        {
+          label: "OPEN APP",
+          value: "OPEN_APP",
+        },
+        {
+          label: "TRY",
+          value: "TRY",
+        },
+        {
+          label: "MORE",
+          value: "MORE",
+        },
+        {
+          label: "SHOP NOW",
+          value: "SHOP_NOW",
+        },
+        {
+          label: "PLAY",
+          value: "PLAY",
+        },
+        {
+          label: "WATCH",
+          value: "WATCH",
+        },
+      ],
+    },
+    {
+      type: "WEB_CONVERSION",
+      call_to_action_list: [
+        {
+          label: "SHOP NOW",
+          value: "SHOP_NOW",
+        },
+        {
+          label: "MORE",
+          value: "MORE",
+        },
+        {
+          label: "ORDER NOW",
+          value: "ORDER_NOW",
+        },
+        {
+          label: "VIEW",
+          value: "VIEW",
+        },
+        {
+          label: "GET NOW",
+          value: "GET_NOW",
+        },
+
+        {
+          label: "APPLY",
+          value: "APPLY",
+        },
+        {
+          label: "SIGN UP",
+          value: "SIGN_UP",
+        },
+        {
+          label: "BOOK NOW",
+          value: "BOOK_NOW",
+        },
+        {
+          label: "BUY TICKETS",
+          value: "BUY_TICKETS",
+        },
+        {
+          label: "WATCH",
+          value: "WATCH",
+        },
+        {
+          label: "LISTEN",
+          value: "LISTEN",
+        },
+        {
+          label: "PLAY",
+          value: "PLAY",
+        },
+        {
+          label: "READ",
+          value: "READ",
+        },
+        {
+          label: "SHOW",
+          value: "SHOW",
+        },
+        {
+          label: "SHOWTIMES",
+          value: "SHOWTIMES",
+        },
+      ],
+    },
+    {
+      type: "ENGAGEMENT",
+      call_to_action_list: [
+        {
+          label: "CALL NOW",
+          value: "CALL_NOW",
+        },
+      ],
+    },
+    {
+      type: "POLITICAL_TRAFFIC",
+      call_to_action_list: [
+        {
+          label: "MORE",
+          value: "MORE",
+        },
+      ],
+    },
+  ],
 };
 export const netLoc = [
   {

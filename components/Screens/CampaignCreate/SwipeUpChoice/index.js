@@ -134,6 +134,7 @@ class SwipeUpChoice extends Component {
                 objective={objective}
                 _changeDestination={_changeDestination}
                 navigation={this.props.navigation}
+                collectionAdLinkForm={this.props.collectionAdLinkForm}
                 // toggleSideMenu={this.toggleSideMenu}
                 screenProps={this.props.screenProps}
                 toggle={this.props.toggle}

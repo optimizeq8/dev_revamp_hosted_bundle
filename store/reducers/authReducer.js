@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import * as actionTypes from "../actions/actionTypes";
 import analytics from "@segment/analytics-react-native";
 import { MixpanelInstance } from "react-native-mixpanel";
+import { Notifications as RNNotifications } from "react-native-notifications";
 
 const initialState = {
   userid: null,
@@ -42,9 +43,9 @@ const reducer = (state = initialState, action) => {
             RNNotifications.events().registerRemoteNotificationsRegistered(
               (event) => {
                 if (Platform.OS === "android") {
-                  userTraits["$android_devices"] = [token.data];
+                  userTraits["$android_devices"] = [event.deviceToken];
                 } else {
-                  userTraits["$ios_devices"] = [token.data];
+                  userTraits["$ios_devices"] = [event.deviceToken];
                 }
                 analytics.identify(action.payload.user.userid, userTraits);
               }

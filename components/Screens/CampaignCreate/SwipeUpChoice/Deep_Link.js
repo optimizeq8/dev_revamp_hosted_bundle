@@ -299,7 +299,7 @@ class Deep_Link extends Component {
           handleCallaction={this.handleCallaction}
           navigation={this.props.navigation}
           selectApp={this.selectApp}
-          listNum={3}
+          listNum={this.props.adType === "CollectionAd" ? 0 : 3}
           attachment={this.state.attachment}
           callaction={this.state.callaction}
           swipeUpDestination={this.props.swipeUpDestination}
