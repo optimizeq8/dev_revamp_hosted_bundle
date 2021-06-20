@@ -73,8 +73,8 @@ class AdObjective extends Component {
       minValueBudget: 0,
       maxValueBudget: 0,
       modalVisible: false,
-      objectiveLabel: this.props.instagramObjectives["InstagramFeedAd"][0]
-        .label,
+      objectiveLabel:
+        this.props.instagramObjectives["InstagramFeedAd"][0].label,
       inputN: false,
       objectives: this.props.instagramObjectives["InstagramFeedAd"],
       closedContinueModal: false,
@@ -99,7 +99,9 @@ class AdObjective extends Component {
     // });
     this.props.set_adType_instagram("InstagramFeedAd");
     this.setCampaignInfo();
-
+    this.props.setCampaignInfoForTransaction({
+      extend_id: null,
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -176,8 +178,8 @@ class AdObjective extends Component {
         maxValueBudget: 0,
         duration: 7,
         modalVisible: false,
-        objectiveLabel: this.props.instagramObjectives["InstagramFeedAd"][0]
-          .label,
+        objectiveLabel:
+          this.props.instagramObjectives["InstagramFeedAd"][0].label,
         inputN: false,
         nameError: "",
         objectiveError: "",
@@ -756,6 +758,8 @@ const mapDispatchToProps = (dispatch) => ({
   setCampaignInProgress: (value) =>
     dispatch(actionCreators.setCampaignInProgress(value)),
 
+  setCampaignInfoForTransaction: (data) =>
+    dispatch(actionCreators.setCampaignInfoForTransaction(data)),
   set_adType_instagram: (value) =>
     dispatch(actionCreators.set_adType_instagram(value)),
 });

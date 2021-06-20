@@ -102,6 +102,7 @@ class ContinueCampaign extends Component {
     const { translate } = this.props.screenProps;
     let updated_transaction_data = {
       channel: "google",
+      extend_id: null,
     };
     if (this.props.data.campaignSteps.includes("GoogleAdInfo")) {
       updated_transaction_data = {
@@ -214,7 +215,12 @@ class ContinueCampaign extends Component {
             <CustomButtons
               buttonStyle={styles.customButton}
               screenProps={this.props.screenProps}
-              onPressFunction={() => this.handleSubmition(false, true)}
+              onPressFunction={() => {
+                this.props.setCampaignInfoForTransaction({
+                  extend_id: null,
+                });
+                this.handleSubmition(false, true);
+              }}
               content="Create a new ad"
             />
           </View>

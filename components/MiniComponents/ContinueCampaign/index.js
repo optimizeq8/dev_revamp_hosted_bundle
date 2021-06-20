@@ -103,6 +103,7 @@ class ContinueCampaign extends Component {
     //it doesn't create a campaign with old dates
     let updated_transaction_data = {
       channel: "",
+      extend_id: null,
     };
     if (this.props.currentCampaignSteps.includes("AdObjective")) {
       updated_transaction_data = {
@@ -220,7 +221,12 @@ class ContinueCampaign extends Component {
                 />
                 <CustomButtons
                   screenProps={this.props.screenProps}
-                  onPressFunction={() => this.handleSubmition(false, true)}
+                  onPressFunction={() => {
+                    this.props.setCampaignInfoForTransaction({
+                      extend_id: null,
+                    });
+                    this.handleSubmition(false, true);
+                  }}
                   content="Create a new ad"
                 />
               </View>

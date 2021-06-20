@@ -90,8 +90,11 @@ class AdObjective extends Component {
     //     businessid: this.props.mainBusiness.businessid
     //   }
     // });
+    this.props.set_adType_instagram("InstagramStoryAd");
     this.setCampaignInfo();
-
+    this.props.setCampaignInfoForTransaction({
+      extend_id: null,
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -159,8 +162,8 @@ class AdObjective extends Component {
           ad_account_id: this.props.mainBusiness.fb_ad_account_id,
           businessid: this.props.mainBusiness.businessid,
           name: campaignName,
-          objective: this.props.instagramObjectives["InstagramStoryAd"][0]
-            .value,
+          objective:
+            this.props.instagramObjectives["InstagramStoryAd"][0].value,
           start_time: start_time.toISOString().split("T")[0],
           end_time: end_time.toISOString().split("T")[0],
         },
@@ -168,8 +171,8 @@ class AdObjective extends Component {
         maxValueBudget: 0,
         duration: 7,
         modalVisible: false,
-        objectiveLabel: this.props.instagramObjectives["InstagramStoryAd"][0]
-          .label,
+        objectiveLabel:
+          this.props.instagramObjectives["InstagramStoryAd"][0].label,
         inputN: false,
         nameError: "",
         objectiveError: "",
@@ -688,6 +691,8 @@ const mapDispatchToProps = (dispatch) => ({
   setCampaignInProgress: (value) =>
     dispatch(actionCreators.setCampaignInProgress(value)),
 
+  setCampaignInfoForTransaction: (data) =>
+    dispatch(actionCreators.setCampaignInfoForTransaction(data)),
   set_adType_instagram: (value) =>
     dispatch(actionCreators.set_adType_instagram(value)),
 });

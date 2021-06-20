@@ -112,6 +112,7 @@ class AdObjective extends Component {
   }
   async componentDidMount() {
     await this.setCampaignInfo();
+    this.props.setCampaignInfoForTransaction({ extend_id: null });
     // const businessCountryIsKuwait =
     //   this.props.mainBusiness.country === "Kuwait";
     // Remove the objective label for non kuwait countries and if adtype is SnapAd
@@ -1025,6 +1026,8 @@ const mapDispatchToProps = (dispatch) => ({
   setCampaignInProgress: (value) =>
     dispatch(actionCreators.setCampaignInProgress(value)),
 
+  setCampaignInfoForTransaction: (data) =>
+    dispatch(actionCreators.setCampaignInfoForTransaction(data)),
   set_adType: (value) => dispatch(actionCreators.set_adType(value)),
 });
 export default copilot({
