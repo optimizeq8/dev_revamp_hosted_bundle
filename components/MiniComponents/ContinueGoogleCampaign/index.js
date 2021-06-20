@@ -214,7 +214,12 @@ class ContinueCampaign extends Component {
             <CustomButtons
               buttonStyle={styles.customButton}
               screenProps={this.props.screenProps}
-              onPressFunction={() => this.handleSubmition(false, true)}
+              onPressFunction={() => {
+                this.props.setCampaignInfoForTransaction({
+                  extend_id: null,
+                });
+                this.handleSubmition(false, true);
+              }}
               content="Create a new ad"
             />
           </View>
