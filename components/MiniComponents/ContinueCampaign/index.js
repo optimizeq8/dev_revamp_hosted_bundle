@@ -103,6 +103,7 @@ class ContinueCampaign extends Component {
     //it doesn't create a campaign with old dates
     let updated_transaction_data = {
       channel: "",
+      extend_id: null,
     };
     if (this.props.currentCampaignSteps.includes("AdObjective")) {
       updated_transaction_data = {

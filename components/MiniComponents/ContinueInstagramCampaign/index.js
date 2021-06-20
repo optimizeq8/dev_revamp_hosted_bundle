@@ -147,6 +147,7 @@ class ContinueCampaign extends Component {
       this.setState({ resumeLoading: true });
       let updated_transaction_data = {
         channel: "instagram",
+        extend_id: null,
       };
       if (
         this.props.currentCampaignSteps.includes("InstagramFeedAdObjective") ||

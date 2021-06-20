@@ -102,6 +102,7 @@ class ContinueCampaign extends Component {
     const { translate } = this.props.screenProps;
     let updated_transaction_data = {
       channel: "google",
+      extend_id: null,
     };
     if (this.props.data.campaignSteps.includes("GoogleAdInfo")) {
       updated_transaction_data = {
