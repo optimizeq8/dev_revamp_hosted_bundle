@@ -1,6 +1,7 @@
 import * as actionTypes from "../actions/actionTypes";
 import find from "lodash/find";
 import analytics from "@segment/analytics-react-native";
+import { Notifications as RNNotifications } from "react-native-notifications";
 
 import { Animated } from "react-native";
 
@@ -72,13 +73,68 @@ const reducer = (state = initialState, action) => {
         main = setNewBusinessAccounts[action.payload.index]
           ? setNewBusinessAccounts[action.payload.index]
           : setNewBusinessAccounts[0];
-        analytics.identify(action.payload.userid, {
-          businessid: main.businessid,
-          businessname: main.businessname,
-          revenue: main.revenue,
-          ltv: main.ltv,
-          wallet_amount: main.wallet_amount,
-        });
+
+        let userTraits = {
+          ...action.payload.user,
+          $name:
+            action.payload.user.firstname + " " + action.payload.user.lastname,
+          $phone: "+" + action.payload.user.mobile,
+        };
+        AsyncStorage.getItem("appLanguage")
+          .then((lang) => {
+            userTraits[`selected_language`] = lang;
+            try {
+              RNNotifications.events().registerRemoteNotificationsRegistered(
+                (event) => {
+                  if (Platform.OS === "android") {
+                    userTraits["$android_devices"] = [event.deviceToken];
+                  } else {
+                    userTraits["$ios_devices"] = [event.deviceToken];
+                  }
+                  console.log("userTraits network", userTraits);
+
+                  analytics.identify(action.payload.userid, {
+                    businessid: main.businessid,
+                    businessname: main.businessname,
+                    revenue: main.revenue,
+                    ltv: main.ltv,
+                    wallet_amount: main.wallet_amount,
+                    ...userTraits,
+                  });
+                }
+              );
+            } catch (err) {
+              console.log("userTraits error network", userTraits);
+
+              console.log(`a_error`, err);
+              analytics.track(`a_error`, {
+                error_page: "a_error_token",
+                error_description: err.response || err.message,
+              });
+              analytics.identify(action.payload.userid, {
+                businessid: main.businessid,
+                businessname: main.businessname,
+                revenue: main.revenue,
+                ltv: main.ltv,
+                wallet_amount: main.wallet_amount,
+                ...userTraits,
+              });
+            }
+          })
+          .catch((error) => {
+            console.log("userTraits error appLang", userTraits);
+            analytics.identify(action.payload.userid, {
+              businessid: main.businessid,
+              businessname: main.businessname,
+              revenue: main.revenue,
+              ltv: main.ltv,
+              wallet_amount: main.wallet_amount,
+              ...userTraits,
+            });
+          });
+
+        console.log("userTraits", userTraits);
+
         analytics.group(main.businessid, {
           businessid: main.businessid,
           [`$name`]: main.businessname,
