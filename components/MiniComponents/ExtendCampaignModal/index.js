@@ -142,10 +142,8 @@ class ExtendCampaignModal extends Component {
                 style={[
                   styles.datePickerContainer,
                   {
-                    top: RFValue(
-                      !switchComponent ? heightPercentageToDP(40) : 250,
-                      414
-                    ),
+                    position: "absolute",
+                    top: !switchComponent ? "90%" : "80%",
                   },
                 ]}
               >

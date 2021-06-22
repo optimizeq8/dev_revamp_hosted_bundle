@@ -5,7 +5,7 @@ import { globalColors } from "../../../GlobalStyles";
 export default StyleSheet.create({
   extendBudgetContainer: {
     backgroundColor: globalColors.white,
-    height: RFValue(160, 414),
+    height: RFValue(120, 414),
     // flex: 1,
     // borderRadius: RFValue(25, 414),
     alignItems: "center",
