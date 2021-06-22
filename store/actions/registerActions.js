@@ -597,6 +597,7 @@ export const registerGuestUser = (
 
         // For users creating new business while registering
         if (businessInvite === "1") {
+          delete userInfo.password;
           analytics.track(`a_create_buiness_account`, {
             source: "open_create_business_account",
             source_action: `a_create_buiness_account`,

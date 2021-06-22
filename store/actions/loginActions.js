@@ -297,6 +297,7 @@ export const logout = (navigation) => {
       //Switched the navigation with this line so that the ErrorComponent doesn't mount when logging out
       .then(() => dispatch(setCurrentUser(null)))
       .then(() => {
+        analytics.reset();
         Intercom.logout();
         AsyncStorage.setItem("selectedBusinessId", "");
       })

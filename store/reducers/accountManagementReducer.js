@@ -80,61 +80,16 @@ const reducer = (state = initialState, action) => {
             action.payload.user.firstname + " " + action.payload.user.lastname,
           $phone: "+" + action.payload.user.mobile,
         };
-        AsyncStorage.getItem("appLanguage")
-          .then((lang) => {
-            userTraits[`selected_language`] = lang;
-            try {
-              RNNotifications.events().registerRemoteNotificationsRegistered(
-                (event) => {
-                  if (Platform.OS === "android") {
-                    userTraits["$android_devices"] = [event.deviceToken];
-                  } else {
-                    userTraits["$ios_devices"] = [event.deviceToken];
-                  }
-                  console.log("userTraits network", userTraits);
 
-                  analytics.identify(action.payload.userid, {
-                    businessid: main.businessid,
-                    businessname: main.businessname,
-                    revenue: main.revenue,
-                    ltv: main.ltv,
-                    wallet_amount: main.wallet_amount,
-                    ...userTraits,
-                  });
-                }
-              );
-            } catch (err) {
-              console.log("userTraits error network", userTraits);
-
-              console.log(`a_error`, err);
-              analytics.track(`a_error`, {
-                error_page: "a_error_token",
-                error_description: err.response || err.message,
-              });
-              analytics.identify(action.payload.userid, {
-                businessid: main.businessid,
-                businessname: main.businessname,
-                revenue: main.revenue,
-                ltv: main.ltv,
-                wallet_amount: main.wallet_amount,
-                ...userTraits,
-              });
-            }
-          })
-          .catch((error) => {
-            console.log("userTraits error appLang", userTraits);
-            analytics.identify(action.payload.userid, {
-              businessid: main.businessid,
-              businessname: main.businessname,
-              revenue: main.revenue,
-              ltv: main.ltv,
-              wallet_amount: main.wallet_amount,
-              ...userTraits,
-            });
-          });
-
-        console.log("userTraits", userTraits);
-
+        analytics.identify(action.payload.userid, {
+          businessid: main.businessid,
+          businessname: main.businessname,
+          revenue: main.revenue,
+          ltv: main.ltv,
+          wallet_amount: main.wallet_amount,
+          ...userTraits,
+          userId: action.payload.userid,
+        });
         analytics.group(main.businessid, {
           businessid: main.businessid,
           [`$name`]: main.businessname,
