@@ -453,8 +453,6 @@ class RepeatCampaignBudget extends Component {
 
     return (
       <View style={styles.extendBudgetContainer}>
-        <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
-
         <View
           style={{
             display: "flex",
