@@ -56,6 +56,7 @@ class AdType extends Component {
 
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+    this.props.setCampaignInfoForTransaction({ extend_id: null });
     if (
       (this.props.mainBusiness &&
         this.props.mainBusiness.instagram_access === "0") ||
@@ -294,12 +295,8 @@ class AdType extends Component {
 
   render() {
     const { translate } = this.props.screenProps;
-    const {
-      backgroundColor,
-      textColor,
-      MainIcon,
-      ad_type_array,
-    } = this.getValuebasedOnActiveSlide();
+    const { backgroundColor, textColor, MainIcon, ad_type_array } =
+      this.getValuebasedOnActiveSlide();
 
     const { fb_connected, fb_ad_account_id } = this.props.mainBusiness;
 
@@ -554,5 +551,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(
       actionCreators.getFacebookPagesList(accessToken, fb_user_id, permissions)
     ),
+  setCampaignInfoForTransaction: (data) =>
+    dispatch(actionCreators.setCampaignInfoForTransaction(data)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdType);

@@ -282,6 +282,7 @@ class App_Install extends Component {
           appChoice={this.state.appChoice}
           appSelections={{ iosAppSelected, androidAppSelected }}
           setTheState={this.setTheState}
+          socialMediaPlatform={this.props.adType}
         />
       </View>
     );

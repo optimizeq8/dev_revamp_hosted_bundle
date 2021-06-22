@@ -48,11 +48,11 @@ class AppChoice extends Component {
       androidData: [],
       callaction:
         list[this.props.socialMediaPlatform || "SnapAd"][
-          this.props.listNum || 1
+          this.props.listNum || 0
         ].call_to_action_list[0],
       callactions:
         list[this.props.socialMediaPlatform || "SnapAd"][
-          this.props.listNum || 1
+          this.props.listNum || 0
         ].call_to_action_list,
       nameError: "",
       callToActionError: "",
