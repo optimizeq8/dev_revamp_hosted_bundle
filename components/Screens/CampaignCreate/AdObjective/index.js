@@ -9,6 +9,7 @@ import {
   StatusBar,
   Text,
   InteractionManager,
+  Platform,
 } from "react-native";
 import { Content, Container } from "native-base";
 // import { Modal } from "react-native-paper";
@@ -951,7 +952,7 @@ class AdObjective extends Component {
             setCampaignInfo={this.setCampaignInfo}
           />
           <Modal
-            animationType={"slide"}
+            animationType={Platform.OS === "ios" ? "slide" : "fade"}
             onDismiss={() => this.setModalVisible(false)}
             isVisible={this.state.modalVisible}
             hardwareAccelerated={true}
