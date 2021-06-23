@@ -99,7 +99,7 @@ class VerifyAccount extends Component {
       timestamp: new Date().getTime(),
       verification_channel: "Mobile",
       channel_changed: false,
-      businessid: this.props.mainBusiness.businessid,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     // USING APP STATE To see if screen is focused or not
     AppState.addEventListener("change", this.handleDidFocusLink);

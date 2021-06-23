@@ -63,7 +63,7 @@ const reducer = (state = initialState, action) => {
         .catch((error) => {
           analytics.track(`a_error`, {
             error_page: "a_error_app_language",
-            error_description: err.response || err.message,
+            error_description: error.response || error.message,
           });
           // Catch never gets called
           // analytics.alias(action.payload.user.userid);
@@ -76,12 +76,8 @@ const reducer = (state = initialState, action) => {
           //   $phone: "+" + action.payload.user.mobile,
           //   logged_out: false,
           // });
-        })
-        .catch((err) => {
-          analytics.track(`a_error`, {
-            error_page: "a_error_mixpanel",
-          });
         });
+
       return {
         ...state,
         userid: action.payload.user.userid,

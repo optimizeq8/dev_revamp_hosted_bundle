@@ -8,6 +8,7 @@ import {
   ScrollView,
   StatusBar,
   Text,
+  Platform,
 } from "react-native";
 import Modal from "react-native-modal";
 
@@ -625,7 +626,7 @@ class AdObjective extends Component {
           )}
         />
         <Modal
-          animationType={"slide"}
+          animationType={Platform.OS === "ios" ? "slide" : "fade"}
           onDismiss={() => this.setModalVisible(false)}
           isVisible={this.state.modalVisible}
           hardwareAccelerated={true}

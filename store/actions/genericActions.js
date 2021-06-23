@@ -133,6 +133,7 @@ export const getBusinessAccounts = (businessSeleced) => {
               index: value ? value : 0,
               userid: getState().auth.userInfo.userid,
               businessSeleced,
+              user: getState().auth.userInfo,
             },
           });
         });
@@ -225,12 +226,11 @@ export const handleAlreadyCreatedCampaigns = (data, channel) => {
     });
     persistor.purge();
     dispatch({
-      type:
-        actionTypes[
-          channel === "snapchat"
-            ? "RESET_CAMPAING_INFO"
-            : "RESET_CAMPAING_INFO_INSTAGRAM"
-        ],
+      type: actionTypes[
+        channel === "snapchat"
+          ? "RESET_CAMPAING_INFO"
+          : "RESET_CAMPAING_INFO_INSTAGRAM"
+      ],
     });
     NavigationService.navigate("AdType", {
       campaignCreationReset: true,

@@ -224,7 +224,7 @@ class App extends React.Component {
 
     adjustConfig.setAttributionCallbackListener((attribution) => {
       // Printing all attribution properties.
-      analytics.identify({
+      analytics.track("install_attribution", {
         trackerToken: attribution.trackerToken,
         trackerName: attribution.trackerName,
         network: attribution.network,
@@ -234,18 +234,6 @@ class App extends React.Component {
         clickLabel: attribution.clickLabel,
         adid: attribution.adid,
       });
-      console.log("Attribution changed!");
-      console.log(attribution.trackerToken);
-      console.log(attribution.trackerName);
-      console.log(attribution.network);
-      console.log(attribution.campaign);
-      console.log(attribution.adgroup);
-      console.log(attribution.creative);
-      console.log(attribution.clickLabel);
-      console.log(attribution.adid);
-      console.log(attribution.costType);
-      console.log(attribution.costAmount);
-      console.log(attribution.costCurrency);
     });
 
     Adjust.create(adjustConfig);
