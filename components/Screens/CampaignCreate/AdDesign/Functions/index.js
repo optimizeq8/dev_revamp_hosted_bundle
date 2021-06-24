@@ -125,7 +125,8 @@ export const formatMedia = (
   fileReadyToUpload,
   rejected,
   data,
-  setTheState
+  setTheState,
+  existing_media
 ) => {
   var body = new FormData();
   let storyAd = {};
@@ -221,8 +222,8 @@ export const formatMedia = (
     //need to send as 1 whenever the user downloads media from different device
     fileReadyToUpload ? 0 : 1
   );
-  body.append("existing_media", campaignInfo.existing_media);
-  if (campaignInfo.existing_media) {
+  body.append("existing_media", existing_media);
+  if (existing_media) {
     let resVideo = media.split("/");
     resVideo = resVideo[resVideo.length - 1];
     body.append("media", resVideo);

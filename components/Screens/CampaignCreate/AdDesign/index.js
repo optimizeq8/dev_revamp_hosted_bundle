@@ -975,7 +975,8 @@ class AdDesign extends Component {
         this.state.fileReadyToUpload,
         this.rejected,
         this.props.data,
-        this.setTheState
+        this.setTheState,
+        this.props.data.existing_media
       );
       await this.handleUpload();
 
@@ -1014,7 +1015,7 @@ class AdDesign extends Component {
           campaign_savedObjective: this.selectedCampaign.savedObjective,
           campaign_existing_media: this.state.campaignInfo.existing_media,
         };
-
+        console.log("this.state.formatted", this.state.formatted);
         if (!this.props.loading) {
           await this.props.ad_design(
             this.state.formatted,
