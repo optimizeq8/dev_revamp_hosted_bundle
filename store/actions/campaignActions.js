@@ -2218,3 +2218,51 @@ export const getExistingMediaSnapchatList = (adType) => {
       });
   };
 };
+
+export const updateCampaignBrandName = (
+  campaign_id,
+  navigation,
+  setModalVisible
+) => {
+  return (dispatch, getState) => {
+    createBaseUrl()
+      .post(`updateSnapAdBrandName`, { campaign_id })
+      .then((res) => res.data)
+      .then((data) => {
+        analytics.track("a_submit_ad_design", {
+          source: "ad_detail",
+          source_action: "a_update_ad_rejection",
+          campaignId: campaign_id,
+          campaign_channel: "snapchat",
+          action_status: data.success ? "success" : "failure",
+          campaign_error: !data.success && data.message,
+          businessid: getState().account.mainBusiness.businessid,
+        });
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "warning",
+          position: "top",
+          duration: 1000,
+        });
+        if (data.success) {
+          setModalVisible(false);
+          navigation.navigate("Dashboard", {
+            source: "ad_detail",
+            source_action: "a_submit_ad_update",
+          });
+        }
+      })
+      .catch((error) => {
+        // console.log("error updateCampaignBrandName", error);
+        analytics.track("a_submit_ad_design", {
+          source: "ad_detail",
+          source_action: "a_update_ad_design",
+          campaignId: campaign_id,
+          campaign_channel: "snapchat",
+          action_status: "failure",
+          campaign_error: error || error.response || error.message,
+          businessid: getState().account.mainBusiness.businessid,
+        });
+      });
+  };
+};

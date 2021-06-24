@@ -123,6 +123,8 @@ class RejectedSnapchatInfo extends Component {
           selectedCampaign={selectedCampaign}
           navigation={this.props.navigation}
           getWalletAmountInKwd={this.props.getWalletAmountInKwd}
+          mainBusiness={this.props.mainBusiness}
+          updateCampaignBrandName={this.props.updateCampaignBrandName}
         />
       </View>
     );
@@ -136,6 +138,14 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.moveRejectedAdAmountToWallet(campaign_id)),
   getWalletAmountInKwd: (amount) =>
     dispatch(actionCreators.getWalletAmountInKwd(amount)),
+  updateCampaignBrandName: (campaign_id, navigation, setModalVisible) =>
+    dispatch(
+      actionCreators.updateCampaignBrandName(
+        campaign_id,
+        navigation,
+        setModalVisible
+      )
+    ),
 });
 
 export default connect(null, mapDispatchToProps)(RejectedSnapchatInfo);
