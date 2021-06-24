@@ -106,6 +106,7 @@ export {
   extendSnapCampagin,
   extendSnapCampaginBudget,
   getExistingMediaSnapchatList,
+  updateCampaignBrandName,
 } from "./campaignActions";
 
 export {

@@ -22,9 +22,12 @@ export default (props) => {
     setModalVisible,
     screenProps,
     selectedCampaign,
+    mainBusiness,
+    navigation,
   } = props;
   const { translate } = screenProps;
-  let { campaign_end } = selectedCampaign;
+  let { campaign_end, brand_name_rejection } = selectedCampaign;
+  console.log("brand_name_rejection", brand_name_rejection);
   return (
     <Modal
       animationIn={"fadeIn"}
@@ -53,8 +56,49 @@ export default (props) => {
                 <Text style={styles.rejectedModalReasonText}>{reason}</Text>
               </View>
             ))}
+          {brand_name_rejection === 1 && (
+            <View style={styles.brandRejection}>
+              <Text style={[styles.rejectedModalReasonBrandText]}>
+                {`Will Change your Brand Name from ${selectedCampaign.brand_name} to ${mainBusiness.businessname}`}
+              </Text>
+              <Text style={[styles.rejectedModalReasonBrandText]}>
+                {`Do you accept to make this change?`}
+              </Text>
+              <View style={styles.buttonView}>
+                <GradientButton
+                  screenProps={screenProps}
+                  text={translate("Update Ad")}
+                  width={RFValue(50, 414)}
+                  height={RFValue(25, 414)}
+                  uppercase
+                  style={styles.updateAdBrandButton}
+                  onPressAction={() => {
+                    setModalVisible(false);
+                    props.handleSnapchatRejection(props.selectedCampaign);
+                  }}
+                  transparent
+                />
+                <GradientButton
+                  screenProps={screenProps}
+                  text={translate("Accept")}
+                  width={RFValue(50, 414)}
+                  height={RFValue(25, 414)}
+                  uppercase
+                  style={styles.updateAdButton}
+                  onPressAction={() => {
+                    props.updateCampaignBrandName(
+                      selectedCampaign.campaign_id,
+                      navigation,
+                      setModalVisible
+                    );
+                  }}
+                />
+              </View>
+            </View>
+          )}
         </ScrollView>
-        {campaign_end === "0" && (
+
+        {!brand_name_rejection && campaign_end === "0" && (
           <GradientButton
             screenProps={screenProps}
             text={translate("Update Ad")}
@@ -64,7 +108,9 @@ export default (props) => {
             style={styles.updateAdButton}
             onPressAction={() => {
               setModalVisible(false);
-              props.handleSnapchatRejection(props.selectedCampaign);
+              if (brand_name_rejection) {
+                props.updateCampaignBrandName(selectedCampaign.campaign_id);
+              } else props.handleSnapchatRejection(props.selectedCampaign);
             }}
           />
         )}

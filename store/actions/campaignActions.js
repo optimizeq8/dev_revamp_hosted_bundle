@@ -1364,8 +1364,7 @@ export const getMediaUploadUrl = (
           type: "danger",
         });
         return dispatch({
-          type:
-            actionTypes.ERROR_GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE,
+          type: actionTypes.ERROR_GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE,
           payload: {
             weblink: "",
             accessCode: "",
@@ -1376,8 +1375,7 @@ export const getMediaUploadUrl = (
       .catch((error) => {
         // console.log("getMediaUploadUrl error", error.response || error.message);
         return dispatch({
-          type:
-            actionTypes.ERROR_GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE,
+          type: actionTypes.ERROR_GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE,
           payload: {
             weblink: "",
             accessCode: "",
@@ -1450,8 +1448,8 @@ export const getWebUploadLinkMedia = (campaign_id, adType) => {
 
             case "CollectionAd":
               const collectionAdArray = data.data;
-              let copyCollectionAdArray = getState().campaignC
-                .collectionAdMedia;
+              let copyCollectionAdArray =
+                getState().campaignC.collectionAdMedia;
               const collectionArray = collectionAdArray.map(
                 (collection, index) => {
                   return {
@@ -2182,6 +2180,54 @@ export const getExistingMediaSnapchatList = (adType) => {
         return dispatch({
           type: actionTypes.GET_SNAP_MEDIA_LIST,
           payload: [],
+        });
+      });
+  };
+};
+
+export const updateCampaignBrandName = (
+  campaign_id,
+  navigation,
+  setModalVisible
+) => {
+  return (dispatch, getState) => {
+    createBaseUrl()
+      .post(`updateSnapAdBrandName`, { campaign_id })
+      .then((res) => res.data)
+      .then((data) => {
+        analytics.track("a_submit_ad_design", {
+          source: "ad_detail",
+          source_action: "a_update_ad_rejection",
+          campaignId: campaign_id,
+          campaign_channel: "snapchat",
+          action_status: data.success ? "success" : "failure",
+          campaign_error: !data.success && data.message,
+          businessid: getState().account.mainBusiness.businessid,
+        });
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "warning",
+          position: "top",
+          duration: 1000,
+        });
+        if (data.success) {
+          setModalVisible(false);
+          navigation.navigate("Dashboard", {
+            source: "ad_detail",
+            source_action: "a_submit_ad_update",
+          });
+        }
+      })
+      .catch((error) => {
+        // console.log("error updateCampaignBrandName", error);
+        analytics.track("a_submit_ad_design", {
+          source: "ad_detail",
+          source_action: "a_update_ad_design",
+          campaignId: campaign_id,
+          campaign_channel: "snapchat",
+          action_status: "failure",
+          campaign_error: error || error.response || error.message,
+          businessid: getState().account.mainBusiness.businessid,
         });
       });
   };
