@@ -36,8 +36,7 @@ import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage"
 import list from "../../../../Data/callactions.data";
 
 const preview = {
-  uri:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+  uri: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
 };
 //Redux
 import { connect } from "react-redux";
@@ -209,12 +208,8 @@ class AdDesign extends Component {
       ) {
         destination = this.state.selectedCampaign.destination;
       } else {
-        const {
-          websitelink,
-          weburl,
-          playstorelink,
-          appstorelink,
-        } = this.props.mainBusiness;
+        const { websitelink, weburl, playstorelink, appstorelink } =
+          this.props.mainBusiness;
         switch (this.state.selectedCampaign.objective) {
           case "BRAND_AWARENESS":
             call_to_action =
@@ -488,7 +483,8 @@ class AdDesign extends Component {
         this.state.selectedCampaign.objective,
         this.props.carouselAdsArray,
         false,
-        this.state.fileReadyToUpload
+        this.state.fileReadyToUpload,
+        this.props.data.existing_media
       );
       await this.handleUpload();
 
@@ -929,8 +925,8 @@ class AdDesign extends Component {
                               // rejected: this.rejected,
                               handleUpload: this.handleUpload,
                               signal: this.state.signal,
-                              uploadCarouselAdCard: this.props
-                                .uploadCarouselAdCard,
+                              uploadCarouselAdCard:
+                                this.props.uploadCarouselAdCard,
                             },
                             this.props.screenProps
                           )

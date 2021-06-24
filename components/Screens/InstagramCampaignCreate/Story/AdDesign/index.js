@@ -68,6 +68,7 @@ class AdDesign extends Component {
         attachment: "BLANK",
         message: "",
         media_type: "",
+        existing_media: 0,
       },
       fileReadyToUpload: false,
       carouselAdCards: {
@@ -169,12 +170,8 @@ class AdDesign extends Component {
       ) {
         destination = this.state.selectedCampaign.destination;
       } else {
-        const {
-          websitelink,
-          weburl,
-          playstorelink,
-          appstorelink,
-        } = this.props.mainBusiness;
+        const { websitelink, weburl, playstorelink, appstorelink } =
+          this.props.mainBusiness;
         switch (this.state.selectedCampaign.objective) {
           case "BRAND_AWARENESS":
             call_to_action =
@@ -434,7 +431,8 @@ class AdDesign extends Component {
         this.state.selectedCampaign.objective,
         this.props.carouselAdsArray,
         false,
-        this.state.fileReadyToUpload
+        this.state.fileReadyToUpload,
+        this.props.data.existing_media
       );
       await this.handleUpload();
 
@@ -456,6 +454,7 @@ class AdDesign extends Component {
           campaign_swipe_up_destination: this.state.campaignInfo.destination,
           campaign_media: this.state.media,
           campaign_media_type: this.state.type,
+          campaign_existing_media: this.state.campaignInfo.existing_media,
           // campaign_appChoice: this.state.appChoice,
         };
         if (!this.props.loading) {
@@ -853,8 +852,8 @@ class AdDesign extends Component {
                             // rejected: this.rejected,
                             handleUpload: this.handleUpload,
                             signal: this.state.signal,
-                            uploadCarouselAdCard: this.props
-                              .uploadCarouselAdCard,
+                            uploadCarouselAdCard:
+                              this.props.uploadCarouselAdCard,
                           },
                           this.props.screenProps
                         )

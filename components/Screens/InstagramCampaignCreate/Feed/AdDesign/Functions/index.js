@@ -85,7 +85,8 @@ export const formatMedia = (
   objective,
   carouselAdsArray,
   allIosVideos = false,
-  fileReadyToUpload = true
+  fileReadyToUpload = true,
+  existing_media
 ) => {
   var body = new FormData();
 
@@ -125,9 +126,8 @@ export const formatMedia = (
       ? !carouselAd.media.includes("http")
       : !media.includes("http")
   ) {
-    let res = (campaignInfo.media_option !== "carousel"
-      ? media
-      : carouselAd.media
+    let res = (
+      campaignInfo.media_option !== "carousel" ? media : carouselAd.media
     ).split("/");
     res = res[res.length - 1];
     let format = res.split(".")[1];
@@ -160,8 +160,8 @@ export const formatMedia = (
   body.append("campaign_type", "InstagramFeedAd");
 
   body.append("media_option", campaignInfo.media_option); //Oneof [single, carousel, collection]
-  body.append("existing_media", campaignInfo.existing_media);
-  if (campaignInfo.existing_media) {
+  body.append("existing_media", existing_media);
+  if (existing_media) {
     let res = media.split("/");
     res = res[res.length - 1];
     body.append("media", res);

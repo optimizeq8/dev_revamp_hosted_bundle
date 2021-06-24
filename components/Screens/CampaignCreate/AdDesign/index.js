@@ -1015,7 +1015,7 @@ class AdDesign extends Component {
           campaign_savedObjective: this.selectedCampaign.savedObjective,
           campaign_existing_media: this.state.campaignInfo.existing_media,
         };
-        console.log("this.state.formatted", this.state.formatted);
+
         if (!this.props.loading) {
           await this.props.ad_design(
             this.state.formatted,
