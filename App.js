@@ -570,13 +570,12 @@ class App extends React.Component {
     // }
   };
   _registerForPushNotificationsAsync = async () => {
-    const permission = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-
-    if (permission.status !== "granted") {
-      const newPermission = await Permissions.askAsync(
-        Permissions.NOTIFICATIONS
-      );
-    }
+    // const permission = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+    // if (permission.status !== "granted") {
+    //   const newPermission = await Permissions.askAsync(
+    //     Permissions.NOTIFICATIONS
+    //   );
+    // }
     // else {
     // let anonId = getUniqueId();
     // let token = await Notifications.getDevicePushTokenAsync();

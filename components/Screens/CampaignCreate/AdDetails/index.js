@@ -236,6 +236,11 @@ class AdDetails extends Component {
       let editedCountryCodes = editedCampaign.targeting.geos.map(
         (geo) => geo.country_code
       );
+      editedCampaign.targeting.demographics[0].languages =
+        this.props.navigation.getParam(
+          "campaign",
+          {}
+        ).targeting.demographics[0].languages;
       this.props.get_interests(editedCountryCodes.join(","));
       editedCampaign.targeting.demographics[0].max_age = parseInt(
         editedCampaign.targeting.demographics[0].max_age
@@ -1098,7 +1103,11 @@ class AdDetails extends Component {
         duration: this.state.duration,
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
       };
-      await this.props.snap_ad_audience_size(obj, obj2);
+      if (!this.state.startEditing) {
+        this.props.snap_ad_audience_size_detail(
+          this.state.campaignInfo.campaign_id
+        );
+      } else this.props.snap_ad_audience_size(obj, obj2);
     }
   };
 
@@ -1113,7 +1122,7 @@ class AdDetails extends Component {
       "mandatory",
       this.state.campaignInfo.targeting.geos[0].country_code
     );
-    if (this.props.average_reach < 25000) {
+    if (this.props.estimated_metrics.impressions < 25000) {
       showMessage({
         message: translate("The targeted audience size is too small"),
         description: translate(
@@ -2091,6 +2100,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.save_campaign_info(info)),
   snap_ad_audience_size: (info, totalReach) =>
     dispatch(actionCreators.snap_ad_audience_size(info, totalReach)),
+  snap_ad_audience_size_detail: (info, totalReach) =>
+    dispatch(actionCreators.snap_ad_audience_size_detail(info, totalReach)),
   get_languages: () => dispatch(actionCreators.get_languages()),
   saveCampaignSteps: (step) => dispatch(actionCreators.saveCampaignSteps(step)),
   setCampaignInfoForTransaction: (data) =>

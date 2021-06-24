@@ -40,12 +40,19 @@ const reducer = (state = initialState, action) => {
           };
           // NOTE: expo-notification not working for iOS
           try {
+            RNNotifications.registerRemoteNotifications();
             RNNotifications.events().registerRemoteNotificationsRegistered(
               (event) => {
                 if (Platform.OS === "android") {
-                  userTraits["$android_devices"] = [event.deviceToken];
+                  userTraits = {
+                    ...userTraits,
+                    android_devices: [event.deviceToken],
+                  };
                 } else {
-                  userTraits["$ios_devices"] = [event.deviceToken];
+                  userTraits = {
+                    ...userTraits,
+                    ios_devices: [event.deviceToken],
+                  };
                 }
                 analytics.identify(action.payload.user.userid, userTraits);
               }
