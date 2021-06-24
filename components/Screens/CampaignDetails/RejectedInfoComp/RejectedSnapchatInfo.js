@@ -125,6 +125,7 @@ class RejectedSnapchatInfo extends Component {
           getWalletAmountInKwd={this.props.getWalletAmountInKwd}
           mainBusiness={this.props.mainBusiness}
           updateCampaignBrandName={this.props.updateCampaignBrandName}
+          updateBrandNameLoading={this.props.updateBrandNameLoading}
         />
       </View>
     );
@@ -148,4 +149,11 @@ const mapDispatchToProps = (dispatch) => ({
     ),
 });
 
-export default connect(null, mapDispatchToProps)(RejectedSnapchatInfo);
+const mapStateToProps = (state) => ({
+  updateBrandNameLoading: state.campaignC.updateBrandNameLoading,
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RejectedSnapchatInfo);

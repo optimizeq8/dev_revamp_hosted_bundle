@@ -2,6 +2,7 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import analytics from "@segment/analytics-react-native";
+import { NavigationActions } from "react-navigation";
 import { persistor } from "../index";
 import createBaseUrl from "./createBaseUrl";
 import { errorMessageHandler } from "./ErrorActions";
@@ -2225,6 +2226,10 @@ export const updateCampaignBrandName = (
   setModalVisible
 ) => {
   return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.UPDATE_BRAND_NAME_LOADING,
+      payload: true,
+    });
     createBaseUrl()
       .post(`updateSnapAdBrandName`, { campaign_id })
       .then((res) => res.data)
@@ -2244,15 +2249,31 @@ export const updateCampaignBrandName = (
           position: "top",
           duration: 1000,
         });
+        dispatch({
+          type: actionTypes.UPDATE_BRAND_NAME_LOADING,
+          payload: false,
+        });
         if (data.success) {
           setModalVisible(false);
-          navigation.navigate("Dashboard", {
-            source: "ad_detail",
-            source_action: "a_submit_ad_update",
-          });
+          navigation.reset(
+            [
+              NavigationActions.navigate({
+                routeName: "Dashboard",
+                params: {
+                  source: "ad_detail",
+                  source_action: "a_update_ad_rejection",
+                },
+              }),
+            ],
+            0
+          );
         }
       })
       .catch((error) => {
+        dispatch({
+          type: actionTypes.UPDATE_BRAND_NAME_LOADING,
+          payload: false,
+        });
         // console.log("error updateCampaignBrandName", error);
         analytics.track("a_submit_ad_design", {
           source: "ad_detail",
