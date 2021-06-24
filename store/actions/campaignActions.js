@@ -2255,18 +2255,10 @@ export const updateCampaignBrandName = (
         });
         if (data.success) {
           setModalVisible(false);
-          navigation.reset(
-            [
-              NavigationActions.navigate({
-                routeName: "Dashboard",
-                params: {
-                  source: "ad_detail",
-                  source_action: "a_update_ad_rejection",
-                },
-              }),
-            ],
-            0
-          );
+          navigation.navigate("Dashboard", {
+            source: "ad_detail_rejection",
+            source_action: "a_update_ad_rejection",
+          });
         }
       })
       .catch((error) => {
