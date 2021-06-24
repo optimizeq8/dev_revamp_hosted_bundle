@@ -6,6 +6,7 @@ import { Notifications as RNNotifications } from "react-native-notifications";
 
 export default (userid) => {
   try {
+    RNNotifications.registerRemoteNotifications();
     RNNotifications.events().registerRemoteNotificationsRegistered((event) => {
       Axios.put(
         `https://track.customer.io/api/v1/customers/${userid}/devices`,

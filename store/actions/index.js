@@ -66,6 +66,7 @@ export {
   updateStatus,
   endCampaign,
   snap_ad_audience_size,
+  snap_ad_audience_size_detail,
   get_interests,
   get_device_brands,
   get_android_versions,

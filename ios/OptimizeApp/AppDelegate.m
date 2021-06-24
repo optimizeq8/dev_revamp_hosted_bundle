@@ -76,22 +76,6 @@ SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWith
   [controller startAndShowLaunchScreen:self.window];
 #endif
 
- if ([UNUserNotificationCenter class] != nil) {
-    [UNUserNotificationCenter currentNotificationCenter].delegate = self;
-    UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
-    [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
-
-      if (granted) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-    [application registerForRemoteNotifications];
-        });
-      }
-
-      if (error != nil) {
-        // NSLog( @"Notiication initialize failed, %@ - %@", error.localizedFailureReason, error.localizedDescription );
-      }
-    }];
-  }
 
 NSDictionary* notification = [launchOptions valueForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
 if (notification != nil) {

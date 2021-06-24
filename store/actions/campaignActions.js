@@ -45,6 +45,34 @@ export const snap_ad_audience_size = (info, totalReach) => {
   };
 };
 
+export const snap_ad_audience_size_detail = (campaign_id, totalReach) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.LOADING_SNAP_AUDIENCE_SIZE,
+      payload: true,
+    });
+    createBaseUrl()
+      .post(`snapcampaignaudiencesize`, { campaign_id })
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        return dispatch({
+          type: actionTypes.SET_SNAP_AUDIENCE_SIZE,
+          payload: data,
+        });
+      })
+      .then(() => dispatch(get_total_reach(totalReach)))
+      .catch((err) => {
+        // console.log("snap_ad_audience_size", err.message || err.response);
+        errorMessageHandler(err);
+        return dispatch({
+          type: actionTypes.ERROR_SET_SNAP_AUDIENCE_SIZE,
+        });
+      });
+  };
+};
+
 export const get_total_reach = (info) => {
   return (dispatch) => {
     createBaseUrl()
@@ -703,7 +731,13 @@ export const ad_details = (
       payload: true,
     });
     createBaseUrl()
-      .post(`savetargeting`, { ...info, coordinates: locationsInfo, districts })
+      .post(`savetargeting`, {
+        ...info,
+        coordinates: locationsInfo,
+        districts,
+        impressions: getState().campaignC.estimated_metrics.impressions,
+        swipes: getState().campaignC.estimated_metrics.swipes,
+      })
       .then((res) => {
         return res.data;
       })
@@ -1364,8 +1398,7 @@ export const getMediaUploadUrl = (
           type: "danger",
         });
         return dispatch({
-          type:
-            actionTypes.ERROR_GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE,
+          type: actionTypes.ERROR_GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE,
           payload: {
             weblink: "",
             accessCode: "",
@@ -1376,8 +1409,7 @@ export const getMediaUploadUrl = (
       .catch((error) => {
         // console.log("getMediaUploadUrl error", error.response || error.message);
         return dispatch({
-          type:
-            actionTypes.ERROR_GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE,
+          type: actionTypes.ERROR_GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE,
           payload: {
             weblink: "",
             accessCode: "",
@@ -1450,8 +1482,8 @@ export const getWebUploadLinkMedia = (campaign_id, adType) => {
 
             case "CollectionAd":
               const collectionAdArray = data.data;
-              let copyCollectionAdArray = getState().campaignC
-                .collectionAdMedia;
+              let copyCollectionAdArray =
+                getState().campaignC.collectionAdMedia;
               const collectionArray = collectionAdArray.map(
                 (collection, index) => {
                   return {
