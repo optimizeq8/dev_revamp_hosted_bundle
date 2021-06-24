@@ -64,10 +64,12 @@ export default (props) => {
           {brand_name_rejection === 1 && (
             <View style={styles.brandRejection}>
               <Text style={[styles.rejectedModalReasonBrandText]}>
-                {`Will Change your Brand Name from ${selectedCampaign.brand_name} to ${mainBusiness.businessname}`}
+                {`${translate(`Will Change your Brand Name from`)} ${
+                  selectedCampaign.brand_name
+                } ${translate("to")} ${mainBusiness.businessname}`}
               </Text>
               <Text style={[styles.rejectedModalReasonBrandText]}>
-                {`Do you accept to make this change?`}
+                {translate(`Do you accept to make this change?`)}
               </Text>
               <View style={styles.buttonView}>
                 <GradientButton

@@ -1630,8 +1630,7 @@ const strings = {
   "Minimum width for video is 1080px": "Minimum width for video is 1080px",
   FEATURED: "FEATURED",
   "Edit Video": "Edit Video",
-  "Processing and upscaling your video now":
-    "Processing and upscaling your video now",
+  "Processing and upscaling your video now": "Processing",
   "Image's aspect ratio must be 9:16\nwith a minimum size of 500px":
     "Image's aspect ratio must be 9:16\nwith a minimum size of 500px",
   "LONGFORM VIDEO": "LongForm Video",
@@ -2169,7 +2168,7 @@ const strings = {
   "Feed / Explore Preview": "Feed / Explore Preview",
   "Story Preview": "Story Preview",
   "Your ads will automatically be shown to your audience in the places they're likely to perform best":
-    "Your ads will automatically be shown to your audience in the places they're likely to perform best",
+    "Your ads will automatically show in the places your audience is at",
   "Targeting too specific, please change targeting for better results":
     "Targeting too specific, please change targeting for better results",
   "Connect To Facebook": "Connect To Facebook",
@@ -2180,9 +2179,20 @@ const strings = {
   "Campaign Options": "Campaign Options",
   Extend: "Extend",
   "The targeted audience size is too small":
-    "The targeted audience size is too small",
+    "The target audience size is too small",
   "Please broaden your demographic or geographic targeting":
-    "Please broaden your demographic or geographic targeting",
+    "Please broaden your targeting",
+  "Attachment URL": "Attachment URL",
+  "URL copied to clipboard": "URL copied to clipboard",
+  "Previous end date": "Previous end date",
+  "New end date": "New end date",
+  "Choose how many days you want to extend the campaign by":
+    "Choose how many days you want to extend the campaign by",
+  "Amount to be paid:": "Amount to be paid:",
+  "Payment methods": "Payment methods",
+  "Ad Destination": "Ad Destination",
+  "Do you accept to make this change?": "Do you accept to make this change?",
+  "Will Change your Brand Name from": "Will Change your Brand Name from",
 };
 
 export default strings;
