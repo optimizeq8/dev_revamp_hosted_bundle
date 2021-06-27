@@ -1082,7 +1082,9 @@ export class InstagramAudience extends Component {
                         {translate("Location")}
                       </Text>
                       <Icon
-                        name={`keyboard-arrow${expandLocation ? "up" : "down"}`}
+                        name={`keyboard-arrow-${
+                          expandLocation ? "up" : "down"
+                        }`}
                         type="MaterialIcons"
                         style={styles.iconDown}
                         onPress={this.expandLocation}
@@ -1223,7 +1225,7 @@ export class InstagramAudience extends Component {
                         {translate("Demographic")}
                       </Text>
                       <Icon
-                        name={`keyboard-arrow${
+                        name={`keyboard-arrow-${
                           expandDemographics ? "up" : "down"
                         }`}
                         type="MaterialIcons"
@@ -1466,7 +1468,7 @@ export class InstagramAudience extends Component {
                         {translate("Devices")}
                       </Text>
                       <Icon
-                        name={`keyboard-arrow${expandDevices ? "up" : "down"}`}
+                        name={`keyboard-arrow-${expandDevices ? "up" : "down"}`}
                         type="MaterialIcons"
                         style={styles.iconDown}
                         onPress={this.expandDevices}

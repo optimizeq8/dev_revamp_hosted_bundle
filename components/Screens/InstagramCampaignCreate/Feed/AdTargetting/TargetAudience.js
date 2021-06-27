@@ -124,7 +124,7 @@ export class TargetAudience extends Component {
                 {translate("Location")}
               </Text>
               <Icon
-                name={`keyboard-arrow${expandLocation ? "up" : "down"}`}
+                name={`keyboard-arrow-${expandLocation ? "up" : "down"}`}
                 type="MaterialIcons"
                 style={styles.iconDown}
                 onPress={this.expandLocation}
@@ -241,7 +241,7 @@ export class TargetAudience extends Component {
                 {translate("Demographic")}
               </Text>
               <Icon
-                name={`keyboard-arrow${expandDemographics ? "up" : "down"}`}
+                name={`keyboard-arrow-${expandDemographics ? "up" : "down"}`}
                 type="MaterialIcons"
                 style={styles.iconDown}
                 onPress={this.expandDemographics}
@@ -465,7 +465,7 @@ export class TargetAudience extends Component {
               />
               <Text style={styles.audienceHeading}>{translate("Devices")}</Text>
               <Icon
-                name={`keyboard-arrow${expandDevices ? "up" : "down"}`}
+                name={`keyboard-arrow-${expandDevices ? "up" : "down"}`}
                 type="MaterialIcons"
                 style={styles.iconDown}
                 onPress={this.expandDevices}
