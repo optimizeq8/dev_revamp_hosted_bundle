@@ -24,7 +24,7 @@ export default (props) => {
     selectedCampaign,
   } = props;
   const { translate } = screenProps;
-  let { campaign_end } = selectedCampaign;
+  let { campaign_end, refund_request } = selectedCampaign;
   return (
     <Modal
       animationIn={"fadeIn"}
@@ -54,7 +54,7 @@ export default (props) => {
               </View>
             ))}
         </ScrollView>
-        {campaign_end === "0" && (
+        {campaign_end === "0" && refund_request === "0" && (
           <GradientButton
             screenProps={screenProps}
             text={translate("Update Ad")}
@@ -68,7 +68,7 @@ export default (props) => {
             }}
           />
         )}
-        {campaign_end === "0" && (
+        {campaign_end === "0" && refund_request === "0" && (
           <TouchableOpacity
             style={styles.returnAmountWalletLinkView}
             onPress={() => {
