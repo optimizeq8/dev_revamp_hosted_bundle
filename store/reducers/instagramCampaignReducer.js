@@ -577,9 +577,8 @@ const reducer = (state = initialState, action) => {
         //if sent back they will be added from the backend
         if (instaRejCampaign.hasOwnProperty("link")) {
           if (instaRejCampaign.link.includes("?utm_source")) {
-            instaRejCampaign.link = instaRejCampaign.link.split(
-              "?utm_source"
-            )[0];
+            instaRejCampaign.link =
+              instaRejCampaign.link.split("?utm_source")[0];
           }
         }
         instaRejCampaign.attachment = instaRejCampaignAttacment;
@@ -626,7 +625,9 @@ const reducer = (state = initialState, action) => {
       );
       if (index === "all") {
         customLocationsOrg = [];
-      } else customLocationsOrg.splice(action.payload.index, 1);
+      } else
+        customLocationsOrg &&
+          customLocationsOrg.splice(action.payload.index, 1);
 
       return {
         ...state,
