@@ -2193,6 +2193,14 @@ const strings = {
   "Ad Destination": "Ad Destination",
   "Do you accept to make this change?": "Do you accept to make this change?",
   "Will Change your Brand Name from": "Will Change your Brand Name from",
+  "Your Remaining budget will be added to Your wallet in the next {{hours}} hours":
+    "Your Remaining budget will be added to Your wallet in the next {{hours}} hours",
+  12: "12",
+  24: "24",
+  48: "48",
+  "GET MORE PEOPLE TO ENGAGE WITH YOUR INSTAGRAM POSTS":
+    "GET MORE PEOPLE TO ENGAGE WITH YOUR INSTAGRAM POSTS",
+  "No Button": "No Button",
 };
 
 export default strings;

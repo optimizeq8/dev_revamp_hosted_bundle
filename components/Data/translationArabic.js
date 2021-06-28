@@ -2184,8 +2184,15 @@ const strings = {
   "Amount to be paid:": "المبلغ المستحق للدفع:",
   "Payment methods": "طرق الدفع",
   "Ad Destination": "وجهة الإعلان",
-  "Do you accept to make this change?": "",
-  "Will Change your Brand Name from": "",
+  "Do you accept to make this change?": "هل تقبل تطبيق التعديلات؟",
+  "Will Change your Brand Name from": "سيتم تغيير اسم المشروع من",
+  "Your Remaining budget will be added to Your wallet in the next {{hours}} hours":
+    "المبلغ المتبقي من ميزانيتك سوف يتم إضافته الى المحفظة الخاصة بك خلال {{hours}} ساعة",
+  12: "",
+  24: "",
+  48: "",
+  "GET MORE PEOPLE TO ENGAGE WITH YOUR INSTAGRAM POSTS": "",
+  "No Button": "",
 };
 
 export default strings;
