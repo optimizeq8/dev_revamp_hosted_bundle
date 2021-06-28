@@ -89,7 +89,7 @@ class SnapchatLocation extends Component {
     if (!remove) locInfo.index = locationsInfo.length;
     if (index > -1 && remove) {
       locationsInfo.splice(index, 1);
-      markers.splice(index, 1);
+      markers && markers.splice(index, 1);
       this.props.deleteCustomLocation(index, this.props.audience);
     } else {
       locationsInfo = [...locationsInfo, locInfo];
