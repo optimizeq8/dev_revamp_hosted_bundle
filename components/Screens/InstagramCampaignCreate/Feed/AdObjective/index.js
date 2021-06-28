@@ -492,8 +492,17 @@ class AdObjective extends Component {
   stopTimer = () => {
     if (this.timer) clearTimeout(this.timer);
   };
+  generateFeedList = () => {
+    let list = [];
+    list = [...this.props.instagramObjectives["InstagramFeedAd"]];
+    // Do not show Post engagement campaign  for InsatgramFeedAd new post
+    if (this.state.campaignInfo.existingPost === 1) {
+      list = list.filter((item) => item.value !== "POST_ENGAGEMENT");
+    }
+    return list;
+  };
   render() {
-    const list = this.props.instagramObjectives["InstagramFeedAd"].map((o) => (
+    const list = this.generateFeedList().map((o) => (
       <ObjectivesCard
         choice={o}
         // selected={this.state.campaignInfo.objective}
