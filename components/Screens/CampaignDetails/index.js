@@ -606,10 +606,11 @@ class CampaignDetails extends Component {
               campaignStatus={loading ? null : selectedCampaign.status}
             />
             {selectedCampaign &&
-              selectedCampaign.campaign_end === "0" &&
-              this.campaignEndedOrNot(selectedCampaign) &&
-              selectedCampaign.lifetime_budget_micro >
-                selectedCampaign.spends &&
+              (selectedCampaign.refund_request === "1" ||
+                (selectedCampaign.campaign_end === "0" &&
+                  this.campaignEndedOrNot(selectedCampaign) &&
+                  selectedCampaign.lifetime_budget_micro >
+                    selectedCampaign.spends)) &&
               !this.state.expand && (
                 <View style={styles.remainingBudgetContainer}>
                   <Icon
@@ -619,7 +620,8 @@ class CampaignDetails extends Component {
                   />
                   <Text style={styles.remainingBudgetText}>
                     {translate(
-                      "Your Remaining budget will be added to Your wallet in the next 48 hours"
+                      `Your Remaining budget will be added to Your wallet in the next {{hours}} hours`,
+                      { hours: 24 }
                     )}
                   </Text>
                 </View>

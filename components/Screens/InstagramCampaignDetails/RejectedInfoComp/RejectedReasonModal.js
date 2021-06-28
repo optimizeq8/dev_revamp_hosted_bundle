@@ -24,7 +24,7 @@ export default (props) => {
     selectedCampaign,
   } = props;
   const { translate } = screenProps;
-
+  const { refund_request } = selectCampaign;
   return (
     <Modal
       animationIn={"fadeIn"}
@@ -60,38 +60,44 @@ export default (props) => {
               </View>
             ))}
         </ScrollView>
-        <GradientButton
-          screenProps={screenProps}
-          text={translate("Update Ad")}
-          width={RFValue(100, 414)}
-          height={RFValue(25, 414)}
-          uppercase
-          style={styles.updateAdButton}
-          onPressAction={() => {
-            setModalVisible(false);
-            props.handleSnapchatRejection(props.selectedCampaign);
-          }}
-        />
-        <TouchableOpacity
-          style={styles.returnAmountWalletLinkView}
-          onPress={() => {
-            setModalVisible(false);
-            props.getWalletAmountInKwd(selectedCampaign.lifetime_budget_micro);
-            props.navigation.navigate("PaymentForm", {
-              amount: selectedCampaign.lifetime_budget_micro,
-              refundAmountToWallet: true,
-              selectedCampaign: selectedCampaign,
-              source: "open_wallet",
-              source_action: "a_return_amount_to_wallet",
-              channel: "instagram",
-              keep_campaign: selectedCampaign.spends > 0 ? 1 : 0,
-            });
-          }}
-        >
-          <Text style={styles.returnAmountWalletLinkText}>
-            {translate("Return amount to wallet")}
-          </Text>
-        </TouchableOpacity>
+        {refund_request === "0" && (
+          <GradientButton
+            screenProps={screenProps}
+            text={translate("Update Ad")}
+            width={RFValue(100, 414)}
+            height={RFValue(25, 414)}
+            uppercase
+            style={styles.updateAdButton}
+            onPressAction={() => {
+              setModalVisible(false);
+              props.handleSnapchatRejection(props.selectedCampaign);
+            }}
+          />
+        )}
+        {refund_request === "0" && (
+          <TouchableOpacity
+            style={styles.returnAmountWalletLinkView}
+            onPress={() => {
+              setModalVisible(false);
+              props.getWalletAmountInKwd(
+                selectedCampaign.lifetime_budget_micro
+              );
+              props.navigation.navigate("PaymentForm", {
+                amount: selectedCampaign.lifetime_budget_micro,
+                refundAmountToWallet: true,
+                selectedCampaign: selectedCampaign,
+                source: "open_wallet",
+                source_action: "a_return_amount_to_wallet",
+                channel: "instagram",
+                keep_campaign: selectedCampaign.spends > 0 ? 1 : 0,
+              });
+            }}
+          >
+            <Text style={styles.returnAmountWalletLinkText}>
+              {translate("Return amount to wallet")}
+            </Text>
+          </TouchableOpacity>
+        )}
       </BlurView>
     </Modal>
   );
