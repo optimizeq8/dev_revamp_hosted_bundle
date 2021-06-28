@@ -2170,8 +2170,22 @@ const strings = {
   "Select an existing media from previously launched campaign":
     "حدد وسائط موجودة من حملة تم إطلاقها مسبقًا",
   "Campaign Options": "خيارات الحملة",
-  Extend: "",
-  "The targeted audience size is too small": "",
-  "Please broaden your demographic or geographic targeting": "",
+  Extend: "مدد",
+  "The targeted audience size is too small":
+    "حجم الجمهور المستهدف أصغر من المقبول",
+  "Please broaden your demographic or geographic targeting":
+    "يرجى توسيع نطاق الاستهداف الخاص بك",
+  "Attachment URL": "رابط وجهة الإعلان",
+  "URL copied to clipboard": "تم نسخ الرابط",
+  "Previous end date": "تاريخ الانتهاء القديم",
+  "New end date": "تاريخ الانتهاء الجديد",
+  "Choose how many days you want to extend the campaign by":
+    "اختر عدد الأيام التي تريد تمديد الحملة بها",
+  "Amount to be paid:": "المبلغ المستحق للدفع:",
+  "Payment methods": "طرق الدفع",
+  "Ad Destination": "وجهة الإعلان",
+  "Do you accept to make this change?": "",
+  "Will Change your Brand Name from": "",
 };
+
 export default strings;

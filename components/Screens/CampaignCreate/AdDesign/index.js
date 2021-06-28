@@ -975,7 +975,8 @@ class AdDesign extends Component {
         this.state.fileReadyToUpload,
         this.rejected,
         this.props.data,
-        this.setTheState
+        this.setTheState,
+        this.props.data.existing_media
       );
       await this.handleUpload();
 

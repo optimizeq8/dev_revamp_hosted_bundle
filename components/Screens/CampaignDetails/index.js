@@ -708,6 +708,7 @@ class CampaignDetails extends Component {
                       }
                       navigation={this.props.navigation}
                       selectedCampaign={selectedCampaign}
+                      mainBusiness={this.props.mainBusiness}
                     />
                     {selectedCampaign.spends !== 0 && (
                       <TouchableOpacity

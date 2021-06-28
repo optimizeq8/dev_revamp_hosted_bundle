@@ -246,6 +246,7 @@ const initialState = {
   targeting_error_message: null,
   snapchatExistingMediaListLoading: false,
   snapchatExistingMediaList: [],
+  updateBrandNameLoading: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -1272,6 +1273,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         snapchatExistingMediaListLoading: action.payload,
+      };
+    }
+    case actionTypes.UPDATE_BRAND_NAME_LOADING: {
+      return {
+        ...state,
+        updateBrandNameLoading: action.payload,
       };
     }
     default:

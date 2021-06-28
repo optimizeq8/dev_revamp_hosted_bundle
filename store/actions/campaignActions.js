@@ -2,6 +2,7 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import analytics from "@segment/analytics-react-native";
+import { NavigationActions } from "react-navigation";
 import { persistor } from "../index";
 import createBaseUrl from "./createBaseUrl";
 import { errorMessageHandler } from "./ErrorActions";
@@ -2214,6 +2215,66 @@ export const getExistingMediaSnapchatList = (adType) => {
         return dispatch({
           type: actionTypes.GET_SNAP_MEDIA_LIST,
           payload: [],
+        });
+      });
+  };
+};
+
+export const updateCampaignBrandName = (
+  campaign_id,
+  navigation,
+  setModalVisible
+) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.UPDATE_BRAND_NAME_LOADING,
+      payload: true,
+    });
+    createBaseUrl()
+      .post(`updateSnapAdBrandName`, { campaign_id })
+      .then((res) => res.data)
+      .then((data) => {
+        analytics.track("a_submit_ad_design", {
+          source: "ad_detail",
+          source_action: "a_update_ad_rejection",
+          campaignId: campaign_id,
+          campaign_channel: "snapchat",
+          action_status: data.success ? "success" : "failure",
+          campaign_error: !data.success && data.message,
+          businessid: getState().account.mainBusiness.businessid,
+        });
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "warning",
+          position: "top",
+          duration: 1000,
+        });
+        dispatch({
+          type: actionTypes.UPDATE_BRAND_NAME_LOADING,
+          payload: false,
+        });
+        if (data.success) {
+          setModalVisible(false);
+          navigation.navigate("Dashboard", {
+            source: "ad_detail_rejection",
+            source_action: "a_update_ad_rejection",
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({
+          type: actionTypes.UPDATE_BRAND_NAME_LOADING,
+          payload: false,
+        });
+        // console.log("error updateCampaignBrandName", error);
+        analytics.track("a_submit_ad_design", {
+          source: "ad_detail",
+          source_action: "a_update_ad_design",
+          campaignId: campaign_id,
+          campaign_channel: "snapchat",
+          action_status: "failure",
+          campaign_error: error || error.response || error.message,
+          businessid: getState().account.mainBusiness.businessid,
         });
       });
   };

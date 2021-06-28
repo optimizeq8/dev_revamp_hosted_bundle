@@ -161,6 +161,7 @@ class Dashboard extends Component {
         (!this.props.campaignList || this.props.campaignList.length === 0) &&
         this.props.mainBusiness
       ) {
+        console.log("called from here");
         this.props.getCampaignList(
           this.props.mainBusiness.businessid,
           this.increasePage,
@@ -187,7 +188,10 @@ class Dashboard extends Component {
       "source",
       this.props.screenProps.prevAppState
     );
-    if (source === "payment_end" && this.props.mainBusiness) {
+    if (
+      (source === "payment_end" || source === "ad_detail_rejection") &&
+      this.props.mainBusiness
+    ) {
       this.reloadData();
     }
     let ignoreBiometricModal = await AsyncStorage.getItem(
