@@ -155,9 +155,9 @@ class AdPaymentReview extends Component {
       targeting.demographics[0].gender
         ? startCase(lowerCase(targeting.demographics[0].gender))
         : "All";
-    let countryName = this.props.countryName.map((country) =>
-      translate(country)
-    );
+    let countryName =
+      this.props.countryName &&
+      this.props.countryName.map((country) => translate(country));
     if (this.props.regionNames) {
       var regionNames = this.props.regionNames.map((region) =>
         translate(region.name)
