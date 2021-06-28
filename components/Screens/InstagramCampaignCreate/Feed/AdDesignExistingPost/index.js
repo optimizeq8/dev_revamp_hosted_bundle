@@ -23,8 +23,7 @@ import Axios from "axios";
 import list from "../../../../Data/callactions.data";
 
 const preview = {
-  uri:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+  uri: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
 };
 //Redux
 import { connect } from "react-redux";
@@ -340,6 +339,7 @@ class InstagramAdDesignExistingPost extends Component {
         (!this.props.data.attachment.app_name ||
           this.props.data.attachment.app_name === "")) ||
       (this.props.data.objective !== "BRAND_AWARENESS" &&
+        this.props.data.objective !== "POST_ENGAGEMENT" &&
         this.props.data.objective !== "VIDEO_VIEWS" &&
         (!this.props.data.call_to_action ||
           (this.props.data &&
@@ -416,6 +416,7 @@ class InstagramAdDesignExistingPost extends Component {
       body.append(
         "destination",
         (data.objective === "BRAND_AWARENESS" ||
+          data.objective === "POST_ENGAGEMENT" ||
           data.objective === "VIDEO_VIEWS") &&
           data.link
           ? "link"

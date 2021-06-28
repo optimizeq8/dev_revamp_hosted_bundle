@@ -117,6 +117,7 @@ export default class ClickDestination extends Component {
                       this.props.campaignInfo.destination
                     )
                       ? this.props.campaignInfo.destination === "link" ||
+                        this.props.data.objective === "POST_ENGAGEMENT" ||
                         (this.props.data.objective === "BRAND_AWARENESS" &&
                           this.props.campaignInfo.destination === "BLANK")
                         ? translate("Website")

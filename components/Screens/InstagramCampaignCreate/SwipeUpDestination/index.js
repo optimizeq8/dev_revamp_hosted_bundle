@@ -95,6 +95,18 @@ class SwipeUpDestination extends React.Component {
           />
         );
         break;
+      case "POST_ENGAGEMENT":
+        listIndex = 0;
+        content = (
+          <Website
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+            listNum={listIndex}
+            toggleClickDestination={this.props.toggleClickDestination}
+            rejected={rejected}
+          />
+        );
+        break;
       default:
         listIndex = 0;
         break;

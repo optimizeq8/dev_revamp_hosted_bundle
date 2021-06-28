@@ -176,7 +176,6 @@ export const getCampaignStats = (campaign, duration) => {
 };
 
 export const getCampaignList = (id, increasePage, cancelToken) => {
-  console.log("campaignList call");
   return (dispatch) => {
     dispatch(getNumberOfCampaigns());
     dispatch({
