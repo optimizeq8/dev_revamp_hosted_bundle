@@ -48,6 +48,7 @@ class RejectedSnapchatInfo extends Component {
     setRejectedCampaignData({ ...selectedCampaign, savedObjective });
     navigation.navigate("AdDesign", {
       rejected: true,
+      editInReview: false,
     });
   };
 

@@ -237,7 +237,8 @@ export const ad_design = (
   onToggleModal,
   rejected,
   cancelUplaod,
-  segmentInfo
+  segmentInfo,
+  editInReview
 ) => {
   onToggleModal(true);
   return (dispatch, getState) => {
@@ -249,12 +250,17 @@ export const ad_design = (
       ...axios.defaults.headers.common,
       "Content-Type": "multipart/form-data",
     };
+    console.log("rejected, editInReview ", rejected, editInReview, info);
     createBaseUrl()
-      .post(rejected ? `reuploadbrandmedia` : `savebrandmedia`, info, {
-        onUploadProgress: (ProgressEvent) =>
-          loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
-        cancelToken: cancelUplaod.token,
-      })
+      .post(
+        rejected && !editInReview ? `reuploadbrandmedia` : `savebrandmedia`,
+        info,
+        {
+          onUploadProgress: (ProgressEvent) =>
+            loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+          cancelToken: cancelUplaod.token,
+        }
+      )
       .then((res) => {
         return res.data;
       })

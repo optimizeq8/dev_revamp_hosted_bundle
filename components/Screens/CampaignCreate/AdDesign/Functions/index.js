@@ -126,7 +126,8 @@ export const formatMedia = (
   rejected,
   data,
   setTheState,
-  existing_media
+  existing_media,
+  editInReview = 0
 ) => {
   var body = new FormData();
   let storyAd = {};
@@ -234,6 +235,7 @@ export const formatMedia = (
     mediaLink = mediaLink[mediaLink.length - 1];
     body.append("media_link", mediaLink);
   }
+  body.append("edit", editInReview ? 1 : 0); // For updating the ad media/headline/brand_name/destination while ad is in review
   setTheState({
     formatted: body,
   });
