@@ -356,6 +356,8 @@ class CampaignDetails extends Component {
     navigation.navigate("AdDesign", {
       rejected: true,
       editInReview: true,
+      source: "campaign_detail",
+      source_action: "a_review_ad",
     });
   };
 
