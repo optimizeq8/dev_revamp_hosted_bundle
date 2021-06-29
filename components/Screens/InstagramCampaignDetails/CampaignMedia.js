@@ -145,7 +145,9 @@ export default (props) => {
                 source={{
                   uri:
                     !loading && selectedCampaign
-                      ? selectedCampaign.media
+                      ? selectedCampaign.media_option === "carousel"
+                        ? selectedCampaign.carousel_media[0].media
+                        : selectedCampaign.media
                       : "../../../assets/images/emptyPlaceHolder.png",
                 }}
                 isMuted
@@ -174,7 +176,11 @@ export default (props) => {
                 {...{
                   preview,
                   uri:
-                    !loading && selectedCampaign ? selectedCampaign.media : "",
+                    !loading && selectedCampaign
+                      ? selectedCampaign.media_option === "carousel"
+                        ? selectedCampaign.carousel_media[0].media
+                        : selectedCampaign.media
+                      : "",
                 }}
                 style={{
                   borderRadius: RFValue(20, 414),
