@@ -5,6 +5,7 @@ import {
   Animated,
   BackHandler,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -305,6 +306,40 @@ class InstagramCampaignDetails extends Component {
       });
     }
   };
+  createDeleteDialog = () => {
+    const { translate } = this.props.screenProps;
+    const { selectedCampaign } = this.props;
+    return Alert.alert(
+      translate("Cancel Campaign"),
+      translate(
+        `Your Remaining budget will be added to Your wallet in the next {{hours}} hours`,
+        { hours: 12 }
+      ),
+      [
+        {
+          text: translate("Cancel"),
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: translate("OK"),
+          onPress: () => {
+            this.props.getWalletAmountInKwd(
+              selectedCampaign.lifetime_budget_micro
+            );
+            this.props.navigation.navigate("PaymentForm", {
+              amount: selectedCampaign.lifetime_budget_micro,
+              refundAmountToWallet: true,
+              selectedCampaign: selectedCampaign,
+              keep_campaign: selectedCampaign.spends > 0 ? 1 : 0,
+              source: "ad_detail",
+              source_action: "a_return_amount_to_wallet",
+            });
+          },
+        },
+      ]
+    );
+  };
   render() {
     let loading = this.props.loading;
     const { translate } = this.props.screenProps;
@@ -600,6 +635,33 @@ class InstagramCampaignDetails extends Component {
                     </Text>
                   </View>
                 )}
+            {loading
+              ? null
+              : !this.state.expand &&
+                selectedCampaign &&
+                selectedCampaign.ad_status === "In Review" &&
+                selectedCampaign.campaign_end === "0" && (
+                  <TouchableOpacity
+                    onPress={this.createDeleteDialog}
+                    style={[styles.deleteStatus]}
+                  >
+                    <Icon
+                      style={[styles.circleIcon]}
+                      name={"circle"}
+                      type={"FontAwesome"}
+                    />
+                    <Icon
+                      style={[styles.circleIcon]}
+                      name={"circle"}
+                      type={"FontAwesome"}
+                    />
+                    <Icon
+                      style={[styles.circleIcon]}
+                      name={"circle"}
+                      type={"FontAwesome"}
+                    />
+                  </TouchableOpacity>
+                )}
             <ScrollView
               contentContainerStyle={styles.scrollViewContentContainerStyle}
               scrollEnabled={!this.state.expand}
@@ -865,6 +927,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(
       actionCreators.downloadInstagramCSV(campaign_id, email, showModalMessage)
     ),
+  getWalletAmountInKwd: (amount) =>
+    dispatch(actionCreators.getWalletAmountInKwd(amount)),
 });
 export default connect(
   mapStateToProps,

@@ -318,7 +318,7 @@ class CampaignDetails extends Component {
       [
         {
           text: translate("Cancel"),
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => {},
           style: "cancel",
         },
         {
