@@ -250,7 +250,7 @@ export const ad_design = (
       ...axios.defaults.headers.common,
       "Content-Type": "multipart/form-data",
     };
-    console.log("rejected, editInReview ", rejected, editInReview, info);
+    // console.log("rejected, editInReview ", rejected, editInReview, info);
     createBaseUrl()
       .post(
         rejected && !editInReview ? `reuploadbrandmedia` : `savebrandmedia`,
