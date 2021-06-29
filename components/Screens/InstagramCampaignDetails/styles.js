@@ -496,7 +496,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontSize: RFValue(7, 414),
   },
-  circleIcon: { color: "#fff", fontSize: RFValue(7, 414) },
+  circleIcon: {
+    color: "#fff",
+    fontSize: RFValue(5, 414),
+    marginHorizontal: RFValue(1, 414),
+  },
   reviewText: {
     fontFamily: "montserrat-bold",
     fontSize: RFValue(5.5, 414),
@@ -578,6 +582,19 @@ const styles = StyleSheet.create({
   copyIcon: {
     alignSelf: "flex-end",
     left: RFValue(4, 414),
+  },
+  deleteStatus: {
+    borderRadius: RFValue(8, 414),
+    marginBottom: RFValue(2.5, 414),
+    paddingHorizontal: RFValue(5, 414),
+    top: RFValue(12, 414),
+    right: "7%",
+    alignItems: "center",
+    position: "absolute",
+    flexDirection: "row",
+    backgroundColor: "rgba(0,0,0,0.2)",
+    height: RFValue(10, 414),
+    zIndex: 100,
   },
 });
 

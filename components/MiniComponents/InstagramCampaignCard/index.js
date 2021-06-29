@@ -67,6 +67,15 @@ class CampaignCard extends Component {
       this.props.campaign.campaign_id,
       this.props.navigation
     );
+
+    // stats API is called here so that  website_interaction is shown for the first time
+    this.props.getInstagraCampaignStats(this.props.campaign, {
+      start_time: this.props.campaign.start_time,
+      end_time:
+        new Date(this.props.campaign.end_time) < new Date()
+          ? this.props.campaign.end_time
+          : new Date(),
+    });
   };
 
   campaignEndedOrNot = (campaign, endDate) => {
@@ -367,6 +376,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getInstagramCampaignDetails: (id, naviagtion) =>
     dispatch(actionCreators.getInstagramCampaignDetails(id, naviagtion)),
+
+  getInstagraCampaignStats: (info, range) =>
+    dispatch(actionCreators.getInstagraCampaignStats(info, range)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignCard);
 CampaignCard.whyDidYouRender = false;

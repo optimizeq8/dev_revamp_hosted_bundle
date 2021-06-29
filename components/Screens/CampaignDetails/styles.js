@@ -33,6 +33,19 @@ const styles = StyleSheet.create({
     position: "absolute",
     flexDirection: "row",
   },
+  deleteStatus: {
+    borderRadius: RFValue(8, 414),
+    marginBottom: RFValue(2.5, 414),
+    paddingHorizontal: RFValue(5, 414),
+    top: RFValue(12, 414),
+    right: "7%",
+    alignItems: "center",
+    position: "absolute",
+    flexDirection: "row",
+    backgroundColor: "rgba(0,0,0,0.2)",
+    height: RFValue(10, 414),
+    zIndex: 100,
+  },
   mainCard: {
     height: "100%",
     overflow: "hidden",
@@ -103,6 +116,15 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     textTransform: "uppercase",
     textAlign: "left",
+  },
+  titleEdit: {
+    fontSize: RFValue(7, 414),
+    color: "#fff",
+    // paddingVertical: RFValue(5, 414),
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
+    textAlign: "left",
+    paddingHorizontal: RFValue(3, 414),
   },
   urlText: {
     fontSize: RFValue(6, 414),
@@ -490,7 +512,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontSize: RFValue(7, 414),
   },
-  circleIcon: { color: "#fff", fontSize: RFValue(7, 414) },
+  circleIcon: {
+    color: "#fff",
+    fontSize: RFValue(3, 414),
+    marginHorizontal: RFValue(1, 414),
+  },
   reviewText: {
     fontFamily: "montserrat-bold",
     fontSize: RFValue(5.5, 414),
@@ -572,6 +598,22 @@ const styles = StyleSheet.create({
   copyIcon: {
     alignSelf: "flex-end",
     left: RFValue(4, 414),
+  },
+  titleMediaView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  editMediaView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    // paddingVertical: RFValue(5, 414),
+  },
+  editIcon: {
+    marginRight: RFValue(5, 414),
   },
 });
 export default styles;

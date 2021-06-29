@@ -5,6 +5,7 @@ import {
   Animated,
   BackHandler,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -305,6 +306,59 @@ class CampaignDetails extends Component {
       });
     }
   };
+  createDeleteDialog = () => {
+    const { translate } = this.props.screenProps;
+    const { selectedCampaign } = this.props;
+    return Alert.alert(
+      translate("Cancel Campaign"),
+      translate(
+        `Your Remaining budget will be added to Your wallet in the next {{hours}} hours`,
+        { hours: 24 }
+      ),
+      [
+        {
+          text: translate("Cancel"),
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: translate("OK"),
+          onPress: () => {
+            this.props.getWalletAmountInKwd(
+              selectedCampaign.lifetime_budget_micro
+            );
+            this.props.navigation.navigate("PaymentForm", {
+              amount: selectedCampaign.lifetime_budget_micro,
+              refundAmountToWallet: true,
+              selectedCampaign: selectedCampaign,
+              keep_campaign: selectedCampaign.spends > 0 ? 1 : 0,
+              source: "ad_detail",
+              source_action: "a_return_amount_to_wallet",
+            });
+          },
+        },
+      ]
+    );
+  };
+  editMedia = (selectedCampaign) => {
+    const { setRejectedAdType, setRejectedCampaignData, navigation } =
+      this.props;
+    setRejectedAdType(selectedCampaign.campaign_type);
+    let savedObjective =
+      selectedCampaign.destination === "REMOTE_WEBPAGE" ||
+      (selectedCampaign.destination === "COLLECTION" &&
+        !selectedCampaign.attachment.hasOwnProperty("deep_link_uri"))
+        ? "WEBSITE_TRAFFIC"
+        : selectedCampaign.destination === "DEEP_LINK"
+        ? "APP_TRAFFIC"
+        : selectedCampaign.objective;
+    setRejectedCampaignData({ ...selectedCampaign, savedObjective });
+    navigation.navigate("AdDesign", {
+      rejected: true,
+      editInReview: true,
+    });
+  };
+
   render() {
     let loading = this.props.loading;
     const { translate } = this.props.screenProps;
@@ -690,6 +744,33 @@ class CampaignDetails extends Component {
                     </Text>
                   </View>
                 )}
+            {loading
+              ? null
+              : !this.state.expand &&
+                selectedCampaign &&
+                selectedCampaign.ad_status === "In Review" &&
+                selectedCampaign.campaign_end === "0" && (
+                  <TouchableOpacity
+                    onPress={this.createDeleteDialog}
+                    style={[styles.deleteStatus]}
+                  >
+                    <Icon
+                      style={[styles.circleIcon]}
+                      name={"circle"}
+                      type={"FontAwesome"}
+                    />
+                    <Icon
+                      style={[styles.circleIcon]}
+                      name={"circle"}
+                      type={"FontAwesome"}
+                    />
+                    <Icon
+                      style={[styles.circleIcon]}
+                      name={"circle"}
+                      type={"FontAwesome"}
+                    />
+                  </TouchableOpacity>
+                )}
             <ScrollView
               contentContainerStyle={{ height: hp(115) }}
               scrollEnabled={!this.state.expand}
@@ -771,6 +852,12 @@ class CampaignDetails extends Component {
                       screenProps={this.props.screenProps}
                       source={"campaign_detail"}
                       mainBusiness={this.props.mainBusiness}
+                      editMedia={this.editMedia}
+                      edit={
+                        selectedCampaign &&
+                        selectedCampaign.campaign_end === "0" &&
+                        selectedCampaign.ad_status === "In Review"
+                      }
                     />
                     <AudienceOverview
                       screenProps={this.props.screenProps}
@@ -955,5 +1042,10 @@ const mapDispatchToProps = (dispatch) => ({
   get_languages: () => dispatch(actionCreators.get_languages()),
   downloadCSV: (campaign_id, email, showModalMessage) =>
     dispatch(actionCreators.downloadCSV(campaign_id, email, showModalMessage)),
+  setRejectedAdType: (info) => dispatch(actionCreators.setRejectedAdType(info)),
+  setRejectedCampaignData: (rejCampaign) =>
+    dispatch(actionCreators.setRejectedCampaignData(rejCampaign)),
+  getWalletAmountInKwd: (amount) =>
+    dispatch(actionCreators.getWalletAmountInKwd(amount)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignDetails);
