@@ -596,6 +596,31 @@ const styles = StyleSheet.create({
     height: RFValue(10, 414),
     zIndex: 100,
   },
+  titleEdit: {
+    fontSize: RFValue(7, 414),
+    color: "#fff",
+    // paddingVertical: RFValue(5, 414),
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
+    textAlign: "left",
+    paddingHorizontal: RFValue(3, 414),
+  },
+  titleMediaView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  editMediaView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    // paddingVertical: RFValue(5, 414),
+  },
+  editIcon: {
+    marginRight: RFValue(5, 414),
+  },
 });
 
 export default styles;
