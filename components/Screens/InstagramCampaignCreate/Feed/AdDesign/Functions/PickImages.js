@@ -315,6 +315,7 @@ export const _pickImage = async (
                 fileReadyToUpload: true,
                 uneditedImageUri,
                 serialization,
+                existing_media: 0,
               });
 
               analytics.track(`a_media_editor`, {

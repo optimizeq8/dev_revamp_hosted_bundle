@@ -224,19 +224,27 @@ export const saveBrandMediaInstagram = (
   onToggleModal,
   cancelUplaod,
   segmentInfo,
-  rejected
+  rejected,
+  editInReview
 ) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
       payload: true,
     });
+    console.log("rejected, editInReview, info", rejected, editInReview, info);
     InstagramBackendURL()
-      .post(rejected ? `updateinstabrandmedia` : `saveinstabrandmedia`, info, {
-        onUploadProgress: (ProgressEvent) =>
-          loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
-        cancelToken: cancelUplaod.token,
-      })
+      .post(
+        rejected && !editInReview
+          ? `updateinstabrandmedia`
+          : `saveinstabrandmedia`,
+        info,
+        {
+          onUploadProgress: (ProgressEvent) =>
+            loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+          cancelToken: cancelUplaod.token,
+        }
+      )
       .then((res) => {
         return res.data;
       })

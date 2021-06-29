@@ -112,6 +112,7 @@ class AdDesign extends Component {
       existingMediaModal: false,
     };
     this.rejected = this.props.navigation.getParam("rejected", false);
+    this.editInReview = this.props.navigation.getParam("editInReview", false);
   }
 
   componentWillUnmount() {
@@ -432,7 +433,10 @@ class AdDesign extends Component {
         this.props.carouselAdsArray,
         false,
         this.state.fileReadyToUpload,
-        this.props.data.existing_media
+        this.rejected
+          ? this.state.selectedCampaign.existing_media
+          : this.props.data.existing_media,
+        this.editInReview
       );
       await this.handleUpload();
 
@@ -465,7 +469,8 @@ class AdDesign extends Component {
             this.onToggleModal,
             this.state.signal,
             segmentInfo,
-            this.rejected
+            this.rejected,
+            this.editInReview
           );
         }
       } else {
@@ -949,7 +954,8 @@ const mapDispatchToProps = (dispatch) => ({
     onToggleModal,
     cancelUpload,
     segmentInfo,
-    rejected
+    rejected,
+    editInReview
   ) =>
     dispatch(
       actionCreators.saveBrandMediaInstagram(
@@ -959,7 +965,8 @@ const mapDispatchToProps = (dispatch) => ({
         onToggleModal,
         cancelUpload,
         segmentInfo,
-        rejected
+        rejected,
+        editInReview
       )
     ),
   saveCampaignSteps: (step) =>

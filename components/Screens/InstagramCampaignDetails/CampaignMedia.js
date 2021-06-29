@@ -8,9 +8,10 @@ import styles from "./styles";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 import PlaceholderLineComp from "../../MiniComponents/PlaceholderLine";
 
+import PenIcon from "../../../assets/SVGs/Pen";
+import { globalColors } from "../../../GlobalStyles";
 const preview = {
-  uri:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+  uri: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
 };
 
 //TODO: CLEAN CODE
@@ -66,6 +67,8 @@ export default (props) => {
     source,
     campaignDetails,
     mainBusiness,
+    edit,
+    editMedia,
   } = props;
 
   const { translate } = props.screenProps;
@@ -80,9 +83,26 @@ export default (props) => {
     >
       <>
         {loading ? null : (
-          <Text uppercase style={styles.titleMedia}>
-            {translate("Media")}
-          </Text>
+          <View style={styles.titleMediaView}>
+            <Text uppercase style={styles.titleMedia}>
+              {translate("Media")}
+            </Text>
+            {edit && (
+              <TouchableOpacity
+                onPress={() => {
+                  editMedia(selectedCampaign);
+                }}
+                style={styles.editMediaView}
+              >
+                <Text style={styles.titleEdit}>{translate("Edit")}</Text>
+                <PenIcon
+                  style={styles.editIcon}
+                  fill={globalColors.white}
+                  width={RFValue(7, 414)}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
         )}
       </>
       {loading ? (
@@ -125,7 +145,9 @@ export default (props) => {
                 source={{
                   uri:
                     !loading && selectedCampaign
-                      ? selectedCampaign.media
+                      ? selectedCampaign.media_option === "carousel"
+                        ? selectedCampaign.carousel_media[0].media
+                        : selectedCampaign.media
                       : "../../../assets/images/emptyPlaceHolder.png",
                 }}
                 isMuted
@@ -154,7 +176,11 @@ export default (props) => {
                 {...{
                   preview,
                   uri:
-                    !loading && selectedCampaign ? selectedCampaign.media : "",
+                    !loading && selectedCampaign
+                      ? selectedCampaign.media_option === "carousel"
+                        ? selectedCampaign.carousel_media[0].media
+                        : selectedCampaign.media
+                      : "",
                 }}
                 style={{
                   borderRadius: RFValue(20, 414),

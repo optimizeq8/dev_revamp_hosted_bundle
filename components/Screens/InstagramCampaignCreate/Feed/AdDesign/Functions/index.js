@@ -8,7 +8,8 @@ export const _handleSubmission = async (
   finalSubmission,
   setTheState,
   formatCarouselAdParams,
-  screenProps
+  screenProps,
+  editInReview
 ) => {
   const { translate } = screenProps;
   let validStoryAds = [false];
@@ -62,7 +63,8 @@ export const _handleSubmission = async (
               formatCarouselAdParams.signal,
               formatCarouselAdParams.uploadCarouselAdCard,
               setTheState,
-              finalSubmission
+              finalSubmission,
+              editInReview
             );
           }
         });
@@ -86,7 +88,8 @@ export const formatMedia = (
   carouselAdsArray,
   allIosVideos = false,
   fileReadyToUpload = true,
-  existing_media
+  existing_media,
+  editInReview
 ) => {
   var body = new FormData();
 
@@ -123,7 +126,7 @@ export const formatMedia = (
     fileReadyToUpload &&
     !allIosVideos &&
     campaignInfo.media_option === "carousel"
-      ? !carouselAd.media.includes("http")
+      ? carouselAd.media && !carouselAd.media.includes("http")
       : !media.includes("http")
   ) {
     let res = (
@@ -184,6 +187,7 @@ export const formatMedia = (
       ? "BLANK"
       : JSON.stringify(data.attachment)
   );
+  body.append("edit", editInReview ? 1 : 0);
   setTheState({
     formatted: body,
   });

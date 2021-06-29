@@ -341,6 +341,30 @@ class InstagramCampaignDetails extends Component {
       ]
     );
   };
+
+  editMedia = (selectedCampaign) => {
+    const { setInstaRejectedAdType, setInstaRejectedCampaignData, navigation } =
+      this.props;
+
+    setInstaRejectedAdType(selectedCampaign.campaign_type);
+    setInstaRejectedCampaignData({ ...selectedCampaign, existing_media: 1 }); // Passing here existing media as 1 means the media is already uploaded on server
+    this.props.setRejectedCarouselAds(selectedCampaign.carousel_media);
+    navigation.navigate(
+      selectedCampaign.campaign_type === "InstagramFeedAd" &&
+        selectedCampaign.instagram_post_id &&
+        selectedCampaign.instagram_post_id !== ""
+        ? "InstagramAdDesignExistingPost"
+        : selectedCampaign.campaign_type === "InstagramFeedAd"
+        ? "InstagramFeedAdDesign"
+        : "InstagramStoryAdDesign",
+      {
+        rejected: true,
+        editInReview: true,
+        source: "campaign_detail",
+        source_action: "a_review_ad",
+      }
+    );
+  };
   render() {
     let loading = this.props.loading;
     const { translate } = this.props.screenProps;
@@ -745,6 +769,12 @@ class InstagramCampaignDetails extends Component {
                       campaignDetails={true}
                       source={"campaign_detail"}
                       mainBusiness={this.props.mainBusiness}
+                      editMedia={this.editMedia}
+                      edit={
+                        selectedCampaign &&
+                        selectedCampaign.campaign_end === "0" &&
+                        selectedCampaign.ad_status === "In Review"
+                      }
                     />
                     <AudienceOverview
                       screenProps={this.props.screenProps}
@@ -930,6 +960,12 @@ const mapDispatchToProps = (dispatch) => ({
     ),
   getWalletAmountInKwd: (amount) =>
     dispatch(actionCreators.getWalletAmountInKwd(amount)),
+  setInstaRejectedAdType: (info) =>
+    dispatch(actionCreators.setInstaRejectedAdType(info)),
+  setInstaRejectedCampaignData: (rejCampaign) =>
+    dispatch(actionCreators.setInstaRejectedCampaignData(rejCampaign)),
+  setRejectedCarouselAds: (rejCampaign) =>
+    dispatch(actionCreators.setRejectedCarouselAds(rejCampaign)),
 });
 export default connect(
   mapStateToProps,

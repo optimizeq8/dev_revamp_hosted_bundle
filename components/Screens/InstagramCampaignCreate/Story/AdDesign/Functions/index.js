@@ -85,7 +85,8 @@ export const formatMedia = (
   carouselAdsArray,
   allIosVideos = false,
   fileReadyToUpload = true,
-  existing_media
+  existing_media,
+  editInReview
 ) => {
   var body = new FormData();
 
@@ -114,7 +115,7 @@ export const formatMedia = (
       return !allIosVideos ? cardMedia : cardUrl;
     });
   }
-  if (fileReadyToUpload && !allIosVideos) {
+  if (fileReadyToUpload && !allIosVideos && !media.includes("http")) {
     let res = (
       campaignInfo.media_option !== "carousel" ? media : carouselAd.media
     ).split("/");
@@ -149,7 +150,7 @@ export const formatMedia = (
   body.append("campaign_type", "InstagramStoryAd");
   body.append("message", ""); // pass caption as empty string for story ad
   body.append("media_option", campaignInfo.media_option); //Oneof [single, carousel, collection]
-  body.append("existing_media", existing_media);
+  body.append("existing_media", !media.includes("http") ? 0 : existing_media); // To handle rejected ads when uploading a new image/video
   if (existing_media) {
     let res = media.split("/");
     res = res[res.length - 1];
@@ -175,6 +176,7 @@ export const formatMedia = (
       ? "BLANK"
       : JSON.stringify(data.attachment)
   );
+  body.append("edit", editInReview ? 1 : 0);
   setTheState({
     formatted: body,
   });
