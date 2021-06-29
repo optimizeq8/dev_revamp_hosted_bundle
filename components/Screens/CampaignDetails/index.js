@@ -360,7 +360,26 @@ class CampaignDetails extends Component {
       source_action: "a_review_ad",
     });
   };
-
+  showEditMedia = () => {
+    let edit = false;
+    const { selectedCampaign } = this.props;
+    if (
+      selectedCampaign &&
+      selectedCampaign.ad_status === "In Review" &&
+      selectedCampaign.campaign_end === "0"
+    ) {
+      edit = true;
+      if (
+        (selectedCampaign.campaign_type === "CollectionAd" ||
+          selectedCampaign.campaign_type === "StoryAd") &&
+        selectedCampaign.snap_ad_id &&
+        selectedCampaign.snap_ad_id !== ""
+      ) {
+        edit = false;
+      }
+    }
+    return edit;
+  };
   render() {
     let loading = this.props.loading;
     const { translate } = this.props.screenProps;
@@ -584,7 +603,10 @@ class CampaignDetails extends Component {
           }
         }
       }
-
+      console.log(
+        "selectedCampaign",
+        JSON.stringify(selectedCampaign, null, 2)
+      );
       return (
         <SafeAreaView
           style={[{ height: "100%" }]}
@@ -749,9 +771,7 @@ class CampaignDetails extends Component {
             {loading
               ? null
               : !this.state.expand &&
-                selectedCampaign &&
-                selectedCampaign.ad_status === "In Review" &&
-                selectedCampaign.campaign_end === "0" && (
+                this.showEditMedia() && (
                   <TouchableOpacity
                     onPress={this.createDeleteDialog}
                     style={[styles.deleteStatus]}
