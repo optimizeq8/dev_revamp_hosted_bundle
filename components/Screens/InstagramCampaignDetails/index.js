@@ -331,9 +331,10 @@ class InstagramCampaignDetails extends Component {
               amount: selectedCampaign.lifetime_budget_micro,
               refundAmountToWallet: true,
               selectedCampaign: selectedCampaign,
-              keep_campaign: selectedCampaign.spends > 0 ? 1 : 0,
               source: "ad_detail",
               source_action: "a_return_amount_to_wallet",
+              channel: "instagram",
+              keep_campaign: selectedCampaign.spends > 0 ? 1 : 0,
             });
           },
         },
