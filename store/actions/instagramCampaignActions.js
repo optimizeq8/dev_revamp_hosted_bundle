@@ -28,12 +28,14 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
       type: actionTypes.SET_INSTAGRAM_AD_LOADING_OBJ,
       payload: true,
     });
+    console.log("info", info);
     InstagramBackendURL()
       .post(`saveinstacampaign`, info)
       .then((res) => {
         return res.data;
       })
       .then((data) => {
+        console.log("data", JSON.stringify(data, null, 2));
         if (data && data.fb_connected === 0) {
           dispatch(
             updateBusinessConnectedToFacebook({
@@ -112,7 +114,7 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
         }
       })
       .catch((err) => {
-        // console.log("ad_objective", err.message || err.response);
+        console.log("ad_objective error", err || err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_AD_OBJECTIVE_INSTAGRAM,

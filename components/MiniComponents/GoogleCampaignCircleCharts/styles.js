@@ -21,11 +21,12 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignSelf: "flex-start",
     alignItems: "center",
     width: "100%",
     height: RFValue(25, 414),
+    paddingHorizontal: RFValue(10, 414),
   },
   title: {
     fontFamily: "montserrat-bold",

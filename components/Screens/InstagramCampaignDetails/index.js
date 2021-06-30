@@ -799,7 +799,7 @@ class InstagramCampaignDetails extends Component {
                 ) : (
                   !this.state.expand &&
                   attachment !== "BLANK" && (
-                    <>
+                    <View style={styles.adDestinationView}>
                       <Text style={styles.attachementText}>
                         {translate("Ad Destination")}
                       </Text>
@@ -817,7 +817,7 @@ class InstagramCampaignDetails extends Component {
                         <Text style={styles.destinationText}>{attachment}</Text>
                         <CopyIcon fill={"#FFF"} style={styles.copyIcon} />
                       </TouchableOpacity>
-                    </>
+                    </View>
                   )
                 )}
                 {loading ? (

@@ -603,10 +603,7 @@ class CampaignDetails extends Component {
           }
         }
       }
-      console.log(
-        "selectedCampaign",
-        JSON.stringify(selectedCampaign, null, 2)
-      );
+
       return (
         <SafeAreaView
           style={[{ height: "100%" }]}
@@ -904,7 +901,7 @@ class CampaignDetails extends Component {
                 ) : (
                   !this.state.expand &&
                   attachment.url && (
-                    <>
+                    <View style={styles.adDestinationView}>
                       <Text style={styles.attachementText}>
                         {translate("Ad Destination")}
                       </Text>
@@ -924,7 +921,7 @@ class CampaignDetails extends Component {
                         </Text>
                         <CopyIcon fill={"#FFF"} style={styles.copyIcon} />
                       </TouchableOpacity>
-                    </>
+                    </View>
                   )
                 )}
                 {loading ? (

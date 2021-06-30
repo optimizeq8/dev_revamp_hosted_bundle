@@ -615,5 +615,8 @@ const styles = StyleSheet.create({
   editIcon: {
     marginRight: RFValue(5, 414),
   },
+  adDestinationView: {
+    marginHorizontal: RFValue(8, 414),
+  },
 });
 export default styles;
