@@ -24,7 +24,7 @@ export default (props) => {
     selectedCampaign,
   } = props;
   const { translate } = screenProps;
-  const { refund_request } = selectCampaign;
+  const { refund_request } = selectedCampaign;
   return (
     <Modal
       animationIn={"fadeIn"}
