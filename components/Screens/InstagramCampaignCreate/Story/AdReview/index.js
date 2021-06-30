@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, BackHandler } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 import { RFValue } from "react-native-responsive-fontsize";
 import { Transition } from "react-navigation-fluid-transitions";
@@ -28,6 +28,17 @@ class AdStoryDesignReview extends React.Component {
     isVideoLoading: false,
     activeSlide: 0,
   };
+  componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
+  handleBackButton = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
   videoIsLoading = (value) => {
     this.setState({
       isVideoLoading: value,
