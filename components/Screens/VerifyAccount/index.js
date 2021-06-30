@@ -311,6 +311,7 @@ class VerifyAccount extends Component {
       "source",
       this.props.screenProps.prevAppState
     );
+    const { approved } = this.props.mainBusiness;
     this.props.verifyMobileCode(
       {
         mobile: this.state.phoneNum.substring(4),
@@ -319,7 +320,9 @@ class VerifyAccount extends Component {
         userid: this.props.userInfo.userid,
       },
       this.state.verifyByMobile ? "Mobile" : "Email",
-      source === "my_website_tutorial" ? "TutorialWeb" : "Dashboard"
+      source === "my_website_tutorial" && approved !== "0"
+        ? "TutorialWeb"
+        : "Dashboard"
     );
   };
 
