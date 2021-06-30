@@ -146,11 +146,18 @@ class BusinessList extends Component {
       timestamp: new Date().getTime(),
       businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
-    this.props.navigation.navigate("CreateBusinessAccount", {
-      createNewBusiness: true,
-      source: "open_hamburger",
-      source_action: `a_create_buiness_account`,
-    });
+    let notApproved = this.props.businessAccounts.some(
+      (bsn) => bsn.approved === "0"
+    );
+
+    this.props.navigation.navigate(
+      notApproved ? "VerifyBusiness" : "CreateBusinessAccount",
+      {
+        createNewBusiness: true,
+        source: "open_hamburger",
+        source_action: `a_create_buiness_account`,
+      }
+    );
   };
   render() {
     const { translate } = this.props.screenProps;

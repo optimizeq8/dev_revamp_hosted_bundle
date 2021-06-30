@@ -419,6 +419,9 @@ export default createNativeStackNavigator(
     ConnectToFacebook: register({
       require: () => require("../Screens/ConnectToFacebook"),
     }),
+    VerifyBusiness: register({
+      require: () => require("../Screens/VerifyBusiness"),
+    }),
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }

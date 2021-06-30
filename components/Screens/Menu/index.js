@@ -102,12 +102,21 @@ class Menu extends Component {
   };
   handleNavigation = (route, checkForBusinessId = false, params) => {
     const { translate } = this.props.screenProps;
+
+    let notApproved =
+      this.props.mainBusiness &&
+      this.props.mainBusiness.hasOwnProperty("approved") &&
+      this.props.mainBusiness.approved === "0";
+
     if (checkForBusinessId) {
       if (
         this.props.mainBusiness &&
         this.props.mainBusiness.hasOwnProperty("businessid")
       ) {
-        this.props.navigation.navigate(route, params);
+        this.props.navigation.navigate(
+          notApproved ? "VerifyBusiness" : route,
+          params
+        );
       } else {
         showMessage({
           message: translate("Please create a business account first"),
@@ -115,7 +124,10 @@ class Menu extends Component {
         });
       }
     } else {
-      this.props.navigation.navigate(route, params);
+      this.props.navigation.navigate(
+        notApproved ? "VerifyBusiness" : route,
+        params
+      );
     }
   };
 
@@ -156,6 +168,7 @@ class Menu extends Component {
     const { translate } = this.props.screenProps;
     const { mainBusiness } = this.props;
     const businesscategoryName = this.getBusinessCategoryName();
+
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -237,7 +250,7 @@ class Menu extends Component {
                 onPress={() => {
                   //First check if the business is not connected to fb force the user to login
                   if (this.props.mainBusiness.fb_connected === "0") {
-                    this.props.navigation.navigate("WebView", {
+                    this.handleNavigation("WebView", false, {
                       url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}&screenName=menu`,
                       title: "Instagram",
                       source: "open_hamburger",
@@ -249,12 +262,12 @@ class Menu extends Component {
                     mainBusiness.weburl !== ""
                   ) {
                     // TODO: Change this path back to MyWebsiteECommerce after releasing to production for now
-                    this.props.navigation.navigate("MyWebsite", {
+                    this.handleNavigation("MyWebsite", false, {
                       source: "open_hamburger",
                       source_action: "a_open_my_website",
                     });
                   } else {
-                    this.props.navigation.navigate("TutorialWeb", {
+                    this.handleNavigation("TutorialWeb", false, {
                       source: "open_hamburger",
                       source_action: "a_open_website_tutorial",
                     });
@@ -308,7 +321,7 @@ class Menu extends Component {
                 style={styles.options}
                 onPress={() => {
                   // this.props.navigation.navigate("BusinessInfo")
-                  this.props.navigation.navigate("CreateBusinessAccount", {
+                  this.handleNavigation("CreateBusinessAccount", false, {
                     editBusinessInfo: true,
                     source: "open_hamburger",
                     source_action: "a_open_business_info",
@@ -328,7 +341,7 @@ class Menu extends Component {
                   style={styles.options}
                   onPress={() => {
                     // this.props.navigation.navigate("BusinessInfo")
-                    this.props.navigation.navigate("PixelScreen", {
+                    this.handleNavigation("PixelScreen", false, {
                       editBusinessInfo: true,
                       source: "open_hamburger",
                       source_action: "a_open_pixel_info",
@@ -409,7 +422,7 @@ class Menu extends Component {
               <TouchableOpacity
                 style={styles.options}
                 onPress={() =>
-                  this.props.navigation.navigate("WebView", {
+                  this.handleNavigation("WebView", false, {
                     url: "https://www.optimizeapp.com/terms_conditions",
                     title: "Terms & Conditions",
                     source: "app_TNC",
@@ -433,7 +446,7 @@ class Menu extends Component {
               <TouchableOpacity
                 style={styles.options}
                 onPress={() =>
-                  this.props.navigation.navigate("WebView", {
+                  this.handleNavigation("WebView", false, {
                     url: "https://www.optimizeapp.com/privacy",
                     title: "Privacy Policy",
                     source: "app_privacy_policy",

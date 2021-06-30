@@ -21,6 +21,7 @@ export {
   updateBusinessConnectedToFacebook,
   crashAppForSpamUser,
   searchForBusinessInBackend,
+  checkBusinessVerified,
 } from "./accountManagementActions";
 
 export {
