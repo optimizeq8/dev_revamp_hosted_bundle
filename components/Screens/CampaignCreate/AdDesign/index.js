@@ -254,7 +254,10 @@ class AdDesign extends Component {
         this.downloadStoryMedia();
         this.props.setRejectedStoryAds(this.selectedCampaign.story_creatives);
       } else if (this.adType === "CollectionAd") {
-        this.setState({ media: this.selectedCampaign.media });
+        this.setState({
+          media: this.selectedCampaign.media,
+          type: this.selectedCampaign.media_type,
+        });
         this.props.setRejectedCollectionAds({
           collectionAdMedia: this.selectedCampaign.collection_creatives,
           call_to_action: this.selectedCampaign.call_to_action,

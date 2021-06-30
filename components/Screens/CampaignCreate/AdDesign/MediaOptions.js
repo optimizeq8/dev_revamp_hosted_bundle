@@ -25,7 +25,13 @@ export default class MediaOptions extends Component {
       this.props.getWebUploadLinkMedia();
     } else if (title === "Media") {
       this.props._pickImage(
-        rejected ? (media_type === "IMAGE" ? "Images" : "Videos") : "All"
+        rejected
+          ? !media_type || media_type === ""
+            ? "All"
+            : media_type === "IMAGE"
+            ? "Images"
+            : "Videos"
+          : "All"
       );
     } else {
       this.props._pickImage(
