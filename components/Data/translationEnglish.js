@@ -2201,6 +2201,8 @@ const strings = {
   "GET MORE PEOPLE TO ENGAGE WITH YOUR INSTAGRAM POSTS":
     "GET MORE PEOPLE TO ENGAGE WITH YOUR INSTAGRAM POSTS",
   "No Button": "No Button",
+  "Cancel Campaign": "Cancel Campaign",
+  OK: "OK",
 };
 
 export default strings;
