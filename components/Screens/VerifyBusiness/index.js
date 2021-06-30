@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Text } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 import { LinearGradient } from "expo-linear-gradient";
+import analytics from "@segment/analytics-react-native";
 
 //Redux
 import { connect } from "react-redux";
@@ -15,6 +16,44 @@ import globalStyles from "../../../GlobalStyles";
 import styles from "./styles";
 
 class VerifyBusiness extends React.Component {
+  componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`start_verify`, {
+      source,
+      source_action,
+      verification_channel: "Business",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    });
+  }
+  renderBusinessNamesNotApproved = () => {
+    let businessNotApproved = null;
+    let counter = 0;
+    businessNotApproved = this.props.businessAccounts.map((business, index) => {
+      if (business.approved && business.approved === "0") {
+        counter = counter + 1;
+        return (
+          <Text style={styles.businessname}>
+            {counter}. {business.businessname}
+          </Text>
+        );
+      }
+    });
+    return businessNotApproved;
+  };
+  getBusinessIdOfNotApproved = () => {
+    let businessNotApproved = null;
+    businessNotApproved = this.props.businessAccounts.filter(
+      (business) => business.approved && business.approved === "0"
+    );
+    return businessNotApproved[0].businessid;
+  };
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -37,12 +76,18 @@ class VerifyBusiness extends React.Component {
           <Text style={styles.approvalText}>
             Your approval request is in review
           </Text>
+          {this.renderBusinessNamesNotApproved()}
           <GradientButton
             screenProps={this.props.screenProps}
             height={50}
             text={"Check your status"}
             style={styles.refreshButton}
             textStyle={styles.textRefreshStyle}
+            onPressAction={() => {
+              this.props.checkBusinessVerified(
+                this.getBusinessIdOfNotApproved()
+              );
+            }}
           />
         </View>
       </View>
@@ -52,9 +97,12 @@ class VerifyBusiness extends React.Component {
 
 const mapStateToProps = (state) => ({
   checkingBusinessStatus: state.account.checkingBusinessStatus,
+  mainBusiness: state.account.mainBusiness,
+  businessAccounts: state.account.businessAccounts,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  checkBusinessVerified: () => dispatch(actionCreators.checkBusinessVerified()),
+  checkBusinessVerified: (businessid) =>
+    dispatch(actionCreators.checkBusinessVerified(businessid)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(VerifyBusiness);

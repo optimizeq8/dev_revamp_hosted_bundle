@@ -3,6 +3,14 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
+  businessname: {
+    color: globalColors.rum,
+    fontSize: RFValue(8, 414),
+    fontFamily: "montserrat-regular",
+    width: "80%",
+    textAlign: "center",
+    marginTop: 5,
+  },
   approvalText: {
     color: globalColors.rum,
     fontSize: RFValue(8, 414),

@@ -27,6 +27,7 @@ export default class EmptyCampaigns extends Component {
     if (this.props.mainBusiness.hasOwnProperty("businessid")) {
       const device_id = this.props.screenProps.device_id;
       const { userInfo } = this.props;
+      const { approved } = this.props.mainBusiness;
       analytics.track(`a_create_campaign`, {
         source: "dashboard",
         source_action: "a_create_campaign",
@@ -36,12 +37,21 @@ export default class EmptyCampaigns extends Component {
         businessid:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
-      this.props.navigation.navigate("AdType", {
-        source: "dashboard",
-        source_action: "a_create_campaign",
-      });
+      this.props.navigation.navigate(
+        approved === "0" ? "VerifyBusiness" : "AdType",
+        {
+          source: "dashboard",
+          source_action: "a_create_campaign",
+        }
+      );
     } else {
-      this.props.navigation.navigate("CreateBusinessAccount");
+      this.props.navigation.navigate(
+        approved === "0" ? "VerifyBusiness" : "CreateBusinessAccount",
+        {
+          source: "dashboard",
+          source_action: "a_create_campaign",
+        }
+      );
     }
   };
 
@@ -64,7 +74,7 @@ export default class EmptyCampaigns extends Component {
   render() {
     let { mainBusiness, translate, userInfo } = this.props;
     const { verified_account } = userInfo;
-    const { user_role } = mainBusiness;
+    const { user_role, approved } = mainBusiness;
 
     return (
       <View style={styles.flex1}>
@@ -171,10 +181,23 @@ export default class EmptyCampaigns extends Component {
               <TouchableOpacity
                 style={styles.websiteCard}
                 onPress={() => {
-                  this.props.navigation.navigate("TutorialWeb", {
-                    source: "dashboard",
-                    source_action: "a_open_website_tutorial",
-                  });
+                  if (
+                    this.props.userInfo &&
+                    this.props.userInfo.hasOwnProperty("verified_account") &&
+                    !this.props.userInfo.verified_account
+                  ) {
+                    this.props.navigation.navigate("VerifyAccount", {
+                      source: "my_website_tutorial",
+                      source_action: "a_open_my_website_detail",
+                    });
+                  } else
+                    this.props.navigation.navigate(
+                      approved === "0" ? "VerifyBusiness" : "TutorialWeb",
+                      {
+                        source: "dashboard",
+                        source_action: "a_open_website_tutorial",
+                      }
+                    );
                 }}
               >
                 <LinearGradient
