@@ -423,6 +423,7 @@ class InstagramAdDesignExistingPost extends Component {
       body.append("campaign_type", "InstagramFeedAd");
       body.append("media", this.state.campaignInfo.media);
       body.append("media_type", this.state.campaignInfo.media_type);
+      body.append("media_option", "single"); // For selecting existing campaign post it will always be single
 
       body.append("message", campaignInfo.message);
       body.append("instagram_post_id", campaignInfo.instagram_post_id);

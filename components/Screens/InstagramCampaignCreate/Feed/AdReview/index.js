@@ -117,7 +117,7 @@ class AdFeedDesignReview extends React.Component {
       : this.props.navigation.state.params;
     const { translate } = this.props.screenProps;
     let mediaView = null;
-    if (media_option === "single") {
+    if (media_option === "single" || !media_option) {
       if (media_type === "IMAGE" && media) {
         mediaView = (
           <Image
