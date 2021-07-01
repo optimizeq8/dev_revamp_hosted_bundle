@@ -1172,8 +1172,7 @@ export const checkBusinessVerified = (businessid, translate) => {
           source: "start_verify",
           source_action: "a_check_status",
           verification_channel: "Business",
-          businessid:
-            this.props.mainBusiness && this.props.mainBusiness.businessid,
+          businessid: businessid,
           business_approved: accountApproved,
         });
         if (accountApproved) {
