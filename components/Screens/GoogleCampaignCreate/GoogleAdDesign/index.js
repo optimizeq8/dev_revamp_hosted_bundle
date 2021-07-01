@@ -215,7 +215,7 @@ class GoogleAdDesign extends Component {
     //   this.state.description2
     // );
     const finalurlError = validateWrapper(
-      "website",
+      "websiteGoogle",
       (!this.state.finalurl.toLowerCase().includes("http")
         ? this.state.networkString
         : "") + this.state.finalurl
@@ -367,7 +367,7 @@ class GoogleAdDesign extends Component {
     this.setState(
       {
         [error]: validateWrapper(
-          value === "finalurl" ? "website" : "mandatory",
+          value === "finalurl" ? "websiteGoogle" : "mandatory",
           (value === "finalurl" &&
           !this.state.finalurl.toLowerCase().includes("http")
             ? this.state.networkString
