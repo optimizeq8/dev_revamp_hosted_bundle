@@ -157,7 +157,7 @@ class BusinessList extends Component {
       ? "VerifyAccount"
       : notApproved
       ? "VerifyBusiness"
-      : route;
+      : "CreateBusinessAccount";
     this.props.navigation.navigate(routePath, {
       createNewBusiness: true,
       source: "open_hamburger",
