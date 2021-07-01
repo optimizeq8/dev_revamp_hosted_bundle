@@ -1177,6 +1177,10 @@ export const checkBusinessVerified = (businessid, translate) => {
         });
         if (accountApproved) {
           dispatch(updateBusinessConnectedToFacebook({ approved: "1" }));
+          NavigationService.navigate("Dashboard", {
+            source: "start_verify",
+            source_action: "a_check_status",
+          });
         }
         showMessage({
           type: accountApproved ? "success" : "warning",
