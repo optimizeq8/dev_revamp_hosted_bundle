@@ -2203,6 +2203,10 @@ const strings = {
   "No Button": "No Button",
   "Cancel Campaign": "Cancel Campaign",
   OK: "OK",
+  "Verify Business": "Verify Business",
+  "Your approval request is in review": "Your approval request is in review",
+  "Check your status": "Check your status",
+  "Your approval request is approved": "Your approval request is approved",
 };
 
 export default strings;

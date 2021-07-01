@@ -55,6 +55,7 @@ class VerifyBusiness extends React.Component {
     return businessNotApproved[0].businessid;
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <View style={{ flex: 1 }}>
         <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
@@ -74,18 +75,19 @@ class VerifyBusiness extends React.Component {
         />
         <View style={styles.verifyBusinessView}>
           <Text style={styles.approvalText}>
-            Your approval request is in review
+            {translate("Your approval request is in review")}
           </Text>
           {this.renderBusinessNamesNotApproved()}
           <GradientButton
             screenProps={this.props.screenProps}
             height={50}
-            text={"Check your status"}
+            text={translate("Check your status")}
             style={styles.refreshButton}
             textStyle={styles.textRefreshStyle}
             onPressAction={() => {
               this.props.checkBusinessVerified(
-                this.getBusinessIdOfNotApproved()
+                this.getBusinessIdOfNotApproved(),
+                translate
               );
             }}
           />
@@ -102,7 +104,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  checkBusinessVerified: (businessid) =>
-    dispatch(actionCreators.checkBusinessVerified(businessid)),
+  checkBusinessVerified: (businessid, translate) =>
+    dispatch(actionCreators.checkBusinessVerified(businessid, translate)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(VerifyBusiness);

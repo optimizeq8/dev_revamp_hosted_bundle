@@ -1153,7 +1153,7 @@ export const searchForBusinessInBackend = (businessName) => {
   };
 };
 
-export const checkBusinessVerified = (businessid) => {
+export const checkBusinessVerified = (businessid, translate) => {
   return (dispatch) => {
     dispatch({
       type: actionTypes.CHECK_BUSINESS_STATUS,
@@ -1174,8 +1174,8 @@ export const checkBusinessVerified = (businessid) => {
         showMessage({
           type: accountApproved ? "success" : "warning",
           message: accountApproved
-            ? "Your approval request is approved"
-            : "Your approval request is in review",
+            ? translate("Your approval request is approved")
+            : translate("Your approval request is in review"),
         });
         return dispatch({
           type: actionTypes.CHECK_BUSINESS_STATUS,
