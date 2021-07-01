@@ -131,7 +131,11 @@ class Item extends Component {
 
   render() {
     return (
-      <TouchableOpacity onPress={this.onPress} activeOpacity={0.5}>
+      <TouchableOpacity
+        disabled={this.props.disabled}
+        onPress={this.onPress}
+        activeOpacity={0.5}
+      >
         <Animated.View
           style={[
             styles.container,

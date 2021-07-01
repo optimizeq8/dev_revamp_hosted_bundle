@@ -299,6 +299,7 @@ export class TargetAudience extends Component {
                     <TouchableOpacity
                       style={styles.ageView}
                       onPress={() => this.callFunction("age")}
+                      disabled={loading}
                     >
                       <Text style={styles.ageText}>{targeting.age_min}</Text>
                     </TouchableOpacity>
@@ -307,6 +308,7 @@ export class TargetAudience extends Component {
                     <TouchableOpacity
                       style={styles.ageView}
                       onPress={() => this.callFunction("age")}
+                      disabled={loading}
                     >
                       <Text style={styles.ageText}>{targeting.age_max}</Text>
                     </TouchableOpacity>
@@ -595,6 +597,7 @@ export class TargetAudience extends Component {
                 {translate("Auto target look-alike audience")}
               </Text>
               <Toggle
+                disabled={loading}
                 switchOn={parseInt(mainState.campaignInfo.auto_targeting) === 1}
                 backgroundColorOff="#0001"
                 backgroundColorOn="#0001"
@@ -625,6 +628,7 @@ export class TargetAudience extends Component {
                 {translate("Remarket instagram behaviour")}
               </Text>
               <Toggle
+                disabled={loading}
                 switchOn={
                   parseInt(mainState.campaignInfo.instagram_custom_audience) ===
                   1
