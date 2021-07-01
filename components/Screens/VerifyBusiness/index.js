@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View, Text, BackHandler } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
@@ -31,7 +31,15 @@ class VerifyBusiness extends React.Component {
       verification_channel: "Business",
       businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  handleBackPress = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
   renderBusinessNamesNotApproved = () => {
     let businessNotApproved = null;
     let counter = 0;
