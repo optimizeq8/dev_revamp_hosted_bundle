@@ -90,6 +90,7 @@ class VerifyBusiness extends React.Component {
                 translate
               );
             }}
+            disabled={this.props.checkingBusinessStatus}
           />
         </View>
       </View>
