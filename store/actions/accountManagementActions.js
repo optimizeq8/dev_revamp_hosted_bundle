@@ -1168,6 +1168,14 @@ export const checkBusinessVerified = (businessid, translate) => {
           data.success &&
           data.business_accounts &&
           data.business_accounts.approved === "1";
+        analytics.track(`a_check_status`, {
+          source: "start_verify",
+          source_action: "a_check_status",
+          verification_channel: "Business",
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
+          business_approved: accountApproved,
+        });
         if (accountApproved) {
           dispatch(updateBusinessConnectedToFacebook({ approved: "1" }));
         }
