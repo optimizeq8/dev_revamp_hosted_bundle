@@ -269,9 +269,10 @@ class GoogleAdDesign extends Component {
       // !headline3Error &&
       !descriptionError &&
       // !description2Error &&
-      !finalurlError &&
-      correctPathsLength &&
-      onlyTwoPaths
+      !finalurlError
+      //    &&
+      //   correctPathsLength &&
+      //   onlyTwoPaths
     ) {
       let finalurl = this.state.finalurl;
       let data = {
@@ -462,42 +463,42 @@ class GoogleAdDesign extends Component {
         : finalurl.split("/");
     let correctPathsLength = true;
     let onlyTwoPaths = true;
-    if (seperatedUrl.slice(3).length > 0) {
-      //check if the url has paths
-      let path1 = "";
-      let path2 = "";
-      path1 = seperatedUrl.slice(3)[0];
-      if (seperatedUrl.slice(3)[1]) path2 = seperatedUrl.slice(3)[1];
-      if (path1 && path2)
-        correctPathsLength = path1.length <= 15 && path2.length <= 15;
-      else if (path1 && !path2) correctPathsLength = path1.length <= 15;
-      else correctPathsLength = path2.length <= 15;
-      onlyTwoPaths = seperatedUrl.slice(3).length <= 2;
-    }
+    // if (seperatedUrl.slice(3).length > 0) {
+    //   //check if the url has paths
+    //   let path1 = "";
+    //   let path2 = "";
+    //   path1 = seperatedUrl.slice(3)[0];
+    //   if (seperatedUrl.slice(3)[1]) path2 = seperatedUrl.slice(3)[1];
+    //   if (path1 && path2)
+    //     correctPathsLength = path1.length <= 15 && path2.length <= 15;
+    //   else if (path1 && !path2) correctPathsLength = path1.length <= 15;
+    //   else correctPathsLength = path2.length <= 15;
+    //   onlyTwoPaths = seperatedUrl.slice(3).length <= 2;
+    // }
     if (this.state.finalurlError)
       showMessage({
         message: this.translate("Please enter a valid URL"),
         type: "warning",
         description: this.translate("Eg") + "'https://url.com/path1/path2'",
       });
-    else if (!correctPathsLength || !onlyTwoPaths) {
-      this.setState({ finalurlError: true });
-      showMessage({
-        message: `${this.translate("Website url issue")}, ${
-          !onlyTwoPaths
-            ? this.translate("Only  2 paths are allowed")
-            : this.translate("Paths length exceeded")
-        }`,
-        description:
-          this.translate(
-            "The max length of the url paths are 15 characters each"
-          ) +
-          this.translate("Eg") +
-          "'https://www.example.com/path1/path2'",
-        type: "warning",
-        duration: 6000,
-      });
-    }
+    // else if (!correctPathsLength || !onlyTwoPaths) {
+    //   this.setState({ finalurlError: true });
+    //   showMessage({
+    //     message: `${this.translate("Website url issue")}, ${
+    //       !onlyTwoPaths
+    //         ? this.translate("Only  2 paths are allowed")
+    //         : this.translate("Paths length exceeded")
+    //     }`,
+    //     description:
+    //       this.translate(
+    //         "The max length of the url paths are 15 characters each"
+    //       ) +
+    //       this.translate("Eg") +
+    //       "'https://www.example.com/path1/path2'",
+    //     type: "warning",
+    //     duration: 6000,
+    //   });
+    // }
     return { correctPathsLength, onlyTwoPaths };
   };
 
