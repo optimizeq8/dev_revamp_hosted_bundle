@@ -309,12 +309,13 @@ class InstagramCampaignDetails extends Component {
   createDeleteDialog = () => {
     const { translate } = this.props.screenProps;
     const { selectedCampaign } = this.props;
+    let alertMessage =
+      selectedCampaign.spends > 0
+        ? "Your Remaining budget will be added to Your wallet in the next {{hours}} hours"
+        : "Your budget will be added to your wallet";
     return Alert.alert(
       translate("Cancel Campaign"),
-      translate(
-        `Your Remaining budget will be added to Your wallet in the next {{hours}} hours`,
-        { hours: 12 }
-      ),
+      translate(alertMessage, { hours: 12 }),
       [
         {
           text: translate("Cancel"),
