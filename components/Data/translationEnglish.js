@@ -2207,6 +2207,8 @@ const strings = {
   "Your approval request is in review": "Your approval request is in review",
   "Check your status": "Check your status",
   "Your approval request is approved": "Your approval request is approved",
+  "Your budget will be added to your wallet":
+    "Your budget will be added to your wallet",
 };
 
 export default strings;
