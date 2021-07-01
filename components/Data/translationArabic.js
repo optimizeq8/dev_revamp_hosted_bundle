@@ -2187,12 +2187,19 @@ const strings = {
   "Do you accept to make this change?": "هل تقبل تطبيق التعديلات؟",
   "Will Change your Brand Name from": "سيتم تغيير اسم المشروع من",
   "Your Remaining budget will be added to Your wallet in the next {{hours}} hours":
-    "المبلغ المتبقي من ميزانيتك سوف يتم إضافته الى المحفظة الخاصة بك خلال {{hours}} ساعة",
-  12: "",
-  24: "",
-  48: "",
-  "GET MORE PEOPLE TO ENGAGE WITH YOUR INSTAGRAM POSTS": "",
-  "No Button": "",
+    "سيتم إضافة الميزانية المتبقية للمحفظة بعد {{hours}} ساعة",
+  12: "12",
+  24: "24",
+  48: "48",
+  "GET MORE PEOPLE TO ENGAGE WITH YOUR INSTAGRAM POSTS":
+    "زيد تفاعل منشوراتك على الانستغرام",
+  "No Button": "دون وجهة",
+  "Cancel Campaign": "الغاء الحملة",
+  OK: "تم",
+  "Verify Business": "وثق مشروعك",
+  "Your approval request is in review": "طلب الموافقة تحت المراجعة",
+  "Check your status": "تحقق من حالة الموافقة",
+  "Your approval request is approved": "تمت الموافقة على طلبك",
 };
 
 export default strings;
