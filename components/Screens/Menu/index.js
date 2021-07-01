@@ -102,21 +102,25 @@ class Menu extends Component {
   };
   handleNavigation = (route, checkForBusinessId = false, params) => {
     const { translate } = this.props.screenProps;
-
+    let userNotVerified =
+      this.props.userInfo &&
+      this.props.userInfo.hasOwnProperty("verified_account") &&
+      !this.props.userInfo.verified_account;
     let notApproved =
       this.props.mainBusiness &&
       this.props.mainBusiness.hasOwnProperty("approved") &&
       this.props.mainBusiness.approved === "0";
-
+    let routePath = userNotVerified
+      ? "VerifyAccount"
+      : notApproved
+      ? "VerifyBusiness"
+      : route;
     if (checkForBusinessId) {
       if (
         this.props.mainBusiness &&
         this.props.mainBusiness.hasOwnProperty("businessid")
       ) {
-        this.props.navigation.navigate(
-          notApproved ? "VerifyBusiness" : route,
-          params
-        );
+        this.props.navigation.navigate(routePath, params);
       } else {
         showMessage({
           message: translate("Please create a business account first"),
@@ -124,10 +128,7 @@ class Menu extends Component {
         });
       }
     } else {
-      this.props.navigation.navigate(
-        notApproved ? "VerifyBusiness" : route,
-        params
-      );
+      this.props.navigation.navigate(routePath, params);
     }
   };
 

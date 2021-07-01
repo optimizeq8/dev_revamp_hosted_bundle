@@ -24,6 +24,25 @@ import Instagram from "../../../../assets/images/AdTypes/InstaWhiteLogo";
 
 export default class EmptyCampaigns extends Component {
   redirectToCampaignAdTypeOrCreateBsn = () => {
+    let userNotVerified =
+      this.props.userInfo &&
+      this.props.userInfo.hasOwnProperty("verified_account") &&
+      !this.props.userInfo.verified_account;
+    let notApproved =
+      this.props.mainBusiness &&
+      this.props.mainBusiness.hasOwnProperty("approved") &&
+      this.props.mainBusiness.approved === "0";
+    let hasBusinessId =
+      this.props.mainBusiness &&
+      this.props.mainBusiness.hasOwnProperty("businessid");
+    let routePath = "AdType";
+    routePath = userNotVerified
+      ? "VerifyAccount"
+      : notApproved
+      ? "VerifyBusiness"
+      : hasBusinessId
+      ? "AdType"
+      : "CreateBusinessAccount";
     if (this.props.mainBusiness.hasOwnProperty("businessid")) {
       const device_id = this.props.screenProps.device_id;
       const { userInfo } = this.props;
@@ -37,21 +56,15 @@ export default class EmptyCampaigns extends Component {
         businessid:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
-      this.props.navigation.navigate(
-        approved === "0" ? "VerifyBusiness" : "AdType",
-        {
-          source: "dashboard",
-          source_action: "a_create_campaign",
-        }
-      );
+      this.props.navigation.navigate(routePath, {
+        source: "dashboard",
+        source_action: "a_create_campaign",
+      });
     } else {
-      this.props.navigation.navigate(
-        approved === "0" ? "VerifyBusiness" : "CreateBusinessAccount",
-        {
-          source: "dashboard",
-          source_action: "a_create_campaign",
-        }
-      );
+      this.props.navigation.navigate(routePath, {
+        source: "dashboard",
+        source_action: "a_create_campaign",
+      });
     }
   };
 
@@ -71,10 +84,30 @@ export default class EmptyCampaigns extends Component {
       source_action: "a_verify_account",
     });
   };
+
+  goToMyWebsiteTutorial = () => {
+    let userNotVerified =
+      this.props.userInfo &&
+      this.props.userInfo.hasOwnProperty("verified_account") &&
+      !this.props.userInfo.verified_account;
+    let notApproved =
+      this.props.mainBusiness &&
+      this.props.mainBusiness.hasOwnProperty("approved") &&
+      this.props.mainBusiness.approved === "0";
+    let routePath = userNotVerified
+      ? "VerifyAccount"
+      : notApproved
+      ? "VerifyBusiness"
+      : "TutorialWeb";
+    this.props.navigation.navigate(routePath, {
+      source: "dashboard",
+      source_action: "a_open_website_tutorial",
+    });
+  };
   render() {
     let { mainBusiness, translate, userInfo } = this.props;
     const { verified_account } = userInfo;
-    const { user_role, approved } = mainBusiness;
+    const { user_role } = mainBusiness;
 
     return (
       <View style={styles.flex1}>
@@ -180,25 +213,7 @@ export default class EmptyCampaigns extends Component {
             (!mainBusiness.weburl || mainBusiness.weburl === "") && (
               <TouchableOpacity
                 style={styles.websiteCard}
-                onPress={() => {
-                  if (
-                    this.props.userInfo &&
-                    this.props.userInfo.hasOwnProperty("verified_account") &&
-                    !this.props.userInfo.verified_account
-                  ) {
-                    this.props.navigation.navigate("VerifyAccount", {
-                      source: "my_website_tutorial",
-                      source_action: "a_open_my_website_detail",
-                    });
-                  } else
-                    this.props.navigation.navigate(
-                      approved === "0" ? "VerifyBusiness" : "TutorialWeb",
-                      {
-                        source: "dashboard",
-                        source_action: "a_open_website_tutorial",
-                      }
-                    );
-                }}
+                onPress={this.goToMyWebsiteTutorial}
               >
                 <LinearGradient
                   colors={["#41C5FF", "#46ABF4"]}
@@ -223,12 +238,7 @@ export default class EmptyCampaigns extends Component {
                   width={20}
                   height={20}
                   style={styles.lowerButton}
-                  function={() => {
-                    this.props.navigation.navigate("TutorialWeb", {
-                      source: "dashboard",
-                      source_action: "a_open_website_tutorial",
-                    });
-                  }}
+                  function={this.goToMyWebsiteTutorial}
                 />
               </TouchableOpacity>
             )}
