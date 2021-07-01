@@ -194,6 +194,7 @@ export class TargetAudience extends Component {
               <TouchableOpacity
                 onPress={() => this.callFunction("regions")}
                 style={styles.targetTouchable}
+                disabled={loading}
               >
                 <View
                   style={[
@@ -343,6 +344,7 @@ export class TargetAudience extends Component {
                     <TouchableOpacity
                       style={styles.ageView}
                       onPress={() => this.callFunction("age")}
+                      disabled={loading}
                     >
                       <Text style={styles.ageText}>
                         {targeting.demographics[0].min_age}
@@ -352,6 +354,7 @@ export class TargetAudience extends Component {
                     <Text style={styles.toText}>{translate("To")}</Text>
                     <TouchableOpacity
                       style={styles.ageView}
+                      disabled={loading}
                       onPress={() => this.callFunction("age")}
                     >
                       <Text style={styles.ageText}>
