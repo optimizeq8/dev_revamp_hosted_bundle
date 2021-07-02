@@ -161,7 +161,6 @@ class Dashboard extends Component {
         (!this.props.campaignList || this.props.campaignList.length === 0) &&
         this.props.mainBusiness
       ) {
-        console.log("called from here");
         this.props.getCampaignList(
           this.props.mainBusiness.businessid,
           this.increasePage,
@@ -360,7 +359,8 @@ class Dashboard extends Component {
 
   navigationHandler = (adType) => {
     const { translate } = this.props.screenProps;
-    const { fb_connected, fb_ad_account_id } = this.props.mainBusiness;
+    const { fb_connected, fb_ad_account_id, approved } =
+      this.props.mainBusiness;
     analytics.track(`a_campaign_ad_type`, {
       source: "dashboard",
       source_action: "a_campaign_ad_type",
@@ -369,7 +369,12 @@ class Dashboard extends Component {
       device_id: this.props.screenProps.device_id,
       businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
-
+    if (approved === "0") {
+      this.props.navigation.navigate("VerifyBusiness", {
+        source: "dashboard",
+        source_action: "a_campaign_ad_type",
+      });
+    }
     if (this.state.adTypeChanged && !this.props.incompleteCampaign) {
       this.props.resetCampaignInfo(true);
     }
@@ -531,10 +536,14 @@ class Dashboard extends Component {
       device_id,
       businessid: this.props.mainBusiness.businessid,
     });
-    this.props.navigation.navigate("AdType", {
-      source: "dashboard",
-      source_action: "a_create_campaign",
-    });
+    const { approved } = this.props.mainBusiness;
+    this.props.navigation.navigate(
+      approved === "0" ? "VerifyBusiness" : "AdType",
+      {
+        source: "dashboard",
+        source_action: "a_create_campaign",
+      }
+    );
   };
   /**
    *
@@ -1001,10 +1010,16 @@ class Dashboard extends Component {
                         <TouchableOpacity
                           style={styles.websiteCard}
                           onPress={() => {
-                            this.props.navigation.navigate("TutorialWeb", {
-                              source: "dashboard",
-                              source_action: "a_open_website_tutorial",
-                            });
+                            const { approved } = this.props.mainBusiness;
+                            this.props.navigation.navigate(
+                              approved === "0"
+                                ? "VerifyBusiness"
+                                : "TutorialWeb",
+                              {
+                                source: "dashboard",
+                                source_action: "a_open_website_tutorial",
+                              }
+                            );
                           }}
                         >
                           <LinearGradient
@@ -1042,10 +1057,16 @@ class Dashboard extends Component {
                             height={10}
                             style={styles.lowerButton}
                             function={() => {
-                              this.props.navigation.navigate("TutorialWeb", {
-                                source: "dashboard",
-                                source_action: "a_open_website_tutorial",
-                              });
+                              const { approved } = this.props.mainBusiness;
+                              this.props.navigation.navigate(
+                                approved === "0"
+                                  ? "VerifyBusiness"
+                                  : "TutorialWeb",
+                                {
+                                  source: "dashboard",
+                                  source_action: "a_open_website_tutorial",
+                                }
+                              );
                             }}
                           />
                         </TouchableOpacity>

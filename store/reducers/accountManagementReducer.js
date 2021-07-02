@@ -44,6 +44,7 @@ const initialState = {
   crashApp: false,
   businessSearchLoading: false,
   searchedBusinessesList: [],
+  checkingBusinessStatus: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -378,6 +379,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         searchedBusinessesList: action.payload,
         businessSearchLoading: false,
+      };
+    case actionTypes.CHECK_BUSINESS_STATUS:
+      return {
+        ...state,
+        checkingBusinessStatus: action.payload,
       };
     default:
       return state;

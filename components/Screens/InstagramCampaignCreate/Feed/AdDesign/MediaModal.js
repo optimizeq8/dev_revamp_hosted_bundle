@@ -13,10 +13,12 @@ export default class MediaModal extends Component {
   modifyOptionArr = () => {
     let optionsArr = ["Media"];
 
-    let { instafeedad, adType } = this.props;
+    let { instafeedad, adType, carousel } = this.props;
+
     switch (adType) {
       case "InstagramFeedAd":
-        if (instafeedad.length > 0) {
+        if (instafeedad.length > 0 && !carousel) {
+          // For carousel Ads do not show media library and when there is no campaign created
           optionsArr.splice(0, 0, "Media Library");
         }
         break;

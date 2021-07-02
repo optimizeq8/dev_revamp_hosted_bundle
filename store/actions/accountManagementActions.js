@@ -1152,3 +1152,53 @@ export const searchForBusinessInBackend = (businessName) => {
       });
   };
 };
+
+export const checkBusinessVerified = (businessid, translate) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.CHECK_BUSINESS_STATUS,
+      payload: true,
+    });
+    createBaseUrl()
+      .get(`businessApprovalStatus/${businessid}`)
+      .then((res) => res.data)
+      .then((data) => {
+        // console.log("data", JSON.stringify(data, null, 2));
+        let accountApproved =
+          data.success &&
+          data.business_accounts &&
+          data.business_accounts.approved === "1";
+        analytics.track(`a_check_status`, {
+          source: "start_verify",
+          source_action: "a_check_status",
+          verification_channel: "Business",
+          businessid: businessid,
+          business_approved: accountApproved,
+        });
+        if (accountApproved) {
+          dispatch(updateBusinessConnectedToFacebook({ approved: "1" }));
+          NavigationService.navigate("Dashboard", {
+            source: "start_verify",
+            source_action: "a_check_status",
+          });
+        }
+        showMessage({
+          type: accountApproved ? "success" : "warning",
+          message: accountApproved
+            ? translate("Your approval request is approved")
+            : translate("Your approval request is in review"),
+        });
+        return dispatch({
+          type: actionTypes.CHECK_BUSINESS_STATUS,
+          payload: false,
+        });
+      })
+      .catch((error) => {
+        // console.log("checkBusinessVerified Error", error);
+        return dispatch({
+          type: actionTypes.CHECK_BUSINESS_STATUS,
+          payload: false,
+        });
+      });
+  };
+};

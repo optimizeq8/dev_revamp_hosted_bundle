@@ -28,6 +28,7 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
       type: actionTypes.SET_INSTAGRAM_AD_LOADING_OBJ,
       payload: true,
     });
+
     InstagramBackendURL()
       .post(`saveinstacampaign`, info)
       .then((res) => {
@@ -112,7 +113,7 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
         }
       })
       .catch((err) => {
-        // console.log("ad_objective", err.message || err.response);
+        // console.log("ad_objective error", err || err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_AD_OBJECTIVE_INSTAGRAM,
@@ -224,19 +225,27 @@ export const saveBrandMediaInstagram = (
   onToggleModal,
   cancelUplaod,
   segmentInfo,
-  rejected
+  rejected,
+  editInReview
 ) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
       payload: true,
     });
+    // console.log("rejected, editInReview, info", rejected, editInReview, info);
     InstagramBackendURL()
-      .post(rejected ? `updateinstabrandmedia` : `saveinstabrandmedia`, info, {
-        onUploadProgress: (ProgressEvent) =>
-          loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
-        cancelToken: cancelUplaod.token,
-      })
+      .post(
+        rejected && !editInReview
+          ? `updateinstabrandmedia`
+          : `saveinstabrandmedia`,
+        info,
+        {
+          onUploadProgress: (ProgressEvent) =>
+            loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+          cancelToken: cancelUplaod.token,
+        }
+      )
       .then((res) => {
         return res.data;
       })
@@ -1637,7 +1646,7 @@ export const getFacebookPagesList = (accessToken, fb_user_id, permissions) => {
       })
       .then((response) => response.data)
       .then((data) => {
-        console.log("getFacebookPagesList", JSON.stringify(data, null, 2));
+        // console.log("getFacebookPagesList", JSON.stringify(data, null, 2));
         dispatch({
           type: actionTypes.FACEBOOK_PAGE_LIST_LOADING,
           payload: false,

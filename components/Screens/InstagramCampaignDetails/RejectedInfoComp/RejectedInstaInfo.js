@@ -36,14 +36,19 @@ class RejectedSnapchatInfo extends Component {
       navigation,
     } = this.props;
     setInstaRejectedAdType(selectedCampaign.campaign_type);
-    setInstaRejectedCampaignData(selectedCampaign);
+    setInstaRejectedCampaignData({ ...selectedCampaign, existing_media: 1 }); // To handle rejected ads
     this.props.setRejectedCarouselAds(selectedCampaign.carousel_media);
     navigation.navigate(
-      selectedCampaign.campaign_type === "InstagramFeedAd"
+      selectedCampaign.campaign_type === "InstagramFeedAd" &&
+        selectedCampaign.instagram_post_id &&
+        selectedCampaign.instagram_post_id !== ""
+        ? "InstagramAdDesignExistingPost"
+        : selectedCampaign.campaign_type === "InstagramFeedAd"
         ? "InstagramFeedAdDesign"
         : "InstagramStoryAdDesign",
       {
         rejected: true,
+        editInReview: false,
         source: "campaign_detail",
         source_action: "a_review_ad",
       }

@@ -24,6 +24,14 @@ export default {
     //   color: "#42EB56",
     // },
     {
+      label: "Engagement",
+      value: "POST_ENGAGEMENT",
+      info: "GET MORE PEOPLE TO ENGAGE WITH YOUR INSTAGRAM POSTS",
+      icon: "Group",
+      color: "#AA22DD",
+      allowed_destination: ["BLANK"],
+    },
+    {
       label: "App Installs",
       value: "APP_INSTALLS",
       info: "INCREASE APP DOWNLOADS",

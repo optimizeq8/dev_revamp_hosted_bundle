@@ -124,7 +124,7 @@ export class TargetAudience extends Component {
                 {translate("Location")}
               </Text>
               <Icon
-                name={`keyboard-arrow${expandLocation ? "up" : "down"}`}
+                name={`keyboard-arrow-${expandLocation ? "up" : "down"}`}
                 type="MaterialIcons"
                 style={styles.iconDown}
                 onPress={this.expandLocation}
@@ -241,7 +241,7 @@ export class TargetAudience extends Component {
                 {translate("Demographic")}
               </Text>
               <Icon
-                name={`keyboard-arrow${expandDemographics ? "up" : "down"}`}
+                name={`keyboard-arrow-${expandDemographics ? "up" : "down"}`}
                 type="MaterialIcons"
                 style={styles.iconDown}
                 onPress={this.expandDemographics}
@@ -299,6 +299,7 @@ export class TargetAudience extends Component {
                     <TouchableOpacity
                       style={styles.ageView}
                       onPress={() => this.callFunction("age")}
+                      disabled={loading}
                     >
                       <Text style={styles.ageText}>{targeting.age_min}</Text>
                     </TouchableOpacity>
@@ -307,6 +308,7 @@ export class TargetAudience extends Component {
                     <TouchableOpacity
                       style={styles.ageView}
                       onPress={() => this.callFunction("age")}
+                      disabled={loading}
                     >
                       <Text style={styles.ageText}>{targeting.age_max}</Text>
                     </TouchableOpacity>
@@ -465,7 +467,7 @@ export class TargetAudience extends Component {
               />
               <Text style={styles.audienceHeading}>{translate("Devices")}</Text>
               <Icon
-                name={`keyboard-arrow${expandDevices ? "up" : "down"}`}
+                name={`keyboard-arrow-${expandDevices ? "up" : "down"}`}
                 type="MaterialIcons"
                 style={styles.iconDown}
                 onPress={this.expandDevices}
@@ -595,6 +597,7 @@ export class TargetAudience extends Component {
                 {translate("Auto target look-alike audience")}
               </Text>
               <Toggle
+                disabled={loading}
                 switchOn={parseInt(mainState.campaignInfo.auto_targeting) === 1}
                 backgroundColorOff="#0001"
                 backgroundColorOn="#0001"
@@ -625,6 +628,7 @@ export class TargetAudience extends Component {
                 {translate("Remarket instagram behaviour")}
               </Text>
               <Toggle
+                disabled={loading}
                 switchOn={
                   parseInt(mainState.campaignInfo.instagram_custom_audience) ===
                   1

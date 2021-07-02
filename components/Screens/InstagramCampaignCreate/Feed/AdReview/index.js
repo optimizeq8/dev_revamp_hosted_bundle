@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, BackHandler } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 import { RFValue } from "react-native-responsive-fontsize";
 import { Transition } from "react-navigation-fluid-transitions";
@@ -59,6 +59,14 @@ class AdFeedDesignReview extends React.Component {
         });
       });
     }
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
+  handleBackButton = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
 
   Slide = ({ item }) => {
@@ -109,7 +117,7 @@ class AdFeedDesignReview extends React.Component {
       : this.props.navigation.state.params;
     const { translate } = this.props.screenProps;
     let mediaView = null;
-    if (media_option === "single") {
+    if (media_option === "single" || !media_option) {
       if (media_type === "IMAGE" && media) {
         mediaView = (
           <Image

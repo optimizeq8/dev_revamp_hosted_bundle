@@ -146,7 +146,19 @@ class BusinessList extends Component {
       timestamp: new Date().getTime(),
       businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
-    this.props.navigation.navigate("CreateBusinessAccount", {
+    let userNotVerified =
+      this.props.userInfo &&
+      this.props.userInfo.hasOwnProperty("verified_account") &&
+      !this.props.userInfo.verified_account;
+    let notApproved = this.props.businessAccounts.some(
+      (bsn) => bsn.approved === "0"
+    );
+    let routePath = userNotVerified
+      ? "VerifyAccount"
+      : notApproved
+      ? "VerifyBusiness"
+      : "CreateBusinessAccount";
+    this.props.navigation.navigate(routePath, {
       createNewBusiness: true,
       source: "open_hamburger",
       source_action: `a_create_buiness_account`,

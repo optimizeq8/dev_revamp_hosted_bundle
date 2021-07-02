@@ -5,6 +5,7 @@ import {
   Animated,
   BackHandler,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -304,6 +305,81 @@ class CampaignDetails extends Component {
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
+  };
+  createDeleteDialog = () => {
+    const { translate } = this.props.screenProps;
+    const { selectedCampaign } = this.props;
+    let alertMessage =
+      selectedCampaign.spends > 0
+        ? "Your Remaining budget will be added to Your wallet in the next {{hours}} hours"
+        : "Your budget will be added to your wallet";
+    return Alert.alert(
+      translate("Cancel Campaign"),
+      translate(alertMessage, { hours: 24 }),
+      [
+        {
+          text: translate("Cancel"),
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: translate("OK"),
+          onPress: () => {
+            this.props.getWalletAmountInKwd(
+              selectedCampaign.lifetime_budget_micro
+            );
+            this.props.navigation.navigate("PaymentForm", {
+              amount: selectedCampaign.lifetime_budget_micro,
+              refundAmountToWallet: true,
+              selectedCampaign: selectedCampaign,
+              keep_campaign: selectedCampaign.spends > 0 ? 1 : 0,
+              source: "ad_detail",
+              source_action: "a_return_amount_to_wallet",
+            });
+          },
+        },
+      ]
+    );
+  };
+  editMedia = (selectedCampaign) => {
+    const { setRejectedAdType, setRejectedCampaignData, navigation } =
+      this.props;
+    setRejectedAdType(selectedCampaign.campaign_type);
+    let savedObjective =
+      selectedCampaign.destination === "REMOTE_WEBPAGE" ||
+      (selectedCampaign.destination === "COLLECTION" &&
+        !selectedCampaign.attachment.hasOwnProperty("deep_link_uri"))
+        ? "WEBSITE_TRAFFIC"
+        : selectedCampaign.destination === "DEEP_LINK"
+        ? "APP_TRAFFIC"
+        : selectedCampaign.objective;
+    setRejectedCampaignData({ ...selectedCampaign, savedObjective });
+    navigation.navigate("AdDesign", {
+      rejected: true,
+      editInReview: true,
+      source: "campaign_detail",
+      source_action: "a_review_ad",
+    });
+  };
+  showEditMedia = () => {
+    let edit = false;
+    const { selectedCampaign } = this.props;
+    if (
+      selectedCampaign &&
+      selectedCampaign.ad_status === "In Review" &&
+      selectedCampaign.campaign_end === "0"
+    ) {
+      edit = true;
+      if (
+        (selectedCampaign.campaign_type === "CollectionAd" ||
+          selectedCampaign.campaign_type === "StoryAd") &&
+        selectedCampaign.snap_ad_id &&
+        selectedCampaign.snap_ad_id !== ""
+      ) {
+        edit = false;
+      }
+    }
+    return edit;
   };
   render() {
     let loading = this.props.loading;
@@ -606,10 +682,11 @@ class CampaignDetails extends Component {
               campaignStatus={loading ? null : selectedCampaign.status}
             />
             {selectedCampaign &&
-              selectedCampaign.campaign_end === "0" &&
-              this.campaignEndedOrNot(selectedCampaign) &&
-              selectedCampaign.lifetime_budget_micro >
-                selectedCampaign.spends &&
+              (selectedCampaign.refund_request === "1" ||
+                (selectedCampaign.campaign_end === "0" &&
+                  this.campaignEndedOrNot(selectedCampaign) &&
+                  selectedCampaign.lifetime_budget_micro >
+                    selectedCampaign.spends)) &&
               !this.state.expand && (
                 <View style={styles.remainingBudgetContainer}>
                   <Icon
@@ -619,7 +696,8 @@ class CampaignDetails extends Component {
                   />
                   <Text style={styles.remainingBudgetText}>
                     {translate(
-                      "Your Remaining budget will be added to Your wallet in the next 48 hours"
+                      `Your Remaining budget will be added to Your wallet in the next {{hours}} hours`,
+                      { hours: 24 }
                     )}
                   </Text>
                 </View>
@@ -687,6 +765,31 @@ class CampaignDetails extends Component {
                       {translate(`${selectedCampaign.ad_status}`)}
                     </Text>
                   </View>
+                )}
+            {loading
+              ? null
+              : !this.state.expand &&
+                this.showEditMedia() && (
+                  <TouchableOpacity
+                    onPress={this.createDeleteDialog}
+                    style={[styles.deleteStatus]}
+                  >
+                    <Icon
+                      style={[styles.circleIcon]}
+                      name={"circle"}
+                      type={"FontAwesome"}
+                    />
+                    <Icon
+                      style={[styles.circleIcon]}
+                      name={"circle"}
+                      type={"FontAwesome"}
+                    />
+                    <Icon
+                      style={[styles.circleIcon]}
+                      name={"circle"}
+                      type={"FontAwesome"}
+                    />
+                  </TouchableOpacity>
                 )}
             <ScrollView
               contentContainerStyle={{ height: hp(115) }}
@@ -769,6 +872,12 @@ class CampaignDetails extends Component {
                       screenProps={this.props.screenProps}
                       source={"campaign_detail"}
                       mainBusiness={this.props.mainBusiness}
+                      editMedia={this.editMedia}
+                      edit={
+                        selectedCampaign &&
+                        selectedCampaign.campaign_end === "0" &&
+                        selectedCampaign.ad_status === "In Review"
+                      }
                     />
                     <AudienceOverview
                       screenProps={this.props.screenProps}
@@ -793,7 +902,7 @@ class CampaignDetails extends Component {
                 ) : (
                   !this.state.expand &&
                   attachment.url && (
-                    <>
+                    <View style={styles.adDestinationView}>
                       <Text style={styles.attachementText}>
                         {translate("Ad Destination")}
                       </Text>
@@ -813,7 +922,7 @@ class CampaignDetails extends Component {
                         </Text>
                         <CopyIcon fill={"#FFF"} style={styles.copyIcon} />
                       </TouchableOpacity>
-                    </>
+                    </View>
                   )
                 )}
                 {loading ? (
@@ -953,5 +1062,10 @@ const mapDispatchToProps = (dispatch) => ({
   get_languages: () => dispatch(actionCreators.get_languages()),
   downloadCSV: (campaign_id, email, showModalMessage) =>
     dispatch(actionCreators.downloadCSV(campaign_id, email, showModalMessage)),
+  setRejectedAdType: (info) => dispatch(actionCreators.setRejectedAdType(info)),
+  setRejectedCampaignData: (rejCampaign) =>
+    dispatch(actionCreators.setRejectedCampaignData(rejCampaign)),
+  getWalletAmountInKwd: (amount) =>
+    dispatch(actionCreators.getWalletAmountInKwd(amount)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignDetails);

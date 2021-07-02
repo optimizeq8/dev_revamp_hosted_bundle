@@ -140,6 +140,7 @@ class AdDesign extends Component {
     };
     this.adType = this.props.adType;
     this.rejected = this.props.navigation.getParam("rejected", false);
+    this.editInReview = this.props.navigation.getParam("editInReview", false);
     this.selectedCampaign = this.rejected
       ? this.props.rejCampaign
       : this.props.data;
@@ -253,7 +254,10 @@ class AdDesign extends Component {
         this.downloadStoryMedia();
         this.props.setRejectedStoryAds(this.selectedCampaign.story_creatives);
       } else if (this.adType === "CollectionAd") {
-        this.setState({ media: this.selectedCampaign.media });
+        this.setState({
+          media: this.selectedCampaign.media,
+          type: this.selectedCampaign.media_type,
+        });
         this.props.setRejectedCollectionAds({
           collectionAdMedia: this.selectedCampaign.collection_creatives,
           call_to_action: this.selectedCampaign.call_to_action,
@@ -976,7 +980,10 @@ class AdDesign extends Component {
         this.rejected,
         this.props.data,
         this.setTheState,
-        this.props.data.existing_media
+        this.rejected
+          ? this.selectedCampaign.existing_media
+          : this.props.data.existing_media,
+        this.editInReview
       );
       await this.handleUpload();
 
@@ -1024,7 +1031,8 @@ class AdDesign extends Component {
             this.onToggleModal,
             this.rejected,
             this.state.signal,
-            segmentInfo
+            segmentInfo,
+            this.editInReview
           );
         }
       } else {
@@ -1800,7 +1808,9 @@ class AdDesign extends Component {
                           },
                           this.props.screenProps,
                           this.props.verifyDestinationUrl,
-                          this.props.data
+                          this.rejected
+                            ? this.selectedCampaign
+                            : this.props.data
                         );
                       }}
                       style={[
@@ -2021,7 +2031,8 @@ const mapDispatchToProps = (dispatch) => ({
     onToggleModal,
     rejected,
     cancelUpload,
-    segmentInfo
+    segmentInfo,
+    editInReview
   ) =>
     dispatch(
       actionCreators.ad_design(
@@ -2031,7 +2042,8 @@ const mapDispatchToProps = (dispatch) => ({
         onToggleModal,
         rejected,
         cancelUpload,
-        segmentInfo
+        segmentInfo,
+        editInReview
       )
     ),
   getVideoUploadUrl: (campaign_id, openBrowser) =>

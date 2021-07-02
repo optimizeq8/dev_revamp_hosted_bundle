@@ -10,7 +10,8 @@ export const formatCarouselAd = async (
   signal,
   uploadCarouselAdCard,
   setTheState,
-  finalSubmission
+  finalSubmission,
+  editInReview
 ) => {
   var carouselBody = new FormData();
   let card = carouselAdsArray[ad.index];
@@ -82,7 +83,7 @@ export const formatCarouselAd = async (
   //     ? JSON.stringify(carouselAdAttachment.attachment)
   //     : "BLANK"
   // );
-
+  carouselBody.append("edit", editInReview ? 1 : 0);
   carouselBody.append("carousel_id", card.carousel_id ? card.carousel_id : 0);
   // carouselBody.append(
   //   "ios_upload",

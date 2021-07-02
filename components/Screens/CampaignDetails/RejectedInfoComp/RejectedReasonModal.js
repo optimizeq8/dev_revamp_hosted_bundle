@@ -32,7 +32,7 @@ export default (props) => {
     updateBrandNameLoading,
   } = props;
   const { translate } = screenProps;
-  let { campaign_end, brand_name_rejection } = selectedCampaign;
+  let { campaign_end, refund_request, brand_name_rejection } = selectedCampaign;
   return (
     <Modal
       animationIn={"fadeIn"}
@@ -121,24 +121,25 @@ export default (props) => {
             </View>
           )}
         </ScrollView>
-
-        {!brand_name_rejection && campaign_end === "0" && (
-          <GradientButton
-            screenProps={screenProps}
-            text={translate("Update Ad")}
-            width={RFValue(100, 414)}
-            height={RFValue(25, 414)}
-            uppercase
-            style={styles.updateAdButton}
-            onPressAction={() => {
-              setModalVisible(false);
-              if (brand_name_rejection) {
-                props.updateCampaignBrandName(selectedCampaign.campaign_id);
-              } else props.handleSnapchatRejection(props.selectedCampaign);
-            }}
-          />
-        )}
-        {campaign_end === "0" && (
+        {!brand_name_rejection &&
+          campaign_end === "0" &&
+          refund_request === "0" && (
+            <GradientButton
+              screenProps={screenProps}
+              text={translate("Update Ad")}
+              width={RFValue(100, 414)}
+              height={RFValue(25, 414)}
+              uppercase
+              style={styles.updateAdButton}
+              onPressAction={() => {
+                setModalVisible(false);
+                if (brand_name_rejection) {
+                  props.updateCampaignBrandName(selectedCampaign.campaign_id);
+                } else props.handleSnapchatRejection(props.selectedCampaign);
+              }}
+            />
+          )}
+        {campaign_end === "0" && refund_request === "0" && (
           <TouchableOpacity
             style={styles.returnAmountWalletLinkView}
             onPress={() => {

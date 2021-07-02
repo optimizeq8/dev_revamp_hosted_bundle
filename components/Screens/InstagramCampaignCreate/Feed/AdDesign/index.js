@@ -147,6 +147,7 @@ class AdDesign extends Component {
       existingMediaModal: false,
     };
     this.rejected = this.props.navigation.getParam("rejected", false);
+    this.editInReview = this.props.navigation.getParam("editInReview", false);
   }
 
   componentWillUnmount() {
@@ -484,7 +485,10 @@ class AdDesign extends Component {
         this.props.carouselAdsArray,
         false,
         this.state.fileReadyToUpload,
-        this.props.data.existing_media
+        this.rejected
+          ? this.state.selectedCampaign.existing_media
+          : this.props.data.existing_media,
+        this.editInReview
       );
       await this.handleUpload();
 
@@ -516,7 +520,8 @@ class AdDesign extends Component {
             this.onToggleModal,
             this.state.signal,
             segmentInfo,
-            this.rejected
+            this.rejected,
+            this.editInReview
           );
         }
       } else {
@@ -744,13 +749,12 @@ class AdDesign extends Component {
               <View style={styles.mainView}>
                 <View style={styles.adImageOptionView}>
                   <GradientButton
-                    disabled={this.props.loading}
                     radius={100}
                     onPressAction={() => this.selectImageOption("single")}
                     style={styles.adImageOptionButton}
                     text={translate("Single Media")}
                     uppercase
-                    disabled={this.rejected}
+                    disabled={this.rejected && !this.editInReview}
                     transparent={
                       this.state.campaignInfo.media_option !== "single"
                     }
@@ -763,7 +767,7 @@ class AdDesign extends Component {
                     transparent={
                       this.state.campaignInfo.media_option !== "carousel"
                     }
-                    disabled={this.rejected}
+                    disabled={this.rejected && !this.editInReview}
                     uppercase
                   />
                 </View>
@@ -928,7 +932,8 @@ class AdDesign extends Component {
                               uploadCarouselAdCard:
                                 this.props.uploadCarouselAdCard,
                             },
-                            this.props.screenProps
+                            this.props.screenProps,
+                            this.editInReview
                           )
                         }
                       />
@@ -1009,6 +1014,11 @@ class AdDesign extends Component {
           />
         ) : null}
         <MediaModal
+          carousel={
+            this.rejected
+              ? this.state.selectedCampaign.media_option === "carousel"
+              : this.props.data && this.props.data.media_option === "carousel"
+          }
           _pickImage={(mediaTypes, mediaEditor, editImage) =>
             this.adDesignPickImage(mediaTypes, mediaEditor, editImage)
           }
@@ -1084,7 +1094,8 @@ const mapDispatchToProps = (dispatch) => ({
     onToggleModal,
     cancelUpload,
     segmentInfo,
-    rejected
+    rejected,
+    editInReview
   ) =>
     dispatch(
       actionCreators.saveBrandMediaInstagram(
@@ -1094,7 +1105,8 @@ const mapDispatchToProps = (dispatch) => ({
         onToggleModal,
         cancelUpload,
         segmentInfo,
-        rejected
+        rejected,
+        editInReview
       )
     ),
   saveCampaignSteps: (step) =>

@@ -21,10 +21,10 @@ import { Transition } from "react-navigation-fluid-transitions";
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
 import list from "../../../../Data/callactions.data";
+import { persistor } from "../../../../../store";
 
 const preview = {
-  uri:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+  uri: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
 };
 //Redux
 import { connect } from "react-redux";
@@ -109,7 +109,16 @@ class InstagramAdDesignExistingPost extends Component {
       swipeUpExpanded: false,
       closeAnimation: false,
       AP: 1 / 1,
+      selectedCampaign: this.props.navigation.getParam("rejected", false)
+        ? this.props.instaRejCampaign
+          ? this.props.instaRejCampaign
+          : {}
+        : this.props.data
+        ? this.props.data
+        : {},
     };
+    this.rejected = this.props.navigation.getParam("rejected", false);
+    this.editInReview = this.props.navigation.getParam("editInReview", false);
   }
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.goBack);
@@ -117,7 +126,7 @@ class InstagramAdDesignExistingPost extends Component {
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.goBack);
     this.props.getInstagramExistingPost(this.props.mainBusiness.businessid);
-    if (this.props.data) {
+    if (this.state.selectedCampaign) {
       const { websitelink, weburl } = this.props.mainBusiness;
 
       let {
@@ -129,15 +138,15 @@ class InstagramAdDesignExistingPost extends Component {
         media_type,
         media = "//",
         fileReadyToUpload,
-      } = this.props.data;
+      } = this.state.selectedCampaign;
       let destination = "";
       if (
-        this.props.data.destination &&
-        this.props.data.destination !== "BLANK"
+        this.state.selectedCampaign.destination &&
+        this.state.selectedCampaign.destination !== "BLANK"
       ) {
-        destination = this.props.data.destination;
+        destination = this.state.selectedCampaign.destination;
       } else {
-        switch (this.props.data.objective) {
+        switch (this.state.selectedCampaign.objective) {
           case "BRAND_AWARENESS":
             destination = "BLANK";
             break;
@@ -160,7 +169,7 @@ class InstagramAdDesignExistingPost extends Component {
             destination = "BLANK";
         }
       }
-      switch (this.props.data.objective) {
+      switch (this.state.selectedCampaign.objective) {
         case "BRAND_AWARENESS":
           call_to_action =
             list[
@@ -284,7 +293,7 @@ class InstagramAdDesignExistingPost extends Component {
       }
       this.setState({
         campaignInfo: {
-          ...this.props.data,
+          ...this.state.selectedCampaign,
           media_option, // Oneof[ "single, caraousel"]
           destination,
           link,
@@ -302,6 +311,7 @@ class InstagramAdDesignExistingPost extends Component {
         link,
         call_to_action,
         attachment,
+        rejected: this.rejected,
       });
     }
   }
@@ -336,18 +346,19 @@ class InstagramAdDesignExistingPost extends Component {
 
     let swipeUpError = null;
     if (
-      (this.props.data.objective === "APP_INSTALLS" &&
-        (!this.props.data.attachment.app_name ||
-          this.props.data.attachment.app_name === "")) ||
-      (this.props.data.objective !== "BRAND_AWARENESS" &&
-        this.props.data.objective !== "VIDEO_VIEWS" &&
-        (!this.props.data.call_to_action ||
-          (this.props.data &&
-            this.props.data.call_to_action &&
-            this.props.data.call_to_action.label === "BLANK") ||
-          this.props.data.link === "BLANK" ||
-          this.props.data.link === "" ||
-          this.props.data.link.toLowerCase() === "https://"))
+      (this.state.selectedCampaign.objective === "APP_INSTALLS" &&
+        (!this.state.selectedCampaign.attachment.app_name ||
+          this.state.selectedCampaign.attachment.app_name === "")) ||
+      (this.state.selectedCampaign.objective !== "BRAND_AWARENESS" &&
+        this.state.selectedCampaign.objective !== "POST_ENGAGEMENT" &&
+        this.state.selectedCampaign.objective !== "VIDEO_VIEWS" &&
+        (!this.state.selectedCampaign.call_to_action ||
+          (this.state.selectedCampaign &&
+            this.state.selectedCampaign.call_to_action &&
+            this.state.selectedCampaign.call_to_action.label === "BLANK") ||
+          this.state.selectedCampaign.link === "BLANK" ||
+          this.state.selectedCampaign.link === "" ||
+          this.state.selectedCampaign.link.toLowerCase() === "https://"))
     ) {
       showMessage({
         message: translate("Choose A Swipe Up Destination"),
@@ -399,7 +410,9 @@ class InstagramAdDesignExistingPost extends Component {
     ) {
       const mainBusiness = this.props.mainBusiness;
       const campaignInfo = this.state.campaignInfo;
-      const data = this.props.data;
+      const data = this.rejected
+        ? this.props.instaRejCampaign
+        : this.props.data;
 
       var body = new FormData();
       body.append("ad_account_id", mainBusiness.fb_ad_account_id);
@@ -410,12 +423,14 @@ class InstagramAdDesignExistingPost extends Component {
       body.append("campaign_type", "InstagramFeedAd");
       body.append("media", this.state.campaignInfo.media);
       body.append("media_type", this.state.campaignInfo.media_type);
+      body.append("media_option", "single"); // For selecting existing campaign post it will always be single
 
       body.append("message", campaignInfo.message);
       body.append("instagram_post_id", campaignInfo.instagram_post_id);
       body.append(
         "destination",
         (data.objective === "BRAND_AWARENESS" ||
+          data.objective === "POST_ENGAGEMENT" ||
           data.objective === "VIDEO_VIEWS") &&
           data.link
           ? "link"
@@ -429,6 +444,7 @@ class InstagramAdDesignExistingPost extends Component {
           ? "BLANK"
           : JSON.stringify(data.attachment)
       );
+      body.append("edit", this.editInReview ? 1 : 0);
       // if (
       //   (this.props.data && !this.props.data.hasOwnProperty("formatted")) ||
       //   JSON.stringify(this.props.data.formatted) !==
@@ -451,7 +467,7 @@ class InstagramAdDesignExistingPost extends Component {
 
       if (!this.props.loading) {
         await this.props.saveInstgramExistpost(
-          "InstagramFeedAdTargetting",
+          this.editInReview ? "Dashboard" : "InstagramFeedAdTargetting",
           body,
           this._getUploadState,
           this.onToggleModal,
@@ -567,6 +583,12 @@ class InstagramAdDesignExistingPost extends Component {
         showPreview: false,
       });
     } else {
+      if (this.rejected) {
+        this.props.resetInstagramRejectedCampaignData();
+        this.props.setRejectedCarouselAds(false);
+        this.props.resetCampaignInfoInstagram();
+        persistor.purge();
+      }
       this.props.navigation.goBack();
     }
     return true;
@@ -598,17 +620,32 @@ class InstagramAdDesignExistingPost extends Component {
       campaign_channel: "instagram",
       campaign_ad_type: "InstagramFeedAd",
       campaign_existing_post: true,
-      campaign_name: this.props.data.name,
-      campaignId: this.props.data.campaign_id,
-      campaign_objective: this.props.data.objective,
-      campaign_duration:
-        Math.ceil(
-          (new Date(this.props.data.end_time) -
-            new Date(this.props.data.start_time)) /
-            (1000 * 60 * 60 * 24)
-        ) + 1,
-      campaign_start_date: this.props.data.start_time,
-      campaign_end_date: this.props.data.end_time,
+      campaign_name: this.rejected
+        ? this.props.instaRejCampaign.name
+        : this.props.data.name,
+      campaignId: this.rejected
+        ? this.props.instaRejCampaign.campaign_id
+        : this.props.data.campaign_id,
+      campaign_objective: this.rejected
+        ? this.props.instaRejCampaign.objective
+        : this.props.data.objective,
+      campaign_duration: this.rejected
+        ? Math.ceil(
+            (new Date(this.props.instaRejCampaign.end_time) -
+              new Date(this.props.instaRejCampaign.start_time)) /
+              (1000 * 60 * 60 * 24)
+          ) + 1
+        : Math.ceil(
+            (new Date(this.props.data.end_time) -
+              new Date(this.props.data.start_time)) /
+              (1000 * 60 * 60 * 24)
+          ) + 1,
+      campaign_start_date: this.rejected
+        ? this.props.instaRejCampaign.start_time
+        : this.props.data.start_time,
+      campaign_end_date: this.rejected
+        ? this.props.instaRejCampaign.end_time
+        : this.props.data.end_time,
       businessid: this.props.mainBusiness.businessid,
     });
   };
@@ -630,6 +667,21 @@ class InstagramAdDesignExistingPost extends Component {
             AP: (width / height).toFixed(2),
           });
         });
+    }
+
+    if (
+      this.props.instaRejCampaign &&
+      this.rejected &&
+      JSON.stringify(prevProps.instaRejCampaign) !==
+        JSON.stringify(this.props.instaRejCampaign)
+    ) {
+      this.setState({ selectedCampaign: this.props.instaRejCampaign });
+    }
+    if (
+      !this.rejected &&
+      JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)
+    ) {
+      this.state.selectedCampaign = this.props.data;
     }
   }
   render() {
@@ -845,7 +897,7 @@ class InstagramAdDesignExistingPost extends Component {
                 screenProps={this.props.screenProps}
                 navigation={this.props.navigation}
                 loading={this.props.loading}
-                data={this.props.data}
+                data={this.state.selectedCampaign}
                 campaignInfo={this.state.campaignInfo}
                 translate={translate}
                 maxClickHeight={this.state.maxClickHeight}
@@ -854,6 +906,7 @@ class InstagramAdDesignExistingPost extends Component {
                 adType={"InstagramFeedAd"}
                 closeAnimation={this.state.closeAnimation}
                 instagramObjectives={this.props.instagramObjectives}
+                rejected={this.rejected}
               />
             </View>
             <View style={[styles.lowerBtn, existPostStyles.lowerBtn]}>
@@ -912,6 +965,7 @@ const mapStateToProps = (state) => ({
   paging: state.instagramAds.paging,
   postsLoading: state.instagramAds.postsLoading,
   instagramObjectives: state.dashboard.instagramObjectives,
+  instaRejCampaign: state.instagramAds.instaRejCampaign,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -975,6 +1029,13 @@ const mapDispatchToProps = (dispatch) => ({
         segmentInfo
       )
     ),
+
+  resetInstagramRejectedCampaignData: () =>
+    dispatch(actionCreators.resetInstagramRejectedCampaignData()),
+  setRejectedCarouselAds: (rejCampaign) =>
+    dispatch(actionCreators.setRejectedCarouselAds(rejCampaign)),
+  resetCampaignInfoInstagram: (resetAdType) =>
+    dispatch(actionCreators.resetCampaignInfoInstagram(resetAdType)),
 });
 export default connect(
   mapStateToProps,

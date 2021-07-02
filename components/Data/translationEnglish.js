@@ -2193,6 +2193,22 @@ const strings = {
   "Ad Destination": "Ad Destination",
   "Do you accept to make this change?": "Do you accept to make this change?",
   "Will Change your Brand Name from": "Will Change your Brand Name from",
+  "Your Remaining budget will be added to Your wallet in the next {{hours}} hours":
+    "Your Remaining budget will be added to Your wallet in the next {{hours}} hours",
+  12: "12",
+  24: "24",
+  48: "48",
+  "GET MORE PEOPLE TO ENGAGE WITH YOUR INSTAGRAM POSTS":
+    "GET MORE PEOPLE TO ENGAGE WITH YOUR INSTAGRAM POSTS",
+  "No Button": "No Button",
+  "Cancel Campaign": "Cancel Campaign",
+  OK: "OK",
+  "Verify Business": "Verify Business",
+  "Your approval request is in review": "Your approval request is in review",
+  "Check your status": "Check your status",
+  "Your approval request is approved": "Your approval request is approved",
+  "Your budget will be added to your wallet":
+    "Your budget will be added to your wallet",
 };
 
 export default strings;

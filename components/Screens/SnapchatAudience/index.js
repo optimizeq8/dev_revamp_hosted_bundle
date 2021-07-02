@@ -1179,7 +1179,9 @@ export class SnapchatAudience extends Component {
                         {translate("Location")}
                       </Text>
                       <Icon
-                        name={`keyboard-arrow${expandLocation ? "up" : "down"}`}
+                        name={`keyboard-arrow-${
+                          expandLocation ? "up" : "down"
+                        }`}
                         type="MaterialIcons"
                         style={styles.iconDown}
                         onPress={this.expandLocation}
@@ -1295,7 +1297,7 @@ export class SnapchatAudience extends Component {
                         {translate("Demographic")}
                       </Text>
                       <Icon
-                        name={`keyboard-arrow${
+                        name={`keyboard-arrow-${
                           expandDemographics ? "up" : "down"
                         }`}
                         type="MaterialIcons"
@@ -1509,7 +1511,7 @@ export class SnapchatAudience extends Component {
                         {translate("Devices")}
                       </Text>
                       <Icon
-                        name={`keyboard-arrow${expandDevices ? "up" : "down"}`}
+                        name={`keyboard-arrow-${expandDevices ? "up" : "down"}`}
                         type="MaterialIcons"
                         style={styles.iconDown}
                         onPress={this.expandDevices}

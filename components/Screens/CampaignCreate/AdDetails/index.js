@@ -868,11 +868,13 @@ class AdDetails extends Component {
         );
         //To add the region ids of all selected countries
         replace.targeting.geos.forEach((cou, i) => {
-          let foundRegions = this.state.regions.find(
-            (cReg) =>
-              cReg.regions.length > 3 &&
-              cReg.country_code === replace.targeting.geos[i].country_code
-          );
+          let foundRegions =
+            this.state.regions &&
+            this.state.regions.find(
+              (cReg) =>
+                cReg.regions.length > 3 &&
+                cReg.country_code === replace.targeting.geos[i].country_code
+            );
           replace.targeting.geos[i].region_id = foundRegions
             ? foundRegions.regions.map((reg) => reg.id)
             : [];
