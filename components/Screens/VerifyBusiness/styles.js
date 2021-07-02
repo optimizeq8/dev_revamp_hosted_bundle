@@ -7,9 +7,10 @@ const styles = StyleSheet.create({
     color: globalColors.rum,
     fontSize: RFValue(8, 414),
     fontFamily: "montserrat-regular",
-    width: "80%",
-    textAlign: "center",
+    // width: "80%",
+    // textAlign: "left",
     marginTop: 5,
+    paddingHorizontal: 2,
   },
   approvalText: {
     color: globalColors.rum,
@@ -40,6 +41,11 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     borderRadius: 20,
     paddingVertical: 20,
+  },
+  businessNameview: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
 
