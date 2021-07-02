@@ -102,6 +102,7 @@ class Menu extends Component {
   };
   handleNavigation = (route, checkForBusinessId = false, params) => {
     const { translate } = this.props.screenProps;
+
     let userNotVerified =
       this.props.userInfo &&
       this.props.userInfo.hasOwnProperty("verified_account") &&
@@ -110,11 +111,16 @@ class Menu extends Component {
       this.props.mainBusiness &&
       this.props.mainBusiness.hasOwnProperty("approved") &&
       this.props.mainBusiness.approved === "0";
-    let routePath = userNotVerified
-      ? "VerifyAccount"
-      : notApproved
-      ? "VerifyBusiness"
-      : route;
+    let userisSuperAdmin =
+      this.props.userInfo &&
+      this.props.userInfo.hasOwnProperty("superadmin") &&
+      this.props.userInfo.superadmin;
+    let routePath = route;
+    if (userNotVerified) {
+      routePath = "VerifyAccount";
+    } else if (notApproved && !userisSuperAdmin) {
+      routePath = "VerifyBusiness";
+    }
     if (checkForBusinessId) {
       if (
         this.props.mainBusiness &&
