@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, BackHandler } from "react-native";
+import { View, Text, BackHandler, ScrollView } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
@@ -47,9 +47,13 @@ class VerifyBusiness extends React.Component {
       if (business.approved && business.approved === "0") {
         counter = counter + 1;
         return (
-          <Text style={styles.businessname}>
-            {counter}. {business.businessname}
-          </Text>
+          <View style={styles.businessNameview}>
+            <Text style={styles.businessname}>{counter}.</Text>
+            <Text style={styles.businessname}>
+              {business.businessname}
+              {"\u200F"}
+            </Text>
+          </View>
         );
       }
     });
@@ -60,10 +64,11 @@ class VerifyBusiness extends React.Component {
     businessNotApproved = this.props.businessAccounts.filter(
       (business) => business.approved && business.approved === "0"
     );
-    return businessNotApproved[0].businessid;
+    return businessNotApproved;
   };
   render() {
     const { translate } = this.props.screenProps;
+    let businessNotApproved = this.getBusinessIdOfNotApproved();
     return (
       <View style={{ flex: 1 }}>
         <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
@@ -81,11 +86,22 @@ class VerifyBusiness extends React.Component {
             source_action: "a_go_back",
           }}
         />
-        <View style={styles.verifyBusinessView}>
+        <View
+          style={[
+            styles.verifyBusinessView,
+            businessNotApproved &&
+              businessNotApproved.length > 6 && {
+                flex: 1,
+              },
+          ]}
+        >
           <Text style={styles.approvalText}>
             {translate("Your approval request is in review")}
           </Text>
-          {this.renderBusinessNamesNotApproved()}
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {this.renderBusinessNamesNotApproved()}
+          </ScrollView>
+
           <GradientButton
             screenProps={this.props.screenProps}
             height={50}
@@ -93,8 +109,9 @@ class VerifyBusiness extends React.Component {
             style={styles.refreshButton}
             textStyle={styles.textRefreshStyle}
             onPressAction={() => {
+              let businessess = this.getBusinessIdOfNotApproved();
               this.props.checkBusinessVerified(
-                this.getBusinessIdOfNotApproved(),
+                businessess[0].businessid,
                 translate
               );
             }}
@@ -110,6 +127,7 @@ const mapStateToProps = (state) => ({
   checkingBusinessStatus: state.account.checkingBusinessStatus,
   mainBusiness: state.account.mainBusiness,
   businessAccounts: state.account.businessAccounts,
+  userInfo: state.auth.userInfo,
 });
 
 const mapDispatchToProps = (dispatch) => ({

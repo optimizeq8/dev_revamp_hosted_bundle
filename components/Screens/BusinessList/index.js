@@ -153,11 +153,18 @@ class BusinessList extends Component {
     let notApproved = this.props.businessAccounts.some(
       (bsn) => bsn.approved === "0"
     );
-    let routePath = userNotVerified
-      ? "VerifyAccount"
-      : notApproved
-      ? "VerifyBusiness"
-      : "CreateBusinessAccount";
+    let userisSuperAdmin =
+      this.props.userInfo &&
+      this.props.userInfo.hasOwnProperty("superadmin") &&
+      this.props.userInfo.superadmin;
+
+    let routePath = "CreateBusinessAccount";
+    if (userNotVerified) {
+      routePath = "VerifyAccount";
+    } else if (notApproved && !userisSuperAdmin) {
+      routePath = "VerifyBusiness";
+    }
+
     this.props.navigation.navigate(routePath, {
       createNewBusiness: true,
       source: "open_hamburger",

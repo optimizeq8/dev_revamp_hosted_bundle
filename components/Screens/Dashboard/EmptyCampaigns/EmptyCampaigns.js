@@ -32,40 +32,40 @@ export default class EmptyCampaigns extends Component {
       this.props.mainBusiness &&
       this.props.mainBusiness.hasOwnProperty("approved") &&
       this.props.mainBusiness.approved === "0";
+    let userisSuperAdmin =
+      this.props.userInfo &&
+      this.props.userInfo.hasOwnProperty("superadmin") &&
+      this.props.userInfo.superadmin;
     let hasBusinessId =
       this.props.mainBusiness &&
       this.props.mainBusiness.hasOwnProperty("businessid");
     let routePath = "AdType";
-    routePath = userNotVerified
-      ? "VerifyAccount"
-      : notApproved
-      ? "VerifyBusiness"
-      : hasBusinessId
-      ? "AdType"
-      : "CreateBusinessAccount";
-    if (this.props.mainBusiness.hasOwnProperty("businessid")) {
-      const device_id = this.props.screenProps.device_id;
-      const { userInfo } = this.props;
-      const { approved } = this.props.mainBusiness;
-      analytics.track(`a_create_campaign`, {
-        source: "dashboard",
-        source_action: "a_create_campaign",
-        timestamp: new Date().getTime(),
-        userId: userInfo.userid,
-        device_id,
-        businessid:
-          this.props.mainBusiness && this.props.mainBusiness.businessid,
-      });
-      this.props.navigation.navigate(routePath, {
-        source: "dashboard",
-        source_action: "a_create_campaign",
-      });
+    if (userNotVerified) {
+      routePath = "VerifyAccount";
+    } else if (notApproved && !userisSuperAdmin) {
+      routePath = "VerifyBusiness";
+    } else if (hasBusinessId) {
+      routePath = "AdType";
     } else {
-      this.props.navigation.navigate(routePath, {
-        source: "dashboard",
-        source_action: "a_create_campaign",
-      });
+      routePath = "CreateBusinessAccount";
     }
+
+    const device_id = this.props.screenProps.device_id;
+    const { userInfo } = this.props;
+
+    analytics.track(`a_create_campaign`, {
+      source: "dashboard",
+      source_action: "a_create_campaign",
+      timestamp: new Date().getTime(),
+      userId: userInfo.userid,
+      device_id,
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    });
+
+    this.props.navigation.navigate(routePath, {
+      source: "dashboard",
+      source_action: "a_create_campaign",
+    });
   };
 
   goToVerifyAccount = () => {
@@ -94,11 +94,15 @@ export default class EmptyCampaigns extends Component {
       this.props.mainBusiness &&
       this.props.mainBusiness.hasOwnProperty("approved") &&
       this.props.mainBusiness.approved === "0";
-    let routePath = userNotVerified
-      ? "VerifyAccount"
-      : notApproved
-      ? "VerifyBusiness"
-      : "TutorialWeb";
+    let userisSuperAdmin =
+      this.props.userInfo &&
+      this.props.userInfo.hasOwnProperty("superadmin") &&
+      this.props.userInfo.superadmin;
+
+    let routePath = "TutorialWeb";
+    if (userNotVerified) routePath = "VerifyAccount";
+    else if (notApproved && !userisSuperAdmin) routePath = "VerifyBusiness";
+
     this.props.navigation.navigate(routePath, {
       source: "dashboard",
       source_action: "a_open_website_tutorial",
