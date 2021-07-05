@@ -31,6 +31,13 @@ class VerifyBusiness extends React.Component {
       verification_channel: "Business",
       businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
+    const { approved, businessid } = this.props.mainBusiness;
+    if (approved === "3") {
+      this.props.checkBusinessVerified(
+        businessid,
+        this.props.screenProps.translate
+      );
+    }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   componentWillUnmount() {
@@ -42,8 +49,8 @@ class VerifyBusiness extends React.Component {
   };
 
   renderMessage = () => {
-    const { approved, reject_reason } = this.props.mainBusiness;
-    let message = "";
+    const { approved } = this.props.mainBusiness;
+    let message = null;
     let title = null;
     switch (approved) {
       case "0":
@@ -52,7 +59,7 @@ class VerifyBusiness extends React.Component {
           "To give you the best service that we can offer, our team needs to verify your business first Please make sure the information you entered during registration is accurate before submitting If you need to make changes, you can do so in the menu under 'Business Info' and 'Personal Info'";
         break;
       case "1":
-        title = "";
+        title = " ";
         message = "Get started and launch your ads now";
         break;
       case "2":
@@ -61,13 +68,34 @@ class VerifyBusiness extends React.Component {
           "Our team is still working towards verifying your business We know your eager to get started, and it won't be much longer";
         break;
       case "3":
-        title = "Your business could not be verified";
-        message = reject_reason;
+        message = "Your business could not be verified";
         break;
-      default:
-        message = "";
     }
     return { message, title };
+  };
+  renderRejectedReasons = () => {
+    const { approved, reject_reason } = this.props.mainBusiness;
+    const { translate } = this.props.screenProps;
+    let reasonsView = null;
+    if (approved === "3" && reject_reason && reject_reason.length > 0) {
+      let reasons = reject_reason.map((reason) => {
+        return { key: Object.keys(reason), value: reason[Object.keys(reason)] };
+      });
+      reasonsView = reasons.map((rea, index) => (
+        <View style={styles.rejView}>
+          <Text style={styles.businessname}>
+            {index + 1}. {translate(rea.key)}
+          </Text>
+          <Text style={styles.rejectedReason}>{translate(rea.value)}</Text>
+        </View>
+      ));
+      reasonsView = [
+        <Text style={styles.rejectedReasonHeading}>
+          {translate("Here Are The Reasons")} :
+        </Text>,
+      ].concat(reasonsView);
+    }
+    return reasonsView;
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -92,10 +120,12 @@ class VerifyBusiness extends React.Component {
           }}
         />
         <View style={[styles.verifyBusinessView]}>
-          <Text style={styles.businessname}>{translate(title)}</Text>
+          {title && <Text style={styles.title}>{translate(title)}</Text>}
 
-          <Text style={styles.approvalText}>{translate(message)}</Text>
-
+          {message && (
+            <Text style={styles.approvalText}>{translate(message)}</Text>
+          )}
+          {this.renderRejectedReasons()}
           {approved === "0" && (
             <GradientButton
               screenProps={this.props.screenProps}

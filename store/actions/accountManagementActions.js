@@ -529,7 +529,7 @@ export const inviteTeamMember = (info, resend) => {
  *
  * @returns for success navigates back to menu screen
  */
-export const updateBusinessInfo = (userid, info, navigation) => {
+export const updateBusinessInfo = (userid, info, navigation, translate) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.UPDATE_BUSINESS_INFO_LOADING,
@@ -559,6 +559,13 @@ export const updateBusinessInfo = (userid, info, navigation) => {
           businessid: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
+          dispatch(
+            checkBusinessVerified(
+              getState().account.mainBusiness.businessid,
+              translate
+            )
+          );
+          //Dashboard
           navigation.navigate("Dashboard", {
             source: "open_business_info",
             source_action: "a_update_buisness_info",
@@ -1190,21 +1197,34 @@ export const checkBusinessVerified = (businessid, translate) => {
         }
         let approvedKey =
           data.business_accounts && data.business_accounts.approved;
-        let message = "";
+        let message = null;
         let title = null;
         switch (approvedKey) {
           case "0":
-            message =
-              "To give you the best service that we can offer, our team needs to verify your business first Please make sure the information you entered during registration is accurate before submitting If you need to make changes, you can do so in the menu under 'Business Info' and 'Personal Info'";
+            // message =
+            //   "To give you the best service that we can offer, our team needs to verify your business first Please make sure the information you entered during registration is accurate before submitting If you need to make changes, you can do so in the menu under 'Business Info' and 'Personal Info'";
             break;
           case "1":
             title = "Your Business Is Now Verified!";
             message = "Get started and launch your ads now";
+            showMessage({
+              type: "warning",
+              message: translate(title),
+              description: translate(message),
+              duration: 5000,
+            });
             break;
           case "2":
             title = "Request Submitted";
             message =
               "We'll be notifying you within 24 hours, so keep your eyes peeled for our app notification and email";
+
+            showMessage({
+              type: "warning",
+              message: translate(title),
+              description: translate(message),
+              duration: 5000,
+            });
             break;
           case "3":
             dispatch(
@@ -1214,18 +1234,14 @@ export const checkBusinessVerified = (businessid, translate) => {
                   data.business_accounts.reject_reason,
               })
             );
-            message = "Your business could not be verified";
+            // message = "Your business could not be verified";
             break;
           default:
+            title = undefined;
             message = "";
             break;
         }
-        showMessage({
-          type: accountApproved ? "success" : "warning",
-          message: title && translate(title),
-          description: translate(message),
-          duration: 5000,
-        });
+
         return dispatch({
           type: actionTypes.CHECK_BUSINESS_STATUS,
           payload: false,

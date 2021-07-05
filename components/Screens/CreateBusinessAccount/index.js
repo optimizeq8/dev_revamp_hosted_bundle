@@ -393,7 +393,8 @@ class CreateBusinessAccount extends Component {
                       ? null
                       : this.state.businessAccount.otherBusinessCategory, // to handle other business category field
                 },
-                this.props.navigation
+                this.props.navigation,
+                this.props.screenProps.translate
               );
             } else {
               analytics.track(`a_update_buisness_info`, {
@@ -1123,8 +1124,10 @@ const mapDispatchToProps = (dispatch) => ({
         submision
       )
     ),
-  updateBusinessInfo: (userid, info, navigation) =>
-    dispatch(actionCreators.updateBusinessInfo(userid, info, navigation)),
+  updateBusinessInfo: (userid, info, navigation, translate) =>
+    dispatch(
+      actionCreators.updateBusinessInfo(userid, info, navigation, translate)
+    ),
 });
 export default connect(
   mapStateToProps,

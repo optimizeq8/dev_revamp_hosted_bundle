@@ -3,21 +3,30 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
-  businessname: {
+  title: {
     color: globalColors.rum,
     fontSize: RFValue(8, 414),
     fontFamily: "montserrat-bold",
+    paddingVertical: 3,
     // width: "80%",
     // textAlign: "left",
-    marginVertical: 5,
-    paddingHorizontal: 2,
+  },
+  businessname: {
+    color: globalColors.rum,
+    fontSize: RFValue(7, 414),
+    fontFamily: "montserrat-bold",
+    paddingVertical: 3,
+    // width: "80%",
+    // textAlign: "left",
   },
   approvalText: {
     color: globalColors.rum,
     fontSize: RFValue(8, 414),
     textAlign: "left",
     fontFamily: "montserrat-regular",
-    width: "80%",
+    width: "100%",
+    paddingBottom: 10,
+    paddingHorizontal: 20,
   },
   refreshButton: {
     marginVertical: RFValue(15, 414),
@@ -46,6 +55,26 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     // alignItems: "center",
+  },
+  rejectedReason: {
+    color: globalColors.rum,
+    fontSize: RFValue(7, 414),
+    textAlign: "left",
+    fontFamily: "montserrat-regular",
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+  },
+  rejView: {
+    paddingHorizontal: 10,
+  },
+  rejectedReasonHeading: {
+    color: globalColors.rum,
+    fontSize: RFValue(7, 414),
+    textAlign: "left",
+    fontFamily: "montserrat-regular",
+    paddingBottom: 7,
+    width: "100%",
+    paddingHorizontal: 20,
   },
 });
 
