@@ -41,6 +41,7 @@ import * as actionCreators from "../../../store/actions";
 import CorporateIcon from "../../../assets/SVGs/Corporate";
 import LocationIcon from "../../../assets/SVGs/LocationOutline";
 import BusinessIcon from "../../../assets/SVGs/Briefcase";
+import InstagramIcon from "../../../assets/SVGs/InstagramIcon";
 //Validator
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { showMessage } from "react-native-flash-message";
@@ -76,6 +77,7 @@ class CreateBusinessAccount extends Component {
           icon_media_url: "",
           android_app_url: "",
         },
+        insta_handle_for_review: "",
       },
       inputT: false,
       inputN: false,
@@ -88,6 +90,7 @@ class CreateBusinessAccount extends Component {
       brandNameError: "",
       businesscategoryError: "",
       businesscategoryOtherError: "",
+      insta_handle_for_reviewError: "",
       countryError: "",
       websitelinkError: null,
       items: businessCategoryList(translate),
@@ -247,7 +250,10 @@ class CreateBusinessAccount extends Component {
       "mandatory",
       this.state.businessAccount.country
     );
-
+    const insta_handle_for_reviewError = validateWrapper(
+      "mandatory",
+      this.state.businessAccount.insta_handle_for_review
+    );
     const businesscategoryOtherError =
       this.state.businessAccount.businesscategory === "43" &&
       validateWrapper(
@@ -268,6 +274,7 @@ class CreateBusinessAccount extends Component {
       countryError,
       businesscategoryOtherError,
       websitelinkError,
+      insta_handle_for_reviewError,
     });
     if (websitelinkError) {
       showMessage({
@@ -280,7 +287,8 @@ class CreateBusinessAccount extends Component {
         !businesscategoryError &&
         !countryError &&
         !businesscategoryOtherError &&
-        !websitelinkError
+        !websitelinkError &&
+        !insta_handle_for_reviewError
       ) {
         if (this.state.businessAccount.brandname === "") {
           await this.setState({
@@ -418,6 +426,8 @@ class CreateBusinessAccount extends Component {
                   ? null
                   : this.state.businessAccount.otherBusinessCategory,
               country: this.state.businessAccount.country,
+              insta_handle_for_review:
+                this.state.businessAccount.insta_handle_for_review,
             };
             this.props.createBusinessAccount(
               businessAccountInfo,
@@ -688,6 +698,7 @@ class CreateBusinessAccount extends Component {
     let { iosAppSelected, androidAppSelected } = this.state;
     const businessCategory = this.getBusinessCategory();
     const country = this.getCountryName();
+    const { approved } = this.props.mainBusiness;
     // Added disable(when updating business info loading ) and value ={having state value} props to input fields
     return (
       <SafeAreaView
@@ -934,7 +945,41 @@ class CreateBusinessAccount extends Component {
               }
             />
           )}
-
+          <InputFeild
+            // disabled={this.props.loadingUpdateInfo}
+            // customStyles={{ width: "100%", marginLeft: 0 }}
+            incomplete={false}
+            translate={this.props.screenProps.translate}
+            stateName1="insta_handle_for_review"
+            label="instagram"
+            placeholder1="Handle"
+            value={
+              this.props.registering
+                ? this.props.businessAccount.insta_handle_for_review
+                : this.state.businessAccount.insta_handle_for_review
+            }
+            valueError1={
+              this.props.registering
+                ? this.props.insta_handle_for_reviewError
+                : this.state.insta_handle_for_reviewError
+            }
+            icon={InstagramIcon}
+            getValidInfo={
+              this.props.registering
+                ? this.props.getValidInfo
+                : this.getValidInfo
+            }
+            setValue={
+              this.props.registering ? this.props.setValue : this.setValue
+            }
+            key={"insta_handle_for_review"}
+            compulsory={true}
+            disabled={
+              (this.state.editBusinessInfo &&
+                this.props.editBusinessInfoLoading) ||
+              this.props.savingRegister
+            }
+          />
           {/** App Choice for business */}
           {/* {this.state.editBusinessInfo && (
             <AppChoiceBusiness
@@ -979,7 +1024,7 @@ class CreateBusinessAccount extends Component {
                 height: 60,
               }}
             />
-          ) : this.state.editBusinessInfo ? (
+          ) : this.state.editBusinessInfo && approved !== "1" ? (
             <LowerButton
               screenProps={this.props.screenProps}
               checkmark

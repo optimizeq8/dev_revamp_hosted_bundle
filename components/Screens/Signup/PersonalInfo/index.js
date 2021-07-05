@@ -44,6 +44,7 @@ class PersonalInfo extends Component {
         businessname: "",
         businesscategory: "",
         country: "",
+        insta_handle_for_review: "",
         otherBusinessCategory: null,
         // businesstype: "1",
         // businessemail: "",
@@ -76,6 +77,7 @@ class PersonalInfo extends Component {
       repasswordError: "",
       businesscategoryError: null,
       businessnameError: null,
+      insta_handle_for_reviewError: null,
     };
     this._handleSubmission = this._handleSubmission.bind(this);
     this._passwordVarification = this._passwordVarification.bind(this);
@@ -207,6 +209,10 @@ class PersonalInfo extends Component {
         "mandatory",
         this.state.businessAccount.otherBusinessCategory
       );
+    const insta_handle_for_reviewError = validateWrapper(
+      "mandatory",
+      this.state.businessAccount.insta_handle_for_review
+    );
     if (
       passwordError ||
       emailError ||
@@ -215,7 +221,8 @@ class PersonalInfo extends Component {
       businessnameError ||
       businesscategoryError ||
       countryError ||
-      businesscategoryOtherError
+      businesscategoryOtherError ||
+      insta_handle_for_reviewError
     ) {
       analytics.track(`a_error_form`, {
         error_page: "registration_detail",
@@ -227,7 +234,8 @@ class PersonalInfo extends Component {
           businessnameError ||
           businesscategoryError ||
           countryError ||
-          businesscategoryOtherError,
+          businesscategoryOtherError ||
+          insta_handle_for_reviewError,
         source_action: "a_sign_up",
       });
     }
@@ -240,6 +248,7 @@ class PersonalInfo extends Component {
       businesscategoryError,
       businesscategoryOtherError,
       countryError,
+      insta_handle_for_reviewError,
     });
     if (businessnameError) {
       showMessage({
@@ -289,6 +298,12 @@ class PersonalInfo extends Component {
         type: "warning",
       });
     }
+    if (insta_handle_for_reviewError) {
+      showMessage({
+        message: translate(insta_handle_for_reviewError),
+        type: "warning",
+      });
+    }
     if (!this.state.valid) {
       showMessage({
         message: translate("Please enter a valid number!"),
@@ -307,6 +322,7 @@ class PersonalInfo extends Component {
       !businesscategoryError &&
       !businesscategoryOtherError &&
       !countryError &&
+      !insta_handle_for_reviewError &&
       this.state.valid // condition for mobile no
     ) {
       const mobile = this.state.userInfo.mobile.substring(
