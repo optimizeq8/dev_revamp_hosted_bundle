@@ -171,6 +171,22 @@ class BusinessList extends Component {
       source_action: `a_create_buiness_account`,
     });
   };
+  showCreateBusiness = () => {
+    let userisSuperAdmin =
+      this.props.userInfo &&
+      this.props.userInfo.hasOwnProperty("superadmin") &&
+      this.props.userInfo.superadmin;
+    let notApproved = this.props.businessAccounts.some(
+      (bsn) => bsn.approved === "0"
+    );
+
+    // activeTab is businessess and  all business approved or userIsSuperAdmin
+    let show =
+      this.state.activeTab === "Businesses" &&
+      (userisSuperAdmin || !notApproved);
+
+    return show;
+  };
   render() {
     const { translate } = this.props.screenProps;
     return (
@@ -268,7 +284,7 @@ class BusinessList extends Component {
                 onPressAction={this.props.getBusinessAccounts}
               />
             )}
-          {this.state.activeTab === "Businesses" && (
+          {this.showCreateBusiness() && (
             <GradientButton
               // purpleViolet
               style={[styles.bottomCard]}

@@ -44,10 +44,15 @@ class VerifyBusiness extends React.Component {
     let businessNotApproved = null;
     let counter = 0;
     businessNotApproved = this.props.businessAccounts.map((business, index) => {
-      if (business.approved && business.approved === "0") {
+      const { businessid } = this.props.mainBusiness;
+      if (
+        business.approved &&
+        business.approved === "0" &&
+        businessid === business.businessid
+      ) {
         counter = counter + 1;
         return (
-          <View style={styles.businessNameview}>
+          <View key={businessid} style={styles.businessNameview}>
             <Text style={styles.businessname}>{counter}.</Text>
             <Text style={styles.businessname}>
               {business.businessname}
@@ -61,14 +66,18 @@ class VerifyBusiness extends React.Component {
   };
   getBusinessIdOfNotApproved = () => {
     let businessNotApproved = null;
-    businessNotApproved = this.props.businessAccounts.filter(
-      (business) => business.approved && business.approved === "0"
+    const { businessid } = this.props.mainBusiness;
+    businessNotApproved = this.props.businessAccounts.find(
+      (business) =>
+        business.approved &&
+        business.approved === "0" &&
+        businessid === business.businessid
     );
     return businessNotApproved;
   };
   render() {
     const { translate } = this.props.screenProps;
-    let businessNotApproved = this.getBusinessIdOfNotApproved();
+
     return (
       <View style={{ flex: 1 }}>
         <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
@@ -86,15 +95,7 @@ class VerifyBusiness extends React.Component {
             source_action: "a_go_back",
           }}
         />
-        <View
-          style={[
-            styles.verifyBusinessView,
-            businessNotApproved &&
-              businessNotApproved.length > 6 && {
-                flex: 1,
-              },
-          ]}
-        >
+        <View style={[styles.verifyBusinessView]}>
           <Text style={styles.approvalText}>
             {translate("Your approval request is in review")}
           </Text>
@@ -111,7 +112,7 @@ class VerifyBusiness extends React.Component {
             onPressAction={() => {
               let businessess = this.getBusinessIdOfNotApproved();
               this.props.checkBusinessVerified(
-                businessess[0].businessid,
+                businessess.businessid,
                 translate
               );
             }}

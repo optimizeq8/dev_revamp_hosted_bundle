@@ -726,8 +726,8 @@ class Dashboard extends Component {
     if (
       userCurrentTime.getDay() < 0 ||
       userCurrentTime.getDay() > 5 ||
-      userCurrentTime.getUTCHours() < 10 ||
-      userCurrentTime.getUTCHours() >= 18
+      userCurrentTime.getUTCHours() + 3 < 10 || // For Kuwait time added + 3
+      userCurrentTime.getUTCHours() + 3 >= 18 // For Kuwait time added + 3
     ) {
       this.setState({ showAlertModal: true });
     } else {

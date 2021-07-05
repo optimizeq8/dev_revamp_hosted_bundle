@@ -115,10 +115,12 @@ class Menu extends Component {
       this.props.userInfo &&
       this.props.userInfo.hasOwnProperty("superadmin") &&
       this.props.userInfo.superadmin;
+    let approvedRoutes =
+      route === "PersonalInfo" || route === "CreateBusinessAccount"; // Users can change their business or personal info even if that business is not approved
     let routePath = route;
-    if (userNotVerified) {
+    if (userNotVerified && !approvedRoutes) {
       routePath = "VerifyAccount";
-    } else if (notApproved && !userisSuperAdmin) {
+    } else if (notApproved && !userisSuperAdmin && !approvedRoutes) {
       routePath = "VerifyBusiness";
     }
     if (checkForBusinessId) {
