@@ -1163,7 +1163,7 @@ export const checkBusinessVerified = (businessid, translate) => {
       .get(`businessApprovalStatus/${businessid}`)
       .then((res) => res.data)
       .then((data) => {
-        // console.log("data", JSON.stringify(data, null, 2));
+        console.log("data", JSON.stringify(data, null, 2));
         let accountApproved =
           data.success &&
           data.business_accounts &&
@@ -1173,10 +1173,16 @@ export const checkBusinessVerified = (businessid, translate) => {
           source_action: "a_check_status",
           verification_channel: "Business",
           businessid: businessid,
-          business_approved: accountApproved,
+          business_approved:
+            data.business_accounts && data.business_accounts.approved,
         });
+        dispatch(
+          updateBusinessConnectedToFacebook({
+            approved: data.business_accounts && data.business_accounts.approved,
+          })
+        );
+
         if (accountApproved) {
-          dispatch(updateBusinessConnectedToFacebook({ approved: "1" }));
           NavigationService.navigate("Dashboard", {
             source: "start_verify",
             source_action: "a_check_status",
