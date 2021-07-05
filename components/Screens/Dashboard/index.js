@@ -368,13 +368,13 @@ class Dashboard extends Component {
       device_id: this.props.screenProps.device_id,
       businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
-    let notApproved =
-      this.props.mainBusiness && this.props.mainBusiness.approved === "0";
+    let businessApproved =
+      this.props.mainBusiness && this.props.mainBusiness.approved === "1";
     let userisSuperAdmin =
       this.props.userInfo &&
       this.props.userInfo.hasOwnProperty("superadmin") &&
       this.props.userInfo.superadmin;
-    if (notApproved && !userisSuperAdmin) {
+    if (!businessApproved && !userisSuperAdmin) {
       this.props.navigation.navigate("VerifyBusiness", {
         source: "dashboard",
         source_action: "a_campaign_ad_type",
@@ -542,14 +542,14 @@ class Dashboard extends Component {
       businessid: this.props.mainBusiness.businessid,
     });
 
-    let notApproved =
-      this.props.mainBusiness && this.props.mainBusiness.approved === "0";
+    let businessApproved =
+      this.props.mainBusiness && this.props.mainBusiness.approved === "1";
     let userisSuperAdmin =
       this.props.userInfo &&
       this.props.userInfo.hasOwnProperty("superadmin") &&
       this.props.userInfo.superadmin;
     this.props.navigation.navigate(
-      notApproved && !userisSuperAdmin ? "VerifyBusiness" : "AdType",
+      !businessApproved && !userisSuperAdmin ? "VerifyBusiness" : "AdType",
       {
         source: "dashboard",
         source_action: "a_create_campaign",
@@ -1021,9 +1021,9 @@ class Dashboard extends Component {
                         <TouchableOpacity
                           style={styles.websiteCard}
                           onPress={() => {
-                            let notApproved =
+                            let businessApproved =
                               this.props.mainBusiness &&
-                              this.props.mainBusiness.approved === "0";
+                              this.props.mainBusiness.approved === "1";
                             let userisSuperAdmin =
                               this.props.userInfo &&
                               this.props.userInfo.hasOwnProperty(
@@ -1031,7 +1031,7 @@ class Dashboard extends Component {
                               ) &&
                               this.props.userInfo.superadmin;
                             this.props.navigation.navigate(
-                              notApproved && !userisSuperAdmin
+                              !businessApproved && !userisSuperAdmin
                                 ? "VerifyBusiness"
                                 : "TutorialWeb",
                               {
@@ -1076,9 +1076,9 @@ class Dashboard extends Component {
                             height={10}
                             style={styles.lowerButton}
                             function={() => {
-                              let notApproved =
+                              let businessApproved =
                                 this.props.mainBusiness &&
-                                this.props.mainBusiness.approved === "0";
+                                this.props.mainBusiness.approved === "1";
                               let userisSuperAdmin =
                                 this.props.userInfo &&
                                 this.props.userInfo.hasOwnProperty(
@@ -1086,7 +1086,7 @@ class Dashboard extends Component {
                                 ) &&
                                 this.props.userInfo.superadmin;
                               this.props.navigation.navigate(
-                                notApproved && !userisSuperAdmin
+                                !businessApproved && !userisSuperAdmin
                                   ? "VerifyBusiness"
                                   : "TutorialWeb",
                                 {

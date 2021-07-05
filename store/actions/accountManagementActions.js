@@ -1188,11 +1188,43 @@ export const checkBusinessVerified = (businessid, translate) => {
             source_action: "a_check_status",
           });
         }
+        let approvedKey =
+          data.business_accounts && data.business_accounts.approved;
+        let message = "";
+        let title = null;
+        switch (approvedKey) {
+          case "0":
+            message =
+              "To give you the best service that we can offer, our team needs to verify your business first Please make sure the information you entered during registration is accurate before submitting If you need to make changes, you can do so in the menu under 'Business Info' and 'Personal Info'";
+            break;
+          case "1":
+            title = "Your Business Is Now Verified!";
+            message = "Get started and launch your ads now";
+            break;
+          case "2":
+            title = "Request Submitted";
+            message =
+              "We'll be notifying you within 24 hours, so keep your eyes peeled for our app notification and email";
+            break;
+          case "3":
+            dispatch(
+              updateBusinessConnectedToFacebook({
+                reject_reason:
+                  data.business_accounts &&
+                  data.business_accounts.reject_reason,
+              })
+            );
+            message = "Your business could not be verified";
+            break;
+          default:
+            message = "";
+            break;
+        }
         showMessage({
           type: accountApproved ? "success" : "warning",
-          message: accountApproved
-            ? translate("Your approval request is approved")
-            : translate("Your approval request is in review"),
+          message: title && translate(title),
+          description: translate(message),
+          duration: 5000,
         });
         return dispatch({
           type: actionTypes.CHECK_BUSINESS_STATUS,

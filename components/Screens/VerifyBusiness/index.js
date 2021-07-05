@@ -40,44 +40,40 @@ class VerifyBusiness extends React.Component {
     this.props.navigation.goBack();
     return true;
   };
-  renderBusinessNamesNotApproved = () => {
-    let businessNotApproved = null;
-    let counter = 0;
-    businessNotApproved = this.props.businessAccounts.map((business, index) => {
-      const { businessid } = this.props.mainBusiness;
-      if (
-        business.approved &&
-        business.approved === "0" &&
-        businessid === business.businessid
-      ) {
-        counter = counter + 1;
-        return (
-          <View key={businessid} style={styles.businessNameview}>
-            <Text style={styles.businessname}>{counter}.</Text>
-            <Text style={styles.businessname}>
-              {business.businessname}
-              {"\u200F"}
-            </Text>
-          </View>
-        );
-      }
-    });
-    return businessNotApproved;
-  };
-  getBusinessIdOfNotApproved = () => {
-    let businessNotApproved = null;
-    const { businessid } = this.props.mainBusiness;
-    businessNotApproved = this.props.businessAccounts.find(
-      (business) =>
-        business.approved &&
-        business.approved === "0" &&
-        businessid === business.businessid
-    );
-    return businessNotApproved;
+
+  renderMessage = () => {
+    const { approved, reject_reason } = this.props.mainBusiness;
+    let message = "";
+    let title = null;
+    switch (approved) {
+      case "0":
+        title = " ";
+        message =
+          "To give you the best service that we can offer, our team needs to verify your business first Please make sure the information you entered during registration is accurate before submitting If you need to make changes, you can do so in the menu under 'Business Info' and 'Personal Info'";
+        break;
+      case "1":
+        title = "";
+        message = "Get started and launch your ads now";
+        break;
+      case "2":
+        title = "Pending Verification";
+        message =
+          "Our team is still working towards verifying your business We know your eager to get started, and it won't be much longer";
+        break;
+      case "3":
+        title = "Your business could not be verified";
+        message = reject_reason;
+        break;
+      default:
+        message = "";
+    }
+    return { message, title };
   };
   render() {
     const { translate } = this.props.screenProps;
 
+    const { approved } = this.props.mainBusiness;
+    const { message, title } = this.renderMessage();
     return (
       <View style={{ flex: 1 }}>
         <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
@@ -96,28 +92,24 @@ class VerifyBusiness extends React.Component {
           }}
         />
         <View style={[styles.verifyBusinessView]}>
-          <Text style={styles.approvalText}>
-            {translate("Your approval request is in review")}
-          </Text>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            {this.renderBusinessNamesNotApproved()}
-          </ScrollView>
+          <Text style={styles.businessname}>{translate(title)}</Text>
 
-          <GradientButton
-            screenProps={this.props.screenProps}
-            height={50}
-            text={translate("Check your status")}
-            style={styles.refreshButton}
-            textStyle={styles.textRefreshStyle}
-            onPressAction={() => {
-              let businessess = this.getBusinessIdOfNotApproved();
-              this.props.checkBusinessVerified(
-                businessess.businessid,
-                translate
-              );
-            }}
-            disabled={this.props.checkingBusinessStatus}
-          />
+          <Text style={styles.approvalText}>{translate(message)}</Text>
+
+          {approved === "0" && (
+            <GradientButton
+              screenProps={this.props.screenProps}
+              height={50}
+              text={translate("Verify your Business")}
+              style={styles.refreshButton}
+              textStyle={styles.textRefreshStyle}
+              onPressAction={() => {
+                const { businessid } = this.props.mainBusiness;
+                this.props.checkBusinessVerified(businessid, translate);
+              }}
+              disabled={this.props.checkingBusinessStatus}
+            />
+          )}
         </View>
       </View>
     );

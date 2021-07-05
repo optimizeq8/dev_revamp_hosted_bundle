@@ -6,16 +6,16 @@ const styles = StyleSheet.create({
   businessname: {
     color: globalColors.rum,
     fontSize: RFValue(8, 414),
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-bold",
     // width: "80%",
     // textAlign: "left",
-    marginTop: 5,
+    marginVertical: 5,
     paddingHorizontal: 2,
   },
   approvalText: {
     color: globalColors.rum,
     fontSize: RFValue(8, 414),
-    textAlign: "center",
+    textAlign: "left",
     fontFamily: "montserrat-regular",
     width: "80%",
   },
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   businessNameview: {
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
+    // alignItems: "center",
   },
 });
 

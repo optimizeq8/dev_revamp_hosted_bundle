@@ -146,24 +146,8 @@ class BusinessList extends Component {
       timestamp: new Date().getTime(),
       businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
-    let userNotVerified =
-      this.props.userInfo &&
-      this.props.userInfo.hasOwnProperty("verified_account") &&
-      !this.props.userInfo.verified_account;
-    let notApproved = this.props.businessAccounts.some(
-      (bsn) => bsn.approved === "0"
-    );
-    let userisSuperAdmin =
-      this.props.userInfo &&
-      this.props.userInfo.hasOwnProperty("superadmin") &&
-      this.props.userInfo.superadmin;
 
     let routePath = "CreateBusinessAccount";
-    if (userNotVerified) {
-      routePath = "VerifyAccount";
-    } else if (notApproved && !userisSuperAdmin) {
-      routePath = "VerifyBusiness";
-    }
 
     this.props.navigation.navigate(routePath, {
       createNewBusiness: true,
@@ -176,14 +160,19 @@ class BusinessList extends Component {
       this.props.userInfo &&
       this.props.userInfo.hasOwnProperty("superadmin") &&
       this.props.userInfo.superadmin;
-    let notApproved = this.props.businessAccounts.some(
-      (bsn) => bsn.approved === "0"
+    let businessApproved = this.props.businessAccounts.some(
+      (bsn) =>
+        bsn.approved === "0" || bsn.approved === "3" || bsn.approved === "2"
     );
-
-    // activeTab is businessess and  all business approved or userIsSuperAdmin
+    let userIsVerified =
+      this.props.userInfo &&
+      this.props.userInfo.hasOwnProperty("verified_account") &&
+      this.props.userInfo.verified_account;
+    // userisVerified and activeTab is businessess and  all business approved or userIsSuperAdmin
     let show =
       this.state.activeTab === "Businesses" &&
-      (userisSuperAdmin || !notApproved);
+      (userisSuperAdmin || !businessApproved) &&
+      userIsVerified;
 
     return show;
   };

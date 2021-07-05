@@ -28,10 +28,10 @@ export default class EmptyCampaigns extends Component {
       this.props.userInfo &&
       this.props.userInfo.hasOwnProperty("verified_account") &&
       !this.props.userInfo.verified_account;
-    let notApproved =
+    let businessApproved =
       this.props.mainBusiness &&
       this.props.mainBusiness.hasOwnProperty("approved") &&
-      this.props.mainBusiness.approved === "0";
+      this.props.mainBusiness.approved === "1";
     let userisSuperAdmin =
       this.props.userInfo &&
       this.props.userInfo.hasOwnProperty("superadmin") &&
@@ -42,7 +42,7 @@ export default class EmptyCampaigns extends Component {
     let routePath = "AdType";
     if (userNotVerified) {
       routePath = "VerifyAccount";
-    } else if (notApproved && !userisSuperAdmin) {
+    } else if (!businessApproved && !userisSuperAdmin) {
       routePath = "VerifyBusiness";
     } else if (hasBusinessId) {
       routePath = "AdType";
@@ -90,10 +90,10 @@ export default class EmptyCampaigns extends Component {
       this.props.userInfo &&
       this.props.userInfo.hasOwnProperty("verified_account") &&
       !this.props.userInfo.verified_account;
-    let notApproved =
+    let businessApproved =
       this.props.mainBusiness &&
       this.props.mainBusiness.hasOwnProperty("approved") &&
-      this.props.mainBusiness.approved === "0";
+      this.props.mainBusiness.approved === "1";
     let userisSuperAdmin =
       this.props.userInfo &&
       this.props.userInfo.hasOwnProperty("superadmin") &&
@@ -101,7 +101,8 @@ export default class EmptyCampaigns extends Component {
 
     let routePath = "TutorialWeb";
     if (userNotVerified) routePath = "VerifyAccount";
-    else if (notApproved && !userisSuperAdmin) routePath = "VerifyBusiness";
+    else if (!businessApproved && !userisSuperAdmin)
+      routePath = "VerifyBusiness";
 
     this.props.navigation.navigate(routePath, {
       source: "dashboard",
