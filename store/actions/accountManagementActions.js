@@ -1173,7 +1173,7 @@ export const checkBusinessVerified = (businessid, translate) => {
       .get(`businessApprovalStatus/${businessid}`)
       .then((res) => res.data)
       .then((data) => {
-        console.log("data", JSON.stringify(data, null, 2));
+        // console.log("data", JSON.stringify(data, null, 2));
         let accountApproved =
           data.success &&
           data.business_accounts &&
