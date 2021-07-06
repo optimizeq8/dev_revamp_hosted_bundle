@@ -2209,6 +2209,35 @@ const strings = {
   "Your approval request is approved": "Your approval request is approved",
   "Your budget will be added to your wallet":
     "Your budget will be added to your wallet",
+  "Verify your Business": "Verify your Business",
+  "To give you the best service that we can offer, our team needs to verify your business first Please make sure the information you entered during registration is accurate before submitting If you need to make changes, you can do so in the menu under 'Business Info' and 'Personal Info'":
+    'To give you the best service that we can offer, our team needs to verify your business first. Please make sure the information you entered during registration is accurate before submitting. If you need to make changes, you can do so in the menu under "Business Info" and "Personal Info".',
+  "Our team is still working towards verifying your business We know your eager to get started, and it won't be much longer":
+    "Our team is still working towards verifying your business. We know your eager to get started, and it won't be much longer.",
+  "Get started and launch your ads now": "Get started and launch your ads now",
+  "We'll be notifying you within 24 hours, so keep your eyes peeled for our app notification and email":
+    "We'll be notifying you within 24 hours, so keep your eyes peeled for our app notification and email",
+  "Request Submitted": "Request Submitted",
+  "Your Business Is Now Verified!": "Your Business Is Now Verified!",
+  "Your business could not be verified": "Your business could not be verified",
+  "Pending Verification": "Pending Verification",
+  "Illegal or fraudulent products/services":
+    "Illegal or fraudulent products/services",
+  "Your offered products or services violate the policies of the ad platforms":
+    "Your offered products or services violate the policies of the ad platforms",
+  "Your business could not be verified because of the following reason:":
+    "Your business could not be verified because of the following reason:",
+  "@ Instagram UserName": "@",
+  "Personal/blog accounts are not currently supported":
+    "Personal/blog accounts are not currently supported",
+  "Optimize does not currently support ads made for personal use, such as blogging/vlogging  If you believe there has been a mistake, please contact our support team":
+    "Optimize does not currently support ads made for personal use, such as blogging/vlogging.  If you believe there has been a mistake, please contact our support team",
+  "Low quality Instagram page": "Low quality Instagram page",
+  "You Instagram page contains a high amount of low quality imagery that would get rejected by the different ad platforms":
+    "You Instagram page contains a high amount of low quality imagery that would get rejected by the different ad platforms",
+  "Submission of fake information": "Submission of fake information",
+  "Please review and update your personal info and business info from within the app with accuracy  You can resubmit your verification request after your information has been updated":
+    "Please review and update your personal info and business info from within the app with accuracy. You can resubmit your verification request after your information has been updated",
 };
 
 export default strings;

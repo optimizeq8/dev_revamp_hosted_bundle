@@ -2200,6 +2200,37 @@ const strings = {
   "Your approval request is in review": "طلب الموافقة تحت المراجعة",
   "Check your status": "تحقق من حالة الموافقة",
   "Your approval request is approved": "تمت الموافقة على طلبك",
+  "Your budget will be added to your wallet":
+    "ستتم إضافة ميزانيتك المتبقية إلى المحفظة",
+  "Verify your Business": "وثق مشروعك",
+  "To give you the best service that we can offer, our team needs to verify your business first Please make sure the information you entered during registration is accurate before submitting If you need to make changes, you can do so in the menu under 'Business Info' and 'Personal Info'":
+    'يجب علينا توثيق حسابك لكي نوفر لكم خدمة أفضل الرجاء التأكد من صحة المعلومات التي ادخلتها وقت التسجيل في التطبيق ، و بإمكانك مراجعتها و التعديل عليها بقسم "معلومات المشروع" و بقسم "المعلومات الشخصية"',
+  "Our team is still working towards verifying your business We know your eager to get started, and it won't be much longer":
+    "ما زال الطلب تحت المراجعة",
+  "Get started and launch your ads now": "أطلق إعلانك الأول الان",
+  "We'll be notifying you within 24 hours, so keep your eyes peeled for our app notification and email":
+    "سيتم مراجعة طلبك خلال 24 ساعة و ابلاغك إن تم توثيق الحساب ام لا عبر البريد الالكتروني و تنبيه من التطبيق",
+  "Request Submitted": "تم استلام الطلب",
+  "Your Business Is Now Verified!": "تم توثيق الحساب!",
+  "Your business could not be verified": "لم نستطع توثيق حسابك",
+  "Pending Verification": "التوثيق تحت المراجعة",
+  "Illegal or fraudulent products/services":
+    "المنتجات أو الخدمات المعروضة غير قانونية أو احتيالية",
+  "Your offered products or services violate the policies of the ad platforms":
+    "المنتجات أو الخدمات التي توفرها تخالف السياسات الإعلانية على المنصات المختلفة",
+  "Your business could not be verified because of the following reason:":
+    "لم نستطع توثيق حسابك للسبب الآتي:",
+  "@ Instagram UserName": "@",
+  "Personal/blog accounts are not currently supported":
+    "الحسابات الشخصية غير مدعومة حاليًا",
+  "Optimize does not currently support ads made for personal use, such as blogging/vlogging  If you believe there has been a mistake, please contact our support team":
+    'تطبيق أوبتيمايز لا يدعم الإعلانات لحسابات شخصية (مثلا ال"blogs" و "vlogs") إذا كنت تعتقد أن هناك خطأ ما فيرجى الاتصال بفريق الدعم الخاص بنا',
+  "Low quality Instagram page": "جودة صفحة الانستغرام غير مرضية",
+  "You Instagram page contains a high amount of low quality imagery that would get rejected by the different ad platforms":
+    "تحتوي صفحة الانستغرام الخاصة بك على كمية كبيرة من المنشورات منخفضة الجودة التي قد ترفض من قبل منصات الإعلانات المختلفة",
+  "Submission of fake information": "تقديم معلومات مزيفة",
+  "Please review and update your personal info and business info from within the app with accuracy  You can resubmit your verification request after your information has been updated":
+    "يرجى مراجعة وتحديث معلوماتك الشخصية ومعلومات المشروع من داخل التطبيق بدقة يمكنك إعادة إرسال طلب التوثيق بعد تحديث المعلومات",
 };
 
 export default strings;
