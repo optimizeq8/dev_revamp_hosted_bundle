@@ -699,7 +699,7 @@ class CreateBusinessAccount extends Component {
     let { iosAppSelected, androidAppSelected } = this.state;
     const businessCategory = this.getBusinessCategory();
     const country = this.getCountryName();
-    const { approved } = this.props.mainBusiness;
+
     // Added disable(when updating business info loading ) and value ={having state value} props to input fields
     return (
       <SafeAreaView
@@ -953,7 +953,7 @@ class CreateBusinessAccount extends Component {
             translate={this.props.screenProps.translate}
             stateName1="insta_handle_for_review"
             label="instagram"
-            placeholder1="Handle"
+            placeholder1="@ Instagram UserName"
             value={
               this.props.registering
                 ? this.props.businessAccount.insta_handle_for_review
@@ -1025,7 +1025,9 @@ class CreateBusinessAccount extends Component {
                 height: 60,
               }}
             />
-          ) : this.state.editBusinessInfo && approved !== "1" ? (
+          ) : this.state.editBusinessInfo &&
+            this.props.mainBusiness &&
+            this.props.mainBusiness.approved !== "1" ? (
             <LowerButton
               screenProps={this.props.screenProps}
               checkmark
