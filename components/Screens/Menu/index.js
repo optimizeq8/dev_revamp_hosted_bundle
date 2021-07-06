@@ -497,7 +497,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text selectable style={styles.version}>
                 {translate("Version:")}
-                {Constants.nativeAppVersion}/429/
+                {Constants.nativeAppVersion}/430/
                 {Constants.nativeBuildVersion}
               </Text>
             </ScrollView>
