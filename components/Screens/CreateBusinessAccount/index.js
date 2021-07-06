@@ -974,7 +974,6 @@ class CreateBusinessAccount extends Component {
               this.props.registering ? this.props.setValue : this.setValue
             }
             key={"insta_handle_for_review"}
-            compulsory={true}
             disabled={
               (this.state.editBusinessInfo &&
                 this.props.editBusinessInfoLoading) ||
