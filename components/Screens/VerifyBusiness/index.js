@@ -68,7 +68,8 @@ class VerifyBusiness extends React.Component {
           "Our team is still working towards verifying your business We know your eager to get started, and it won't be much longer";
         break;
       case "3":
-        message = "Your business could not be verified";
+        message =
+          "Your business could not be verified because of the following reason:";
         break;
     }
     return { message, title };
@@ -81,19 +82,13 @@ class VerifyBusiness extends React.Component {
       let reasons = reject_reason.map((reason) => {
         return { key: Object.keys(reason), value: reason[Object.keys(reason)] };
       });
-      reasonsView = reasons.map((rea, index) => (
+      reasonsView = reasons.map((rea) => (
         <View style={styles.rejView}>
-          <Text style={styles.businessname}>
-            {index + 1}. {translate(rea.key)}
+          <Text style={styles.rejectedReason}>
+            {translate(rea.key)}. {translate(rea.value)}.
           </Text>
-          <Text style={styles.rejectedReason}>{translate(rea.value)}</Text>
         </View>
       ));
-      reasonsView = [
-        <Text style={styles.rejectedReasonHeading}>
-          {translate("Here Are The Reasons")} :
-        </Text>,
-      ].concat(reasonsView);
     }
     return reasonsView;
   };

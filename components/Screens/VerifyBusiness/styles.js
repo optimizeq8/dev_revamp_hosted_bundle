@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   rejectedReason: {
     color: globalColors.rum,
-    fontSize: RFValue(7, 414),
+    fontSize: RFValue(8, 414),
     textAlign: "left",
     fontFamily: "montserrat-regular",
     paddingVertical: 3,

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
 import * as SecureStore from "expo-secure-store";
+import jwt_decode from "jwt-decode";
 import analytics from "@segment/analytics-react-native";
 import { Animated } from "react-native";
 import { persistor } from "../index";
@@ -354,15 +355,17 @@ export const updateUserInfo = (info, navigation) => {
         });
         if (data.success) {
           setAuthToken(data.accessToken);
+          let decodedUser = jwt_decode(data.accessToken);
           showMessage({
             message: data.message,
             type: "success",
             position: "top",
           });
           const updateInfo = {
-            ...info,
+            ...decodedUser,
             mobile: info.country_code + info.mobile,
           };
+
           analytics.identify(getState().auth.userid, {
             ...updateInfo,
           });
