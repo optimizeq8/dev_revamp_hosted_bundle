@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Text, BackHandler, ScrollView } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 import { LinearGradient } from "expo-linear-gradient";
+import Intercom from "react-native-intercom";
 import analytics from "@segment/analytics-react-native";
 
 //Redux
@@ -82,21 +83,48 @@ class VerifyBusiness extends React.Component {
       let reasons = reject_reason.map((reason) => {
         return { key: Object.keys(reason), value: reason[Object.keys(reason)] };
       });
-      reasonsView = reasons.map((rea) => (
-        <View style={styles.rejView}>
-          <Text style={styles.rejectedReason}>
-            {translate(rea.key)}. {translate(rea.value)}.
-          </Text>
-        </View>
-      ));
+      reasonsView = reasons.map((rea) => {
+        let val = rea.value;
+        if (val && val.includes(".")) {
+          val = val.split(".").join(" ");
+        }
+        return (
+          <View style={styles.rejView}>
+            <Text style={styles.rejectedReason}>
+              {translate(rea.key)}. {translate(val)}.
+            </Text>
+          </View>
+        );
+      });
     }
     return reasonsView;
+  };
+
+  rejectionReasons = () => {
+    const { approved, reject_reason } = this.props.mainBusiness;
+    let reasons = [];
+    if (approved === "3" && reject_reason && reject_reason.length > 0) {
+      reasons = reject_reason.map((reason) => {
+        return { key: Object.keys(reason), value: reason[Object.keys(reason)] };
+      });
+    }
+    return reasons;
+  };
+  openIntercom = () => {
+    analytics.track(`a_help`, {
+      source: "start_verify",
+      source_action: "a_help",
+      support_type: "intercom",
+      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    });
+    Intercom.displayConversationsList();
   };
   render() {
     const { translate } = this.props.screenProps;
 
     const { approved } = this.props.mainBusiness;
     const { message, title } = this.renderMessage();
+    const reasons = this.rejectionReasons();
     return (
       <View style={{ flex: 1 }}>
         <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
@@ -135,6 +163,24 @@ class VerifyBusiness extends React.Component {
               disabled={this.props.checkingBusinessStatus}
             />
           )}
+          {approved === "3" &&
+            reasons &&
+            reasons.length > 0 &&
+            reasons.filter((e) =>
+              e.key.includes(
+                "Personal/blog accounts are not currently supported"
+              )
+            ).length > 0 && (
+              <GradientButton
+                screenProps={this.props.screenProps}
+                height={50}
+                text={translate("Contact Us")}
+                style={styles.refreshButton}
+                textStyle={styles.textRefreshStyle}
+                onPressAction={this.openIntercom}
+                disabled={this.props.checkingBusinessStatus}
+              />
+            )}
         </View>
       </View>
     );
