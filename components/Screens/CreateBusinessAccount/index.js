@@ -41,7 +41,7 @@ import * as actionCreators from "../../../store/actions";
 import CorporateIcon from "../../../assets/SVGs/Corporate";
 import LocationIcon from "../../../assets/SVGs/LocationOutline";
 import BusinessIcon from "../../../assets/SVGs/Briefcase";
-import InstagramIcon from "../../../assets/SVGs/InstagramIcon";
+import InstagramIcon from "../../../assets/SVGs/Instagram";
 //Validator
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { showMessage } from "react-native-flash-message";
@@ -659,6 +659,8 @@ class CreateBusinessAccount extends Component {
     state[stateName] =
       stateName === "businessname"
         ? value.replace(/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi, "")
+        : stateName === "insta_handle_for_review"
+        ? value.replace("@", "")
         : value;
 
     let businessAccount = {
@@ -955,9 +957,10 @@ class CreateBusinessAccount extends Component {
             label="instagram"
             placeholder1="@ Instagram UserName"
             value={
-              this.props.registering
+              "@" +
+              (this.props.registering
                 ? this.props.businessAccount.insta_handle_for_review
-                : this.state.businessAccount.insta_handle_for_review
+                : this.state.businessAccount.insta_handle_for_review)
             }
             valueError1={
               this.props.registering

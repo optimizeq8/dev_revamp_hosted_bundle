@@ -385,6 +385,8 @@ class PersonalInfo extends Component {
     state[stateName] =
       stateName === "businessname"
         ? value.replace(/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi, "")
+        : stateName === "insta_handle_for_review"
+        ? value.replace("@", "")
         : value;
     analytics.track(`a_${stateName}`, {
       source: "registration_detail",

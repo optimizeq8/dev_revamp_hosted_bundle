@@ -81,17 +81,24 @@ class VerifyBusiness extends React.Component {
     let reasonsView = null;
     if (approved === "3" && reject_reason && reject_reason.length > 0) {
       let reasons = reject_reason.map((reason) => {
-        return { key: Object.keys(reason), value: reason[Object.keys(reason)] };
+        return {
+          key: Object.keys(reason)[0],
+          value: reason[Object.keys(reason)],
+        };
       });
       reasonsView = reasons.map((rea) => {
+        let key = rea.key;
         let val = rea.value;
+        if (key && key.includes(".")) {
+          key = key.split(".").join(" ");
+        }
         if (val && val.includes(".")) {
           val = val.split(".").join(" ");
         }
         return (
           <View style={styles.rejView}>
             <Text style={styles.rejectedReason}>
-              {translate(rea.key)}. {translate(val)}.
+              {translate(key)}. {translate(val)}.
             </Text>
           </View>
         );
