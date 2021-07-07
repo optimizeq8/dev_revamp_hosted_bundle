@@ -2228,16 +2228,17 @@ const strings = {
   "Your business could not be verified because of the following reason:":
     "Your business could not be verified because of the following reason:",
   "@ Instagram UserName": "@",
-  "Personal/blog accounts are not currently supported":
+  "Personal/blog accounts are not currently supported ":
     "Personal/blog accounts are not currently supported",
-  "Optimize does not currently support ads made for personal use, such as blogging/vlogging  If you believe there has been a mistake, please contact our support team":
+  "Optimize does not currently support ads made for personal use, such as blogging/vlogging   If you believe there has been a mistake, please contact our support team ":
     "Optimize does not currently support ads made for personal use, such as blogging/vlogging.  If you believe there has been a mistake, please contact our support team",
   "Low quality Instagram page": "Low quality Instagram page",
   "You Instagram page contains a high amount of low quality imagery that would get rejected by the different ad platforms":
-    "You Instagram page contains a high amount of low quality imagery that would get rejected by the different ad platforms",
+    "Your Instagram page contains a high amount of low quality imagery that would get rejected by the different ad platforms",
   "Submission of fake information": "Submission of fake information",
-  "Please review and update your personal info and business info from within the app with accuracy  You can resubmit your verification request after your information has been updated":
+  "Please review and update your personal info and business info from within the app with accuracy  You can resubmit your verification request after your information has been updated ":
     "Please review and update your personal info and business info from within the app with accuracy. You can resubmit your verification request after your information has been updated",
+  "Business Verification Rejected": "Business Verification Rejected",
 };
 
 export default strings;
