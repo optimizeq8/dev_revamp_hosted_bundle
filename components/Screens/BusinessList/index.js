@@ -146,30 +146,35 @@ class BusinessList extends Component {
       timestamp: new Date().getTime(),
       businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
-    let userNotVerified =
-      this.props.userInfo &&
-      this.props.userInfo.hasOwnProperty("verified_account") &&
-      !this.props.userInfo.verified_account;
-    let notApproved = this.props.businessAccounts.some(
-      (bsn) => bsn.approved === "0"
-    );
-    let userisSuperAdmin =
-      this.props.userInfo &&
-      this.props.userInfo.hasOwnProperty("superadmin") &&
-      this.props.userInfo.superadmin;
 
     let routePath = "CreateBusinessAccount";
-    if (userNotVerified) {
-      routePath = "VerifyAccount";
-    } else if (notApproved && !userisSuperAdmin) {
-      routePath = "VerifyBusiness";
-    }
 
     this.props.navigation.navigate(routePath, {
       createNewBusiness: true,
       source: "open_hamburger",
       source_action: `a_create_buiness_account`,
     });
+  };
+  showCreateBusiness = () => {
+    let userisSuperAdmin =
+      this.props.userInfo &&
+      this.props.userInfo.hasOwnProperty("superadmin") &&
+      this.props.userInfo.superadmin;
+    let businessApproved = this.props.businessAccounts.some(
+      (bsn) =>
+        bsn.approved === "0" || bsn.approved === "3" || bsn.approved === "2"
+    );
+    let userIsVerified =
+      this.props.userInfo &&
+      this.props.userInfo.hasOwnProperty("verified_account") &&
+      this.props.userInfo.verified_account;
+    // userisVerified and activeTab is businessess and  all business approved or userIsSuperAdmin
+    let show =
+      this.state.activeTab === "Businesses" &&
+      (userisSuperAdmin || !businessApproved) &&
+      userIsVerified;
+
+    return show;
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -268,7 +273,7 @@ class BusinessList extends Component {
                 onPressAction={this.props.getBusinessAccounts}
               />
             )}
-          {this.state.activeTab === "Businesses" && (
+          {this.showCreateBusiness() && (
             <GradientButton
               // purpleViolet
               style={[styles.bottomCard]}

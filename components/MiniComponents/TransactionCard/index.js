@@ -10,7 +10,7 @@ import globalStyles from "../../../GlobalStyles";
 import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet";
 import SnapGhostIcon from "../../../assets/SVGs/Snapchat-Border";
 import GoogleSE from "../../../assets/SVGs/GoogleAds.svg";
-import InstagramIcon from "../../../assets/images/AdTypes/InstaWhiteLogo";
+import InstagramIcon from "../../../assets/SVGs/Instagram";
 
 import isStringArabic from "../../isStringArabic";
 

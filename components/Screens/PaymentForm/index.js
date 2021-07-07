@@ -145,8 +145,8 @@ class PaymentForm extends Component {
         source_action: "a_payment_processing",
         amount: this.props.navigation.getParam("amount", 0),
         // mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
-        mode_of_payment: this.props.paymentMethods[this.state.choice - 2]
-          .PaymentMethodEn,
+        mode_of_payment:
+          this.props.paymentMethods[this.state.choice - 2].PaymentMethodEn,
         campaignId: this.props.campaign_id,
         businessid: this.props.mainBusiness.businessid,
       });
@@ -196,8 +196,8 @@ class PaymentForm extends Component {
         source: "payment_mode",
         source_action: "a_payment_processing",
         // mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
-        mode_of_payment: this.props.paymentMethods[this.state.choice - 2]
-          .PaymentMethodEn,
+        mode_of_payment:
+          this.props.paymentMethods[this.state.choice - 2].PaymentMethodEn,
         action_status: "failure",
         error_description: "Something went wrong",
         campaignId: this.props.campaign_id,
@@ -247,10 +247,10 @@ class PaymentForm extends Component {
         this.props.addWalletAmount(
           {
             amount: this.state.amount,
-            payment_type: this.props.paymentMethods[this.state.choice - 2]
-              .payment_type,
-            PaymentMethodId: this.props.paymentMethods[this.state.choice - 2]
-              .PaymentMethodId,
+            payment_type:
+              this.props.paymentMethods[this.state.choice - 2].payment_type,
+            PaymentMethodId:
+              this.props.paymentMethods[this.state.choice - 2].PaymentMethodId,
           },
           this._openWebBrowserAsync,
           this.props.paymentMethods[this.state.choice - 2].payment_type === 1
@@ -722,9 +722,11 @@ class PaymentForm extends Component {
                     <Text style={[styles.money, styles.kdAmountText]}>
                       {this.state.addingCredits ||
                       this.state.refundAmountToWallet
-                        ? this.props.walletAmountInKwd
+                        ? parseFloat(this.props.walletAmountInKwd).toFixed(3)
                         : this.props.walletUsed
-                        ? this.props.campaign_balance_amount_kwd
+                        ? parseFloat(
+                            this.props.campaign_balance_amount_kwd
+                          ).toFixed(3)
                         : parseFloat(
                             this.props.navigation.getParam(
                               "kdamount",
@@ -827,11 +829,21 @@ class PaymentForm extends Component {
           visible={!this.props.loading && this.state.showRemoveWalletAmount}
         >
           <BlurView tint="dark" intensity={100} style={styles.BlurView}>
-            <View style={styles.walletPaymentModalContainer}>
+            <View
+              style={[
+                styles.walletPaymentModalContainer,
+                {
+                  height: "100%",
+                },
+              ]}
+            >
               {this.props.loading ? (
                 <LoadingScreen top={0} />
               ) : (
                 <>
+                  <SafeAreaView
+                    forceInset={{ top: "always", bottom: "never" }}
+                  />
                   <WalletIcon width={80} height={80} />
                   <Text style={[styles.walletInfo, styles.reviewPurchaseText]}>
                     {translate("Review Purchase")}
