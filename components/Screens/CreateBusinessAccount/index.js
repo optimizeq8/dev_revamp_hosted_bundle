@@ -696,6 +696,31 @@ class CreateBusinessAccount extends Component {
   openCountryModal = () => {
     this.setState({ inputC: true });
   };
+  rejectionReasons = () => {
+    const { approved, reject_reason } = this.props.mainBusiness;
+    let reasons = [];
+    if (approved === "3" && reject_reason && reject_reason.length > 0) {
+      reasons = reject_reason.map((reason) => {
+        return { key: Object.keys(reason), value: reason[Object.keys(reason)] };
+      });
+    }
+    return reasons;
+  };
+  showEditSubmitButton = () => {
+    let reasons = this.rejectionReasons();
+    let rejectedReason =
+      reasons &&
+      reasons.length > 0 &&
+      reasons.filter((e) => e.key.includes("Submission of fake information"))
+        .length > 0;
+    let show =
+      this.state.editBusinessInfo &&
+      this.props.mainBusiness &&
+      (this.props.mainBusiness.approved === "0" ||
+        this.props.mainBusiness.approved === "2" ||
+        (this.props.mainBusiness.approved === "3" && rejectedReason));
+    return show;
+  };
   render() {
     const { translate } = this.props.screenProps;
     let { iosAppSelected, androidAppSelected } = this.state;
@@ -1027,9 +1052,7 @@ class CreateBusinessAccount extends Component {
                 height: 60,
               }}
             />
-          ) : this.state.editBusinessInfo &&
-            this.props.mainBusiness &&
-            this.props.mainBusiness.approved !== "1" ? (
+          ) : this.showEditSubmitButton() ? (
             <LowerButton
               screenProps={this.props.screenProps}
               checkmark

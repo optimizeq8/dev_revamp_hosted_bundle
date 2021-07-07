@@ -1214,7 +1214,7 @@ export const checkBusinessVerified = (businessid, translate) => {
               type: "warning",
               message: translate(title),
               description: translate(message),
-              duration: 5000,
+              duration: 10000,
             });
             break;
           case "2":
@@ -1226,7 +1226,7 @@ export const checkBusinessVerified = (businessid, translate) => {
               type: "warning",
               message: translate(title),
               description: translate(message),
-              duration: 5000,
+              duration: 10000,
             });
             break;
           case "3":

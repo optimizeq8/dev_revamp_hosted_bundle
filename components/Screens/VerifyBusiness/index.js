@@ -112,7 +112,10 @@ class VerifyBusiness extends React.Component {
     let reasons = [];
     if (approved === "3" && reject_reason && reject_reason.length > 0) {
       reasons = reject_reason.map((reason) => {
-        return { key: Object.keys(reason), value: reason[Object.keys(reason)] };
+        return {
+          key: Object.keys(reason)[0],
+          value: reason[Object.keys(reason)],
+        };
       });
     }
     return reasons;
