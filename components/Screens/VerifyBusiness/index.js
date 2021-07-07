@@ -69,7 +69,7 @@ class VerifyBusiness extends React.Component {
           "Our team is still working towards verifying your business We know your eager to get started, and it won't be much longer";
         break;
       case "3":
-        message =
+        title =
           "Your business could not be verified because of the following reason:";
         break;
     }
@@ -145,7 +145,11 @@ class VerifyBusiness extends React.Component {
         />
         <Header
           screenProps={this.props.screenProps}
-          title={"Verify Business"}
+          title={
+            approved === "3"
+              ? "Business Verification Rejected"
+              : "Verify Business"
+          }
           navigation={this.props.navigation}
           segment={{
             source: "otp_verify",

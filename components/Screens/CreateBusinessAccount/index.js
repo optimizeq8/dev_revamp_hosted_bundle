@@ -188,6 +188,11 @@ class CreateBusinessAccount extends Component {
           ...this.state.businessAccount,
           ...this.props.mainBusiness,
           websitelink: website ? website : "",
+          insta_handle_for_review:
+            this.props.mainBusiness &&
+            this.props.mainBusiness.insta_handle_for_review
+              ? this.props.mainBusiness.insta_handle_for_review
+              : "",
         },
         editBusinessInfo,
         // networkString: networkString ? networkString : "http://",
@@ -697,9 +702,14 @@ class CreateBusinessAccount extends Component {
     this.setState({ inputC: true });
   };
   rejectionReasons = () => {
-    const { approved, reject_reason } = this.props.mainBusiness;
     let reasons = [];
-    if (approved === "3" && reject_reason && reject_reason.length > 0) {
+    if (
+      this.props.mainBusiness &&
+      this.props.mainBusiness.approved &&
+      this.props.mainBusiness.approved === "3" &&
+      this.props.mainBusiness.reject_reason &&
+      this.props.mainBusiness.reject_reason.length > 0
+    ) {
       reasons = reject_reason.map((reason) => {
         return { key: Object.keys(reason), value: reason[Object.keys(reason)] };
       });
@@ -716,6 +726,7 @@ class CreateBusinessAccount extends Component {
     let show =
       this.state.editBusinessInfo &&
       this.props.mainBusiness &&
+      this.props.mainBusiness.approved &&
       (this.props.mainBusiness.approved === "0" ||
         this.props.mainBusiness.approved === "2" ||
         (this.props.mainBusiness.approved === "3" && rejectedReason));
