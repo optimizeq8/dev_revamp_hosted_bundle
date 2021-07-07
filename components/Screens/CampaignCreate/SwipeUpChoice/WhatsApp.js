@@ -752,10 +752,11 @@ class WhatsApp extends Component {
                     function={() => {
                       let whatsAppCampaign = {
                         weburl: this.state.campaignInfo.weburl,
-                        whatsappnumber: this.state.campaignInfo.whatsappnumber.replace(
-                          "+",
-                          ""
-                        ),
+                        whatsappnumber:
+                          this.state.campaignInfo.whatsappnumber.replace(
+                            "+",
+                            ""
+                          ),
                         insta_handle: this.state.campaignInfo.insta_handle,
                         callnumber:
                           this.state.campaignInfo.callnumber ||

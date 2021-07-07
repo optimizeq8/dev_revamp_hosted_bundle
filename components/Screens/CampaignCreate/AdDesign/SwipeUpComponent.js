@@ -39,13 +39,8 @@ export default class SwipeUpComponent extends Component {
     }
   }
   handleSwipeUp = () => {
-    let {
-      destination,
-      collectionAdLinkForm,
-      adType,
-      objective,
-      media,
-    } = this.props;
+    let { destination, collectionAdLinkForm, adType, objective, media } =
+      this.props;
 
     if (adType === "CollectionAd") {
       this.setState({
@@ -231,6 +226,7 @@ export default class SwipeUpComponent extends Component {
                         startCase(destination.replace("_", " ").toLowerCase())
                       )
                     : destination === "REMOTE_WEBPAGE" ||
+                      objective === "WEB_CONVERSION" ||
                       // &&
                       //     objective !== "WEB_CONVERSION"
                       (destination === "COLLECTION" &&
@@ -242,7 +238,7 @@ export default class SwipeUpComponent extends Component {
                     //   (destination !== "BLANK" ||
                     //     selectedStoryAd.destination !== "BLANK")
                     // ? translate("SME Growth")
-                    objective === "WEB_CONVERSION"
+                    objective === "ENGAGEMENT"
                     ? translate("Call")
                     : translate("Swipe Up destination")}
                 </Text>
