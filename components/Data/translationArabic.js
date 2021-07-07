@@ -2231,7 +2231,7 @@ const strings = {
   "Submission of fake information": "تقديم معلومات مزيفة",
   "Please review and update your personal info and business info from within the app with accuracy  You can resubmit your verification request after your information has been updated ":
     "يرجى مراجعة وتحديث معلوماتك الشخصية ومعلومات المشروع من داخل التطبيق بدقة يمكنك إعادة إرسال طلب التوثيق بعد تحديث المعلومات",
-  "Business Verification Rejected": "",
+  "Business Verification Rejected": "تم رفض توثيق الحساب",
 };
 
 export default strings;
