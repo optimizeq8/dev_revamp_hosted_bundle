@@ -1171,7 +1171,7 @@ class AdDetails extends Component {
         error_page: "ad_targeting",
         source_action: "a_submit_ad_targeting",
         timestamp: new Date().getTime(),
-        campaignId: this.props.data.campaign_id,
+        campaignId: this.props.data && this.props.data.campaign_id,
         campaign_channel: "snapchat",
         campaign_ad_type: this.props.adType,
         error_description:

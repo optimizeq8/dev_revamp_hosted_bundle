@@ -107,18 +107,23 @@ class Menu extends Component {
       this.props.userInfo &&
       this.props.userInfo.hasOwnProperty("verified_account") &&
       !this.props.userInfo.verified_account;
-    let notApproved =
+    let businessApproved =
       this.props.mainBusiness &&
       this.props.mainBusiness.hasOwnProperty("approved") &&
-      this.props.mainBusiness.approved === "0";
+      this.props.mainBusiness.approved === "1";
     let userisSuperAdmin =
       this.props.userInfo &&
       this.props.userInfo.hasOwnProperty("superadmin") &&
       this.props.userInfo.superadmin;
+    let approvedRoutes =
+      params.source === "app_privacy_policy" ||
+      params.source === "app_TNC" ||
+      route === "PersonalInfo" ||
+      route === "CreateBusinessAccount"; // Users can change their business or personal info even if that business is not approved
     let routePath = route;
-    if (userNotVerified) {
+    if (userNotVerified && !approvedRoutes) {
       routePath = "VerifyAccount";
-    } else if (notApproved && !userisSuperAdmin) {
+    } else if (!businessApproved && !userisSuperAdmin && !approvedRoutes) {
       routePath = "VerifyBusiness";
     }
     if (checkForBusinessId) {
@@ -492,7 +497,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text selectable style={styles.version}>
                 {translate("Version:")}
-                {Constants.nativeAppVersion}/427/
+                {Constants.nativeAppVersion}/432/
                 {Constants.nativeBuildVersion}
               </Text>
             </ScrollView>
