@@ -52,57 +52,30 @@ class SwitchLanguage extends Component {
       .then(async (value) => {
         if (isNull(value)) {
           AsyncStorage.setItem("languageOpened", "false").then(() => {
-            analytics.track("first_app_open", {
-              anonymous_userId,
+            analytics.track("First App Opened", {
               source: this.props.screenProps.prevAppState,
-              // source_action: "", Not sure what will come here
-              timestamp: new Date().getTime(),
-              device_id,
-              businessid:
-                this.props.mainBusiness && this.props.mainBusiness.businessid,
-              // country: "",
             });
-            analytics.track("app_language", {
+            analytics.track("Screen Viewed", {
+              screen_name: "SwitchLanguage",
               source: this.props.screenProps.prevAppState,
-              device_id,
-              selected_language: this.state.language,
-              // source_action: "", // Not sure what will come here ??
-              timestamp: new Date().getTime(),
-              anonymous_userId,
-              businessid:
-                this.props.mainBusiness && this.props.mainBusiness.businessid,
             });
             this.setState({
               languageOpened: false,
             });
           });
         } else if (value === "true") {
-          analytics.track("a_app_language_select", {
-            source: "app_language",
-            source_action: "a_app_language_select",
+          analytics.track("Language Selected", {
+            source: "SwitchLanguage",
             selected_language: this.state.language,
-            timestamp: new Date().getTime(),
-            anonymous_userId,
-            device_id,
-            businessid:
-              this.props.mainBusiness && this.props.mainBusiness.businessid,
-            // county: "",
-            // locations: //,
           });
           this.props.navigation.replace("Tutorial", {
             source: "app_lanaguage",
-            source_action: "a_app_language_select",
+            source_action: "Language Selected",
           });
         } else {
-          analytics.track("app_language", {
+          analytics.track("Screen Viewed", {
+            screen_name: "SwitchLanguage",
             source: this.props.screenProps.prevAppState,
-            device_id,
-            selected_language: this.state.language,
-            // source_action: "", // Not sure what will come here ??
-            timestamp: new Date().getTime(),
-            anonymous_userId,
-            businessid:
-              this.props.mainBusiness && this.props.mainBusiness.businessid,
           });
           this.setState({
             languageOpened: false,
@@ -120,12 +93,9 @@ class SwitchLanguage extends Component {
       });
   }
   handleLanguageChange = (language) => {
-    analytics.track(`a_change_language`, {
-      source: `app_language`,
+    analytics.track(`Language Changed`, {
+      source: `SwitchLanguage`,
       selected_language: language,
-      source_action: `a_change_language`,
-      anonymous_userId: this.props.screenProps.anonymous_userId,
-      device_id: this.props.screenProps.device_id,
       businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
@@ -141,25 +111,17 @@ class SwitchLanguage extends Component {
       // if app language not same as the state language then set it as the app language and reloading the app
       this.props.navigation.navigate("SwitchLanguageLoading", {
         source: "app_language",
-        source_action: "a_app_language_select",
+        source_action: "Language Selected",
       });
     } else {
       // to show  tutorial if app langugage is same as app language
-      analytics.track("a_app_language_select", {
-        source: "app_language",
-        source_action: "a_app_language_select",
+      analytics.track("Language Selected", {
+        source: "SwitchLanguage",
         selected_language: this.state.language,
-        timestamp: new Date().getTime(),
-        anonymous_userId,
-        device_id,
-        businessid:
-          this.props.mainBusiness && this.props.mainBusiness.businessid,
-        // county: "",
-        // locations: //,
       });
       this.props.navigation.replace("Tutorial", {
-        source: "app_language",
-        source_action: "a_app_language_select",
+        source: "SwitchLanguage",
+        source_action: "Language Selected",
       });
     }
   };

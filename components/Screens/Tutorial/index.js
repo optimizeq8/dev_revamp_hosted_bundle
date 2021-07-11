@@ -80,16 +80,9 @@ class Tutorial extends Component {
       .then(async (value) => {
         if (isNull(value)) {
           AsyncStorage.setItem("tutorialOpened", "false").then(async () => {
-            await analytics.track("tutorial_1", {
-              anonymous_userId,
+            await analytics.track("Tutorial Viewed", {
+              tutorial_number: 1,
               source,
-              source_action,
-              timestamp: new Date().getTime(),
-              device_id,
-              businessid:
-                this.props.mainBusiness && this.props.mainBusiness.businessid,
-              // location: "",
-              // country: ""
             });
             this.setState({
               tutorialOpened: false,
@@ -98,17 +91,9 @@ class Tutorial extends Component {
         } else if (value === "true") {
           this.props.navigation.replace("Signin");
         } else {
-          await analytics.track("tutorial_1", {
-            anonymous_userId,
+          await analytics.track("Tutorial Viewed", {
+            tutorial_number: 1,
             source,
-            source_action,
-            timestamp: new Date().getTime(),
-            device_id,
-            businessid:
-              this.props.mainBusiness && this.props.mainBusiness.businessid,
-
-            // location: "",
-            // country: ""
           });
           this.setState({
             tutorialOpened: false,
@@ -181,16 +166,9 @@ class Tutorial extends Component {
   };
   // To change slide
   navigationRouteHandler = (index) => {
-    const anonymous_userId = this.props.screenProps.anonymous_userId;
-    const device_id = this.props.screenProps.device_id;
-
-    analytics.track(`tutorial_${index + 1}`, {
-      anonymous_userId,
-      device_id,
+    analytics.track("Tutorial Viewed", {
+      tutorial_number: index + 1,
       source: `tutorial_${index}`,
-      source_action: `a_tutorial_${index}`,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       activeSlide: index,
@@ -199,16 +177,11 @@ class Tutorial extends Component {
 
   // GET START BUTTON PRESS
   getStartedButtonAction = async () => {
-    const anonymous_userId = this.props.screenProps.anonymous_userId;
-    const device_id = this.props.screenProps.device_id;
-
-    await analytics.track("a_get_started", {
+    await analytics.track("Button Pressed", {
       source: "tutorial_4",
-      // source_action: "", // Not sure
-      timestamp: new Date().getTime(),
-      anonymous_userId,
-      device_id,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      button_type: "Finished Tutorial",
+      button_text: "Get Started!",
+      button_color: "Orange",
     });
     AsyncStorage.getItem("tutorialOpened")
       .then((value) => {
@@ -217,8 +190,8 @@ class Tutorial extends Component {
         } else {
           AsyncStorage.setItem("tutorialOpened", "true").then(
             this.props.navigation.replace("Signin", {
-              source: "tutorial_4",
-              source_action: "a_get_started",
+              source: "Tutorial",
+              source_action: "tutorial_4",
             })
           );
         }
@@ -230,18 +203,11 @@ class Tutorial extends Component {
 
   // SKIP BUTTON ACTION
   skipTutorial = async () => {
-    const anonymous_userId = this.props.screenProps.anonymous_userId;
-    const device_id = this.props.screenProps.device_id;
-    await analytics.track(`a_skip_after_${this.state.activeSlide + 1}`, {
-      anonymous_userId,
+    await analytics.track(`Button Pressed`, {
       source: `tutorial_${this.state.activeSlide + 1}`,
-      source_action: `a_skip_after_${this.state.activeSlide + 1}`,
-      timestamp: new Date().getTime(),
-      device_id,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
-
-      // location: "",
-      // country: ""
+      button_type: `skipped after slide ${this.state.activeSlide + 1}`,
+      button_text: "Skip",
+      button_color: "Transparent",
     });
 
     AsyncStorage.getItem("tutorialOpened")
@@ -251,8 +217,10 @@ class Tutorial extends Component {
         } else {
           AsyncStorage.setItem("tutorialOpened", "true").then(
             this.props.navigation.replace("Signin", {
-              source: `tutorial_${this.state.activeSlide + 1}`,
-              source_action: `a_skip_after_${this.state.activeSlide + 1}`,
+              source: `Tutoria;`,
+              source_action: `skipped after slide ${
+                this.state.activeSlide + 1
+              }`,
             })
           );
         }

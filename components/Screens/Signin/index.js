@@ -98,13 +98,10 @@ class Signin extends Component {
       this.props.screenProps.prevAppState
     );
     const source_action = this.props.navigation.getParam("source_action", null);
-    const anonymous_userId = this.props.screenProps.anonymous_userId;
-    const device_id = this.props.screenProps.device_id;
-    await analytics.track(`email_registration`, {
+    await analytics.track(`Screen Viewed`, {
+      screen_name: "Signin",
       source,
       source_action,
-      anonymous_userId,
-      device_id,
     });
     this.setState({
       source,
@@ -161,34 +158,20 @@ class Signin extends Component {
     });
   };
   createNewAccount = () => {
-    const device_id = this.props.screenProps.device_id;
-    const anonymous_userId = this.props.screenProps.anonymous_userId;
     if (!this.state.newEmailError) {
-      analytics.track(`a_create_account`, {
-        mode_of_sign_up: "email",
-        source: "email_registration",
-        source_action: "a_create_account",
-        action_status: "success",
-        timestamp: new Date().getTime(),
-        device_id,
-        anonymous_userId,
-        // source_action: "" Not sure
+      analytics.track(`Email Entered`, {
+        source: "Signin",
+        email_populated: true,
       });
       this.props.verifyEmail(
         this.state.newEmail,
         { email: this.state.newEmail },
-
         this.props.navigation
       );
     } else {
-      analytics.track(`a_create_account`, {
-        mode_of_sign_up: "email",
-        source: "email_registration",
-        action_status: "failure",
-        timestamp: new Date().getTime(),
-        device_id,
-        anonymous_userId,
-        source_action: "a_error",
+      analytics.track(`Email Entered`, {
+        source: "Signin",
+        email_populated: false,
       });
 
       showMessage({
@@ -202,26 +185,18 @@ class Signin extends Component {
    * change active tab
    */
   changeActiveTab = (activeTabSignUp) => {
-    // let activeTabSignUp = this.state.activeTab === 0;
-    const anonymous_userId = this.props.screenProps.anonymous_userId;
-    const device_id = this.props.screenProps.device_id;
-
     // Action event
-    analytics.track(`a_${activeTabSignUp ? "sign_in" : "sign_up"}_tab`, {
-      source: activeTabSignUp ? "sign_in" : "email_registration",
-      anonymous_userId,
-      device_id,
-      source_action: `a_${activeTabSignUp ? "sign_up" : "sign_in"}_tab`,
-      timestamp: new Date().getTime(),
+    analytics.track(`Button Pressed`, {
+      button_type: "Sign In Tab Selected",
+      button_text: `${activeTabSignUp ? "Sign Up" : "Sign In"}`,
+      button_color: "Transparent",
+      source: "Signin",
     });
 
     // Screeen event
-    analytics.track(`${activeTabSignUp ? "sign_in" : "email_registration"}`, {
-      source: `${activeTabSignUp ? "sign_in" : "email_registration"}`,
-      source_action: `a_${activeTabSignUp ? "sign_up" : "sign_in"}_tab`,
-      anonymous_userId,
-      device_id,
-      timestamp: new Date().getTime(),
+    analytics.track(`Screen Viewed`, {
+      screen_name: "Signin",
+      source: `${activeTabSignUp ? "Sign In" : "Sign Up"}`,
     });
     this.setState({
       activeTab: activeTabSignUp ? 1 : 0,
