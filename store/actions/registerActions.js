@@ -605,6 +605,12 @@ export const registerGuestUser = (
             other_business_category: businessAccount.otherBusinessCategory,
           });
         }
+        analytics.track("Signed Up", {
+          first_name: userInfo.firstname,
+          last_name: userInfo.lastname,
+          email: userInfo.email,
+          mobile: userInfo.mobile,
+        });
         // let adjustRegiserTracker = new AdjustEvent("eivlhl");
         // adjustRegiserTracker.setCallbackId(userInfo.mobile);
         // Adjust.trackEvent(adjustRegiserTracker);
