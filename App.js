@@ -20,7 +20,7 @@ import RNRestart from "react-native-restart";
 
 import Intercom from "react-native-intercom";
 import analytics from "@segment/analytics-react-native";
-// import AdjustIntegration from "@segment/analytics-react-native-adjust";
+import AdjustIntegration from "@segment/analytics-react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
 TextReactNative.defaultProps.allowFontScaling = false;
@@ -67,7 +67,6 @@ import FlashMessage from "react-native-flash-message";
 import { REHYDRATE } from "redux-persist";
 import { PESDK } from "react-native-photoeditorsdk";
 import { VESDK } from "react-native-videoeditorsdk";
-import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import RNBootSplash from "react-native-bootsplash";
 import * as Sentry from "@sentry/react-native";
 if (!__DEV__) {
@@ -75,20 +74,11 @@ if (!__DEV__) {
     dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635",
   });
 }
-import { MixpanelInstance } from "react-native-mixpanel";
 import AsyncStorage from "@react-native-community/async-storage";
 import LottieView from "lottie-react-native";
-
+import Mixpanel from "@segment/analytics-react-native-mixpanel";
 //DEV TOKEN FOR MIXPANEL ====> c9ade508d045eb648f95add033dfb017
 //LIVE TOKEN FOR MIXPANEL ====> ef78d7f5f4160b74fda35568224f6cfa
-const MixpanelSDK = new MixpanelInstance(
-  !__DEV__
-    ? "c9ade508d045eb648f95add033dfb017"
-    : "ef78d7f5f4160b74fda35568224f6cfa",
-  false,
-  false
-);
-MixpanelSDK.initialize().then(() => MixpanelSDK.showInAppMessageIfAvailable());
 // analytics.getAnonymousId().then((id) => MixpanelSDK.identify(id));
 // Sentry.captureException(new Error("Oops!"));
 // crash;
@@ -98,6 +88,11 @@ import Logo from "./assets/Logo.svg";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Notifications as RNNotifications } from "react-native-notifications";
 import { globalColors } from "./GlobalStyles";
+import { IDFA } from "react-native-idfa";
+import {
+  getTrackingStatus,
+  requestTrackingPermission,
+} from "react-native-tracking-transparency";
 
 const defaultErrorHandler = ErrorUtils.getGlobalHandler();
 
@@ -167,7 +162,7 @@ class App extends React.Component {
         ? "fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh"
         : "ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB",
       {
-        // using: [AdjustIntegration],
+        using: [Mixpanel, AdjustIntegration],
         // Record screen views automatically!
         recordScreenViews: true,
         // Record certain application events automatically!
@@ -185,59 +180,11 @@ class App extends React.Component {
         debug: true,
       }
     );
-    const adjustConfig = new AdjustConfig(
-      "c698tyk65u68",
-      !__DEV__
-        ? AdjustConfig.EnvironmentProduction
-        : AdjustConfig.EnvironmentSandbox
-    );
-    adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
-
-    Adjust.requestTrackingAuthorizationWithCompletionHandler((status) => {
-      switch (status) {
-        case 0:
-          // ATTrackingManagerAuthorizationStatusNotDetermined case
-
-          analytics.track("Authorization status", {
-            status: "ATTrackingManagerAuthorizationStatusNotDetermined",
-          });
-          break;
-        case 1:
-          // ATTrackingManagerAuthorizationStatusRestricted case
-          analytics.track("Authorization status", {
-            status: "ATTrackingManagerAuthorizationStatusRestricted",
-          });
-          break;
-        case 2:
-          // ATTrackingManagerAuthorizationStatusDenied case
-          analytics.track("Authorization status", {
-            status: "ATTrackingManagerAuthorizationStatusDenied",
-          });
-          break;
-        case 3:
-          // ATTrackingManagerAuthorizationStatusAuthorized case
-          analytics.track("Authorization status", {
-            status: "ATTrackingManagerAuthorizationStatusAuthorized",
-          });
-          break;
-      }
+    getTrackingStatus().then((status) => {
+      console.log("status", status);
+      this.determineTrackingStatus(status);
     });
 
-    adjustConfig.setAttributionCallbackListener((attribution) => {
-      // Printing all attribution properties.
-      analytics.track("install_attribution", {
-        trackerToken: attribution.trackerToken,
-        trackerName: attribution.trackerName,
-        network: attribution.network,
-        campaign: attribution.campaign,
-        adgroup: attribution.adgroup,
-        creative: attribution.creative,
-        clickLabel: attribution.clickLabel,
-        adid: attribution.adid,
-      });
-    });
-
-    Adjust.create(adjustConfig);
     RNNotifications.registerRemoteNotifications();
     RNNotifications.events().registerNotificationReceivedForeground(
       (notification, completion) => {
@@ -321,7 +268,45 @@ class App extends React.Component {
     //   }
     // }
   }
+  determineTrackingStatus = (status) => {
+    switch (status) {
+      case "not-determined":
+        analytics.track("Authorization Status Given", {
+          status: "ATTracking Authorization Status Not Determined",
+        });
+        requestTrackingPermission().then((status) => {
+          determineTrackingStatus(status);
+        });
+        break;
+      case "restricted":
+        analytics.track("Authorization status", {
+          status: "ATTracking Authorization Status Restricted",
+        });
+        break;
+      case "denied":
+        analytics.track("Authorization status", {
+          status: "ATTracking Authorization Status Denied",
+        });
+        break;
+      case "unavailable":
+      case "authorized":
+        analytics.track("Authorization status", {
+          status: "ATTracking Authorization Status Authorized",
+        });
+        IDFA.getIDFA()
+          .then((idfa) => {
+            analytics.setIDFA(idfa);
+            console.log("idfa", idfa);
+          })
+          .catch((e) => {
+            analytics.track("IDFA not set", {
+              error_status: e,
+            });
+          });
 
+        break;
+    }
+  };
   _loadAsync = async () => {
     try {
       await this._loadResourcesAsync();

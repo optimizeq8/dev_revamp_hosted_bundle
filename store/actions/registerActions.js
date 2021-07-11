@@ -20,7 +20,6 @@ import createBaseUrl from "./createBaseUrl";
 
 // import { Adjust, AdjustEvent } from "react-native-adjust";
 import analytics from "@segment/analytics-react-native";
-import { MixpanelInstance } from "react-native-mixpanel";
 // const MixpanelSDK = new MixpanelInstance(
 //   "c9ade508d045eb648f95add033dfb017",
 //   false,

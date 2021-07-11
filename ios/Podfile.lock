@@ -277,9 +277,6 @@ PODS:
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
   - React-jsinspector (0.63.4)
-  - react-native-adjust (4.28.0):
-    - Adjust (= 4.28.0)
-    - React
   - react-native-advertising-id (1.0.11):
     - React
   - react-native-biometrics (2.1.4):
@@ -295,20 +292,21 @@ PODS:
     - Google-Maps-iOS-Utils (= 2.1.0)
     - GoogleMaps (= 3.5.0)
     - React
+  - react-native-idfa (4.1.0):
+    - React
   - react-native-intercom (18.0.0):
     - Intercom (~> 8.0.0)
     - React
   - react-native-maps (0.27.1):
     - React
-  - react-native-mixpanel (1.2.5):
-    - Mixpanel (~> 3.6.0)
-    - React
-  - react-native-notifications (3.5.0):
+  - react-native-notifications (3.4.2):
     - React-Core
   - react-native-restart (0.0.17):
     - React
   - react-native-safe-area-context (3.1.9):
     - React-Core
+  - react-native-tracking-transparency (0.1.1):
+    - React
   - react-native-webview (11.6.2):
     - React-Core
   - React-RCTActionSheet (0.63.4):
@@ -372,6 +370,14 @@ PODS:
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
   - RNAnalytics (1.4.9):
+    - Analytics
+    - React-Core
+  - RNAnalyticsIntegration-Adjust (1.4.9):
+    - Analytics
+    - React-Core
+    - RNAnalytics
+    - Segment-Adjust (~> 3.1.1)
+  - RNAnalyticsIntegration-Mixpanel (1.3.2):
     - Analytics
     - React-Core
   - RNBootSplash (2.2.8):
@@ -475,19 +481,19 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
-  - react-native-adjust (from `../node_modules/react-native-adjust`)
   - react-native-advertising-id (from `../node_modules/react-native-advertising-id`)
   - react-native-biometrics (from `../node_modules/react-native-biometrics`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - react-native-ffmpeg/https-gpl-lts (from `../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
+  - react-native-idfa (from `../node_modules/react-native-idfa`)
   - react-native-intercom (from `../node_modules/react-native-intercom`)
   - react-native-maps (from `../node_modules/react-native-maps`)
-  - react-native-mixpanel (from `../node_modules/react-native-mixpanel`)
   - react-native-notifications (from `../node_modules/react-native-notifications`)
   - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-tracking-transparency (from `../node_modules/react-native-tracking-transparency`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -500,6 +506,8 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNAnalytics (from `../node_modules/@segment/analytics-react-native`)"
+  - "RNAnalyticsIntegration-Adjust (from `../node_modules/@segment/analytics-react-native-adjust`)"
+  - "RNAnalyticsIntegration-Mixpanel (from `../node_modules/@segment/analytics-react-native-mixpanel`)"
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCCheckbox (from `../node_modules/@react-native-community/checkbox`)"
@@ -621,8 +629,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
-  react-native-adjust:
-    :path: "../node_modules/react-native-adjust"
   react-native-advertising-id:
     :path: "../node_modules/react-native-advertising-id"
   react-native-biometrics:
@@ -635,18 +641,20 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec"
   react-native-google-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-idfa:
+    :path: "../node_modules/react-native-idfa"
   react-native-intercom:
     :path: "../node_modules/react-native-intercom"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
-  react-native-mixpanel:
-    :path: "../node_modules/react-native-mixpanel"
   react-native-notifications:
     :path: "../node_modules/react-native-notifications"
   react-native-restart:
     :path: "../node_modules/react-native-restart"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-tracking-transparency:
+    :path: "../node_modules/react-native-tracking-transparency"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-RCTActionSheet:
@@ -671,6 +679,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNAnalytics:
     :path: "../node_modules/@segment/analytics-react-native"
+  RNAnalyticsIntegration-Adjust:
+    :path: "../node_modules/@segment/analytics-react-native-adjust"
+  RNAnalyticsIntegration-Mixpanel:
+    :path: "../node_modules/@segment/analytics-react-native-mixpanel"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
@@ -776,19 +788,19 @@ SPEC CHECKSUMS:
   React-jsi: a0418934cf48f25b485631deb27c64dc40fb4c31
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
-  react-native-adjust: ffd658e43e26a7bf619554dc359a62b25bd01bf6
   react-native-advertising-id: 91e0e65f5a1dd0667ce4b6e667ca7338e3c3414a
   react-native-biometrics: 9d3306e5d29c3bc4e6a3c912d759a94e76a2f683
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-cookies: 2cb6ef472da68610dfcf0eaee68464c244943abd
   react-native-ffmpeg: f9a60452aaa5d478aac205b248224994f3bde416
   react-native-google-maps: 0a989abda71059db2caa98b9dacca7a8f38a47d0
+  react-native-idfa: 7a029b76f4d5dff76efa6fe4b86be8fadd71c49f
   react-native-intercom: c48e0e15877bf96ff4d461f7aa9b833d11188139
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
-  react-native-mixpanel: 5d0bcea791fd938c35138be2d00e50e19b9de601
-  react-native-notifications: 89a73cd2cd2648e1734fa10e3507681c9e4f14de
+  react-native-notifications: 51ed8167f70f01c5000ba81a4465ea98b4612e23
   react-native-restart: d19a0f8d053d065fe64cd2baebb6487111c77149
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
+  react-native-tracking-transparency: b2029ff756f1128b1f2c7c7c7f3003bc3c950f9f
   react-native-webview: 193d233c29eacce1f42ca2637dab7ba79c25a6de
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
@@ -801,7 +813,9 @@ SPEC CHECKSUMS:
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
   RNAnalytics: 764e000dbc5b5da88175faa19fb92e29e1a16399
-  RNBootSplash: 14d30c2e1de7247d334540cb2c2d7f3c2acc6150
+  RNAnalyticsIntegration-Adjust: 498a654c5a6e6cafe1d512fee85802102ce3201d
+  RNAnalyticsIntegration-Mixpanel: 2962c1d4c581d372e16586427a8818b2f954992a
+  RNBootSplash: a902017918cfd3e1f016ec7faef78fdf4c4e3cd0
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCCheckbox: 357578d3b42652c78ee9a1bb9bcfc3195af6e161
   RNCClipboard: 18e2e6048edf841b1225b81025969ba8330f3251
@@ -833,6 +847,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: 54574fecac368928e7cedd5fbd3e31b53b57dc72
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 18e6ba6f468bdd8af9cd66aa7563acbca69c26a4
+PODFILE CHECKSUM: 8867164327cb885a8cdf08bf6740e780e780f28b
 
 COCOAPODS: 1.10.1
