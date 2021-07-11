@@ -52,16 +52,10 @@ export default class EmptyCampaigns extends Component {
       routePath = "CreateBusinessAccount";
     }
 
-    const device_id = this.props.screenProps.device_id;
-    const { userInfo } = this.props;
-
-    analytics.track(`a_create_campaign`, {
-      source: "dashboard",
-      source_action: "a_create_campaign",
-      timestamp: new Date().getTime(),
-      userId: userInfo.userid,
-      device_id,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Create Campaign",
+      button_text: "LAUNCH YOU FIRST AD",
+      button_color: "Orange Illustration",
     });
 
     this.props.navigation.navigate(routePath, {
@@ -71,19 +65,14 @@ export default class EmptyCampaigns extends Component {
   };
 
   goToVerifyAccount = () => {
-    const device_id = this.props.screenProps.device_id;
-    const { userInfo } = this.props;
-    analytics.track(`a_verify_account`, {
-      source: "dashboard",
-      source_action: "a_verify_account",
-      timestamp: new Date().getTime(),
-      device_id,
-      userId: userInfo.userid,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Verify account",
+      button_text: "VERFIY ACCOUNT",
+      button_color: "Orange text",
     });
     this.props.navigation.navigate("VerifyAccount", {
-      source: "dashboard",
-      source_action: "a_verify_account",
+      source: "Dashboard",
+      source_action: "Start Account Verification",
     });
   };
 

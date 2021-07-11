@@ -242,16 +242,8 @@ export const verifyMobileCode = (
           position: "top",
         });
         if (!data.success) {
-          analytics.track(`a_otp_verify`, {
-            source: "otp_verify",
-            source_action: "a_otp_verify",
-            device_id: getUniqueId(),
-            timestamp: new Date().getTime(),
-            verification_channel,
-            action_status: "failure",
-            businessid:
-              getState().account.mainBusiness &&
-              getState().account.mainBusiness.businessid,
+          analytics.track(`Account Verified`, {
+            account_verified: false,
           });
           return dispatch({
             type: actionTypes.VERIFY_MOBILE_NUMBER,
@@ -274,17 +266,8 @@ export const verifyMobileCode = (
       })
       .then((decodedUser) => {
         if (decodedUser && decodedUser.user && decodedUser.success) {
-          analytics.track(`a_otp_verify`, {
-            source: "otp_verify",
-            source_action: "a_otp_verify",
-            device_id: getUniqueId(),
-            timestamp: new Date().getTime(),
-            userId: decodedUser.user.userid,
-            verification_channel,
-            action_status: "success",
-            businessid:
-              getState().account.mainBusiness &&
-              getState().account.mainBusiness.businessid,
+          analytics.track(`Account Verified`, {
+            account_verified: true,
           });
           dispatch(setCurrentUser(decodedUser));
         }
@@ -302,19 +285,13 @@ export const verifyMobileCode = (
       })
       .catch((err) => {
         // console.log("verifyMobileCode error", err.message || err.response);
-        analytics.track(`a_error`, {
-          error_page: "otp_verify",
-          action_status: "failure",
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
-          source_action: "a_otp_verify",
+        analytics.track(`Backend Error Received`, {
+          error_page: "VerfiyAccount",
+          source_action: "OTP Verification",
           error_description:
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
-          businessid:
-            getState().account.mainBusiness &&
-            getState().account.mainBusiness.businessid,
         });
         showMessage({
           message:

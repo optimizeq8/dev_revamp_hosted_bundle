@@ -255,13 +255,9 @@ class Dashboard extends Component {
       RNNotifications.getInitialNotification()
         .then((notification) => {
           if (notification) {
-            analytics.track(
-              "Notification opened by device user from killed state",
-              {
-                notification: JSON.stringify(notification.payload, null, 2),
-                platform: Platform.OS,
-              }
-            );
+            analytics.track("Notification opened", {
+              notification: JSON.stringify(notification.payload, null, 2),
+            });
 
             if (notification.payload.hasOwnProperty("screenName")) {
               this.props.navigation.navigate(notification.payload.screenName);
@@ -361,13 +357,10 @@ class Dashboard extends Component {
   navigationHandler = (adType) => {
     const { translate } = this.props.screenProps;
     const { fb_connected, fb_ad_account_id } = this.props.mainBusiness;
-    analytics.track(`a_campaign_ad_type`, {
-      source: "dashboard",
-      source_action: "a_campaign_ad_type",
-      campaign_channel: adType.mediaType,
-      campaign_ad_type: adType.value,
-      device_id: this.props.screenProps.device_id,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Campaign Ad Type Selected",
+      button_text: adType.value,
+      button_color: adType.mediaType + " icon",
     });
     let businessApproved =
       this.props.mainBusiness && this.props.mainBusiness.approved === "1";
@@ -473,11 +466,10 @@ class Dashboard extends Component {
   };
 
   reloadData = () => {
-    analytics.track(`a_refresh_list`, {
-      source: "dashboard",
-      source_action: "a_refresh_list",
-      refresh_type: "campaigns",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Swipe down to refresh campaign list",
+      button_text: "",
+      button_color: "",
     });
     // this.props.connect_user_to_intercom(this.props.userInfo.userid);
     // this.props.set_as_seen(false);
@@ -534,13 +526,10 @@ class Dashboard extends Component {
       "source",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`a_create_campaign`, {
-      source,
-      source_action: "a_create_campaign",
-      timestamp: new Date().getTime(),
-      userId: this.props.userInfo.userid,
-      device_id,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Create New Campaign",
+      button_text: "Plus Icon",
+      button_color: "Orange",
     });
 
     let businessApproved =
@@ -613,12 +602,10 @@ class Dashboard extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`dashboard`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "Dashboard",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      device_id: this.props.screenProps.device_id,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     if (
       source_action === "a_move_amount_to_wallet" &&
@@ -701,12 +688,9 @@ class Dashboard extends Component {
     }
   };
   handleSwitchLanguage = () => {
-    analytics.track(`a_change_language`, {
+    analytics.track(`Language Selected`, {
       source: "dashboard",
-      source_action: "a_change_language",
-      prev_langauage: this.props.appLanguage,
       selected_language: this.props.appLanguage === "en" ? "ar" : "en",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.navigation.navigate("SwitchLanguageLoading", {
       source: "dashboard",
@@ -737,11 +721,8 @@ class Dashboard extends Component {
   };
   openIntercom = () => {
     this.setState({ showAlertModal: false });
-    analytics.track(`a_help`, {
+    analytics.track(`Intercom Opened`, {
       source: "dashboard",
-      source_action: "a_help",
-      support_type: "intercom",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     Intercom.displayConversationsList();
   };
