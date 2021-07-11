@@ -146,6 +146,12 @@ class Signin extends Component {
   }
   setValue = (stateName, value) => {
     let state = {};
+    if (stateName === "newEmail") {
+      analytics.track(`Email Entered`, {
+        source: "Signin",
+        email_populated: true,
+      });
+    }
     state[stateName] = value;
     this.setState({ ...state });
   };
@@ -159,9 +165,11 @@ class Signin extends Component {
   };
   createNewAccount = () => {
     if (!this.state.newEmailError) {
-      analytics.track(`Email Entered`, {
+      analytics.track(`Button Pressed`, {
+        button_type: "Signup Initiated ",
+        button_text: `Create Account`,
+        button_color: "Orange",
         source: "Signin",
-        email_populated: true,
       });
       this.props.verifyEmail(
         this.state.newEmail,

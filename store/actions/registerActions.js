@@ -437,8 +437,8 @@ export const verifyEmail = (email, userInfo, navigation) => {
       .then((data) => {
         if (data.success) {
           navigation.push("MainForm", {
-            source: "email_registration",
-            source_action: "a_create_account",
+            source: "Signin",
+            source_action: "Create Account",
           });
         }
         if (!data.success) {
@@ -575,7 +575,8 @@ export const requestInvitationCode = (info) => {
 export const registerGuestUser = (
   userInfo,
   businessInvite = "1",
-  navigation
+  navigation,
+  businessAccount
 ) => {
   return async (dispatch, getState) => {
     createBaseUrl()
@@ -584,25 +585,24 @@ export const registerGuestUser = (
         return res.data;
       })
       .then((data) => {
-        analytics.track(`a_sign_up`, {
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
-          source: "registration_detail",
-          source_action: "a_sign_up",
-          action_status: data.success ? "success" : "failure",
-          email: userInfo.email,
-          business_invite: businessInvite === "0",
-        });
+        delete userInfo.password;
 
+        analytics.track(`Form Submitted`, {
+          form_type: "Sign Up Form",
+          form_context: {
+            ...userInfo,
+            business_invite: businessInvite === "0",
+          },
+        });
+        console.log(JSON.stringify(data, null, 2));
         // For users creating new business while registering
         if (businessInvite === "1") {
-          delete userInfo.password;
-          analytics.track(`a_create_buiness_account`, {
-            source: "open_create_business_account",
-            source_action: `a_create_buiness_account`,
-            action_status: data.success ? "success" : "failure",
-            timestamp: new Date().getTime(),
-            ...userInfo,
+          analytics.track(`Business Created`, {
+            business_name: businessAccount.businessname,
+            business_category: businessAccount.businesscategory,
+            country: businessAccount.country,
+            insta_handle_for_review: businessAccount.insta_handle_for_review,
+            other_business_category: businessAccount.otherBusinessCategory,
           });
         }
         // let adjustRegiserTracker = new AdjustEvent("eivlhl");
@@ -663,8 +663,8 @@ export const registerGuestUser = (
             payload: false,
           });
           navigation.navigate("RegistrationSuccess", {
-            source: "registration_detail",
-            source_action: "a_sign_up",
+            source: "Signup",
+            source_action: "Sign Up Form Submitted",
           });
           // dispatch(send_push_notification());
           dispatch(getBusinessAccounts());
@@ -673,7 +673,7 @@ export const registerGuestUser = (
         }
       })
       .catch((err) => {
-        // console.log("registerGuestUser ERROR", err.message || err.response);
+        // console.log("registerGuestUser ERROR", JSON.stringify(err, null, 2));
         analytics.track(`a_error`, {
           timestamp: new Date().getTime(),
           device_id: getUniqueId(),
