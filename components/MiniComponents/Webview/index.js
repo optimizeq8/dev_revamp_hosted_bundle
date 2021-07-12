@@ -126,13 +126,8 @@ class index extends Component {
                 url,
               });
             }}
-            onLoad={(syntheticEvent) => {
+            onLoad={() => {
               this.hideLoader();
-              // const { nativeEvent } = syntheticEvent;
-              // if (nativeEvent.title == "") {
-              //   console.log("reacched here", this.webview);
-              //   // this.webview.reload();
-              // }
             }}
             androidHardwareAccelerationDisabled={true}
             // renderLoading={() => (

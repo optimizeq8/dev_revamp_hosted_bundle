@@ -5,7 +5,6 @@ import {
   Text,
   I18nManager,
   TouchableOpacity,
-  Linking,
 } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import analytics from "@segment/analytics-react-native";
@@ -75,10 +74,6 @@ class Transactions extends Component {
 
   showTransactionPdf = (reference_id) => {
     this.props.exportTransactionInvoice(reference_id);
-    // Linking.openURL(
-    //   "https://www.optimizekwtestingserver.com/optimize/pdf_invoices/735721734_1626085951.pdf"
-    // );
-    //https://docs.google.com/gview?embedded=true&url=
   };
   renderTransactionCard = ({ item }) => (
     <TransactionCard
@@ -117,10 +112,7 @@ class Transactions extends Component {
           open={this.state.sidemenustate}
         />
       ) : null;
-      const source = {
-        uri: "https://www.optimizekwtestingserver.com/optimize/pdf_invoices/735721734_1626085951.pdf",
-        cache: true,
-      };
+
       return (
         <Sidemenu
           onChange={(isOpen) => {
@@ -182,22 +174,7 @@ class Transactions extends Component {
                   {translate("No transactions available")}
                 </Text>
               )}
-              {/* <Pdf
-                source={source}
-                onLoadComplete={(numberOfPages, filePath) => {
-                  console.log(`number of pages: ${numberOfPages}`);
-                }}
-                onPageChanged={(page, numberOfPages) => {
-                  console.log(`current page: ${page}`);
-                }}
-                onError={(error) => {
-                  console.log(error);
-                }}
-                onPressLink={(uri) => {
-                  console.log(`Link presse: ${uri}`);
-                }}
-                style={styles.pdf}
-              /> */}
+
               {this.props.loadingTransactionInvoice && <Loading dash={true} />}
               <FlatList
                 renderItem={this.renderTransactionCard}
