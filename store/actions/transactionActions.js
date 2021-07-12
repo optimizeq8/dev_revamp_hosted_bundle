@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Linking } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import * as actionTypes from "./actionTypes";
 import NavigationService from "../../NavigationService";
@@ -854,6 +855,55 @@ export const payment_request_payment_method = (
           payload: {
             loading: false,
           },
+        });
+      });
+  };
+};
+
+export const exportTransactionInvoice = (reference_id) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.LOADING_TRANSACTION_INVOICE,
+      payload: true,
+    });
+    createBaseUrl()
+      .post(`exportInvoice`, { reference_id })
+      .then((response) => response.data)
+      .then((data) => {
+        analytics.track(`a_export_invoice`, {
+          source: "open_transactions",
+          source_action: "a_export_invoice",
+          invoice_reference_id: reference_id,
+          action_status: data.success ? "success" : "failure",
+        });
+        if (data.success) {
+          Linking.openURL(data.pdf_download_link);
+          // NavigationService.navigate("WebView", {
+          //   backgroundColor: "#f4f4f4",
+          //   title: "Invoice",
+          //   url:
+          //     // Platform.OS === "android"?
+          //     `https://drive.google.com/viewerng/viewer?embedded=true&url=${data.pdf_download_link}`,
+          //   // : data.pdf_download_link,
+          // });
+        }
+        dispatch({
+          type: actionTypes.LOADING_TRANSACTION_INVOICE,
+          payload: false,
+        });
+      })
+      .catch((error) => {
+        // console.log("error", error);
+        analytics.track(`a_export_invoice`, {
+          source: "open_transactions",
+          source_action: "a_export_invoice",
+          invoice_reference_id: reference_id,
+          action_status: "failure",
+          error_description: error || error.message || error.response,
+        });
+        dispatch({
+          type: actionTypes.LOADING_TRANSACTION_INVOICE,
+          payload: false,
         });
       });
   };
