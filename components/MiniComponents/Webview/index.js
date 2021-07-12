@@ -63,6 +63,10 @@ class index extends Component {
     let url = this.props.navigation.getParam("url", "");
     let title = this.props.navigation.getParam("title", "");
     // console.log("userAgent", this.state.userAgent);
+    const backgroundColor = this.props.navigation.getParam(
+      "backgroundColor",
+      "transparent"
+    );
     return (
       <SafeAreaView
         // style={styles.mainSafeArea}
@@ -122,19 +126,27 @@ class index extends Component {
                 url,
               });
             }}
-            onLoad={() => this.hideLoader()}
+            onLoad={(syntheticEvent) => {
+              this.hideLoader();
+              // const { nativeEvent } = syntheticEvent;
+              // if (nativeEvent.title == "") {
+              //   console.log("reacched here", this.webview);
+              //   // this.webview.reload();
+              // }
+            }}
             androidHardwareAccelerationDisabled={true}
             // renderLoading={() => (
             //   <View style={{ height: "100%", backgroundColor: "#0000" }}>
             //     <Loading top={40} />
             //   </View>
             // )}
-            style={{ backgroundColor: "transparent" }}
-            contentContainerStyle={{ backgroundColor: "transparent" }}
+            style={{ backgroundColor: backgroundColor }}
+            contentContainerStyle={{ backgroundColor: backgroundColor }}
             ref={(ref) => (this.webview = ref)}
             source={{ uri: url }}
             cacheEnabled={false}
             sharedCookiesEnabled={false}
+            allowFileAccess={true}
             // incognito={Platform.OS === "android"}
             onNavigationStateChange={(navState) => {
               //   console.log("navState.url", navState.url);

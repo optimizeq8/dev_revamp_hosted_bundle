@@ -5,6 +5,7 @@ import {
   Text,
   I18nManager,
   TouchableOpacity,
+  Linking,
 } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import analytics from "@segment/analytics-react-native";
@@ -35,6 +36,7 @@ import { widthPercentageToDP } from "react-native-responsive-screen";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";
 import globalStyles from "../../../GlobalStyles";
+import Loading from "../../MiniComponents/LoadingScreen";
 
 class Transactions extends Component {
   state = {
@@ -71,11 +73,19 @@ class Transactions extends Component {
     FilterMenu = require("../../MiniComponents/FilterMenu").default;
   };
 
+  showTransactionPdf = (reference_id) => {
+    this.props.exportTransactionInvoice(reference_id);
+    // Linking.openURL(
+    //   "https://www.optimizekwtestingserver.com/optimize/pdf_invoices/735721734_1626085951.pdf"
+    // );
+    //https://docs.google.com/gview?embedded=true&url=
+  };
   renderTransactionCard = ({ item }) => (
     <TransactionCard
       key={item.payment_id}
       transaction={item}
       screenProps={this.props.screenProps}
+      showTransactionPdf={this.showTransactionPdf}
     />
   );
   render() {
@@ -107,6 +117,10 @@ class Transactions extends Component {
           open={this.state.sidemenustate}
         />
       ) : null;
+      const source = {
+        uri: "https://www.optimizekwtestingserver.com/optimize/pdf_invoices/735721734_1626085951.pdf",
+        cache: true,
+      };
       return (
         <Sidemenu
           onChange={(isOpen) => {
@@ -168,6 +182,23 @@ class Transactions extends Component {
                   {translate("No transactions available")}
                 </Text>
               )}
+              {/* <Pdf
+                source={source}
+                onLoadComplete={(numberOfPages, filePath) => {
+                  console.log(`number of pages: ${numberOfPages}`);
+                }}
+                onPageChanged={(page, numberOfPages) => {
+                  console.log(`current page: ${page}`);
+                }}
+                onError={(error) => {
+                  console.log(error);
+                }}
+                onPressLink={(uri) => {
+                  console.log(`Link presse: ${uri}`);
+                }}
+                style={styles.pdf}
+              /> */}
+              {this.props.loadingTransactionInvoice && <Loading dash={true} />}
               <FlatList
                 renderItem={this.renderTransactionCard}
                 data={this.props.filteredTransactions}
@@ -189,10 +220,13 @@ const mapStateToProps = (state) => ({
   transactionList: state.transA.transactionList,
   filteredTransactions: state.transA.filteredTransactions,
   errorTransactionList: state.transA.errorTransactionList,
+  loadingTransactionInvoice: state.transA.loadingTransactionInvoice,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onSelect: (query) => dispatch(actionCreators.filterCampaignsStatus(query)),
   getTransactions: () => dispatch(actionCreators.getTransactions()),
+  exportTransactionInvoice: (reference_id) =>
+    dispatch(actionCreators.exportTransactionInvoice(reference_id)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Transactions);

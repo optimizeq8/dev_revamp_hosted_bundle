@@ -5,6 +5,7 @@ import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
 import createBaseUrl from "./createBaseUrl";
 import { NavigationActions } from "react-navigation";
+import { Platform } from "react-native";
 
 export const setCampaignInfoForTransaction = (data) => {
   return (dispatch) => {
@@ -854,6 +855,41 @@ export const payment_request_payment_method = (
           payload: {
             loading: false,
           },
+        });
+      });
+  };
+};
+
+export const exportTransactionInvoice = (reference_id) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.LOADING_TRANSACTION_INVOICE,
+      payload: true,
+    });
+    createBaseUrl()
+      .post(`exportInvoice`, { reference_id })
+      .then((response) => response.data)
+      .then((data) => {
+        if (data.success) {
+          NavigationService.navigate("WebView", {
+            backgroundColor: "#f4f4f4",
+            title: "Invoice",
+            url:
+              // Platform.OS === "android"?
+              `https://drive.google.com/viewerng/viewer?embedded=true&url=${data.pdf_download_link}`,
+            // : data.pdf_download_link,
+          });
+        }
+        dispatch({
+          type: actionTypes.LOADING_TRANSACTION_INVOICE,
+          payload: false,
+        });
+      })
+      .catch((error) => {
+        console.log("error", error);
+        dispatch({
+          type: actionTypes.LOADING_TRANSACTION_INVOICE,
+          payload: false,
         });
       });
   };

@@ -97,6 +97,13 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: RFValue(6, 414),
   },
+  invoiceButton: {
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: globalColors.white,
+    paddingVertical: 5,
+    paddingHorizontal: 8,
+  },
 });
 
 export default styles;
