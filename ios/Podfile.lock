@@ -2,10 +2,10 @@ PODS:
   - Adjust (4.28.0):
     - Adjust/Core (= 4.28.0)
   - Adjust/Core (4.28.0)
-  - Analytics (4.1.4)
+  - Analytics (4.1.5)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
-  - EXApplication (2.4.1):
+  - EXApplication (3.1.2):
     - UMCore
   - EXAV (8.7.0):
     - UMCore
@@ -16,7 +16,7 @@ PODS:
   - EXConstants (10.1.3):
     - UMConstantsInterface
     - UMCore
-  - EXDevice (2.3.0):
+  - EXDevice (3.2.0):
     - UMCore
   - EXErrorRecovery (1.4.0):
     - UMCore
@@ -286,7 +286,7 @@ PODS:
     - React
   - react-native-blur (0.8.0):
     - React
-  - react-native-cookies (6.0.7):
+  - react-native-cookies (6.0.8):
     - React-Core
   - react-native-ffmpeg/https-gpl-lts (0.4.4):
     - mobile-ffmpeg-https-gpl (= 4.3.1.LTS)
@@ -303,7 +303,7 @@ PODS:
   - react-native-mixpanel (1.2.5):
     - Mixpanel (~> 3.6.0)
     - React
-  - react-native-notifications (3.4.2):
+  - react-native-notifications (3.5.0):
     - React-Core
   - react-native-restart (0.0.17):
     - React
@@ -371,21 +371,16 @@ PODS:
     - React-Core (= 0.63.4)
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
-  - RNAnalytics (1.3.2):
-    - Analytics (~> 4.1)
-    - React
-  - RNAnalyticsIntegration-Mixpanel (1.3.2):
+  - RNAnalytics (1.4.9):
     - Analytics
-    - React
-    - RNAnalytics
-    - Segment-Mixpanel
-  - RNBootSplash (2.2.7):
+    - React-Core
+  - RNBootSplash (2.2.8):
     - React-Core
   - RNCAsyncStorage (1.12.1):
     - React-Core
   - RNCCheckbox (0.4.2):
     - React
-  - RNCClipboard (1.8.1):
+  - RNCClipboard (1.8.2):
     - React-Core
   - RNCMaskedView (0.1.10):
     - React
@@ -415,9 +410,6 @@ PODS:
   - Segment-Adjust (3.1.1):
     - Adjust (~> 4.28)
     - Analytics
-  - Segment-Mixpanel (1.7.0):
-    - Analytics
-    - Mixpanel (~> 3.5)
   - Sentry (5.2.2):
     - Sentry/Core (= 5.2.2)
   - Sentry/Core (5.2.2)
@@ -444,7 +436,7 @@ PODS:
 
 DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
-  - EXApplication (from `../node_modules/expo/node_modules/expo-application/ios`)
+  - EXApplication (from `../node_modules/expo-application/ios`)
   - EXAV (from `../node_modules/expo-av/ios`)
   - EXBlur (from `../node_modules/expo-blur/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
@@ -508,7 +500,6 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNAnalytics (from `../node_modules/@segment/analytics-react-native`)"
-  - "RNAnalyticsIntegration-Mixpanel (from `../node_modules/@segment/analytics-react-native-mixpanel`)"
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCCheckbox (from `../node_modules/@react-native-community/checkbox`)"
@@ -554,7 +545,6 @@ SPEC REPOS:
     - mobile-ffmpeg-https-gpl
     - PhotoEditorSDK
     - Segment-Adjust
-    - Segment-Mixpanel
     - Sentry
     - VideoEditorSDK
 
@@ -562,7 +552,7 @@ EXTERNAL SOURCES:
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXApplication:
-    :path: "../node_modules/expo/node_modules/expo-application/ios"
+    :path: "../node_modules/expo-application/ios"
   EXAV:
     :path: "../node_modules/expo-av/ios"
   EXBlur:
@@ -681,8 +671,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNAnalytics:
     :path: "../node_modules/@segment/analytics-react-native"
-  RNAnalyticsIntegration-Mixpanel:
-    :path: "../node_modules/@segment/analytics-react-native-mixpanel"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
@@ -742,14 +730,14 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Adjust: 131c77905f67b26e946d1b831fad20ed2b41134c
-  Analytics: 7bdc735c456434b4eaa2eacdcf122bb03d51ede7
+  Analytics: 084a3edda6517e308007c1a7810b8f1e8f2925aa
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: cde416483dac037923206447da6e1454df403714
-  EXApplication: e3c201e7b913d081bbd37bd3c5d0e2cdc21733b4
+  EXApplication: 4797b8b37f0b0470f587fdccf6407f44b50d18b5
   EXAV: e32adf44c10a82f723172d5b01d5693890888dd6
   EXBlur: 569d38c2b0b7b000866d928bc36acadfdc02ea8e
   EXConstants: c4dd28acc12039c999612507a5f935556f2c86ce
-  EXDevice: e6ede72e08f6adc4b224d0628a9963d394ab9226
+  EXDevice: e69996534618927956e80a91135b5c0dd1d7d114
   EXErrorRecovery: b46af4b91e2b4ec598ab1fa51d2cf088aaf5511f
   EXFileSystem: 0e4974ab77bff04cda68d2886d070cbe64b93a6b
   EXFont: 30c64ed8735a180e3f20046e4fdac4ea074d71d3
@@ -792,13 +780,13 @@ SPEC CHECKSUMS:
   react-native-advertising-id: 91e0e65f5a1dd0667ce4b6e667ca7338e3c3414a
   react-native-biometrics: 9d3306e5d29c3bc4e6a3c912d759a94e76a2f683
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
-  react-native-cookies: 6004d512ffc6f2c498c5b70cda0bc040350c0585
+  react-native-cookies: 2cb6ef472da68610dfcf0eaee68464c244943abd
   react-native-ffmpeg: f9a60452aaa5d478aac205b248224994f3bde416
   react-native-google-maps: 0a989abda71059db2caa98b9dacca7a8f38a47d0
   react-native-intercom: c48e0e15877bf96ff4d461f7aa9b833d11188139
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-mixpanel: 5d0bcea791fd938c35138be2d00e50e19b9de601
-  react-native-notifications: 51ed8167f70f01c5000ba81a4465ea98b4612e23
+  react-native-notifications: 89a73cd2cd2648e1734fa10e3507681c9e4f14de
   react-native-restart: d19a0f8d053d065fe64cd2baebb6487111c77149
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-webview: 193d233c29eacce1f42ca2637dab7ba79c25a6de
@@ -812,12 +800,11 @@ SPEC CHECKSUMS:
   React-RCTText: 5c51df3f08cb9dedc6e790161195d12bac06101c
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
-  RNAnalytics: ac18ac964dd53bac7f957994412963e8e2568c4d
-  RNAnalyticsIntegration-Mixpanel: 2962c1d4c581d372e16586427a8818b2f954992a
-  RNBootSplash: a902017918cfd3e1f016ec7faef78fdf4c4e3cd0
+  RNAnalytics: 764e000dbc5b5da88175faa19fb92e29e1a16399
+  RNBootSplash: 14d30c2e1de7247d334540cb2c2d7f3c2acc6150
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCCheckbox: 357578d3b42652c78ee9a1bb9bcfc3195af6e161
-  RNCClipboard: 4935717a8e86273de4a45f113d01dad949b5374b
+  RNCClipboard: 18e2e6048edf841b1225b81025969ba8330f3251
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDeviceInfo: c5f8f3a456adcbba405ace475254b08febc4c095
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
@@ -829,7 +816,6 @@ SPEC CHECKSUMS:
   RNVectorIcons: 368d6d8b8301224e5ffb6254191f4f8876c2be0d
   RNVideoEditorSDK: 02a5a9f8dc21ba69b26e39db50f511f72699dd0b
   Segment-Adjust: 5c45cd11f3ed647967c54e93c267f8e8c987f849
-  Segment-Mixpanel: 18c35e15fa95ee61ee2254577cf2c968db42e68a
   Sentry: 8fa58a051237554f22507fb483b9a1de0171a2dc
   UMAppLoader: 92d044af52626af3d81a69796ad666fc7a9a7d78
   UMBarCodeScannerInterface: 3f6c1b09ef4b867ce752b8c0b3893bcf9cd85f32
@@ -847,6 +833,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: 54574fecac368928e7cedd5fbd3e31b53b57dc72
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 6c97ba486c34f21cece22c32fdee64efc2f241b1
+PODFILE CHECKSUM: 18e6ba6f468bdd8af9cd66aa7563acbca69c26a4
 
 COCOAPODS: 1.10.1
