@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -45,11 +45,6 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontFamily: "montserrat-regular",
     paddingVertical: 20,
-  },
-  pdf: {
-    flex: 1,
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
   },
 });
 
