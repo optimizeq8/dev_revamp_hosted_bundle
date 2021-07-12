@@ -893,7 +893,7 @@ export const exportTransactionInvoice = (reference_id) => {
         });
       })
       .catch((error) => {
-        console.log("error", error);
+        // console.log("error", error);
         analytics.track(`a_export_invoice`, {
           source: "open_transactions",
           source_action: "a_export_invoice",
