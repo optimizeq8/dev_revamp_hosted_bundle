@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Linking } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import * as actionTypes from "./actionTypes";
 import NavigationService from "../../NavigationService";
@@ -871,14 +872,15 @@ export const exportTransactionInvoice = (reference_id) => {
       .then((response) => response.data)
       .then((data) => {
         if (data.success) {
-          NavigationService.navigate("WebView", {
-            backgroundColor: "#f4f4f4",
-            title: "Invoice",
-            url:
-              // Platform.OS === "android"?
-              `https://drive.google.com/viewerng/viewer?embedded=true&url=${data.pdf_download_link}`,
-            // : data.pdf_download_link,
-          });
+          Linking.openURL(data.pdf_download_link);
+          // NavigationService.navigate("WebView", {
+          //   backgroundColor: "#f4f4f4",
+          //   title: "Invoice",
+          //   url:
+          //     // Platform.OS === "android"?
+          //     `https://drive.google.com/viewerng/viewer?embedded=true&url=${data.pdf_download_link}`,
+          //   // : data.pdf_download_link,
+          // });
         }
         dispatch({
           type: actionTypes.LOADING_TRANSACTION_INVOICE,

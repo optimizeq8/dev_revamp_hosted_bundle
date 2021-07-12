@@ -99,10 +99,12 @@ const styles = StyleSheet.create({
   },
   invoiceButton: {
     borderWidth: 1,
-    borderRadius: 20,
+    borderRadius: RFValue(10, 414),
     borderColor: globalColors.white,
-    paddingVertical: 5,
-    paddingHorizontal: 8,
+    paddingVertical: RFValue(2.5, 414),
+    paddingHorizontal: RFValue(4, 414),
+    alignSelf: "flex-end",
+    marginLeft: "auto",
   },
 });
 
