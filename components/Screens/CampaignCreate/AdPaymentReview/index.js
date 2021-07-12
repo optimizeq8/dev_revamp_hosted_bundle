@@ -84,7 +84,7 @@ class AdPaymentReview extends Component {
             (1000 * 60 * 60 * 24)
         ) + 1,
       campaign_name: this.props.data.name,
-      campaignId: this.props.data.campaign_id,
+      campaign_id: this.props.data.campaign_id,
       campaign_brand_name: this.props.data.brand_name,
       campaign_headline: this.props.data.headline,
       campaign_attachment: this.props.data.attachment,
@@ -101,12 +101,13 @@ class AdPaymentReview extends Component {
       campaign_devices: devices,
       campaign_language: languageNames,
     };
-    analytics.track(`ad_review`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "AdPaymentReview",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      ...segmentInfo,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      form_context: { ...segmentInfo },
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.saveCampaignSteps(
       this.props.adType === "StoryAd"
@@ -204,54 +205,13 @@ class AdPaymentReview extends Component {
   };
 
   goToPaymentForm = () => {
-    const {
-      interestNames,
-      gender,
-      countryName,
-      regionNames,
-      devices,
-      languageNames,
-    } = this.formatAttributes();
-    const segmentInfo = {
-      campaign_channel: "snapchat",
-      campaign_ad_type: this.props.adType,
-      campaign_duration:
-        Math.ceil(
-          (new Date(this.props.data.end_time) -
-            new Date(this.props.data.start_time)) /
-            (1000 * 60 * 60 * 24)
-        ) + 1,
-      campaign_name: this.props.data.name,
-      campaignId: this.props.data.campaign_id,
-      campaign_brand_name: this.props.data.campaignbrand_name,
-      campaign_end_date: this.props.data.end_time,
-      campaign_start_date: this.props.data.start_time,
-      campaign_headline: this.props.data.headline,
-      campaign_attachment: this.props.data.attachment,
-      campaign_swipe_up_CTA: this.props.data.call_to_action,
-      campaign_swipe_up_destination: this.props.data.destination,
-      campaign_media: this.props.data.media,
-      campaign_media_type: this.props.data.media_type,
-      campaign_appChoice: this.props.data.appChoice,
-      campaign_objective: this.props.data.objective,
-      campaign_interest: interestNames,
-      campaign_gender: gender,
-      campaign_country: countryName,
-      campaign_region: regionNames,
-      campaign_devices: devices,
-      campaign_language: languageNames,
-    };
-    analytics.track(`a_submit_ad_review`, {
-      source: "ad_review",
-      source_action: "a_submit_ad_review",
-      action_status: "success",
-      timestamp: new Date().getTime(),
-      ...segmentInfo,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Submit Ad Review",
+      button_text: "Payment Info",
+      button_color: "Orange",
     });
-
     this.props.navigation.navigate("PaymentForm", {
-      source: "ad_review",
+      source: "AdPaymentReview",
       source_action: `a_submit_ad_review`,
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,

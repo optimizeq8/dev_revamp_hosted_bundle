@@ -769,18 +769,18 @@ export const ad_details = (
           (!data.data.hasOwnProperty("campaign_already_created") ||
             data.data.campaign_already_created === 0)
         ) {
-          analytics.track(`a_submit_ad_targeting`, {
-            source: "ad_targeting",
-            source_action: "a_submit_ad_targeting",
-            timestamp: new Date().getTime(),
-            action_status: data.success ? "success" : "failure",
-            campaign_budget: data.data.lifetime_budget_micro,
-            campaign_error: !data.success && data.message,
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+          analytics.track(`Form Submitted`, {
+            form_type: "Ad Targeting Form",
+            form_context: {
+              action_status: data.success ? "success" : "failure",
+              campaign_budget: data.data.lifetime_budget_micro,
+              campaign_error: !data.success && data.message,
+              ...segmentInfo,
+            },
+            business_id: getState().account.mainBusiness.businessid,
           });
           navigation.navigate("AdPaymentReview", {
-            source: "ad_targeting",
+            source: "AdTargeting",
             source_action: "a_submit_ad_targeting",
           });
         }
@@ -815,13 +815,15 @@ export const updateCampaign = (
         return res.data;
       })
       .then((data) => {
-        analytics.track(`a_submit_update_campaign_details`, {
-          source: "ad_targeting",
-          source_action: "a_submit_ad_targeting",
-          ...segmentInfo,
-          action_status: data.success ? "success" : "failure",
-          campaign_error: !data.success && data.message,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track(`From Submitted`, {
+          form_type: "Ad Targeting From Updated",
+          form_context: {
+            ...segmentInfo,
+            action_status: data.success ? "success" : "failure",
+            campaign_error: !data.success && data.message,
+          },
+
+          business_id: getState().account.mainBusiness.businessid,
         });
         showMessage({
           type: data.success ? "success" : "warning",
@@ -832,7 +834,7 @@ export const updateCampaign = (
           payload: false,
         });
         navigation.navigate("Dashboard", {
-          source: "ad_targeting",
+          source: "AdTargeting",
           source_action: "a_submit_ad_targeting",
         });
       })

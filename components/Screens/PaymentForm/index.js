@@ -140,15 +140,15 @@ class PaymentForm extends Component {
   };
   _openWebBrowserAsync = async () => {
     try {
-      analytics.track(`payment_processing`, {
-        source: "payment_mode",
-        source_action: "a_payment_processing",
-        amount: this.props.navigation.getParam("amount", 0),
-        // mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
-        mode_of_payment:
+      analytics.track(`Button Pressed`, {
+        button_type: "Checkout Started",
+        button_text: "Pay Now",
+        button_color: "Orange",
+        total: this.props.navigation.getParam("amount", 0),
+        payment_method:
           this.props.paymentMethods[this.state.choice - 2].PaymentMethodEn,
-        campaignId: this.props.campaign_id,
-        businessid: this.props.mainBusiness.businessid,
+        campaign_id: this.props.campaign_id,
+        business_id: this.props.mainBusiness.businessid,
       });
       if (
         this.props.paymentMethods[this.state.choice - 2].payment_type === "1"
@@ -192,16 +192,16 @@ class PaymentForm extends Component {
       }
       this.closeBrowserLoading();
     } catch (error) {
-      analytics.track(`payment_processing`, {
-        source: "payment_mode",
+      analytics.track(`Payment Error`, {
+        error_screen: "PaymentForm",
+        source: "AdPaymentReview",
         source_action: "a_payment_processing",
-        // mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
-        mode_of_payment:
+        payment_method:
           this.props.paymentMethods[this.state.choice - 2].PaymentMethodEn,
         action_status: "failure",
         error_description: "Something went wrong",
-        campaignId: this.props.campaign_id,
-        businessid: this.props.mainBusiness.businessid,
+        campaign_id: this.props.campaign_id,
+        business_id: this.props.mainBusiness.businessid,
       });
 
       showMessage({
@@ -295,11 +295,11 @@ class PaymentForm extends Component {
     });
   };
   removeWalletAmountAndGoBack = () => {
-    analytics.track(`a_remove_wallet_amount`, {
-      source: "payment_mode",
+    analytics.track(`Wallet Amount Removed`, {
+      source: "PaymentForm",
       source_action: "a_remove_wallet_amount",
-      campaignId: this.props.campaign_id,
-      businessid: this.props.mainBusiness.businessid,
+      campaign_id: this.props.campaign_id,
+      business_id: this.props.mainBusiness.businessid,
     });
     if (this.props.walletUsed) {
       this.props.removeWalletAmount(
@@ -338,10 +338,10 @@ class PaymentForm extends Component {
   };
 
   _handleChoice = (choice) => {
-    analytics.track(`a_select_payment_mode`, {
-      source: "payment_mode",
+    analytics.track(`Payment Mode Selected`, {
+      source: "Payment Form",
       source_action: "a_select_payment_mode",
-      payment_mode_type:
+      payment_method:
         choice === 1
           ? "WALLET"
           : choice === 2 && this.showKnet
@@ -349,7 +349,7 @@ class PaymentForm extends Component {
           : choice === 2 && !this.showKnet
           ? "DEBIT CARD"
           : "CREDIT CARD",
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
     this.setState({
       choice,
@@ -376,10 +376,7 @@ class PaymentForm extends Component {
   };
 
   handlePaymentFormFocus = () => {
-    const source = this.props.navigation.getParam(
-      "source",
-      "payment_processing"
-    );
+    const source = this.props.navigation.getParam("source", "AdPaymentReview");
     const source_action = this.props.navigation.getParam(
       "source_action",
       "a_payment_processing"
@@ -395,48 +392,33 @@ class PaymentForm extends Component {
 
     if (this.state.addingCredits) {
       const amount = this.props.navigation.getParam(`amount`, 0);
-      analytics.track(`payment_mode`, {
+      analytics.track(`Checkout Started`, {
+        checkout_type: "Wallet Top Up",
         source,
         source_action,
-        top_up_amount: amount,
-        businessid: this.props.mainBusiness.businessid,
+        total: amount,
+        business_id: this.props.mainBusiness.businessid,
       });
     } else {
-      analytics.track(`payment_mode`, {
+      analytics.track(`Checkout Started`, {
+        screen_name: "PayemntForm",
+        checkout_type: "Campaign Checkout",
         source,
         source_action,
-        campaignId: this.props.campaign_id,
+        campaign_id: this.props.campaign_id,
         campaign_ad_type,
         campaign_channel: this.state.addingCredits
           ? "wallet_top_up"
           : campaign_channel,
+        payment_method:
+          this.state.choice === 1
+            ? "Wallet"
+            : this.props.paymentMethods[this.state.choice - 2] &&
+              this.props.paymentMethods[this.state.choice - 2].PaymentMethodEn,
         campaign_budget: this.props.campaign_budget,
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
+        business_name: this.props.mainBusiness.businessname,
       });
-    }
-    if (this.state.addingCredits) {
-      // let adjustWalletPaymentFormTracker = new AdjustEvent("x8ckdv");
-      // adjustWalletPaymentFormTracker.addPartnerParameter(
-      //   this.props.channel === "google"
-      //     ? `Google_SEM`
-      //     : `Snap_${this.props.adType}`,
-      //   this.props.channel === "google" ? "google_sem" : this.props.adType
-      // );
-      // adjustWalletPaymentFormTracker.setRevenue(this.state.amount, "USD");
-      // Adjust.trackEvent(adjustWalletPaymentFormTracker);
-    } else {
-      // let adjustPaymentFormTracker = new AdjustEvent("gmds3l");
-      // adjustPaymentFormTracker.addPartnerParameter(
-      //   this.props.channel === "google"
-      //     ? `Google_SEM`
-      //     : `Snap_${this.props.adType}`,
-      //   this.props.channel === "google" ? "google_sem" : this.props.adType
-      // );
-      // adjustPaymentFormTracker.setRevenue(
-      //   this.props.campaign_budget && this.props.campaign_budget,
-      //   "USD"
-      // );
-      // Adjust.trackEvent(adjustPaymentFormTracker);
     }
   };
   renderContent = () => {
@@ -665,8 +647,8 @@ class PaymentForm extends Component {
             closeButton={false}
             segment={{
               str: "Payment Method Screen Back Button",
-              obj: { businessname: this.props.mainBusiness.businessname },
-              source: "payment_mode",
+              obj: { business_name: this.props.mainBusiness.businessname },
+              source: "AdPaymentReview",
               source_action: "a_go_back",
             }}
             icon={campaign_channel}

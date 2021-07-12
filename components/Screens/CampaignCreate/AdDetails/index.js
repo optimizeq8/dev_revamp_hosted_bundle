@@ -466,12 +466,16 @@ class AdDetails extends Component {
     rep.targeting.demographics[0].min_age = parseInt(values[0]);
     rep.targeting.demographics[0].max_age = parseInt(values[1]);
 
-    analytics.track(`a_ad_age`, {
-      source: "ad_targeting",
-      source_action: "a_ad_age",
-      campaign_min_age: parseInt(values[0]),
-      campaign_max_age: parseInt(values[1]),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Ad Targeting Form",
+      form_field: "ad_age",
+      form_value: {
+        campaign_min_age: parseInt(values[0]),
+        campaign_max_age: parseInt(values[1]),
+      },
+      campaign_id: this.props.campaign_id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       campaignInfo: rep,
@@ -573,11 +577,12 @@ class AdDetails extends Component {
       }
 
       replace.targeting.interests[0].category_id = [];
-      analytics.track(`a_ad_country`, {
-        source: "ad_targeting",
-        source_action: "a_ad_country",
-        campaign_country_name: countryName,
-        businessid:
+      analytics.track(`Form Populated`, {
+        form_type: "Ad Targeting Form",
+        form_field: "ad_country",
+        form_value: countryName,
+        campaign_id: this.props.campaign_id,
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       let showRegions = false;
@@ -624,12 +629,13 @@ class AdDetails extends Component {
     let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.devices[0].marketing_name = selectedItems;
 
-    analytics.track(`a_ad_devices`, {
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
-      source: "ad_targeting",
-      source_action: "a_ad_devices",
-      campaign_devices_name:
-        selectedItems.length > 0 ? selectedItems.join(", ") : "",
+    analytics.track(`Form Populated`, {
+      form_type: "Ad Targeting Form",
+      form_field: "ad_devices",
+      form_value: selectedItems.length > 0 ? selectedItems.join(", ") : "",
+      campaign_id: this.props.campaign_id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.setState({
@@ -646,11 +652,13 @@ class AdDetails extends Component {
     });
     let names = [];
     names = selectedItems.length > 0 && selectedItems.map((item) => item.name);
-    analytics.track(`a_ad_interests`, {
-      source: "ad_targeting",
-      source_action: "a_ad_interests",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
-      campaign_interests_names: names && names.length > 0 && names.join(", "),
+    analytics.track(`Form Populated`, {
+      form_type: "Ad Targeting Form",
+      form_field: "ad_interests",
+      form_value: names && names.length > 0 && names.join(", "),
+      campaign_id: this.props.campaign_id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     !this.editCampaign &&
       this.props.save_campaign_info({
@@ -672,33 +680,26 @@ class AdDetails extends Component {
           (r) => r !== selectedItem
         );
       langs = replace.targeting.demographics[0].languages;
-      analytics.track(`a_ad_languages`, {
-        source: "ad_targeting",
-        source_action: "a_ad_languages",
-        campaign_languages: langs.join(", "),
-        businessid:
-          this.props.mainBusiness && this.props.mainBusiness.businessid,
-      });
     } else {
       if (replace.targeting.geos.length > 1) {
         replace.targeting.demographics[0].languages = [selectedItem];
       } else replace.targeting.demographics[0].languages.push(selectedItem);
       langs = replace.targeting.demographics[0].languages;
-      analytics.track(`a_ad_languages`, {
-        source: "ad_targeting",
-        source_action: "a_ad_languages",
-        campaign_languages: langs.join(", "),
-        businessid:
-          this.props.mainBusiness && this.props.mainBusiness.businessid,
-      });
     }
-
+    analytics.track(`Form Populated`, {
+      form_type: "Ad Targeting Form",
+      form_field: "ad_languages",
+      form_value: langs.join(", "),
+      campaign_id: this.props.campaign_id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
+    });
     if (replace.targeting.demographics[0].languages.length === 0) {
-      analytics.track(`a_error_form`, {
-        error_page: "ad_targeting",
+      analytics.track(`Form Error Made`, {
+        error_screen: "ad_targeting",
         source_action: "a_ad_languages",
         error_description: "Please choose a language",
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
 
@@ -724,13 +725,16 @@ class AdDetails extends Component {
     replace.targeting.devices[0].os_type = selectedItem;
     replace.targeting.devices[0].os_version_min = "";
     replace.targeting.devices[0].os_version_max = "";
-    analytics.track(`a_ad_OS_type`, {
-      source: "ad_targeting",
-      source_action: "a_ad_OS_type",
-      campaign_os_type: selectedItem === "" ? "ALL" : selectedItem,
-      campaign_os_min_ver: "",
-      campaign_os_max_ver: "",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Ad Targeting Form",
+      form_field: "ad_OS_type",
+      form_value: {
+        campaign_os_type: selectedItem === "" ? "ALL" : selectedItem,
+        campaign_os_min_ver: "",
+        campaign_os_max_ver: "",
+      },
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       campaignInfo: { ...replace },
@@ -745,12 +749,16 @@ class AdDetails extends Component {
     let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.devices[0].os_version_min = selectedItem[0];
     replace.targeting.devices[0].os_version_max = selectedItem[1];
-    analytics.track(`a_ad_OS_version`, {
-      source: "ad_targeting",
-      source_action: "a_ad_OS_version",
-      campaign_os_min_ver: selectedItem[0],
-      campaign_os_max_ver: selectedItem[1],
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Ad Targeting Form",
+      form_field: "ad_OS_version",
+      form_value: {
+        campaign_os_min_ver: selectedItem[0],
+        campaign_os_max_ver: selectedItem[1],
+      },
+
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       campaignInfo: { ...replace },
@@ -771,11 +779,12 @@ class AdDetails extends Component {
       stateRep.targeting.locations[0].circles = [];
       this.props.save_campaign_info({ markers: [], locationsInfo: [] });
     } else stateRep.targeting.locations[0].circles = selectedItems;
-    analytics.track(`a_ad_map_locations`, {
-      source: "ad_targeting",
-      source_action: "a_ad_map_locations",
-      campaign_map_locations: selectedItems,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Ad Targeting Form",
+      form_field: "ad_map_locations",
+      form_value: selectedItems,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       campaignInfo: { ...stateRep },
@@ -837,11 +846,11 @@ class AdDetails extends Component {
         replace.targeting.geos.forEach(
           (co, i) => (replace.targeting.geos[i].region_id = [])
         );
-        analytics.track(`a_ad_regions`, {
-          source: "ad_targeting",
-          source_action: "a_ad_regions",
-          campaign_region_names: [],
-          businessid:
+        analytics.track(`Form Populated`, {
+          form_type: "Ad Targeting Form",
+          form_field: "ad_regions",
+          form_value: [],
+          business_id:
             this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         rNamesSelected = [];
@@ -880,10 +889,10 @@ class AdDetails extends Component {
             : [];
         });
         analytics.track(`a_ad_regions`, {
-          source: "ad_targeting",
-          source_action: "a_ad_regions",
-          campaign_region_names: rNamesSelected.join(", "),
-          businessid:
+          form_type: "Ad Targeting Form",
+          form_field: "ad_regions",
+          form_value: rNamesSelected.join(", "),
+          business_id:
             this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         this.setState({
@@ -915,10 +924,10 @@ class AdDetails extends Component {
         });
       }
       analytics.track(`a_ad_regions`, {
-        source: "ad_targeting",
-        source_action: "a_ad_regions",
-        campaign_region_names: rNamesSelected.join(", "),
-        businessid:
+        form_type: "Ad Targeting Form",
+        form_field: "ad_regions",
+        form_value: rNamesSelected.join(", "),
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.setState({
@@ -955,11 +964,10 @@ class AdDetails extends Component {
         () => this._calcReach()
       );
 
-      analytics.track(`a_handle_budget`, {
-        source: "ad_targeting",
-        source_action: "a_handle_budget",
-        custom_budget: false,
-        campaign_budget: rawValue,
+      analytics.track(`Form Populated`, {
+        form_type: "Ad Targeting Form",
+        form_field: "handle_budget",
+        form_value: rawValue,
       });
       !this.editCampaign &&
         this.props.save_campaign_info({
@@ -973,14 +981,14 @@ class AdDetails extends Component {
     } else {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
-          analytics.track(`a_error_form`, {
-            error_page: "ad_targeting",
+          analytics.track(`From Error Made`, {
+            error_screen: "adDetails",
             source_action: "a_change_campaign_custom_budget",
             error_description:
               validateWrapper("Budget", rawValue) + " $" + this.props.campaign
                 ? this.props.campaign && this.props.campaign.minValueBudget
                 : "error",
-            businessid:
+            business_id:
               this.props.mainBusiness && this.props.mainBusiness.businessid,
           });
         }
@@ -998,12 +1006,11 @@ class AdDetails extends Component {
           position: "top",
         });
       }
-      analytics.track(`a_handle_budget`, {
-        source: "ad_targeting",
-        source_action: "a_handle_budget",
-        custom_budget: true,
-        campaign_budget: rawValue,
-        businessid:
+      analytics.track(`Form Populated`, {
+        form_type: "Ad Targeting Form",
+        form_field: "handle_budget",
+        form_value: rawValue,
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
 
@@ -1031,9 +1038,12 @@ class AdDetails extends Component {
   onSelectedGenderChange = (gender) => {
     let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.demographics[0].gender = gender;
-    analytics.track(`a_ad_gender`, {
-      campaign_gender: gender === "" ? "ALL" : gender,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Ad Targeting From",
+      form_field: "ad_gender",
+      form_value: gender === "" ? "ALL" : gender,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ campaignInfo: { ...replace } });
     !this.editCampaign &&
@@ -1167,11 +1177,10 @@ class AdDetails extends Component {
         this.state.budgetOption
       )
     ) {
-      analytics.track(`a_error_form`, {
-        error_page: "ad_targeting",
+      analytics.track(`Form Error Made`, {
+        error_screen: "AdTargeting",
         source_action: "a_submit_ad_targeting",
-        timestamp: new Date().getTime(),
-        campaignId: this.props.data && this.props.data.campaign_id,
+        campaign_id: this.props.data && this.props.data.campaign_id,
         campaign_channel: "snapchat",
         campaign_ad_type: this.props.adType,
         error_description:
@@ -1182,7 +1191,7 @@ class AdDetails extends Component {
             "Budget",
             this.state.campaignInfo.lifetime_budget_micro
           ),
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
@@ -1504,12 +1513,13 @@ class AdDetails extends Component {
           campaign_objective: this.props.data.objective,
         }
       : {};
-    analytics.track("ad_targeting", {
-      timestamp: new Date().getTime(),
+    analytics.track("Screen Viewed", {
+      screen_name: "AdDetails",
       source,
       source_action,
-      ...segmentInfo,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      form_context: { ...segmentInfo },
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     if (!this.editCampaign) {
       this.props.saveCampaignSteps(
