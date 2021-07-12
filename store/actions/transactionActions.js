@@ -871,6 +871,12 @@ export const exportTransactionInvoice = (reference_id) => {
       .post(`exportInvoice`, { reference_id })
       .then((response) => response.data)
       .then((data) => {
+        analytics.track(`a_export_invoice`, {
+          source: "open_transactions",
+          source_action: "a_export_invoice",
+          invoice_reference_id: reference_id,
+          action_status: data.success ? "success" : "failure",
+        });
         if (data.success) {
           Linking.openURL(data.pdf_download_link);
           // NavigationService.navigate("WebView", {
@@ -889,6 +895,13 @@ export const exportTransactionInvoice = (reference_id) => {
       })
       .catch((error) => {
         console.log("error", error);
+        analytics.track(`a_export_invoice`, {
+          source: "open_transactions",
+          source_action: "a_export_invoice",
+          invoice_reference_id: reference_id,
+          action_status: "failure",
+          error_description: error || error.message || error.response,
+        });
         dispatch({
           type: actionTypes.LOADING_TRANSACTION_INVOICE,
           payload: false,
