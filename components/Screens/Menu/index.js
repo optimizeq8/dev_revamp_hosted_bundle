@@ -261,7 +261,11 @@ class Menu extends Component {
                 }
                 onPress={() => {
                   //First check if the business is not connected to fb force the user to login
-                  if (this.props.mainBusiness.fb_connected === "0") {
+                  if (
+                    mainBusiness &&
+                    mainBusiness.hasOwnProperty("fb_connected") &&
+                    mainBusiness.fb_connected === "0"
+                  ) {
                     this.handleNavigation("WebView", false, {
                       url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}&screenName=menu`,
                       title: "Instagram",
