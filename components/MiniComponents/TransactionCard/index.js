@@ -73,7 +73,9 @@ class TransactionCard extends Component {
               this.props.showTransactionPdf(transaction.reference_id)
             }
           >
-            <Text style={[styles.amountTextTitle]}>View Invoice</Text>
+            <Text style={[styles.amountTextTitle]}>
+              {translate("View Invoice")}
+            </Text>
           </TouchableOpacity>
         </View>
         <View style={styles.mainView}>
