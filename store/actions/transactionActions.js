@@ -6,7 +6,6 @@ import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
 import createBaseUrl from "./createBaseUrl";
 import { NavigationActions } from "react-navigation";
-import { Platform } from "react-native";
 
 export const setCampaignInfoForTransaction = (data) => {
   return (dispatch) => {
