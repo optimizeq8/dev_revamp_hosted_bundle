@@ -142,16 +142,11 @@ export const ad_objective = (info, navigation, segmentInfo, objective) => {
       .then((data) => {
         if (data.data && data.data.campaign_already_created) {
           dispatch(handleAlreadyCreatedCampaigns(data, "snapchat"));
-          analytics.track(`a_submit_ad_objective_campaign_already_created`, {
-            source: "ad_objective",
-            campaign_channel: "snapchat",
-            action_status: data.success ? "success" : "failure",
-            source_action: "a_submit_ad_objective",
-            timestamp: new Date().getTime(),
+          analytics.track(`Form Submitted`, {
+            form_type: "Submit Ad Objective for a campaign already created",
+            form_context: { ...segmentInfo },
             campaign_error: !data.success && data.message,
-            device_id: getUniqueId(),
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+            business_id: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_OBJ,
@@ -180,19 +175,14 @@ export const ad_objective = (info, navigation, segmentInfo, objective) => {
           (!data.data.hasOwnProperty("campaign_already_created") ||
             data.data.campaign_already_created === 0)
         ) {
-          analytics.track(`a_submit_ad_objective`, {
-            source: "ad_objective",
-            campaign_channel: "snapchat",
-            action_status: data.success ? "success" : "failure",
-            source_action: "a_submit_ad_objective",
-            timestamp: new Date().getTime(),
+          analytics.track(`Form Submitted`, {
+            form_type: "Ad Objective Form",
+            form_context: { ...segmentInfo },
             campaign_error: !data.success && data.message,
-            device_id: getUniqueId(),
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+            business_id: getState().account.mainBusiness.businessid,
           });
           navigation.navigate("AdDesign", {
-            source: "ad_objective",
+            source: "AdObjective",
             source_action: "a_submit_ad_objective",
           });
         } else
@@ -267,28 +257,30 @@ export const ad_design = (
       .then((data) => {
         if (data.data && data.data.campaign_already_created) {
           dispatch(handleAlreadyCreatedCampaigns(data, "snapchat"));
-          analytics.track(`a_submit_ad_design_campaign_already_created`, {
-            source: "ad_design",
-            source_action: "a_submit_ad_design",
-            resubmit: rejected,
-            action_status: data.success ? "success" : "failure",
-            campaign_error: !data.success && data.message,
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+          analytics.track(`Form Submitted`, {
+            form_type: "Submit Ad Design Form for a campaign already created",
+            form_context: {
+              ...segmentInfo,
+              resubmit: rejected,
+              action_status: data.success ? "success" : "failure",
+              campaign_error: !data.success && data.message,
+            },
+            business_id: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DESIGN,
             payload: false,
           });
         } else {
-          analytics.track(`a_submit_ad_design`, {
-            source: "ad_design",
-            source_action: "a_submit_ad_design",
-            resubmit: rejected,
-            action_status: data.success ? "success" : "failure",
-            campaign_error: !data.success && data.message,
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+          analytics.track(`Form Submitted`, {
+            form_type: "Ad Design Form",
+            form_context: {
+              ...segmentInfo,
+              resubmit: rejected,
+              action_status: data.success ? "success" : "failure",
+              campaign_error: !data.success && data.message,
+            },
+            business_id: getState().account.mainBusiness.businessid,
           });
           rejected &&
             showMessage({
@@ -327,7 +319,7 @@ export const ad_design = (
               ? "AdDetailsPolitical"
               : "AdDetails",
             {
-              source: "ad_design",
+              source: "AdDesign",
               source_action: "a_submit_ad_design",
             }
           );

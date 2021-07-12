@@ -256,16 +256,17 @@ export const _changeDestination = (
 ) => {
   let newData = {};
   if (adType === "StoryAd") {
-    analytics.track(`a_swipe_up_destination`, {
-      source: "ad_swipe_up_destination",
-      source_action: "a_swipe_up_destination",
+    analytics.track(`Form Populated`, {
+      form_type: "Ad Design Form",
+      form_field: "swipe_up_destination",
+      form_value: {
+        campaign_attachment: attachment,
+        campaign_swipe_up_CTA: call_to_action,
+        campaign_swipe_up_destination: destination,
+      },
       campaign_channel: "snapchat",
       campaign_ad_type: adType,
-      ...campaignInfo,
-      campaign_attachment: attachment,
-      campaign_swipe_up_CTA: call_to_action,
-      campaign_swipe_up_destination: destination,
-      businessid: mainBusiness && mainBusiness.businessid,
+      business_id: mainBusiness && mainBusiness.businessid,
     });
     if (whatsAppCampaign) {
       !store.getState().dashboard.rejCampaign
@@ -304,19 +305,20 @@ export const _changeDestination = (
       [Object.keys(attachment)[0]]: attachment.longformvideo_media,
       [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
     };
-    analytics.track(`a_swipe_up_destination`, {
-      source: "ad_swipe_up_destination",
-      source_action: "a_swipe_up_destination",
+    analytics.track(`Form Populated`, {
+      form_type: "Ad Design Form",
+      form_field: "swipe_up_destination",
+      form_value: {
+        campaign_attachment: {
+          [Object.keys(attachment)[0]]: attachment.longformvideo_media,
+          [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
+        },
+        campaign_swipe_up_CTA: call_to_action,
+        campaign_swipe_up_destination: destination,
+      },
       campaign_channel: "snapchat",
       campaign_ad_type: adType,
-      ...campaignInfo,
-      campaign_attachment: {
-        [Object.keys(attachment)[0]]: attachment.longformvideo_media,
-        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
-      },
-      campaign_swipe_up_CTA: call_to_action,
-      campaign_swipe_up_destination: destination,
-      businessid: mainBusiness && mainBusiness.businessid,
+      business_id: mainBusiness && mainBusiness.businessid,
     });
     setTheState(newData);
 
@@ -345,20 +347,22 @@ export const _changeDestination = (
       swipeUpError: null,
     };
 
-    analytics.track(`a_swipe_up_destination`, {
-      source: "ad_swipe_up_destination",
-      source_action: "a_swipe_up_destination",
+    analytics.track(`Form Populated`, {
+      form_type: "Ad Design Form",
+      form_field: "swipe_up_destination",
+      form_value: {
+        campaign_attachment: {
+          [Object.keys(attachment)[0]]: attachment.longformvideo_media,
+          [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
+        },
+        campaign_swipe_up_CTA: call_to_action,
+        campaign_swipe_up_destination: destination,
+        campaign_app_choice: appChoice,
+      },
       campaign_channel: "snapchat",
       campaign_ad_type: adType,
-      ...campaignInfo,
-      campaign_attachment: {
-        [Object.keys(attachment)[0]]: attachment.longformvideo_media,
-        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
-      },
-      campaign_swipe_up_CTA: call_to_action,
-      campaign_swipe_up_destination: destination,
-      campaign_app_choice: appChoice,
-      businessid: mainBusiness && mainBusiness.businessid,
+
+      business_id: mainBusiness && mainBusiness.businessid,
     });
     if (whatsAppCampaign) {
       newData = {

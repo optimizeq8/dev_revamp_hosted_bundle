@@ -59,7 +59,7 @@ export default class EmptyCampaigns extends Component {
     });
 
     this.props.navigation.navigate(routePath, {
-      source: "dashboard",
+      source: "Dashboard",
       source_action: "a_create_campaign",
     });
   };
@@ -72,7 +72,7 @@ export default class EmptyCampaigns extends Component {
     });
     this.props.navigation.navigate("VerifyAccount", {
       source: "Dashboard",
-      source_action: "Start Account Verification",
+      source_action: "start_account _verification",
     });
   };
 
@@ -96,7 +96,7 @@ export default class EmptyCampaigns extends Component {
       routePath = "VerifyBusiness";
 
     this.props.navigation.navigate(routePath, {
-      source: "dashboard",
+      source: "Dashboard",
       source_action: "a_open_website_tutorial",
     });
   };

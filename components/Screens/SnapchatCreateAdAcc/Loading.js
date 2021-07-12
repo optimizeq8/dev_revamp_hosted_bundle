@@ -25,14 +25,10 @@ class AcceptTermsConditionLoading extends Component {
       this.props.screenProps.prevAppState
     );
 
-    analytics.track(`ad_TNC_loading`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "AcceptTermsConditionLoading",
       source,
       source_action,
-      campaign_channel: "snapchat",
-      campaign_ad_type: this.props.adType,
-      timestamp: new Date().getTime(),
-      device_id: this.props.screenProps.device_id,
-      businessid: this.props.mainBusiness.businessid,
     });
   }
   componentDidUpdate(prevProps, prevState) {
@@ -45,8 +41,8 @@ class AcceptTermsConditionLoading extends Component {
         snap_ad_account_id: this.props.mainBusiness.snap_ad_account_id,
       });
       this.props.navigation.navigate("AdObjective", {
-        source: "ad_TNC_loading",
-        source_action: "a_accept_ad_TNC",
+        source: "AcceptTermsConditionLoading",
+        source_action: "a_accept_ad_terms&conditions",
       });
     }
   }

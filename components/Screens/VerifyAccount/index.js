@@ -146,7 +146,7 @@ class VerifyAccount extends Component {
   changePhoneNo = (number, countryCode, type, valid) => {
     analytics.track(`Form Populated`, {
       form_type: "Verifying Mobile Number",
-      form_field: "mobile_number",
+      form_field: "mobile",
       form_value: number,
     });
     this.setState({
