@@ -7,9 +7,13 @@ import {
   Platform,
   ScrollView,
   Text,
+  Image,
 } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
 import SafeAreaView from "react-native-safe-area-view";
 
 import analytics from "@segment/analytics-react-native";
@@ -30,7 +34,8 @@ import AppUpdateChecker from "../AppUpdateChecker";
 import validateWrapper from "./ValidateWrapper";
 
 // Icons
-import Logo from "../../../assets/SVGs/Optimize";
+// import Logo from "../../../assets/SVGs/Optimize";
+import Logo from "../../../assets/images/Optimize_Logo_transparent.png";
 import PasswordIcon from "../../../assets/SVGs/PasswordOutline";
 import SignInCover from "../../../assets/SVGs/SignInCover";
 
@@ -344,11 +349,20 @@ class Signin extends Component {
                 keyboardShouldPersistTaps="handled"
               >
                 <View style={styles.logoContainer}>
-                  <Logo
+                  <Image
+                    source={Logo}
+                    resizeMode="contain"
+                    style={{
+                      width: widthPercentageToDP(35),
+                      height: heightPercentageToDP(12),
+                      // alignSelf: "center",
+                    }}
+                  />
+                  {/* <Logo
                     style={styles.logo}
                     width={RFValue(39, 414)}
                     height={RFValue(39, 414)}
-                  />
+                  /> */}
                   <View style={styles.signTextContainer}>
                     <TouchableOpacity
                       activeOpacity={1}
