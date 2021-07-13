@@ -75,30 +75,23 @@ const reducer = (state = initialState, action) => {
           ? setNewBusinessAccounts[action.payload.index]
           : setNewBusinessAccounts[0];
 
-        let userTraits = {
-          ...action.payload.user,
-          $name:
-            action.payload.user.firstname + " " + action.payload.user.lastname,
-          $phone: "+" + action.payload.user.mobile,
-        };
-
         analytics.identify(action.payload.userid, {
-          businessid: main.businessid,
-          businessname: main.businessname,
+          business_id: main.businessid,
+          business_name: main.businessname,
           revenue: main.revenue,
           ltv: main.ltv,
           wallet_amount: main.wallet_amount,
-          ...userTraits,
-          userId: action.payload.userid,
+          first_name: action.payload.user.firstname,
+          last_name: action.payload.user.lastname,
         });
         analytics.group(main.businessid, {
-          businessid: main.businessid,
+          business_id: main.businessid,
           [`$name`]: main.businessname,
           company: main.businessname,
           revenue: main.revenue,
           ltv: main.ltv,
           wallet_amount: main.wallet_amount,
-          userId: action.payload.userid,
+          user_id: action.payload.userid,
         });
       }
       AsyncStorage.setItem("selectedBusinessId", main.businessid);

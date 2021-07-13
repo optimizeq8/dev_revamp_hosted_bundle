@@ -143,7 +143,8 @@ export const ad_objective = (info, navigation, segmentInfo, objective) => {
         if (data.data && data.data.campaign_already_created) {
           dispatch(handleAlreadyCreatedCampaigns(data, "snapchat"));
           analytics.track(`Form Submitted`, {
-            form_type: "Submit Ad Objective for a campaign already created",
+            form_type:
+              "Submit Ad Objective for a campaign already created campagin",
             form_context: { ...segmentInfo },
             campaign_error: !data.success && data.message,
             business_id: getState().account.mainBusiness.businessid,
@@ -258,7 +259,8 @@ export const ad_design = (
         if (data.data && data.data.campaign_already_created) {
           dispatch(handleAlreadyCreatedCampaigns(data, "snapchat"));
           analytics.track(`Form Submitted`, {
-            form_type: "Submit Ad Design Form for a campaign already created",
+            form_type:
+              "Submit Ad Design Form for a campaign already created campagin",
             form_context: {
               ...segmentInfo,
               resubmit: rejected,

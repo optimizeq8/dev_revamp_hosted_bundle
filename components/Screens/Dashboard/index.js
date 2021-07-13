@@ -255,7 +255,8 @@ class Dashboard extends Component {
       RNNotifications.getInitialNotification()
         .then((notification) => {
           if (notification) {
-            analytics.track("Notification opened", {
+            analytics.track("Notification Opened", {
+              state: "From Killed State",
               notification: JSON.stringify(notification.payload, null, 2),
             });
 
