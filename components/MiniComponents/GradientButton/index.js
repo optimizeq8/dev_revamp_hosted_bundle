@@ -2,6 +2,7 @@ import React from "react";
 import { TouchableOpacity, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "./styles";
+import { globalColors } from "../../../GlobalStyles";
 
 class GradientButton extends React.PureComponent {
   render() {
@@ -35,7 +36,8 @@ class GradientButton extends React.PureComponent {
     } = this.props;
     const orangeDarkColor = ["#FF9D00", "#FF5C14"];
     const transparentColor = ["rgba(0,0,0,0)", "rgba(0,0,0,0)"];
-    const purpleVioletColor = ["#9300FF", "#9300FF"];
+    // const purpleVioletColor = ["#9300FF", "#9300FF"];
+    const purpleVioletColor = [globalColors.bluegem, globalColors.bluegem];
     const violetPinkColor = ["#B01EFF", "#E1467C"];
     const pinkDarkGreenColor = ["#E1467C", "#205284"];
     const blueVioletColor = ["#3672F8", "#B01EFF"];

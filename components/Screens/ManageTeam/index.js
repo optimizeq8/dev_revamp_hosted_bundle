@@ -13,7 +13,7 @@ import TeamMember from "./TeamMember";
 import analytics from "@segment/analytics-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";
-import globalStyles from "../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 
 class ManageTeam extends Component {
   translate = this.props.screenProps.translate;
@@ -59,9 +59,10 @@ class ManageTeam extends Component {
     this.props.getTeamMembers(this.props.mainBusiness.businessid);
   };
   render() {
-    let team = (this.props.agencyTeamMembers.length > 0
-      ? this.props.agencyTeamMembers
-      : [{ userid: 1 }, { userid: 2 }]
+    let team = (
+      this.props.agencyTeamMembers.length > 0
+        ? this.props.agencyTeamMembers
+        : [{ userid: 1 }, { userid: 2 }]
     ).map((member) => (
       <TeamMember
         key={member.userid}
@@ -89,14 +90,14 @@ class ManageTeam extends Component {
 
     return (
       <SafeAreaView
-        style={{ height: "100%" }}
+        style={{ height: "100%", backgroundColor: globalColors.bluegem }}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <Header
           screenProps={this.props.screenProps}

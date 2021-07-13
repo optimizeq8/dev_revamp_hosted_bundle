@@ -86,11 +86,11 @@ class MainForm extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}

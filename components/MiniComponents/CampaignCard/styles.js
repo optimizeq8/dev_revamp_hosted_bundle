@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: RFValue(10, 414),
     paddingVertical: RFValue(10, 414),
+    backgroundColor: globalColors.bluegem,
   },
   chart: {
     paddingHorizontal: 5,

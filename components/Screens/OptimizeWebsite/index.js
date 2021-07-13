@@ -245,21 +245,21 @@ class OptimizeWebsite extends Component {
             // activeStep === 2 && styles.step2OuterView
           ]}
         >
-          {activeStep === 1 && (
+          {/* {activeStep === 1 && (
             <LinearGradient
               colors={["#9300FF", "#5600CB"]}
               locations={[0, 0.75]}
               style={styles.gradient}
             />
-          )}
+          )} */}
 
           {activeStep === 2 && (
             <View style={styles.previewOuterView}>
-              <LinearGradient
+              {/* <LinearGradient
                 colors={["#9300FF", "#5600CB"]}
                 locations={[0, 0.75]}
                 style={styles.gradient}
-              />
+              /> */}
               <Image
                 style={styles.profileIcon}
                 source={{

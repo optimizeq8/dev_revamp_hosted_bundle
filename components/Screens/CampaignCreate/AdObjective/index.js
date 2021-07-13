@@ -724,13 +724,13 @@ class AdObjective extends Component {
     // }
     else
       return (
-        <View style={{ height: "100%", backgroundColor: "#0000" }}>
+        <View style={{ height: "100%", backgroundColor: globalColors.bluegem }}>
           <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-          <LinearGradient
+          {/* <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
             style={globalStyles.gradient}
-          />
+          /> */}
           <SafeAreaView
             style={styles.safeAreaView}
             forceInset={{ bottom: "never", top: "always" }}

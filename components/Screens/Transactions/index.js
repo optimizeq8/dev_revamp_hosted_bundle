@@ -95,11 +95,15 @@ class Transactions extends Component {
     } else if (this.props.loading || !this.props.filteredTransactions)
       return (
         <>
-          <LinearGradient
+          <SafeAreaView
+            style={styles.safeAreaContainer}
+            forceInset={{ bottom: "never", top: "always" }}
+          />
+          {/* <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
             style={globalStyles.gradient}
-          />
+          /> */}
           <LoadingScreen dash={true} top={0} />
         </>
       );
@@ -128,11 +132,11 @@ class Transactions extends Component {
             style={styles.safeAreaContainer}
             forceInset={{ bottom: "never", top: "always" }}
           >
-            <LinearGradient
+            {/* <LinearGradient
               colors={[colors.background1, colors.background2]}
               locations={[1, 0.3]}
               style={globalStyles.gradient}
-            />
+            /> */}
             <CustomHeader
               screenProps={this.props.screenProps}
               title={"Transactions"}

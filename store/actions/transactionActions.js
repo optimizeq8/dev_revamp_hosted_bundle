@@ -899,7 +899,7 @@ export const exportTransactionInvoice = (reference_id) => {
           source_action: "a_export_invoice",
           invoice_reference_id: reference_id,
           action_status: "failure",
-          error_description: error || error.message || error.response,
+          error_description: error.message || error.response,
         });
         dispatch({
           type: actionTypes.LOADING_TRANSACTION_INVOICE,

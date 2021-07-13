@@ -257,14 +257,14 @@ class AddOrEditTeamMember extends Component {
 
     return (
       <SafeAreaView
-        style={{ height: "100%" }}
+        style={{ height: "100%", backgroundColor: globalColors.bluegem }}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <Header
           screenProps={this.props.screenProps}

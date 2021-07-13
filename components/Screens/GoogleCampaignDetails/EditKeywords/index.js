@@ -32,6 +32,7 @@ import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 // Style
 import styles from "./styles";
 import isUndefined from "lodash/isUndefined";
+import { globalColors } from "../../../../GlobalStyles";
 
 class EditKeywords extends Component {
   static navigationOptions = {
@@ -164,14 +165,15 @@ class EditKeywords extends Component {
                   borderBottomStartRadius: 30,
                   borderBottomEndRadius: 30,
                   overflow: "hidden",
+                  backgroundColor: globalColors.bluegem,
                 },
               ]}
             >
-              <LinearGradient
+              {/* <LinearGradient
                 colors={["#9300FF", "#5600CB"]}
                 locations={[0, 1]}
                 style={styles.gradient}
-              />
+              /> */}
             </View>
             {rejected ? (
               <Header

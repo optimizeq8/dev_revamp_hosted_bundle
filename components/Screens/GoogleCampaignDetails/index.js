@@ -391,14 +391,15 @@ class GoogleCampaignDetails extends Component {
                     borderBottomStartRadius: 30,
                     borderBottomEndRadius: 30,
                     overflow: "hidden",
+                    backgroundColor: globalColors.bluegem,
                   },
                 ]}
               >
-                <LinearGradient
+                {/* <LinearGradient
                   colors={["#9300FF", "#5600CB"]}
                   locations={[0, 1]}
                   style={styles.gradient}
-                />
+                /> */}
               </View>
               <Header
                 screenProps={this.props.screenProps}
@@ -723,8 +724,9 @@ class GoogleCampaignDetails extends Component {
                                                   source: "campaign_detail",
                                                   source_action:
                                                     "a_update_campaign_status",
-                                                  businessid: this.props
-                                                    .mainBusiness.businessid,
+                                                  businessid:
+                                                    this.props.mainBusiness
+                                                      .businessid,
                                                 }
                                               );
                                             }

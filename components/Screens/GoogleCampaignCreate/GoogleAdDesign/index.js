@@ -529,11 +529,11 @@ class GoogleAdDesign extends Component {
     const { translate } = this.props.screenProps;
     return (
       <View style={styles.safeAreaView}>
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <SafeAreaView
           style={{ backgroundColor: rejected ? "#0000" : "#FFF" }}
           forceInset={{

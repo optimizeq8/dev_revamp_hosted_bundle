@@ -1,5 +1,6 @@
 import { StyleSheet, Platform } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
+import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   cardStyle: {
@@ -43,6 +44,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: RFValue(10, 414),
     paddingVertical: RFValue(10, 414),
+    backgroundColor: globalColors.bluegem,
   },
   reviewText: {
     fontFamily: "montserrat-bold",

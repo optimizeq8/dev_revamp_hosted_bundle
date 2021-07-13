@@ -7,6 +7,7 @@ import {
   ScrollView,
   I18nManager,
   Text,
+  Image,
 } from "react-native";
 import { Container, Icon } from "native-base";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -21,7 +22,8 @@ import ReactNativeBiometrics from "react-native-biometrics";
 
 // Icons
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
-import Logo from "../../../assets/SVGs/Optimize";
+// import Logo from "../../../assets/SVGs/Optimize";
+import Logo from "../../../assets/images/Optimize_Logo_transparent.png";
 import DownArrowIcon from "../../../assets/SVGs/MenuIcons/DownArrowIcon";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 
@@ -42,6 +44,7 @@ import isStringArabic from "../../isStringArabic";
 import {
   heightPercentageToDP as hp,
   heightPercentageToDP,
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 import SafeAreaView from "react-native-safe-area-view";
 
@@ -189,12 +192,21 @@ class Menu extends Component {
         <BackdropIcon style={styles.backDrop} />
         <Container style={[styles.menuModal]}>
           <View style={styles.menuContainer}>
-            <Logo
+            {/* <Logo
               style={{ alignSelf: "center" }}
               width={heightPercentageToDP(10)}
               height={heightPercentageToDP(10)}
+            /> */}
+            <Image
+              source={Logo}
+              resizeMode="contain"
+              style={{
+                width: widthPercentageToDP(50),
+                height: heightPercentageToDP(12),
+                alignSelf: "center",
+              }}
             />
-            <Text style={styles.logoText}>Optimize</Text>
+            {/* <Text style={styles.logoText}>Optimize</Text> */}
             <Text
               style={[
                 styles.businessTitle,

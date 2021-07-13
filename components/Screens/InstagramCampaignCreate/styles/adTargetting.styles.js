@@ -344,7 +344,8 @@ const styles = StyleSheet.create({
   createText: {
     fontFamily: "montserrat-regular",
     fontSize: RFValue(6, 414),
-    color: "#9325FF",
+    // color: "#9325FF",
+    color: globalColors.purple,
   },
   iconAdd: { marginHorizontal: RFValue(2.5, 414) },
   iconRight: {

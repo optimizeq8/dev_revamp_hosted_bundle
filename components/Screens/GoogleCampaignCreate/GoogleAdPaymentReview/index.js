@@ -250,11 +250,11 @@ class AdPaymentReview extends Component {
 
     return (
       <View style={[styles.safeAreaView]}>
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}

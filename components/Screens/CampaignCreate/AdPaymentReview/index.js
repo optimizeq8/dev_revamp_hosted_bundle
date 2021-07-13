@@ -266,18 +266,18 @@ class AdPaymentReview extends Component {
       isUndefined(this.props.data.campaignInfo)
     ) {
       return (
-        <>
+        <View style={styles.safeAreaView}>
           <NavigationEvents
             onDidFocus={this.handlePaymentReviewFocus}
             onDidBlur={this.handlePaymentReviewBlur}
           />
-          <LinearGradient
+          {/* <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
             style={globalStyles.gradient}
-          />
+          /> */}
           <LoadingScreen top={50} />
-        </>
+        </View>
       );
     } else {
       let targeting = !isUndefined(this.props.data.campaignInfo)
@@ -296,11 +296,11 @@ class AdPaymentReview extends Component {
       const media = this.props.data.media ? this.props.data.media : "//";
       return (
         <View style={[styles.safeAreaView]}>
-          <LinearGradient
+          {/* <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
             style={globalStyles.gradient}
-          />
+          /> */}
           <SafeAreaView
             style={{ backgroundColor: "#fff" }}
             forceInset={{ bottom: "never", top: "always" }}

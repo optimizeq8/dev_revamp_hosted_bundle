@@ -97,6 +97,7 @@ import MaskedView from "@react-native-community/masked-view";
 import Logo from "./assets/Logo.svg";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Notifications as RNNotifications } from "react-native-notifications";
+import { globalColors } from "./GlobalStyles";
 
 const defaultErrorHandler = ErrorUtils.getGlobalHandler();
 
@@ -667,18 +668,20 @@ class App extends React.Component {
               paddingTop: 0,
             }}
           />
-          <LinearGradient
-            colors={["#9300FF", "#5600CB"]}
+          <View style={styles.gradient} />
+          {/* <LinearGradient
+            // colors={["#9300FF", "#5600CB"]}
+            colors={[globalColors.bluegem, globalColors.bluegem]}
             locations={[0, 1]}
             style={styles.gradient}
-          />
-          <View
+          /> */}
+          {/* <View
             style={{
               backgroundColor: "transparent",
               marginTop: 0,
               paddingTop: 0,
             }}
-          />
+          /> */}
           {!this.state.animDone && (
             <View
               style={{
@@ -905,5 +908,6 @@ const styles = StyleSheet.create({
 
   gradient: {
     ...StyleSheet.absoluteFillObject,
+    backgroundColor: globalColors.bluegem,
   },
 });

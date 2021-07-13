@@ -50,7 +50,7 @@ class ReachBar extends Component {
           <View style={styles.chartItems}>
             <View style={styles.reachPeopleView}>
               <SwipeUpsIcon
-                fill="#9300FF"
+                fill={globalColors.bluegem}
                 width={RFValue(13.5, 414)}
                 height={RFValue(15, 414)}
               />
@@ -87,7 +87,7 @@ class ReachBar extends Component {
 
             <View style={styles.reachPeopleView}>
               <ImpressionsIcon
-                fill="#9300FF"
+                fill={globalColors.bluegem}
                 width={RFValue(15, 414)}
                 height={RFValue(15, 414)}
               />

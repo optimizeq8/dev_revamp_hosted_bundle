@@ -323,11 +323,11 @@ class Signin extends Component {
           forceInset={{ bottom: "never", top: "always" }}
           style={styles.safeAreaViewContainer}
         >
-          <LinearGradient
+          {/* <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
             style={styles.gradient}
-          />
+          /> */}
 
           {this.props.checkingForToken ? (
             <LoadingScreen dash={true} />

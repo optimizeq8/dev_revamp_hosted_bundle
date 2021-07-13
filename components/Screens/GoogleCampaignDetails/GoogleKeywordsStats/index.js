@@ -31,6 +31,7 @@ import SpendIcon from "../../../../assets/SVGs/Performance/Spend";
 import SearchIcon from "../../../../assets/SVGs/Search.svg";
 import isUndefined from "lodash/isUndefined";
 import { RFValue } from "react-native-responsive-fontsize";
+import { globalColors } from "../../../../GlobalStyles";
 
 class GoogleKeywordsStats extends Component {
   static navigationOptions = {
@@ -128,14 +129,15 @@ class GoogleKeywordsStats extends Component {
                   borderBottomStartRadius: 30,
                   borderBottomEndRadius: 30,
                   overflow: "hidden",
+                  backgroundColor: globalColors.bluegem,
                 },
               ]}
             >
-              <LinearGradient
+              {/* <LinearGradient
                 colors={["#9300FF", "#5600CB"]}
                 locations={[0, 1]}
                 style={styles.gradient}
-              />
+              /> */}
             </View>
             <Header
               screenProps={this.props.screenProps}
@@ -198,10 +200,10 @@ class GoogleKeywordsStats extends Component {
                   style={styles.searchInputText}
                   placeholderTextColor="#fff"
                   onChangeText={(value) => {
-                    let filteredKeywords = this.props.selectedCampaign.keywords.filter(
-                      (c) =>
+                    let filteredKeywords =
+                      this.props.selectedCampaign.keywords.filter((c) =>
                         c.keyword.toLowerCase().includes(value.toLowerCase())
-                    );
+                      );
                     this.setState({ filteredKeywords: filteredKeywords });
                   }}
                 />

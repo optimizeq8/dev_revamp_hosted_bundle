@@ -1503,11 +1503,11 @@ class AdDesign extends Component {
           onDidFocus={this.handleAdDesignFocus}
           onDidBlur={this.handleAdDesignBlur}
         />
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={styles.gradient}
-        />
+        /> */}
         <SafeAreaView
           style={styles.safeAreaView}
           forceInset={{ bottom: "never", top: "always" }}

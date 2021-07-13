@@ -607,7 +607,7 @@ class CampaignDetails extends Component {
 
       return (
         <SafeAreaView
-          style={[{ height: "100%" }]}
+          style={[{ height: "100%", backgroundColor: globalColors.bluegem }]}
           forceInset={{ bottom: "never", top: "always" }}
         >
           <DateFields
@@ -630,14 +630,15 @@ class CampaignDetails extends Component {
                   borderBottomStartRadius: 30,
                   borderBottomEndRadius: 30,
                   overflow: "hidden",
+                  backgroundColor: globalColors.bluegem,
                 },
               ]}
             >
-              <LinearGradient
+              {/* <LinearGradient
                 colors={["#9300FF", "#5600CB"]}
                 locations={[0, 1]}
                 style={styles.gradient}
-              />
+              /> */}
             </View>
             <Header
               screenProps={this.props.screenProps}

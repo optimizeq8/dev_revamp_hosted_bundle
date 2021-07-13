@@ -1,38 +1,39 @@
 import { StyleSheet, I18nManager } from "react-native";
 import {
   heightPercentageToDP,
-  widthPercentageToDP
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   budgetView: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 12
+    paddingTop: 12,
   },
   budgetText: {
     fontFamily: "montserrat-bold",
     fontSize: 18,
     color: "#FFFFFF",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   budgetAmountView: {
     display: "flex",
-    flexDirection: I18nManager.isRTL ? "row-reverse" : "row"
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
   },
   budgetDollarText: {
     color: "#FFFFFF",
     fontFamily: "montserrat-medium",
-    fontSize: 14
+    fontSize: 14,
   },
   budgetAmountText: {
     color: "#FF9D00",
     fontFamily: "montserrat-bold-english",
-    fontSize: 24
+    fontSize: 24,
   },
   contentContainerStyle: {
-    paddingHorizontal: 5
+    paddingHorizontal: 5,
   },
   footerBlock: {
     paddingBottom: 10,
@@ -44,17 +45,18 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 35,
     marginLeft: 0,
     marginRight: 0,
-    width: "100%"
+    width: "100%",
   },
   optimizeFeesPercentange: {
     color: "#C6C6C6",
     fontFamily: "montserrat-bold",
     fontSize: 12,
-    paddingRight: 2
+    paddingRight: 2,
   },
   safeAreaView: {
     height: "100%",
-    width: "100%"
+    width: "100%",
+    backgroundColor: globalColors.bluegem,
   },
   container: {
     height: "100%",
@@ -63,7 +65,7 @@ const styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     overflow: "hidden",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   mainCard: {
     backgroundColor: "#FF9D00",
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     marginRight: 0,
     borderRadius: 30,
-    justifyContent: "center"
+    justifyContent: "center",
   },
 
   bottomCardBlock1: {
@@ -88,52 +90,52 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     backgroundColor: "#FFF",
     borderTopLeftRadius: 35,
-    borderTopRightRadius: 35
+    borderTopRightRadius: 35,
   },
   dollarAmountContainer: {
     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
-    alignSelf: "flex-start"
+    alignSelf: "flex-start",
   },
   dollarAmountText: {
     fontSize: 15,
-    color: "#FF9D00"
+    color: "#FF9D00",
   },
   kdAmountContainer: {
     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
     alignSelf: "flex-start",
-    paddingTop: 2
+    paddingTop: 2,
   },
   kdText: {
     fontSize: 11,
     color: "#C6C6C6",
-    fontFamily: "montserrat-bold-english"
+    fontFamily: "montserrat-bold-english",
   },
   kdAmountText: {
     fontSize: 13,
     fontFamily: "montserrat-bold-english",
     paddingLeft: 4,
-    color: "#C6C6C6"
+    color: "#C6C6C6",
   },
   optimizeFeesTextContainer: {
     flexDirection: "row",
-    paddingTop: 10
+    paddingTop: 10,
   },
   optimizeFeesText: {
     color: "#C6C6C6",
     fontSize: 12,
-    fontFamily: "montserrat-light"
+    fontFamily: "montserrat-light",
   },
   payNowText: {
     color: "#FFF",
     textAlign: "center",
     fontSize: 14,
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold",
   },
   money: {
     color: "#FF8D04",
     fontSize: 21,
-    fontFamily: "montserrat-bold"
-  }
+    fontFamily: "montserrat-bold",
+  },
 });
 
 export default styles;

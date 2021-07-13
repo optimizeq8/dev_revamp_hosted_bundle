@@ -246,7 +246,8 @@ class CollectionMedia extends Component {
       urlError,
     });
     if (urlError) {
-      const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me|api.whatsapp.|twitter.)/g;
+      const regex =
+        /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me|api.whatsapp.|twitter.)/g;
 
       showMessage({
         message: translate(
@@ -725,11 +726,11 @@ class CollectionMedia extends Component {
         style={styles.safeAreaView}
         forceInset={{ bottom: "always", top: "always" }}
       >
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <Container style={styles.container}>
           <CustomHeader
             screenProps={this.props.screenProps}

@@ -349,11 +349,11 @@ class InstagramAdPaymentReview extends Component {
 
       return (
         <View style={[styles.safeAreaView]}>
-          <LinearGradient
+          {/* <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
             style={globalStyles.gradient}
-          />
+          /> */}
           <SafeAreaView style={{ backgroundColor: "#fff" }} />
           <NavigationEvents onDidFocus={this.onDidFocus} />
           <Container style={[styles.container]}>
@@ -571,8 +571,8 @@ class InstagramAdPaymentReview extends Component {
                       campaign_start_date: this.props.data.start_time,
                       campaign_attachment: this.props.data.attachment,
                       campaign_swipe_up_CTA: this.props.data.call_to_action,
-                      campaign_swipe_up_destination: this.props.data
-                        .destination,
+                      campaign_swipe_up_destination:
+                        this.props.data.destination,
                       campaign_media: this.props.data.media,
                       campaign_media_type: this.props.data.media_type,
                       campaign_appChoice: this.props.data.appChoice,

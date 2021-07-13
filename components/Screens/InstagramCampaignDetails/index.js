@@ -54,6 +54,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import ChartDateChoices from "./ChartDateChoices";
 import CSVModal from "./CSVModal";
 import { showMessage } from "react-native-flash-message";
+import { globalColors } from "../../../GlobalStyles";
 
 class InstagramCampaignDetails extends Component {
   static navigationOptions = {
@@ -572,14 +573,15 @@ class InstagramCampaignDetails extends Component {
                   borderBottomStartRadius: 30,
                   borderBottomEndRadius: 30,
                   overflow: "hidden",
+                  backgroundColor: globalColors.bluegem,
                 },
               ]}
             >
-              <LinearGradient
+              {/* <LinearGradient
                 colors={["#9300FF", "#5600CB"]}
                 locations={[0, 1]}
                 style={styles.gradient}
-              />
+              /> */}
             </View>
             <Header
               screenProps={this.props.screenProps}

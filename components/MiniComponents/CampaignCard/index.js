@@ -167,80 +167,81 @@ class CampaignCard extends Component {
       };
     }
     return (
-      <LinearGradient
-        colors={[gradientColor.color1, "#9300FF", gradientColor.color2]}
-        start={[0, 0]}
-        end={[1, 1]}
-        style={styles.cardStyle}
+      // <LinearGradient
+      //   // colors={[gradientColor.color1, "#9300FF", gradientColor.color2]}
+      //   colors={[]}
+      //   start={[0, 0]}
+      //   end={[1, 1]}
+      //   style={styles.cardStyle}
+      // >
+      <TouchableOpacity
+        onPress={this.handleCampaignPress}
+        style={[styles.cardStyle, styles.campaignButton]}
+        disabled={campaign.channel === "instagram"}
       >
-        <TouchableOpacity
-          onPress={this.handleCampaignPress}
-          style={styles.campaignButton}
-          disabled={campaign.channel === "instagram"}
-        >
-          <View style={styles.textcontainer}>
-            <View style={styles.header}>
-              <SnapchatBorder width={30} height={30} fill="#000" />
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  paddingHorizontal: 10,
-                  flex: 1,
-                }}
+        <View style={styles.textcontainer}>
+          <View style={styles.header}>
+            <SnapchatBorder width={30} height={30} fill="#000" />
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                paddingHorizontal: 10,
+                flex: 1,
+              }}
+            >
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                style={[
+                  styles.titleText,
+                  !isStringArabic(this.props.campaign.name)
+                    ? {
+                        fontFamily: "montserrat-bold-english",
+                      }
+                    : {
+                        fontFamily: "changa-bold-arabic",
+                      },
+                ]}
               >
-                <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
+                {this.props.campaign.name}
+              </Text>
+              <View style={[styles.adStatus]}>
+                <Icon
                   style={[
-                    styles.titleText,
-                    !isStringArabic(this.props.campaign.name)
-                      ? {
-                          fontFamily: "montserrat-bold-english",
-                        }
-                      : {
-                          fontFamily: "changa-bold-arabic",
-                        },
+                    styles.circleIcon,
+                    {
+                      color: this.ad_status_color,
+                    },
+                  ]}
+                  name={
+                    this.review_status.includes("REJECTED")
+                      ? "circle-slash"
+                      : "circle"
+                  }
+                  type={
+                    this.review_status.includes("REJECTED")
+                      ? "Octicons"
+                      : "FontAwesome"
+                  }
+                />
+                <Text
+                  style={[
+                    styles.reviewText,
+                    {
+                      color: this.ad_status_color,
+                    },
                   ]}
                 >
-                  {this.props.campaign.name}
+                  {translate(`${this.ad_status}`) +
+                    " " +
+                    (campaign && campaign.campaign_start_date
+                      ? campaign.campaign_start_date
+                      : "")}
                 </Text>
-                <View style={[styles.adStatus]}>
-                  <Icon
-                    style={[
-                      styles.circleIcon,
-                      {
-                        color: this.ad_status_color,
-                      },
-                    ]}
-                    name={
-                      this.review_status.includes("REJECTED")
-                        ? "circle-slash"
-                        : "circle"
-                    }
-                    type={
-                      this.review_status.includes("REJECTED")
-                        ? "Octicons"
-                        : "FontAwesome"
-                    }
-                  />
-                  <Text
-                    style={[
-                      styles.reviewText,
-                      {
-                        color: this.ad_status_color,
-                      },
-                    ]}
-                  >
-                    {translate(`${this.ad_status}`) +
-                      " " +
-                      (campaign && campaign.campaign_start_date
-                        ? campaign.campaign_start_date
-                        : "")}
-                  </Text>
-                </View>
               </View>
-              {/* {campaign.snap_ad_id &&
+            </View>
+            {/* {campaign.snap_ad_id &&
                 campaign.campaign_end === "0" &&
                 endDate < this.currentDate() && (
                   <Icon
@@ -257,119 +258,118 @@ class CampaignCard extends Component {
                     ]}
                   />
                 )} */}
-            </View>
-            {this.ad_status && this.ad_status.includes("Ad Rejected") && (
-              <Text style={[styles.subtext]}>
-                {translate("Tap to submit your Ad again")}
-              </Text>
-            )}
-            {campaign.hasOwnProperty("engagement_unverified") &&
-              campaign.hasOwnProperty("engagement_phone_number") &&
-              campaign.engagement_unverified &&
-              campaign.objective === "ENGAGEMENT" && (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    paddingVertical: 5,
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  <Text style={[styles.subtext, { width: "50%" }]}>
-                    {translate("You need to verify the phone number to launch")}
-                  </Text>
-                  <GradientButton
-                    onPressAction={() =>
-                      NavigationService.navigate("VerifyEngagmentNumber", {
-                        dashboard: true,
-                        engagement_phone_number:
-                          campaign.engagement_phone_number,
-                        campaign_id: campaign.campaign_id,
-                        source: "dashboard",
-                        source_action: "a_verify_engagement_number",
-                      })
-                    }
-                    style={{ height: "75%", width: "30%" }}
-                    text={translate("Verify")}
-                  />
-                </View>
-              )}
-            {this.review_status.includes("APPROVED") && (
-              <View style={styles.chartContainer}>
-                <CampaignCircleChart
-                  channel={this.props.channel}
-                  campaign={campaign}
-                  detail={false}
-                  screenProps={this.props.screenProps}
+          </View>
+          {this.ad_status && this.ad_status.includes("Ad Rejected") && (
+            <Text style={[styles.subtext]}>
+              {translate("Tap to submit your Ad again")}
+            </Text>
+          )}
+          {campaign.hasOwnProperty("engagement_unverified") &&
+            campaign.hasOwnProperty("engagement_phone_number") &&
+            campaign.engagement_unverified &&
+            campaign.objective === "ENGAGEMENT" && (
+              <View
+                style={{
+                  flexDirection: "row",
+                  paddingVertical: 5,
+                  justifyContent: "flex-end",
+                }}
+              >
+                <Text style={[styles.subtext, { width: "50%" }]}>
+                  {translate("You need to verify the phone number to launch")}
+                </Text>
+                <GradientButton
+                  onPressAction={() =>
+                    NavigationService.navigate("VerifyEngagmentNumber", {
+                      dashboard: true,
+                      engagement_phone_number: campaign.engagement_phone_number,
+                      campaign_id: campaign.campaign_id,
+                      source: "dashboard",
+                      source_action: "a_verify_engagement_number",
+                    })
+                  }
+                  style={{ height: "75%", width: "30%" }}
+                  text={translate("Verify")}
                 />
-                {this.ad_status !== "Campaign ended" ? (
-                  <>
-                    <View style={styles.horizontalLineView} />
-                    <View style={styles.cardStatusDays}>
-                      <Text style={globalStyles.numbers}>
-                        {TimeDifferance(this.currentDate(), campaign.end_time) +
-                          1}
-                      </Text>
-                      <Text uppercase style={styles.cardText}>
-                        {translate("Day(s) left")}
-                      </Text>
-
-                      <TouchableOpacity
-                        style={[
-                          styles.repeatButton,
-                          { alignSelf: "center", marginTop: 10, width: "100%" },
-                        ]}
-                        onPress={() => this.handleExtendModal(true)}
-                      >
-                        <Text style={styles.repeatText}>
-                          {translate("Extend")}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </>
-                ) : (
-                  <TouchableOpacity
-                    style={styles.dotsContainer}
-                    onPress={() => this.handleOptionsModal(true)}
-                  >
-                    <Icon
-                      name="options"
-                      type="SimpleLineIcons"
-                      style={{
-                        fontSize: 20,
-                        color: "#d4d4d4",
-                      }}
-                    />
-                  </TouchableOpacity>
-                )}
               </View>
             )}
-            {this.state.showRepeatModal && (
-              <RepeatCampaignModal
-                showRepeatModal={this.state.showRepeatModal}
-                screenProps={this.props.screenProps}
-                handleRepeatModal={this.handleRepeatModal}
+          {this.review_status.includes("APPROVED") && (
+            <View style={styles.chartContainer}>
+              <CampaignCircleChart
+                channel={this.props.channel}
                 campaign={campaign}
+                detail={false}
                 screenProps={this.props.screenProps}
               />
-            )}
-            {this.state.showExtendModal && (
-              <ExtendCampaignModal
-                showRepeatModal={this.state.showExtendModal}
-                screenProps={this.props.screenProps}
-                handleExtendModal={this.handleExtendModal}
-                campaign={campaign}
-                screenProps={this.props.screenProps}
-              />
-            )}
-            <CampaignOptionsMenu
-              showCampaignOptions={this.state.showCampaignOptions}
-              handleOptionsModal={this.handleOptionsModal}
-              translate={translate}
-              showRepeatButton={this.showRepeatButton}
+              {this.ad_status !== "Campaign ended" ? (
+                <>
+                  <View style={styles.horizontalLineView} />
+                  <View style={styles.cardStatusDays}>
+                    <Text style={globalStyles.numbers}>
+                      {TimeDifferance(this.currentDate(), campaign.end_time) +
+                        1}
+                    </Text>
+                    <Text uppercase style={styles.cardText}>
+                      {translate("Day(s) left")}
+                    </Text>
+
+                    <TouchableOpacity
+                      style={[
+                        styles.repeatButton,
+                        { alignSelf: "center", marginTop: 10, width: "100%" },
+                      ]}
+                      onPress={() => this.handleExtendModal(true)}
+                    >
+                      <Text style={styles.repeatText}>
+                        {translate("Extend")}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </>
+              ) : (
+                <TouchableOpacity
+                  style={styles.dotsContainer}
+                  onPress={() => this.handleOptionsModal(true)}
+                >
+                  <Icon
+                    name="options"
+                    type="SimpleLineIcons"
+                    style={{
+                      fontSize: 20,
+                      color: "#d4d4d4",
+                    }}
+                  />
+                </TouchableOpacity>
+              )}
+            </View>
+          )}
+          {this.state.showRepeatModal && (
+            <RepeatCampaignModal
+              showRepeatModal={this.state.showRepeatModal}
+              screenProps={this.props.screenProps}
+              handleRepeatModal={this.handleRepeatModal}
+              campaign={campaign}
+              screenProps={this.props.screenProps}
             />
-          </View>
-        </TouchableOpacity>
-      </LinearGradient>
+          )}
+          {this.state.showExtendModal && (
+            <ExtendCampaignModal
+              showRepeatModal={this.state.showExtendModal}
+              screenProps={this.props.screenProps}
+              handleExtendModal={this.handleExtendModal}
+              campaign={campaign}
+              screenProps={this.props.screenProps}
+            />
+          )}
+          <CampaignOptionsMenu
+            showCampaignOptions={this.state.showCampaignOptions}
+            handleOptionsModal={this.handleOptionsModal}
+            translate={translate}
+            showRepeatButton={this.showRepeatButton}
+          />
+        </View>
+      </TouchableOpacity>
+      // </LinearGradient>
     );
   }
 }

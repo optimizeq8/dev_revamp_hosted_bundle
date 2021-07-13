@@ -449,11 +449,11 @@ class GoogleAdTargetting extends Component {
           forceInset={{ bottom: "never", top: "always" }}
         >
           <NavigationEvents onDidFocus={this.onDidFocus} />
-          <LinearGradient
+          {/* <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
             style={globalStyles.gradient}
-          />
+          /> */}
           <Container style={styles.mainContainer}>
             <Container style={styles.container}>
               <CustomHeader

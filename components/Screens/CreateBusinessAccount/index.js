@@ -747,13 +747,13 @@ class CreateBusinessAccount extends Component {
           top: this.props.registering ? "never" : "always",
         }}
       >
-        {!this.props.registering && (
+        {/* {!this.props.registering && (
           <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
             style={globalStyles.gradient}
           />
-        )}
+        )} */}
         {!this.props.registering && (
           <View>
             <CustomHeader

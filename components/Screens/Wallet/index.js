@@ -144,11 +144,12 @@ class Wallet extends Component {
         style={styles.safeAreaContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
+        {/* <LinearGradient
+          // colors={[colors.background1, colors.background2]}
+          colors={[globalColors.bluegem, globalColors.bluegem]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <Container
           style={[
@@ -264,7 +265,7 @@ class Wallet extends Component {
         >
           <BlurView tint="dark" intensity={95} style={styles.BlurView}>
             <SafeAreaView
-              style={[styles.safeAreaContainer]}
+              // style={[styles.safeAreaContainer]}
               forceInset={{ bottom: "always", top: "always" }}
             >
               <CustomHeader

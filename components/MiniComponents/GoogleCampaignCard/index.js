@@ -59,175 +59,172 @@ class GoogleCampaignCard extends Component {
       };
     }
     return (
-      <LinearGradient
-        colors={[gradientColor.color1, "#9300FF", gradientColor.color2]}
-        start={[0, 0]}
-        end={[1, 1]}
-        style={styles.cardStyle}
+      // <LinearGradient
+      //   colors={[gradientColor.color1, "#9300FF", gradientColor.color2]}
+      //   start={[0, 0]}
+      //   end={[1, 1]}
+      //   style={styles.cardStyle}
+      // >
+      <TouchableOpacity
+        onPress={this.handleCampaignPress}
+        style={[styles.cardStyle, styles.campaignButton]}
       >
-        <TouchableOpacity
-          onPress={this.handleCampaignPress}
-          style={styles.campaignButton}
-        >
-          <View style={styles.textcontainer}>
-            <View style={styles.headerContainer}>
-              <View style={styles.header}>
-                <GoogleAd width={30} height={30} />
-                <View style={styles.headerContent}>
-                  <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
-                    style={[
-                      styles.titleText,
-                      !isStringArabic(campaign.name)
-                        ? {
-                            fontFamily: "montserrat-bold-english",
-                          }
-                        : {},
-                    ]}
-                  >
-                    {campaign.name}
-                  </Text>
-                  {this.review_status === "APPROVED" ? (
-                    <View style={[styles.adStatus]}>
-                      <Icon
-                        style={[
-                          styles.circleIcon,
-                          {
-                            color:
-                              campaign.status === "REMOVED"
-                                ? globalColors.orange
-                                : globalColors.green,
-                          },
-                        ]}
-                        name={"circle"}
-                        type={"FontAwesome"}
-                      />
-                      <Text
-                        style={[
-                          styles.reviewText,
-                          {
-                            color:
-                              campaign.status === "REMOVED"
-                                ? globalColors.orange
-                                : globalColors.green,
-                          },
-                        ]}
-                      >
-                        {translate(
-                          `${
-                            campaign.status === "ENABLED"
-                              ? new Date(campaign.start_time).setHours(
-                                  0,
-                                  0,
-                                  0,
-                                  0
-                                ) > new Date().setHours(0, 0, 0, 0)
-                                ? "Scheduled for"
-                                : "LIVE"
-                              : campaign.status === "PAUSED"
-                              ? "Campaign Paused"
-                              : "Campaign ended"
-                          }`
-                        ) +
-                          " " +
-                          (new Date(campaign.start_time) > new Date()
-                            ? dateFormat(
-                                new Date(campaign.start_time),
-                                "mmm dS"
-                              )
-                            : "")}
-                      </Text>
-                    </View>
-                  ) : this.review_status === "REJECTED" ? (
-                    <View style={[styles.adStatus]}>
-                      <Icon
-                        style={[
-                          styles.circleIcon,
-                          {
-                            color: globalColors.red,
-                          },
-                        ]}
-                        name={"circle-slash"}
-                        type={"Octicons"}
-                      />
-                      <Text
-                        style={[styles.reviewText, { color: globalColors.red }]}
-                      >
-                        {translate("Ad Rejected")}
-                      </Text>
-                    </View>
-                  ) : (
-                    <View style={[styles.adStatus]}>
-                      <Icon
-                        style={[
-                          styles.circleIcon,
-                          {
-                            color: globalColors.orange,
-                          },
-                        ]}
-                        name={"circle"}
-                        type={"FontAwesome"}
-                      />
-                      <Text
-                        style={[
-                          styles.reviewText,
-                          {
-                            color: globalColors.orange,
-                          },
-                        ]}
-                      >
-                        {translate("In Review")}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-              </View>
-              {!campaign.completed &&
-                campaign.status === "REMOVED" &&
-                endDate < new Date() && (
-                  <Icon
-                    type="MaterialCommunityIcons"
-                    name="alert"
-                    style={[
-                      styles.icon,
-                      {
-                        marginLeft: "auto",
-                        // left: "75%",
-                        color: globalColors.green,
-                        // position: "absolute"
-                      },
-                    ]}
-                  />
+        <View style={styles.textcontainer}>
+          <View style={styles.headerContainer}>
+            <View style={styles.header}>
+              <GoogleAd width={30} height={30} />
+              <View style={styles.headerContent}>
+                <Text
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  style={[
+                    styles.titleText,
+                    !isStringArabic(campaign.name)
+                      ? {
+                          fontFamily: "montserrat-bold-english",
+                        }
+                      : {},
+                  ]}
+                >
+                  {campaign.name}
+                </Text>
+                {this.review_status === "APPROVED" ? (
+                  <View style={[styles.adStatus]}>
+                    <Icon
+                      style={[
+                        styles.circleIcon,
+                        {
+                          color:
+                            campaign.status === "REMOVED"
+                              ? globalColors.orange
+                              : globalColors.green,
+                        },
+                      ]}
+                      name={"circle"}
+                      type={"FontAwesome"}
+                    />
+                    <Text
+                      style={[
+                        styles.reviewText,
+                        {
+                          color:
+                            campaign.status === "REMOVED"
+                              ? globalColors.orange
+                              : globalColors.green,
+                        },
+                      ]}
+                    >
+                      {translate(
+                        `${
+                          campaign.status === "ENABLED"
+                            ? new Date(campaign.start_time).setHours(
+                                0,
+                                0,
+                                0,
+                                0
+                              ) > new Date().setHours(0, 0, 0, 0)
+                              ? "Scheduled for"
+                              : "LIVE"
+                            : campaign.status === "PAUSED"
+                            ? "Campaign Paused"
+                            : "Campaign ended"
+                        }`
+                      ) +
+                        " " +
+                        (new Date(campaign.start_time) > new Date()
+                          ? dateFormat(new Date(campaign.start_time), "mmm dS")
+                          : "")}
+                    </Text>
+                  </View>
+                ) : this.review_status === "REJECTED" ? (
+                  <View style={[styles.adStatus]}>
+                    <Icon
+                      style={[
+                        styles.circleIcon,
+                        {
+                          color: globalColors.red,
+                        },
+                      ]}
+                      name={"circle-slash"}
+                      type={"Octicons"}
+                    />
+                    <Text
+                      style={[styles.reviewText, { color: globalColors.red }]}
+                    >
+                      {translate("Ad Rejected")}
+                    </Text>
+                  </View>
+                ) : (
+                  <View style={[styles.adStatus]}>
+                    <Icon
+                      style={[
+                        styles.circleIcon,
+                        {
+                          color: globalColors.orange,
+                        },
+                      ]}
+                      name={"circle"}
+                      type={"FontAwesome"}
+                    />
+                    <Text
+                      style={[
+                        styles.reviewText,
+                        {
+                          color: globalColors.orange,
+                        },
+                      ]}
+                    >
+                      {translate("In Review")}
+                    </Text>
+                  </View>
                 )}
+              </View>
             </View>
-            {this.review_status === "APPROVED" && (
-              <View style={styles.chartContainer}>
-                <GoogleCampaignCircleCharts
-                  channel={this.props.channel}
-                  selectedCampaign={{ campaign }}
-                  detail={false}
-                  screenProps={this.props.screenProps}
+            {!campaign.completed &&
+              campaign.status === "REMOVED" &&
+              endDate < new Date() && (
+                <Icon
+                  type="MaterialCommunityIcons"
+                  name="alert"
+                  style={[
+                    styles.icon,
+                    {
+                      marginLeft: "auto",
+                      // left: "75%",
+                      color: globalColors.green,
+                      // position: "absolute"
+                    },
+                  ]}
                 />
-
-                {campaign.status !== "REMOVED" && (
-                  <>
-                    <View style={styles.horizontalLineView} />
-                    <View style={styles.cardStatusDays}>
-                      <Text style={globalStyles.numbers}>
-                        {TimeDifferance(new Date(), campaign.end_time)}
-                      </Text>
-                      <Text uppercase style={styles.cardText}>
-                        {translate("Day(s) left")}
-                      </Text>
-                    </View>
-                  </>
-                )}
-              </View>
-            )}
+              )}
           </View>
-        </TouchableOpacity>
-      </LinearGradient>
+          {this.review_status === "APPROVED" && (
+            <View style={styles.chartContainer}>
+              <GoogleCampaignCircleCharts
+                channel={this.props.channel}
+                selectedCampaign={{ campaign }}
+                detail={false}
+                screenProps={this.props.screenProps}
+              />
+
+              {campaign.status !== "REMOVED" && (
+                <>
+                  <View style={styles.horizontalLineView} />
+                  <View style={styles.cardStatusDays}>
+                    <Text style={globalStyles.numbers}>
+                      {TimeDifferance(new Date(), campaign.end_time)}
+                    </Text>
+                    <Text uppercase style={styles.cardText}>
+                      {translate("Day(s) left")}
+                    </Text>
+                  </View>
+                </>
+              )}
+            </View>
+          )}
+        </View>
+      </TouchableOpacity>
+      // </LinearGradient>
     );
   }
 }

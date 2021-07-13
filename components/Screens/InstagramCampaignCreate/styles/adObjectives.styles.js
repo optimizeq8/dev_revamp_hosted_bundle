@@ -13,7 +13,8 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   safeAreaView: {
-    backgroundColor: "#0000",
+    // backgroundColor: "#0000",
+    backgroundColor: globalColors.bluegem,
     height: "100%",
   },
   container: {
@@ -265,7 +266,7 @@ const styles = StyleSheet.create({
   btnHeadingText: {
     fontFamily: "montserrat-bold",
     fontSize: RFValue(7, 414),
-    color: globalColors.white,
+    color: globalColors.black,
     textTransform: "uppercase",
     textAlign: "center",
     marginTop: RFValue(1.5, 414),
@@ -273,7 +274,7 @@ const styles = StyleSheet.create({
   btnDescText: {
     fontFamily: "montserrat-regular",
     fontSize: RFValue(6, 414),
-    color: globalColors.white,
+    color: globalColors.black,
     marginTop: RFValue(1.5, 414),
     textAlign: "center",
   },

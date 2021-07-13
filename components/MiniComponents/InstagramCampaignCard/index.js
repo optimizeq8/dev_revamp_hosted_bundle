@@ -185,186 +185,186 @@ class CampaignCard extends Component {
       };
     }
     return (
-      <LinearGradient
-        colors={[gradientColor.color1, "#9300FF", gradientColor.color2]}
-        start={[0, 0]}
-        end={[1, 1]}
-        style={styles.cardStyle}
+      // <LinearGradient
+      //   colors={[gradientColor.color1, "#9300FF", gradientColor.color2]}
+      //   start={[0, 0]}
+      //   end={[1, 1]}
+      //   style={styles.cardStyle}
+      // >
+      <TouchableOpacity
+        // disabled={true}
+        onPress={this.handleCampaignPress}
+        style={[styles.cardStyle, styles.campaignButton]}
       >
-        <TouchableOpacity
-          // disabled={true}
-          onPress={this.handleCampaignPress}
-          style={styles.campaignButton}
-        >
-          <View style={styles.textcontainer}>
-            <View style={styles.header}>
-              <InstagramIcon
-                width={RFValue(12.5, 414)}
-                height={RFValue(12.5, 414)}
-                fill={"#FFF"}
-                style={
-                  {
-                    //   marginRight: RFValue(-7.5, 414),
-                    //   marginLeft: -10,
-                    //   marginBottom: -10,
-                  }
+        <View style={styles.textcontainer}>
+          <View style={styles.header}>
+            <InstagramIcon
+              width={RFValue(12.5, 414)}
+              height={RFValue(12.5, 414)}
+              fill={"#FFF"}
+              style={
+                {
+                  //   marginRight: RFValue(-7.5, 414),
+                  //   marginLeft: -10,
+                  //   marginBottom: -10,
                 }
-              />
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  paddingHorizontal: RFValue(5, 414),
-                  flex: 1,
-                }}
+              }
+            />
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                paddingHorizontal: RFValue(5, 414),
+                flex: 1,
+              }}
+            >
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                style={[
+                  styles.titleText,
+                  !isStringArabic(this.props.campaign.name)
+                    ? {
+                        fontFamily: "montserrat-bold-english",
+                      }
+                    : {
+                        fontFamily: "changa-bold-arabic",
+                      },
+                ]}
               >
-                <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
+                {this.props.campaign.name}
+              </Text>
+
+              <View style={[styles.adStatus]}>
+                <Icon
                   style={[
-                    styles.titleText,
-                    !isStringArabic(this.props.campaign.name)
-                      ? {
-                          fontFamily: "montserrat-bold-english",
-                        }
-                      : {
-                          fontFamily: "changa-bold-arabic",
-                        },
+                    styles.circleIcon,
+                    {
+                      color: this.ad_status_color_code,
+                    },
+                  ]}
+                  name={
+                    this.ad_status && this.ad_status.includes("Ad Rejected")
+                      ? "circle-slash"
+                      : "circle"
+                  }
+                  type={
+                    this.ad_status && this.ad_status.includes("Ad Rejected")
+                      ? "Octicons"
+                      : "FontAwesome"
+                  }
+                />
+                <Text
+                  style={[
+                    styles.reviewText,
+                    {
+                      color: this.ad_status_color_code,
+                    },
                   ]}
                 >
-                  {this.props.campaign.name}
+                  {translate(`${this.ad_status}`) + " "}
+                  {campaign && campaign.campaign_start_date
+                    ? campaign.campaign_start_date
+                    : ""}
                 </Text>
-
-                <View style={[styles.adStatus]}>
-                  <Icon
-                    style={[
-                      styles.circleIcon,
-                      {
-                        color: this.ad_status_color_code,
-                      },
-                    ]}
-                    name={
-                      this.ad_status && this.ad_status.includes("Ad Rejected")
-                        ? "circle-slash"
-                        : "circle"
-                    }
-                    type={
-                      this.ad_status && this.ad_status.includes("Ad Rejected")
-                        ? "Octicons"
-                        : "FontAwesome"
-                    }
-                  />
-                  <Text
-                    style={[
-                      styles.reviewText,
-                      {
-                        color: this.ad_status_color_code,
-                      },
-                    ]}
-                  >
-                    {translate(`${this.ad_status}`) + " "}
-                    {campaign && campaign.campaign_start_date
-                      ? campaign.campaign_start_date
-                      : ""}
-                  </Text>
-                </View>
               </View>
-              {campaign.snap_ad_id &&
-                campaign.campaign_end === "0" &&
-                endDate < new Date() && (
-                  <Icon
-                    type="MaterialCommunityIcons"
-                    name="alert"
-                    style={[
-                      styles.icon,
-                      {
-                        marginLeft: "auto",
-                        // left: "75%",
-                        color: globalColors.green,
-                        // position: "absolute"
-                      },
-                    ]}
-                  />
-                )}
             </View>
-
-            {this.ad_status && this.ad_status.includes("Ad Rejected") && (
-              <Text style={[styles.subtext]}>
-                {translate("Tap to submit your Ad again")}
-              </Text>
-            )}
-
-            {this.review_status === "APPROVED" && (
-              <View style={styles.chartContainer}>
-                <CampaignCircleChart
-                  channel={this.props.channel}
-                  campaign={campaign}
-                  detail={false}
-                  screenProps={this.props.screenProps}
+            {campaign.snap_ad_id &&
+              campaign.campaign_end === "0" &&
+              endDate < new Date() && (
+                <Icon
+                  type="MaterialCommunityIcons"
+                  name="alert"
+                  style={[
+                    styles.icon,
+                    {
+                      marginLeft: "auto",
+                      // left: "75%",
+                      color: globalColors.green,
+                      // position: "absolute"
+                    },
+                  ]}
                 />
-
-                {this.ad_status !== "Campaign ended" ? (
-                  <>
-                    <View style={styles.horizontalLineView} />
-                    <View style={styles.cardStatusDays}>
-                      <Text style={globalStyles.numbers}>
-                        {TimeDifferance(new Date(), campaign.end_time) + 1}
-                      </Text>
-                      <Text uppercase style={styles.cardText}>
-                        {translate("Day(s) left")}
-                      </Text>
-                      <TouchableOpacity
-                        style={[
-                          styles.repeatButton,
-                          { alignSelf: "center", marginTop: 10, width: "100%" },
-                        ]}
-                        onPress={() => this.handleExtendModal(true)}
-                      >
-                        <Text style={styles.repeatText}>{"Extend"}</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </>
-                ) : (
-                  <TouchableOpacity style={styles.dotsContainer}>
-                    <Icon
-                      name="options"
-                      type="SimpleLineIcons"
-                      onPress={() => this.handleOptionsModal(true)}
-                      style={{
-                        fontSize: 20,
-                        color: "#d4d4d4",
-                      }}
-                    />
-                  </TouchableOpacity>
-                )}
-              </View>
-            )}
-            {this.state.showRepeatModal && (
-              <RepeatCampaignModal
-                showRepeatModal={this.state.showRepeatModal}
-                screenProps={this.props.screenProps}
-                handleRepeatModal={this.handleRepeatModal}
-                campaign={campaign}
-              />
-            )}
-            {this.state.showExtendModal && (
-              <ExtendCampaignModal
-                showRepeatModal={this.state.showExtendModal}
-                screenProps={this.props.screenProps}
-                handleExtendModal={this.handleExtendModal}
-                campaign={campaign}
-                instagramCampaign={true}
-              />
-            )}
-            <CampaignOptionsMenu
-              showCampaignOptions={this.state.showCampaignOptions}
-              handleOptionsModal={this.handleOptionsModal}
-              translate={translate}
-              showRepeatButton={this.showRepeatButton}
-            />
+              )}
           </View>
-        </TouchableOpacity>
-      </LinearGradient>
+
+          {this.ad_status && this.ad_status.includes("Ad Rejected") && (
+            <Text style={[styles.subtext]}>
+              {translate("Tap to submit your Ad again")}
+            </Text>
+          )}
+
+          {this.review_status === "APPROVED" && (
+            <View style={styles.chartContainer}>
+              <CampaignCircleChart
+                channel={this.props.channel}
+                campaign={campaign}
+                detail={false}
+                screenProps={this.props.screenProps}
+              />
+
+              {this.ad_status !== "Campaign ended" ? (
+                <>
+                  <View style={styles.horizontalLineView} />
+                  <View style={styles.cardStatusDays}>
+                    <Text style={globalStyles.numbers}>
+                      {TimeDifferance(new Date(), campaign.end_time) + 1}
+                    </Text>
+                    <Text uppercase style={styles.cardText}>
+                      {translate("Day(s) left")}
+                    </Text>
+                    <TouchableOpacity
+                      style={[
+                        styles.repeatButton,
+                        { alignSelf: "center", marginTop: 10, width: "100%" },
+                      ]}
+                      onPress={() => this.handleExtendModal(true)}
+                    >
+                      <Text style={styles.repeatText}>{"Extend"}</Text>
+                    </TouchableOpacity>
+                  </View>
+                </>
+              ) : (
+                <TouchableOpacity style={styles.dotsContainer}>
+                  <Icon
+                    name="options"
+                    type="SimpleLineIcons"
+                    onPress={() => this.handleOptionsModal(true)}
+                    style={{
+                      fontSize: 20,
+                      color: "#d4d4d4",
+                    }}
+                  />
+                </TouchableOpacity>
+              )}
+            </View>
+          )}
+          {this.state.showRepeatModal && (
+            <RepeatCampaignModal
+              showRepeatModal={this.state.showRepeatModal}
+              screenProps={this.props.screenProps}
+              handleRepeatModal={this.handleRepeatModal}
+              campaign={campaign}
+            />
+          )}
+          {this.state.showExtendModal && (
+            <ExtendCampaignModal
+              showRepeatModal={this.state.showExtendModal}
+              screenProps={this.props.screenProps}
+              handleExtendModal={this.handleExtendModal}
+              campaign={campaign}
+              instagramCampaign={true}
+            />
+          )}
+          <CampaignOptionsMenu
+            showCampaignOptions={this.state.showCampaignOptions}
+            handleOptionsModal={this.handleOptionsModal}
+            translate={translate}
+            showRepeatButton={this.showRepeatButton}
+          />
+        </View>
+      </TouchableOpacity>
+      // </LinearGradient>
     );
   }
 }

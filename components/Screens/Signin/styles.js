@@ -1,9 +1,11 @@
 import { StyleSheet, I18nManager } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import { RFValue } from "react-native-responsive-fontsize";
+import { globalColors } from "../../../GlobalStyles";
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
+    backgroundColor: globalColors.bluegem,
   },
   logoContainer: {
     flexDirection: "row",

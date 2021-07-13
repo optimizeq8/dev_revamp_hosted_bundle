@@ -83,11 +83,12 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 10,
+    paddingVertical: RFValue(5, 414),
   },
   mainSafeArea: {
     height: "100%",
-    backgroundColor: "#0000",
+    // backgroundColor: "#0000",
+    backgroundColor: globalColors.bluegem,
   },
   blankView: {
     backgroundColor: "rgba(0,0,0,0.5)",

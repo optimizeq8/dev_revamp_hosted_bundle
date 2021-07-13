@@ -78,6 +78,7 @@ import { BlurView } from "@react-native-community/blur";
 import AsyncStorage from "@react-native-community/async-storage";
 import CustomerIOAddDevice from "../../Functions/CustomerIOAddDevice";
 import { Notifications as RNNotifications } from "react-native-notifications";
+import { globalColors } from "../../../GlobalStyles";
 
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
@@ -1005,7 +1006,7 @@ class Dashboard extends Component {
                                 <Icon
                                   name="plus"
                                   type="MaterialCommunityIcons"
-                                  style={{ color: "#fff" }}
+                                  style={{ color: globalColors.white }}
                                 />
                               </GradientButton>
                               {adButtons}
@@ -1042,7 +1043,11 @@ class Dashboard extends Component {
                           }}
                         >
                           <LinearGradient
-                            colors={["#41C5FF", "#46ABF4"]}
+                            colors={[
+                              globalColors.bluegem,
+                              globalColors.bluegem,
+                            ]}
+                            // colors={["#41C5FF", "#46ABF4"]}
                             locations={[0.3, 0.75]}
                             style={styles.gradient}
                           />

@@ -52,7 +52,7 @@ import InputField from "../../../../MiniComponents/InputFieldNew";
 import ModalField from "../../../../MiniComponents/InputFieldNew/ModalField";
 import GradientButton from "../../../../MiniComponents/GradientButton";
 import { colors } from "../../../../GradiantColors/colors";
-import globalStyles from "../../../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../../../GlobalStyles";
 import { LinearGradient } from "expo-linear-gradient";
 import { showMessage } from "react-native-flash-message";
 
@@ -521,11 +521,11 @@ class AdObjective extends Component {
     return (
       <View style={styles.safeAreaView}>
         <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}
@@ -581,7 +581,7 @@ class AdObjective extends Component {
                     onPressAction={() => this.selectPostType(1)}
                   >
                     <View style={styles.buttonView}>
-                      <PenBox />
+                      <PenBox fill={globalColors.black} />
                       <Text style={styles.btnHeadingText}>
                         {translate("New Post")}
                       </Text>

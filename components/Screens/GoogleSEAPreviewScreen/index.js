@@ -322,11 +322,11 @@ class GoogleSEAPreviewScreen extends Component {
         style={styles.safeAreaView}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <Container style={styles.container}>
           <CustomHeader
             closeButton={false}

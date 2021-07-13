@@ -9,7 +9,8 @@ import { globalColors } from "../../../../GlobalStyles";
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
-    backgroundColor: "#0000",
+    // backgroundColor: "#0000",
+    backgroundColor: globalColors.bluegem,
     // position: "absolute"
   },
   headerCardView: {

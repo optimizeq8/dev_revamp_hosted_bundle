@@ -12,6 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";
 import styles from "./styles";
 import Loading from "../LoadingScreen";
+import { globalColors } from "../../../GlobalStyles";
 const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking");
 
 class index extends Component {
@@ -70,14 +71,14 @@ class index extends Component {
     return (
       <SafeAreaView
         // style={styles.mainSafeArea}
-        style={{ flex: 1 }}
+        style={{ flex: 1, backgroundColor: globalColors.bluegem }}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={styles.gradient}
-        />
+        /> */}
 
         <Container style={styles.container}>
           <CustomHeader
