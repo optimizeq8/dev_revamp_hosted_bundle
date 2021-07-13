@@ -482,11 +482,10 @@ class AdDesign extends Component {
     }
   };
   handleCaptionExpand = (value) => {
-    analytics.track(`instagram_caption`, {
-      visibile: value,
-      source: "ad_design",
-      source_action: "a_toggle_caption",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Expand Instagram Feed Caption",
+      button_text: "",
+      button_color: "Transparent",
     });
     this.setState(
       {
@@ -500,13 +499,12 @@ class AdDesign extends Component {
   handleReview = async () => {
     const noError = this.validator();
 
-    analytics.track(`a_preview_ad`, {
-      source: "ad_design",
-      source_action: "a_preview_ad",
-      action_status: noError ? "success" : "failure",
-      campaign_channel: "instagram",
-      campaign_ad_type: "InstagramStoryAd",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Preview Instagram Feed Ad Design",
+      button_text: "PREVIEW",
+      button_color: "Transparent + White Outline",
+      campaign_channel: "Instagram",
+      campaign_ad_type: this.adType,
     });
     if (noError) {
       this.props.navigation.navigate("AdStoryDesignReview", {
@@ -576,23 +574,26 @@ class AdDesign extends Component {
       "source",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`ad_design`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "InstagramStory/AdDesign",
       source,
       source_action,
-      campaign_channel: "instagram",
-      campaign_ad_type: "InstagramStoryAd",
-      campaign_name: this.state.selectedCampaign.name,
-      campaign_id: this.state.selectedCampaign.campaign_id,
-      campaign_objective: this.state.selectedCampaign.objective,
-      campaign_duration:
-        Math.ceil(
-          (new Date(this.state.selectedCampaign.end_time.split("T")[0]) -
-            new Date(this.state.selectedCampaign.start_time.split("T")[0])) /
-            (1000 * 60 * 60 * 24)
-        ) + 1,
-      campaign_start_date: this.state.selectedCampaign.start_time,
-      campaign_end_date: this.state.selectedCampaign.end_time,
-      businessid: this.props.mainBusiness.businessid,
+      form_context: {
+        campaign_channel: "Instagram",
+        campaign_ad_type: "InstagramStoryAd",
+        campaign_name: this.state.selectedCampaign.name,
+        campaign_id: this.state.selectedCampaign.campaign_id,
+        campaign_objective: this.state.selectedCampaign.objective,
+        campaign_duration:
+          Math.ceil(
+            (new Date(this.state.selectedCampaign.end_time) -
+              new Date(this.state.selectedCampaign.start_time)) /
+              (1000 * 60 * 60 * 24)
+          ) + 1,
+        campaign_start_date: this.state.selectedCampaign.start_time,
+        campaign_end_date: this.state.selectedCampaign.end_time,
+      },
+      business_id: this.props.mainBusiness.businessid,
     });
   };
   setMaxClickHeight = (event) => {

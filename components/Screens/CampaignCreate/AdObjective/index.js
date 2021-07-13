@@ -372,7 +372,7 @@ class AdObjective extends Component {
     });
     analytics.track(`Form Populated`, {
       form_value: date,
-      form_type: "Ad Objective",
+      form_type: "Ad Objective Form",
       form_field: "end_date",
       campaig_id: this.props.campaig_id,
       campaign_channel: "snapchat",

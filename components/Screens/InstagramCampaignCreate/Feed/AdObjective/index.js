@@ -204,12 +204,15 @@ class AdObjective extends Component {
       },
       objectiveLabel: choice.label,
     });
-    analytics.track(`a_select_ad_objective`, {
-      source: "ad_objective_modal",
-      source_action: "a_select_ad_objective",
-      campaignId: this.props.campaign_id,
-      campaign_objective: choice.value,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Feed Ad Objective Form",
+      form_field: "Objective",
+      form_value: choice.value,
+      campaign_id: this.props.campaign_id,
+      campaign_channel: "Instagram",
+      campaign_ad_type: this.props.adType,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.save_campaign_info_instagram({
       objective: choice.value,
@@ -229,11 +232,15 @@ class AdObjective extends Component {
         start_time: date,
       },
     });
-    analytics.track(`a_ad_start_date`, {
-      campaign_start_date: date,
-      source: "ad_objective",
-      source_action: "a_ad_start_date",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Feed Ad Objective Form",
+      form_field: "start_date",
+      form_value: date,
+      campaig_id: this.props.campaig_id,
+      campaign_channel: "Instagram",
+      campaign_ad_type: this.props.adType,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.save_campaign_info_instagram({ start_time: date });
   };
@@ -246,11 +253,15 @@ class AdObjective extends Component {
         end_time: end_time.toISOString().split("T")[0],
       },
     });
-    analytics.track(`a_ad_end_date`, {
-      campaign_end_date: date,
-      source: "ad_objective",
-      source_action: "a_ad_end_date",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_value: date,
+      form_type: "Instagram Feed Ad Objective Form",
+      form_field: "end_date",
+      campaig_id: this.props.campaig_id,
+      campaign_channel: "Instagram",
+      campaign_ad_type: this.props.adType,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.save_campaign_info_instagram({
       end_time: date,
@@ -259,11 +270,10 @@ class AdObjective extends Component {
     this._handleSubmission();
   };
   setModalVisible = (visible) => {
-    analytics.track(`ad_objective_modal`, {
-      source: "ad_objective",
-      source_action: "a_toggle_modal",
-      modal_visible: visible,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: `${visible ? "Open" : "Close"} Ad Objective Modal`,
+      button_text: "OBJECTIVE",
+      button_color: "Dark Purple",
     });
     this.setState({ modalVisible: visible });
   };
@@ -310,8 +320,8 @@ class AdObjective extends Component {
       dateErrors.start_timeError ||
       dateErrors.end_timeError
     ) {
-      analytics.track(`a_error_form`, {
-        error_page: "ad_objective",
+      analytics.track(`From Error Made`, {
+        error_screen: "InstagramFeed/AdObjective",
         campaign_channel: "instagram",
         campaign_ad_type: this.props.adType,
         source_action: "a_submit_ad_objective",
@@ -320,7 +330,7 @@ class AdObjective extends Component {
           objectiveError ||
           dateErrors.start_timeError ||
           dateErrors.end_timeError,
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
     }
     if (
@@ -400,14 +410,15 @@ class AdObjective extends Component {
   setValue = (stateName, value) => {
     let state = {};
     state[stateName] = value;
-    analytics.track(`a_ad_name`, {
-      source: "ad_objective",
-      source_action: "a_ad_name",
-      campaignId: this.props.campaign_id,
-      campaign_channel: "instagram",
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Feed Ad Objective Form",
+      form_field: "ad_name",
+      form_value: value,
+      campaig_id: this.props.campaign_id,
+      campaign_channel: "Instagram",
       campaign_ad_type: this.props.adType,
-      campaign_name: value,
-      businessid: this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ campaignInfo: { ...this.state.campaignInfo, ...state } });
     this.props.save_campaign_info_instagram({ name: value });
@@ -418,10 +429,10 @@ class AdObjective extends Component {
   and overwrites what's in the state  to check when submitting*/
   getValidInfo = (stateError, validObj) => {
     if (validObj) {
-      analytics.track(`a_error_form`, {
-        error_page: "ad_objective",
+      analytics.track(`From Error Made`, {
+        error_screen: "ad_objective",
         error_description: `Error in ${stateError}: ${validObj}`,
-        source: "ad_objective",
+        source: "InstagramFeed/AdObjective",
         source_action: "a_ad_name",
         campaign_channel: "instagram",
         campaign_ad_type: this.props.adType,
@@ -443,12 +454,12 @@ class AdObjective extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`ad_objective`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "InstagramFeed/AdObjective",
       source,
       source_action,
-      campaign_channel: "instagram",
+      campaign_channel: "Instagram",
       campaign_ad_type: this.props.adType,
-      businessid: this.props.mainBusiness.businessid,
     });
   };
   selectPostType = (postType) => {
@@ -457,12 +468,10 @@ class AdObjective extends Component {
     this.setState({
       campaignInfo: replace,
     });
-    analytics.track("a_change_post_type", {
-      source: "ad_objective",
-      source_action: "a_change_objective",
-      campaign_channel: "instagram",
-      campaign_existing_post: postType === 0,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track("Button Pressed", {
+      button_type: "Change Post Type for Instagram Feed",
+      button_text: `${postType === 0 ? "Existing Post" : "New Post"}`,
+      button_color: "Orange Selected / Transparent Unselected",
     });
     this.props.save_campaign_info_instagram({
       existingPost: postType,
@@ -540,7 +549,7 @@ class AdObjective extends Component {
               segment={{
                 str: "Instagram Feed Ad Objective Back Button",
                 obj: { businessname: this.props.mainBusiness.businessname },
-                source: "ad_objective",
+                source: "InstagramFeed/AdObjective",
                 source_action: "a_go_back",
               }}
               icon="instagram"
@@ -725,7 +734,7 @@ class AdObjective extends Component {
                 }}
                 title={"Select an objective"}
                 segment={{
-                  source: "ad_objective_modal",
+                  source: "InstagramFeed/AdObjective Modal",
                   source_action: "a_go_back",
                 }}
                 titleStyle={{ color: "#000" }}

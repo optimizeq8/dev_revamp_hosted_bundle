@@ -43,14 +43,14 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
             })
           );
           dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
-          analytics.track(`a_submit_ad_objective`, {
-            source: "ad_objective",
-            campaign_channel: "instagram",
-            action_status: data.success ? "success" : "failure",
-            source_action: "a_submit_ad_objective",
+          analytics.track(`Form Submitted`, {
+            form_type: "Instagram Feed Ad Objective",
+            form_context: {
+              ...segmentInfo,
+              action_status: data.success ? "success" : "failure",
+            },
             campaign_error: !data.success && data.message,
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+            business_id: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_INSTAGRAM_AD_LOADING_OBJ,
@@ -58,28 +58,29 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
           });
         } else if (data.data && data.data.campaign_already_created) {
           dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
-          analytics.track(`a_submit_ad_objective_campaign_already_created`, {
-            source: "ad_objective",
-            campaign_channel: "instagram",
-            action_status: data.success ? "success" : "failure",
-            source_action: "a_submit_ad_objective",
+          analytics.track(`Form Submitted`, {
+            form_type:
+              "Instagram Feed Ad Objective for already created campagin",
+            form_context: {
+              ...segmentInfo,
+              action_status: data.success ? "success" : "failure",
+            },
             campaign_error: !data.success && data.message,
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+            business_id: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_INSTAGRAM_AD_LOADING_OBJ,
             payload: false,
           });
         } else {
-          analytics.track(`a_submit_ad_objective`, {
-            source: "ad_objective",
-            campaign_channel: "instagram",
-            action_status: data.success ? "success" : "failure",
-            source_action: "a_submit_ad_objective",
+          analytics.track(`Form Submitted`, {
+            form_type: "Instagram Feed Ad Objective",
+            form_context: {
+              ...segmentInfo,
+              action_status: data.success ? "success" : "failure",
+            },
             campaign_error: !data.success && data.message,
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+            business_id: getState().account.mainBusiness.businessid,
           });
           data.success
             ? dispatch({
@@ -101,7 +102,7 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
             data.data.campaign_already_created === 0)
         ) {
           NavigationService.navigate(navigation_route, {
-            source: "ad_objective",
+            source: "InstagramFeed/AdObjective",
             source_action: "a_submit_ad_objective",
           });
         } else {
