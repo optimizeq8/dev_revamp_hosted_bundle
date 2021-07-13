@@ -583,15 +583,15 @@ export const ad_details_instagram = (
             })
           );
           dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
-          analytics.track(`a_submit_ad_targeting`, {
-            source: "ad_targeting",
-            source_action: "a_submit_ad_targeting",
-            action_status: data.success ? "success" : "failure",
-            campaign_error: !data.success && data.message,
-            campaign_budget: data.data.lifetime_budget_micro,
-            campaign_error: !data.success && data.message,
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+          analytics.track(`Form Submitted`, {
+            form_type: "Submit Instagram Ad Targeting Form",
+            form_context: {
+              ...segmentInfo,
+              campaign_budget: data.data.lifetime_budget_micro,
+              action_status: data.success ? "success" : "failure",
+              campaign_error: !data.success && data.message,
+            },
+            business_id: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DETAIL_INSTAGRAM,
@@ -599,30 +599,31 @@ export const ad_details_instagram = (
           });
         } else if (data.data && data.data.campaign_already_created) {
           dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
-          analytics.track(`a_submit_ad_targeting_campaign_already_created`, {
-            source: "ad_targeting",
-            source_action: "a_submit_ad_targeting",
-            action_status: data.success ? "success" : "failure",
-            campaign_error: !data.success && data.message,
-            campaign_budget: data.data.lifetime_budget_micro,
-            campaign_error: !data.success && data.message,
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+          analytics.track(`Form Submitted`, {
+            form_type:
+              "Submit Instagram Ad Targeting Form for already created campaign",
+            form_context: {
+              ...segmentInfo,
+              campaign_budget: data.data.lifetime_budget_micro,
+              action_status: data.success ? "success" : "failure",
+              campaign_error: !data.success && data.message,
+            },
+            business_id: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DETAIL_INSTAGRAM,
             payload: false,
           });
         } else {
-          analytics.track(`a_submit_ad_targeting`, {
-            source: "ad_targeting",
-            source_action: "a_submit_ad_targeting",
-            action_status: data.success ? "success" : "failure",
-            campaign_error: !data.success && data.message,
-            campaign_budget: data.data.lifetime_budget_micro,
-            campaign_error: !data.success && data.message,
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+          analytics.track(`Form Submitted`, {
+            form_type: "Submit Instagram Ad Targeting Form",
+            form_context: {
+              ...segmentInfo,
+              campaign_budget: data.data.lifetime_budget_micro,
+              action_status: data.success ? "success" : "failure",
+              campaign_error: !data.success && data.message,
+            },
+            business_id: getState().account.mainBusiness.businessid,
           });
           showMessage({
             message: data.message,
@@ -654,7 +655,9 @@ export const ad_details_instagram = (
             data.data.campaign_already_created === 0)
         )
           navigation.navigate(navigationPath, {
-            source: "ad_targeting",
+            source: navigationPath.includes("Feed")
+              ? "InstagramFeed/AdTargeting"
+              : "InstagramStory/AdTargeting",
             source_action: "a_submit_ad_targeting",
           });
       })
@@ -777,13 +780,16 @@ export const updateInstagramCampaign = (
         return res.data;
       })
       .then((data) => {
-        analytics.track(`a_submit_update_campaign_details`, {
+        analytics.track(`Form Submitted`, {
+          form_type: "Update Instagram Ad Targeting Form",
+          form_context: {
+            ...segmentInfo,
+            action_status: data.success ? "success" : "failure",
+            campaign_error: !data.success && data.message,
+          },
           source: "ad_targeting",
           source_action: "a_submit_ad_targeting",
-          ...segmentInfo,
-          action_status: data.success ? "success" : "failure",
-          campaign_error: !data.success && data.message,
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         showMessage({
           type: data.success ? "success" : "warning",
