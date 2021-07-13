@@ -182,12 +182,13 @@ class InstagramAdPaymentReview extends Component {
         this.props.data.campaignInfo.targeting &&
         this.props.data.campaignInfo.targeting.age_min,
     };
-    analytics.track(`ad_review`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "InstagramStoryAdPaymentReview",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      ...segmentInfo,
-      businessid: this.props.mainBusiness.businessid,
+      form_context: { ...segmentInfo },
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.saveCampaignSteps([
       "Dashboard",
@@ -583,12 +584,10 @@ class InstagramAdPaymentReview extends Component {
                       campaign_region: regionNames,
                       campaign_devices: user_devices,
                     };
-                    analytics.track(`a_submit_ad_review`, {
-                      source: "ad_review",
-                      source_action: "a_submit_ad_review",
-                      action_status: "success",
-                      businessid: this.props.mainBusiness.businessid,
-                      ...segmentInfo,
+                    analytics.track(`Button Pressed`, {
+                      button_type: "Submit Instagram Feed Ad Review",
+                      button_text: "Payment Info",
+                      button_color: "Orange",
                     });
 
                     this.props.navigation.navigate("PaymentForm", {
