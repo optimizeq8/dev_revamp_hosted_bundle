@@ -20,8 +20,9 @@ import { colors } from "../../GradiantColors/colors";
 
 import BackButton from "../../../assets/SVGs/BackButton";
 import ArrowForward from "../../../assets/SVGs/ArrowForward";
-import Logo from "../../../assets/SVGs/Optimize";
+// import Logo from "../../../assets/SVGs/Optimize";
 const imageLogo = require("../../../assets/images/people.png");
+const Logo = require("../../../assets/images/Optimize_Logo_transparent.png");
 
 //redux
 import * as actionCreators from "../../../store/actions";
@@ -180,12 +181,20 @@ class SwitchLanguage extends Component {
           />
           <Container style={styles.container}>
             <View style={styles.logoContainer}>
-              <Logo
+              <Image
+                source={Logo}
+                resizeMode="contain"
+                style={{
+                  width: heightPercentageToDP(25),
+                  height: heightPercentageToDP(12),
+                }}
+              />
+              {/* <Logo
                 style={styles.logo}
                 width={heightPercentageToDP(12)}
                 height={heightPercentageToDP(12)}
               />
-              <Text style={styles.logoText}>Optimize</Text>
+              <Text style={styles.logoText}>Optimize</Text> */}
             </View>
             <View style={styles.imageView}>
               <Image

@@ -35,8 +35,8 @@ import validateWrapper from "./ValidateWrapper";
 
 // Icons
 // import Logo from "../../../assets/SVGs/Optimize";
-// import Logo from "../../../assets/images/Optimize_Logo_transparent.png";
-import Logo from "../../../assets/images/Optimize_Icon_White.png";
+import Logo from "../../../assets/images/Optimize_Logo_transparent.png";
+// import Logo from "../../../assets/images/Optimize_Icon_White.png";
 
 import PasswordIcon from "../../../assets/SVGs/PasswordOutline";
 import SignInCover from "../../../assets/SVGs/SignInCover";
@@ -344,6 +344,15 @@ class Signin extends Component {
                 style={styles.SignInCoverImage}
                 height={heightPercentageToDP(42)}
               />
+              <Image
+                source={Logo}
+                resizeMode="contain"
+                style={{
+                  width: widthPercentageToDP(55),
+                  height: heightPercentageToDP(12),
+                  alignSelf: "center",
+                }}
+              />
               <InputScrollView
                 showsVerticalScrollIndicator={false}
                 {...ScrollView.props}
@@ -351,15 +360,6 @@ class Signin extends Component {
                 keyboardShouldPersistTaps="handled"
               >
                 <View style={styles.logoContainer}>
-                  <Image
-                    source={Logo}
-                    resizeMode="contain"
-                    style={{
-                      width: widthPercentageToDP(25),
-                      height: heightPercentageToDP(12),
-                      // alignSelf: "center",
-                    }}
-                  />
                   {/* <Logo
                     style={styles.logo}
                     width={RFValue(39, 414)}

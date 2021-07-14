@@ -13,8 +13,9 @@ const styles = StyleSheet.create({
   signTextContainer: {
     display: "flex",
     flexDirection: "row",
-    marginLeft: "auto",
+    // marginLeft: "auto",
     alignItems: "center",
+    marginBottom: RFValue(10, 414),
   },
   signText: {
     fontSize: RFValue(7, 414),
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
 
   mainView: {
     // flex: 1,
-    paddingTop: 40,
+    // paddingTop: 40,
     paddingHorizontal: 30,
   },
   heading: {
