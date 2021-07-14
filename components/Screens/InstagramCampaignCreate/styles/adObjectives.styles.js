@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
   btnHeadingText: {
     fontFamily: "montserrat-bold",
     fontSize: RFValue(7, 414),
-    color: globalColors.black,
+    color: globalColors.white,
     textTransform: "uppercase",
     textAlign: "center",
     marginTop: RFValue(1.5, 414),
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
   btnDescText: {
     fontFamily: "montserrat-regular",
     fontSize: RFValue(6, 414),
-    color: globalColors.black,
+    color: globalColors.white,
     marginTop: RFValue(1.5, 414),
     textAlign: "center",
   },
