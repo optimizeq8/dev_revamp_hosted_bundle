@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity, ScrollView } from "react-native";
+import { Text, View, TouchableOpacity, ScrollView, Image } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
@@ -19,7 +19,9 @@ import LaunchCampaignIcon from "../../../../assets/SVGs/LaunchCampaignHome";
 import Snapchat from "../../../../assets/SVGs/AdType/Snapchat";
 import Google from "../../../../assets/SVGs/AdType/GoogleIcon";
 import OnlineStoreHome from "../../../../assets/SVGs/OnlineStoreHome";
-import Logo from "../../../../assets/SVGs/Optimize";
+// import Logo from "../../../../assets/SVGs/Optimize";
+import Logo from "../../../../assets/images/Optimize_Icon_White.png";
+
 import Instagram from "../../../../assets/images/AdTypes/InstaWhiteLogo";
 
 export default class EmptyCampaigns extends Component {
@@ -118,12 +120,23 @@ export default class EmptyCampaigns extends Component {
       <View style={styles.flex1}>
         {userInfo.hasOwnProperty("verified_account") && !verified_account ? (
           <View style={styles.flex}>
-            <Logo
+            {/* <Logo
               style={styles.logo}
               width={heightPercentageToDP(11)}
               height={heightPercentageToDP(11)}
+            /> */}
+            <Image
+              source={Logo}
+              resizeMode="contain"
+              style={[
+                {
+                  width: widthPercentageToDP(25),
+                  height: heightPercentageToDP(8),
+                  alignSelf: "center",
+                },
+                styles.logo,
+              ]}
             />
-
             <Text style={[styles.helloNameStyle]}>
               {translate("Hello")} {userInfo.firstname}!
             </Text>
@@ -138,10 +151,17 @@ export default class EmptyCampaigns extends Component {
           </View>
         ) : (
           <View style={styles.flex}>
-            <Logo
-              style={styles.logo}
-              width={heightPercentageToDP(10)}
-              height={heightPercentageToDP(10)}
+            <Image
+              source={Logo}
+              resizeMode="contain"
+              style={[
+                {
+                  width: widthPercentageToDP(25),
+                  height: heightPercentageToDP(8),
+                  alignSelf: "center",
+                },
+                styles.logo,
+              ]}
             />
 
             <Text

@@ -35,7 +35,9 @@ import validateWrapper from "./ValidateWrapper";
 
 // Icons
 // import Logo from "../../../assets/SVGs/Optimize";
-import Logo from "../../../assets/images/Optimize_Logo_transparent.png";
+// import Logo from "../../../assets/images/Optimize_Logo_transparent.png";
+import Logo from "../../../assets/images/Optimize_Icon_White.png";
+
 import PasswordIcon from "../../../assets/SVGs/PasswordOutline";
 import SignInCover from "../../../assets/SVGs/SignInCover";
 
@@ -353,7 +355,7 @@ class Signin extends Component {
                     source={Logo}
                     resizeMode="contain"
                     style={{
-                      width: widthPercentageToDP(35),
+                      width: widthPercentageToDP(25),
                       height: heightPercentageToDP(12),
                       // alignSelf: "center",
                     }}

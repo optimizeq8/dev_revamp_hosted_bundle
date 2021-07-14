@@ -1043,11 +1043,11 @@ class Dashboard extends Component {
                           }}
                         >
                           <LinearGradient
-                            colors={[
-                              globalColors.bluegem,
-                              globalColors.bluegem,
-                            ]}
-                            // colors={["#41C5FF", "#46ABF4"]}
+                            // colors={[
+                            //   globalColors.bluegem,
+                            //   globalColors.bluegem,
+                            // ]}
+                            colors={["#41C5FF", "#46ABF4"]}
                             locations={[0.3, 0.75]}
                             style={styles.gradient}
                           />

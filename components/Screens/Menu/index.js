@@ -23,7 +23,7 @@ import ReactNativeBiometrics from "react-native-biometrics";
 // Icons
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 // import Logo from "../../../assets/SVGs/Optimize";
-import Logo from "../../../assets/images/Optimize_Logo_transparent.png";
+import Logo from "../../../assets/images/Optimize_Icon_White.png";
 import DownArrowIcon from "../../../assets/SVGs/MenuIcons/DownArrowIcon";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 
@@ -200,11 +200,14 @@ class Menu extends Component {
             <Image
               source={Logo}
               resizeMode="contain"
-              style={{
-                width: widthPercentageToDP(50),
-                height: heightPercentageToDP(12),
-                alignSelf: "center",
-              }}
+              style={[
+                {
+                  width: widthPercentageToDP(25),
+                  height: heightPercentageToDP(8),
+                  alignSelf: "center",
+                },
+                styles.logo,
+              ]}
             />
             {/* <Text style={styles.logoText}>Optimize</Text> */}
             <Text
