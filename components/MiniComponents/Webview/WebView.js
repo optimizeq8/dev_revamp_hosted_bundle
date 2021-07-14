@@ -15,7 +15,8 @@ import analytics from "@segment/analytics-react-native";
 import CustomHeader from "../Header";
 import SafeAreaView from "react-native-safe-area-view";
 import CookieManager from "@react-native-cookies/cookies";
-import Logo from "../../../assets/SVGs/OptimizePurpleBgLogo";
+import Logo from "../../../assets/images/Optimize_Logo_Purple.png";
+// import Logo from "../../../assets/SVGs/OptimizePurpleBgLogo";
 
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";
@@ -94,11 +95,11 @@ class index extends Component {
           style={{ flex: 1 }}
           forceInset={{ bottom: "never", top: "always" }}
         />
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={styles.gradient}
-        />
+        /> */}
         <CustomHeader
           screenProps={this.props.screenProps}
           navigation={this.props.navigation}
@@ -121,10 +122,18 @@ class index extends Component {
         >
           {showLogo && (
             <View style={[globalStyles.whiteBackgroundColor, styles.logoView]}>
-              <Logo
+              {/* <Logo
                 style={styles.logo}
                 width={heightPercentageToDP(10)}
                 height={heightPercentageToDP(10)}
+              /> */}
+              <Image
+                source={Logo}
+                style={{
+                  width: heightPercentageToDP(15),
+                  height: heightPercentageToDP(10),
+                }}
+                resizeMode="contain"
               />
               <Image
                 source={{ uri: ImageUrl }}

@@ -450,7 +450,7 @@ class Menu extends Component {
                 style={styles.options}
                 onPress={() =>
                   this.handleNavigation("WebView", false, {
-                    url: "https://www.optimizeapp.com/terms_conditions",
+                    url: "https://www.optimizeapp.com/rebranding/terms_conditions", // TODO: Remove /rebranding
                     title: "Terms & Conditions",
                     source: "app_TNC",
                     source_action: "a_open_app_TNC",
@@ -474,7 +474,7 @@ class Menu extends Component {
                 style={styles.options}
                 onPress={() =>
                   this.handleNavigation("WebView", false, {
-                    url: "https://www.optimizeapp.com/privacy",
+                    url: "https://www.optimizeapp.com/rebranding/privacy", // TODO: Chage back to /privacy
                     title: "Privacy Policy",
                     source: "app_privacy_policy",
                     source_action: "a_open_app_privacy_policy",
