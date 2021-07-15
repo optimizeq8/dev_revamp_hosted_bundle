@@ -189,9 +189,12 @@ class App extends React.Component {
     RNNotifications.events().registerNotificationReceivedForeground(
       (notification, completion) => {
         if (notification)
-          analytics.track("Notification Received - Foreground", {
+          analytics.track("Notification Received", {
+            state: "Forground",
             notification: notification.payload,
-            platform: Platform.OS,
+            business_id:
+              store.getState().account.mainBusiness &&
+              store.getState().account.mainBusiness.businessid,
           });
 
         // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
@@ -202,9 +205,12 @@ class App extends React.Component {
     RNNotifications.events().registerNotificationOpened(
       (notification, completion, action) => {
         if (notification) {
-          analytics.track("Notification opened by device user", {
+          analytics.track("Notification Opened", {
             notification: notification.payload,
-            platform: Platform.OS,
+            state: "Background",
+            business_id:
+              store.getState().account.mainBusiness &&
+              store.getState().account.mainBusiness.businessid,
           });
           if (notification.payload.hasOwnProperty("screenName")) {
             NavigationService.navigate(notification.payload.screenName);
@@ -273,25 +279,37 @@ class App extends React.Component {
       case "not-determined":
         analytics.track("Authorization Status Given", {
           status: "ATTracking Authorization Status Not Determined",
+          business_id:
+            store.getState().account.mainBusiness &&
+            store.getState().account.mainBusiness.businessid,
         });
         requestTrackingPermission().then((status) => {
           determineTrackingStatus(status);
         });
         break;
       case "restricted":
-        analytics.track("Authorization status", {
+        analytics.track("Authorization Status Given", {
           status: "ATTracking Authorization Status Restricted",
+          business_id:
+            store.getState().account.mainBusiness &&
+            store.getState().account.mainBusiness.businessid,
         });
         break;
       case "denied":
-        analytics.track("Authorization status", {
+        analytics.track("Authorization Status Given", {
           status: "ATTracking Authorization Status Denied",
+          business_id:
+            store.getState().account.mainBusiness &&
+            store.getState().account.mainBusiness.businessid,
         });
         break;
       case "unavailable":
       case "authorized":
-        analytics.track("Authorization status", {
+        analytics.track("Authorization Status Given", {
           status: "ATTracking Authorization Status Authorized",
+          business_id:
+            store.getState().account.mainBusiness &&
+            store.getState().account.mainBusiness.businessid,
         });
         IDFA.getIDFA()
           .then((idfa) => {
@@ -299,8 +317,11 @@ class App extends React.Component {
             console.log("idfa", idfa);
           })
           .catch((e) => {
-            analytics.track("IDFA not set", {
+            analytics.track("Error Setting IDFA", {
               error_status: e,
+              business_id:
+                store.getState().account.mainBusiness &&
+                store.getState().account.mainBusiness.businessid,
             });
           });
 
@@ -389,28 +410,6 @@ class App extends React.Component {
       this.state.appState.match(/inactive|background/) &&
       nextAppState === "active"
     ) {
-      analytics.track("app_open", {
-        userid:
-          (store.getState().auth &&
-            store.getState().auth.userInfo &&
-            store.getState().auth.userInfo.userid) ||
-          this.state.anonymous_userId,
-        anonymous_userId: this.state.anonymous_userId,
-        source: this.state.appState,
-        device_id: getUniqueId(),
-        businessid:
-          (store.getState().account &&
-            store.getState().account.mainBusiness &&
-            store.getState().account.mainBusiness.businessid) ||
-          null,
-        context: {
-          device: {
-            id: getUniqueId(),
-            type: Platform.OS,
-          },
-        },
-        timestamp: new Date().getTime(),
-      });
       //   analytics.identify(null, { logged_out: false }); // To avoid creating user profile
       Platform.OS === "ios" && RNNotifications.ios.setBadgeCount(0);
       // console.log("App has come to the foreground!");
