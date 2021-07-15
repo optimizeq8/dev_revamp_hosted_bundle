@@ -462,11 +462,11 @@ class InstagramStoryAdTargetting extends Component {
       interestNames: selectedItems,
     });
     let names = [];
-    // names = selectedItems.length > 0 && selectedItems.map((item) => item.name);
+    names = selectedItems.length > 0 && selectedItems.map((item) => item.name);
     analytics.track(`Form Populated`, {
       form_type: "Instagram Story Ad Targeting Form",
       form_field: "ad_interests",
-      form_value: names && names.length > 0 && names.join(", "),
+      form_value: names && names.length > 0 ? names : [],
       campaign_id: this.props.campaign_id,
       business_id:
         this.props.mainBusiness && this.props.mainBusiness.businessid,
@@ -555,7 +555,7 @@ class InstagramStoryAdTargetting extends Component {
       form_type: "Instagram Story Ad Targeting Form",
       form_field: "ad_OS_version",
       form_value: {
-        campaign_os_type: selectedItem === "" ? "ALL" : selectedItem,
+        campaign_os_type: replace.targeting.user_os,
         campaign_os_min_ver: selectedItem[0],
         campaign_os_max_ver: selectedItem[1],
       },
@@ -890,7 +890,7 @@ class InstagramStoryAdTargetting extends Component {
       analytics.track(`Form Error Made`, {
         error_screen: "InstagramStory/AdTargeting",
         source_action: "a_submit_ad_targeting",
-        campaignId: this.props.data.campaign_id,
+        campaign_id: this.props.data.campaign_id,
         campaign_channel: "Instagram",
         campaign_ad_type: "InstagramStoryAd",
         error_description:
@@ -988,7 +988,7 @@ class InstagramStoryAdTargetting extends Component {
       rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
         campaign_ad_type: "InstagramStoryAd",
-        campaignId: this.props.campaign_id,
+        campaign_id: this.props.campaign_id,
         campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
         campaign_gender:
           this.state.campaignInfo.targeting.genders[0] === ""
@@ -1783,7 +1783,7 @@ class InstagramStoryAdTargetting extends Component {
                         campaign_channel: "Instagram",
                         campaign_ad_type: "InstagramStoryAd",
                         campaign_name: this.props.data.name,
-                        campaignId: this.props.data.campaign_id,
+                        campaign_id: this.props.data.campaign_id,
                         campaign_message: this.props.data.message,
                         campaign_attachment: this.props.data.attachment,
                         campaign_swipe_up_CTA: this.props.data.call_to_action,

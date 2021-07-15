@@ -251,16 +251,15 @@ class GoogleAdDesign extends Component {
         campaign_finalurl: this.state.finalurl,
         campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
-        campaignId: this.props.campaign.id,
+        campaig_id: this.props.campaign.id,
       };
-      analytics.track(`a_error`, {
-        error_page: "ad_design",
+      analytics.track(`Form Error Made`, {
+        error_screen: "ad_design",
         source_action: "a_submit_ad_design",
-        timestamp: new Date().getTime(),
         ...segmentInfo,
         error_description:
           headline1Error || headline2Error || descriptionError || finalurlError,
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
     }
     if (
@@ -295,7 +294,7 @@ class GoogleAdDesign extends Component {
         campaign_finalurl: this.state.finalurl,
         campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
-        campaignId: this.props.campaign.id,
+        campaign_id: this.props.campaign.id,
       };
       /**
        * the screen is used to handle rejected ads as well, I send back rejected as a param
@@ -337,7 +336,7 @@ class GoogleAdDesign extends Component {
         else
           this.props.navigation.navigate("GoogleEditKeywords", {
             adData: data,
-            source: "ad_design",
+            source: "GoogleAdDesign",
             source_action: "a_ad_keywords",
           });
       }
@@ -358,11 +357,11 @@ class GoogleAdDesign extends Component {
     error = value + "Error";
     campaign_error_ = "campaign_error_" + value;
 
-    analytics.track(`a_ad_${value}`, {
-      source: "ad_design",
-      source_action: `a_ad_${value}`,
-      [campaign_]: this.state[value],
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Google Ad Design Form",
+      form_field: "ad_${value}",
+      form_value: this.state[value],
+      business_id: this.props.mainBusiness.businessid,
     });
     this.setState({ [booleanKey]: false });
     this.setState(
@@ -377,11 +376,11 @@ class GoogleAdDesign extends Component {
       },
       () => {
         if (this.state[error]) {
-          analytics.track(`a_error_form`, {
-            error_page: "ad_targeting",
+          analytics.track(`Form Erro Made`, {
+            error_screen: "GoogleAdDesign",
             error_description: this.state[error],
             source_action: `a_ad_${value}`,
-            businessid: this.props.mainBusiness.businessid,
+            business_id: this.props.mainBusiness.businessid,
           });
         }
         if (value === "finalurl") this.validatePaths();
@@ -424,14 +423,14 @@ class GoogleAdDesign extends Component {
       campaign_end_date: this.props.campaign.end_time,
       campaign_location: this.props.campaign.location,
       campaign_country: this.props.campaign.country,
-      campaignId: this.props.campaign.id,
+      campaign_id: this.props.campaign.id,
     };
-    analytics.track("ad_design", {
-      timestamp: new Date().getTime(),
+    analytics.track("Screen Viewed", {
+      screen_name: "GoogleAdDesign",
       source,
       source_action,
       ...segmentInfo,
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
 
     if (!this.props.navigation.getParam("rejected", false))
@@ -503,13 +502,12 @@ class GoogleAdDesign extends Component {
   };
 
   previewHandler = () => {
-    analytics.track(`a_preview_ad`, {
-      source: "ad_design",
-      source_action: "a_preview_ad",
-      action_status: "success",
+    analytics.track(`Button Pressed`, {
+      button_type: "Google Ad Design Preview",
+      button_text: "Eye Icon",
       campaign_channel: "google",
       campaign_ad_type: "GoogleSEAd",
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
     this.props.navigation.push("GoogleSEAPreviewScreen", {
       campaign: {

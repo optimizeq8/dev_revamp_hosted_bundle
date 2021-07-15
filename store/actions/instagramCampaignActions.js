@@ -263,13 +263,14 @@ export const saveBrandMediaInstagram = (
             })
           );
           dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
-          analytics.track("a_submit_ad_design", {
-            source: "ad_design",
-            source_action: `a_submit_ad_design`,
-            action_status: data.success ? "success" : "failure",
-            campaign_error: !data.success && data.message,
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+          analytics.track("Form Submitted", {
+            form_type: "Instagram Ad Design Form",
+            form_context: {
+              action_status: data.success ? "success" : "failure",
+              campaign_error: !data.success && data.message,
+              ...segmentInfo,
+            },
+            business_id: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
@@ -281,26 +282,31 @@ export const saveBrandMediaInstagram = (
           data.data.campaign_already_created
         ) {
           dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
-          analytics.track("a_submit_ad_design_campaign_already_created", {
-            source: "ad_design",
-            source_action: `a_submit_ad_design`,
-            action_status: data.success ? "success" : "failure",
-            campaign_error: !data.success && data.message,
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+          analytics.track("Form Submitted", {
+            form_type: "Instagram Ad Design Form",
+            already_created_campaign: true,
+            form_context: {
+              action_status: data.success ? "success" : "failure",
+              campaign_error: !data.success && data.message,
+              ...segmentInfo,
+            },
+            business_id: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
             payload: false,
           });
         } else {
-          analytics.track(`a_submit_ad_design${rejected ? "_rejection" : ""}`, {
-            source: "ad_design",
-            source_action: `a_submit_ad_design${rejected ? "_rejection" : ""}`,
-            action_status: data.success ? "success" : "failure",
-            campaign_error: !data.success && data.message,
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+          analytics.track(`Form Submitted`, {
+            form_type: `Instagram ${
+              rejected ? "Rejection" : ""
+            } Ad Design Form`,
+            form_context: {
+              action_status: data.success ? "success" : "failure",
+              campaign_error: !data.success && data.message,
+              ...segmentInfo,
+            },
+            business_id: getState().account.mainBusiness.businessid,
           });
           if (data.success) {
             onToggleModal(false);
@@ -312,7 +318,7 @@ export const saveBrandMediaInstagram = (
               persistor.purge();
             }
             NavigationService.navigate(rejected ? "Dashboard" : path, {
-              source: "ad_design",
+              source: "Instagram/AdDesign",
               source_action: `a_submit_ad_design${
                 rejected ? "_rejection" : ""
               }`,
@@ -600,8 +606,8 @@ export const ad_details_instagram = (
         } else if (data.data && data.data.campaign_already_created) {
           dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
           analytics.track(`Form Submitted`, {
-            form_type:
-              "Submit Instagram Ad Targeting Form for already created campaign",
+            form_type: "Submit Instagram Ad Targeting Form",
+            already_created_campaign: true,
             form_context: {
               ...segmentInfo,
               campaign_budget: data.data.lifetime_budget_micro,
@@ -1108,13 +1114,14 @@ export const saveInstgramExistpost = (
             })
           );
           dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
-          analytics.track("a_submit_ad_design_campaign", {
-            source: "ad_design",
-            source_action: `a_submit_ad_design`,
-            action_status: data.success ? "success" : "failure",
-            campaign_error: !data.success && data.message,
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+          analytics.track("Form Submitted", {
+            form_type: "Instagram Existing Ad Design Form",
+            form_context: {
+              action_status: data.success ? "success" : "failure",
+              campaign_error: !data.success && data.message,
+              ...segmentInfo,
+            },
+            business_id: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
@@ -1122,26 +1129,29 @@ export const saveInstgramExistpost = (
           });
         } else if (data.data && data.data.campaign_already_created) {
           dispatch(handleAlreadyCreatedCampaigns(data, "instagram"));
-          analytics.track("a_submit_ad_design_campaign_already_created", {
-            source: "ad_design",
-            source_action: `a_submit_ad_design`,
-            action_status: data.success ? "success" : "failure",
-            campaign_error: !data.success && data.message,
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+          analytics.track("Form Submitted", {
+            form_type: "Instagram Existing Ad Design Form",
+            already_created_campaign: true,
+            form_context: {
+              action_status: data.success ? "success" : "failure",
+              campaign_error: !data.success && data.message,
+              ...segmentInfo,
+            },
+            business_id: getState().account.mainBusiness.businessid,
           });
           dispatch({
             type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
             payload: false,
           });
         } else {
-          analytics.track(`a_submit_ad_design`, {
-            source: "ad_design",
-            source_action: "a_submit_ad_design",
-            action_status: data.success ? "success" : "failure",
-            campaign_error: !data.success && data.message,
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+          analytics.track("Form Submitted", {
+            form_type: "Instagram Existing Ad Design Form",
+            form_context: {
+              action_status: data.success ? "success" : "failure",
+              campaign_error: !data.success && data.message,
+              ...segmentInfo,
+            },
+            business_id: getState().account.mainBusiness.businessid,
           });
           if (data.success) {
             onToggleModal(false);
@@ -1219,14 +1229,14 @@ export const moveRejectedAdAmountToWalletInstagram = (
       })
       .then((res) => res.data)
       .then((data) => {
-        analytics.track("a_move_amount_to_wallet", {
-          source: "ad_detail",
+        analytics.track("Wallet Amount Updated", {
+          source: "InstagramCampaignDetails",
           source_action: "a_move_amount_to_wallet",
           camapign_channel: "instagram",
           campaign_id: campaign_id,
           action_status: data.success ? "success" : "failure",
           campaign_error: !data.success && data.message,
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         dispatch({
           type: actionTypes.MOVING_AMOUNT_TO_WALLET_INSTAGRAM,
@@ -1319,15 +1329,15 @@ export const downloadInstagramCSV = (campaign_id, email, showModalMessage) => {
       .post(`exportData`, { campaign_id, email })
       .then((res) => res.data)
       .then((data) => {
-        analytics.track(`a_share_csv`, {
+        analytics.track(`CSV Downloaded`, {
           channel: "email",
           source: "ad_detail",
           source_action: "a_share_csv",
           campaign_channel: "instagram",
           action_status: data.success ? "success" : "failure",
-          campaignId: campaign_id,
+          campaign_id: campaign_id,
           export_email: email,
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         showModalMessage(data.message, data.success ? "success" : "warning");
       })
@@ -1388,13 +1398,12 @@ export const repeatInstaCampagin = (previous_campaign_info, handleSwitch) => {
       })
       .then((res) => res.data)
       .then((data) => {
-        analytics.track("a_repeat_campaign", {
-          source: "dashboard",
-          source_action: "a_repeat_campaign",
-          action_status: data.success ? "success" : "failure",
-          camapign_channel: "instagram",
-          previous_campaignId: previous_campaign_info.previous_campaign_id,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track("Form Submitted", {
+          form_type: "Instagram Repeat Campaign Form",
+          form_context: {
+            camapign_channel: "Instagram",
+            original_campaign_id: previous_campaign_info.previous_campaign_id,
+          },
         });
 
         if (data && data.fb_connected === 0) {
@@ -1448,13 +1457,14 @@ export const repeatInstaCampaginBudget = (
             channel: "instagram",
           })
         );
-        analytics.track("a_submit_repeat_campaign_budget", {
-          source: "dashboard",
-          source_action: "a_submit_repeat_campaign_budget",
-          action_status: data.success ? "success" : "failure",
-          campaign_channel: "instagram",
-          campaignId: data.campaign_id,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track("Form Submitted", {
+          form_type: "Instagram Repeat Campaign Form",
+          form_context: {
+            action_status: data.success ? "success" : "failure",
+            campaign_channel: "Instagram",
+            repeat_campaign_id: data.campaign_id,
+          },
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (data && data.fb_connected === 0) {
           dispatch(
@@ -1509,13 +1519,14 @@ export const extendInstaCampagin = (previous_campaign_info, handleSwitch) => {
       })
       .then((res) => res.data)
       .then((data) => {
-        analytics.track("a_extend_campaign", {
-          source: "extend_campaign_modal",
-          source_action: "a_extend_campaign",
-          camapign_channel: "instagram",
-          previous_campaignId: previous_campaign_info.previous_campaign_id,
-          action_status: data.success ? "success" : "failure",
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track("Form Submitted", {
+          form_type: "Instagram Extend Campaign Form",
+          form_context: {
+            camapign_channel: "Instagram",
+            original_campaign_id: previous_campaign_info.previous_campaign_id,
+            action_status: data.success ? "success" : "failure",
+          },
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (data && data.fb_connected === 0) {
           dispatch(
@@ -1582,13 +1593,14 @@ export const extendInstaCampaginBudget = (
             extend_id: getState().transA.extend_id,
           })
         );
-        analytics.track("a_submit_extend_campaign_budget", {
-          source: "dashboard",
-          source_action: "a_submit_extend_campaign_budget",
-          action_status: data.success ? "success" : "failure",
-          campaign_channel: "instagram",
-          campaignId: data.campaign_id,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track("Form Submitted", {
+          form_type: "Instagram Extend Campaign Form",
+          form_context: {
+            action_status: data.success ? "success" : "failure",
+            campaign_channel: "Instagram",
+            campaign_id: data.campaign_id,
+          },
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (data && data.fb_connected === 0) {
           dispatch(

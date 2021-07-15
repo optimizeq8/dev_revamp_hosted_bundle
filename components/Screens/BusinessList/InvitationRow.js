@@ -58,10 +58,10 @@ export default class InvitationRow extends Component {
               handleTeamInvite(
                 { status: 0, v: v },
                 {
-                  source: "open_hamburger",
+                  source: "Menu",
                   source_action: "a_decline_invite",
                   invite_status: 0,
-                  invite_v: v,
+                  invite_id: v,
                 }
               )
             }

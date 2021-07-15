@@ -43,15 +43,14 @@ export const getCampaignDetails = (id, navigation) => {
           throw TypeError("Connection-Failure, Please try again later");
         }
 
-        analytics.track(`a_open_campaign_details`, {
-          source: "dashboard",
-          source_action: "a_open_campaign_details",
+        analytics.track(`Button Pressed`, {
+          button_type: "Open Campaign Details",
           action_status: data.success ? "success" : "failure",
-          campaignId: id,
+          campaign_id: id,
           campaign_type: "snapchat",
           campaign_ad_type: data.data && data.data.campaign_type,
           error_description: !data.success && data.message,
-          businessid: getState().account.mainBusiness.businessid,
+          busines_id: getState().account.mainBusiness.businessid,
         });
         dispatch({
           type: actionTypes.SET_CAMPAIGN,
@@ -311,13 +310,13 @@ export const downloadCSV = (campaign_id, email, showModalMessage) => {
       .post(`exportData`, { campaign_id, email })
       .then((res) => res.data)
       .then((data) => {
-        analytics.track(`a_share_csv`, {
+        analytics.track(`CSV Downloaded`, {
           channel: "email",
-          source: "ad_detail",
+          source: "CampaignDetails",
           source_action: "a_share_csv",
           campaign_channel: "snapchat",
           action_status: data.success ? "success" : "failure",
-          campaignId: campaign_id,
+          campaign_id: campaign_id,
           export_email: email,
           businessid: getState().account.mainBusiness.businessid,
         });

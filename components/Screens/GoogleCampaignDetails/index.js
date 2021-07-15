@@ -110,13 +110,13 @@ class GoogleCampaignDetails extends Component {
   }
 
   handleStartDatePicked = (date) => {
-    analytics.track(`a_ad_start_date`, {
-      campaign_start_date: date,
-      source: "ad_detail",
-      source_action: "a_ad_start_date",
-      campaignId: this.props.campaign.id,
-      campaign_start_date: date,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Google Campaign Details Form",
+      form_field: "ad_start_date",
+      fomr_value: date,
+      campaign_id: this.props.campaign.id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       start_time: date,
@@ -124,13 +124,13 @@ class GoogleCampaignDetails extends Component {
   };
 
   handleEndDatePicked = (date) => {
-    analytics.track(`a_ad_end_date`, {
-      campaign_end_date: date,
-      source: "ad_detail",
-      source_action: "a_ad_end_date",
-      campaignId: this.props.campaign.id,
-      campaign_end_date: date,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Google Campaign Details Form",
+      form_field: "ad_end_date",
+      fomr_value: date,
+      campaign_id: this.props.campaign.id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       end_time: date,
@@ -138,12 +138,13 @@ class GoogleCampaignDetails extends Component {
   };
 
   showModal = (visible) => {
-    analytics.track(`ad_status_modal`, {
-      campaign_status: "rejected",
-      visible,
-      source: "campaign_detail",
-      source_action: "a_update_campaign_status",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: `${visible ? "Open" : "Close"} Campaign Status Modal`,
+      button_text: this.state.toggleText !== "PAUSED" ? "LIVE" : "PAUSED",
+      campaign_channel: "google",
+      campaign_id: this.props.campaign.id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ modalVisible: visible });
   };
@@ -177,12 +178,13 @@ class GoogleCampaignDetails extends Component {
   };
 
   handleModalToggle = (status) => {
-    analytics.track(`ad_status_modal`, {
-      campaign_status: status,
-      visible: false,
-      source: "campaign_detail",
-      source_action: "a_update_campaign_status",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: `Close Campaign Status Modal`,
+      button_text: status !== "PAUSED" ? "LIVE" : "PAUSED",
+      campaign_channel: "google",
+      campaign_id: this.props.campaign.id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       toggle: status !== "PAUSED",
@@ -200,11 +202,13 @@ class GoogleCampaignDetails extends Component {
     );
   };
   showCSVModal = (isVisible) => {
-    analytics.track(`csv_modal`, {
-      source: "ad_detail",
-      source_action: "a_toggle_csv_modal",
+    analytics.track(`Button Pressed`, {
+      button_type: `${isVisible ? "Open" : "Close"} Campaign CSV Modal`,
+      button_text: "Download Icon",
       campaign_channel: "google",
-      businessid: this.props.mainBusiness.businessid,
+      campaign_id: this.props.campaign.id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ CSVModalVisible: isVisible });
   };
@@ -226,15 +230,14 @@ class GoogleCampaignDetails extends Component {
     );
 
     if (this.props.campaignError) {
-      analytics.track(`campaign_detail`, {
+      analytics.track(`Screen Viewed`, {
+        screen_name: "GoogleCampaignDetails",
         source,
         source_action,
-        timestamp: new Date().getTime(),
-        device_id: this.props.screenProps.device_id,
         campaign_id: "error",
         error_description: this.props.campaignError,
         campaign_channel: "google",
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
     }
     if (
@@ -242,14 +245,13 @@ class GoogleCampaignDetails extends Component {
       this.props.selectedCampaign &&
       this.props.selectedCampaign.campaign
     ) {
-      analytics.track(`campaign_detail`, {
+      analytics.track(`Screen Viewed`, {
+        screen_name: "GoogleCampaignDetails",
         source,
         source_action,
-        timestamp: new Date().getTime(),
-        device_id: this.props.screenProps.device_id,
-        campaignId: this.props.selectedCampaign.campaign.id,
+        campaign_id: this.props.selectedCampaign.campaign.id,
         campaign_channel: "google",
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
     }
   };
@@ -713,18 +715,19 @@ class GoogleCampaignDetails extends Component {
                                             },
                                             () => {
                                               analytics.track(
-                                                `ad_status_modal`,
+                                                `Button Pressed`,
                                                 {
-                                                  campaign_status:
+                                                  button_type:
+                                                    "Open Campaign Status Modal",
+                                                  button_text:
                                                     this.state.toggleText !==
                                                     "PAUSED"
                                                       ? "LIVE"
                                                       : "PAUSED",
-                                                  visible: true,
-                                                  source: "campaign_detail",
-                                                  source_action:
-                                                    "a_update_campaign_status",
-                                                  businessid:
+                                                  campaign_id:
+                                                    this.props.campaign.id,
+                                                  campaign_channel: "google",
+                                                  business_id:
                                                     this.props.mainBusiness
                                                       .businessid,
                                                 }

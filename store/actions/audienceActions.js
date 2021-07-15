@@ -105,14 +105,15 @@ export const createAudience = (
           type: actionTypes.SAVE_AUDIENCE_DETAIL_LOADING,
           payload: false,
         });
-        analytics.track("a_create_audience", {
-          source: "audience_detail",
-          source_action: "a_create_audience",
-          action_status: data.success ? "success" : "failure",
-          action_description: data.message,
-          audience_name: audience.name,
-          audience_targeting: audience.targeting,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track("Form Submitted", {
+          form_type: "Snapchat Audience Form",
+          form_context: {
+            action_status: data.success ? "success" : "failure",
+            action_description: data.message,
+            audience_name: audience.name,
+            audience_targeting: audience.targeting,
+          },
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch(getAudienceList());
@@ -140,13 +141,14 @@ export const deleteAudience = (audienceId) => {
       .delete(`/snapchatsavedaudience/${audienceId}`)
       .then((res) => res.data)
       .then((data) => {
-        analytics.track("a_delete_audience", {
-          source: "audience_list",
-          source_action: "a_delete_audience",
-          action_status: data.success ? "success" : "failure",
-          action_description: data.message,
-          audience_id: audienceId,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track("Form Submitted", {
+          form_type: "Snapchat Audience Form",
+          form_context: {
+            action_status: data.success ? "success" : "failure",
+            action_description: data.message,
+            audience_id: audienceId,
+          },
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch(getAudienceList());
@@ -188,15 +190,16 @@ export const updateAudience = (
           type: actionTypes.SAVE_AUDIENCE_DETAIL_LOADING,
           payload: false,
         });
-        analytics.track("a_update_audience", {
-          source: "audience_detail",
-          source_action: "a_update_audience",
-          action_status: data.success ? "success" : "failure",
-          action_description: data.message,
-          audience_id: audienceId,
-          audience_name: audienceName,
-          audience_targeting: targeting,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track("Form Submitted", {
+          form_type: "Snapchat Update Audience Form",
+          form_context: {
+            action_status: data.success ? "success" : "failure",
+            action_description: data.message,
+            audience_id: audienceId,
+            audience_name: audienceName,
+            audience_targeting: targeting,
+          },
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch(getAudienceList());

@@ -1303,7 +1303,7 @@ class AdDesign extends Component {
         campaign_name: this.rejected
           ? this.selectedCampaign.name
           : this.props.data.name,
-        campaignId: this.rejected
+        campaign_id: this.rejected
           ? this.selectedCampaign.campaign_id
           : this.props.data.campaign_id,
         campaign_objective: this.rejected

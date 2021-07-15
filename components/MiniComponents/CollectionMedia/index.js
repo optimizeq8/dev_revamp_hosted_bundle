@@ -578,10 +578,10 @@ class CollectionMedia extends Component {
       if (this.props.collectionAdLinkForm === 1) {
         const validUrl = await this.validateUrl();
         if (!validUrl || !validImage) {
-          analytics.track("a_error", {
-            error_page: "collection_media",
+          analytics.track("Form Error Made", {
+            error_screen: "CollectionMedia",
             error_description: !validUrl || !validImage,
-            businessid: this.props.mainBusiness.businessid,
+            business_id: this.props.mainBusiness.businessid,
           });
         }
         if (validUrl && validImage) {
@@ -599,10 +599,10 @@ class CollectionMedia extends Component {
       } else {
         const validDeepLinkURL = await this.validateDeepLinkUrl();
         if (!validDeepLinkURL || !validImage) {
-          analytics.track("a_error", {
-            error_page: "collection_media",
+          analytics.track("Form Error Made", {
+            error_screen: "CollectionMedia",
             error_description: !validDeepLinkURL || !validImage,
-            businessid: this.props.mainBusiness.businessid,
+            business_id: this.props.mainBusiness.businessid,
           });
         }
         if (validDeepLinkURL && validImage) {
@@ -698,20 +698,20 @@ class CollectionMedia extends Component {
   };
   getValidInfo = (stateError, error) => {
     if (stateError === "deep_link_uriError" && error) {
-      analytics.track("a_deep_link_uri", {
-        source: "ad_swipe_up_destination",
-        source_action: "a_deep_link_uri",
-        campaign_deep_link_url: this.state.deep_link_uri,
-        businessid: this.props.mainBusiness.businessid,
+      analytics.track("Form Populated", {
+        form_type: "Deep Link Form",
+        form_field: "collection_website_field",
+        form_value: this.state.deep_link_uri,
+        business_id: this.props.mainBusiness.businessid,
       });
 
       if (error) {
-        analytics.track("a_error_form", {
-          source: "ad_swipe_up_destination",
-          error_page: "ad_swipe_up_destination",
+        analytics.track("Form Error Made", {
+          source: "AdDesign",
+          error_screen: "CollectionMedia",
           source_action: "a_deep_link_uri",
           error_description: this.state.deep_link_uriError,
-          businessid: this.props.mainBusiness.businessid,
+          business_id: this.props.mainBusiness.businessid,
         });
       }
     }

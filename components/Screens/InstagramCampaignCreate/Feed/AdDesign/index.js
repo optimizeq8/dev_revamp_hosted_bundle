@@ -554,7 +554,7 @@ class AdDesign extends Component {
       button_text: "PREVIEW",
       button_color: "Transparent + White Outline",
       campaign_channel: "Instagram",
-      campaign_ad_type: this.adType,
+      campaign_ad_type: "InstagramFeedAd",
     });
     if (noError) {
       this.props.navigation.navigate("AdFeedDesignReview", {

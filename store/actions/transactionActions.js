@@ -338,14 +338,14 @@ export const removeWalletAmount = (
         return res.data;
       })
       .then((data) => {
-        analytics.track(`a_remove_wallet_amount`, {
-          source: "payment_mode",
+        analytics.track(`Wallet Amount Updated`, {
+          source: "PaymentForm",
           source_action: "a_remove_wallet_amount",
           action_status: data.success ? "success" : "failure",
-          campaignId: campaign_id,
+          campaign_id: campaign_id,
           campaign_channel:
             getState().transA.channel === "google" ? "google" : "snapchat",
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         return dispatch({
           type: actionTypes.REMOVE_WALLET_AMOUNT,
@@ -415,14 +415,15 @@ export const checkoutwithWallet = (campaign_id, navigation, retries = 3) => {
         return res.data;
       })
       .then((data) => {
-        analytics.track(`payment_processing`, {
-          source: "payment_mode",
+        analytics.track(`Checkout Started`, {
+          source: "PaymentForm",
           source_action: "a_payment_processing",
-          mode_of_payment: "WALLET",
-          amount: data.amount,
-          campaignId: campaign_id,
+          payment_method: "WALLET",
+          total: data.amount,
+          campaign_id: campaign_id,
           action_status: data.success ? "success" : "failure",
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
+          business_name: getState().account.mainBusiness.busunessname,
         });
 
         // Update the new wallet amount for that user's profile buiness
@@ -457,12 +458,11 @@ export const checkoutwithWallet = (campaign_id, navigation, retries = 3) => {
 
       .catch((err) => {
         // console.log("checkoutwithWallet Error: ", err.message || err.response);
-        analytics.track(`a_error`, {
-          source: "payment_mode",
-          error_page: "payment_mode",
+        analytics.track(`Form Error Made`, {
+          error_screen: "payment_mode",
           source_action: "a_payment_processing",
-          mode_of_payment: "WALLET",
-          campaignId: campaign_id,
+          payment_method: "WALLET",
+          campaign_id: campaign_id,
           action_status: "failure",
           error_description:
             (err.message &&
@@ -473,7 +473,8 @@ export const checkoutwithWallet = (campaign_id, navigation, retries = 3) => {
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
+          business_name: getState().account.mainBusiness.busunessname,
         });
         if (retries > 0) {
           checkoutwithWallet(campaign_id, retries - 1);
@@ -556,19 +557,20 @@ export const payment_request_knet = (
             payload: data,
           });
         } else {
-          analytics.track(`payment_processing`, {
+          analytics.track(`Checkout Started`, {
             source: "payment_mode",
             source_action: "a_payment_processing",
-            mode_of_payment: "KNET",
-            campaignId: campaign_id,
-            amount: data.amount,
+            payment_method: "KNET",
+            campaign_id: campaign_id,
+            total: data.amount,
             action_status: data.success ? "success" : "failure",
             error_description: !data.success ? data.status : null,
-            businessid: getState().account.mainBusiness.businessid,
+            business_id: getState().account.mainBusiness.businessid,
+            business_name: getState().account.mainBusiness.busunessname,
           });
           navigation.navigate("SuccessRedirect", {
             ...data,
-            source: "payment_processing",
+            source: "PaymentForm",
             source_action: "a_payment_processing",
             payment_mode: "KNET",
           });
@@ -643,19 +645,20 @@ export const payment_request_credit_card = (
             payload: data,
           });
         } else {
-          analytics.track(`payment_processing`, {
-            source: "payment_mode",
+          analytics.track(`Checkout Started`, {
+            source: "PaymentForm",
             source_action: "a_payment_processing",
-            mode_of_payment: "CREDIT CARD",
-            amount: data.amount,
-            campaignId: campaign_id,
+            payment_method: "CREDIT CARD",
+            total: data.amount,
+            campaign_id: campaign_id,
             action_status: data.success ? "success" : "failure",
             error_description: !data.success ? data.status : null,
-            businessid: getState().account.mainBusiness.businessid,
+            business_id: getState().account.mainBusiness.businessid,
+            business_name: getState().account.mainBusiness.busunessname,
           });
           navigation.navigate("SuccessRedirect", {
             ...data,
-            source: "payment_processing",
+            source: "PaymentForm",
             source_action: "a_payment_processing",
             payment_mode: "CREDIT CARD",
           });
@@ -813,18 +816,19 @@ export const payment_request_payment_method = (
           });
         } else {
           analytics.track(`payment_processing`, {
-            source: "payment_mode",
+            source: "PaymentForm",
             source_action: "a_payment_processing",
-            mode_of_payment: "CREDIT CARD",
-            amount: data.amount,
-            campaignId: campaign_id,
+            payment_method: "CREDIT CARD",
+            total: data.amount,
+            campaign_id: campaign_id,
             action_status: data.success ? "success" : "failure",
             error_description: !data.success ? data.status : null,
-            businessid: getState().account.mainBusiness.businessid,
+            business_id: getState().account.mainBusiness.businessid,
+            business_name: getState().account.mainBusiness.busunessname,
           });
           navigation.navigate("SuccessRedirect", {
             ...data,
-            source: "payment_processing",
+            source: "PaymentForm",
             source_action: "a_payment_processing",
             payment_mode: "CREDIT CARD",
           });

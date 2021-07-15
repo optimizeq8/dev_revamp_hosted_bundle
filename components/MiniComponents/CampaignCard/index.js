@@ -48,13 +48,15 @@ class CampaignCard extends Component {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
   handleCampaignPress = () => {
-    analytics.track(`a_open_campaign_card`, {
-      source: "dashboard",
+    analytics.track(`Button Pressed`, {
+      button_type: "Open Campaign Details",
+      button_text: "Campaign Name + Illustrations",
+      button_color: "Purple",
+      source: "Dashboard",
       source_action: "a_open_campaign_card",
-      timestamp: new Date().getTime(),
-      campaignId: this.props.campaign.campaign_id,
+      campaign_id: this.props.campaign.campaign_id,
       campaign_channel: "snapchat",
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
     this.props.getCampaignDetails(
       this.props.campaign.campaign_id,
@@ -76,13 +78,13 @@ class CampaignCard extends Component {
     return campaignEndedOrNot;
   };
   handleRepeatModal = (value) => {
-    analytics.track("a_toggle_repeat_modal", {
-      source: "dashboard",
-      source_action: "a_toggle_repeat_modal",
-      visible: value,
+    analytics.track("Button Pressed", {
+      button_type: `${value ? "Open" : "Close"} Repeat Campaign Modal`,
+      button_text: "Promote again",
+      button_color: "Light Gray",
       campaign_channel: "snapchat",
-      campaignId: this.props.campaign.campaign_id,
-      businessid: this.props.mainBusiness.businessid,
+      campaign_id: this.props.campaign.campaign_id,
+      business_id: this.props.mainBusiness.businessid,
     });
     this.handleOptionsModal(false);
     this.setState({
@@ -90,13 +92,13 @@ class CampaignCard extends Component {
     });
   };
   handleExtendModal = (value) => {
-    analytics.track("a_toggle_extend_modal", {
-      source: "dashboard",
-      source_action: "a_toggle_extend_modal",
-      visible: value,
+    analytics.track("Button Pressed", {
+      button_type: `${value ? "Open" : "Close"} Extend Campaign Modal`,
+      button_text: "Extend",
+      button_color: "Light Gray",
       campaign_channel: "snapchat",
-      campaignId: this.props.campaign.campaign_id,
-      businessid: this.props.mainBusiness.businessid,
+      campaign_id: this.props.campaign.campaign_id,
+      business_id: this.props.mainBusiness.businessid,
     });
     this.handleOptionsModal(false);
     this.setState({
@@ -104,13 +106,13 @@ class CampaignCard extends Component {
     });
   };
   handleOptionsModal = (value) => {
-    analytics.track("a_toggle_options_modal", {
-      source: "dashboard",
-      source_action: "a_toggle_options_modal",
-      visible: value,
+    analytics.track("Button Pressed", {
+      button_type: "Open Options Campaign Modal",
+      button_text: "3 dots Icon",
+      button_color: "Light Gray",
       campaign_channel: "snapchat",
-      campaignId: this.props.campaign.campaign_id,
-      businessid: this.props.mainBusiness.businessid,
+      campaign_id: this.props.campaign.campaign_id,
+      business_id: this.props.mainBusiness.businessid,
     });
     this.setState({
       showCampaignOptions: value,

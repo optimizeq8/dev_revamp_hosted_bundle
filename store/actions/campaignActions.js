@@ -392,22 +392,25 @@ export const uploadStoryAdCover = (
             type: actionTypes.SET_COVER_LOADING_DESIGN,
             payload: false,
           });
-          analytics.track(`a_submit_ad_cover_campaign_already_created`, {
-            source: "ad_cover",
-            source_action: "a_submit_ad_cover",
-            resubmit: rejected,
-            action_status: data.success ? "success" : "failure",
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+          analytics.track(`Form Submitted`, {
+            form_type: "Ad Design Cover Form",
+            already_created_campaign: true,
+            form_context: {
+              resubmit: rejected,
+              action_status: data.success ? "success" : "failure",
+              ...segmentInfo,
+            },
+            business_id: getState().account.mainBusiness.businessid,
           });
         } else {
-          analytics.track(`a_submit_ad_cover`, {
-            source: "ad_cover",
-            source_action: "a_submit_ad_cover",
-            resubmit: rejected,
-            action_status: data.success ? "success" : "failure",
-            ...segmentInfo,
-            businessid: getState().account.mainBusiness.businessid,
+          analytics.track(`Form Submitted`, {
+            form_type: "Ad Design Cover Form",
+            form_context: {
+              resubmit: rejected,
+              action_status: data.success ? "success" : "failure",
+              ...segmentInfo,
+            },
+            business_id: getState().account.mainBusiness.businessid,
           });
           showMessage({
             message: data.message,
@@ -859,15 +862,13 @@ export const updateStatus = (info, handleToggle) => {
         return res.data;
       })
       .then((data) => {
-        analytics.track(`a_update_campaign_status`, {
+        analytics.track(`Campaign Status Updated`, {
           campaign_id: info.campaign_id,
           campaign_spend: info.spend,
           campaign_status: data.status,
           action_status: data.success ? "sucsess" : "failure",
           campaign_error: !data.success && data.message,
-          source: "campaign_detail",
-          source_action: "a_update_campaign_status",
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         handleToggle(data.status);
         if (data.message) {
@@ -894,16 +895,6 @@ export const endCampaign = (info, handleToggle) => {
       })
       .then((data) => {
         handleToggle(data.status);
-        analytics.track(`a_update_campaign_status`, {
-          campaign_id: info.campaign_id,
-          campaign_spend: info.spend,
-          campaign_status: data.status,
-          action_status: data.success ? "sucsess" : "failure",
-          campaign_error: !data.success && data.message,
-          source: "campaign_detail",
-          source_action: "a_update_campaign_status",
-          businessid: getState().account.mainBusiness.businessid,
-        });
         if (data.message) {
           showMessage({ message: data.message, type: "info", position: "top" });
         }
@@ -1721,24 +1712,24 @@ export const verifyDestinationUrl = (url, submit, translate) => {
       )
       .then((res) => res.data)
       .then((data) => {
-        analytics.track(`a_verify_destination_url`, {
-          source: "ad_swipe_up_destination",
-          source_action: "a_verify_destination_url",
-          action_status: data.success ? "success" : "failure",
-          campaign_url: url,
-          businessid: getState().account.mainBusiness.businessid,
-        });
+        // analytics.track(`a_verify_destination_url`, {
+        //   source: "ad_swipe_up_destination",
+        //   source_action: "a_verify_destination_url",
+        //   action_status: data.success ? "success" : "failure",
+        //   campaign_url: url,
+        //   businessid: getState().account.mainBusiness.businessid,
+        // });
         if (data.success) {
           submit(url);
         }
         if (!data.success) {
-          analytics.track(`a_error_form`, {
-            error_page: "ad_swipe_up_destination",
+          analytics.track(`Form Error Made`, {
+            error_screen: "AdDesign Swipe Up",
             error_description:
               "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media",
             campaign_channel: "snapchat",
             campaign_url: url,
-            businessid: getState().account.mainBusiness.businessid,
+            business_id: getState().account.mainBusiness.businessid,
           });
           showMessage({
             type: "warning",
@@ -1822,14 +1813,14 @@ export const moveRejectedAdAmountToWallet = (campaign_id, keep_campaign) => {
       })
       .then((res) => res.data)
       .then((data) => {
-        analytics.track("a_move_amount_to_wallet", {
-          source: "ad_detail",
+        analytics.track("Wallet Amount Updated", {
+          source: "CampaignDetails",
           source_action: "a_move_amount_to_wallet",
-          camapign_channel: "snapchat",
-          campaignId: campaign_id,
+          camapign_channel: "Snapchat",
+          campaign_id: campaign_id,
           action_status: data.success ? "success" : "failure",
           campaign_error: !data.success && data.message,
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         dispatch({
           type: actionTypes.MOVING_AMOUNT_TO_WALLET,
@@ -1942,18 +1933,15 @@ export const verifySnapchatOtp = (
       })
       .then((res) => res.data)
       .then((data) => {
-        analytics.track(`a_verify_otp`, {
-          source: "otp_verify",
+        analytics.track(`Engagement Number Verified`, {
+          source: "SuccessRedirect",
           source_action: `a_verify_otp`,
-          verification_channel: "Mobile",
           action_status: data.success ? "success" : "failure",
           action_message: data.message,
-          campaignId: campaign_id,
+          campaign_id: campaign_id,
           campaign_phone_number_id: phone_number_id,
-          campaign_verification_code: verification_code,
           campaign_error: !data.success && data.message,
-          campaignId: campaign_id,
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         showMessage({
           message: data.message,
@@ -1985,12 +1973,12 @@ export const repeatSnapCampagin = (previous_campaign_info, handleSwitch) => {
       })
       .then((res) => res.data)
       .then((data) => {
-        analytics.track("a_repeat_campaign", {
-          source: "repeat_campaign_modal",
-          source_action: "a_repeat_campaign",
-          camapign_channel: "snapchat",
-          previous_campaignId: previous_campaign_info.previous_campaign_id,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track("Form Submitted", {
+          form_type: "Snapchat Repeat Campaign Form",
+          form_context: {
+            camapign_channel: "Snapchat",
+            original_campaign_id: previous_campaign_info.previous_campaign_id,
+          },
         });
         if (data.success)
           dispatch({
@@ -2032,13 +2020,14 @@ export const repeatSnapCampaginBudget = (
             channel: "",
           })
         );
-        analytics.track("a_submit_repeat_campaign_budget", {
-          source: "repeat_campaign_modal",
-          source_action: "a_submit_repeat_campaign_budget",
-          action_status: data.success ? "success" : "failure",
-          campaign_channel: "snapchat",
-          campaignId: data.campaign_id,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track("Form Submitted", {
+          form_type: "Snapchat Repeat Campaign Form",
+          form_context: {
+            action_status: data.success ? "success" : "failure",
+            campaign_channel: "snapchat",
+            repeat_campaign_id: data.campaign_id,
+          },
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch({
@@ -2080,13 +2069,14 @@ export const extendSnapCampagin = (previous_campaign_info, handleSwitch) => {
       })
       .then((res) => res.data)
       .then((data) => {
-        analytics.track("a_extend_campaign", {
-          source: "extend_campaign_modal",
-          source_action: "a_extend_campaign",
-          camapign_channel: "snapchat",
-          previous_campaignId: previous_campaign_info.previous_campaign_id,
-          action_status: data.success ? "success" : "failure",
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track("Form Submitted", {
+          form_type: "Snapchat Extend Campaign Form",
+          form_context: {
+            camapign_channel: "Snapchat",
+            original_campaign_id: previous_campaign_info.previous_campaign_id,
+            action_status: data.success ? "success" : "failure",
+          },
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch(
@@ -2144,13 +2134,14 @@ export const extendSnapCampaginBudget = (
             extend_id: getState().transA.extend_id,
           })
         );
-        analytics.track("a_submit_extend_campaign_budget", {
-          source: "dashboard",
-          source_action: "a_submit_extend_campaign_budget",
-          action_status: data.success ? "success" : "failure",
-          campaign_channel: "channel",
-          campaignId: data.campaign_id,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track("Form Submitted", {
+          form_type: "Snapchat Extend Campaign Form",
+          form_context: {
+            action_status: data.success ? "success" : "failure",
+            campaign_channel: "Snapchat",
+            campaign_id: data.campaign_id,
+          },
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch({
@@ -2236,14 +2227,15 @@ export const updateCampaignBrandName = (
       .post(`updateSnapAdBrandName`, { campaign_id })
       .then((res) => res.data)
       .then((data) => {
-        analytics.track("a_submit_ad_design", {
-          source: "ad_detail",
-          source_action: "a_update_ad_rejection",
-          campaignId: campaign_id,
-          campaign_channel: "snapchat",
-          action_status: data.success ? "success" : "failure",
-          campaign_error: !data.success && data.message,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track("Form Submitted", {
+          form_type: "Update Rejected Campaign Brand Name",
+          form_context: {
+            campaign_id: campaign_id,
+            campaign_channel: "snapchat",
+            action_status: data.success ? "success" : "failure",
+            campaign_error: !data.success && data.message,
+          },
+          business_id: getState().account.mainBusiness.businessid,
         });
         showMessage({
           message: data.message,
@@ -2269,14 +2261,15 @@ export const updateCampaignBrandName = (
           payload: false,
         });
         // console.log("error updateCampaignBrandName", error);
-        analytics.track("a_submit_ad_design", {
-          source: "ad_detail",
-          source_action: "a_update_ad_design",
-          campaignId: campaign_id,
-          campaign_channel: "snapchat",
-          action_status: "failure",
-          campaign_error: error || error.response || error.message,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track("Form Submitted", {
+          form_type: "Update Rejected Campaign Brand Name",
+          form_context: {
+            campaign_id: campaign_id,
+            campaign_channel: "snapchat",
+            action_status: data.success ? "success" : "failure",
+            campaign_error: !data.success && data.message,
+          },
+          business_id: getState().account.mainBusiness.businessid,
         });
       });
   };

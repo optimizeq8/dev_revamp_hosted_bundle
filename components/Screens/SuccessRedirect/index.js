@@ -79,27 +79,27 @@ class SuccessRedirect extends Component {
         transaction_id: this.props.navigation.getParam("paymentId", ""),
         track_id: this.props.navigation.getParam("trackID", ""),
       };
-      if (
-        this.props.navigation.getParam("payment_mode").toLowerCase() !==
-        "wallet"
-      )
-        analytics.track(`Order Completed for Adjust`, {
-          source,
-          source_action,
-          business_id: this.props.mainBusiness.businessid,
-          business_name: this.props.mainBusiness.businessname,
-          ...segmentInfo,
-          payment_method: this.props.navigation.getParam("payment_mode"),
-        });
+      // if (
+      //   this.props.navigation.getParam("payment_mode").toLowerCase() !==
+      //   "wallet"
+      // )
+      //   analytics.track(`Order Completed for Adjust`, {
+      //     source,
+      //     source_action,
+      //     business_id: this.props.mainBusiness.businessid,
+      //     business_name: this.props.mainBusiness.businessname,
+      //     ...segmentInfo,
+      //     payment_method: this.props.navigation.getParam("payment_mode"),
+      //   });
     }
-    analytics.track(`Order Completed`, {
-      source,
-      source_action,
-      business_id: this.props.mainBusiness.businessid,
-      business_name: this.props.mainBusiness.businessname,
-      ...segmentInfo,
-      payment_method: this.props.navigation.getParam("payment_mode"),
-    });
+    // analytics.track(`Order Completed`, {
+    //   source,
+    //   source_action,
+    //   business_id: this.props.mainBusiness.businessid,
+    //   business_name: this.props.mainBusiness.businessname,
+    //   ...segmentInfo,
+    //   payment_method: this.props.navigation.getParam("payment_mode"),
+    // });
     //TODO: For adjust please add the analytics keywords accordinlgy for instagram channel
     if (this.props.navigation.getParam("isWallet") === "1") {
       // let adjustWalletPaymentTracker = new AdjustEvent("byiugh");
@@ -155,7 +155,7 @@ class SuccessRedirect extends Component {
         ) {
           analytics.track(`Engagement Number Verified`, {
             business_id: this.props.mainBusiness.businessid,
-            source: "payment_end",
+            source: "SuccessRedirect",
             source_action: "a_verify_phone_number_engagement",
             campaign_id: this.state.campaign_id,
             campaign_engagement_phone_number: this.state.engagmentPhoneNumber,

@@ -153,16 +153,16 @@ class GoogleSEAPreviewScreen extends Component {
         campaign_finalurl: this.state.campaign.finalurl,
         campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
-        campaignId: this.props.campaign.id,
+        campaign_id: this.props.campaign.id,
       };
-      analytics.track(`a_error`, {
-        error_page: "ad_preview",
+      analytics.track(`Form Error Made`, {
+        error_screen: "GoogleSEAPreviewScreen",
         source_action: "a_submit_ad_preview",
         timestamp: new Date().getTime(),
         ...segmentInfo,
         error_description:
           headline1Error || headline2Error || descriptionError || finalurlError,
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
     }
     if (
@@ -196,7 +196,7 @@ class GoogleSEAPreviewScreen extends Component {
         campaign_finalurl: this.state.campaign.finalurl,
         campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
-        campaignId: this.props.campaign.id,
+        campaign_id: this.props.campaign.id,
       };
       /**
        * the screen is used to handle rejected ads as well, I send back rejected as a param
@@ -238,7 +238,7 @@ class GoogleSEAPreviewScreen extends Component {
         else
           this.props.navigation.navigate("GoogleEditKeywords", {
             adData: data,
-            source: "ad_preview",
+            source: "GoogleSEAPreviewScreen",
             source_action: "a_ad_keywords",
           });
       }

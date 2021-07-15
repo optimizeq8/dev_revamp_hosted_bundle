@@ -75,11 +75,12 @@ class EditKeywords extends Component {
   };
 
   handleModalToggle = () => {
-    analytics.track(`ad_edit_modal`, {
-      visible: !this.state.modalVisible,
-      source: "ad_keywords",
-      source_action: "a_toggle_modal",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: `${
+        !this.state.modalVisible ? "Open" : "Close"
+      } Google Keywords Modal`,
+      button_text: "",
+      business_id: this.props.mainBusiness.businessid,
     });
     this.setState({ modalVisible: !this.state.modalVisible });
   };
@@ -92,7 +93,7 @@ class EditKeywords extends Component {
         : null;
     if (!keywordsError) {
       const segmentInfo = {
-        campaignId: this.props.selectedCampaign.campaign.id,
+        campaign_id: this.props.selectedCampaign.campaign.id,
         campaign_keywords: this.state.keywords,
         source: "ad_keywords",
         source_action: "a_update_ad_keywords",
@@ -115,12 +116,12 @@ class EditKeywords extends Component {
         segmentInfo
       );
     } else {
-      analytics.track(`a_error_form`, {
-        error_page: "ad_keywords",
+      analytics.track(`Form Error Made`, {
+        error_screen: "EditKeywords",
         error_description: keywordsError,
-        source: "ad_targeting",
+        source: "GoogleCampaignDetails",
         source_action: "a_update_ad_keywords",
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
       showMessage({
         message: translate(keywordsError),
@@ -139,13 +140,12 @@ class EditKeywords extends Component {
       this.props.prevAppState
     );
 
-    analytics.track(`ad_keywords`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "EditKeywords",
       source,
       source_action,
-      campaign_keywords: this.props.selectedCampaign.keywords.map(
-        (k) => k.keyword
-      ),
-      businessid: this.props.mainBusiness.businessid,
+      form_context: this.props.selectedCampaign.keywords.map((k) => k.keyword),
+      business_id: this.props.mainBusiness.businessid,
     });
   };
   render() {

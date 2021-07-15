@@ -135,11 +135,10 @@ class Deep_Link extends Component {
   }
 
   handleCallaction = (callaction) => {
-    analytics.track(`a_change_cta`, {
-      source: "ad_swipe_up_destination",
-      source_action: "a_change_cta",
-      campaign_swipe_up_CTA: callaction,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Ad Design Form",
+      form_field: "deep_link_cta",
+      form_value: callaction,
     });
     this.setState({
       callaction,
@@ -157,23 +156,19 @@ class Deep_Link extends Component {
     androidApp_icon
   ) => {
     if (nameError || callActionError) {
-      analytics.track(`a_error_form`, {
-        error_page: "ad_swipe_up_destination",
+      analytics.track(`Form Error Made`, {
+        error_screen: "AdDesign Swipe Up",
         error_description: nameError || callActionError,
         campaign_swipe_up_destination: "Deep Link",
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
     if (!nameError && !callActionError) {
-      analytics.track(`a_select_campaign_app`, {
-        source: "ad_swipe_up_destination",
-        source_action: "a_select_campaign_app",
-        campaign_swipe_up_destination: "Deep Link",
-        campaign_app_OS: appChoice,
-        campaign_app_name: appChoice === "iOS" ? iosApp_name : androidApp_name,
-        businessid:
-          this.props.mainBusiness && this.props.mainBusiness.businessid,
+      analytics.track(`Form Populated`, {
+        form_type: "Ad Design Form",
+        form_field: "deep_link_swipe_up",
+        form_value: appChoice === "iOS" ? iosApp_name : androidApp_name,
       });
 
       this.setState({
@@ -241,11 +236,11 @@ class Deep_Link extends Component {
       appError,
     });
     if (appError) {
-      analytics.track(`a_error_form`, {
-        error_page: "ad_swipe_up_destination",
+      analytics.track(`Form Error Made`, {
+        error_screen: "AdDesign Swipe Up",
         campaign_swipe_up_destination: "Deep Link",
         error_description: appError,
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }

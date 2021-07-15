@@ -655,7 +655,7 @@ class AdDetails extends Component {
     analytics.track(`Form Populated`, {
       form_type: "Ad Targeting Form",
       form_field: "ad_interests",
-      form_value: names && names.length > 0 && names.join(", "),
+      form_value: names && names.length > 0 ? names : [],
       campaign_id: this.props.campaign_id,
       business_id:
         this.props.mainBusiness && this.props.mainBusiness.businessid,
@@ -888,10 +888,10 @@ class AdDetails extends Component {
             ? foundRegions.regions.map((reg) => reg.id)
             : [];
         });
-        analytics.track(`a_ad_regions`, {
+        analytics.track(`Form Populated`, {
           form_type: "Ad Targeting Form",
           form_field: "ad_regions",
-          form_value: rNamesSelected.join(", "),
+          form_value: rNamesSelected.map((reg) => reg.name),
           business_id:
             this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
@@ -923,10 +923,10 @@ class AdDetails extends Component {
           country_code: country_code,
         });
       }
-      analytics.track(`a_ad_regions`, {
+      analytics.track(`Form Populated`, {
         form_type: "Ad Targeting Form",
         form_field: "ad_regions",
-        form_value: rNamesSelected.join(", "),
+        form_value: rNamesSelected.map((reg) => reg.name),
         business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
@@ -1278,7 +1278,7 @@ class AdDetails extends Component {
         this.state.interestNames.length > 0 &&
         this.state.interestNames.map((inter) => inter.name);
       const segmentInfo = {
-        campaignId: this.props.campaign_id,
+        campaign_id: this.props.campaign_id,
         campaign_ad_type: this.props.adType,
         business_name: this.props.mainBusiness.businessname,
         campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
@@ -1501,7 +1501,7 @@ class AdDetails extends Component {
           campaign_channel: "snapchat",
           campaign_ad_type: this.props.adType,
           campaign_name: this.props.data.name,
-          campaignId: this.props.data.campaign_id,
+          campaign_id: this.props.data.campaign_id,
           campaign_brand_name: this.props.data.brand_name,
           campaign_headline: this.props.data.headline,
           campaign_attachment: this.props.data.attachment,

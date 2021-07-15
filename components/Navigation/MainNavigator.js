@@ -39,7 +39,7 @@ import { register } from "react-native-bundle-splitter";
 // import TeamInvite from "../Screens/TeamInvite";
 // import GoogleAdInfo from "../Screens/GoogleCampaignCreate/GoogleAdInfo";
 // import GoogleAdDesign from "../Screens/GoogleCampaignCreate/GoogleAdDesign";
-// import GoogleAdTargetting from "../Screens/GoogleCampaignCreate/GoogleAdTargetting";
+// import GoogleAdTargeting from "../Screens/GoogleCampaignCreate/GoogleAdTargeting";
 // import GoogleAdPaymentReview from "../Screens/GoogleCampaignCreate/GoogleAdPaymentReview";
 // import GoogleCreateAdAcc from "../Screens/GoogleCreateAdAcc";
 // import GoogleCampaignDetails from "../Screens/GoogleCampaignDetails";
@@ -217,9 +217,9 @@ export default createNativeStackNavigator(
     GoogleAdDesign: register({
       require: () => require("../Screens/GoogleCampaignCreate/GoogleAdDesign"),
     }),
-    GoogleAdTargetting: register({
+    GoogleAdTargeting: register({
       require: () =>
-        require("../Screens/GoogleCampaignCreate/GoogleAdTargetting"),
+        require("../Screens/GoogleCampaignCreate/GoogleAdTargeting"),
     }),
     GoogleAdPaymentReview: register({
       require: () =>

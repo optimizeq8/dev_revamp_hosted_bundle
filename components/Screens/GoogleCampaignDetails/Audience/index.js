@@ -58,7 +58,7 @@ import {
 } from "react-native-responsive-screen";
 import { isRTL } from "expo-localization";
 
-class GoogleAdTargetting extends Component {
+class GoogleAdTargeting extends Component {
   static navigationOptions = {
     header: null,
     gesturesEnabled: false,
@@ -787,4 +787,4 @@ const mapDispatchToProps = (dispatch) => ({
   get_google_SE_location_list_reach: (country) =>
     dispatch(actionCreators.get_google_SE_location_list_reach(country)),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(GoogleAdTargetting);
+export default connect(mapStateToProps, mapDispatchToProps)(GoogleAdTargeting);

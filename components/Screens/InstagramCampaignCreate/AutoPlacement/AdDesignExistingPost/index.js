@@ -26,8 +26,7 @@ import Axios from "axios";
 import list from "../../../../Data/callactions.data";
 
 const preview = {
-  uri:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+  uri: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
 };
 //Redux
 import { connect } from "react-redux";
@@ -447,7 +446,7 @@ class InstagramAdDesignExistingPost extends Component {
       const segmentInfo = {
         campaign_channel: "instagram",
         campaign_ad_type: "InstagramAutoPlacementAd",
-        campaignId: this.props.data.campaign_id,
+        campaign_id: this.props.data.campaign_id,
         campaign_business_name: this.state.campaignInfo.instagram_business_name,
         campaign_caption: this.state.campaignInfo.message,
         campaign_attachment: this.state.campaignInfo.attachment,
@@ -611,7 +610,7 @@ class InstagramAdDesignExistingPost extends Component {
       campaign_ad_type: "InstagramAutoPlacementAd",
       campaign_existing_post: true,
       campaign_name: this.props.data.name,
-      campaignId: this.props.data.campaign_id,
+      campaign_id: this.props.data.campaign_id,
       campaign_objective: this.props.data.objective,
       campaign_duration:
         Math.ceil(

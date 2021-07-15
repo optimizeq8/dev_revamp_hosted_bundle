@@ -446,11 +446,11 @@ class InstagramFeedAdTargetting extends Component {
       interestNames: selectedItems,
     });
     let names = [];
-    // names = selectedItems.length > 0 && selectedItems.map((item) => item.name);
+    names = selectedItems.length > 0 && selectedItems.map((item) => item.name);
     analytics.track(`Form Populated`, {
       form_type: "Instagram Feed Ad Targeting Form",
       form_field: "ad_interests",
-      form_value: names && names.length > 0 && names.join(", "),
+      form_value: names && names.length > 0 ? names : [],
       campaign_id: this.props.campaign_id,
       business_id:
         this.props.mainBusiness && this.props.mainBusiness.businessid,
@@ -539,7 +539,7 @@ class InstagramFeedAdTargetting extends Component {
       form_type: "Instagram Feed Ad Targeting Form",
       form_field: "ad_OS_version",
       form_value: {
-        campaign_os_type: selectedItem === "" ? "ALL" : selectedItem,
+        campaign_os_type: replace.targeting.user_os,
         campaign_os_min_ver: selectedItem[0],
         campaign_os_max_ver: selectedItem[1],
       },
@@ -1005,7 +1005,7 @@ class InstagramFeedAdTargetting extends Component {
       rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
         campaign_ad_type: "InstagramFeedAd",
-        campaignId: this.props.campaign_id,
+        campaign_id: this.props.campaign_id,
         campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
         campaign_gender:
           this.state.campaignInfo.targeting.genders[0] === ""
@@ -1793,7 +1793,7 @@ class InstagramFeedAdTargetting extends Component {
                         campaign_existing_post:
                           this.props.data.existingPost === 0 ? true : false,
                         campaign_name: this.props.data.name,
-                        campaignId: this.props.data.campaign_id,
+                        campaign_id: this.props.data.campaign_id,
                         campaign_message: this.props.data.message,
                         campaign_attachment: this.props.data.attachment,
                         campaign_swipe_up_CTA: this.props.data.call_to_action,

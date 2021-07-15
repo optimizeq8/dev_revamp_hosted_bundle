@@ -19,13 +19,11 @@ class GoogleCampaignCard extends Component {
   campaign_status = this.props.campaign.status;
 
   handleCampaignPress = () => {
-    analytics.track(`a_open_campaign_card`, {
-      source: "dashboard",
-      source_action: "a_open_campaign_card",
-      timestamp: new Date().getTime(),
-      campaignId: this.props.campaign.campaign_id,
-      campaign_channel: "google",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Google Campaign Card",
+      campaign_id: this.props.campaign.campaign_id,
+      campaign_channel: "Google",
+      business_id: this.props.mainBusiness.businessid,
     });
     this.props.get_google_campiagn_details(
       this.props.campaign.campaign_id,

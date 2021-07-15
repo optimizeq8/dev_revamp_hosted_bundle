@@ -339,7 +339,7 @@ class PaymentForm extends Component {
 
   _handleChoice = (choice) => {
     analytics.track(`Payment Mode Selected`, {
-      source: "Payment Form",
+      source: "PaymentForm",
       source_action: "a_select_payment_mode",
       payment_method:
         choice === 1
@@ -392,7 +392,7 @@ class PaymentForm extends Component {
 
     if (this.state.addingCredits) {
       const amount = this.props.navigation.getParam(`amount`, 0);
-      analytics.track(`Checkout Started`, {
+      analytics.track(`Checkout Step Viewed`, {
         checkout_type: "Wallet Top Up",
         source,
         source_action,
@@ -400,7 +400,7 @@ class PaymentForm extends Component {
         business_id: this.props.mainBusiness.businessid,
       });
     } else {
-      analytics.track(`Checkout Started`, {
+      analytics.track(`Checkout Step Viewed`, {
         screen_name: "PayemntForm",
         checkout_type: "Campaign Checkout",
         source,

@@ -64,7 +64,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../../GradiantColors/colors";
 import GradientButton from "../../../MiniComponents/GradientButton";
 
-class GoogleAdTargetting extends Component {
+class GoogleAdTargeting extends Component {
   static navigationOptions = {
     header: null,
     gesturesEnabled: false,
@@ -167,11 +167,11 @@ class GoogleAdTargetting extends Component {
   };
 
   _renderSideMenu = (component, option = "") => {
-    analytics.track(`a_open_side_menu`, {
-      menu_component: component,
-      source: "ad_targeting",
-      source_action: "a_open_side_menu",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Open Side Menu Targeting",
+      button_text: this.componentDidMount,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ sidemenu: component, selectionOption: option }, () =>
       this._handleSideMenuState(true)
@@ -181,24 +181,25 @@ class GoogleAdTargetting extends Component {
   _handleGenderSelection = (gender) => {
     this.setState({ gender: gender });
 
-    analytics.track(`a_ad_gender`, {
-      source: "ad_targeting",
-      source_action: "a_ad_gender",
+    analytics.track(`Form Populated`, {
+      form_type: "Google Ad Targeting Form",
+      form_field: "ad_gender",
+      form_value: gender,
       campaign_type: "google",
-      campaignId: this.props.campaign.id,
-      campaign_gender: gender,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      campaign_id: this.props.campaign.id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.save_google_campaign_data({ gender: gender });
   };
 
   _handleAgeSelection = (val) => {
     if (val === "Undetermined") {
-      analytics.track(`a_ad_age`, {
-        source: "ad_targeting",
-        source_action: "a_ad_age",
-        campaign_age: [val],
-        businessid:
+      analytics.track(`Form Populated`, {
+        form_type: "Google Ad Targeting Form",
+        form_field: "ad_age",
+        form_value: [val],
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.setState({ age: [val] });
@@ -209,12 +210,11 @@ class GoogleAdTargetting extends Component {
         res = this.state.age.filter((l) => l !== val);
         res = this.state.age.filter((l) => l !== "Undetermined");
         this.setState({ age: [...res, val] });
-
-        analytics.track(`a_ad_age`, {
-          source: "ad_targeting",
-          source_action: "a_ad_age",
-          campaign_age: [...res, val],
-          businessid:
+        analytics.track(`Form Populated`, {
+          form_type: "Google Ad Targeting Form",
+          form_field: "ad_age",
+          form_value: [...res, val],
+          business_id:
             this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         this.props.save_google_campaign_data({ age: [...res, val] });
@@ -225,11 +225,11 @@ class GoogleAdTargetting extends Component {
         } else if (res.length - 1 !== 0) {
           res = res.filter((l) => l !== "Undetermined");
         }
-        analytics.track(`a_ad_age`, {
-          source: "ad_targeting",
-          source_action: "a_ad_age",
-          campaign_age: res,
-          businessid:
+        analytics.track(`Form Populated`, {
+          form_type: "Google Ad Targeting Form",
+          form_field: "ad_age",
+          form_value: res,
+          business_id:
             this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         this.setState({ age: res });
@@ -240,13 +240,11 @@ class GoogleAdTargetting extends Component {
 
   _handleAddKeyword = (keyword) => {
     if (keyword === "Reset") {
-      analytics.track(`a_ad_keywords`, {
-        source: "ad_targeting",
-        source_actions: "a_ad_keywords",
-        campaign_keywords: [],
-        campaign_channel: "google",
-        campaign_ad_type: "GoogleSEAd",
-        businessid:
+      analytics.track(`Form Populated`, {
+        form_type: "Google Ad Targeting Form",
+        form_field: "ad_keywords",
+        form_value: [],
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.setState({ keywords: [] });
@@ -256,26 +254,22 @@ class GoogleAdTargetting extends Component {
     var res = this.state.keywords.filter((l) => l !== keyword);
     if (isUndefined(this.state.keywords.find((l) => l === keyword))) {
       this.setState({ keywords: [...res, keyword] });
-      analytics.track(`a_ad_keywords`, {
-        source: "ad_targeting",
-        source_actions: "a_ad_keywords",
-        campaign_keywords: [...res, keyword],
-        campaign_channel: "google",
-        campaign_ad_type: "GoogleSEAd",
-        businessid:
+      analytics.track(`Form Populated`, {
+        form_type: "Google Ad Targeting Form",
+        form_field: "ad_keywords",
+        form_value: [...res, keyword],
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.props.save_google_campaign_data({
         keywords: [...res, keyword],
       });
     } else {
-      analytics.track(`a_ad_keywords`, {
-        source: "ad_targeting",
-        source_actions: "a_ad_keywords",
-        campaign_keywords: res,
-        campaign_channel: "google",
-        campaign_ad_type: "GoogleSEAd",
-        businessid:
+      analytics.track(`Form Populated`, {
+        form_type: "Google Ad Targeting Form",
+        form_field: "ad_keywords",
+        form_value: res,
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
 
@@ -298,12 +292,11 @@ class GoogleAdTargetting extends Component {
         value: value,
         budgetOption,
       });
-      analytics.track(`a_handle_budget`, {
-        source: "ad_targeting",
-        source_action: "a_handle_budget",
-        custom_budget: false,
-        campaign_budget: rawValue,
-        businessid:
+      analytics.track(`Form Populated`, {
+        form_type: "Google Ad Targeting Form",
+        form_field: "ad_handle_budget",
+        form_value: rawValue,
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.props.save_google_campaign_data({
@@ -314,11 +307,11 @@ class GoogleAdTargetting extends Component {
     } else {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
-          analytics.track(`a_error_form`, {
-            error_page: "ad_targeting",
+          analytics.track(`Form Error Made`, {
+            error_screen: "GoogleAdTargeting",
             source_action: "a_change_campaign_custom_budget",
             error_description: validateWrapper("Budget", rawValue) + " $" + 25,
-            businessid:
+            business_id:
               this.props.mainBusiness && this.props.mainBusiness.businessid,
           });
         }
@@ -331,12 +324,12 @@ class GoogleAdTargetting extends Component {
           position: "top",
         });
       }
-      analytics.track(`a_handle_budget`, {
-        source: "ad_targeting",
-        source_action: "a_handle_budget",
+      analytics.track(`Form Populated`, {
+        form_type: "Google Ad Targeting Form",
+        form_field: "ad_handle_budget",
+        form_value: rawValue,
         custom_budget: true,
-        campaign_budget: rawValue,
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
 
@@ -389,12 +382,12 @@ class GoogleAdTargetting extends Component {
       !keywordsError
     ) {
       const segmentInfo = {
-        campaignId: this.props.campaign.id,
+        campaign_id: this.props.campaign.id,
         campaign_budget: this.state.budget,
         campaign_age: this.state.age,
         campaign_gender: this.state.gender,
         campaign_keywords: this.state.keywords,
-        source: "ad_targeting",
+        source: "GoogleAdTargeting",
         source_action: "a_submit_ad_targeting",
         campaign_ad_type: "GoogleSEAd",
         campaign_channel: "google",
@@ -411,13 +404,13 @@ class GoogleAdTargetting extends Component {
       );
       this.props.save_google_campaign_data(data);
     } else {
-      analytics.track(`a_error_form`, {
-        error_page: "ad_targeting",
+      analytics.track(`Form Error Made`, {
+        error_screen: "GoogleAdTargeting",
         source_action: "a_submit_ad_targeting",
         error_description: isNull(keywordsError)
           ? "Budget can't be less than the minimum"
           : keywordsError,
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       showMessage({
@@ -458,7 +451,7 @@ class GoogleAdTargetting extends Component {
       campaign_end_date: this.props.campaign.end_time,
       campaign_location: this.props.campaign.location,
       campaign_country: this.props.campaign.country,
-      campaignId: this.props.campaign.id,
+      campaign_id: this.props.campaign.id,
       campaign_headline1: this.props.campaign.headline1,
       campaign_headline2: this.props.campaign.headline2,
       campaign_headline3: this.props.campaign.headline3,
@@ -467,27 +460,21 @@ class GoogleAdTargetting extends Component {
       campaign_finalurl: this.props.campaign.finalurl,
     };
 
-    analytics.track("ad_targeting", {
-      timestamp: new Date().getTime(),
+    analytics.track("Screen Viewed", {
+      screen_name: "GoogleAdTargeting",
+      form_context: { ...segmentInfo },
       source,
       source_action,
-      ...segmentInfo,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.props.save_google_campaign_steps([
       "Dashboard",
       "GoogleAdInfo",
       "GoogleAdDesign",
-      "GoogleAdTargetting",
+      "GoogleAdTargeting",
     ]);
-    // let adjustGoogleAdDetailsTracker = new AdjustEvent("1mtblg");
-    // adjustGoogleAdDetailsTracker.addPartnerParameter(
-    //   `Google_SEM`,
-    //   "google_sem"
-    // );
-
-    // Adjust.trackEvent(adjustGoogleAdDetailsTracker);
   };
   duration = () => {
     return this.props.campaign && this.props.campaign.end_time
@@ -881,4 +868,4 @@ const mapDispatchToProps = (dispatch) => ({
   save_google_campaign_steps: (value) =>
     dispatch(actionCreators.save_google_campaign_steps(value)),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(GoogleAdTargetting);
+export default connect(mapStateToProps, mapDispatchToProps)(GoogleAdTargeting);

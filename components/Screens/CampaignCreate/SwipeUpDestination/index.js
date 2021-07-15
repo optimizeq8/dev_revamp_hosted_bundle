@@ -62,13 +62,13 @@ class SwipeUpDestination extends Component {
       this.props.screenProps.prevAppState
     );
     const campaign_ad_type = this.props.navigation.getParam("adType", "SnapAd");
-    analytics.track(`ad_swipe_up_destination`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "AdDesign Swipe Up Destination",
       source,
       campaign_swipe_up_destination: destination,
       source_action,
       campaign_channel: "snapchat",
       campaign_ad_type,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     let storyAdAttachment = this.props.storyAdAttachment;
     this.setState({
@@ -95,10 +95,10 @@ class SwipeUpDestination extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   toggleSideMenu = () => {
-    analytics.track(`a_toggle_side_menu`, {
-      source: "ad_swipe_up_destination",
-      source_action: "a_toggle_side_menu",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Close Swipe Up Side Menu",
+      button_text: "",
+      button_color: "",
     });
     this.setState({
       sidemenustate: false,
@@ -111,17 +111,10 @@ class SwipeUpDestination extends Component {
         sidemenustate: true,
       },
       () => {
-        analytics.track(`a_swipe_up_destination`, {
-          campaign_swipe_up_destination: value,
-          source: "ad_swipe_up_destination",
-          source_action: "a_swipe_up_destination",
-          campaign_channel: "snapchat",
-          campaign_objective: this.props.data
-            ? this.props.data.objective
-            : this.props.navigation.getParam("objective", "objective"),
-          campaign_ad_type: this.props.navigation.getParam("adType", "SnapAd"),
-          businessid:
-            this.props.mainBusiness && this.props.mainBusiness.businessid,
+        analytics.track(`Button Pressed`, {
+          button_type: "Toggle Swipe Up Side Menu",
+          button_text: "<Swipe Up Description>",
+          button_color: "Orange Selected ",
         });
       }
     );
@@ -129,48 +122,38 @@ class SwipeUpDestination extends Component {
   handleSideMenu = (isOpen) => {
     if (isOpen === false)
       this.setState({ sidemenustate: isOpen }, () => {
-        analytics.track(`ad_swipe_up_destination`, {
-          campaign_channel: "snapchat",
-          campaign_ad_type: this.props.navigation.getParam("adType", "SnapAd"),
-          source: "ad_swipe_up_destination",
-          source_action: "a_swipe_up_destination",
-          campaign_swipe_up_destination: "",
-          campaign_objective: this.props.navigation.getParam(
-            "objective",
-            "objective"
-          ),
-          businessid:
-            this.props.mainBusiness && this.props.mainBusiness.businessid,
+        analytics.track(`Button Pressed`, {
+          button_type: "Close Swipe Up Side Menu",
+          button_text: "",
+          button_color: "",
         });
       });
     else {
       if (this.state.selected === "REMOTE_WEBPAGE")
-        analytics.track(`ad_swipe_up_destination`, {
+        analytics.track(`Button Pressed`, {
+          button_type: "Open Swipe Up Side Menu",
+          button_text: "Website",
+          button_color: "Orange Selected",
           campaign_channel: "snapchat",
           campaign_ad_type: this.props.navigation.getParam("adType", "SnapAd"),
-          source: "ad_swipe_up_destination",
-          source_action: "a_swipe_up_destination",
           campaign_swipe_up_destination: "Website",
           campaign_objective: this.props.navigation.getParam(
             "objective",
             "objective"
           ),
-          businessid:
-            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
       else
-        analytics.track(`ad_swipe_up_destination`, {
+        analytics.track(`Button Pressed`, {
+          button_type: "Open Swipe Up Side Menu",
+          button_text: "Deep Link",
+          button_color: "Orange Selected",
           campaign_channel: "snapchat",
           campaign_ad_type: this.props.navigation.getParam("adType", "SnapAd"),
-          source: "ad_swipe_up_destination",
-          source_action: "a_swipe_up_destination",
           campaign_swipe_up_destination: "Deep link",
           campaign_objective: this.props.navigation.getParam(
             "objective",
             "objective"
           ),
-          businessid:
-            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
     }
   };

@@ -54,13 +54,13 @@ export const verifyInstagramHandleWebsite = (insta_handle) => {
       }
     } catch (err) {
       //   console.log("insta error verify account", err.message || err.response);
-      analytics.track("a_error", {
-        error_page: "my_website_detail",
+      analytics.track("Form Error Made", {
+        error_screen: "MyWebsite",
         error_description: err.message || err.response,
         insta_handle: insta_handle,
         source: "my_website_detail",
         source_action: "a_verify_InstagramHandle_Website",
-        businessid: getState().account.mainBusiness.businessid,
+        business_id: getState().account.mainBusiness.businessid,
       });
       return dispatch({
         type: actionTypes.ERROR_GET_INSTAGRAM_POSTS,

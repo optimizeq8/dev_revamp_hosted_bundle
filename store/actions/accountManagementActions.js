@@ -18,21 +18,20 @@ export const changeBusiness = (business) => {
   return (dispatch, getState) => {
     persistor.purge();
     analytics.identify(getState().auth.userid, {
-      businessname: business.businessname,
-      businessid: business.businessid,
+      business_name: business.businessname,
+      business_id: business.businessid,
       revenue: business.revenue,
       ltv: business.ltv,
       wallet_amount: business.wallet_amount,
     });
 
     analytics.group(business.businessid, {
-      businessid: business.businessid,
-      [`$name`]: business.businessname,
+      business_id: business.businessid,
+      name: business.businessname,
       company: business.businessname,
       revenue: business.revenue,
       ltv: business.ltv,
       wallet_amount: business.wallet_amount,
-      userId: getState().auth.userid,
     });
     dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
@@ -70,8 +69,8 @@ export const createBusinessAccount = (account, navigation) => {
         //incase of an error?? need handling
         if (data.success) {
           analytics.identify(getState().auth.userid, {
-            businessname: data.data.businessname,
-            businessid: data.data.businessid,
+            business_name: data.data.businessname,
+            business_id: data.data.businessid,
             revenue: 0,
             ltv: 0,
             wallet_amount: 0,
@@ -356,14 +355,16 @@ export const updateUserInfo = (info, navigation) => {
         if (data.success) {
           setAuthToken(data.accessToken);
           let decodedUser = jwt_decode(data.accessToken);
+          console.log("decode", decodedUser);
           showMessage({
             message: data.message,
             type: "success",
             position: "top",
           });
           const updateInfo = {
-            ...decodedUser,
-            mobile: info.country_code + info.mobile,
+            first_name: decodedUser.firstname,
+            last_name: decodedUser.lastname,
+            mobile: mobile,
           };
 
           analytics.identify(getState().auth.userid, {
@@ -672,10 +673,10 @@ export const handleTeamInvite = (status, segmentInfo) => {
           message: data.message,
           type: data.success ? "success" : "warning",
         });
-        analytics.track("a_handle_team_invite", {
+        analytics.track("Account Added User", {
           ...segmentInfo,
           action_status: data.success ? "success" : "failure",
-          businessid:
+          business_id:
             getState().account.mainBusiness &&
             getState().account.mainBusiness.businessid,
         });

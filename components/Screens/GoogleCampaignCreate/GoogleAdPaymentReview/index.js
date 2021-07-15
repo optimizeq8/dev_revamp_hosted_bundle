@@ -164,7 +164,7 @@ class AdPaymentReview extends Component {
             (1000 * 60 * 60 * 24)
         ) + 1,
       campaign_name: this.props.campaign.name,
-      campaignId: this.props.campaign_id,
+      campaign_id: this.props.campaign_id,
       campaign_headline1: this.props.campaign.headline1,
       campaign_headline2: this.props.campaign.headline2,
       campaign_headline3: this.props.campaign.headline3,
@@ -180,18 +180,21 @@ class AdPaymentReview extends Component {
       campaign_budget: formatNumber(this.props.campaign_budget, true),
       campaign_keywords: this.props.campaign.keywords.join(", "),
     };
-    analytics.track(`ad_review`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "GoogleAdPaymentReview",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      ...segmentInfo,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      form_context: {
+        ...segmentInfo,
+      },
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.save_google_campaign_steps([
       "Dashboard",
       "GoogleAdInfo",
       "GoogleAdDesign",
-      "GoogleAdTargetting",
+      "GoogleAdTargeting",
       "GoogleAdPaymentReview",
     ]);
 
@@ -200,42 +203,10 @@ class AdPaymentReview extends Component {
     // Adjust.trackEvent(adjustGoogleAdReviewTracker);
   };
   goToPayment = () => {
-    const { gender, age, regionsNames, country } = this.formatAttribute();
-    const segmentInfo = {
-      campaign_channel: "google",
-      campaign_ad_type: "GoogleSEAd",
-      campaign_duration:
-        Math.ceil(
-          (new Date(this.props.campaign.end_time) -
-            new Date(this.props.campaign.start_time)) /
-            (1000 * 60 * 60 * 24)
-        ) + 1,
-      campaign_name: this.props.campaign.name,
-      campaignId: this.props.campaign_id,
-      campaign_start_date: this.props.campaign.start_time,
-      campaign_end_date: this.props.campaign.end_time,
-      campaign_headline1: this.props.campaign.headline1,
-      campaign_headline2: this.props.campaign.headline2,
-      campaign_headline3: this.props.campaign.headline3,
-      campaign_finalurl: this.props.campaign.finalurl,
-      campaign_description: this.props.campaign.description,
-      campaign_description2: this.props.campaign.description2,
-      campaign_gender: gender,
-      campaign_age: age,
-      campaign_country: country,
-      campaign_region: [...regionsNames].join(","),
-      campaign_language:
-        this.props.campaign.language === "1000" ? "English" : "Arabic",
-      campaign_budget: this.props.campaign_budget,
-      campaign_keywords: this.props.campaign.keywords.join(", "),
-    };
-    analytics.track(`a_submit_ad_review`, {
-      source: "ad_review",
-      source_action: "a_submit_ad_review",
-      action_status: "success",
-      timestamp: new Date().getTime(),
-      ...segmentInfo,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Submit Ad Review",
+      button_text: "Payment Info",
+      button_color: "Orange",
     });
 
     this.props.navigation.navigate("PaymentForm", {

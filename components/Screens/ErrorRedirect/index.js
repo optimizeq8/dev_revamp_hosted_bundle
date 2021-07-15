@@ -71,14 +71,14 @@ class ErrorRedirect extends Component {
         track_id: this.props.navigation.getParam("trackID", ""),
       };
     }
-    analytics.track(`Order Completed`, {
-      source,
-      source_action,
-      business_id: this.props.mainBusiness.businessid,
-      business_name: this.props.mainBusiness.businessname,
-      ...segmentInfo,
-      payment_method: this.props.navigation.getParam("payment_mode"),
-    });
+    // analytics.track(`Order Completed`, {
+    //   source,
+    //   source_action,
+    //   business_id: this.props.mainBusiness.businessid,
+    //   business_name: this.props.mainBusiness.businessname,
+    //   ...segmentInfo,
+    //   payment_method: this.props.navigation.getParam("payment_mode"),
+    // });
     //TODO: add adjust analytics accordingly
     if (this.props.navigation.getParam("isWallet") === "1") {
       // let adjustWalletPaymentTracker = new AdjustEvent("l70qk7");

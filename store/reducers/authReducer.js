@@ -28,13 +28,14 @@ const reducer = (state = initialState, action) => {
       AsyncStorage.getItem("appLanguage")
         .then((language) => {
           let userTraits = {
-            ...action.payload.user,
-            $name:
+            first_name: action.payload.user.firstname,
+            lastt_name: action.payload.user.lasttname,
+            name:
               action.payload.user.firstname +
               " " +
               action.payload.user.lastname,
             selected_language: language,
-            $phone: "+" + action.payload.user.mobile,
+            mobile: "+" + action.payload.user.mobile,
             logged_out: false,
           };
           // NOTE: expo-notification not working for iOS

@@ -86,12 +86,11 @@ const reducer = (state = initialState, action) => {
         });
         analytics.group(main.businessid, {
           business_id: main.businessid,
-          [`$name`]: main.businessname,
+          name: main.businessname,
           company: main.businessname,
           revenue: main.revenue,
           ltv: main.ltv,
           wallet_amount: main.wallet_amount,
-          user_id: action.payload.userid,
         });
       }
       AsyncStorage.setItem("selectedBusinessId", main.businessid);

@@ -46,12 +46,14 @@ class ExtendCampaignModal extends Component {
   };
 
   handleSwitch = (value) => {
-    analytics.track("a_toggle_date_modal", {
-      source: "extend_campaign_modal",
-      source_action: "a_toggle_date_modal",
-      visible: value,
-      campaign_channel: this.props.campaign.channel,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track("Button Pressed", {
+      button_type: `Show ${
+        value ? "Ad Targeting" : "Duration Modal"
+      } for Extend Campaigns`,
+      button_text: "Forward Arrow or Back Arrow",
+      button_color: "Orange",
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ switchComponent: value });
   };

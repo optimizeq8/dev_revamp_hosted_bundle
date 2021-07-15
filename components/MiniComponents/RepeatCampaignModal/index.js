@@ -103,12 +103,12 @@ class RepeatCampaignModal extends Component {
 
   handleSwitch = (value) => {
     this.setState({ switchComponent: value });
-    analytics.track("a_toggle_date_modal", {
-      source: "repeat_campaign_modal",
-      source_action: "a_toggle_date_modal",
-      visible: value,
-      campaign_channel: this.props.campaign.channel,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track("Button Pressed", {
+      button_type: `Show ${
+        value ? "Ad Targeting" : "Duration Modal"
+      } for Repeat Campaigns`,
+      button_text: "Forward Arrow or Back Arrow",
+      button_color: "Orange",
     });
     if (!value) {
       this.dateField.showModal();

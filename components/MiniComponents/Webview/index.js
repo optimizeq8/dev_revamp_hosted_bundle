@@ -37,11 +37,10 @@ class index extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`web_view`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "Webview",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     AppState.addEventListener("change", this._handleAppStateChange);
@@ -118,8 +117,8 @@ class index extends Component {
             }}
             onError={(error) => {
               console.log("error loading url", error);
-              analytics.track("a_error", {
-                source: "web_view",
+              analytics.track("Webview Error Thrown", {
+                source: this.props.screenProps.prevAppState,
                 source_action: this.props.navigation.getParam(
                   "source_action",
                   this.props.screenProps.prevAppState
