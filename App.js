@@ -687,7 +687,7 @@ class App extends React.Component {
                   style={{
                     backgroundColor: "#5410BF",
                     top: 0,
-                    width: "100:%",
+                    width: "100%",
                     height: "10%",
                     position: "absolute",
                     zIndex: 1,
@@ -718,7 +718,7 @@ class App extends React.Component {
                   style={{
                     backgroundColor: "#5410BF",
                     bottom: 0,
-                    width: "100:%",
+                    width: "100%",
                     height: "10%",
                     position: "absolute",
                     zIndex: 1,
