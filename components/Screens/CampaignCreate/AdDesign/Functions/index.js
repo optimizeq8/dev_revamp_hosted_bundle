@@ -351,10 +351,7 @@ export const _changeDestination = (
       form_type: "Ad Design Form",
       form_field: "swipe_up_destination",
       form_value: {
-        campaign_attachment: {
-          [Object.keys(attachment)[0]]: attachment.longformvideo_media,
-          [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
-        },
+        campaign_attachment: attachment,
         campaign_swipe_up_CTA: call_to_action,
         campaign_swipe_up_destination: destination,
         campaign_app_choice: appChoice,
