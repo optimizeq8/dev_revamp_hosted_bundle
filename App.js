@@ -675,13 +675,7 @@ class App extends React.Component {
             locations={[0, 1]}
             style={styles.gradient}
           /> */}
-          {/* <View
-            style={{
-              backgroundColor: "transparent",
-              marginTop: 0,
-              paddingTop: 0,
-            }}
-          /> */}
+
           {!this.state.animDone && (
             <View
               style={{
@@ -705,24 +699,46 @@ class App extends React.Component {
                   opacityNeg,
                 ]}
               >
+                <View //To block the animations edge since its a diiferent shade of color
+                  style={{
+                    backgroundColor: "#5410BF",
+                    top: 0,
+                    width: "100:%",
+                    height: "10%",
+                    position: "absolute",
+                    zIndex: 1,
+                  }}
+                />
                 <LottieView
                   ref={(animation) => {
                     this.animation = animation;
                   }}
+                  backgroundColor="#5511bf"
                   resizeMode="contain"
-                  source={require("./assets/animation/LogoAnimation.json")}
+                  source={require("./assets/animation/NewLogoAnimation.json")}
                   onAnimationFinish={() =>
                     Animated.timing(this.state.loadingProgress, {
                       toValue: 100,
-                      duration: 1000,
+                      duration: 500,
                       useNativeDriver: true,
-                      delay: 400,
+                      delay: 200,
                     }).start(() => {
                       this.setState({ animDone: true });
                     })
                   }
+                  duration={4000}
                   autoPlay={false}
                   loop={false}
+                />
+                <View //To block the animations edge sinze its a diiferent shade of color
+                  style={{
+                    backgroundColor: "#5410BF",
+                    bottom: 0,
+                    width: "100:%",
+                    height: "10%",
+                    position: "absolute",
+                    zIndex: 1,
+                  }}
                 />
                 {/* <Logo width={1000} /> */}
               </Animated.View>
@@ -873,7 +889,7 @@ class App extends React.Component {
 
   _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
-    this.animation.play(70, 200);
+    this.animation.play(0, 200);
   };
 }
 

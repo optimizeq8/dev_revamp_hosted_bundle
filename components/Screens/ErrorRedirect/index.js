@@ -29,7 +29,7 @@ class ErrorRedirect extends Component {
     super(props);
 
     this.state = {
-      logoImage: require("../../../assets/images/logo01.png"),
+      logoImage: require("../../../assets/images/Optimize_Logo_transparent.png"),
     };
   }
 

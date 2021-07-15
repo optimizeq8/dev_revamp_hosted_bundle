@@ -2,7 +2,7 @@ PODS:
   - Adjust (4.28.0):
     - Adjust/Core (= 4.28.0)
   - Adjust/Core (4.28.0)
-  - Analytics (4.1.5)
+  - Analytics (4.1.4)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - EXApplication (3.1.2):
@@ -730,7 +730,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Adjust: 131c77905f67b26e946d1b831fad20ed2b41134c
-  Analytics: 084a3edda6517e308007c1a7810b8f1e8f2925aa
+  Analytics: 7bdc735c456434b4eaa2eacdcf122bb03d51ede7
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   EXApplication: 4797b8b37f0b0470f587fdccf6407f44b50d18b5
