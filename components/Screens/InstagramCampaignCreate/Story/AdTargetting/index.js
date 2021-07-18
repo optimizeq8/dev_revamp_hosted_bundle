@@ -966,7 +966,6 @@ class InstagramStoryAdTargetting extends Component {
       } else if (!this.editCampaign) {
         delete rep.targeting.geo_locations.custom_locations;
       }
-      rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
         campaign_ad_type: "InstagramStoryAd",
         campaignId: this.props.campaign_id,
@@ -1021,6 +1020,7 @@ class InstagramStoryAdTargetting extends Component {
           rep.coordinates = JSON.parse(rep.coordinates);
           rep.custom_location = JSON.parse(rep.custom_location);
         }
+        rep.targeting = JSON.stringify(rep.targeting);
         this.props.updateInstagramCampaign(
           rep,
           this.props.mainBusiness.businessid,
@@ -1035,6 +1035,7 @@ class InstagramStoryAdTargetting extends Component {
         //   campaign_budget: this.state.campaignInfo.lifetime_budget_micro
         // });
         /** If the audience list is empty for the first time create a new audience */
+        rep.targeting = JSON.stringify(rep.targeting);
 
         if (this.props.audienceList.length === 0) {
           this.props.createAudience(
