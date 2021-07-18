@@ -8,10 +8,10 @@ const styles = StyleSheet.create({
     marginHorizontal: RFValue(10, 414),
     borderRadius: 30,
     marginVertical: RFValue(4, 414),
-    shadowOpacity: 0.5,
-    shadowRadius: 3,
-    shadowColor: "#6268FF",
-    shadowOffset: { height: 6, width: 0 },
+    // shadowOpacity: 0.5,
+    // shadowRadius: 3,
+    // shadowColor: "#6268FF",
+    // shadowOffset: { height: 6, width: 0 },
   },
   headerContainer: {
     flexDirection: "row",
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: RFValue(10, 414),
     paddingVertical: RFValue(10, 414),
-    backgroundColor: globalColors.bluegem,
+    backgroundColor: "#6a12db",
   },
   reviewText: {
     fontFamily: "montserrat-bold",
