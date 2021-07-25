@@ -181,7 +181,6 @@ class App extends React.Component {
       }
     );
     getTrackingStatus().then((status) => {
-      console.log("status", status);
       this.determineTrackingStatus(status);
     });
 
@@ -314,7 +313,6 @@ class App extends React.Component {
         IDFA.getIDFA()
           .then((idfa) => {
             analytics.setIDFA(idfa);
-            console.log("idfa", idfa);
           })
           .catch((e) => {
             analytics.track("Error Setting IDFA", {
@@ -403,7 +401,6 @@ class App extends React.Component {
   }
   handleDeeplink = (url) => {
     Linking.openURL(url.url);
-    console.log("URL", url.url);
   };
   _handleAppStateChange = (nextAppState) => {
     if (
@@ -421,8 +418,6 @@ class App extends React.Component {
   };
 
   _handleNotification = async (handleScreen) => {
-    console.log("handleScreen app", JSON.stringify(handleScreen, null, 2));
-    // console.log(handleScreen.notification.request.content.data.screenName);
     this.setState({ notificationData: handleScreen });
     if (handleScreen.data) {
       store.dispatch(
