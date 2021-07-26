@@ -139,11 +139,10 @@ class BusinessList extends Component {
     });
   };
   createNewBuiness = () => {
-    analytics.track(`a_create_buiness_account`, {
-      source: "open_hamburger",
-      source_action: `a_create_buiness_account`,
-      action_status: "success",
-      timestamp: new Date().getTime(),
+    analytics.track(`Button Pressed`, {
+      button_type: "Create New Business",
+      button_text: "Add a new business",
+      button_color: "Orange",
       businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
@@ -151,8 +150,8 @@ class BusinessList extends Component {
 
     this.props.navigation.navigate(routePath, {
       createNewBusiness: true,
-      source: "open_hamburger",
-      source_action: `a_create_buiness_account`,
+      source: "Menu",
+      source_action: `a_create_business_account`,
     });
   };
   showCreateBusiness = () => {

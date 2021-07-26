@@ -442,24 +442,14 @@ class CreateBusinessAccount extends Component {
           }
         }
       } else {
-        analytics.track(
-          this.state.editBusinessInfo
-            ? `a_update_buisness_info`
-            : `a_create_buiness_account`,
-          {
-            source_action: this.state.editBusinessInfo
-              ? "open_business_info"
-              : "open_create_business_account",
-            source_action: this.state.editBusinessInfo
-              ? `a_update_buisness_info`
-              : `a_create_buiness_account`,
-            action_status: "failure",
-            timestamp: new Date().getTime(),
-            error_description: "Please complete all the required fields",
-            businessid:
-              this.props.mainBusiness && this.props.mainBusiness.businessid,
-          }
-        );
+        analytics.track(`Form Error Made`, {
+          error_screen: "CreateBusinessAccount",
+          error_description: this.state.editBusinessInfo
+            ? `Error updating business info`
+            : `Error creating busines info`,
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
+        });
         showMessage({
           message: translate("Please complete all the required fields"),
           type: "warning",

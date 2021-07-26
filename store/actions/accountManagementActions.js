@@ -53,14 +53,6 @@ export const createBusinessAccount = (account, navigation) => {
         return res.data;
       })
       .then((data) => {
-        analytics.track(`a_create_buiness_account`, {
-          source: "open_create_business_account",
-          source_action: `a_create_buiness_account`,
-          action_status: data.success ? "success" : "failure",
-          timestamp: new Date().getTime(),
-          ...account,
-          newBusiness: data.success ? data.data : "",
-        });
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -68,6 +60,19 @@ export const createBusinessAccount = (account, navigation) => {
         });
         //incase of an error?? need handling
         if (data.success) {
+          analytics.track(`Form Submitted`, {
+            form_type: "Business Creation Form",
+            form_context: {
+              business_name: account.businessname,
+              business_category: account.businesscategory,
+              other_business_category: account.otherBusinessCategory,
+              country: account.country,
+              insta_handle_for_review: account.insta_handle_for_review,
+              user_role: data.user_role,
+              approved: data.approved,
+              instagram_access: data.instagram_access,
+            },
+          });
           analytics.identify(getState().auth.userid, {
             business_name: data.data.businessname,
             business_id: data.data.businessid,
@@ -80,8 +85,8 @@ export const createBusinessAccount = (account, navigation) => {
             payload: { ...data.data },
           });
           navigation.navigate("Dashboard", {
-            source: "open_create_business_account",
-            source_action: `a_create_buiness_account`,
+            source: "CreateBusinessAccount",
+            source_action: `a_create_business_account`,
           });
           return dispatch({
             type: actionTypes.ADD_BUSINESS_ACCOUNT,
