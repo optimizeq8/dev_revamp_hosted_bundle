@@ -173,12 +173,10 @@ class BillingAddressCard extends React.Component {
     ) {
       this.props._handleSubmission();
     } else {
-      analytics.track(`a_business_address`, {
-        source: "open_business_address",
-        source_action: "a_business_address",
+      analytics.track(`Form Error Made`, {
+        error_scree: "BillingAddressCard",
         error_desctiption: "Please complete the mandatory fields",
-        action_status: "failure",
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }

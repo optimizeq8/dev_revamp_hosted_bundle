@@ -60,11 +60,12 @@ class ChangePassword extends Component {
       "source_action",
       false
     );
-    analytics.track(`change_password`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "ChangePassword",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -125,14 +126,12 @@ class ChangePassword extends Component {
         this.props.user.email
       );
     } else {
-      analytics.track(`a_change_password`, {
-        source: "change_password",
+      analytics.track(`Form Error Made`, {
+        source: "ChangePassword",
         source_action: "a_change_password",
-        timestamp: new Date().getTime(),
-        action_status: "failure",
         error_description:
           this.state.repasswordError || this.state.passwordError,
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }

@@ -70,11 +70,11 @@ export default RejectedInfo = (props) => {
           style={styles.contactUsBtn}
           text={translate("Contact Us")}
           onPressAction={() => {
-            analytics.track(`a_help`, {
-              source: "campaign_details",
-              source_action: "a_help",
-              support_type: "intercom",
-              businessid: this.props.mainBusiness.businessid,
+            analytics.track(`Button Pressed`, {
+              button_type: "Open Intercom For Rejected Campaign",
+              button_content: "Contact Us",
+              source: "RejectedInfo",
+              business_id: this.props.mainBusiness.businessid,
             });
             // Intercom.displayMessageComposer();
             Intercom.displayConversationsList();

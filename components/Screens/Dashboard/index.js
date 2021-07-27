@@ -468,10 +468,12 @@ class Dashboard extends Component {
   };
 
   reloadData = () => {
-    analytics.track(`Button Pressed`, {
-      button_type: "Swipe down to refresh campaign list",
-      button_text: "",
-      button_color: "",
+    analytics.track(`Refresh List`, {
+      list_type: "Campaign List",
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_name:
+        this.props.mainBusiness && this.props.mainBusiness.businessname,
     });
     // this.props.connect_user_to_intercom(this.props.userInfo.userid);
     // this.props.set_as_seen(false);

@@ -46,15 +46,12 @@ class ManageTeam extends Component {
   };
 
   onRefresh = () => {
-    const source = "team_management_members_list";
-    const source_action = "a_refresh_list";
-
-    analytics.track(`a_refresh_list`, {
-      source,
-      source_action,
-      timestamp: new Date().getTime(),
-      refresh_type: "members",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Refresh List`, {
+      list_type: "Team Members List",
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_name:
+        this.props.mainBusiness && this.props.mainBusiness.businessname,
     });
     this.props.getTeamMembers(this.props.mainBusiness.businessid);
   };

@@ -486,7 +486,7 @@ class InstagramAdDesignExistingPost extends Component {
       action_status: noError ? "success" : "failure",
       campaign_channel: "instagram",
       campaign_ad_type: "InstagramAutoPlacementAd",
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
     if (noError) {
       this.props.navigation.navigate("AdAutoPlacementDesignReview", {

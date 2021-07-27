@@ -99,12 +99,10 @@ class AddOrEditTeamMember extends Component {
    * @param {Int} userRole a number to indicate which user role is selected
    */
   handleMemberType = (userRole) => {
-    analytics.track(`a_change_team_member_role`, {
-      source: "team_management_member_details",
-      source_action: "a_change_team_member_role",
-      timestamp: new Date().getTime(),
-      user_role: userRole === this.state.userRole ? 0 : userRole,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Change Team Member Role",
+      button_content: userRole === this.state.userRole ? 0 : userRole,
+      business_id: this.props.mainBusiness.businessid,
     });
     this.setState({
       //if none of the switches are selected then set the state to 0
@@ -228,13 +226,11 @@ class AddOrEditTeamMember extends Component {
       this.props.screenProps.prevAppState
     );
 
-    analytics.track(`team_management_member_details`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "AddOrEditTeamMember",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      new_team_member: this.props.navigation.getParam("editTeamMember", false),
-      ...teamMeber,
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
   };
 

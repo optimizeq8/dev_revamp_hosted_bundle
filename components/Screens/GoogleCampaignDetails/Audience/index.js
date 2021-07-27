@@ -93,10 +93,10 @@ class GoogleAdTargeting extends Component {
   }
 
   handleBackButton = () => {
-    analytics.track(`a_go_back`, {
-      source: "ad_targeting",
-      source_action: "a_go_back",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Go Back Button",
+      source: "Goolge Ad Targeting",
+      business_id: this.props.mainBusiness.businessid,
     });
     this.props.navigation.goBack();
     return true;
@@ -344,12 +344,13 @@ class GoogleAdTargeting extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`ad_targeting`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "GoogleAudience",
       source,
       source_action,
       campaign_channel: "google",
       campaign_ad_type: "GoogleSEAd",
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
   };
   render() {

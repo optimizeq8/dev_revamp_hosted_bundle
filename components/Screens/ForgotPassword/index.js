@@ -52,7 +52,8 @@ class ForgotPassword extends Component {
     this._handleSubmission = this._handleSubmission.bind(this);
   }
   componentDidMount() {
-    analytics.track(`forget_password`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "ForgotPassword",
       source: this.props.navigation.getParam(
         "source",
         this.props.screenProps.prevAppState
@@ -72,29 +73,26 @@ class ForgotPassword extends Component {
     if (!emailError) {
       this.props.forgotPassword(this.state.email, this.props.navigation);
     } else {
-      analytics.track(`a_error_form`, {
-        source: "forget_password",
-        error_page: "forget_password",
+      analytics.track(`Form Error Made`, {
+        source: "ForgotPassword",
+        error_screen: "forget_password",
         source_action: "a_forget_password",
         error_description: emailError,
-        email: this.state.email,
       });
     }
   };
   openSupport = () => {
     Intercom.registerUnidentifiedUser()
       .then(() => {
-        analytics.track(`a_help`, {
-          source: "forgot_password",
-          source_action: "a_help",
-          support_type: "intercom",
-          action_status: "success",
+        analytics.track(`Button Pressed`, {
+          button_type: "Open Intercom For Forgot Password",
+          button_content: this.props.forgotPasswordMessage,
         });
         Intercom.displayMessageComposer();
       })
       .catch((err) => {
-        analytics.track(`a_help`, {
-          source: "forgot_password",
+        analytics.track(`Form Error Made`, {
+          source: "ForgotPassword",
           source_action: "a_help",
           support_type: "intercom",
           action_status: "failure",

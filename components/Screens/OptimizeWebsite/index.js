@@ -59,17 +59,19 @@ class OptimizeWebsite extends Component {
 
   handleBackPress = () => {
     if (this.state.activeStep === 1) {
-      analytics.track(`a_go_back`, {
-        source: "my_website_detail",
-        source_action: "a_go_back",
-        businessid:
+      analytics.track(`Button Pressed`, {
+        button_type: "Go Back",
+        button_content: "Backward arrow",
+        source: "OptimizeWebsite",
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     } else {
-      analytics.track(`a_go_back`, {
-        source: "my_website_products",
-        source_action: "a_go_back",
-        businessid:
+      analytics.track(`Button Pressed`, {
+        button_type: "Go Back",
+        button_content: "Backward arrow",
+        source: "OptimizeWebsite/Products",
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
@@ -88,21 +90,23 @@ class OptimizeWebsite extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`my_website_detail`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "OptimizeWebsite",
       source,
       source_action,
-      new: true,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
   submitNextStep = (activeStep) => {
-    analytics.track(`a_go_to_my_website_products`, {
-      source: "my_website_detail",
-      source_action: "a_submit_my_website_detail",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Submit Website Details",
+      button_content: "Forward arrow",
+      source: "OptimizeWebsite",
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       activeStep,
@@ -110,11 +114,10 @@ class OptimizeWebsite extends Component {
   };
   componentDidUpdate(prevProps, prevState) {
     if (prevState.activeStep === 1 && this.state.activeStep === 2) {
-      analytics.track(`my_website_products`, {
-        source: "my_website_detail",
-        source_action: "a_submit_my_website_detail",
-        timestamp: new Date().getTime(),
-        businessid:
+      analytics.track(`Screen Viewed`, {
+        screen_name: "OptimizeWebsite/Products",
+        source: "OptimizeWebsite",
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
@@ -132,11 +135,12 @@ class OptimizeWebsite extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-
-    analytics.track(`my_website_detail`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "OptimizeWebsite",
       source,
       source_action,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     const changeFbConnectStatus = this.props.navigation.getParam(
       "success",

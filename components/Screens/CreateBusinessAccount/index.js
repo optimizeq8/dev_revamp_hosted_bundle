@@ -159,19 +159,11 @@ class CreateBusinessAccount extends Component {
         "source_action",
         false
       );
-      analytics.track(
-        `${
-          editBusinessInfo
-            ? "open_business_info"
-            : "open_create_business_account"
-        }`,
-        {
-          source,
-          source_action,
-          timestamp: new Date().getTime(),
-          ...this.props.mainBusiness,
-        }
-      );
+      analytics.track("Screen Viewed", {
+        screen_name: "CreateBusinessAccount",
+        source,
+        source_action,
+      });
     }
 
     // prefilling the values in case of updating business info
@@ -402,19 +394,11 @@ class CreateBusinessAccount extends Component {
                 this.props.screenProps.translate
               );
             } else {
-              analytics.track(`a_update_buisness_info`, {
-                source_action: "open_business_info",
+              analytics.track(`Form Error Made`, {
                 source_action: "a_update_buisness_info",
-                action_status: "failure",
-                timestamp: new Date().getTime(),
-                ...business,
-                websitelink,
-                otherBusinessCategory:
-                  this.state.businessAccount.businesscategory !== "43"
-                    ? null
-                    : this.state.businessAccount.otherBusinessCategory, // to handle other business category field
                 error_description: "No changes to update",
-                businessid:
+                error_screen: "CreateBusinessAccount",
+                business_id:
                   this.props.mainBusiness && this.props.mainBusiness.businessid,
               });
               showMessage({
