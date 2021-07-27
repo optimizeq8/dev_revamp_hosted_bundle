@@ -18,6 +18,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import * as actionCreators from "../../../store/actions";
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import Loading from "../../MiniComponents/LoadingScreen";
+import analytics from "@segment/analytics-react-native";
 
 class BiometricsAuth extends Component {
   state = {
@@ -29,6 +30,10 @@ class BiometricsAuth extends Component {
     userConnectedBiometrics: [],
   };
   componentDidMount() {
+    analytics.track("Screen Viewed", {
+      screen_name: "SecureAccount",
+      source: "Menu",
+    });
     ReactNativeBiometrics.isSensorAvailable().then(async (type) => {
       let userConnectedBiometrics = await SecureStore.getItemAsync(
         "accountsSecured",
@@ -52,6 +57,13 @@ class BiometricsAuth extends Component {
     });
   }
   handleToggle = () => {
+    analytics.track("Button Pressed", {
+      button_type: `Toggle ${
+        !this.state.biometricsEnabled ? "On" : "Off"
+      } Biometrics`,
+      button_content: !this.state.biometricsEnabled ? "On" : "Off",
+      source: "SecureAccount",
+    });
     if (!this.state.biometricsEnabled) {
       this.setState({ showPasswordField: true });
     } else
@@ -60,8 +72,8 @@ class BiometricsAuth extends Component {
           if (action.success) {
             this.setState({ biometricsEnabled: !this.state.biometricsEnabled });
             if (!this.state.biometricsEnabled) {
-              let newUserConnectedBiometrics = this.state
-                .userConnectedBiometrics;
+              let newUserConnectedBiometrics =
+                this.state.userConnectedBiometrics;
               newUserConnectedBiometrics = newUserConnectedBiometrics.filter(
                 (acc) => acc.username !== this.props.userInfo.email
               );
@@ -91,6 +103,10 @@ class BiometricsAuth extends Component {
   };
   handleAd;
   setValue = (stateName, value) => {
+    analytics.track("Form Populated", {
+      form_type: "Biometrics Form",
+      form_field: "user_password",
+    });
     this.setState({ [stateName]: value });
   };
   getValidInfo = (stateError, validWrap) => {
@@ -101,6 +117,13 @@ class BiometricsAuth extends Component {
     });
   };
   handleAddingAccount = () => {
+    analytics.track("Button Pressed", {
+      button_type: `Secure Account With Biometrics`,
+      button_content: this.state.showPasswordField
+        ? translate("Continue")
+        : translate("Enable"),
+      source: "SecureAccount",
+    });
     this.props.checkPassword(
       {
         email: this.props.userInfo.email,
@@ -112,6 +135,13 @@ class BiometricsAuth extends Component {
     );
   };
   handleDismissingBiometricModal = () => {
+    analytics.track("Button Pressed", {
+      button_type: this.props.showingInModal
+        ? "Ignore Biometrics Modal"
+        : "Enable Biometrics",
+      button_content: this.props.showingInModal ? "Not Now" : "",
+      source: "SecureAccount",
+    });
     AsyncStorage.setItem("ignoreBiometricModal", "true");
     if (this.props.showingInModal) this.props.closeBiometricsModal();
     else {
@@ -123,24 +153,22 @@ class BiometricsAuth extends Component {
     let { showPasswordField, biometricsEnabled, biometryType } = this.state;
     let { translate } = screenProps;
     return (
-      <View style={styles.safeAreaViewContainer}>
+      <View
+        style={[
+          styles.safeAreaViewContainer,
+          !showingInModal ? { backgroundColor: globalColors.purple } : {},
+        ]}
+      >
         <SafeAreaView
           forceInset={{ bottom: "never", top: "always" }}
         ></SafeAreaView>
-        {showingInModal ? null : (
-          <LinearGradient
-            colors={[colors.background1, colors.background2]}
-            locations={[1, 0.3]}
-            style={globalStyles.gradient}
-          />
-        )}
         <CustomHeader
           screenProps={this.props.screenProps}
           title={"Secure Account"}
           navigation={this.props.navigation}
           actionButton={() => closeBiometricsModal()}
           segment={{
-            source: "open_biometrics_details",
+            source: "SecureAccount",
             source_action: "a_go_back",
           }}
           hideButton={showingInModal}

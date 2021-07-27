@@ -115,7 +115,7 @@ class PersonalInfo extends Component {
         : value;
     if (stateName !== "password")
       analytics.track(`Form Populated`, {
-        form_type: "Sign Up Form",
+        form_type: "Registration Detail Form",
         form_field: `${stateName}`,
         form_value:
           stateName === "firstname" || stateName === "lastname"
@@ -158,7 +158,7 @@ class PersonalInfo extends Component {
       country_code: countryCode,
     };
     analytics.track(`Form Populated`, {
-      form_type: "Sign Up Form",
+      form_type: "Registration Detail Form",
       form_field: `mobile`,
       form_value: number,
     });
@@ -388,7 +388,7 @@ class PersonalInfo extends Component {
         ? value.replace("@", "")
         : value;
     analytics.track(`Form Populated`, {
-      form_type: "Sign Up Form",
+      form_type: "Registration Detail Form",
       form_field: `${stateName}`,
       form_value:
         stateName === "businessname"
@@ -459,7 +459,7 @@ class PersonalInfo extends Component {
   onSelectedBusinessCategoryChange = (value) => {
     if (value && !isEmpty(value)) {
       analytics.track(`Form Populated`, {
-        form_type: "Sign Up Form",
+        form_type: "Registration Detail Form",
         form_field: "businesscategory",
         form_value: value[0].value,
       });
@@ -503,7 +503,7 @@ class PersonalInfo extends Component {
   onSelectedCountryChange = (value) => {
     if (value && !isEmpty(value)) {
       analytics.track(`Form Populated`, {
-        form_type: "Sign Up Form",
+        form_type: "Registration Detail Form",
         form_field: "country",
         form_value: value[0].value,
       });

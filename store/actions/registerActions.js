@@ -565,13 +565,12 @@ export const registerGuestUser = (
         delete userInfo.password;
 
         analytics.track(`Form Submitted`, {
-          form_type: "Sign Up Form",
+          form_type: "Registration Detail Form",
           form_context: {
             ...userInfo,
             business_invite: businessInvite === "0",
           },
         });
-        console.log(JSON.stringify(data, null, 2));
         // For users creating new business while registering
         if (businessInvite === "1") {
           analytics.track(`Business Created`, {
@@ -646,8 +645,8 @@ export const registerGuestUser = (
             payload: false,
           });
           navigation.navigate("RegistrationSuccess", {
-            source: "Signup",
-            source_action: "Sign Up Form Submitted",
+            source: "RegistrationDetailForm",
+            source_action: "Registration Detail Form Submitted",
           });
           // dispatch(send_push_notification());
           dispatch(getBusinessAccounts());

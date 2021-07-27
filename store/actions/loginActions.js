@@ -244,6 +244,13 @@ export const login = (userData, navigation) => {
                 invitedEmail: navigation.getParam("email", ""),
               })
             );
+            analytics.track(`Signed In`, {
+              first_name: getState().auth.userInfo.firstname,
+              last_name: getState().auth.userInfo.lastname,
+              email: getState().auth.userInfo.email,
+              mobile: getState().auth.userInfo.mobile,
+              verified_account: getState().auth.userInfo.verified_account,
+            });
             navigation.navigate("Dashboard", {
               v: navigation.getParam("v", ""),
               business: navigation.getParam("business", ""),

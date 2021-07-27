@@ -282,8 +282,8 @@ class VerifyAccount extends Component {
       form_type: "Account Verification",
       form_context: {
         mobile: this.state.phoneNum,
-        verification_code: this.state.code,
       },
+      verification_mode: this.state.verifyByMobile ? "Mobile" : "Email",
     });
     this.props.verifyMobileCode(
       {

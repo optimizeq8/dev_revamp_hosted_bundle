@@ -80,6 +80,14 @@ class Signin extends Component {
       passwordError: passwordError,
     });
     if (!emailError && !passwordError) {
+      analytics.track(`Form Submitted`, {
+        form_type: "Sign In Form",
+        form_context: {
+          email: this.state.email,
+          password_populated: this.state.password.length > 0,
+        },
+        source: "Signin",
+      });
       this.props.login(this.state, this.props.navigation);
     }
   };
@@ -152,6 +160,11 @@ class Signin extends Component {
         email_populated: true,
       });
     }
+    analytics.track("Form Populated", {
+      form_type: "Sign In Form",
+      form_field: stateName,
+      form_value: stateName === "email" && value,
+    });
     state[stateName] = value;
     this.setState({ ...state });
   };
@@ -195,9 +208,8 @@ class Signin extends Component {
   changeActiveTab = (activeTabSignUp) => {
     // Action event
     analytics.track(`Button Pressed`, {
-      button_type: "Sign In Tab Selected",
+      button_type: `Sign ${activeTabSignUp ? "Up" : "In"} Tab Selected`,
       button_content: `${activeTabSignUp ? "Sign Up" : "Sign In"}`,
-      button_color: "Transparent",
       source: "Signin",
     });
 

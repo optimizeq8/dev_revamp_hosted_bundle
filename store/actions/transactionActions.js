@@ -417,7 +417,6 @@ export const checkoutwithWallet = (campaign_id, navigation, retries = 3) => {
       .then((data) => {
         analytics.track(`Checkout Started`, {
           source: "PaymentForm",
-          source_action: "a_payment_processing",
           payment_method: "WALLET",
           total: data.amount,
           campaign_id: campaign_id,
