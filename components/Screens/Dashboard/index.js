@@ -697,7 +697,7 @@ class Dashboard extends Component {
       selected_language: this.props.appLanguage === "en" ? "ar" : "en",
     });
     this.props.navigation.navigate("SwitchLanguageLoading", {
-      source: "dashboard",
+      source: "Dashboard",
       source_action: "a_change_language",
     });
     // this.props.getLanguageListPOEdit(
