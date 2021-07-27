@@ -55,7 +55,7 @@ export default class EmptyCampaigns extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Create Campaign",
       button_content: "LAUNCH YOU FIRST AD",
-      button_color: "Orange Illustration",
+      source: "EmptyDashboard",
     });
 
     this.props.navigation.navigate(routePath, {
@@ -66,9 +66,9 @@ export default class EmptyCampaigns extends Component {
 
   goToVerifyAccount = () => {
     analytics.track(`Button Pressed`, {
-      button_type: "Verify account",
+      button_type: "To Verify User Account",
       button_content: "VERFIY ACCOUNT",
-      button_color: "Orange text",
+      source: "EmptyDashboard",
     });
     this.props.navigation.navigate("VerifyAccount", {
       source: "Dashboard",

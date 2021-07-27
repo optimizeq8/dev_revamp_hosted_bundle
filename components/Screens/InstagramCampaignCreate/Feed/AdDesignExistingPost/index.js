@@ -489,7 +489,7 @@ class InstagramAdDesignExistingPost extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Preview Instagram Feed Ad Design",
       button_content: "PREVIEW",
-      button_color: "Transparent + White Outline",
+      source: "Instagram/ComposeAdExistingPost",
       campaign_channel: "Instagram",
       campaign_ad_type: "InstagramFeedAd",
     });
@@ -722,8 +722,8 @@ class InstagramAdDesignExistingPost extends Component {
           closeButton={false}
           segment={{
             str: "Instagram Feed Ad Design Back Button",
-            obj: { businessname: this.props.mainBusiness.businessname },
-            source: "ad_design",
+            obj: { business_name: this.props.mainBusiness.businessname },
+            source: "Instagram/ComposeAdExistingPost",
             source_action: "a_go_back",
           }}
           icon="instagram"

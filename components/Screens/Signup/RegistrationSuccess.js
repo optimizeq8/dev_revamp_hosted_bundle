@@ -44,7 +44,6 @@ class RegistartionSuccess extends React.Component {
       source: "RegistrationSuccess",
       button_type: "Complete Registration",
       button_content: "GET STARTED",
-      button_color: "Orange",
     });
     this.props.navigation.navigate("Dashboard", {
       source: "success_registration",

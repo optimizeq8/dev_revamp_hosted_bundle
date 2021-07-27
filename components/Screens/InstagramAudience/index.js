@@ -118,7 +118,6 @@ export class InstagramAudience extends Component {
     );
     let rep = cloneDeep(this.props.audience);
     rep.targeting = combinedMerge;
-    console.log("rep.targeting", JSON.stringify(rep.targeting, null, 2));
     this.props.setAudienceDetail({
       ...rep,
     });
@@ -171,7 +170,6 @@ export class InstagramAudience extends Component {
       );
       let rep = cloneDeep(this.props.audience);
       rep.targeting = combinedMerge;
-      console.log("rep.targeting", JSON.stringify(rep.targeting, null, 2));
       this.props.setAudienceDetail({
         ...rep,
       });

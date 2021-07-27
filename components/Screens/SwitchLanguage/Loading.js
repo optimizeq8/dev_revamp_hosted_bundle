@@ -19,14 +19,6 @@ import isStringArabic from "../../isStringArabic";
 
 class SwitchLanguageLoading extends Component {
   componentDidUpdate(prevProps) {
-    console.log(
-      "prevProps.languageChangeLoading",
-      prevProps.languageChangeLoading
-    );
-    console.log(
-      "this.props.languageChangeLoading",
-      this.props.languageChangeLoading
-    );
     if (prevProps.languageChangeLoading && !this.props.languageChangeLoading) {
       setTimeout(() => RNRestart.Restart(), 5000);
     }

@@ -51,9 +51,7 @@ class CampaignCard extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Open Campaign Details",
       button_content: "Campaign Name + Illustrations",
-      button_color: "Purple",
       source: "Dashboard",
-      source_action: "a_open_campaign_card",
       campaign_id: this.props.campaign.campaign_id,
       campaign_channel: "snapchat",
       business_id: this.props.mainBusiness.businessid,
@@ -81,7 +79,7 @@ class CampaignCard extends Component {
     analytics.track("Button Pressed", {
       button_type: `${value ? "Open" : "Close"} Repeat Campaign Modal`,
       button_content: "Promote again",
-      button_color: "Light Gray",
+      source: "Dashboard",
       campaign_channel: "snapchat",
       campaign_id: this.props.campaign.campaign_id,
       business_id: this.props.mainBusiness.businessid,
@@ -95,7 +93,7 @@ class CampaignCard extends Component {
     analytics.track("Button Pressed", {
       button_type: `${value ? "Open" : "Close"} Extend Campaign Modal`,
       button_content: "Extend",
-      button_color: "Light Gray",
+      source: "Dashboard",
       campaign_channel: "snapchat",
       campaign_id: this.props.campaign.campaign_id,
       business_id: this.props.mainBusiness.businessid,
@@ -109,7 +107,7 @@ class CampaignCard extends Component {
     analytics.track("Button Pressed", {
       button_type: "Open Options Campaign Modal",
       button_content: "3 dots Icon",
-      button_color: "Light Gray",
+      source: "Dashboard",
       campaign_channel: "snapchat",
       campaign_id: this.props.campaign.campaign_id,
       business_id: this.props.mainBusiness.businessid,

@@ -276,7 +276,7 @@ class AppChoice extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Close CTA Modal",
       button_content: "Call to action",
-      button_color: "Tarnsparent",
+      source: "AppChoiceSwipeUp",
       business_id: this.props.mainBusiness.businessid,
     });
     this.setState({
@@ -335,7 +335,7 @@ class AppChoice extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Open CTA Modal",
       button_content: "Call to action",
-      button_color: "Tarnsparent",
+      source: "AppChoice",
       business_id: this.props.mainBusiness.businessid,
     });
     this.setState({ inputCallToAction: true }, () => {});
@@ -351,7 +351,7 @@ class AppChoice extends Component {
 
       if (error) {
         analytics.track("Form Error Made", {
-          source: "ad_swipe_up_destination",
+          source: "AppChoice",
           error_screen: "ad_swipe_up_destination",
           source_action: "a_deep_link_uri",
           error_description: this.state.deep_link_uriError,

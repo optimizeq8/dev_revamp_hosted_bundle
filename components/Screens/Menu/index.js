@@ -496,7 +496,7 @@ class Menu extends Component {
                   analytics.track(`Button Pressed`, {
                     button_type: "Menu button",
                     button_content: translate("Logout"),
-                    button_color: "White Text + Icon",
+                    source: "Menu",
                   });
                   analytics.track(`Signed Out`, {
                     source: "Menu",

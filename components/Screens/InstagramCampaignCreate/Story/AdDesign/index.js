@@ -475,7 +475,8 @@ class AdDesign extends Component {
         }
       } else {
         this.props.navigation.navigate("InstagramStoryAdTargetting", {
-          source: "ad_design",
+          source: "InstagramStory/ComposeAd",
+
           source_action: "a_submit_ad_design",
         });
       }
@@ -485,7 +486,7 @@ class AdDesign extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Expand Instagram Feed Caption",
       button_content: "",
-      button_color: "Transparent",
+      source: "InstagramStory/ComposeAd",
     });
     this.setState(
       {
@@ -502,13 +503,13 @@ class AdDesign extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Preview Instagram Feed Ad Design",
       button_content: "PREVIEW",
-      button_color: "Transparent + White Outline",
+      source: "InstagramStory/ComposeAd",
       campaign_channel: "Instagram",
       campaign_ad_type: this.adType,
     });
     if (noError) {
       this.props.navigation.navigate("AdStoryDesignReview", {
-        source: "ad_objective",
+        source: "InstagramStory/ComposeAd",
         source_action: "a_preview_ad",
         rejected: this.rejected,
         media: this.state.media,
@@ -673,8 +674,9 @@ class AdDesign extends Component {
           closeButton={false}
           segment={{
             str: "Instagram Feed Ad Design Back Button",
-            obj: { businessname: this.props.mainBusiness.businessname },
-            source: "ad_design",
+            obj: { business_name: this.props.mainBusiness.businessname },
+            source: "InstagramStory/ComposeAd",
+
             source_action: "a_go_back",
           }}
           icon="instagram"

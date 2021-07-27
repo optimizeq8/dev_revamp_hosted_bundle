@@ -587,7 +587,7 @@ class InstagramAdPaymentReview extends Component {
                     analytics.track(`Button Pressed`, {
                       button_type: "Submit Instagram Feed Ad Review",
                       button_content: "Payment Info",
-                      button_color: "Orange",
+                      source: "InstagramStory/AdPaymentReview",
                     });
 
                     this.props.navigation.navigate("PaymentForm", {

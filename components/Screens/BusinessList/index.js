@@ -142,7 +142,7 @@ class BusinessList extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Create New Business",
       button_content: "Add a new business",
-      button_color: "Orange",
+      source: "Dashboard",
       businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 

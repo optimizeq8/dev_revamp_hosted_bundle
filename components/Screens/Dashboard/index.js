@@ -362,7 +362,7 @@ class Dashboard extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Campaign Ad Type Selected",
       button_content: adType.value,
-      button_color: adType.mediaType + " icon",
+      source: "Dashboard",
     });
     let businessApproved =
       this.props.mainBusiness && this.props.mainBusiness.approved === "1";
@@ -533,7 +533,7 @@ class Dashboard extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Create New Campaign",
       button_content: "Plus Icon",
-      button_color: "Orange",
+      source: "Dashboard",
     });
 
     let businessApproved =

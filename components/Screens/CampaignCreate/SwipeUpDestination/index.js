@@ -98,7 +98,7 @@ class SwipeUpDestination extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Close Swipe Up Side Menu",
       button_content: "",
-      button_color: "",
+      source: "SnapchatSwipeUpDestination",
     });
     this.setState({
       sidemenustate: false,
@@ -114,7 +114,7 @@ class SwipeUpDestination extends Component {
         analytics.track(`Button Pressed`, {
           button_type: "Toggle Swipe Up Side Menu",
           button_content: "<Swipe Up Description>",
-          button_color: "Orange Selected ",
+          source: "SnapchatSwipeUpDestination",
         });
       }
     );
@@ -125,7 +125,7 @@ class SwipeUpDestination extends Component {
         analytics.track(`Button Pressed`, {
           button_type: "Close Swipe Up Side Menu",
           button_content: "",
-          button_color: "",
+          source: "SnapchatSwipeUpDestination",
         });
       });
     else {
@@ -133,7 +133,7 @@ class SwipeUpDestination extends Component {
         analytics.track(`Button Pressed`, {
           button_type: "Open Swipe Up Side Menu",
           button_content: "Website",
-          button_color: "Orange Selected",
+          source: "SnapchatSwipeUpDestination",
           campaign_channel: "snapchat",
           campaign_ad_type: this.props.navigation.getParam("adType", "SnapAd"),
           campaign_swipe_up_destination: "Website",
@@ -146,7 +146,7 @@ class SwipeUpDestination extends Component {
         analytics.track(`Button Pressed`, {
           button_type: "Open Swipe Up Side Menu",
           button_content: "Deep Link",
-          button_color: "Orange Selected",
+          source: "SnapchatSwipeUpDestination",
           campaign_channel: "snapchat",
           campaign_ad_type: this.props.navigation.getParam("adType", "SnapAd"),
           campaign_swipe_up_destination: "Deep link",

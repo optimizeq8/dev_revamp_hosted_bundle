@@ -707,7 +707,7 @@ class CollectionMedia extends Component {
 
       if (error) {
         analytics.track("Form Error Made", {
-          source: "AdDesign",
+          source: "ComposeAd",
           error_screen: "CollectionMedia",
           source_action: "a_deep_link_uri",
           error_description: this.state.deep_link_uriError,

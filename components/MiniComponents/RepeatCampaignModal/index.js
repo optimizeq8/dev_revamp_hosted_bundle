@@ -113,7 +113,7 @@ class RepeatCampaignModal extends Component {
         value ? "Ad Targeting" : "Duration Modal"
       } for Repeat Campaigns`,
       button_content: "Forward Arrow or Back Arrow",
-      button_color: "Orange",
+      source: "Dashboard",
     });
     if (!value) {
       this.dateField.showModal();

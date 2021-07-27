@@ -88,7 +88,10 @@ class Signin extends Component {
         },
         source: "Signin",
       });
-      this.props.login(this.state, this.props.navigation);
+      this.props.login(
+        { email: this.state.email, password: this.state.password },
+        this.props.navigation
+      );
     }
   };
 
@@ -181,7 +184,6 @@ class Signin extends Component {
       analytics.track(`Button Pressed`, {
         button_type: "Signup Initiated ",
         button_content: `Create Account`,
-        button_color: "Orange",
         source: "Signin",
       });
       this.props.verifyEmail(

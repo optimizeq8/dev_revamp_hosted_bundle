@@ -378,9 +378,9 @@ class InstagramAdPaymentReview extends Component {
               segment={{
                 str: "Ad Payment Review Back Button",
                 obj: {
-                  businessname: this.props.mainBusiness.businessname,
+                  business_name: this.props.mainBusiness.businessname,
                 },
-                source: "ad_review",
+                source: "InstagramFeed/AdPaymentReview",
                 source_action: "a_go_back",
               }}
               icon="instagram"
@@ -601,11 +601,11 @@ class InstagramAdPaymentReview extends Component {
                     analytics.track(`Button Pressed`, {
                       button_type: "Submit Instagram Feed Ad Review",
                       button_content: "Payment Info",
-                      button_color: "Orange",
+                      source: "InstagramFeed/AdPaymentReview",
                     });
 
                     this.props.navigation.navigate("PaymentForm", {
-                      source: "ad_review",
+                      source: "InstagramFeed/AdPaymentReview",
                       source_action: `a_submit_ad_review`,
                       campaign_channel: "instagram",
                       campaign_ad_type: "InstagramFeedAd",

@@ -143,7 +143,7 @@ class PaymentForm extends Component {
       analytics.track(`Button Pressed`, {
         button_type: "Checkout Started",
         button_content: "Pay Now",
-        button_color: "Orange",
+        source: "PaymentForm",
         total: this.props.navigation.getParam("amount", 0),
         payment_method:
           this.props.paymentMethods[this.state.choice - 2].PaymentMethodEn,
