@@ -219,7 +219,7 @@ class Website extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Close CTA Modal",
       button_content: "Call to action",
-      button_color: "Transparent",
+      source: "WebsiteSwipeUp",
     });
     this.setState({
       inputCallToAction: false,
@@ -260,7 +260,7 @@ class Website extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Open CTA Modal",
       button_content: "Call to action",
-      button_color: "Transparent",
+      source: "SnapchatWebsiteSwipeUp",
     });
     this.setState({ inputCallToAction: true });
   };

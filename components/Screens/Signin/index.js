@@ -181,7 +181,6 @@ class Signin extends Component {
       analytics.track(`Button Pressed`, {
         button_type: "Signup Initiated ",
         button_content: `Create Account`,
-        button_color: "Orange",
         source: "Signin",
       });
       this.props.verifyEmail(

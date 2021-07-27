@@ -99,7 +99,7 @@ class AdType extends Component {
       button_type:
         "Ad Type Selection for " + adType.mediaType + " " + adType.value,
       button_content: adType.value + " description",
-      button_color: "White + Illustrations",
+      source: "AdType",
     });
     //Check if account is verified or not
     const { fb_connected, fb_ad_account_id } = this.props.mainBusiness;
@@ -213,7 +213,7 @@ class AdType extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Campaign Platform Selection",
       button_content: "Channel icons",
-      button_color: "Transparent",
+      source: "AdType",
     });
     this.setState({
       active: title,

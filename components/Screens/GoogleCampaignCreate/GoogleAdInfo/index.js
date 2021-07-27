@@ -835,7 +835,7 @@ class GoogleAdInfo extends Component {
                               analytics.track(`Button Pressed`, {
                                 button_type: "Google Ad Info Show Regions",
                                 button_content: "Forward Icon",
-                                button_color: "Orange",
+                                source: "GoogleAdInfo",
                                 business_id:
                                   this.props.mainBusiness &&
                                   this.props.mainBusiness.businessid,

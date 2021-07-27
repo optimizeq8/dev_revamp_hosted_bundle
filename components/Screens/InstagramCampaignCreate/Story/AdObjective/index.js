@@ -259,7 +259,7 @@ class AdObjective extends Component {
     analytics.track(`Button Pressed`, {
       button_type: `${visible ? "Open" : "Close"} Ad Objective Modal`,
       button_content: "OBJECTIVE",
-      button_color: "Dark Purple",
+      source: "InstagramStory/AdObjective",
     });
     this.setState({ modalVisible: visible });
   };

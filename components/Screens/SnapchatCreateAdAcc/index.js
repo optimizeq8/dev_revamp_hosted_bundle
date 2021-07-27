@@ -86,7 +86,7 @@ class SnapchatCreateAdAcc extends Component {
     analytics.track("Button Pressed", {
       button_type: "Accepting Terms and Conditions for Snapchat",
       button_content: "ACCEPT",
-      button_color: "Orange",
+      source: "SnapchatCreateAdAcc",
     });
     if (this.state.is_political === null) {
       analytics.track("Form Error Made", {

@@ -181,7 +181,7 @@ class Tutorial extends Component {
       source: "tutorial_4",
       button_type: "Finished Tutorial",
       button_content: "Get Started!",
-      button_color: "Orange",
+      source: "Tutorial",
     });
     AsyncStorage.getItem("tutorialOpened")
       .then((value) => {
@@ -207,7 +207,7 @@ class Tutorial extends Component {
       source: `tutorial_${this.state.activeSlide + 1}`,
       button_type: `skipped after slide ${this.state.activeSlide + 1}`,
       button_content: "Skip",
-      button_color: "Transparent",
+      source: "Tutorial",
     });
 
     AsyncStorage.getItem("tutorialOpened")

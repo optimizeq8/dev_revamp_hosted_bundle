@@ -320,10 +320,7 @@ export const ad_design = (
             segmentInfo.campaign_savedObjective === "POLITICAL_TRAFFIC"
               ? "AdDetailsPolitical"
               : "AdDetails",
-            {
-              source: "AdDesign",
-              source_action: "a_submit_ad_design",
-            }
+            { source: "ComposeAd", source_action: "a_submit_ad_design" }
           );
         else if (
           data.data &&

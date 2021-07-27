@@ -273,7 +273,7 @@ class AdObjective extends Component {
     analytics.track(`Button Pressed`, {
       button_type: `${visible ? "Open" : "Close"} Ad Objective Modal`,
       button_content: "OBJECTIVE",
-      button_color: "Dark Purple",
+      source: "InstagramFeed/AdObjective",
     });
     this.setState({ modalVisible: visible });
   };
@@ -471,7 +471,7 @@ class AdObjective extends Component {
     analytics.track("Button Pressed", {
       button_type: "Change Post Type for Instagram Feed",
       button_content: `${postType === 0 ? "Existing Post" : "New Post"}`,
-      button_color: "Orange Selected / Transparent Unselected",
+      source: "InstagramFeed/AdObjective",
     });
     this.props.save_campaign_info_instagram({
       existingPost: postType,

@@ -131,7 +131,7 @@ class VerifyAccount extends Component {
           button_content: this.state.verifyByMobile
             ? "Verify By E-mail Instead"
             : "Verify By Mobile Number Instead",
-          button_color: "Orange Text",
+          source: "Tutorial",
         });
       }
     );
@@ -171,7 +171,7 @@ class VerifyAccount extends Component {
     analytics.track("Button Pressed", {
       button_type: "Send OTP By SMS",
       button_content: "Verify",
-      button_color: "Orange",
+      source: "VerifyAccount",
     });
     const { translate } = this.props.screenProps;
     if (!this.state.valid) {
@@ -196,7 +196,7 @@ class VerifyAccount extends Component {
     analytics.track("Button Pressed", {
       button_type: "Send OTP By Email",
       button_content: "Verify",
-      button_color: "Orange",
+      source: "VerifyAccount",
     });
     // Taking USER's original phone number that was used while registeration
     const mobile = this.props.userInfo.mobile.substring(3);
@@ -240,7 +240,7 @@ class VerifyAccount extends Component {
           ? "Resend OTP"
           : `Verify OTP by ${verifyByMobile ? "Mobile" : "Email"}`,
         button_content: "",
-        button_color: "",
+        source: "VerifyAccount",
       });
     }
   }
@@ -254,7 +254,7 @@ class VerifyAccount extends Component {
         ? "Resend OTP"
         : `Verify OTP by ${verifyByMobile ? "Mobile" : "Email"}`,
       button_content: "Resend Code",
-      button_color: "Orange Text",
+      source: "VerifyAccount",
     });
     if (this.state.verifyByMobile) {
       this.props.resendVerifyMobileCode({
