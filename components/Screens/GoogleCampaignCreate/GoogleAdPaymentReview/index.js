@@ -205,7 +205,7 @@ class AdPaymentReview extends Component {
   goToPayment = () => {
     analytics.track(`Button Pressed`, {
       button_type: "Submit Ad Review",
-      button_text: "Payment Info",
+      button_content: "Payment Info",
       button_color: "Orange",
     });
 

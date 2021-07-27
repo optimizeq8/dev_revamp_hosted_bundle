@@ -484,7 +484,7 @@ class AdDesign extends Component {
   handleCaptionExpand = (value) => {
     analytics.track(`Button Pressed`, {
       button_type: "Expand Instagram Feed Caption",
-      button_text: "",
+      button_content: "",
       button_color: "Transparent",
     });
     this.setState(
@@ -501,7 +501,7 @@ class AdDesign extends Component {
 
     analytics.track(`Button Pressed`, {
       button_type: "Preview Instagram Feed Ad Design",
-      button_text: "PREVIEW",
+      button_content: "PREVIEW",
       button_color: "Transparent + White Outline",
       campaign_channel: "Instagram",
       campaign_ad_type: this.adType,

@@ -50,7 +50,7 @@ class CampaignCard extends Component {
   handleCampaignPress = () => {
     analytics.track(`Button Pressed`, {
       button_type: "Open Campaign Details",
-      button_text: "Campaign Name + Illustrations",
+      button_content: "Campaign Name + Illustrations",
       button_color: "Purple",
       source: "Dashboard",
       source_action: "a_open_campaign_card",
@@ -80,7 +80,7 @@ class CampaignCard extends Component {
   handleRepeatModal = (value) => {
     analytics.track("Button Pressed", {
       button_type: `${value ? "Open" : "Close"} Repeat Campaign Modal`,
-      button_text: "Promote again",
+      button_content: "Promote again",
       button_color: "Light Gray",
       campaign_channel: "snapchat",
       campaign_id: this.props.campaign.campaign_id,
@@ -94,7 +94,7 @@ class CampaignCard extends Component {
   handleExtendModal = (value) => {
     analytics.track("Button Pressed", {
       button_type: `${value ? "Open" : "Close"} Extend Campaign Modal`,
-      button_text: "Extend",
+      button_content: "Extend",
       button_color: "Light Gray",
       campaign_channel: "snapchat",
       campaign_id: this.props.campaign.campaign_id,
@@ -108,7 +108,7 @@ class CampaignCard extends Component {
   handleOptionsModal = (value) => {
     analytics.track("Button Pressed", {
       button_type: "Open Options Campaign Modal",
-      button_text: "3 dots Icon",
+      button_content: "3 dots Icon",
       button_color: "Light Gray",
       campaign_channel: "snapchat",
       campaign_id: this.props.campaign.campaign_id,

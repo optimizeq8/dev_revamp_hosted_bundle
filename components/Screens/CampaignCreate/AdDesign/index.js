@@ -566,7 +566,7 @@ class AdDesign extends Component {
   setMediaModalVisible = (visible) => {
     analytics.track(`Button Pressed`, {
       button_type: `${visible ? "Open" : "Close"} Media Options Modal`,
-      button_text: "Add Media + Camera Iocn",
+      button_content: "Add Media + Camera Iocn",
       button_color: "Orange Text",
     });
     this.setState({ mediaModalVisible: visible });
@@ -676,7 +676,7 @@ class AdDesign extends Component {
             };
       analytics.track(`Button Pressed`, {
         button_type: "Preview Ad Design",
-        button_text: "PREVIEW",
+        button_content: "PREVIEW",
         button_color: "Transparent + White Outline",
         campaign_channel: "snapchat",
         campaign_ad_type: this.adType,
@@ -1108,7 +1108,7 @@ class AdDesign extends Component {
       button_type: `${
         val ? "Open" : "Close"
       } upload media from different device modal`,
-      button_text: "Upload media from different device",
+      button_content: "Upload media from different device",
       button_color: "Orange Text + Icon",
     });
     this.setState({
@@ -1129,7 +1129,7 @@ class AdDesign extends Component {
       button_type: `${
         val ? "Open" : "Close"
       } download media from different device modal`,
-      button_text: "Download media from different device",
+      button_content: "Download media from different device",
       button_color: "Orange Text + Icon",
     });
     this.setState({
@@ -1372,7 +1372,7 @@ class AdDesign extends Component {
   setExistingMediaModal = (val) => {
     analytics.track(`Button Pressed`, {
       button_type: `${val ? "Open" : "Close"} existing media modal`,
-      button_text: "Media Library",
+      button_content: "Media Library",
       button_color: "Orange Text + Icon",
     });
     this.setState(

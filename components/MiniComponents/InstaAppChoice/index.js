@@ -261,7 +261,7 @@ class AppChoice extends Component {
   closeCallToActionModal = () => {
     analytics.track(`Button Pressed`, {
       button_type: "Closed CTA Modal",
-      button_text: "Call to action",
+      button_content: "Call to action",
       business_id: this.props.mainBusiness.businessid,
     });
     this.setState({

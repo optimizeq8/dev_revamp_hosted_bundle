@@ -389,7 +389,7 @@ class AdObjective extends Component {
   setModalVisible = (visible) => {
     analytics.track(`Button Pressed`, {
       button_type: `${visible ? "Open" : "Close"} Ad Objective Modal`,
-      button_text: "OBJECTIVE",
+      button_content: "OBJECTIVE",
       button_color: "Dark Purple",
     });
 
@@ -413,7 +413,7 @@ class AdObjective extends Component {
   _handleCollectionAdLinkForm = (val) => {
     analytics.track(`Button Pressed`, {
       button_type: "Change Ad Objective Collection Link Form",
-      button_text:
+      button_content:
         val === 2
           ? `WEBSITE
       Links to your site`

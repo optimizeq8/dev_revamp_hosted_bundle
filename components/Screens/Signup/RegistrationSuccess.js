@@ -43,7 +43,7 @@ class RegistartionSuccess extends React.Component {
     analytics.track(`Button Pressed`, {
       source: "RegistrationSuccess",
       button_type: "Complete Registration",
-      button_text: "GET STARTED",
+      button_content: "GET STARTED",
       button_color: "Orange",
     });
     this.props.navigation.navigate("Dashboard", {

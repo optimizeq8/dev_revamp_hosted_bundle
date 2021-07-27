@@ -218,7 +218,7 @@ class Website extends Component {
   closeCallToActionModal = () => {
     analytics.track(`Button Pressed`, {
       button_type: "Close CTA Modal",
-      button_text: "Call to action",
+      button_content: "Call to action",
       button_color: "Transparent",
     });
     this.setState({
@@ -259,7 +259,7 @@ class Website extends Component {
   openCallToActionModal = () => {
     analytics.track(`Button Pressed`, {
       button_type: "Open CTA Modal",
-      button_text: "Call to action",
+      button_content: "Call to action",
       button_color: "Transparent",
     });
     this.setState({ inputCallToAction: true });

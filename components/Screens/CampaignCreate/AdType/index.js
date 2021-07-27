@@ -98,7 +98,7 @@ class AdType extends Component {
     analytics.track(`Button Pressed`, {
       button_type:
         "Ad Type Selection for " + adType.mediaType + " " + adType.value,
-      button_text: adType.value + " description",
+      button_content: adType.value + " description",
       button_color: "White + Illustrations",
     });
     //Check if account is verified or not
@@ -212,7 +212,7 @@ class AdType extends Component {
   setActiveCampaignType = (title) => {
     analytics.track(`Button Pressed`, {
       button_type: "Campaign Platform Selection",
-      button_text: "Channel icons",
+      button_content: "Channel icons",
       button_color: "Transparent",
     });
     this.setState({

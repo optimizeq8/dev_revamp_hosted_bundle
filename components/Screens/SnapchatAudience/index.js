@@ -856,7 +856,7 @@ export class SnapchatAudience extends Component {
     const { translate } = this.props.screenProps;
     analytics.track(`Button Pressed`, {
       button_type: "Go Back",
-      button_text: "Backward Icon",
+      button_content: "Backward Icon",
     });
     analytics.track("go_back_warning", {
       source: "audience_detail",
@@ -874,7 +874,7 @@ export class SnapchatAudience extends Component {
           onPress: () => {
             analytics.track(`Button Pressed`, {
               button_type: "Alert Cancel Go Back",
-              button_text: "Cancel",
+              button_content: "Cancel",
             });
           },
           style: "cancel",
@@ -884,7 +884,7 @@ export class SnapchatAudience extends Component {
           onPress: () => {
             analytics.track(`Button Pressed`, {
               button_type: "Alert Go Back Confirm",
-              button_text: "Yes",
+              button_content: "Yes",
             });
             this.props.navigation.goBack();
           },

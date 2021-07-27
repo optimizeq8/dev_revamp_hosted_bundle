@@ -34,7 +34,7 @@ class SnapchatCampaignAudience extends React.Component {
     const { translate } = this.props.screenProps;
     analytics.track("Button Pressed", {
       button_type: "Snapchat Auidence Alret Displayed",
-      button_text: "Delete Icon",
+      button_content: "Delete Icon",
       audience_id: audience.id,
       audience_name: audience.name,
       business_id: this.props.mainBusiness.businessid,
@@ -50,7 +50,7 @@ class SnapchatCampaignAudience extends React.Component {
           onPress: () => {
             analytics.track("Button Pressed", {
               button_type: "Alert Cancel Go Back",
-              button_text: "Cancel",
+              button_content: "Cancel",
             });
           },
           style: "cancel",

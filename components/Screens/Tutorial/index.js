@@ -180,7 +180,7 @@ class Tutorial extends Component {
     await analytics.track("Button Pressed", {
       source: "tutorial_4",
       button_type: "Finished Tutorial",
-      button_text: "Get Started!",
+      button_content: "Get Started!",
       button_color: "Orange",
     });
     AsyncStorage.getItem("tutorialOpened")
@@ -206,7 +206,7 @@ class Tutorial extends Component {
     await analytics.track(`Button Pressed`, {
       source: `tutorial_${this.state.activeSlide + 1}`,
       button_type: `skipped after slide ${this.state.activeSlide + 1}`,
-      button_text: "Skip",
+      button_content: "Skip",
       button_color: "Transparent",
     });
 

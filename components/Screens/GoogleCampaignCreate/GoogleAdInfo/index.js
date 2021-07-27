@@ -210,7 +210,7 @@ class GoogleAdInfo extends Component {
   setModalVisible = (visible) => {
     analytics.track(`Button Pressed`, {
       button_type: `${visible ? "Open" : "Close"} Country Modal`,
-      button_text: "COUNTRY",
+      button_content: "COUNTRY",
       campaign_channel: "google",
       campaign_ad_type: "GoogleSEAd",
       business_id:
@@ -834,7 +834,7 @@ class GoogleAdInfo extends Component {
                             () => {
                               analytics.track(`Button Pressed`, {
                                 button_type: "Google Ad Info Show Regions",
-                                button_text: "Forward Icon",
+                                button_content: "Forward Icon",
                                 button_color: "Orange",
                                 business_id:
                                   this.props.mainBusiness &&

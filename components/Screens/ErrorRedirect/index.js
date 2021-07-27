@@ -190,7 +190,7 @@ class ErrorRedirect extends Component {
               onPressAction={() => {
                 analytics.track(`Button Pressed`, {
                   button_type: "Retry Payment",
-                  button_text: "Retry",
+                  button_content: "Retry",
                   button_color: "Orange",
                 });
                 if (this.props.navigation.getParam("isWallet") === "1") {
@@ -222,7 +222,7 @@ class ErrorRedirect extends Component {
                 // }
                 analytics.track(`Button Pressed`, {
                   button_type: "Go to Dashboard",
-                  button_text: "HOME",
+                  button_content: "HOME",
                   button_color: "Orange",
                 });
                 this.props.navigation.reset(

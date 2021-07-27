@@ -85,7 +85,7 @@ class SnapchatCreateAdAcc extends Component {
     // To validate the paying advertiser name should not be blank id it going to be political account
     analytics.track("Button Pressed", {
       button_type: "Accepting Terms and Conditions for Snapchat",
-      button_text: "ACCEPT",
+      button_content: "ACCEPT",
       button_color: "Orange",
     });
     if (this.state.is_political === null) {

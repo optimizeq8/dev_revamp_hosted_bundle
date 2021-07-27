@@ -488,7 +488,7 @@ class InstagramAdDesignExistingPost extends Component {
     const noError = this.validator();
     analytics.track(`Button Pressed`, {
       button_type: "Preview Instagram Feed Ad Design",
-      button_text: "PREVIEW",
+      button_content: "PREVIEW",
       button_color: "Transparent + White Outline",
       campaign_channel: "Instagram",
       campaign_ad_type: "InstagramFeedAd",

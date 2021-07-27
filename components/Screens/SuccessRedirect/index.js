@@ -185,7 +185,7 @@ class SuccessRedirect extends Component {
   handleButton = (show = false, navigateToDashboard = false) => {
     analytics.track(`Button Pressed`, {
       button_type: "Go to Dashboard",
-      button_text: "HOME",
+      button_content: "HOME",
       button_color: "Orange",
     });
     this.props.navigation.reset(

@@ -169,7 +169,7 @@ class GoogleAdTargeting extends Component {
   _renderSideMenu = (component, option = "") => {
     analytics.track(`Button Pressed`, {
       button_type: "Open Side Menu Targeting",
-      button_text: this.componentDidMount,
+      button_content: this.componentDidMount,
       business_id:
         this.props.mainBusiness && this.props.mainBusiness.businessid,
     });

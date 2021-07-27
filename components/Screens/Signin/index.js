@@ -167,7 +167,7 @@ class Signin extends Component {
     if (!this.state.newEmailError) {
       analytics.track(`Button Pressed`, {
         button_type: "Signup Initiated ",
-        button_text: `Create Account`,
+        button_content: `Create Account`,
         button_color: "Orange",
         source: "Signin",
       });
@@ -196,7 +196,7 @@ class Signin extends Component {
     // Action event
     analytics.track(`Button Pressed`, {
       button_type: "Sign In Tab Selected",
-      button_text: `${activeTabSignUp ? "Sign Up" : "Sign In"}`,
+      button_content: `${activeTabSignUp ? "Sign Up" : "Sign In"}`,
       button_color: "Transparent",
       source: "Signin",
     });

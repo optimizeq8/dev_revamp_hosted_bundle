@@ -35,7 +35,7 @@ class InstagramCampaignAudience extends React.Component {
 
     analytics.track("Button Pressed", {
       button_type: "Instagram Auidence Alret Displayed",
-      button_text: "Delete Icon",
+      button_content: "Delete Icon",
       audience_id: audience.id,
       audience_name: audience.name,
       business_id: this.props.mainBusiness.businessid,
@@ -51,7 +51,7 @@ class InstagramCampaignAudience extends React.Component {
           onPress: () => {
             analytics.track("Button Pressed", {
               button_type: "Cancel Deletion of Audience",
-              button_text: "Cancel",
+              button_content: "Cancel",
             });
           },
           style: "cancel",

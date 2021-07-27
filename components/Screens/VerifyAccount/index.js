@@ -128,7 +128,7 @@ class VerifyAccount extends Component {
       () => {
         analytics.track(`Button Pressed`, {
           button_type: "Change Verification Mode",
-          button_text: this.state.verifyByMobile
+          button_content: this.state.verifyByMobile
             ? "Verify By E-mail Instead"
             : "Verify By Mobile Number Instead",
           button_color: "Orange Text",
@@ -170,7 +170,7 @@ class VerifyAccount extends Component {
   sendMobileNo = () => {
     analytics.track("Button Pressed", {
       button_type: "Send OTP By SMS",
-      button_text: "Verify",
+      button_content: "Verify",
       button_color: "Orange",
     });
     const { translate } = this.props.screenProps;
@@ -195,7 +195,7 @@ class VerifyAccount extends Component {
   sendEmail = () => {
     analytics.track("Button Pressed", {
       button_type: "Send OTP By Email",
-      button_text: "Verify",
+      button_content: "Verify",
       button_color: "Orange",
     });
     // Taking USER's original phone number that was used while registeration
@@ -239,7 +239,7 @@ class VerifyAccount extends Component {
         button_type: this.state.resend_otp
           ? "Resend OTP"
           : `Verify OTP by ${verifyByMobile ? "Mobile" : "Email"}`,
-        button_text: "",
+        button_content: "",
         button_color: "",
       });
     }
@@ -253,7 +253,7 @@ class VerifyAccount extends Component {
       button_type: this.state.resend_otp
         ? "Resend OTP"
         : `Verify OTP by ${verifyByMobile ? "Mobile" : "Email"}`,
-      button_text: "Resend Code",
+      button_content: "Resend Code",
       button_color: "Orange Text",
     });
     if (this.state.verifyByMobile) {

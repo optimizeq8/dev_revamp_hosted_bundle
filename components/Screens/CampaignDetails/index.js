@@ -170,7 +170,7 @@ class CampaignDetails extends Component {
   showModal = (visible) => {
     analytics.track(`Button Pressed`, {
       button_type: `${visible ? "Open" : "Close"} Campaign Status Modal`,
-      button_text: this.state.toggleText !== "PAUSED" ? "LIVE" : "PAUSED",
+      button_content: this.state.toggleText !== "PAUSED" ? "LIVE" : "PAUSED",
       campaign_channel: "snapchat",
       business_id:
         this.props.mainBusiness && this.props.mainBusiness.businessid,
@@ -229,7 +229,7 @@ class CampaignDetails extends Component {
   showCSVModal = (isVisible) => {
     analytics.track(`Button Pressed`, {
       button_type: `${isVisible ? "Open" : "Close"} Campaign CSV Modal`,
-      button_text: "Download Icon",
+      button_content: "Download Icon",
       campaign_channel: "snapchat",
       campaign_id: this.props.selectedCampaign.campaign_id,
       business_id:

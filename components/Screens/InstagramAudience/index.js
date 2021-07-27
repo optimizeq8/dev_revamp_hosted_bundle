@@ -668,7 +668,7 @@ export class InstagramAudience extends Component {
     const { translate } = this.props.screenProps;
     analytics.track("Button Pressed", {
       button_type: "Go Back",
-      button_text: "Backward Icon",
+      button_content: "Backward Icon",
     });
     Alert.alert(
       translate("Warning"),
@@ -681,7 +681,7 @@ export class InstagramAudience extends Component {
           onPress: () => {
             analytics.track("Button Pressed", {
               button_type: "Go Back Alert Cancel",
-              button_text: "Cancel",
+              button_content: "Cancel",
             });
           },
           style: "cancel",
@@ -691,7 +691,7 @@ export class InstagramAudience extends Component {
           onPress: () => {
             analytics.track("Button Pressed", {
               button_type: "Go Back Alert Confirm",
-              button_text: "Yes",
+              button_content: "Yes",
             });
             this.props.deleteCustomLocation("all", true);
             this.props.navigation.goBack();

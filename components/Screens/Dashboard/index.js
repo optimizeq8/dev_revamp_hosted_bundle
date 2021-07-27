@@ -361,7 +361,7 @@ class Dashboard extends Component {
     const { fb_connected, fb_ad_account_id } = this.props.mainBusiness;
     analytics.track(`Button Pressed`, {
       button_type: "Campaign Ad Type Selected",
-      button_text: adType.value,
+      button_content: adType.value,
       button_color: adType.mediaType + " icon",
     });
     let businessApproved =
@@ -532,7 +532,7 @@ class Dashboard extends Component {
     );
     analytics.track(`Button Pressed`, {
       button_type: "Create New Campaign",
-      button_text: "Plus Icon",
+      button_content: "Plus Icon",
       button_color: "Orange",
     });
 

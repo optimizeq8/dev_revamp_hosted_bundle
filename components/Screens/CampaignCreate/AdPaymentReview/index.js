@@ -207,7 +207,7 @@ class AdPaymentReview extends Component {
   goToPaymentForm = () => {
     analytics.track(`Button Pressed`, {
       button_type: "Submit Ad Review",
-      button_text: "Payment Info",
+      button_content: "Payment Info",
       button_color: "Orange",
     });
     this.props.navigation.navigate("PaymentForm", {

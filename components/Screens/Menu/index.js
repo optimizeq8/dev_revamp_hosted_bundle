@@ -495,7 +495,7 @@ class Menu extends Component {
                 onPress={() => {
                   analytics.track(`Button Pressed`, {
                     button_type: "Menu button",
-                    button_text: translate("Logout"),
+                    button_content: translate("Logout"),
                     button_color: "White Text + Icon",
                   });
                   analytics.track(`Signed Out`, {

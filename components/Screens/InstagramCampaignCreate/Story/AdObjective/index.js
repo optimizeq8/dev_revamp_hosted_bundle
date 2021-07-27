@@ -258,7 +258,7 @@ class AdObjective extends Component {
   setModalVisible = (visible) => {
     analytics.track(`Button Pressed`, {
       button_type: `${visible ? "Open" : "Close"} Ad Objective Modal`,
-      button_text: "OBJECTIVE",
+      button_content: "OBJECTIVE",
       button_color: "Dark Purple",
     });
     this.setState({ modalVisible: visible });

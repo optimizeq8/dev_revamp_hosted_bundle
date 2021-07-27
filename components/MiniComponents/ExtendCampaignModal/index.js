@@ -50,7 +50,7 @@ class ExtendCampaignModal extends Component {
       button_type: `Show ${
         value ? "Ad Targeting" : "Duration Modal"
       } for Extend Campaigns`,
-      button_text: "Forward Arrow or Back Arrow",
+      button_content: "Forward Arrow or Back Arrow",
       button_color: "Orange",
       business_id:
         this.props.mainBusiness && this.props.mainBusiness.businessid,

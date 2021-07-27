@@ -79,7 +79,7 @@ class EditKeywords extends Component {
       button_type: `${
         !this.state.modalVisible ? "Open" : "Close"
       } Google Keywords Modal`,
-      button_text: "",
+      button_content: "",
       business_id: this.props.mainBusiness.businessid,
     });
     this.setState({ modalVisible: !this.state.modalVisible });

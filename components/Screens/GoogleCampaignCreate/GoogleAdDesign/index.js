@@ -504,7 +504,7 @@ class GoogleAdDesign extends Component {
   previewHandler = () => {
     analytics.track(`Button Pressed`, {
       button_type: "Google Ad Design Preview",
-      button_text: "Eye Icon",
+      button_content: "Eye Icon",
       campaign_channel: "google",
       campaign_ad_type: "GoogleSEAd",
       business_id: this.props.mainBusiness.businessid,

@@ -140,7 +140,7 @@ class GoogleCampaignDetails extends Component {
   showModal = (visible) => {
     analytics.track(`Button Pressed`, {
       button_type: `${visible ? "Open" : "Close"} Campaign Status Modal`,
-      button_text: this.state.toggleText !== "PAUSED" ? "LIVE" : "PAUSED",
+      button_content: this.state.toggleText !== "PAUSED" ? "LIVE" : "PAUSED",
       campaign_channel: "google",
       campaign_id: this.props.campaign.id,
       business_id:
@@ -180,7 +180,7 @@ class GoogleCampaignDetails extends Component {
   handleModalToggle = (status) => {
     analytics.track(`Button Pressed`, {
       button_type: `Close Campaign Status Modal`,
-      button_text: status !== "PAUSED" ? "LIVE" : "PAUSED",
+      button_content: status !== "PAUSED" ? "LIVE" : "PAUSED",
       campaign_channel: "google",
       campaign_id: this.props.campaign.id,
       business_id:
@@ -204,7 +204,7 @@ class GoogleCampaignDetails extends Component {
   showCSVModal = (isVisible) => {
     analytics.track(`Button Pressed`, {
       button_type: `${isVisible ? "Open" : "Close"} Campaign CSV Modal`,
-      button_text: "Download Icon",
+      button_content: "Download Icon",
       campaign_channel: "google",
       campaign_id: this.props.campaign.id,
       business_id:
@@ -719,7 +719,7 @@ class GoogleCampaignDetails extends Component {
                                                 {
                                                   button_type:
                                                     "Open Campaign Status Modal",
-                                                  button_text:
+                                                  button_content:
                                                     this.state.toggleText !==
                                                     "PAUSED"
                                                       ? "LIVE"

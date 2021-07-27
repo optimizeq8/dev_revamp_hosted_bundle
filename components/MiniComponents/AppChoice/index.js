@@ -205,7 +205,7 @@ class AppChoice extends Component {
   setModalVisible = (isVisible, os) => {
     analytics.track(`Button Pressed`, {
       button_type: `${isVisible ? "Open" : "Close"} App Search Modal`,
-      button_text: os,
+      button_content: os,
       business_id: this.props.mainBusiness.businessid,
     });
     this.setState({ isVisible, appSelection: os });
@@ -275,7 +275,7 @@ class AppChoice extends Component {
   closeCallToActionModal = () => {
     analytics.track(`Button Pressed`, {
       button_type: "Close CTA Modal",
-      button_text: "Call to action",
+      button_content: "Call to action",
       button_color: "Tarnsparent",
       business_id: this.props.mainBusiness.businessid,
     });
@@ -334,7 +334,7 @@ class AppChoice extends Component {
   openCallToActionModal = () => {
     analytics.track(`Button Pressed`, {
       button_type: "Open CTA Modal",
-      button_text: "Call to action",
+      button_content: "Call to action",
       button_color: "Tarnsparent",
       business_id: this.props.mainBusiness.businessid,
     });
