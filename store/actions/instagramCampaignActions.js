@@ -328,6 +328,12 @@ export const saveBrandMediaInstagram = (
                 type: actionTypes.SET_AD_DESIGN_INSTAGRAM,
                 payload: data,
               });
+          } else {
+            showMessage({
+              message: data.message,
+              position: "top",
+              type: "warning",
+            });
           }
         }
       })
@@ -1163,6 +1169,12 @@ export const saveInstgramExistpost = (
             return dispatch({
               type: actionTypes.SET_AD_DESIGN_INSTAGRAM,
               payload: data,
+            });
+          } else {
+            showMessage({
+              message: data.message,
+              position: "top",
+              type: "warning",
             });
           }
         }
