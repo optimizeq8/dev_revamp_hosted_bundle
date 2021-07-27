@@ -46,6 +46,7 @@ class MainForm extends Component {
     );
     const source_action = this.props.navigation.getParam("source_action", null);
     analytics.track(`Screen Viewed`, {
+      screen_name: "RegistrationDetailForm",
       source,
       source_action,
     });
