@@ -117,7 +117,6 @@ export const addWalletAmount = (
       type: actionTypes.SET_TRAN_LOADING,
       payload: true,
     });
-    console.log("info", JSON.stringify(info, null, 2));
     createBaseUrl()
       .post(
         `purchaseBusinessWalletAmount`,

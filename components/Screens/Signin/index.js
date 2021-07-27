@@ -88,7 +88,10 @@ class Signin extends Component {
         },
         source: "Signin",
       });
-      this.props.login(this.state, this.props.navigation);
+      this.props.login(
+        { email: this.state.email, password: this.state.password },
+        this.props.navigation
+      );
     }
   };
 
