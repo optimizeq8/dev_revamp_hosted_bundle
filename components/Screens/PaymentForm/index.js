@@ -193,7 +193,7 @@ class PaymentForm extends Component {
       this.closeBrowserLoading();
     } catch (error) {
       analytics.track(`Payment Error`, {
-        error_screen: "PaymentForm",
+        source: "PaymentForm",
         source: "AdPaymentReview",
         source_action: "a_payment_processing",
         payment_method:

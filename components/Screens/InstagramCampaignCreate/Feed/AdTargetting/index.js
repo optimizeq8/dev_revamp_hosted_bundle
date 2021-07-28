@@ -666,7 +666,7 @@ class InstagramFeedAdTargetting extends Component {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
           analytics.track(`Form Error Made`, {
-            error_screen: "InstagramFeed/AdTargeting",
+            source: "InstagramFeed/AdTargeting",
             source_action: "a_change_campaign_custom_budget",
             error_description:
               validateWrapper("Budget", rawValue) +
@@ -899,7 +899,7 @@ class InstagramFeedAdTargetting extends Component {
       )
     ) {
       analytics.track(`Form Error Made`, {
-        error_screen: "InstagramFeed/AdTargeting",
+        source: "InstagramFeed/AdTargeting",
         source_action: "a_submit_ad_targeting",
         campaign_id: this.state.campaignInfo.campaign_id,
         campaign_channel: "instagram",

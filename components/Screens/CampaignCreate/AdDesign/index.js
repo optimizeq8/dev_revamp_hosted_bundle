@@ -940,7 +940,7 @@ class AdDesign extends Component {
       this.state.coverError
     ) {
       analytics.track(`Form Error Made`, {
-        error_screen: "AdDesign",
+        source: "AdDesign",
         source_action: "a_submit_ad_design",
         campaign_id: this.selectedCampaign.campaign_id,
         campaign_channel: "snapchat",
@@ -991,7 +991,7 @@ class AdDesign extends Component {
 
       if (!this.state.fileReadyToUpload && this.state.incorrectDimensions) {
         analytics.track(`Form Error Made`, {
-          error_screen: "ad_design",
+          source: "ad_design",
           error_description: "Please crop the image to the right dimensions",
           campaign_channel: "snapchat",
           campaign_ad_type: this.adType,
@@ -1109,7 +1109,7 @@ class AdDesign extends Component {
         val ? "Open" : "Close"
       } upload media from different device modal`,
       button_content: "Upload media from different device",
-      button_color: "Orange Text + Icon",
+      source: "ComposeAd",
     });
     this.setState({
       uploadMediaDifferentDeviceModal: val,

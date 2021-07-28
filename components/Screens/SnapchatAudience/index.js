@@ -162,7 +162,7 @@ export class SnapchatAudience extends Component {
     // segment track for error on final submit
     if (countryError || languagesError || audienceNameError) {
       analytics.track(`Form Error Made`, {
-        error_screen: "SnapchatAudience",
+        source: "SnapchatAudience",
         source_action: "a_save_audience_targeting",
         error_description: countryError || languagesError || audienceNameError,
         business_id: this.props.mainBusiness.businessid,
@@ -504,7 +504,7 @@ export class SnapchatAudience extends Component {
 
     if (replace.targeting.demographics[0].languages.length === 0) {
       analytics.track(`Form Error Made`, {
-        error_screen: "SnapchatAudience",
+        source: "SnapchatAudience",
         source_action: "a_audience_languages",
         error_description: "Please choose a language",
         businessid: this.props.mainBusiness.businessid,

@@ -63,11 +63,11 @@ class GoogleKeywordsStats extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
   handleSelectedKeyword = (keyword) => {
-    analytics.track(`a_open_keyword_performance`, {
-      source: "ad_keywords_performance",
-      source_action: "a_open_keyword_performance",
-      ...keyword,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Google Keyword Stats Selected",
+      button_content: { ...keyword },
+      source: "GoogleKeywordsStats",
+      business_id: this.props.mainBusiness.businessid,
     });
     this.setState(
       {

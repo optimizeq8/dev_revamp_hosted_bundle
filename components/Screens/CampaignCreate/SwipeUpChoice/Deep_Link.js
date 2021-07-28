@@ -157,7 +157,7 @@ class Deep_Link extends Component {
   ) => {
     if (nameError || callActionError) {
       analytics.track(`Form Error Made`, {
-        error_screen: "AdDesign Swipe Up",
+        source: "AdDesign Swipe Up",
         error_description: nameError || callActionError,
         campaign_swipe_up_destination: "Deep Link",
         business_id:
@@ -237,7 +237,7 @@ class Deep_Link extends Component {
     });
     if (appError) {
       analytics.track(`Form Error Made`, {
-        error_screen: "AdDesign Swipe Up",
+        source: "AdDesign Swipe Up",
         campaign_swipe_up_destination: "Deep Link",
         error_description: appError,
         business_id:

@@ -134,7 +134,7 @@ class App_Install extends Component {
   ) => {
     if (nameError || callActionError) {
       analytics.track(`Form Error Made`, {
-        error_screen: "AdDesign Swip Up",
+        source: "AdDesign Swip Up",
         error_description: nameError || callActionError,
         campaign_channel: "snapchat",
         campaign_objective: "APP_INSTALL",
@@ -209,7 +209,7 @@ class App_Install extends Component {
     });
     if (appError) {
       analytics.track(`Form Error Made`, {
-        error_screen: "AdDesign Swip Up",
+        source: "AdDesign Swip Up",
         error_description: appError,
         campaign_channel: "snapchat",
         campaign_objective: "APP_INSTALL",

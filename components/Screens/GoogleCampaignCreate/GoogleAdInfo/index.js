@@ -362,7 +362,7 @@ class GoogleAdInfo extends Component {
       dateErrors.end_timeError
     ) {
       analytics.track(`Form Error Made`, {
-        error_screen: "GoogleAdInfo",
+        source: "GoogleAdInfo",
         campaign_channel: "google",
         source_action: "a_submit_ad_objective",
         error_description:
@@ -465,7 +465,7 @@ class GoogleAdInfo extends Component {
   getValidInfo = (stateError, validObj) => {
     if (validObj) {
       analytics.track(`Form Error Made`, {
-        error_screen: "GoogleAdInfo",
+        source: "GoogleAdInfo",
         error_description: `Error in ${stateError}: ${validObj}`,
         source: "ad_objective",
         source_action: "a_ad_name",

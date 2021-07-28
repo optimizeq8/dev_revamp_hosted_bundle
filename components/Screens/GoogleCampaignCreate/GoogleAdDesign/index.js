@@ -254,7 +254,7 @@ class GoogleAdDesign extends Component {
         campaig_id: this.props.campaign.id,
       };
       analytics.track(`Form Error Made`, {
-        error_screen: "ad_design",
+        source: "ad_design",
         source_action: "a_submit_ad_design",
         ...segmentInfo,
         error_description:
@@ -377,7 +377,7 @@ class GoogleAdDesign extends Component {
       () => {
         if (this.state[error]) {
           analytics.track(`Form Erro Made`, {
-            error_screen: "GoogleAdDesign",
+            source: "GoogleAdDesign",
             error_description: this.state[error],
             source_action: `a_ad_${value}`,
             business_id: this.props.mainBusiness.businessid,

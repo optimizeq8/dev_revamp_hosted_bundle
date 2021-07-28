@@ -55,7 +55,7 @@ export const verifyInstagramHandleWebsite = (insta_handle) => {
     } catch (err) {
       //   console.log("insta error verify account", err.message || err.response);
       analytics.track("Form Error Made", {
-        error_screen: "MyWebsite",
+        source: "MyWebsite",
         error_description: err.message || err.response,
         insta_handle: insta_handle,
         source: "my_website_detail",

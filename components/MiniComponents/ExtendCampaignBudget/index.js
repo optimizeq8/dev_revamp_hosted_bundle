@@ -227,7 +227,7 @@ class RepeatCampaignBudget extends Component {
           analytics.track(`Form Error Made`, {
             business_id:
               this.props.mainBusiness && this.props.mainBusiness.businessid,
-            error_screen: "ExtendCampaignBudget",
+            source: "ExtendCampaignBudget",
             source_action: "a_change_campaign_custom_budget",
             error_description:
               validateWrapper("Budget", rawValue) + " $" + this.props.campaign

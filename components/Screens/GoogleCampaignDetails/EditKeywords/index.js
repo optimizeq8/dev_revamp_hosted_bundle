@@ -117,7 +117,7 @@ class EditKeywords extends Component {
       );
     } else {
       analytics.track(`Form Error Made`, {
-        error_screen: "EditKeywords",
+        source: "EditKeywords",
         error_description: keywordsError,
         source: "GoogleCampaignDetails",
         source_action: "a_update_ad_keywords",

@@ -696,7 +696,7 @@ class AdDetails extends Component {
     });
     if (replace.targeting.demographics[0].languages.length === 0) {
       analytics.track(`Form Error Made`, {
-        error_screen: "ad_targeting",
+        source: "ad_targeting",
         source_action: "a_ad_languages",
         error_description: "Please choose a language",
         business_id:
@@ -982,7 +982,7 @@ class AdDetails extends Component {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
           analytics.track(`From Error Made`, {
-            error_screen: "adDetails",
+            source: "adDetails",
             source_action: "a_change_campaign_custom_budget",
             error_description:
               validateWrapper("Budget", rawValue) + " $" + this.props.campaign
@@ -1178,7 +1178,7 @@ class AdDetails extends Component {
       )
     ) {
       analytics.track(`Form Error Made`, {
-        error_screen: "AdTargeting",
+        source: "AdTargeting",
         source_action: "a_submit_ad_targeting",
         campaign_id: this.props.data && this.props.data.campaign_id,
         campaign_channel: "snapchat",

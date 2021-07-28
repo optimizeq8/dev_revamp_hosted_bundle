@@ -183,7 +183,7 @@ class Website extends Component {
       : this.props.objective;
     if (!this.validateUrl()) {
       analytics.track(`Form Error Made`, {
-        error_screen: "AdDesign Website Siwpe Up",
+        source: "AdDesign Website Siwpe Up",
         error_description: this.state.urlError,
         campaign_channel: "snapchat",
         campaign_url: this.state.campaignInfo.attachment,

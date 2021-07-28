@@ -579,7 +579,7 @@ class CollectionMedia extends Component {
         const validUrl = await this.validateUrl();
         if (!validUrl || !validImage) {
           analytics.track("Form Error Made", {
-            error_screen: "CollectionMedia",
+            source: "CollectionMedia",
             error_description: !validUrl || !validImage,
             business_id: this.props.mainBusiness.businessid,
           });
@@ -600,7 +600,7 @@ class CollectionMedia extends Component {
         const validDeepLinkURL = await this.validateDeepLinkUrl();
         if (!validDeepLinkURL || !validImage) {
           analytics.track("Form Error Made", {
-            error_screen: "CollectionMedia",
+            source: "CollectionMedia",
             error_description: !validDeepLinkURL || !validImage,
             business_id: this.props.mainBusiness.businessid,
           });
@@ -708,7 +708,7 @@ class CollectionMedia extends Component {
       if (error) {
         analytics.track("Form Error Made", {
           source: "ComposeAd",
-          error_screen: "CollectionMedia",
+          source: "CollectionMedia",
           source_action: "a_deep_link_uri",
           error_description: this.state.deep_link_uriError,
           business_id: this.props.mainBusiness.businessid,

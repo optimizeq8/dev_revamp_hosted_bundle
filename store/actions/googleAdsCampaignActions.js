@@ -450,7 +450,7 @@ export const create_google_SE_campaign_ad_targeting = (info, segmentInfo) => {
           );
         } else {
           analytics.track(`Form Error Made`, {
-            error_screen: "GoogleAdTargeting",
+            source: "GoogleAdTargeting",
             source_action: "a_submit_ad_targeting",
             error_description:
               data.error || "Something went wrong. Please try again",
@@ -826,7 +826,7 @@ export const create_google_keywords = (info, segmentInfo) => {
           });
         } else {
           analytics.track(`Form Error Made`, {
-            error_screen: "Google Ad Targeting",
+            source: "Google Ad Targeting",
             source_action: "a_ad_keywords",
             error_description:
               data.error || "Something went wrong. Please try again",

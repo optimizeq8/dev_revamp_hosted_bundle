@@ -1721,7 +1721,7 @@ export const verifyDestinationUrl = (url, submit, translate) => {
         }
         if (!data.success) {
           analytics.track(`Form Error Made`, {
-            error_screen: "AdDesign Swipe Up",
+            source: "AdDesign Swipe Up",
             error_description:
               "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media",
             campaign_channel: "snapchat",

@@ -85,7 +85,7 @@ class AppSearchModal extends Component {
 
         this.props.setTheState({ loading: false });
         analytics.track(`Form Error Made`, {
-          error_screen: "AppSearchModal",
+          source: "AppSearchModal",
           error_description:
             err.response && err.response.data
               ? err.response.data.error.message
@@ -136,7 +136,7 @@ class AppSearchModal extends Component {
         // console.log("APP search", err);
         this.props.setTheState({ loading: false });
         analytics.track(`Form Error Made`, {
-          error_screen: "AppSearchModal",
+          source: "AppSearchModal",
           error_description:
             err.response && err.response.data
               ? err.response.data.error.message

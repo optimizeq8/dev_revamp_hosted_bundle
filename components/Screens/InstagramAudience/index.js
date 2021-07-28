@@ -209,7 +209,7 @@ export class InstagramAudience extends Component {
     // segment track for error on final submit
     if (countryRegionError || audienceNameError) {
       analytics.track(`Form Error Made`, {
-        error_screen: "InstagramAudience",
+        source: "InstagramAudience",
         source_action: "a_save_audience_targeting",
         error_description: countryRegionError || audienceNameError,
         business_id: this.props.mainBusiness.businessid,
@@ -366,7 +366,7 @@ export class InstagramAudience extends Component {
 
     if (replace.targeting.demographics[0].languages.length === 0) {
       analytics.track(`Form Error Made`, {
-        error_screen: "InstagramAudience",
+        source: "InstagramAudience",
         source_action: "a_audience_languages",
         error_description: "Please choose a language",
         business_id: this.props.mainBusiness.businessid,

@@ -156,7 +156,7 @@ class GoogleSEAPreviewScreen extends Component {
         campaign_id: this.props.campaign.id,
       };
       analytics.track(`Form Error Made`, {
-        error_screen: "GoogleSEAPreviewScreen",
+        source: "GoogleSEAPreviewScreen",
         source_action: "a_submit_ad_preview",
         timestamp: new Date().getTime(),
         ...segmentInfo,

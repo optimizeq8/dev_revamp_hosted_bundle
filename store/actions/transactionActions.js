@@ -457,7 +457,7 @@ export const checkoutwithWallet = (campaign_id, navigation, retries = 3) => {
       .catch((err) => {
         // console.log("checkoutwithWallet Error: ", err.message || err.response);
         analytics.track(`Form Error Made`, {
-          error_screen: "payment_mode",
+          source: "payment_mode",
           source_action: "a_payment_processing",
           payment_method: "WALLET",
           campaign_id: campaign_id,

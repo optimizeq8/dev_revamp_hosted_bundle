@@ -308,7 +308,7 @@ class GoogleAdTargeting extends Component {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
           analytics.track(`Form Error Made`, {
-            error_screen: "GoogleAdTargeting",
+            source: "GoogleAdTargeting",
             source_action: "a_change_campaign_custom_budget",
             error_description: validateWrapper("Budget", rawValue) + " $" + 25,
             business_id:
@@ -405,7 +405,7 @@ class GoogleAdTargeting extends Component {
       this.props.save_google_campaign_data(data);
     } else {
       analytics.track(`Form Error Made`, {
-        error_screen: "GoogleAdTargeting",
+        source: "GoogleAdTargeting",
         source_action: "a_submit_ad_targeting",
         error_description: isNull(keywordsError)
           ? "Budget can't be less than the minimum"

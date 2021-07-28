@@ -51,7 +51,7 @@ class AppSearchModal extends Component {
 
         this.props.setTheState({ loading: false });
         analytics.track(`Form Error Made`, {
-          error_screen: "Instagram/AppSearchModal",
+          source: "Instagram/AppSearchModal",
           error_description:
             err.response && err.response.data
               ? err.response.data.error

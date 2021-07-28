@@ -90,7 +90,7 @@ class SnapchatCreateAdAcc extends Component {
     });
     if (this.state.is_political === null) {
       analytics.track("Form Error Made", {
-        error_screen: "SnapchatCreateAdAcc",
+        source: "SnapchatCreateAdAcc",
         error_description:
           "Please confirm if your ad account will be used for political and advocacy or not",
         campaign_channel: "snapchat",
@@ -104,7 +104,7 @@ class SnapchatCreateAdAcc extends Component {
     } else if (this.state.is_political) {
       if (this.state.paying_advertiser_name === "") {
         analytics.track("Form Error Made", {
-          error_screen: "SnapchatCreateAdAcc",
+          source: "SnapchatCreateAdAcc",
           error_description: "Please enter paying advertiser name",
           campaign_channel: "snapchat",
         });

@@ -144,7 +144,7 @@ class InstaApp_Install extends Component {
   ) => {
     if (nameError || callActionError) {
       analytics.track(`Form Error Made`, {
-        error_screen: "InstaApp_Install",
+        source: "InstaApp_Install",
         error_description: nameError || callActionError,
         campaign_channel: "instagram",
         campaign_objective: "APP_INSTALL",
@@ -215,7 +215,7 @@ class InstaApp_Install extends Component {
     });
     if (appError) {
       analytics.track(`Form Error Made`, {
-        error_screen: "ad_swipe_up_destination",
+        source: "ad_swipe_up_destination",
         error_description: appError,
         campaign_channel: "instagram",
         campaign_objective: "APP_INSTALL",

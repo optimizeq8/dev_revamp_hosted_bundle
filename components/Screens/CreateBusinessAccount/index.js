@@ -397,7 +397,7 @@ class CreateBusinessAccount extends Component {
               analytics.track(`Form Error Made`, {
                 source_action: "a_update_buisness_info",
                 error_description: "No changes to update",
-                error_screen: "CreateBusinessAccount",
+                source: "CreateBusinessAccount",
                 business_id:
                   this.props.mainBusiness && this.props.mainBusiness.businessid,
               });
@@ -427,7 +427,7 @@ class CreateBusinessAccount extends Component {
         }
       } else {
         analytics.track(`Form Error Made`, {
-          error_screen: "CreateBusinessAccount",
+          source: "CreateBusinessAccount",
           error_description: this.state.editBusinessInfo
             ? `Error updating business info`
             : `Error creating busines info`,

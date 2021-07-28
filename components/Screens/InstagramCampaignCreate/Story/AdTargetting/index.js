@@ -681,7 +681,7 @@ class InstagramStoryAdTargetting extends Component {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
           analytics.track(`Form Error Made`, {
-            error_screen: "InstagramStory/AdTargeting",
+            source: "InstagramStory/AdTargeting",
             source_action: "a_change_campaign_custom_budget",
             error_description:
               validateWrapper("Budget", rawValue) +
@@ -888,7 +888,7 @@ class InstagramStoryAdTargetting extends Component {
       )
     ) {
       analytics.track(`Form Error Made`, {
-        error_screen: "InstagramStory/AdTargeting",
+        source: "InstagramStory/AdTargeting",
         source_action: "a_submit_ad_targeting",
         campaign_id: this.props.data.campaign_id,
         campaign_channel: "Instagram",

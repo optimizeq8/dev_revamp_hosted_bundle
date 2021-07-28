@@ -75,7 +75,7 @@ class ForgotPassword extends Component {
     } else {
       analytics.track(`Form Error Made`, {
         source: "ForgotPassword",
-        error_screen: "forget_password",
+        source: "forget_password",
         source_action: "a_forget_password",
         error_description: emailError,
       });

@@ -308,7 +308,7 @@ class AdObjective extends Component {
       dateErrors.end_timeError
     ) {
       analytics.track(`From Error Made`, {
-        error_screen: "InstagramFeed/AdObjective",
+        source: "InstagramFeed/AdObjective",
         campaign_channel: "instagram",
         campaign_ad_type: this.props.adType,
         source_action: "a_submit_ad_objective",
@@ -414,7 +414,7 @@ class AdObjective extends Component {
   getValidInfo = (stateError, validObj) => {
     if (validObj) {
       analytics.track(`From Error Made`, {
-        error_screen: "ad_objective",
+        source: "ad_objective",
         error_description: `Error in ${stateError}: ${validObj}`,
         source: "ad_objective",
         source_action: "a_ad_name",

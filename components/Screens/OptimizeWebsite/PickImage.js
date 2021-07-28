@@ -79,6 +79,7 @@ export const _pickImage = async (
     const { translate } = screenProps;
     if (result && !result.cancelled) {
       let uneditedImageUri = result.uri;
+      let newSize = 0;
       PESDK.openEditor(
         result.uri,
         configuration,
@@ -108,17 +109,16 @@ export const _pickImage = async (
                 compress: 1,
               }
             );
-            let newSize = await FileSystem.getInfoAsync(manipResult.uri, {
+            newSize = await FileSystem.getInfoAsync(manipResult.uri, {
               size: true,
             });
 
             if (newSize.size > 5000000) {
-              analytics.track(`a_error`, {
-                source: "open_my_website",
+              analytics.track(`Form Error Made`, {
+                source: "OptimizeWebsite",
                 source_action: "a_select_media",
                 error_description: "Image must be less than 5 MBs",
-                image_for: "Business Logo",
-                businessid: mainBusiness && mainBusiness.businessid,
+                business_id: mainBusiness && mainBusiness.businessid,
               });
 
               showMessage({
@@ -137,23 +137,25 @@ export const _pickImage = async (
             result.width = manipResult.width;
             result.serialization = serialization;
           } else {
-            analytics.track(`a_select_media`, {
-              source: "open_my_website",
-              source_action: "a_select_media",
-              action_status: "failure",
-              image_for: "Business Logo",
-              businessid: mainBusiness && mainBusiness.businessid,
+            analytics.track(`Button Pressed`, {
+              button_type: "Cancel Media Editor",
+              source: "OptimizeWebsite",
+              business_id: mainBusiness && mainBusiness.businessid,
             });
             return Promise.reject("Editing canceled");
           }
         })
         .then(() => {
-          analytics.track(`a_select_media`, {
-            source: "open_my_website",
-            source_action: "a_select_media",
-            action_status: "success",
-            image_for: "Business Logo",
-            businessid: mainBusiness && mainBusiness.businessid,
+          analytics.track(`Website Logo Selected`, {
+            source: "OptimizeWebsite",
+            media_type: "IMAGE",
+            media_uri: result.uri,
+            media_specs: {
+              size: newSize.size,
+              height: result.height,
+              width: result.width,
+            },
+            business_id: mainBusiness && mainBusiness.businessid,
           });
 
           showMessage({
@@ -173,8 +175,8 @@ export const _pickImage = async (
         })
         .catch((error) => {
           // console.log(error);
-          analytics.track(`a_error`, {
-            source: "open_my_website",
+          analytics.track(`Form Error Made`, {
+            source: "OptimizeWebsite",
             source_action: "a_select_media",
             error_description: error.wrongAspect
               ? error.message
@@ -183,7 +185,7 @@ export const _pickImage = async (
                   "The dimensions are too large, please choose a different image"
                 ),
             image_for: "Business Logo",
-            businessid: mainBusiness && mainBusiness.businessid,
+            business_id: mainBusiness && mainBusiness.businessid,
           });
 
           showMessage({
@@ -231,6 +233,7 @@ export const _pickImageMedia = async (
     const { translate } = screenProps;
     if (result && !result.cancelled) {
       let uneditedImageUri = result.uri;
+      let newSize = 0;
       PESDK.openEditor(
         result.uri,
         configuration,
@@ -260,17 +263,17 @@ export const _pickImageMedia = async (
                 compress: 1,
               }
             );
-            let newSize = await FileSystem.getInfoAsync(manipResult.uri, {
+            newSize = await FileSystem.getInfoAsync(manipResult.uri, {
               size: true,
             });
 
             if (newSize.size > 5000000) {
-              analytics.track(`a_error`, {
-                source: "open_my_website",
-                source_action: "a_select_media",
+              analytics.track(`Form Error Made`, {
+                source: "OptimizeWebsite",
+                source_action: "a_select_product_media",
+                image_for: "Product Media",
                 error_description: "Image must be less than 5 MBs",
-                image_for: "Business Logo",
-                businessid: mainBusiness && mainBusiness.businessid,
+                business_id: mainBusiness && mainBusiness.businessid,
               });
 
               showMessage({
@@ -289,23 +292,27 @@ export const _pickImageMedia = async (
             result.width = manipResult.width;
             result.serialization = serialization;
           } else {
-            analytics.track(`a_select_media`, {
-              source: "open_my_website",
+            analytics.track(`Button Pressed`, {
+              button_type: "Cancel Media Editor",
+              source: "OptimizeWebsite",
               source_action: "a_select_media",
-              action_status: "failure",
-              image_for: "Business Logo",
-              businessid: mainBusiness && mainBusiness.businessid,
+              image_for: "Product Media",
+              business_id: mainBusiness && mainBusiness.businessid,
             });
             return Promise.reject("Editing canceled");
           }
         })
         .then(() => {
-          analytics.track(`a_select_media`, {
-            source: "open_my_website",
-            source_action: "a_select_media",
-            action_status: "success",
-            image_for: "Business Logo",
-            businessid: mainBusiness && mainBusiness.businessid,
+          analytics.track(`Website Product Media Selected`, {
+            source: "OptimizeWebsite",
+            media_type: "IMAGE",
+            media_uri: result.uri,
+            media_specs: {
+              size: newSize.size,
+              height: result.height,
+              width: result.width,
+            },
+            business_id: mainBusiness && mainBusiness.businessid,
           });
 
           showMessage({
@@ -325,8 +332,8 @@ export const _pickImageMedia = async (
         })
         .catch((error) => {
           // console.log(error);
-          analytics.track(`a_error`, {
-            source: "open_my_website",
+          analytics.track(`Form Error Made`, {
+            source: "OptimizeWebsite",
             source_action: "a_select_media",
             error_description: error.wrongAspect
               ? error.message
@@ -334,8 +341,8 @@ export const _pickImageMedia = async (
                 translate(
                   "The dimensions are too large, please choose a different image"
                 ),
-            image_for: "Business Logo",
-            businessid: mainBusiness && mainBusiness.businessid,
+            image_for: "Product Media",
+            business_id: mainBusiness && mainBusiness.businessid,
           });
 
           showMessage({

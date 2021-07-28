@@ -178,7 +178,7 @@ class RepeatCampaignBudget extends Component {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
           analytics.track(`Form Erro Made`, {
-            error_screen: "RepeatCampaignBudget",
+            source: "RepeatCampaignBudget",
             source_action: "a_change_campaign_custom_budget",
             error_description:
               validateWrapper("Budget", rawValue) + " $" + this.props.campaign

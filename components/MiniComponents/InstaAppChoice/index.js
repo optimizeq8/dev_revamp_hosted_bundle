@@ -343,7 +343,7 @@ class AppChoice extends Component {
       if (error) {
         analytics.track("Form Error Made", {
           source: "ad_swipe_up_destination",
-          error_screen: "Instagram/AdDesign",
+          source: "Instagram/AdDesign",
           source_action: "a_deep_link_uri",
           error_description: this.state.deep_link_uriError,
           business_id: this.props.mainBusiness.businessid,
