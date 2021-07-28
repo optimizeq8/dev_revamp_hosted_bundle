@@ -89,7 +89,7 @@ class GoogleAdDesign extends Component {
     //   /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g,
     //   ""
     // );
-    return text.replace(/[^a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/g, " ");
+    return text.replace(/[^a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/g, "");
   };
   componentDidMount() {
     if (this.props.navigation.getParam("rejected", false)) {
@@ -359,7 +359,7 @@ class GoogleAdDesign extends Component {
 
     analytics.track(`Form Populated`, {
       form_type: "Google Ad Design Form",
-      form_field: "ad_${value}",
+      form_field: `ad_${value}`,
       form_value: this.state[value],
       business_id: this.props.mainBusiness.businessid,
     });
@@ -388,9 +388,20 @@ class GoogleAdDesign extends Component {
     );
   };
   setValue = (value, dontSave = false) => {
-    this.setState(value);
+    let newValue = value;
+
+    if (value[`headline1`]) {
+      newValue[`headline1`] = this.removeEmojis(newValue[`headline1`]);
+    }
+    if (value[`headline2`]) {
+      newValue[`headline2`] = this.removeEmojis(newValue[`headline2`]);
+    }
+    if (value[`headline3`]) {
+      newValue[`headline3`] = this.removeEmojis(newValue[`headline3`]);
+    }
+    this.setState(newValue);
     if (!this.props.navigation.getParam("rejected", false) && !dontSave)
-      this.props.save_google_campaign_data(value);
+      this.props.save_google_campaign_data(newValue);
   };
 
   handleInputRefs = (value, input) => {
