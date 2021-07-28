@@ -135,17 +135,17 @@ class RegisterForm extends Component {
 
       this.props.updateWebInfoForBusiness(info, this.props.submitNextStep);
     } else {
-      analytics.track(`a_submit_my_website_detail`, {
-        source: "my_website_detail",
-        source_action: "a_submit_my_website_detail",
-        new: true,
-        action_status: "failure",
+      analytics.track(`Form Error Made`, {
+        form_type: `Website ${
+          this.props.edit ? "Update" : "Registeration"
+        } Form`,
+        form_field: "a_submit_my_website_detail",
         error_description:
           this.props.errorInstaHandle ||
           this.state.insta_handleError ||
           this.state.googleMapLinkError ||
           this.state.snapchat_handleError,
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
@@ -161,17 +161,16 @@ class RegisterForm extends Component {
       !valid
       // || this.props.errorInstaHandle
     ) {
-      analytics.track(`a_error_form`, {
-        source: "my_website_detail",
-        error_page: "my_website_detail",
-        source_action: "a_submit_my_website_detail",
-        new: false,
-        action_status: "failure",
+      analytics.track(`Form Error Made`, {
+        form_type: `Website ${
+          this.props.edit ? "Update" : "Registeration"
+        } Form`,
+        form_field: "a_submit_my_website_detail",
         error_description:
           this.props.errorInstaHandle ||
           this.state.insta_handleError ||
           this.state.googleMapLinkError,
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     } else if (
@@ -227,13 +226,13 @@ class RegisterForm extends Component {
         // console.log("updateWebInfoForBusiness", JSON.stringify(info, null, 2));
         this.props.updateWebInfoForBusiness(info, false);
       } else {
-        analytics.track(`a_error_form`, {
-          source: "my_website_detail",
-          source_action: "a_submit_my_website_detail",
-          new: false,
-          action_status: "failure",
+        analytics.track(`Form Error Made`, {
+          form_type: `Website ${
+            this.props.edit ? "Update" : "Registeration"
+          } Form`,
+          form_field: "a_submit_my_website_detail",
           error_description: "No changes to update",
-          businessid:
+          business_id:
             this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         showMessage({
@@ -246,13 +245,12 @@ class RegisterForm extends Component {
   };
 
   changeWhatsAppPhoneNo = (value, countryCode, numberType, validNumber) => {
-    analytics.track(`a_business_whatsapp`, {
-      source: "my_website_detail",
-      source_action: "a_business_whatsapp",
-      new: this.props.edit ? false : true,
-      whatsappnumber: value,
-      action_status: validNumber ? "success" : "failure",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: `Website ${this.props.edit ? "Update" : "Registeration"} Form`,
+      form_field: "a_business_whatsapp",
+      form_value: value,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.setState({
@@ -261,13 +259,12 @@ class RegisterForm extends Component {
     });
   };
   changeCallNumberPhoneNo = (value, countryCode, numberType, validNumber) => {
-    analytics.track(`a_business_callnumber`, {
-      source: "my_website_detail",
-      source_action: "a_business_callnumber",
-      new: this.props.edit ? false : true,
-      callnumber: value,
-      action_status: validNumber ? "success" : "failure",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: `Website ${this.props.edit ? "Update" : "Registeration"} Form`,
+      form_field: "a_business_callnumber",
+      form_value: value,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       callnumber: validNumber ? value : "",
@@ -374,12 +371,13 @@ class RegisterForm extends Component {
   getValidInfo = async (stateError, validWrap) => {
     let state = {};
     if (stateError === "insta_handleError") {
-      analytics.track(`a_business_insta_handle`, {
-        source: "my_website_detail",
-        source_action: "a_business_insta_handle",
-        new: this.props.edit ? false : true,
+      analytics.track(`Form Error Made`, {
+        form_type: `Website ${
+          this.props.edit ? "Update" : "Registeration"
+        } Form`,
+        form_field: "a_business_insta_handle",
         insta_handle: this.state.insta_handle,
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       //   await this.props.verifyInstagramHandle(this.state.insta_handle);
@@ -395,24 +393,25 @@ class RegisterForm extends Component {
       //   }
     }
     if (stateError === "snapchat_handleError") {
-      analytics.track(`a_business_snapchat_handle`, {
-        source: "my_website_detail",
-        source_action: "a_business_snapchat_handle",
-        new: this.props.edit ? false : true,
+      analytics.track(`Form Error Made`, {
+        form_type: `Website ${
+          this.props.edit ? "Update" : "Registeration"
+        } Form`,
+        form_field: "a_business_snapchat_handle",
         snapchat_handle: this.state.snapchat_handle,
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
 
       if (this.state.snapchat_handleError) {
-        analytics.track(`a_error_form`, {
-          error_page: "my_website_detail",
-          source: "my_website_detail",
-          source_action: "a_business_snapchat_handle",
-          new: this.props.edit ? false : true,
+        analytics.track(`Form Error Made`, {
+          form_type: `Website ${
+            this.props.edit ? "Update" : "Registeration"
+          } Form`,
+          form_field: "a_business_snapchat_handle",
           snapchat_handle: this.state.snapchat_handle,
           error_description: this.state.snapchat_handleError,
-          businessid:
+          business_id:
             this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
       }
@@ -513,25 +512,26 @@ class RegisterForm extends Component {
                 autoCapitalize="none"
                 onChangeText={(value) => this.changeGoogleMapLocation(value)}
                 onBlur={async () => {
-                  analytics.track(`a_business_googlemaplink`, {
-                    source: "my_website_detail",
-                    source_action: "a_business_googlemaplink",
-                    new: this.props.edit ? false : true,
-                    googlemaplink: this.state.googlemaplink,
-                    businessid:
+                  analytics.track(`Form Populated`, {
+                    form_type: `Website ${
+                      this.props.edit ? "Update" : "Registeration"
+                    } Form`,
+                    form_value: this.state.googlemaplink,
+                    form_field: "a_business_googlemaplink",
+                    business_id:
                       this.props.mainBusiness &&
                       this.props.mainBusiness.businessid,
                   });
                   await this.validateUrl();
                   if (this.state.googleMapLinkError) {
-                    analytics.track(`a_error_form`, {
-                      error_page: "my_website_detail",
-                      source: "my_website_detail",
-                      source_action: "a_business_googlemaplink",
-                      new: this.props.edit ? false : true,
-                      googlemaplink: this.state.insta_handle,
+                    analytics.track(`Form Error Made`, {
+                      form_type: `Website ${
+                        this.props.edit ? "Update" : "Registeration"
+                      } Form`,
+                      form_field: "a_business_googlemaplink",
+                      form_value: this.state.insta_handle,
                       error_description: this.state.googleMapLinkError,
-                      businessid:
+                      business_id:
                         this.props.mainBusiness &&
                         this.props.mainBusiness.businessid,
                     });

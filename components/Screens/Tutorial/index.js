@@ -81,7 +81,7 @@ class Tutorial extends Component {
         if (isNull(value)) {
           AsyncStorage.setItem("tutorialOpened", "false").then(async () => {
             await analytics.track("Tutorial Viewed", {
-              tutorial_number: 1,
+              tutorial_screen_name: "tutorial_" + 1,
               source,
             });
             this.setState({
@@ -92,7 +92,7 @@ class Tutorial extends Component {
           this.props.navigation.replace("Signin");
         } else {
           await analytics.track("Tutorial Viewed", {
-            tutorial_number: 1,
+            tutorial_screen_name: "tutorial_" + 1,
             source,
           });
           this.setState({
@@ -167,7 +167,7 @@ class Tutorial extends Component {
   // To change slide
   navigationRouteHandler = (index) => {
     analytics.track("Tutorial Viewed", {
-      tutorial_number: index + 1,
+      tutorial_screen_name: "tutorial_" + index + 1,
       source: `tutorial_${index}`,
     });
     this.setState({

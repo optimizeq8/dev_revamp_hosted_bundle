@@ -297,7 +297,7 @@ class OptimizeWebsite extends Component {
           )}
           {activeStep === 2 && (
             <ProductSelect
-              source={"my_website_products"}
+              source={"OptimizeWebsite"}
               navigation={this.props.navigation}
               screenProps={this.props.screenProps}
             />

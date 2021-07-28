@@ -257,7 +257,7 @@ class MyWebsite extends Component {
           </View>
 
           <ProductSelect
-            source={"open_my_website"}
+            source={"MyWebsite"}
             edit={true}
             screenProps={this.props.screenProps}
           />

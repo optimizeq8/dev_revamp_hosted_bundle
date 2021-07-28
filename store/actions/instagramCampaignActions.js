@@ -1279,16 +1279,22 @@ export const updateInstagramStatus = (info, handleToggle) => {
         return res.data;
       })
       .then((data) => {
-        analytics.track(`a_update_campaign_status`, {
-          campaign_id: info.campaign_id,
-          campaign_spend: info.spend,
-          campaign_status: data.status,
-          action_status: data.success ? "sucsess" : "failure",
-          campaign_error: !data.success && data.message,
-          source: "campaign_detail",
-          source_action: "a_update_campaign_status",
-          businessid: getState().account.mainBusiness.businessid,
-        });
+        analytics.track(
+          `Instagram Campaign ${
+            info.status === "ACTIVE" ? "Resumed" : "Paused"
+          } `,
+          {
+            campaign_id: info.campaign_id,
+            campaign_spend: info.spend,
+            campaign_status: data.status,
+            campaign_channel: "instagram",
+            action_status: data.success ? "sucsess" : "failure",
+            error_description: !data.success && data.message,
+            source: "InstagramCampaignDetails",
+            source_action: "a_update_campaign_status",
+            business_id: getState().account.mainBusiness.businessid,
+          }
+        );
         handleToggle(data.status);
         if (data.message) {
           showMessage({ message: data.message, type: "info", position: "top" });
@@ -1310,15 +1316,15 @@ export const endInstagramCampaign = (info, handleToggle) => {
       })
       .then((data) => {
         handleToggle(data.status);
-        analytics.track(`a_update_campaign_status`, {
+        analytics.track(`Instagram Campaign Ended`, {
           campaign_id: info.campaign_id,
           campaign_spend: info.spend,
           campaign_status: data.status,
           action_status: data.success ? "sucsess" : "failure",
-          campaign_error: !data.success && data.message,
-          source: "campaign_detail",
+          error_description: !data.success && data.message,
+          source: "InstagramCampaignDetails",
           source_action: "a_update_campaign_status",
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (data.message) {
           showMessage({ message: data.message, type: "info", position: "top" });

@@ -285,9 +285,9 @@ export const verifyMobileCode = (
       })
       .catch((err) => {
         // console.log("verifyMobileCode error", err.message || err.response);
-        analytics.track(`Backend Error Received`, {
-          error_page: "VerfiyAccount",
-          source_action: "OTP Verification",
+        analytics.track(`Form Error Made`, {
+          source: "VerfiyAccount",
+          form_type: "OTP Verification",
           error_description:
             err.message ||
             err.response ||
@@ -425,13 +425,11 @@ export const verifyEmail = (email, userInfo, navigation) => {
             position: "top",
           });
         }
-        analytics.track(`a_create_account`, {
+        analytics.track(`Sign up Initiated`, {
           mode_of_sign_up: "email",
-          source: "email_registration",
+          source: "Signin",
           action_status: data.success ? "success" : "failure",
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
-          // source_action: "" Not sure
+          email,
         });
       })
       .catch((err) => {
@@ -448,12 +446,9 @@ export const verifyEmail = (email, userInfo, navigation) => {
           type: actionTypes.VERIFY_EMAIL_LOADING,
           payload: false,
         });
-        analytics.track(`a_error`, {
-          error_page: "email_registration",
-          action_status: "failure",
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
-
+        analytics.track(`Form Error Made`, {
+          form_type: "Sign up Initiated",
+          source: "Signin",
           source_action: "a_create_account",
           error_description:
             err.message ||
@@ -571,22 +566,23 @@ export const registerGuestUser = (
             business_invite: businessInvite === "0",
           },
         });
+        //=====Tracked from the backend=====//
         // For users creating new business while registering
-        if (businessInvite === "1") {
-          analytics.track(`Business Created`, {
-            business_name: businessAccount.businessname,
-            business_category: businessAccount.businesscategory,
-            country: businessAccount.country,
-            insta_handle_for_review: businessAccount.insta_handle_for_review,
-            other_business_category: businessAccount.otherBusinessCategory,
-          });
-        }
-        analytics.track("Signed Up", {
-          first_name: userInfo.firstname,
-          last_name: userInfo.lastname,
-          email: userInfo.email,
-          mobile: userInfo.mobile,
-        });
+        // if (businessInvite === "1") {
+        //   analytics.track(`Business Created`, {
+        //     business_name: businessAccount.businessname,
+        //     business_category: businessAccount.businesscategory,
+        //     country: businessAccount.country,
+        //     insta_handle_for_review: businessAccount.insta_handle_for_review,
+        //     other_business_category: businessAccount.otherBusinessCategory,
+        //   });
+        // }
+        // analytics.track("Signed Up", {
+        //   first_name: userInfo.firstname,
+        //   last_name: userInfo.lastname,
+        //   email: userInfo.email,
+        //   mobile: userInfo.mobile,
+        // });
         // let adjustRegiserTracker = new AdjustEvent("eivlhl");
         // adjustRegiserTracker.setCallbackId(userInfo.mobile);
         // Adjust.trackEvent(adjustRegiserTracker);
@@ -656,10 +652,9 @@ export const registerGuestUser = (
       })
       .catch((err) => {
         // console.log("registerGuestUser ERROR", JSON.stringify(err, null, 2));
-        analytics.track(`a_error`, {
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
-          error_page: "registration_detail",
+        analytics.track(`Form Error Made`, {
+          form_type: "Registration Form",
+          source: "RegistrationDetailForm",
           source_action: "a_sign_up",
           error_description:
             err.message ||

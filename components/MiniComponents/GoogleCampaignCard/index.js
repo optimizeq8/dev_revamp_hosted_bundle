@@ -31,7 +31,7 @@ class GoogleCampaignCard extends Component {
       this.props.campaign.end_time,
       false,
       {
-        source: "dashboard",
+        source: "Dashboard",
         source_action: "a_open_campaign_details",
       }
     );

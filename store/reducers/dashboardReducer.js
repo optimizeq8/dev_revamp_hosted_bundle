@@ -289,9 +289,8 @@ const reducer = (state = initialState, action) => {
             return campaign;
         });
       }
-      analytics.track(`a_filter`, {
-        source: "dashboard",
-        source_action: "a_filter",
+      analytics.track(`Campaign List Filtered`, {
+        source: "Dashboard",
         no_of_results: filtered && filtered.length,
         filter_type: "campaigns",
         keywords: action.payload.value,
@@ -332,9 +331,8 @@ const reducer = (state = initialState, action) => {
         if (rejCampaignAttacment.hasOwnProperty("block_preload")) {
           delete rejCampaignAttacment.block_preload;
           if (rejCampaignAttacment.url.includes("?utm_source")) {
-            rejCampaignAttacment.url = rejCampaignAttacment.url.split(
-              "?utm_source"
-            )[0];
+            rejCampaignAttacment.url =
+              rejCampaignAttacment.url.split("?utm_source")[0];
           }
         }
         rejCampaign.attachment = rejCampaignAttacment;

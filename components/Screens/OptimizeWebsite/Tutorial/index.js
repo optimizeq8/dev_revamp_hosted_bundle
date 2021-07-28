@@ -49,10 +49,11 @@ class TutorialWeb extends React.Component {
   }
 
   handleBackPress = () => {
-    analytics.track(`a_go_back`, {
-      source: "my_website_tutorial",
-      source_action: "a_go_back",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Go Back",
+      source: "Tutorial",
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.navigation.goBack();
     return true;
