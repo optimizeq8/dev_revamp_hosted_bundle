@@ -56,7 +56,6 @@ class AppSearchModal extends Component {
             err.response && err.response.data
               ? err.response.data.error
               : "Something went wrong!",
-          source: "ad_swipe_up_destination",
           source_action: "a_app_search_modal",
           campaign_app_OS: "ANDROID",
           business_id: this.props.mainBusiness.businessid,
@@ -99,12 +98,11 @@ class AppSearchModal extends Component {
 
         this.props.setTheState({ loading: false });
         analytics.track(`Form Error Made`, {
-          error_scren: "Instagram/AppSearchModal",
+          source: "Instagram/AppSearchModal",
           error_description:
             err.response && err.response.data
               ? err.response.data.error
               : "Something went wrong!",
-          source: "ad_swipe_up_destination",
           source_action: "a_app_search_modal",
           campaign_app_OS: "iOS",
           business_id: this.props.mainBusiness.businessid,
@@ -180,7 +178,7 @@ class AppSearchModal extends Component {
                 screenProps={this.props.screenProps}
                 closeButton={true}
                 segment={{
-                  source: "app_search_modal",
+                  source: "InstagramAppSearchModal",
                   source_action: "a_go_back",
                 }}
                 actionButton={() => this.submitApp(true)} //when a user selects and closes the modal,

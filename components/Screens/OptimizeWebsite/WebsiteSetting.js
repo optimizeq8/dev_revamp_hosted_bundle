@@ -64,7 +64,7 @@ export default class MyWebsite extends Component {
           screenProps={this.props.screenProps}
           closeButton={false}
           segment={{
-            source: "my_website_detail",
+            source: "WebsiteSetting",
             source_action: "a_go_back",
           }}
           navigation={this.props.navigation}

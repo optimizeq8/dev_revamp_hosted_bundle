@@ -149,7 +149,6 @@ export const addWalletAmount = (
       .catch((err) => {
         // console.log("addWalletAmount Error: ", err.message || err.response);
         analytics.track(`Form Error Made`, {
-          form_type: "Top Up Wallet Form",
           source: "PaymentForm",
           total: info.amount,
           payment_method: payment_mode,

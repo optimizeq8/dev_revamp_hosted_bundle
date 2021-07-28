@@ -154,7 +154,7 @@ class VerifyBusiness extends React.Component {
           }
           navigation={this.props.navigation}
           segment={{
-            source: "otp_verify",
+            source: "VerifyBusiness",
             source_action: "a_go_back",
           }}
         />

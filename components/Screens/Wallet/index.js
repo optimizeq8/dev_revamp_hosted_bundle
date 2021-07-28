@@ -96,7 +96,7 @@ class Wallet extends Component {
       );
     } else {
       analytics.track(`Form Error Made`, {
-        form_type: "Wallet Top Up Form",
+        source: "Wallet",
         form_field: "a_top_up_wallet",
         error_description: amountError,
         business_id: this.props.mainBusiness.businessid,
@@ -165,7 +165,7 @@ class Wallet extends Component {
             title={"Wallet"}
             navigation={this.props.navigation}
             segment={{
-              source: "open_wallet",
+              source: "wallet",
               source_action: "a_go_back",
             }}
           />
@@ -273,7 +273,7 @@ class Wallet extends Component {
                 title={"Top up wallet"}
                 actionButton={this.handleModalVisibility}
                 segment={{
-                  source: "add_top_up_wallet",
+                  source: "TopUpModal",
                   source_action: "a_close_modal",
                 }}
               />

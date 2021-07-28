@@ -464,7 +464,7 @@ class GoogleAdTargeting extends Component {
                   obj: {
                     businessname: this.props.mainBusiness.businessname,
                   },
-                  source: "ad_targeting",
+                  source: "GoogleAdTargeting",
                   source_action: "a_go_back",
                 }}
                 navigation={this.props.navigation}
@@ -697,7 +697,7 @@ class GoogleAdTargeting extends Component {
                         title="Select Regions"
                         screenProps={this.props.screenProps}
                         segment={{
-                          source: "regions_modal",
+                          source: "GoogleAdTargetingRegionsModal",
                           source_action: "a_go_back",
                         }}
                       />
@@ -736,7 +736,7 @@ class GoogleAdTargeting extends Component {
                           this.setModalVisible(false);
                         }}
                         segment={{
-                          source: "country_modal",
+                          source: "GoogleAdTargetingCountryModal",
                           source_action: "a_go_back",
                         }}
                         title="Select Country"

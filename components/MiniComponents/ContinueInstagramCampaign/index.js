@@ -27,7 +27,7 @@ class ContinueCampaign extends Component {
     //this is to disable showing the modal everytime if a campaign creation is in progress
     if (this.props.incompleteCampaign && !this.props.campaignProgressStarted) {
       analytics.track("Instagram Campaign Continued", {
-        campaign_channel: "Instagram",
+        campaign_channel: "instagram",
         campaign_ad_type: this.props.adType,
         business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
@@ -56,7 +56,7 @@ class ContinueCampaign extends Component {
           routeName: route,
         },
         {
-          source: "continue_campaign_modal",
+          source: "InstagramContinueCampaign",
           source_action: "a_continue_campaign",
         }
       )
@@ -226,7 +226,7 @@ class ContinueCampaign extends Component {
                   //this.handleClosing();
                 }}
                 segment={{
-                  source: "continue_campaign_modal",
+                  source: "InstagramContinueCampaign",
                   source_action: "a_go_back",
                 }}
                 title={"Continue Ad Creation"}

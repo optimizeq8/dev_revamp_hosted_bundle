@@ -210,7 +210,7 @@ export const _pickImage = async (
                 serialization: result.serialization,
               };
               analytics.track(`Ad Media Selected`, {
-                campaign_channel: "Instagram",
+                campaign_channel: "instagram",
                 campaign_ad_type: "InstagramStoryAd",
                 media_specs: {
                   width: result.width,
@@ -252,7 +252,7 @@ export const _pickImage = async (
                 existing_media: 0,
               });
               analytics.track(`Ad Media Selected`, {
-                campaign_channel: "Instagram",
+                campaign_channel: "instagram",
                 campaign_ad_type: "InstagramStoryAd",
                 media_specs: {
                   width: result.width,
@@ -279,9 +279,9 @@ export const _pickImage = async (
           })
           .catch((error) => {
             analytics.track(`Form Error Made`, {
-              campaign_channel: "Instagram",
+              campaign_channel: "instagram",
               campaign_ad_type: "InstagramStoryAd",
-              source: "InstagramStory/AdDesign",
+              source: "instagramstoryAdDesign",
               error_description: error.wrongAspect
                 ? error.message
                 : error ||
@@ -422,9 +422,9 @@ export const _pickImage = async (
               }
               if (newResult.duration > 120) {
                 analytics.track(`Form Error Made`, {
-                  campaign_channel: "Instagram",
+                  campaign_channel: "instagram",
                   campaign_ad_type: "InstagramStoryAd",
-                  source: "InstagramFeed/AdDesign",
+                  source: "instagramfeedAdDesign",
                   error_description: "Maximum video duration  is 120 seconds.",
                   business_id: mainBusiness && mainBusiness.businessid,
                 });
@@ -456,9 +456,9 @@ export const _pickImage = async (
                 return false;
               } else if (newResult.duration < 1.0) {
                 analytics.track(`Form Error Made`, {
-                  campaign_channel: "Instagram",
+                  campaign_channel: "instagram",
                   campaign_ad_type: "InstagramStoryAd",
-                  source: "InstagramFeed/AdDesign",
+                  source: "instagramfeedAdDesign",
                   error_description: "Maximum video duration  is 1 second",
                   business_id: mainBusiness && mainBusiness.businessid,
                 });
@@ -489,9 +489,9 @@ export const _pickImage = async (
                 return false;
               } else if (newResult.width < 500) {
                 analytics.track(`Form Error Made`, {
-                  campaign_channel: "Instagram",
+                  campaign_channel: "instagram",
                   campaign_ad_type: "InstagramStoryAd",
-                  source: "InstagramFeed/AdDesign",
+                  source: "instagramfeedAdDesign",
                   error_description:
                     "Video's aspect ratio must be 16:9 or 4:5\nwith a minimum width size of 500",
                   business_id: mainBusiness && mainBusiness.businessid,
@@ -522,9 +522,9 @@ export const _pickImage = async (
                 return false;
               } else if (newSize.size > 32000000) {
                 analytics.track(`Form Error Made`, {
-                  campaign_channel: "Instagram",
+                  campaign_channel: "instagram",
                   campaign_ad_type: "InstagramStoryAd",
-                  source: "InstagramFeed/AdDesign",
+                  source: "instagramfeedAdDesign",
                   error_description: "Allowed video size is up to 32 MBs",
                   business_id: mainBusiness && mainBusiness.businessid,
                 });
@@ -563,9 +563,9 @@ export const _pickImage = async (
               }
             } else {
               analytics.track(`Form Error Made`, {
-                campaign_channel: "Instagram",
+                campaign_channel: "instagram",
                 campaign_ad_type: "InstagramStoryAd",
-                source: "InstagramFeed/AdDesign",
+                source: "instagramfeedAdDesign",
                 error_description: "Editing canceled",
                 business_id: mainBusiness && mainBusiness.businessid,
               });
@@ -597,7 +597,7 @@ export const _pickImage = async (
 
               cards[carouselAdCards.selectedCarouselAd.index] = card;
               analytics.track(`Ad Media Selected`, {
-                campaign_channel: "Instagram",
+                campaign_channel: "instagram",
                 campaign_ad_type: "InstagramStoryAd",
                 media_specs: {
                   width: result.width,
@@ -641,7 +641,7 @@ export const _pickImage = async (
                 });
                 // onToggleModal((false);
                 analytics.track(`Ad Media Selected`, {
-                  campaign_channel: "Instagram",
+                  campaign_channel: "instagram",
                   campaign_ad_type: "InstagramStoryAd",
                   media_specs: {
                     width: result.width,
@@ -671,9 +671,9 @@ export const _pickImage = async (
                 setTheState({ sourceChanging: false });
               } else {
                 analytics.track(`Form Error Made`, {
-                  campaign_channel: "Instagram",
+                  campaign_channel: "instagram",
                   campaign_ad_type: "InstagramStoryAd",
-                  source: "InstagramFeed/AdDesign",
+                  source: "instagramfeedAdDesign",
                   error_description: "Selected Video Unsuccessfully",
                   business_id: mainBusiness && mainBusiness.businessid,
                 });
@@ -690,9 +690,9 @@ export const _pickImage = async (
           .catch((err) => {
             // console.log(err);
             analytics.track(`Form Error Made`, {
-              campaign_channel: "Instagram",
+              campaign_channel: "instagram",
               campaign_ad_type: "InstagramStoryAd",
-              source: "InstagramFeed/AdDesign",
+              source: "instagramfeedAdDesign",
               error_description: err,
               business_id: mainBusiness && mainBusiness.businessid,
             });
@@ -710,9 +710,9 @@ export const _pickImage = async (
         type: "warning",
       });
       analytics.track(`Form Error Made`, {
-        campaign_channel: "Instagram",
+        campaign_channel: "instagram",
         campaign_ad_type: "InstagramStoryAd",
-        source: "InstagramFeed/AdDesign",
+        source: "instagramfeedAdDesign",
         error_description: "Image Picker closed without selecting a media file",
         business_id: mainBusiness && mainBusiness.businessid,
       });

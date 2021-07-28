@@ -324,6 +324,13 @@ class CampaignDetails extends Component {
         {
           text: translate("OK"),
           onPress: () => {
+            analytics.track("Cancel Campaign Requested", {
+              source: "SnapchatCampaignDetails",
+              campaign_channel: "snapchat",
+              campaign_id: selectedCampaign.campaign_id,
+              campaign_name: selectedCampaign.name,
+              amount: selectedCampaign.lifetime_budget_micro,
+            });
             this.props.getWalletAmountInKwd(
               selectedCampaign.lifetime_budget_micro
             );
@@ -676,7 +683,7 @@ class CampaignDetails extends Component {
                 flex: 1,
               }}
               segment={{
-                source: "campaign_detail",
+                source: "SnapchatCampaignDetails",
                 source_action: "a_go_back",
               }}
               campaignStatus={loading ? null : selectedCampaign.status}
@@ -870,7 +877,7 @@ class CampaignDetails extends Component {
                       navigation={this.props.navigation}
                       loading={loading}
                       screenProps={this.props.screenProps}
-                      source={"campaign_detail"}
+                      source={"SnpachatCampaignDetails"}
                       mainBusiness={this.props.mainBusiness}
                       editMedia={this.editMedia}
                       edit={

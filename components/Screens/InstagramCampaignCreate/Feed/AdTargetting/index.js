@@ -666,7 +666,7 @@ class InstagramFeedAdTargetting extends Component {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
           analytics.track(`Form Error Made`, {
-            source: "InstagramFeed/AdTargeting",
+            source: "InstagramFeedAdTargeting",
             source_action: "a_change_campaign_custom_budget",
             error_description:
               validateWrapper("Budget", rawValue) +
@@ -899,7 +899,7 @@ class InstagramFeedAdTargetting extends Component {
       )
     ) {
       analytics.track(`Form Error Made`, {
-        source: "InstagramFeed/AdTargeting",
+        source: "InstagramFeedAdTargeting",
         source_action: "a_submit_ad_targeting",
         campaign_id: this.state.campaignInfo.campaign_id,
         campaign_channel: "instagram",
@@ -1720,7 +1720,7 @@ class InstagramFeedAdTargetting extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
-              source: "ad_targeting",
+              source: "InstagramFeedAdTargeting",
               source_action: "a_go_back",
             }}
             icon="instagram"
@@ -1737,7 +1737,7 @@ class InstagramFeedAdTargetting extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
-              source: "ad_targeting",
+              source: "InstagramFeedAdTargeting",
               source_action: "a_go_back",
             }}
             actionButton={() => this.handleBackButton()}
@@ -1806,7 +1806,7 @@ class InstagramFeedAdTargetting extends Component {
                       }
                     : {};
                   analytics.track("Screen Viewed", {
-                    screen_name: "InstagramFeed/AdTargeting",
+                    screen_name: "InstagramFeedAdTargeting",
                     source,
                     source_action,
                     from_context: { ...segmentInfo },

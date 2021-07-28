@@ -308,7 +308,6 @@ export const create_snapchat_ad_account = (info, navigation) => {
         //   err.message || err.response
         // );
         analytics.track(`Form Error Made`, {
-          form_type: "Snapchat Ad Acoount Creation",
           source: "SnapchatCreateAdAcc",
           campaign_channel: "snapchat",
           source_action: "a_accept_ad_TNC",
@@ -500,7 +499,6 @@ export const inviteTeamMember = (info, resend) => {
       .catch((err) => {
         analytics.track(`Form Error Made`, {
           source: source,
-          form_type: "Team Member Form",
           form_field: source_action,
           error_description:
             err.message ||

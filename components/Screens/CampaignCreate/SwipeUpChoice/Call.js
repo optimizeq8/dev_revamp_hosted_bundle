@@ -171,7 +171,7 @@ class Call extends Component {
   onSelectedCallToActionChange = (value) => {
     if (value && !isEmpty(value)) {
       analytics.track(`Form Populated`, {
-        form_type: "Ad Design Form",
+        form_type: "Snapchat Compose Ad Form",
         form_field: "engagement_cta",
         form_value: value,
       });

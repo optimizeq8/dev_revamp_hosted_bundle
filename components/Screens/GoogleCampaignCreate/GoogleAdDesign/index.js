@@ -336,7 +336,7 @@ class GoogleAdDesign extends Component {
         else
           this.props.navigation.navigate("GoogleEditKeywords", {
             adData: data,
-            source: "GoogleAdDesign",
+            source: "GoogleComposeAd",
             source_action: "a_ad_keywords",
           });
       }
@@ -377,7 +377,7 @@ class GoogleAdDesign extends Component {
       () => {
         if (this.state[error]) {
           analytics.track(`Form Erro Made`, {
-            source: "GoogleAdDesign",
+            source: "GoogleComposeAd",
             error_description: this.state[error],
             source_action: `a_ad_${value}`,
             business_id: this.props.mainBusiness.businessid,
@@ -437,7 +437,7 @@ class GoogleAdDesign extends Component {
       campaign_id: this.props.campaign.id,
     };
     analytics.track("Screen Viewed", {
-      screen_name: "GoogleAdDesign",
+      screen_name: "GoogleComposeAd",
       source,
       source_action,
       ...segmentInfo,
@@ -448,7 +448,7 @@ class GoogleAdDesign extends Component {
       this.props.save_google_campaign_steps([
         "Dashboard",
         "GoogleAdInfo",
-        "GoogleAdDesign",
+        "GoogleComposeAd",
       ]);
 
     this.setState({ unmounted: false });
@@ -565,7 +565,7 @@ class GoogleAdDesign extends Component {
                 segment={{
                   str: "Google SE Design Back Button",
                   obj: { businessname: this.props.mainBusiness.businessname },
-                  source: "ad_design",
+                  source: "GoogleComposeAd",
                   source_action: "a_go_back",
                 }}
                 icon="google"
@@ -580,7 +580,7 @@ class GoogleAdDesign extends Component {
                 segment={{
                   str: "Google SE Design Back Button",
                   obj: { businessname: this.props.mainBusiness.businessname },
-                  source: "ad_design",
+                  source: "GoogleComposeAd",
                   source_action: "a_go_back",
                 }}
                 actionButton={() => this.handleModalToggle()}

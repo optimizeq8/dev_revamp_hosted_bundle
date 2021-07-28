@@ -287,7 +287,6 @@ export const verifyMobileCode = (
         // console.log("verifyMobileCode error", err.message || err.response);
         analytics.track(`Form Error Made`, {
           source: "VerfiyAccount",
-          form_type: "OTP Verification",
           error_description:
             err.message ||
             err.response ||
@@ -447,7 +446,6 @@ export const verifyEmail = (email, userInfo, navigation) => {
           payload: false,
         });
         analytics.track(`Form Error Made`, {
-          form_type: "Sign up Initiated",
           source: "Signin",
           source_action: "a_create_account",
           error_description:
@@ -653,7 +651,6 @@ export const registerGuestUser = (
       .catch((err) => {
         // console.log("registerGuestUser ERROR", JSON.stringify(err, null, 2));
         analytics.track(`Form Error Made`, {
-          form_type: "Registration Form",
           source: "RegistrationDetailForm",
           source_action: "a_sign_up",
           error_description:

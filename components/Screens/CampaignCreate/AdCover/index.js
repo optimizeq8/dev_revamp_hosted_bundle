@@ -330,7 +330,7 @@ class AdCover extends Component {
           analytics.track(`Form Error Made`, {
             campaign_channel: "snapchat",
             campaign_ad_type: "StoryAd",
-            source: "AdCover",
+            source: "SnapchatAdCover",
             error_description:
               "Wrong aspect ratio for logo, Please crop the image to the correct size",
             business_id: this.props.mainBusiness.businessid,
@@ -370,7 +370,7 @@ class AdCover extends Component {
           analytics.track(`Form Error Made`, {
             campaign_channel: "snapchat",
             campaign_ad_type: "StoryAd",
-            source: "ad_cover",
+            source: "SnapchatAdCover",
             error_description: "Logo must be exactly 993px by 284px",
             business_id: this.props.mainBusiness.businessid,
           });
@@ -484,7 +484,7 @@ class AdCover extends Component {
                 analytics.track(`Form Error Made`, {
                   campaign_channel: "snapchat",
                   campaign_ad_type: "StoryAd",
-                  source: "ad_cover",
+                  source: "SnapchatAdCover",
                   error_description: "Image must be less than 2 MBs",
                   business_id: this.props.mainBusiness.businessid,
                 });
@@ -544,7 +544,7 @@ class AdCover extends Component {
               analytics.track(`Form Error Made`, {
                 campaign_channel: "snapchat",
                 campaign_ad_type: "StoryAd",
-                source: "ad_cover",
+                source: "SnapchatAdCover",
                 error_description: error.wrongAspect
                   ? "Wrong aspect ratio for logo, Please crop the image to the correct size "
                   : "Please choose an image",
@@ -569,7 +569,7 @@ class AdCover extends Component {
           analytics.track(`Form Error Made`, {
             campaign_channel: "snapchat",
             campaign_ad_type: "StoryAd",
-            source: "ad_cover",
+            source: "SnapchatAdCover",
             error_description: "Please make sure the image is in png format",
             business_id: this.props.mainBusiness.businessid,
           });
@@ -578,7 +578,7 @@ class AdCover extends Component {
         analytics.track(`Form Error Made`, {
           campaign_channel: "snapchat",
           campaign_ad_type: "StoryAd",
-          source: "ad_cover",
+          source: "SnapchatAdCover",
           error_description: "Please choose a media file",
           business_id: this.props.mainBusiness.businessid,
         });
@@ -686,7 +686,7 @@ class AdCover extends Component {
       this.state.coverError
     ) {
       analytics.track(`Form Error Made`, {
-        source: "ad_cover",
+        source: "SnapchatAdCover",
         source_action: "a_submit_ad_cover",
         error_description:
           this.state.coverHeadlineError ||
@@ -735,7 +735,7 @@ class AdCover extends Component {
         // .push("AdDesign", {
         //   rejected: this.rejected,
         //   selectedCampaign: this.selectedCampaign,
-        //   source: "ad_cover",
+        //   source: "SnapchatAdCover",
         //   source_action: "a_submit_ad_cover",
         // });
       }
@@ -755,13 +755,13 @@ class AdCover extends Component {
   handleSupportPage = () => {
     const { translate } = this.props.screenProps;
     analytics.track(`a_help`, {
-      source: "ad_cover",
+      source: "SnapchatAdCover",
       source_action: "a_help",
       support_type: "optimize_website",
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
     analytics.track(`open_support`, {
-      source: "ad_cover",
+      source: "SnapchatAdCover",
       source_action: "a_help",
       support_type: "optimize_website",
       timestamp: new Date().getTime(),
@@ -772,7 +772,7 @@ class AdCover extends Component {
     this.props.navigation.push("WebView", {
       url: "https://www.optimizeapp.com/ad_requirements",
       title: "Support",
-      source: "ad_cover",
+      source: "SnapchatAdCover",
       source_action: "a_help",
     });
   };
@@ -851,7 +851,7 @@ class AdCover extends Component {
             segment={{
               str: "Ad Design Back Button",
               obj: { businessname: this.props.mainBusiness.businessname },
-              source: "ad_cover",
+              source: "SnapchatAdCover",
               source_action: "a_go_back",
             }}
             icon="snapchat"
@@ -1044,7 +1044,7 @@ class AdCover extends Component {
           description={
             "The cover shows on the Discover page among subscriptions and trending content"
           }
-          source={"ad_cover"}
+          source={"SnapchatAdCover"}
           source_action={"a_help"}
           screenProps={this.props.screenProps}
           media={this.props.ad_tutorial_link}

@@ -193,7 +193,7 @@ class AdPaymentReview extends Component {
     this.props.save_google_campaign_steps([
       "Dashboard",
       "GoogleAdInfo",
-      "GoogleAdDesign",
+      "GoogleComposeAd",
       "GoogleAdTargeting",
       "GoogleAdPaymentReview",
     ]);
@@ -240,7 +240,7 @@ class AdPaymentReview extends Component {
             obj: {
               businessname: this.props.mainBusiness.businessname,
             },
-            source: "ad_review",
+            source: "GoogleAdPaymentReview",
             source_action: "a_go_back",
           }}
           icon="google"

@@ -183,7 +183,7 @@ class EditKeywords extends Component {
                 title={this.props.selectedCampaign.campaign.name}
                 icon={"google"}
                 segment={{
-                  source: "ad_keywords",
+                  source: "GoogleEditKeywords",
                   source_action: "a_go_back",
                 }}
                 actionButton={() => this.handleModalToggle()}
@@ -205,7 +205,7 @@ class EditKeywords extends Component {
                 title={this.props.selectedCampaign.campaign.name}
                 icon={"google"}
                 segment={{
-                  source: "ad_keywords",
+                  source: "GoogleEditKeywords",
                   source_action: "a_go_back",
                 }}
                 navigation={this.props.navigation}
@@ -230,7 +230,7 @@ class EditKeywords extends Component {
               data={this.props.campaign.fetchedKeywords}
               campaign_id={this.props.selectedCampaign.campaign.id}
               businessid={this.props.mainBusiness.businessid}
-              source={"ad_keywords"}
+              source={"EditKeywords"}
             />
             {this.props.campaign.uploading ? (
               <ForwardLoading

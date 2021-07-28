@@ -58,11 +58,12 @@ class Transactions extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`open_transactions`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "Transaction",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.getTransactions();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
@@ -142,7 +143,7 @@ class Transactions extends Component {
               title={"Transactions"}
               navigation={this.props.navigation}
               segment={{
-                source: "open_transactions",
+                source: "Transactions",
                 source_action: "a_go_back",
               }}
             />
@@ -155,7 +156,7 @@ class Transactions extends Component {
                     customInputStyle={{
                       backgroundColor: "#0004",
                     }}
-                    source={"open_transactions"}
+                    source={"Transactions"}
                   />
                 </View>
                 {this.props.filteredTransactions.length !== 0 && (

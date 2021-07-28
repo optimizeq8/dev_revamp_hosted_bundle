@@ -37,11 +37,12 @@ class ManageTeam extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`team_management_members_list`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "ManageTeam",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness.businessid,
+
+      business_id: this.props.mainBusiness.businessid,
     });
   };
 
@@ -101,7 +102,7 @@ class ManageTeam extends Component {
           title={"Manage Team"}
           navigation={this.props.navigation}
           segment={{
-            source: "team_management_members_list",
+            source: "ManageTeam",
             source_action: "a_go_back",
           }}
         />

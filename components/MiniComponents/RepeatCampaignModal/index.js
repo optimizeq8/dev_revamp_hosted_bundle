@@ -191,7 +191,11 @@ class RepeatCampaignModal extends Component {
                     closeButton={false}
                     segment={{
                       str: "Ad Details Back Button",
-                      source: "repeat_campaign_modal",
+                      source: `${
+                        campaign.channel === "instagram"
+                          ? "Instagram"
+                          : "Snapchat"
+                      }RepeatCampaignModal`,
                       source_action: "a_go_back",
                     }}
                     actionButton={() => this.handleSwitch(false)}

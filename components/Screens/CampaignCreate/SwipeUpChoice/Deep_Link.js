@@ -136,7 +136,7 @@ class Deep_Link extends Component {
 
   handleCallaction = (callaction) => {
     analytics.track(`Form Populated`, {
-      form_type: "Ad Design Form",
+      form_type: "Snapchat Compose Ad Form",
       form_field: "deep_link_cta",
       form_value: callaction,
     });
@@ -166,7 +166,7 @@ class Deep_Link extends Component {
     }
     if (!nameError && !callActionError) {
       analytics.track(`Form Populated`, {
-        form_type: "Ad Design Form",
+        form_type: "Snapchat Compose Ad Form",
         form_field: "deep_link_swipe_up",
         form_value: appChoice === "iOS" ? iosApp_name : androidApp_name,
       });

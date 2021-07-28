@@ -98,7 +98,7 @@ export default RejectedInfo = (props) => {
              *
              */
             if (error_type === 1)
-              navigation.navigate("GoogleAdDesign", {
+              navigation.navigate("GoogleComposeAd", {
                 rejected: true,
                 id: campaign_id,
                 ad: ad,
@@ -115,7 +115,7 @@ export default RejectedInfo = (props) => {
                 source_action: "a_review_ad",
               });
             else
-              props.navigation.navigate("GoogleAdDesign", {
+              props.navigation.navigate("GoogleComposeAd", {
                 rejected: true,
                 id: campaign_id,
                 ad: ad,

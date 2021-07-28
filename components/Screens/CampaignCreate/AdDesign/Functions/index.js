@@ -257,7 +257,7 @@ export const _changeDestination = (
   let newData = {};
   if (adType === "StoryAd") {
     analytics.track(`Form Populated`, {
-      form_type: "Ad Design Form",
+      form_type: "Snapchat Compose Ad Form",
       form_field: "swipe_up_destination",
       form_value: {
         campaign_attachment: attachment,
@@ -306,7 +306,7 @@ export const _changeDestination = (
       [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
     };
     analytics.track(`Form Populated`, {
-      form_type: "Ad Design Form",
+      form_type: "Snapchat Compose Ad Form",
       form_field: "swipe_up_destination",
       form_value: {
         campaign_attachment: {
@@ -348,7 +348,7 @@ export const _changeDestination = (
     };
 
     analytics.track(`Form Populated`, {
-      form_type: "Ad Design Form",
+      form_type: "Snapchat Compose Ad Form",
       form_field: "swipe_up_destination",
       form_value: {
         campaign_attachment: attachment,

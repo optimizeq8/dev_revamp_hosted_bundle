@@ -146,7 +146,7 @@ class AppUpdateChecker extends PureComponent {
                     this.setState({ updateIsAvalible: false });
                   }}
                   segment={{
-                    source: "app_update_checker",
+                    source: "AppUpdateChecker",
                     source_action: "a_go_back",
                   }}
                 />

@@ -304,7 +304,7 @@ class AdObjective extends Component {
       duration,
     });
     analytics.track(`Form Populated`, {
-      form_type: "Ad Objective Form",
+      form_type: "Snapchat Ad Objective Form",
       form_field: "Objective",
       form_value: choice.value,
       campaign_id: this.props.campaign_id,
@@ -349,7 +349,7 @@ class AdObjective extends Component {
       },
     });
     analytics.track(`Form Populated`, {
-      form_type: "Ad Objective Form",
+      form_type: "Snapchat Ad Objective Form",
       form_field: "start_date",
       form_value: date,
       campaig_id: this.props.campaig_id,
@@ -372,7 +372,7 @@ class AdObjective extends Component {
     });
     analytics.track(`Form Populated`, {
       form_value: date,
-      form_type: "Ad Objective Form",
+      form_type: "Snapchat Ad Objective Form",
       form_field: "end_date",
       campaig_id: this.props.campaig_id,
       campaign_channel: "snapchat",
@@ -390,7 +390,7 @@ class AdObjective extends Component {
     analytics.track(`Button Pressed`, {
       button_type: `${visible ? "Open" : "Close"} Ad Objective Modal`,
       button_content: "OBJECTIVE",
-      source: "AdObjective",
+      source: "SnapchatAdObjective",
     });
 
     this.setState({ modalVisible: visible });
@@ -420,7 +420,8 @@ class AdObjective extends Component {
           : `APP DEEPLINKS
       Links to your App`,
       campaign_collectionAdLinkForm: val === 2 ? "Website" : "App DeepLinks",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ ...this.state, collectionAdLinkForm: val });
   };
@@ -459,7 +460,6 @@ class AdObjective extends Component {
       dateErrors.end_timeError
     ) {
       analytics.track(`Form Error Made`, {
-        error_page: "AdObjective",
         campaign_channel: "snapchat",
         campaign_ad_type: this.props.adType,
         source_action: "a_submit_ad_objective",
@@ -581,7 +581,7 @@ class AdObjective extends Component {
     // value = value.replace(/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi, "");
     state[stateName] = value;
     analytics.track(`Form Populated`, {
-      form_type: "Ad Objective Form",
+      form_type: "Snapchat Ad Objective Form",
       form_field: "ad_name",
       form_value: value,
       campaig_id: this.props.campaign_id,
@@ -600,9 +600,8 @@ class AdObjective extends Component {
   getValidInfo = (stateError, validObj) => {
     if (validObj) {
       analytics.track(`Form Error Made`, {
-        error_page: "AdObjective",
         error_description: `Error in ${stateError}: ${validObj}`,
-        source: "ad_objective",
+        source: "SnapchatAdObjective",
         source_action: "a_ad_name",
         campaign_channel: "snapchat",
         campaign_ad_type: this.props.adType,
@@ -637,7 +636,8 @@ class AdObjective extends Component {
       source_action,
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     AsyncStorage.getItem("AdObjectiveTutorialOpened").then((value) => {
       if (!value && this.props.campaignList.length === 0) {
@@ -758,7 +758,7 @@ class AdObjective extends Component {
             screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
-              source: "ad_objective",
+              source: "SnapchatAdObjective",
               source_action: "a_go_back",
               str: "Ad Objective Back Button",
               obj: {
@@ -984,7 +984,7 @@ class AdObjective extends Component {
                 }}
                 title={"Select an objective"}
                 segment={{
-                  source: "ad_objective_modal",
+                  source: "SnapchatAdObjectiveModal",
                   source_action: "a_go_back",
                 }}
                 titleStyle={{ color: "#000" }}

@@ -333,7 +333,7 @@ class GoogleSEAPreviewScreen extends Component {
             segment={{
               str: "Google SE Design Preview Back Button",
               obj: { businessname: this.props.mainBusiness.businessname },
-              source: "ad_preview",
+              source: "GoogleSEAPreviewScreen",
               source_action: "a_go_back",
             }}
             navigation={this.props.navigation}
@@ -385,7 +385,7 @@ class GoogleSEAPreviewScreen extends Component {
                 <GradientButton
                   transparent
                   onPressAction={() => {
-                    this.props.navigation.navigate("GoogleAdDesign", {
+                    this.props.navigation.navigate("GoogleComposeAd", {
                       source: "ad_preview",
                       source_action: "a_edit_ad_design",
                     });

@@ -42,11 +42,12 @@ class index extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`web_view`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "WebView",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     AppState.addEventListener("change", this._handleAppStateChange);
   }

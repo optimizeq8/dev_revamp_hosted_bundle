@@ -212,7 +212,7 @@ class PersonalInfo extends Component {
           title={"Personal Info"}
           navigation={this.props.navigation}
           segment={{
-            source: "open_personal_details",
+            source: "PersonalInfo",
             source_action: "a_go_back",
           }}
         />

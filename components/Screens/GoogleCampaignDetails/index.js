@@ -410,7 +410,7 @@ class GoogleCampaignDetails extends Component {
                 title={loading ? "" : selectedCampaign.campaign.name}
                 icon={"google"}
                 segment={{
-                  source: "campaign_detail",
+                  source: "GoogleCampaignDetails",
                   source_action: "a_go_back",
                 }}
                 navigation={

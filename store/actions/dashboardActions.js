@@ -26,7 +26,7 @@ export const getCampaignDetails = (id, navigation) => {
     });
 
     navigation.navigate("CampaignDetails", {
-      source: "dashboard",
+      source: "Dashboard",
       source_action: "a_open_campaign",
     });
 
@@ -317,7 +317,7 @@ export const downloadCSV = (campaign_id, email, showModalMessage) => {
           action_status: data.success ? "success" : "failure",
           campaign_id: campaign_id,
           export_email: email,
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         showModalMessage(data.message, data.success ? "success" : "warning");
       })

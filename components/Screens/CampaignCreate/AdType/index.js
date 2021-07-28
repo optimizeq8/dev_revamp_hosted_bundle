@@ -302,7 +302,7 @@ class AdType extends Component {
           segment={{
             str: "Ad Type Close",
             obj: { businessname: this.props.mainBusiness.businessname },
-            source: "ad_type",
+            source: "AdType",
             source_action: "a_go_back",
           }}
           navigation={

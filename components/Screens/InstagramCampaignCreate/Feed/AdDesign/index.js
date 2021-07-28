@@ -526,7 +526,7 @@ class AdDesign extends Component {
         }
       } else {
         this.props.navigation.navigate("InstagramFeedAdTargetting", {
-          source: "InstagramFeed/ComposeAd",
+          source: "InstagramFeedComposeAd",
           source_action: "a_submit_ad_design",
         });
       }
@@ -536,7 +536,7 @@ class AdDesign extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Expand Instagram Feed Caption",
       button_content: "",
-      source: "InstagramFeed/ComposeAd",
+      source: "InstagramFeedComposeAd",
     });
     this.setState(
       {
@@ -552,13 +552,13 @@ class AdDesign extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Preview Instagram Feed Ad Design",
       button_content: "PREVIEW",
-      source: "InstagramFeed/ComposeAd",
-      campaign_channel: "Instagram",
+      source: "InstagramFeedComposeAd",
+      campaign_channel: "instagram",
       campaign_ad_type: "InstagramFeedAd",
     });
     if (noError) {
       this.props.navigation.navigate("AdFeedDesignReview", {
-        source: "InstagramFeed/ComposeAd",
+        source: "InstagramFeedComposeAd",
         source_action: "a_preview_ad",
         rejected: this.rejected,
         media: this.state.media,
@@ -625,11 +625,11 @@ class AdDesign extends Component {
       this.props.screenProps.prevAppState
     );
     analytics.track(`Screen Viewed`, {
-      screen_name: "InstagramFeed/AdDesign",
+      screen_name: "instagramfeedAdDesign",
       source,
       source_action,
       form_context: {
-        campaign_channel: "Instagram",
+        campaign_channel: "instagram",
         campaign_ad_type: "InstagramFeedAd",
         campaign_name: this.state.selectedCampaign.name,
         campaign_id: this.state.selectedCampaign.campaign_id,
@@ -722,9 +722,9 @@ class AdDesign extends Component {
           screenProps={this.props.screenProps}
           closeButton={false}
           segment={{
-            str: "Instagram Feed Ad Design Back Button",
+            str: "Instagram Feed Compose Ad Back Button",
             obj: { businessname: this.props.mainBusiness.businessname },
-            source: "InstagramFeed/ComposeAd",
+            source: "InstagramFeedComposeAd",
             source_action: "a_go_back",
           }}
           icon="instagram"

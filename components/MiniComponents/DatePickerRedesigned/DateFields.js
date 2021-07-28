@@ -361,7 +361,7 @@ class DateFields extends Component {
                 icon="calendar"
                 screenProps={this.props.screenProps}
                 segment={{
-                  source: "date_modal",
+                  source: "DatePickerRedesigned",
                   source_action: "a_go_back",
                 }}
                 closeButton={true}

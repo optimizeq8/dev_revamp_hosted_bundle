@@ -707,7 +707,6 @@ class CollectionMedia extends Component {
 
       if (error) {
         analytics.track("Form Error Made", {
-          source: "ComposeAd",
           source: "CollectionMedia",
           source_action: "a_deep_link_uri",
           error_description: this.state.deep_link_uriError,
@@ -736,7 +735,7 @@ class CollectionMedia extends Component {
             screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
-              source: "ad_collection_media",
+              source: "SnapchatCollectionMedia",
               source_action: "a_go_back",
               str: "Go Back from Collection Media Upload",
               obj: { businessname: this.props.mainBusiness.businessname },

@@ -102,7 +102,7 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
             data.data.campaign_already_created === 0)
         ) {
           NavigationService.navigate(navigation_route, {
-            source: "InstagramFeed/AdObjective",
+            source: "InstagramFeedAdObjective",
             source_action: "a_submit_ad_objective",
           });
         } else {
@@ -668,8 +668,8 @@ export const ad_details_instagram = (
         )
           navigation.navigate(navigationPath, {
             source: navigationPath.includes("Feed")
-              ? "InstagramFeed/AdTargeting"
-              : "InstagramStory/AdTargeting",
+              ? "instagramfeedAdTargeting"
+              : "instagramstoryAdTargeting",
             source_action: "a_submit_ad_targeting",
           });
       })
@@ -692,7 +692,7 @@ export const getInstagramCampaignDetails = (id, navigation) => {
     });
 
     navigation.navigate("InstagramCampaignDetails", {
-      source: "dashboard",
+      source: "Dashboard",
       source_action: "a_open_campaign",
     });
 
@@ -710,7 +710,7 @@ export const getInstagramCampaignDetails = (id, navigation) => {
         }
 
         // analytics.track(`a_open_campaign_details`, {
-        //   source: "dashboard",
+        //   source: "Dashboard",
         //   source_action: "a_open_campaign_details",
         //   action_status: data.sucess ? "success" : "failure",
         //   campaign_id: id,
@@ -1479,7 +1479,7 @@ export const repeatInstaCampaginBudget = (
           form_type: "Instagram Repeat Campaign Form",
           form_context: {
             action_status: data.success ? "success" : "failure",
-            campaign_channel: "Instagram",
+            campaign_channel: "instagram",
             repeat_campaign_id: data.campaign_id,
           },
           business_id: getState().account.mainBusiness.businessid,
@@ -1506,7 +1506,7 @@ export const repeatInstaCampaginBudget = (
             payload: false,
           });
           NavigationService.navigate("PaymentForm", {
-            source: "dashboard",
+            source: "Dashboard",
             source_action: `a_submit_repeat_campaign_budget`,
             campaign_channel: "instagram",
           });
@@ -1615,7 +1615,7 @@ export const extendInstaCampaginBudget = (
           form_type: "Instagram Extend Campaign Form",
           form_context: {
             action_status: data.success ? "success" : "failure",
-            campaign_channel: "Instagram",
+            campaign_channel: "instagram",
             campaign_id: data.campaign_id,
           },
           business_id: getState().account.mainBusiness.businessid,

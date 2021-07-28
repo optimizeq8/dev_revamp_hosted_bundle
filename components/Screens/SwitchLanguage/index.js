@@ -96,7 +96,8 @@ class SwitchLanguage extends Component {
     analytics.track(`Language Changed`, {
       source: `SwitchLanguage`,
       selected_language: language,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       language,

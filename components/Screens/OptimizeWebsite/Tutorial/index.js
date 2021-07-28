@@ -67,11 +67,12 @@ class TutorialWeb extends React.Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`my_website_tutorial`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "Tutorial",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }

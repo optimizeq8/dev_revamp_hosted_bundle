@@ -372,7 +372,7 @@ class Dashboard extends Component {
       this.props.userInfo.superadmin;
     if (!businessApproved && !userisSuperAdmin) {
       this.props.navigation.navigate("VerifyBusiness", {
-        source: "dashboard",
+        source: "Dashboard",
         source_action: "a_campaign_ad_type",
       });
     }
@@ -385,7 +385,7 @@ class Dashboard extends Component {
       adType.mediaType === "snapchat"
     ) {
       this.props.navigation.navigate("SnapchatCreateAdAcc", {
-        source: "dashboard",
+        source: "Dashboard",
         source_action: "a_campaign_ad_type",
       });
     } else if (
@@ -393,7 +393,7 @@ class Dashboard extends Component {
       adType.mediaType === "google"
     ) {
       this.props.navigation.navigate("GoogleCreateAdAcc", {
-        source: "dashboard",
+        source: "Dashboard",
         source_action: "a_campaign_ad_type",
       });
     } else {
@@ -402,14 +402,14 @@ class Dashboard extends Component {
         this.props.mainBusiness.google_suspended === "1"
       ) {
         this.props.navigation.navigate("SuspendedWarning", {
-          source: "dashboard",
+          source: "Dashboard",
           source_action: "a_campaign_ad_type",
         });
       } else if (adType.mediaType === "instagram" && fb_connected === "0") {
         this.props.navigation.navigate("WebView", {
           url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
           title: "Instagram",
-          source: "dashboard",
+          source: "Dashboard",
           source_action: "a_campaign_ad_type",
         });
       } else if (
@@ -545,7 +545,7 @@ class Dashboard extends Component {
     this.props.navigation.navigate(
       !businessApproved && !userisSuperAdmin ? "VerifyBusiness" : "AdType",
       {
-        source: "dashboard",
+        source: "Dashboard",
         source_action: "a_create_campaign",
       }
     );
@@ -670,13 +670,13 @@ class Dashboard extends Component {
             end_time,
             false,
             {
-              source: "dashboard",
+              source: "Dashboard",
               source_action: "a_open_campaign_details",
             }
           );
           this.props.navigation.navigate("GoogleCampaignDetails", {
             campaign: campaign_id,
-            source: "dashboard",
+            source: "Dashboard",
             source_action: "a_open_campaign_details",
           });
           break;
@@ -693,7 +693,7 @@ class Dashboard extends Component {
   };
   handleSwitchLanguage = () => {
     analytics.track(`Language Selected`, {
-      source: "dashboard",
+      source: "Dashboard",
       selected_language: this.props.appLanguage === "en" ? "ar" : "en",
     });
     this.props.navigation.navigate("SwitchLanguageLoading", {
@@ -726,7 +726,7 @@ class Dashboard extends Component {
   openIntercom = () => {
     this.setState({ showAlertModal: false });
     analytics.track(`Intercom Opened`, {
-      source: "dashboard",
+      source: "Dashboard",
     });
     Intercom.displayConversationsList();
   };
@@ -1021,7 +1021,7 @@ class Dashboard extends Component {
                                 ? "VerifyBusiness"
                                 : "TutorialWeb",
                               {
-                                source: "dashboard",
+                                source: "Dashboard",
                                 source_action: "a_open_website_tutorial",
                               }
                             );
@@ -1080,7 +1080,7 @@ class Dashboard extends Component {
                                   ? "VerifyBusiness"
                                   : "TutorialWeb",
                                 {
-                                  source: "dashboard",
+                                  source: "Dashboard",
                                   source_action: "a_open_website_tutorial",
                                 }
                               );
@@ -1099,7 +1099,7 @@ class Dashboard extends Component {
                             }}
                             strokeColor={"#909090"}
                             renderSearchBar={this.renderSearchBar}
-                            source={"dashboard"}
+                            source={"Dashboard"}
                           />
                         </View>
                         <TouchableOpacity

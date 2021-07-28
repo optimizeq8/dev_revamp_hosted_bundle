@@ -648,7 +648,7 @@ class PaymentForm extends Component {
             segment={{
               str: "Payment Method Screen Back Button",
               obj: { business_name: this.props.mainBusiness.businessname },
-              source: "AdPaymentReview",
+              source: "PaymentForm",
               source_action: "a_go_back",
             }}
             icon={campaign_channel}

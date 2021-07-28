@@ -681,7 +681,7 @@ class InstagramStoryAdTargetting extends Component {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
           analytics.track(`Form Error Made`, {
-            source: "InstagramStory/AdTargeting",
+            source: "instagramstoryAdTargeting",
             source_action: "a_change_campaign_custom_budget",
             error_description:
               validateWrapper("Budget", rawValue) +
@@ -888,10 +888,10 @@ class InstagramStoryAdTargetting extends Component {
       )
     ) {
       analytics.track(`Form Error Made`, {
-        source: "InstagramStory/AdTargeting",
+        source: "instagramstoryAdTargeting",
         source_action: "a_submit_ad_targeting",
         campaign_id: this.props.data.campaign_id,
-        campaign_channel: "Instagram",
+        campaign_channel: "instagram",
         campaign_ad_type: "InstagramStoryAd",
         error_description:
           countryRegionError ||
@@ -1712,7 +1712,7 @@ class InstagramStoryAdTargetting extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
-              source: "ad_targeting",
+              source: "InstagramStoryAdTargeting",
               source_action: "a_go_back",
             }}
             icon="instagram"
@@ -1729,7 +1729,7 @@ class InstagramStoryAdTargetting extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
-              source: "ad_targeting",
+              source: "InstagramStoryAdTargeting",
               source_action: "a_go_back",
             }}
             actionButton={() => this.handleBackButton()}
@@ -1780,7 +1780,7 @@ class InstagramStoryAdTargetting extends Component {
                     ? {
                         source,
                         source_action,
-                        campaign_channel: "Instagram",
+                        campaign_channel: "instagram",
                         campaign_ad_type: "InstagramStoryAd",
                         campaign_name: this.props.data.name,
                         campaign_id: this.props.data.campaign_id,
@@ -1796,7 +1796,7 @@ class InstagramStoryAdTargetting extends Component {
                       }
                     : {};
                   analytics.track("Screen Viewed", {
-                    screen_name: "InstagramFeed/AdTargeting",
+                    screen_name: "instagramfeedAdTargeting",
                     source,
                     source_action,
                     from_context: { ...segmentInfo },

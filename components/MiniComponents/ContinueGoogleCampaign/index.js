@@ -33,7 +33,7 @@ class ContinueCampaign extends Component {
       !this.props.data.campaignResumed
     ) {
       analytics.track("Google Campaign Continued", {
-        campaign_channel: "Google",
+        campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
         business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
@@ -54,7 +54,7 @@ class ContinueCampaign extends Component {
           routeName: route,
         },
         {
-          source: "continue_campaign_modal",
+          source: "GoogleContinueCampaign",
           source_action: "a_continue_campaign",
         }
       )
@@ -190,7 +190,7 @@ class ContinueCampaign extends Component {
             navigation={this.props.navigation}
             title={"Continue Ad Creation"}
             segment={{
-              source: "continue_campaign_modal",
+              source: "GoogleContinueCampaign",
               source_action: "a_go_back",
             }}
           />

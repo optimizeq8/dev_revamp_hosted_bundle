@@ -284,7 +284,7 @@ class CampaignCard extends Component {
                       dashboard: true,
                       engagement_phone_number: campaign.engagement_phone_number,
                       campaign_id: campaign.campaign_id,
-                      source: "dashboard",
+                      source: "Dashboard",
                       source_action: "a_verify_engagement_number",
                     })
                   }

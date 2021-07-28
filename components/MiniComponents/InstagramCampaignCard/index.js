@@ -61,7 +61,7 @@ class CampaignCard extends Component {
       source: "Dashboard",
       source_action: "a_open_campaign_card",
       campaign_id: this.props.campaign.campaign_id,
-      campaign_channel: "Instagram",
+      campaign_channel: "instagram",
       business_id: this.props.mainBusiness.businessid,
     });
     this.props.getInstagramCampaignDetails(
@@ -97,7 +97,7 @@ class CampaignCard extends Component {
       button_type: `${value ? "Open" : "Close"} Repeat Campaign Modal`,
       button_content: "promote again",
       source: "Dashboard",
-      campaign_channel: "Instagram",
+      campaign_channel: "instagram",
       campaign_id: this.props.campaign.campaign_id,
       business_id: this.props.mainBusiness.businessid,
     });
@@ -112,7 +112,7 @@ class CampaignCard extends Component {
       button_type: `${value ? "Open" : "Close"} Extend Campaign Modal`,
       button_content: "Extend",
       source: "Dashboard",
-      campaign_channel: "Instagram",
+      campaign_channel: "instagram",
       campaign_id: this.props.campaign.campaign_id,
       business_id: this.props.mainBusiness.businessid,
     });
@@ -127,7 +127,7 @@ class CampaignCard extends Component {
       button_type: "Open Options Campaign Modal",
       button_content: "3 dots Icon",
       source: "Dashboard",
-      campaign_channel: "Instagram",
+      campaign_channel: "instagram",
       campaign_id: this.props.campaign.campaign_id,
       business_id: this.props.mainBusiness.businessid,
     });

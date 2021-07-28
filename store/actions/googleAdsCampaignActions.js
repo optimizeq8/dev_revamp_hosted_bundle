@@ -70,7 +70,6 @@ export const create_google_ad_account = (info, navigation) => {
       })
       .catch((err) => {
         analytics.track(`Form Error Made`, {
-          form_type: "Google Ad Acoount Creation",
           source: "GoogletCreateAdAcc",
           campaign_channel: "google",
           source_action: "a_accept_ad_TNC",
@@ -297,12 +296,12 @@ export const create_google_SE_campaign_ad_design = (
       .then((data) => {
         if (rejected && !data.error)
           NavigationService.navigate("Dashboard", {
-            source: "GoogleAdDesign",
+            source: "GoogleComposeAd",
             source_action: "a_submit_ad_design",
           });
         else if (!rejected && !data.error) {
           NavigationService.navigate("GoogleAdTargeting", {
-            source: "GoogleAdDesign",
+            source: "GoogleComposeAd",
             source_action: "a_submit_ad_design",
           });
         }
@@ -692,7 +691,6 @@ export const update_google_audience_targeting = (info, segmentInfo) => {
       })
       .catch((err) => {
         analytics.track(`Form Error Made`, {
-          form_type: "Gooogle Ad Targeting Form",
           form_field: segmentInfo.source_action,
           source: segmentInfo.source,
           error_description: err.message || err.response,
@@ -753,7 +751,6 @@ export const update_google_keywords = (info, segmentInfo) => {
           });
         } else {
           analytics.track(`Form Error Made`, {
-            form_type: "Google Keywords Update Form",
             ...segmentInfo,
             source: segmentInfo.source,
             action_status: !data.error ? "success" : "failure",
@@ -772,7 +769,6 @@ export const update_google_keywords = (info, segmentInfo) => {
       })
       .catch((err) => {
         analytics.track(`Form Error Made`, {
-          form_type: "Google Keywords Update Form",
           source: segmentInfo.source,
           action_status: !data.error ? "success" : "failure",
           error_description: err.message || err.response,
@@ -828,7 +824,6 @@ export const create_google_keywords = (info, segmentInfo) => {
           });
         } else {
           analytics.track(`Form Error Made`, {
-            source: "Google Ad Targeting",
             source_action: "a_ad_keywords",
             error_description:
               data.error || "Something went wrong. Please try again",

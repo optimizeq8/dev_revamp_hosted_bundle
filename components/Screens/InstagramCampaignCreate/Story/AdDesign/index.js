@@ -475,7 +475,7 @@ class AdDesign extends Component {
         }
       } else {
         this.props.navigation.navigate("InstagramStoryAdTargetting", {
-          source: "InstagramStory/ComposeAd",
+          source: "InstagramStoryComposeAd",
 
           source_action: "a_submit_ad_design",
         });
@@ -486,7 +486,7 @@ class AdDesign extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Expand Instagram Feed Caption",
       button_content: "",
-      source: "InstagramStory/ComposeAd",
+      source: "InstagramStoryComposeAd",
     });
     this.setState(
       {
@@ -503,13 +503,13 @@ class AdDesign extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Preview Instagram Feed Ad Design",
       button_content: "PREVIEW",
-      source: "InstagramStory/ComposeAd",
-      campaign_channel: "Instagram",
+      source: "InstagramStoryComposeAd",
+      campaign_channel: "instagram",
       campaign_ad_type: this.adType,
     });
     if (noError) {
       this.props.navigation.navigate("AdStoryDesignReview", {
-        source: "InstagramStory/ComposeAd",
+        source: "InstagramStoryComposeAd",
         source_action: "a_preview_ad",
         rejected: this.rejected,
         media: this.state.media,
@@ -576,11 +576,11 @@ class AdDesign extends Component {
       this.props.screenProps.prevAppState
     );
     analytics.track(`Screen Viewed`, {
-      screen_name: "InstagramStory/AdDesign",
+      screen_name: "instagramstoryAdDesign",
       source,
       source_action,
       form_context: {
-        campaign_channel: "Instagram",
+        campaign_channel: "instagram",
         campaign_ad_type: "InstagramStoryAd",
         campaign_name: this.state.selectedCampaign.name,
         campaign_id: this.state.selectedCampaign.campaign_id,
@@ -675,7 +675,7 @@ class AdDesign extends Component {
           segment={{
             str: "Instagram Feed Ad Design Back Button",
             obj: { business_name: this.props.mainBusiness.businessname },
-            source: "InstagramStory/ComposeAd",
+            source: "InstagramStoryComposeAd",
 
             source_action: "a_go_back",
           }}

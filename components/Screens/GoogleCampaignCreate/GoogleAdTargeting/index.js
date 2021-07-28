@@ -472,7 +472,7 @@ class GoogleAdTargeting extends Component {
     this.props.save_google_campaign_steps([
       "Dashboard",
       "GoogleAdInfo",
-      "GoogleAdDesign",
+      "GoogleComposeAd",
       "GoogleAdTargeting",
     ]);
   };
@@ -587,7 +587,7 @@ class GoogleAdTargeting extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
-              source: "ad_targeting",
+              source: "GoogleAdTargeting",
               source_action: "a_go_back",
             }}
             icon="google"

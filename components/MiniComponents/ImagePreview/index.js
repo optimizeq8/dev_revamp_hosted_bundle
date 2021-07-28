@@ -31,8 +31,7 @@ import globalStyles from "../../../GlobalStyles";
 import isNull from "lodash/isNull";
 
 const preview = {
-  uri:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+  uri: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
 };
 class ImagePreview extends Component {
   static navigationOptions = {
@@ -81,7 +80,7 @@ class ImagePreview extends Component {
             screenProps={this.props.screenProps}
             title={""}
             segment={{
-              source: "image_preview",
+              source: "ImagePreview",
               source_action: "a_go_back",
             }}
             navigation={this.props.navigation}

@@ -171,7 +171,7 @@ class SnapchatCreateAdAcc extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
-              source: "ad_TNC",
+              source: "SnapchatCreateAdAcc",
               source_action: "a_go_back",
             }}
             screenProps={this.props.screenProps}

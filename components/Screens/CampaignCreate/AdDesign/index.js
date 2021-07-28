@@ -567,7 +567,7 @@ class AdDesign extends Component {
     analytics.track(`Button Pressed`, {
       button_type: `${visible ? "Open" : "Close"} Media Options Modal`,
       button_content: "Add Media + Camera Iocn",
-      source: "ComposeAd",
+      source: "SnapchatComposeAd",
     });
     this.setState({ mediaModalVisible: visible });
   };
@@ -583,7 +583,7 @@ class AdDesign extends Component {
       },
     });
     analytics.track(`Form Populated`, {
-      form_type: "Ad Design Form",
+      form_type: "Snapchat Compose Ad Form",
       form_field: "business_name",
       form_value: brand_name.replace(
         /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
@@ -610,7 +610,7 @@ class AdDesign extends Component {
       },
     });
     analytics.track(`Form Populated`, {
-      form_type: "Ad Design Form",
+      form_type: "Snapchat Compose Ad Form",
       form_field: "promotional_message",
       form_value: headline.replace(
         /[^ a-zA-Z0-9\.\!\%\@\u0621-\u064A\u0660-\u0669]/gi,
@@ -677,7 +677,7 @@ class AdDesign extends Component {
       analytics.track(`Button Pressed`, {
         button_type: "Preview Ad Design",
         button_content: "PREVIEW",
-        source: "ComposeAd",
+        source: "SnapchatComposeAd",
         campaign_channel: "snapchat",
         campaign_ad_type: this.adType,
       });
@@ -940,7 +940,7 @@ class AdDesign extends Component {
       this.state.coverError
     ) {
       analytics.track(`Form Error Made`, {
-        source: "AdDesign",
+        source: "SnapchatComposeAd",
         source_action: "a_submit_ad_design",
         campaign_id: this.selectedCampaign.campaign_id,
         campaign_channel: "snapchat",
@@ -991,7 +991,6 @@ class AdDesign extends Component {
 
       if (!this.state.fileReadyToUpload && this.state.incorrectDimensions) {
         analytics.track(`Form Error Made`, {
-          source: "ad_design",
           error_description: "Please crop the image to the right dimensions",
           campaign_channel: "snapchat",
           campaign_ad_type: this.adType,
@@ -1044,7 +1043,7 @@ class AdDesign extends Component {
             ? "AdDetailsPolitical"
             : "AdDetails",
           {
-            source: "ComposeAd",
+            source: "SnapchatComposeAd",
             source_action: "a_submit_ad_design",
           }
         );
@@ -1109,7 +1108,7 @@ class AdDesign extends Component {
         val ? "Open" : "Close"
       } upload media from different device modal`,
       button_content: "Upload media from different device",
-      source: "ComposeAd",
+      source: "SnapchatComposeAd",
     });
     this.setState({
       uploadMediaDifferentDeviceModal: val,
@@ -1130,7 +1129,7 @@ class AdDesign extends Component {
         val ? "Open" : "Close"
       } download media from different device modal`,
       button_content: "Download media from different device",
-      source: "ComposeAd",
+      source: "SnapchatComposeAd",
     });
     this.setState({
       downloadMediaModal: val,
@@ -1231,7 +1230,8 @@ class AdDesign extends Component {
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
       campaignId: this.selectedCampaign.campaign_id,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.props.navigation.push("WebView", {
@@ -1373,7 +1373,7 @@ class AdDesign extends Component {
     analytics.track(`Button Pressed`, {
       button_type: `${val ? "Open" : "Close"} existing media modal`,
       button_content: "Media Library",
-      source: "ComposeAd",
+      source: "SnapchatComposeAd",
     });
     this.setState(
       {
@@ -1390,10 +1390,10 @@ class AdDesign extends Component {
     let { media, media_url, media_type } = item;
 
     analytics.track(`Form Populated`, {
-      form_type: "Ad Design Form",
+      form_type: "Snapchat Compose Ad Form",
       form_field: "existing_media",
       form_value: media_url,
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
     analytics.track("Ad Media Selected", {
       media: media_url,
@@ -1529,7 +1529,7 @@ class AdDesign extends Component {
             segment={{
               str: "Ad Design Back Button",
               obj: { businessname: this.props.mainBusiness.businessname },
-              source: "ad_design",
+              source: "SnapchatComposeAd",
               source_action: "a_go_back",
             }}
             icon="snapchat"
@@ -1967,7 +1967,7 @@ class AdDesign extends Component {
           cancelUpload={() => {
             this.setState({ showExampleModal: false });
           }}
-          source={"ad_cover"}
+          source={"SnapchatAdCover"}
           source_action={"a_help"}
           screenProps={this.props.screenProps}
           media={this.props.ad_tutorial_link}

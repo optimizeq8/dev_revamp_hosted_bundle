@@ -325,6 +325,13 @@ class InstagramCampaignDetails extends Component {
         {
           text: translate("OK"),
           onPress: () => {
+            analytics.track("Cancel Campaign Requested", {
+              source: "SnapchatCampaignDetails",
+              campaign_channel: "instagram",
+              campaign_id: selectedCampaign.campaign_id,
+              campaign_name: selectedCampaign.name,
+              amount: selectedCampaign.lifetime_budget_micro,
+            });
             this.props.getWalletAmountInKwd(
               selectedCampaign.lifetime_budget_micro
             );
@@ -601,7 +608,7 @@ class InstagramCampaignDetails extends Component {
               topRightButtonFunction={() => this.showCSVModal(true)}
               titleStyle={styles.headerTitleStyle}
               segment={{
-                source: "campaign_detail",
+                source: "InstagramCampaignDetails",
                 source_action: "a_go_back",
               }}
               campaignStatus={loading ? null : selectedCampaign.status}
@@ -769,7 +776,7 @@ class InstagramCampaignDetails extends Component {
                       loading={loading}
                       screenProps={this.props.screenProps}
                       campaignDetails={true}
-                      source={"campaign_detail"}
+                      source={"instagramCampaignDetails"}
                       mainBusiness={this.props.mainBusiness}
                       editMedia={this.editMedia}
                       edit={

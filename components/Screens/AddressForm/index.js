@@ -79,12 +79,10 @@ class AddressForm extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`open_business_address`, {
+    analytics.track(`Screen Viewed`, {
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      ...this.props.address,
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
     this.setState({
       from: this.props.navigation.getParam("from", null),

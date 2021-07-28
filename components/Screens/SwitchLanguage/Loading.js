@@ -24,7 +24,8 @@ class SwitchLanguageLoading extends Component {
     }
   }
   onDidFocus = async () => {
-    analytics.track(`switch_language_loading`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "SwitchLanguageLoading",
       source: this.props.navigation.getParam(
         "source",
         this.props.screenProps.prevAppState
@@ -33,7 +34,8 @@ class SwitchLanguageLoading extends Component {
         "source_action",
         this.props.screenProps.prevAppState
       ),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     await this.props.getLanguageListPOEdit(
       this.props.appLanguage === "en" ? "ar" : "en"
