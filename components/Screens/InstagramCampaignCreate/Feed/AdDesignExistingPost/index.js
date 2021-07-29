@@ -453,7 +453,7 @@ class InstagramAdDesignExistingPost extends Component {
       const segmentInfo = {
         campaign_channel: "instagram",
         campaign_ad_type: "InstagramFeedAd",
-        campaignId: this.props.data.campaign_id,
+        campaign_id: this.props.data.campaign_id,
         campaign_business_name: this.state.campaignInfo.instagram_business_name,
         campaign_caption: this.state.campaignInfo.message,
         campaign_attachment: this.state.campaignInfo.attachment,
@@ -486,18 +486,16 @@ class InstagramAdDesignExistingPost extends Component {
 
   handleReview = async () => {
     const noError = this.validator();
-
-    analytics.track(`a_preview_ad`, {
-      source: "ad_design",
-      source_action: "a_preview_ad",
-      action_status: noError ? "success" : "failure",
+    analytics.track(`Button Pressed`, {
+      button_type: "Preview Instagram Feed Ad Design",
+      button_content: "PREVIEW",
+      source: "InstagramComposeAdExistingPost",
       campaign_channel: "instagram",
       campaign_ad_type: "InstagramFeedAd",
-      businessid: this.props.mainBusiness.businessid,
     });
     if (noError) {
       this.props.navigation.navigate("AdFeedDesignReview", {
-        source: "ad_objective",
+        source: "InstagramAdDesignExistingPost",
         source_action: "a_preview_ad",
       });
     }
@@ -614,39 +612,42 @@ class InstagramAdDesignExistingPost extends Component {
       "source",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`ad_design`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "InstagramAdDesignExistingPost",
       source,
       source_action,
-      campaign_channel: "instagram",
-      campaign_ad_type: "InstagramFeedAd",
-      campaign_existing_post: true,
-      campaign_name: this.rejected
-        ? this.props.instaRejCampaign.name
-        : this.props.data.name,
-      campaignId: this.rejected
-        ? this.props.instaRejCampaign.campaign_id
-        : this.props.data.campaign_id,
-      campaign_objective: this.rejected
-        ? this.props.instaRejCampaign.objective
-        : this.props.data.objective,
-      campaign_duration: this.rejected
-        ? Math.ceil(
-            (new Date(this.props.instaRejCampaign.end_time) -
-              new Date(this.props.instaRejCampaign.start_time)) /
-              (1000 * 60 * 60 * 24)
-          ) + 1
-        : Math.ceil(
-            (new Date(this.props.data.end_time) -
-              new Date(this.props.data.start_time)) /
-              (1000 * 60 * 60 * 24)
-          ) + 1,
-      campaign_start_date: this.rejected
-        ? this.props.instaRejCampaign.start_time
-        : this.props.data.start_time,
-      campaign_end_date: this.rejected
-        ? this.props.instaRejCampaign.end_time
-        : this.props.data.end_time,
-      businessid: this.props.mainBusiness.businessid,
+      form_context: {
+        campaign_channel: "instagram",
+        campaign_ad_type: "InstagramFeedAd",
+        campaign_existing_post: true,
+        campaign_name: this.rejected
+          ? this.props.instaRejCampaign.name
+          : this.props.data.name,
+        campaign_id: this.rejected
+          ? this.props.instaRejCampaign.campaign_id
+          : this.props.data.campaign_id,
+        campaign_objective: this.rejected
+          ? this.props.instaRejCampaign.objective
+          : this.props.data.objective,
+        campaign_duration: this.rejected
+          ? Math.ceil(
+              (new Date(this.props.instaRejCampaign.end_time) -
+                new Date(this.props.instaRejCampaign.start_time)) /
+                (1000 * 60 * 60 * 24)
+            ) + 1
+          : Math.ceil(
+              (new Date(this.props.data.end_time) -
+                new Date(this.props.data.start_time)) /
+                (1000 * 60 * 60 * 24)
+            ) + 1,
+        campaign_start_date: this.rejected
+          ? this.props.instaRejCampaign.start_time
+          : this.props.data.start_time,
+        campaign_end_date: this.rejected
+          ? this.props.instaRejCampaign.end_time
+          : this.props.data.end_time,
+        business_id: this.props.mainBusiness.businessid,
+      },
     });
   };
   setMaxClickHeight = (event) => {
@@ -699,11 +700,11 @@ class InstagramAdDesignExistingPost extends Component {
 
     return (
       <View style={styles.safeAreaView}>
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}
@@ -721,8 +722,8 @@ class InstagramAdDesignExistingPost extends Component {
           closeButton={false}
           segment={{
             str: "Instagram Feed Ad Design Back Button",
-            obj: { businessname: this.props.mainBusiness.businessname },
-            source: "ad_design",
+            obj: { business_name: this.props.mainBusiness.businessname },
+            source: "InstagramComposeAdExistingPost",
             source_action: "a_go_back",
           }}
           icon="instagram"

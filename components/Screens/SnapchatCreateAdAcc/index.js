@@ -56,14 +56,10 @@ class SnapchatCreateAdAcc extends Component {
       this.props.screenProps.prevAppState
     );
 
-    analytics.track(`ad_TNC`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "SnapchatCreateAdAcc",
       source,
       source_action,
-      campaign_channel: "snapchat",
-      campaign_ad_type: this.props.adType,
-      timestamp: new Date().getTime(),
-      device_id: this.props.screenProps.device_id,
-      businessid: this.props.mainBusiness.businessid,
     });
   }
 
@@ -87,14 +83,17 @@ class SnapchatCreateAdAcc extends Component {
   acceptTNC = () => {
     const { translate } = this.props.screenProps;
     // To validate the paying advertiser name should not be blank id it going to be political account
-
+    analytics.track("Button Pressed", {
+      button_type: "Accepting Terms and Conditions for Snapchat",
+      button_content: "ACCEPT",
+      source: "SnapchatCreateAdAcc",
+    });
     if (this.state.is_political === null) {
-      analytics.track("a_error_form", {
-        error_page: "ad_TNC",
+      analytics.track("Form Error Made", {
+        source: "SnapchatCreateAdAcc",
         error_description:
           "Please confirm if your ad account will be used for political and advocacy or not",
         campaign_channel: "snapchat",
-        businessid: this.props.mainBusiness.businessid,
       });
       showMessage({
         type: "warning",
@@ -104,11 +103,10 @@ class SnapchatCreateAdAcc extends Component {
       });
     } else if (this.state.is_political) {
       if (this.state.paying_advertiser_name === "") {
-        analytics.track("a_error_form", {
-          error_page: "ad_TNC",
+        analytics.track("Form Error Made", {
+          source: "SnapchatCreateAdAcc",
           error_description: "Please enter paying advertiser name",
           campaign_channel: "snapchat",
-          businessid: this.props.mainBusiness.businessid,
         });
         this.setState({
           paying_advertiser_nameError: "Please enter paying advertiser name",
@@ -119,8 +117,8 @@ class SnapchatCreateAdAcc extends Component {
         });
       } else {
         this.props.navigation.navigate("AcceptTermsConditionLoading", {
-          source: "ad_TNC",
-          source_action: "a_accept_ad_TNC",
+          source: "SnapchatCreateAdAcc",
+          source_action: "a_accept_ad_terms&conditions",
         });
         this.props.create_snapchat_ad_account(
           {
@@ -133,8 +131,8 @@ class SnapchatCreateAdAcc extends Component {
       }
     } else {
       this.props.navigation.navigate("AcceptTermsConditionLoading", {
-        source: "ad_TNC",
-        source_action: "a_accept_ad_TNC",
+        source: "SnapchatCreateAdAcc",
+        source_action: "a_accept_ad_terms&conditions",
       });
       this.props.create_snapchat_ad_account(
         {
@@ -173,7 +171,7 @@ class SnapchatCreateAdAcc extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
-              source: "ad_TNC",
+              source: "SnapchatCreateAdAcc",
               source_action: "a_go_back",
             }}
             screenProps={this.props.screenProps}

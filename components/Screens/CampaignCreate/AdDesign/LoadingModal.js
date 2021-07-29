@@ -41,7 +41,7 @@ export default class LoadingModal extends Component {
                 actionButton={() => cancelUpload()}
                 title={"Uploading Media"}
                 segment={{
-                  source: "upload_media",
+                  source: "SnapchatComposeAdLoading",
                   source_action: "a_cancel_upload",
                 }}
               />
@@ -52,7 +52,7 @@ export default class LoadingModal extends Component {
                 closeButton={true}
                 actionButton={() => onToggleModal(false)}
                 segment={{
-                  source: "upload_media",
+                  source: "SnapchatComposeAdLoading",
                   source_action: "a_go_back",
                 }}
               />

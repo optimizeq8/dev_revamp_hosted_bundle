@@ -28,17 +28,10 @@ class RegistartionSuccess extends React.Component {
       this.props.screenProps.prevAppState
     );
     const source_action = this.props.navigation.getParam("source_action", null);
-    const device_id = this.props.screenProps.device_id;
-    const anonymous_userId = this.props.screenProps.anonymous_userId;
-    analytics.track("success_registration", {
+    analytics.track("Screen Viewed", {
+      screen_name: "RegistrationSuccess",
       source,
       source_action,
-      device_id,
-      anonymous_userId,
-      timestamp: new Date().getTime(),
-      userId: userInfo.userid,
-      ...userInfo,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     // let adjustRegiserTracker = new AdjustEvent("z1mpdo");
@@ -47,15 +40,10 @@ class RegistartionSuccess extends React.Component {
     // Adjust.trackEvent(adjustRegiserTracker);
   }
   getStartedBtnAction = () => {
-    const device_id = this.props.screenProps.device_id;
-    const anonymous_userId = this.props.screenProps.anonymous_userId;
-    analytics.track(`a_get_start_dashboard`, {
-      source: "success_registration",
-      timestamp: new Date().getTime(),
-      userId: this.props.userInfo.userid,
-      device_id,
-      anonymous_userId,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      source: "RegistrationSuccess",
+      button_type: "Complete Registration",
+      button_content: "GET STARTED",
     });
     this.props.navigation.navigate("Dashboard", {
       source: "success_registration",

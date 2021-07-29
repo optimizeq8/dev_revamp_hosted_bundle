@@ -20,9 +20,6 @@ class SwipeUpChoice extends Component {
   static navigationOptions = {
     header: null,
   };
-  componentDidMount() {
-    this.segment();
-  }
   segment = () => {
     const source = this.props.screenProps.prevAppState;
 
@@ -32,68 +29,49 @@ class SwipeUpChoice extends Component {
 
     switch (this.props.objective) {
       case "ENGAGEMENT":
-        analytics.track(`ad_swipe_up_destination`, {
+        analytics.track(`Screen Viewed`, {
+          screen_name: "AdDesign Engagement Swipe Up",
           source,
           source_action,
-          timestamp: new Date().getTime(),
-          campaign_swipe_up_destination: "ad_to_call",
-          campaign_objective: this.props.objective,
           campaign_channel: "snapchat",
           campaign_ad_type,
-          businessid:
-            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         break;
       case "LEAD_GENERATION":
-        analytics.track(`ad_swipe_up_destination`, {
+        analytics.track(`Screen Viewed`, {
+          screen_name: "AdDesign Lead Generation Swipe Up",
           source,
           source_action,
-          timestamp: new Date().getTime(),
-          campaign_swipe_up_destination: "website",
-          campaign_objective: this.props.objective,
           campaign_channel: "snapchat",
           campaign_ad_type,
-          businessid:
-            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         break;
       case "VIDEO_VIEWS":
-        analytics.track(`ad_swipe_up_destination`, {
+        analytics.track(`Screen Viewed`, {
+          screen_name: "AdDesign Video Views Swipe Up",
           source,
           source_action,
-          timestamp: new Date().getTime(),
-          campaign_swipe_up_destination: "video_views",
-          campaign_objective: this.props.objective,
           campaign_channel: "snapchat",
           campaign_ad_type,
-          businessid:
-            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         break;
       case "WEB_CONVERSION":
-        analytics.track(`ad_swipe_up_destination`, {
+        analytics.track(`Screen Viewed`, {
+          screen_name: "AdDesign Web Conversion Swipe Up",
           source,
           source_action,
-          timestamp: new Date().getTime(),
-          campaign_swipe_up_destination: "sme_growth",
-          campaign_objective: this.props.objective,
           campaign_channel: "snapchat",
           campaign_ad_type,
-          businessid:
-            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         break;
       default:
-        analytics.track(`ad_swipe_up_destination`, {
+        analytics.track(`Screen Viewed`, {
+          screen_name: "AdDesign App Install Swipe Up",
           source,
           source_action,
-          timestamp: new Date().getTime(),
-          campaign_swipe_up_destination: "app_install",
           campaign_objective: this.props.objective,
           campaign_channel: "snapchat",
           campaign_ad_type,
-          businessid:
-            this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
     }
   };

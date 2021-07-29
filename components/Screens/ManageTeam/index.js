@@ -13,7 +13,7 @@ import TeamMember from "./TeamMember";
 import analytics from "@segment/analytics-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";
-import globalStyles from "../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 
 class ManageTeam extends Component {
   translate = this.props.screenProps.translate;
@@ -37,31 +37,30 @@ class ManageTeam extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`team_management_members_list`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "ManageTeam",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness.businessid,
+
+      business_id: this.props.mainBusiness.businessid,
     });
   };
 
   onRefresh = () => {
-    const source = "team_management_members_list";
-    const source_action = "a_refresh_list";
-
-    analytics.track(`a_refresh_list`, {
-      source,
-      source_action,
-      timestamp: new Date().getTime(),
-      refresh_type: "members",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Refresh List`, {
+      list_type: "Team Members List",
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_name:
+        this.props.mainBusiness && this.props.mainBusiness.businessname,
     });
     this.props.getTeamMembers(this.props.mainBusiness.businessid);
   };
   render() {
-    let team = (this.props.agencyTeamMembers.length > 0
-      ? this.props.agencyTeamMembers
-      : [{ userid: 1 }, { userid: 2 }]
+    let team = (
+      this.props.agencyTeamMembers.length > 0
+        ? this.props.agencyTeamMembers
+        : [{ userid: 1 }, { userid: 2 }]
     ).map((member) => (
       <TeamMember
         key={member.userid}
@@ -89,21 +88,21 @@ class ManageTeam extends Component {
 
     return (
       <SafeAreaView
-        style={{ height: "100%" }}
+        style={{ height: "100%", backgroundColor: globalColors.bluegem }}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <Header
           screenProps={this.props.screenProps}
           title={"Manage Team"}
           navigation={this.props.navigation}
           segment={{
-            source: "team_management_members_list",
+            source: "ManageTeam",
             source_action: "a_go_back",
           }}
         />

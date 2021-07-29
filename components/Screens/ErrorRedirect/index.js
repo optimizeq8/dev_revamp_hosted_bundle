@@ -29,15 +29,12 @@ class ErrorRedirect extends Component {
     super(props);
 
     this.state = {
-      logoImage: require("../../../assets/images/logo01.png"),
+      logoImage: require("../../../assets/images/Optimize_Logo_transparent.png"),
     };
   }
 
   componentDidMount() {
-    const source = this.props.navigation.getParam(
-      "source",
-      "payment_processing"
-    );
+    const source = this.props.navigation.getParam("source", "PaymentForm");
     const source_action = this.props.navigation.getParam(
       "source_action",
       "a_payment_processing"
@@ -45,39 +42,43 @@ class ErrorRedirect extends Component {
     let segmentInfo = {};
     if (this.props.navigation.getParam("isWallet") === "1") {
       segmentInfo = {
-        amount: parseFloat(this.props.navigation.getParam("amount", "null")),
-        payment_status: "failure",
-        top_wallet_amount: this.props.navigation.getParam("amount", "null"),
+        total: parseFloat(this.props.navigation.getParam("amount", "0.00")),
+        payment_status: "FAILURE",
+        top_wallet_amount: this.props.navigation.getParam("amount", "0.00"),
+        transaction_id: this.props.navigation.getParam("paymentId", ""),
+        track_id: this.props.navigation.getParam("trackID", ""),
+        checkout_type: "Wallet Top Up",
       };
     } else {
       segmentInfo = {
-        payment_status: "failure",
+        payment_status: "FAILURE",
         campaign_channel:
           this.props.channel === "" ? "snapchat" : this.props.channel,
-        amount: parseFloat(this.props.navigation.getParam("amount", 0)),
+        total: parseFloat(this.props.navigation.getParam("amount", "0.00")),
         campaign_ad_type:
           this.props.channel === "google"
             ? "GoogleSEAd"
             : this.props.channel === "instagram"
             ? this.props.adTypeInstagram
             : this.props.adType,
-        campaign_ltv: parseFloat(
-          this.props.navigation.getParam("campaign_ltv", 0)
+
+        ltv: parseFloat(this.props.navigation.getParam("campaign_ltv", "0.00")),
+        revenue: parseFloat(
+          this.props.navigation.getParam("campaign_revenue", "0.00")
         ),
-        campaign_revenue: parseFloat(
-          this.props.navigation.getParam("campaign_revenue", 0)
-        ),
+        checkout_type: "Campaign Checkout",
+        transaction_id: this.props.navigation.getParam("paymentId", ""),
+        track_id: this.props.navigation.getParam("trackID", ""),
       };
     }
-    analytics.track(`payment_end`, {
-      source,
-      source_action,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness.businessid,
-      businessname: this.props.mainBusiness.businessname,
-      ...segmentInfo,
-      payment_mode: this.props.navigation.getParam("payment_mode"),
-    });
+    // analytics.track(`Order Completed`, {
+    //   source,
+    //   source_action,
+    //   business_id: this.props.mainBusiness.businessid,
+    //   business_name: this.props.mainBusiness.businessname,
+    //   ...segmentInfo,
+    //   payment_method: this.props.navigation.getParam("payment_mode"),
+    // });
     //TODO: add adjust analytics accordingly
     if (this.props.navigation.getParam("isWallet") === "1") {
       // let adjustWalletPaymentTracker = new AdjustEvent("l70qk7");
@@ -187,17 +188,22 @@ class ErrorRedirect extends Component {
               style={styles.button}
               text={translate("Retry")}
               onPressAction={() => {
+                analytics.track(`Button Pressed`, {
+                  button_type: "Retry Payment",
+                  button_content: "Retry",
+                  source: "ErrorRedirect",
+                });
                 if (this.props.navigation.getParam("isWallet") === "1") {
                   this.props.navigation.navigate("PaymentForm", {
                     addingCredits: true,
                     amount: this.props.navigation.getParam("amount", 0),
-                    source: "payment_mode",
+                    source: "ErrorRedirect",
                     source_action: "a_retry_payment",
                   });
                 } else {
                   this.props.navigation.navigate("PaymentForm", {
                     addingCredits: false,
-                    source: "payment_mode",
+                    source: "ErrorRedirect",
                     source_action: "a_retry_payment",
                     amount: this.props.navigation.getParam("amount", 0),
                   });
@@ -214,12 +220,17 @@ class ErrorRedirect extends Component {
                 //   this.props.rest_google_campaign_data();
                 //   this.props.reset_transaction_reducer();
                 // }
+                analytics.track(`Button Pressed`, {
+                  button_type: "Go to Dashboard",
+                  button_content: "HOME",
+                  source: "ErrorRedirect",
+                });
                 this.props.navigation.reset(
                   [
                     NavigationActions.navigate({
                       routeName: "Dashboard",
                       params: {
-                        source: "payment_end",
+                        source: "ErrorRedirect",
                         source_action: "a_go_to_home",
                       },
                     }),

@@ -3,6 +3,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -79,6 +80,7 @@ const styles = StyleSheet.create({
   },
   safeAreaView: {
     flex: 1,
+    backgroundColor: globalColors.bluegem,
   },
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },

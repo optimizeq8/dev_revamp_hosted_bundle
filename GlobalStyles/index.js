@@ -6,8 +6,10 @@ import {
 import { RFValue } from "react-native-responsive-fontsize";
 export const globalColors = {
   orange: "#FF790A",
+  // orange: "#FF005C",
   darkOrange: "#FF790A",
-  purple: "#9300FF",
+  // purple: "#9300FF",
+  purple: "#5410BF",
   purple1: "#BF77F4",
   purple2: "#8B56B0",
   purple3: "#A496AC",
@@ -26,6 +28,8 @@ export const globalColors = {
   twilight: "#D2C6D8",
   mist: "#9E93A3",
   offWhite: "#F8F8F8",
+  bluegem: "#5410BF",
+  rose: "#FF005C",
 };
 const globalStyles = StyleSheet.create({
   linearGradientBackground1: {

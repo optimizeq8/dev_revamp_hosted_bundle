@@ -45,17 +45,10 @@ class MainForm extends Component {
       this.props.screenProps.prevAppState
     );
     const source_action = this.props.navigation.getParam("source_action", null);
-    const device_id = this.props.screenProps.device_id;
-    const anonymous_userId = this.props.screenProps.anonymous_userId;
-
-    analytics.track(`registration_detail`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "RegistrationDetailForm",
       source,
       source_action,
-      device_id,
-      anonymous_userId,
-      timestamp: new Date().getTime(),
-      email: this.props.userInfo && this.props.userInfo.email,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
   }
   /**
@@ -86,11 +79,11 @@ class MainForm extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}

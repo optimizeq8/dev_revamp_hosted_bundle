@@ -112,26 +112,26 @@ class CampaignDetails extends Component {
   }
 
   handleStartDatePicked = (date) => {
-    analytics.track(`a_ad_start_date`, {
-      campaign_start_date: date,
-      source: "ad_detail",
-      source_action: "a_ad_start_date",
-      campaignId: this.props.selectedCampaign.campaign_id,
-      campaign_start_date: date,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Snapchat Campaign Details Form",
+      form_field: "ad_start_date",
+      fomr_value: date,
+      campaign_id: this.props.selectedCampaign.campaign_id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       start_time: date,
     });
   };
   handleEndDatePicked = (date) => {
-    analytics.track(`a_ad_end_date`, {
-      campaign_end_date: date,
-      source: "ad_detail",
-      source_action: "a_ad_end_date",
-      campaignId: this.props.selectedCampaign.campaign_id,
-      campaign_end_date: date,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Snapchat Campaign Details Form",
+      form_field: "ad_end_date",
+      fomr_value: date,
+      campaign_id: this.props.selectedCampaign.campaign_id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       end_time: date,
@@ -168,13 +168,12 @@ class CampaignDetails extends Component {
   };
 
   showModal = (visible) => {
-    analytics.track(`ad_status_modal`, {
-      campaign_status: "rejected",
-      visible,
-      source: "campaign_detail",
+    analytics.track(`Button Pressed`, {
+      button_type: `${visible ? "Open" : "Close"} Campaign Status Modal`,
+      button_content: this.state.toggleText !== "PAUSED" ? "LIVE" : "PAUSED",
       campaign_channel: "snapchat",
-      source_action: "a_update_campaign_status",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ modalVisible: visible });
   };
@@ -228,11 +227,13 @@ class CampaignDetails extends Component {
   };
 
   showCSVModal = (isVisible) => {
-    analytics.track(`csv_modal`, {
-      source: "ad_detail",
-      source_action: "a_toggle_csv_modal",
+    analytics.track(`Button Pressed`, {
+      button_type: `${isVisible ? "Open" : "Close"} Campaign CSV Modal`,
+      button_content: "Download Icon",
       campaign_channel: "snapchat",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      campaign_id: this.props.selectedCampaign.campaign_id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ CSVModalVisible: isVisible });
   };
@@ -275,33 +276,31 @@ class CampaignDetails extends Component {
       this.props.campaignError ||
       this.props.languagesListError
     ) {
-      analytics.track(`campaign_detail`, {
+      analytics.track(`Screen Viewed`, {
+        screen_name: "CampaignDetails",
         source,
         source_action,
         campaign_channel: "snapchat",
-        timestamp: new Date().getTime(),
-        device_id: this.props.screenProps.device_id,
-        campaignId: "error",
+        campaign_id: "error",
         error_description:
           (!this.props.loading &&
             !this.props.languagesListLoading &&
             !this.props.selectedCampaign) ||
           this.props.campaignError ||
           this.props.languagesListError,
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
 
     if (this.props.selectedCampaign) {
-      analytics.track(`campaign_detail`, {
+      analytics.track(`Screen Viewed`, {
+        screen_name: "CampaignDetails",
         source,
         source_action,
         campaign_channel: "snapchat",
-        timestamp: new Date().getTime(),
-        device_id: this.props.screenProps.device_id,
-        campaignId: this.props.selectedCampaign.campaign_id,
-        businessid:
+        campaign_id: this.props.selectedCampaign.campaign_id,
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
@@ -325,6 +324,13 @@ class CampaignDetails extends Component {
         {
           text: translate("OK"),
           onPress: () => {
+            analytics.track("Cancel Campaign Requested", {
+              source: "SnapchatCampaignDetails",
+              campaign_channel: "snapchat",
+              campaign_id: selectedCampaign.campaign_id,
+              campaign_name: selectedCampaign.name,
+              amount: selectedCampaign.lifetime_budget_micro,
+            });
             this.props.getWalletAmountInKwd(
               selectedCampaign.lifetime_budget_micro
             );
@@ -607,7 +613,7 @@ class CampaignDetails extends Component {
 
       return (
         <SafeAreaView
-          style={[{ height: "100%" }]}
+          style={[{ height: "100%", backgroundColor: globalColors.bluegem }]}
           forceInset={{ bottom: "never", top: "always" }}
         >
           <DateFields
@@ -630,14 +636,15 @@ class CampaignDetails extends Component {
                   borderBottomStartRadius: 30,
                   borderBottomEndRadius: 30,
                   overflow: "hidden",
+                  backgroundColor: globalColors.bluegem,
                 },
               ]}
             >
-              <LinearGradient
+              {/* <LinearGradient
                 colors={["#9300FF", "#5600CB"]}
                 locations={[0, 1]}
                 style={styles.gradient}
-              />
+              /> */}
             </View>
             <Header
               screenProps={this.props.screenProps}
@@ -676,7 +683,7 @@ class CampaignDetails extends Component {
                 flex: 1,
               }}
               segment={{
-                source: "campaign_detail",
+                source: "SnapchatCampaignDetails",
                 source_action: "a_go_back",
               }}
               campaignStatus={loading ? null : selectedCampaign.status}
@@ -870,7 +877,7 @@ class CampaignDetails extends Component {
                       navigation={this.props.navigation}
                       loading={loading}
                       screenProps={this.props.screenProps}
-                      source={"campaign_detail"}
+                      source={"SnpachatCampaignDetails"}
                       mainBusiness={this.props.mainBusiness}
                       editMedia={this.editMedia}
                       edit={

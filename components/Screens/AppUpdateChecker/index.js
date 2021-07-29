@@ -50,10 +50,9 @@ class AppUpdateChecker extends PureComponent {
       this.props.actualVersion !== Constants.nativeAppVersion &&
       this.props.actualVersion
     ) {
-      analytics.track("app_update_checker", {
-        source: "app_update_available",
-        source_action: "app_update_checker",
-        businessid:
+      analytics.track("App Update Avalible", {
+        source: "AppUpdateChecker",
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.setState({ updateIsAvalible: true });
@@ -69,10 +68,9 @@ class AppUpdateChecker extends PureComponent {
       });
       const update = await Updates.checkForUpdateAsync();
       if (update.isAvailable) {
-        analytics.track("app_update_checker", {
-          source: "ota_available",
-          source_action: "app_update_checker",
-          businessid:
+        analytics.track("OTA Update Available", {
+          source: "AppUpdateChecker",
+          business_id:
             this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         this.setState({
@@ -148,7 +146,7 @@ class AppUpdateChecker extends PureComponent {
                     this.setState({ updateIsAvalible: false });
                   }}
                   segment={{
-                    source: "app_update_checker",
+                    source: "AppUpdateChecker",
                     source_action: "a_go_back",
                   }}
                 />

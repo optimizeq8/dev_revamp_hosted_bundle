@@ -564,11 +564,10 @@ class AdDesign extends Component {
   };
 
   setMediaModalVisible = (visible) => {
-    analytics.track(`a_media_options_modal`, {
-      visible: visible,
-      source: "a_media_options_modal",
-      source_action: "ad_design",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: `${visible ? "Open" : "Close"} Media Options Modal`,
+      button_content: "Add Media + Camera Iocn",
+      source: "SnapchatComposeAd",
     });
     this.setState({ mediaModalVisible: visible });
   };
@@ -583,17 +582,17 @@ class AdDesign extends Component {
         ),
       },
     });
-    analytics.track(`a_edit_business_name`, {
-      source: "ad_design",
-      source_action: "a_edit_business_name",
-      campaign_brand_name: brand_name.replace(
+    analytics.track(`Form Populated`, {
+      form_type: "Snapchat Compose Ad Form",
+      form_field: "business_name",
+      form_value: brand_name.replace(
         /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
         ""
       ),
-      timestamp: new Date().getTime(),
       campaign_ad_type: this.props.adType,
       campaign_channel: "snapchat",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     !this.rejected &&
       this.props.save_campaign_info({
@@ -610,17 +609,17 @@ class AdDesign extends Component {
         ),
       },
     });
-    analytics.track(`a_edit_promotional_message`, {
-      source: "ad_design",
-      source_action: "a_edit_promotional_message",
-      campaign_headline: headline.replace(
+    analytics.track(`Form Populated`, {
+      form_type: "Snapchat Compose Ad Form",
+      form_field: "promotional_message",
+      form_value: headline.replace(
         /[^ a-zA-Z0-9\.\!\%\@\u0621-\u064A\u0660-\u0669]/gi,
         ""
       ),
-      timestamp: new Date().getTime(),
       campaign_ad_type: this.props.adType,
       campaign_channel: "snapchat",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     !this.rejected &&
       this.props.save_campaign_info({ headline: headline.replace("@", "") });
@@ -675,14 +674,12 @@ class AdDesign extends Component {
                 ? this.selectedCampaign.story_logo_media
                 : this.props.data.logo,
             };
-      analytics.track(`a_preview_ad`, {
-        source: "ad_design",
-        source_action: "a_preview_ad",
-        action_status: "success",
+      analytics.track(`Button Pressed`, {
+        button_type: "Preview Ad Design",
+        button_content: "PREVIEW",
+        source: "SnapchatComposeAd",
         campaign_channel: "snapchat",
         campaign_ad_type: this.adType,
-        businessid:
-          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.props.navigation.push(
         this.adType === "StoryAd" ? "StoryAdDesignReview" : "AdDesignReview",
@@ -942,10 +939,15 @@ class AdDesign extends Component {
       this.state.swipeUpError ||
       this.state.coverError
     ) {
-      analytics.track(`a_error_form`, {
-        source: "ad_design",
+      analytics.track(`Form Error Made`, {
+        source: "SnapchatComposeAd",
         source_action: "a_submit_ad_design",
-        campaignId: this.selectedCampaign.campaign_id,
+        campaign_id: this.selectedCampaign.campaign_id,
+        campaign_channel: "snapchat",
+        campaign_ad_type: this.adType,
+        business_id:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
+
         error_description:
           this.state.brand_nameError ||
           this.state.headlineError ||
@@ -988,13 +990,12 @@ class AdDesign extends Component {
       await this.handleUpload();
 
       if (!this.state.fileReadyToUpload && this.state.incorrectDimensions) {
-        analytics.track(`a_error`, {
-          error_page: "ad_design",
+        analytics.track(`Form Error Made`, {
           error_description: "Please crop the image to the right dimensions",
           campaign_channel: "snapchat",
           campaign_ad_type: this.adType,
-          campaignId: this.selectedCampaign.campaign_id,
-          businessid:
+          campaign_id: this.selectedCampaign.campaign_id,
+          business_id:
             this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         showMessage({
@@ -1042,7 +1043,7 @@ class AdDesign extends Component {
             ? "AdDetailsPolitical"
             : "AdDetails",
           {
-            source: "ad_design",
+            source: "SnapchatComposeAd",
             source_action: "a_submit_ad_design",
           }
         );
@@ -1102,11 +1103,12 @@ class AdDesign extends Component {
   };
 
   setUploadFromDifferentDeviceModal = (val) => {
-    analytics.track(`a_upload_media_from_different_device_modal`, {
-      visible: val,
-      source: "a_upload_media_from_different_device_modal",
-      source_action: "ad_design",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: `${
+        val ? "Open" : "Close"
+      } upload media from different device modal`,
+      button_content: "Upload media from different device",
+      source: "SnapchatComposeAd",
     });
     this.setState({
       uploadMediaDifferentDeviceModal: val,
@@ -1122,11 +1124,12 @@ class AdDesign extends Component {
     this.setMediaModalVisible(false);
   };
   setDownloadMediaModal = (val) => {
-    analytics.track(`a_download_media_from_different_device_modal`, {
-      visible: val,
-      source: "a_download_media_from_different_device_modal",
-      source_action: "ad_design",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: `${
+        val ? "Open" : "Close"
+      } download media from different device modal`,
+      button_content: "Download media from different device",
+      source: "SnapchatComposeAd",
     });
     this.setState({
       downloadMediaModal: val,
@@ -1227,7 +1230,8 @@ class AdDesign extends Component {
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
       campaignId: this.selectedCampaign.campaign_id,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.props.navigation.push("WebView", {
@@ -1289,44 +1293,48 @@ class AdDesign extends Component {
       "source",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`ad_design`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "AdDesign",
       source,
       source_action,
-      campaign_channel: "snapchat",
-      campaign_ad_type: this.props.adType,
-      campaign_name: this.rejected
-        ? this.selectedCampaign.name
-        : this.props.data.name,
-      campaignId: this.rejected
-        ? this.selectedCampaign.campaign_id
-        : this.props.data.campaign_id,
-      campaign_objective: this.rejected
-        ? this.selectedCampaign.objective
-        : this.props.data.objective,
-      campaign_duration:
-        Math.ceil(
-          (new Date(
-            this.rejected
-              ? this.selectedCampaign.end_time
-              : this.props.data.end_time
-          ) -
-            new Date(
+      form_context: {
+        campaign_channel: "snapchat",
+        campaign_ad_type: this.props.adType,
+        campaign_name: this.rejected
+          ? this.selectedCampaign.name
+          : this.props.data.name,
+        campaign_id: this.rejected
+          ? this.selectedCampaign.campaign_id
+          : this.props.data.campaign_id,
+        campaign_objective: this.rejected
+          ? this.selectedCampaign.objective
+          : this.props.data.objective,
+        campaign_duration:
+          Math.ceil(
+            (new Date(
               this.rejected
-                ? this.selectedCampaign.start_time
-                : this.props.data.start_time
-            )) /
-            (1000 * 60 * 60 * 24)
-        ) + 1,
-      campaign_start_date: this.rejected
-        ? this.selectedCampaign.start_time
-        : this.props.data.start_time,
-      campaign_end_date: this.rejected
-        ? this.selectedCampaign.end_time
-        : this.props.data.end_time,
-      campaign_collectionAdLinkForm: this.rejected
-        ? this.selectedCampaign.campaign_collectionAdLinkForm
-        : this.props.data.campaign_collectionAdLinkForm,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+                ? this.selectedCampaign.end_time
+                : this.props.data.end_time
+            ) -
+              new Date(
+                this.rejected
+                  ? this.selectedCampaign.start_time
+                  : this.props.data.start_time
+              )) /
+              (1000 * 60 * 60 * 24)
+          ) + 1,
+        campaign_start_date: this.rejected
+          ? this.selectedCampaign.start_time
+          : this.props.data.start_time,
+        campaign_end_date: this.rejected
+          ? this.selectedCampaign.end_time
+          : this.props.data.end_time,
+        campaign_collectionAdLinkForm: this.rejected
+          ? this.selectedCampaign.campaign_collectionAdLinkForm
+          : this.props.data.campaign_collectionAdLinkForm,
+      },
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     AsyncStorage.getItem("AdDesignTutorialOpened").then((value) => {
       if (!value && this.props.campaignList.length === 0) {
@@ -1362,11 +1370,10 @@ class AdDesign extends Component {
     RNFFmpeg.cancel();
   };
   setExistingMediaModal = (val) => {
-    analytics.track(`a_existing_media_modal`, {
-      visible: val,
-      source: "a_existing_media_modal",
-      source_action: "ad_design",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: `${val ? "Open" : "Close"} existing media modal`,
+      button_content: "Media Library",
+      source: "SnapchatComposeAd",
     });
     this.setState(
       {
@@ -1382,12 +1389,15 @@ class AdDesign extends Component {
   setExistingMediaUrl = (item) => {
     let { media, media_url, media_type } = item;
 
-    analytics.track(`a_set_existing_media`, {
-      source: "a_set_existing_media",
-      source_action: "ad_design",
+    analytics.track(`Form Populated`, {
+      form_type: "Snapchat Compose Ad Form",
+      form_field: "existing_media",
+      form_value: media_url,
+      business_id: this.props.mainBusiness.businessid,
+    });
+    analytics.track("Ad Media Selected", {
       media: media_url,
-      type: media_type,
-      businessid: this.props.mainBusiness.businessid,
+      media_type: media_type,
     });
     this.setState({
       media: media_url,
@@ -1503,11 +1513,11 @@ class AdDesign extends Component {
           onDidFocus={this.handleAdDesignFocus}
           onDidBlur={this.handleAdDesignBlur}
         />
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={styles.gradient}
-        />
+        /> */}
         <SafeAreaView
           style={styles.safeAreaView}
           forceInset={{ bottom: "never", top: "always" }}
@@ -1519,7 +1529,7 @@ class AdDesign extends Component {
             segment={{
               str: "Ad Design Back Button",
               obj: { businessname: this.props.mainBusiness.businessname },
-              source: "ad_design",
+              source: "SnapchatComposeAd",
               source_action: "a_go_back",
             }}
             icon="snapchat"
@@ -1957,7 +1967,7 @@ class AdDesign extends Component {
           cancelUpload={() => {
             this.setState({ showExampleModal: false });
           }}
-          source={"ad_cover"}
+          source={"SnapchatAdCover"}
           source_action={"a_help"}
           screenProps={this.props.screenProps}
           media={this.props.ad_tutorial_link}

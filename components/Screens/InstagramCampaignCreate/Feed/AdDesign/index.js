@@ -526,18 +526,17 @@ class AdDesign extends Component {
         }
       } else {
         this.props.navigation.navigate("InstagramFeedAdTargetting", {
-          source: "ad_design",
+          source: "InstagramFeedComposeAd",
           source_action: "a_submit_ad_design",
         });
       }
     }
   };
   handleCaptionExpand = (value) => {
-    analytics.track(`instagram_caption`, {
-      visibile: value,
-      source: "ad_design",
-      source_action: "a_toggle_caption",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Expand Instagram Feed Caption",
+      button_content: "",
+      source: "InstagramFeedComposeAd",
     });
     this.setState(
       {
@@ -550,18 +549,16 @@ class AdDesign extends Component {
   };
   handleReview = async () => {
     const noError = this.validator();
-
-    analytics.track(`a_preview_ad`, {
-      source: "ad_design",
-      source_action: "a_preview_ad",
-      action_status: noError ? "success" : "failure",
+    analytics.track(`Button Pressed`, {
+      button_type: "Preview Instagram Feed Ad Design",
+      button_content: "PREVIEW",
+      source: "InstagramFeedComposeAd",
       campaign_channel: "instagram",
       campaign_ad_type: "InstagramFeedAd",
-      businessid: this.props.mainBusiness.businessid,
     });
     if (noError) {
       this.props.navigation.navigate("AdFeedDesignReview", {
-        source: "ad_objective",
+        source: "InstagramFeedComposeAd",
         source_action: "a_preview_ad",
         rejected: this.rejected,
         media: this.state.media,
@@ -627,23 +624,26 @@ class AdDesign extends Component {
       "source",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`ad_design`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "instagramfeedAdDesign",
       source,
       source_action,
-      campaign_channel: "instagram",
-      campaign_ad_type: "InstagramFeedAd",
-      campaign_name: this.state.selectedCampaign.name,
-      campaign_id: this.state.selectedCampaign.campaign_id,
-      campaign_objective: this.state.selectedCampaign.objective,
-      campaign_duration:
-        Math.ceil(
-          (new Date(this.state.selectedCampaign.end_time) -
-            new Date(this.state.selectedCampaign.start_time)) /
-            (1000 * 60 * 60 * 24)
-        ) + 1,
-      campaign_start_date: this.state.selectedCampaign.start_time,
-      campaign_end_date: this.state.selectedCampaign.end_time,
-      businessid: this.props.mainBusiness.businessid,
+      form_context: {
+        campaign_channel: "instagram",
+        campaign_ad_type: "InstagramFeedAd",
+        campaign_name: this.state.selectedCampaign.name,
+        campaign_id: this.state.selectedCampaign.campaign_id,
+        campaign_objective: this.state.selectedCampaign.objective,
+        campaign_duration:
+          Math.ceil(
+            (new Date(this.state.selectedCampaign.end_time) -
+              new Date(this.state.selectedCampaign.start_time)) /
+              (1000 * 60 * 60 * 24)
+          ) + 1,
+        campaign_start_date: this.state.selectedCampaign.start_time,
+        campaign_end_date: this.state.selectedCampaign.end_time,
+      },
+      business_id: this.props.mainBusiness.businessid,
     });
   };
   setMaxClickHeight = (event) => {
@@ -709,11 +709,11 @@ class AdDesign extends Component {
     }
     return (
       <View style={styles.safeAreaView}>
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}
@@ -722,9 +722,9 @@ class AdDesign extends Component {
           screenProps={this.props.screenProps}
           closeButton={false}
           segment={{
-            str: "Instagram Feed Ad Design Back Button",
+            str: "Instagram Feed Compose Ad Back Button",
             obj: { businessname: this.props.mainBusiness.businessname },
-            source: "ad_design",
+            source: "InstagramFeedComposeAd",
             source_action: "a_go_back",
           }}
           icon="instagram"

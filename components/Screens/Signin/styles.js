@@ -1,9 +1,11 @@
 import { StyleSheet, I18nManager } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import { RFValue } from "react-native-responsive-fontsize";
+import { globalColors } from "../../../GlobalStyles";
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
+    backgroundColor: globalColors.bluegem,
   },
   logoContainer: {
     flexDirection: "row",
@@ -11,8 +13,9 @@ const styles = StyleSheet.create({
   signTextContainer: {
     display: "flex",
     flexDirection: "row",
-    marginLeft: "auto",
+    // marginLeft: "auto",
     alignItems: "center",
+    marginBottom: RFValue(10, 414),
   },
   signText: {
     fontSize: RFValue(7, 414),
@@ -58,7 +61,7 @@ const styles = StyleSheet.create({
 
   mainView: {
     // flex: 1,
-    paddingTop: 40,
+    // paddingTop: 40,
     paddingHorizontal: 30,
   },
   heading: {

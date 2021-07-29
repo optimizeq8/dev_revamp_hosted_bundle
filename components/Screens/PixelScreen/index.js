@@ -43,7 +43,7 @@ class PixelScreen extends React.Component {
           navigation={this.props.navigation}
           //   actionButton={() => closeBiometricsModal()}
           segment={{
-            source: "open_pixel_info_details",
+            source: "PixelScreen",
             source_action: "a_go_back",
           }}
         />

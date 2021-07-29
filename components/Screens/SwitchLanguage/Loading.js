@@ -19,20 +19,13 @@ import isStringArabic from "../../isStringArabic";
 
 class SwitchLanguageLoading extends Component {
   componentDidUpdate(prevProps) {
-    console.log(
-      "prevProps.languageChangeLoading",
-      prevProps.languageChangeLoading
-    );
-    console.log(
-      "this.props.languageChangeLoading",
-      this.props.languageChangeLoading
-    );
     if (prevProps.languageChangeLoading && !this.props.languageChangeLoading) {
       setTimeout(() => RNRestart.Restart(), 5000);
     }
   }
   onDidFocus = async () => {
-    analytics.track(`switch_language_loading`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "SwitchLanguageLoading",
       source: this.props.navigation.getParam(
         "source",
         this.props.screenProps.prevAppState
@@ -41,7 +34,8 @@ class SwitchLanguageLoading extends Component {
         "source_action",
         this.props.screenProps.prevAppState
       ),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     await this.props.getLanguageListPOEdit(
       this.props.appLanguage === "en" ? "ar" : "en"

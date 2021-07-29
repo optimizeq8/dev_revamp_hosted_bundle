@@ -303,12 +303,15 @@ class AdObjective extends Component {
       objectiveLabel: choice.label,
       duration,
     });
-    analytics.track(`a_select_ad_objective`, {
-      source: "ad_objective_modal",
-      source_action: "a_select_ad_objective",
-      campaignId: this.props.campaign_id,
-      campaign_objective: choice.value,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Snapchat Ad Objective Form",
+      form_field: "Objective",
+      form_value: choice.value,
+      campaign_id: this.props.campaign_id,
+      campaign_channel: "snapchat",
+      campaign_ad_type: this.props.adType,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.props.save_campaign_info({
@@ -345,11 +348,15 @@ class AdObjective extends Component {
         start_time: date,
       },
     });
-    analytics.track(`a_ad_start_date`, {
-      source: "ad_objective",
-      source_action: "a_ad_start_date",
-      campaign_start_date: date,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Snapchat Ad Objective Form",
+      form_field: "start_date",
+      form_value: date,
+      campaig_id: this.props.campaig_id,
+      campaign_channel: "snapchat",
+      campaign_ad_type: this.props.adType,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.props.save_campaign_info({ start_time: date });
@@ -363,11 +370,15 @@ class AdObjective extends Component {
         end_time: end_time.toISOString().split("T")[0],
       },
     });
-    analytics.track(`a_ad_end_date`, {
-      campaign_end_date: date,
-      source: "ad_objective",
-      source_action: "a_ad_end_date",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_value: date,
+      form_type: "Snapchat Ad Objective Form",
+      form_field: "end_date",
+      campaig_id: this.props.campaig_id,
+      campaign_channel: "snapchat",
+      campaign_ad_type: this.props.adType,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.save_campaign_info({
       end_time: date,
@@ -376,11 +387,10 @@ class AdObjective extends Component {
     this._handleSubmission();
   };
   setModalVisible = (visible) => {
-    analytics.track(`ad_objective_modal`, {
-      source: "ad_objective",
-      source_action: "a_toggle_modal",
-      modal_visible: visible,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: `${visible ? "Open" : "Close"} Ad Objective Modal`,
+      button_content: "OBJECTIVE",
+      source: "SnapchatAdObjective",
     });
 
     this.setState({ modalVisible: visible });
@@ -401,11 +411,17 @@ class AdObjective extends Component {
   };
 
   _handleCollectionAdLinkForm = (val) => {
-    analytics.track(`a_change_collection_ad_link_form`, {
-      source: "ad_objective",
-      source_action: "a_change_collection_ad_link_form",
+    analytics.track(`Button Pressed`, {
+      button_type: "Change Ad Objective Collection Link Form",
+      button_content:
+        val === 2
+          ? `WEBSITE
+      Links to your site`
+          : `APP DEEPLINKS
+      Links to your App`,
       campaign_collectionAdLinkForm: val === 2 ? "Website" : "App DeepLinks",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ ...this.state, collectionAdLinkForm: val });
   };
@@ -443,8 +459,7 @@ class AdObjective extends Component {
       dateErrors.start_timeError ||
       dateErrors.end_timeError
     ) {
-      analytics.track(`a_error_form`, {
-        error_page: "ad_objective",
+      analytics.track(`Form Error Made`, {
         campaign_channel: "snapchat",
         campaign_ad_type: this.props.adType,
         source_action: "a_submit_ad_objective",
@@ -453,8 +468,6 @@ class AdObjective extends Component {
           objectiveError ||
           dateErrors.start_timeError ||
           dateErrors.end_timeError,
-        businessid:
-          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
     if (
@@ -567,14 +580,15 @@ class AdObjective extends Component {
     let state = {};
     // value = value.replace(/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi, "");
     state[stateName] = value;
-    analytics.track(`a_ad_name`, {
-      source: "ad_objective",
-      source_action: "a_ad_name",
-      campaignId: this.props.campaign_id,
+    analytics.track(`Form Populated`, {
+      form_type: "Snapchat Ad Objective Form",
+      form_field: "ad_name",
+      form_value: value,
+      campaig_id: this.props.campaign_id,
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
-      campaign_name: value,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ campaignInfo: { ...this.state.campaignInfo, ...state } });
     this.props.save_campaign_info({ name: value });
@@ -585,14 +599,13 @@ class AdObjective extends Component {
   and overwrites what's in the state  to check when submitting*/
   getValidInfo = (stateError, validObj) => {
     if (validObj) {
-      analytics.track(`a_error_form`, {
-        error_page: "ad_objective",
+      analytics.track(`Form Error Made`, {
         error_description: `Error in ${stateError}: ${validObj}`,
-        source: "ad_objective",
+        source: "SnapchatAdObjective",
         source_action: "a_ad_name",
         campaign_channel: "snapchat",
         campaign_ad_type: this.props.adType,
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
@@ -617,12 +630,14 @@ class AdObjective extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`ad_objective`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "AdObjective",
       source,
       source_action,
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     AsyncStorage.getItem("AdObjectiveTutorialOpened").then((value) => {
       if (!value && this.props.campaignList.length === 0) {
@@ -724,13 +739,13 @@ class AdObjective extends Component {
     // }
     else
       return (
-        <View style={{ height: "100%", backgroundColor: "#0000" }}>
+        <View style={{ height: "100%", backgroundColor: globalColors.bluegem }}>
           <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-          <LinearGradient
+          {/* <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
             style={globalStyles.gradient}
-          />
+          /> */}
           <SafeAreaView
             style={styles.safeAreaView}
             forceInset={{ bottom: "never", top: "always" }}
@@ -743,7 +758,7 @@ class AdObjective extends Component {
             screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
-              source: "ad_objective",
+              source: "SnapchatAdObjective",
               source_action: "a_go_back",
               str: "Ad Objective Back Button",
               obj: {
@@ -969,7 +984,7 @@ class AdObjective extends Component {
                 }}
                 title={"Select an objective"}
                 segment={{
-                  source: "ad_objective_modal",
+                  source: "SnapchatAdObjectiveModal",
                   source_action: "a_go_back",
                 }}
                 titleStyle={{ color: "#000" }}

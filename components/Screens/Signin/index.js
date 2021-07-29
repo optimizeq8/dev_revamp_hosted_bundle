@@ -7,9 +7,13 @@ import {
   Platform,
   ScrollView,
   Text,
+  Image,
 } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
 import SafeAreaView from "react-native-safe-area-view";
 
 import analytics from "@segment/analytics-react-native";
@@ -30,7 +34,10 @@ import AppUpdateChecker from "../AppUpdateChecker";
 import validateWrapper from "./ValidateWrapper";
 
 // Icons
-import Logo from "../../../assets/SVGs/Optimize";
+// import Logo from "../../../assets/SVGs/Optimize";
+import Logo from "../../../assets/images/Optimize_Logo_transparent.png";
+// import Logo from "../../../assets/images/Optimize_Icon_White.png";
+
 import PasswordIcon from "../../../assets/SVGs/PasswordOutline";
 import SignInCover from "../../../assets/SVGs/SignInCover";
 
@@ -73,7 +80,18 @@ class Signin extends Component {
       passwordError: passwordError,
     });
     if (!emailError && !passwordError) {
-      this.props.login(this.state, this.props.navigation);
+      analytics.track(`Form Submitted`, {
+        form_type: "Sign In Form",
+        form_context: {
+          email: this.state.email,
+          password_populated: this.state.password.length > 0,
+        },
+        source: "Signin",
+      });
+      this.props.login(
+        { email: this.state.email, password: this.state.password },
+        this.props.navigation
+      );
     }
   };
 
@@ -91,13 +109,10 @@ class Signin extends Component {
       this.props.screenProps.prevAppState
     );
     const source_action = this.props.navigation.getParam("source_action", null);
-    const anonymous_userId = this.props.screenProps.anonymous_userId;
-    const device_id = this.props.screenProps.device_id;
-    await analytics.track(`email_registration`, {
+    await analytics.track(`Screen Viewed`, {
+      screen_name: "Signin",
       source,
       source_action,
-      anonymous_userId,
-      device_id,
     });
     this.setState({
       source,
@@ -142,6 +157,17 @@ class Signin extends Component {
   }
   setValue = (stateName, value) => {
     let state = {};
+    if (stateName === "newEmail") {
+      analytics.track(`Email Entered`, {
+        source: "Signin",
+        email_populated: true,
+      });
+    }
+    analytics.track("Form Populated", {
+      form_type: "Sign In Form",
+      form_field: stateName,
+      form_value: stateName === "email" && value,
+    });
     state[stateName] = value;
     this.setState({ ...state });
   };
@@ -154,34 +180,21 @@ class Signin extends Component {
     });
   };
   createNewAccount = () => {
-    const device_id = this.props.screenProps.device_id;
-    const anonymous_userId = this.props.screenProps.anonymous_userId;
     if (!this.state.newEmailError) {
-      analytics.track(`a_create_account`, {
-        mode_of_sign_up: "email",
-        source: "email_registration",
-        source_action: "a_create_account",
-        action_status: "success",
-        timestamp: new Date().getTime(),
-        device_id,
-        anonymous_userId,
-        // source_action: "" Not sure
+      analytics.track(`Button Pressed`, {
+        button_type: "Signup Initiated ",
+        button_content: `Create Account`,
+        source: "Signin",
       });
       this.props.verifyEmail(
         this.state.newEmail,
         { email: this.state.newEmail },
-
         this.props.navigation
       );
     } else {
-      analytics.track(`a_create_account`, {
-        mode_of_sign_up: "email",
-        source: "email_registration",
-        action_status: "failure",
-        timestamp: new Date().getTime(),
-        device_id,
-        anonymous_userId,
-        source_action: "a_error",
+      analytics.track(`Email Entered`, {
+        source: "Signin",
+        email_populated: false,
       });
 
       showMessage({
@@ -195,26 +208,17 @@ class Signin extends Component {
    * change active tab
    */
   changeActiveTab = (activeTabSignUp) => {
-    // let activeTabSignUp = this.state.activeTab === 0;
-    const anonymous_userId = this.props.screenProps.anonymous_userId;
-    const device_id = this.props.screenProps.device_id;
-
     // Action event
-    analytics.track(`a_${activeTabSignUp ? "sign_in" : "sign_up"}_tab`, {
-      source: activeTabSignUp ? "sign_in" : "email_registration",
-      anonymous_userId,
-      device_id,
-      source_action: `a_${activeTabSignUp ? "sign_up" : "sign_in"}_tab`,
-      timestamp: new Date().getTime(),
+    analytics.track(`Button Pressed`, {
+      button_type: `Sign ${activeTabSignUp ? "Up" : "In"} Tab Selected`,
+      button_content: `${activeTabSignUp ? "Sign Up" : "Sign In"}`,
+      source: "Signin",
     });
 
     // Screeen event
-    analytics.track(`${activeTabSignUp ? "sign_in" : "email_registration"}`, {
-      source: `${activeTabSignUp ? "sign_in" : "email_registration"}`,
-      source_action: `a_${activeTabSignUp ? "sign_up" : "sign_in"}_tab`,
-      anonymous_userId,
-      device_id,
-      timestamp: new Date().getTime(),
+    analytics.track(`Screen Viewed`, {
+      screen_name: "Signin",
+      source: `${activeTabSignUp ? "Sign In" : "Sign Up"}`,
     });
     this.setState({
       activeTab: activeTabSignUp ? 1 : 0,
@@ -323,11 +327,11 @@ class Signin extends Component {
           forceInset={{ bottom: "never", top: "always" }}
           style={styles.safeAreaViewContainer}
         >
-          <LinearGradient
+          {/* <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
             style={styles.gradient}
-          />
+          /> */}
 
           {this.props.checkingForToken ? (
             <LoadingScreen dash={true} />
@@ -337,6 +341,15 @@ class Signin extends Component {
                 style={styles.SignInCoverImage}
                 height={heightPercentageToDP(42)}
               />
+              <Image
+                source={Logo}
+                resizeMode="contain"
+                style={{
+                  width: widthPercentageToDP(55),
+                  height: heightPercentageToDP(12),
+                  alignSelf: "center",
+                }}
+              />
               <InputScrollView
                 showsVerticalScrollIndicator={false}
                 {...ScrollView.props}
@@ -344,11 +357,11 @@ class Signin extends Component {
                 keyboardShouldPersistTaps="handled"
               >
                 <View style={styles.logoContainer}>
-                  <Logo
+                  {/* <Logo
                     style={styles.logo}
                     width={RFValue(39, 414)}
                     height={RFValue(39, 414)}
-                  />
+                  /> */}
                   <View style={styles.signTextContainer}>
                     <TouchableOpacity
                       activeOpacity={1}

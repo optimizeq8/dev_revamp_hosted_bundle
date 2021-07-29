@@ -32,13 +32,11 @@ class ContinueCampaign extends Component {
       this.props.data.incompleteCampaign &&
       !this.props.data.campaignResumed
     ) {
-      analytics.track("continue_campaign_modal", {
-        source: "ad_objective",
-        // source_action: ""
+      analytics.track("Google Campaign Continued", {
         campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
-        timestamp: new Date().getTime(),
-        businessid: this.props.mainBusiness.businessid,
+        business_id:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       this.continueCampaign();
     }
@@ -56,7 +54,7 @@ class ContinueCampaign extends Component {
           routeName: route,
         },
         {
-          source: "continue_campaign_modal",
+          source: "GoogleContinueCampaign",
           source_action: "a_continue_campaign",
         }
       )
@@ -110,7 +108,7 @@ class ContinueCampaign extends Component {
         campaign_id: this.props.data.id,
       };
     }
-    if (this.props.data.campaignSteps.includes("GoogleAdTargetting")) {
+    if (this.props.data.campaignSteps.includes("GoogleAdTargeting")) {
       updated_transaction_data = {
         ...updated_transaction_data,
         campaign_budget: this.props.data.budget,
@@ -192,7 +190,7 @@ class ContinueCampaign extends Component {
             navigation={this.props.navigation}
             title={"Continue Ad Creation"}
             segment={{
-              source: "continue_campaign_modal",
+              source: "GoogleContinueCampaign",
               source_action: "a_go_back",
             }}
           />

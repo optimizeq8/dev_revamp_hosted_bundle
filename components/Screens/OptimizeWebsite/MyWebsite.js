@@ -75,11 +75,12 @@ class MyWebsite extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`open_my_website`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "MyWebsite",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -189,7 +190,7 @@ class MyWebsite extends Component {
           segment={{
             str: "MyWebsite Back Button",
             obj: { businessname: this.props.mainBusiness.businessname },
-            source: "open_my_website",
+            source: "MyWebsite",
             source_action: "a_go_back",
           }}
           showTopRightButtonIcon={"settings"}
@@ -240,11 +241,11 @@ class MyWebsite extends Component {
             <TouchableOpacity
               style={styles.copyIcon2}
               onPress={() => {
-                analytics.track(`a_copy_my_website_url`, {
-                  source: "open_my_website",
-                  source_action: "a_copy_my_website_url",
-                  weburl: website,
-                  businessid:
+                analytics.track(`Button Pressed`, {
+                  button_type: "Copy Website URL",
+                  button_content: website,
+                  source: "MyWebsite",
+                  business_id:
                     this.props.mainBusiness &&
                     this.props.mainBusiness.businessid,
                 });
@@ -256,7 +257,7 @@ class MyWebsite extends Component {
           </View>
 
           <ProductSelect
-            source={"open_my_website"}
+            source={"MyWebsite"}
             edit={true}
             screenProps={this.props.screenProps}
           />

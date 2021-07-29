@@ -61,13 +61,8 @@ class TeamInvite extends Component {
    * handles the accept button's function
    */
   handleCheckingInvite = () => {
-    let {
-      navigation,
-      userInfo,
-      clearPushToken,
-      logout,
-      tempInviteId,
-    } = this.props;
+    let { navigation, userInfo, clearPushToken, logout, tempInviteId } =
+      this.props;
     if (this.state.wrongEmail || this.state.loggedOut) {
       if (userInfo) clearPushToken(navigation, userInfo.userid);
       else logout(navigation);
@@ -76,10 +71,10 @@ class TeamInvite extends Component {
       this.props.handleTeamInvite(
         { status: 1, v: tempInviteId },
         {
-          source: "team_invite",
+          source: "TeamInvite",
           source_action: "a_accept_invite",
           invite_status: 1,
-          invite_v: tempInviteId,
+          invite_id: tempInviteId,
         }
       );
     }
@@ -94,11 +89,13 @@ class TeamInvite extends Component {
       this.props.screenProps.prevAppState
     );
     let { businessInvitee } = this.props;
-    analytics.track(`team_invite`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "TeamInvite",
       source,
       source_action,
       invite_business: businessInvitee,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.checkTeamInvite();
   };
@@ -126,12 +123,12 @@ class TeamInvite extends Component {
               v: this.props.tempInviteId,
               email: this.props.invitedEmail,
               business: this.props.businessInvitee,
-              source: "team_invite",
+              source: "TeamInvite",
               source_action: "a_go_back",
             });
           }}
           segment={{
-            source: "team_invite",
+            source: "TeamInvite",
             source_action: "a_go_back",
           }}
         />
@@ -176,10 +173,10 @@ class TeamInvite extends Component {
                 this.props.handleTeamInvite(
                   { status: 0, v: tempInviteId },
                   {
-                    source: "team_invite",
+                    source: "TeamInvite",
                     source_action: "a_decline_invite",
                     invite_status: 0,
-                    invite_v: tempInviteId,
+                    invite_id: tempInviteId,
                   }
                 )
               }

@@ -408,12 +408,13 @@ class InstagramFeedAdTargetting extends Component {
   onSelectedDevicesChange = (selectedItems) => {
     let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.user_device = selectedItems;
-    analytics.track(`a_ad_devices`, {
-      source: "ad_targeting",
-      source_action: "a_ad_devices",
-      campaign_devices_name:
-        selectedItems.length > 0 ? selectedItems.join(", ") : "",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Feed Ad Targeting Form",
+      form_field: "ad_devices",
+      form_value: selectedItems.length > 0 ? selectedItems.join(", ") : "",
+      campaign_id: this.props.campaign_id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.setState({
@@ -445,12 +446,14 @@ class InstagramFeedAdTargetting extends Component {
       interestNames: selectedItems,
     });
     let names = [];
-    // names = selectedItems.length > 0 && selectedItems.map((item) => item.name);
-    analytics.track(`a_ad_interests`, {
-      source: "ad_targeting",
-      source_action: "a_ad_interests",
-      campaign_interests_names: names && names.length > 0 && names.join(", "),
-      businessid: this.props.mainBusiness.businessid,
+    names = selectedItems.length > 0 && selectedItems.map((item) => item.name);
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Feed Ad Targeting Form",
+      form_field: "ad_interests",
+      form_value: names && names.length > 0 ? names : [],
+      campaign_id: this.props.campaign_id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     // if (names && names.length > 0)
     !this.editCampaign &&
@@ -507,14 +510,17 @@ class InstagramFeedAdTargetting extends Component {
     replace.targeting.user_device = [];
     replace.targeting.os_version_max = "";
     replace.targeting.os_version_min = "";
-
-    analytics.track(`a_ad_OS_type`, {
-      source: "ad_targeting",
-      source_action: "a_ad_OS_type",
-      campaign_os_type: selectedItem === "" ? "ALL" : selectedItem,
-      campaign_os_min_ver: "",
-      campaign_os_max_ver: "",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Feed Ad Targeting Form",
+      form_field: "ad_OS_type",
+      form_value: {
+        campaign_os_type: selectedItem === "" ? "ALL" : selectedItem,
+        campaign_os_min_ver: "",
+        campaign_os_max_ver: "",
+      },
+      campaign_id: this.props.campaign_id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       campaignInfo: { ...replace },
@@ -529,12 +535,17 @@ class InstagramFeedAdTargetting extends Component {
     let replace = this.state.campaignInfo;
     replace.targeting.os_version_min = selectedItem[0];
     replace.targeting.os_version_max = selectedItem[1];
-    analytics.track(`a_ad_OS_version`, {
-      source: "ad_targeting",
-      source_action: "a_ad_OS_version",
-      campaign_os_min_ver: selectedItem[0],
-      campaign_os_max_ver: selectedItem[1],
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Feed Ad Targeting Form",
+      form_field: "ad_OS_version",
+      form_value: {
+        campaign_os_type: replace.targeting.user_os,
+        campaign_os_min_ver: selectedItem[0],
+        campaign_os_max_ver: selectedItem[1],
+      },
+      campaign_id: this.props.campaign_id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.setState({
@@ -633,13 +644,15 @@ class InstagramFeedAdTargetting extends Component {
         value: value,
         budgetOption,
       });
-      analytics.track(`a_handle_budget`, {
-        source: "ad_targeting",
-        source_action: "a_handle_budget",
-        custom_budget: false,
-        campaign_budget: rawValue,
-        businessid: this.props.mainBusiness.businessid,
+      analytics.track(`Form Populated`, {
+        form_type: "Instagram Feed Ad Targeting Form",
+        form_field: "handle_budget",
+        form_value: rawValue,
+        campaign_id: this.props.campaign_id,
+        business_id:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
+
       !this.editCampaign &&
         this.props.save_campaign_info_instagram({
           campaignInfo: {
@@ -652,14 +665,14 @@ class InstagramFeedAdTargetting extends Component {
     } else {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
-          analytics.track(`a_error_form`, {
-            error_page: "ad_targeting",
+          analytics.track(`Form Error Made`, {
+            source: "InstagramFeedAdTargeting",
             source_action: "a_change_campaign_custom_budget",
             error_description:
               validateWrapper("Budget", rawValue) +
               " $" +
               this.state.minValueBudget,
-            businessid: this.props.mainBusiness.businessid,
+            business_id: this.props.mainBusiness.businessid,
           });
         }
         showMessage({
@@ -717,11 +730,13 @@ class InstagramFeedAdTargetting extends Component {
     // }
     //gender is coming in as 1,2
     replace.targeting.genders = [gender];
-    analytics.track(`a_ad_gender`, {
-      source: "ad_targeting",
-      source_action: "a_ad_gender",
-      campaign_gender: replace.targeting.genders,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Feed Ad Targeting Form",
+      form_field: "ad_gender",
+      form_value: replace.targeting.genders,
+      campaign_id: this.props.campaign_id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ campaignInfo: { ...replace }, selectedGender: gender });
     !this.editCampaign &&
@@ -733,14 +748,18 @@ class InstagramFeedAdTargetting extends Component {
     let rep = cloneDeep(this.state.campaignInfo);
     rep.targeting.age_min = parseInt(values[0]);
     rep.targeting.age_max = parseInt(values[1]);
-
-    analytics.track(`a_ad_age`, {
-      source: "ad_targeting",
-      source_action: "a_ad_age",
-      campaign_min_age: parseInt(values[0]),
-      campaign_max_age: parseInt(values[1]),
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Feed Ad Targeting Form",
+      form_field: "ad_age",
+      form_value: {
+        campaign_min_age: parseInt(values[0]),
+        campaign_max_age: parseInt(values[1]),
+      },
+      campaign_id: this.props.campaign_id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
+
     this.setState({
       campaignInfo: rep,
     });
@@ -879,8 +898,8 @@ class InstagramFeedAdTargetting extends Component {
         this.state.budgetOption
       )
     ) {
-      analytics.track(`a_error_form`, {
-        error_page: "ad_targeting",
+      analytics.track(`Form Error Made`, {
+        source: "InstagramFeedAdTargeting",
         source_action: "a_submit_ad_targeting",
         campaign_id: this.state.campaignInfo.campaign_id,
         campaign_channel: "instagram",
@@ -891,7 +910,7 @@ class InstagramFeedAdTargetting extends Component {
             "Budget",
             this.state.campaignInfo.lifetime_budget_micro
           ),
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
     }
     if (
@@ -986,7 +1005,7 @@ class InstagramFeedAdTargetting extends Component {
       rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
         campaign_ad_type: "InstagramFeedAd",
-        campaignId: this.props.campaign_id,
+        campaign_id: this.props.campaign_id,
         campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
         campaign_gender:
           this.state.campaignInfo.targeting.genders[0] === ""
@@ -1376,11 +1395,13 @@ class InstagramFeedAdTargetting extends Component {
         multipleCountriesSelected: false,
       });
     } else stateRep.targeting.geo_locations.custom_locations = selectedItems;
-    analytics.track(`a_ad_map_locations`, {
-      source: "ad_targeting",
-      source_action: "a_ad_map_locations",
-      campaign_map_locations: selectedItems,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Feed Ad Targeting Form",
+      form_field: "ad_map_locations",
+      form_value: selectedItems,
+      campaign_id: this.props.campaign_id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       campaignInfo: { ...stateRep },
@@ -1699,7 +1720,7 @@ class InstagramFeedAdTargetting extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
-              source: "ad_targeting",
+              source: "InstagramFeedAdTargeting",
               source_action: "a_go_back",
             }}
             icon="instagram"
@@ -1716,7 +1737,7 @@ class InstagramFeedAdTargetting extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
-              source: "ad_targeting",
+              source: "InstagramFeedAdTargeting",
               source_action: "a_go_back",
             }}
             actionButton={() => this.handleBackButton()}
@@ -1772,7 +1793,7 @@ class InstagramFeedAdTargetting extends Component {
                         campaign_existing_post:
                           this.props.data.existingPost === 0 ? true : false,
                         campaign_name: this.props.data.name,
-                        campaignId: this.props.data.campaign_id,
+                        campaign_id: this.props.data.campaign_id,
                         campaign_message: this.props.data.message,
                         campaign_attachment: this.props.data.attachment,
                         campaign_swipe_up_CTA: this.props.data.call_to_action,
@@ -1784,12 +1805,12 @@ class InstagramFeedAdTargetting extends Component {
                         campaign_objective: this.props.data.objective,
                       }
                     : {};
-                  analytics.track("ad_targeting", {
-                    timestamp: new Date().getTime(),
+                  analytics.track("Screen Viewed", {
+                    screen_name: "InstagramFeedAdTargeting",
                     source,
                     source_action,
-                    ...segmentInfo,
-                    businessid: this.props.mainBusiness.businessid,
+                    from_context: { ...segmentInfo },
+                    business_id: this.props.mainBusiness.businessid,
                   });
                   if (
                     !this.props.currentCampaignSteps.includes(

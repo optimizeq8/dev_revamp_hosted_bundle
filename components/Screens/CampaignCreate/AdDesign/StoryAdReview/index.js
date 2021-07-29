@@ -59,8 +59,7 @@ class StoryAdDesignReview extends Component {
 
     let coverHeadline = this.props.navigation.getParam("coverHeadline", "");
     let preview = {
-      uri:
-        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+      uri: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
     };
     let campaignDetails = this.props.navigation.getParam(
       "campaignDetails",
@@ -84,7 +83,7 @@ class StoryAdDesignReview extends Component {
             segment={{
               str: "Stroy Ad Design Back Button",
               obj: { businessname: this.props.mainBusiness.businessname },
-              source: campaignDetails ? "ad_cover" : "ad_design",
+              source: "StoryAdDesignReview",
               source_action: "a_go_back",
             }}
             actionButton={this.props.navigation.goBack}

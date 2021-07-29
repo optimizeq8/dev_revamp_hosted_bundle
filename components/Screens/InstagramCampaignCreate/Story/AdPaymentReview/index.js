@@ -156,7 +156,7 @@ class InstagramAdPaymentReview extends Component {
             (1000 * 60 * 60 * 24)
         ) + 1,
       campaign_name: this.props.data.name,
-      campaignId: this.props.data.campaign_id,
+      campaign_id: this.props.data.campaign_id,
       campaign_caption: message,
       campaign_attachment: link,
       campaign_swipe_up_CTA: this.props.data.call_to_action,
@@ -182,12 +182,13 @@ class InstagramAdPaymentReview extends Component {
         this.props.data.campaignInfo.targeting &&
         this.props.data.campaignInfo.targeting.age_min,
     };
-    analytics.track(`ad_review`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "InstagramStoryAdPaymentReview",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      ...segmentInfo,
-      businessid: this.props.mainBusiness.businessid,
+      form_context: { ...segmentInfo },
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.saveCampaignSteps([
       "Dashboard",
@@ -349,11 +350,11 @@ class InstagramAdPaymentReview extends Component {
 
       return (
         <View style={[styles.safeAreaView]}>
-          <LinearGradient
+          {/* <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
             style={globalStyles.gradient}
-          />
+          /> */}
           <SafeAreaView style={{ backgroundColor: "#fff" }} />
           <NavigationEvents onDidFocus={this.onDidFocus} />
           <Container style={[styles.container]}>
@@ -365,7 +366,7 @@ class InstagramAdPaymentReview extends Component {
                 obj: {
                   businessname: this.props.mainBusiness.businessname,
                 },
-                source: "ad_review",
+                source: "InstagramStoryAdPaymentReview",
                 source_action: "a_go_back",
               }}
               icon="instagram"
@@ -565,14 +566,14 @@ class InstagramAdPaymentReview extends Component {
                             (1000 * 60 * 60 * 24)
                         ) + 1,
                       campaign_name: this.props.data.name,
-                      campaignId: this.props.data.campaign_id,
+                      campaign_id: this.props.data.campaign_id,
                       campaign_caption: message,
                       campaign_end_date: this.props.data.end_time,
                       campaign_start_date: this.props.data.start_time,
                       campaign_attachment: this.props.data.attachment,
                       campaign_swipe_up_CTA: this.props.data.call_to_action,
-                      campaign_swipe_up_destination: this.props.data
-                        .destination,
+                      campaign_swipe_up_destination:
+                        this.props.data.destination,
                       campaign_media: this.props.data.media,
                       campaign_media_type: this.props.data.media_type,
                       campaign_appChoice: this.props.data.appChoice,
@@ -583,12 +584,10 @@ class InstagramAdPaymentReview extends Component {
                       campaign_region: regionNames,
                       campaign_devices: user_devices,
                     };
-                    analytics.track(`a_submit_ad_review`, {
-                      source: "ad_review",
-                      source_action: "a_submit_ad_review",
-                      action_status: "success",
-                      businessid: this.props.mainBusiness.businessid,
-                      ...segmentInfo,
+                    analytics.track(`Button Pressed`, {
+                      button_type: "Submit Instagram Feed Ad Review",
+                      button_content: "Payment Info",
+                      source: "instagramstoryAdPaymentReview",
                     });
 
                     this.props.navigation.navigate("PaymentForm", {

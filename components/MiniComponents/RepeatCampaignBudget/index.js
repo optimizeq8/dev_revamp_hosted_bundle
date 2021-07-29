@@ -162,12 +162,13 @@ class RepeatCampaignBudget extends Component {
         budgetOption,
       });
 
-      analytics.track(`a_handle_budget`, {
-        source: "repeat_campaign_modal",
-        source_action: "a_handle_budget",
+      analytics.track(`Form Populated`, {
+        form_type: "Repeat Campaign Budget Form",
+        form_field: "handle_budget",
+        form_value: rawValue,
+        campaign_channel: this.props.campaign.channel,
         custom_budget: false,
-        campaign_budget: rawValue,
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
       !this.state.prevCampaignIsInstagram
         ? this._calcSnapReach(this.state.repeatingCampaginData, rawValue)
@@ -176,14 +177,14 @@ class RepeatCampaignBudget extends Component {
     } else {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
-          analytics.track(`a_error_form`, {
-            error_page: "repeat_campaign_modal",
+          analytics.track(`Form Erro Made`, {
+            source: "RepeatCampaignBudget",
             source_action: "a_change_campaign_custom_budget",
             error_description:
               validateWrapper("Budget", rawValue) + " $" + this.props.campaign
                 ? this.props.campaign && this.props.campaign.minValueBudget
                 : "error",
-            businessid: this.props.mainBusiness.businessid,
+            business_id: this.props.mainBusiness.businessid,
           });
         }
         let repeatingCampaginData = this.state.repeatingCampaginData;
@@ -204,12 +205,13 @@ class RepeatCampaignBudget extends Component {
           position: "top",
         });
       }
-      analytics.track(`a_handle_budget`, {
-        source: "repeat_campaign_modal",
-        source_action: "a_handle_budget",
+      analytics.track(`Form Populated`, {
+        form_type: "Repeat Campagin Form",
+        form_field: "handle_budget",
+        form_value: rawValue,
+        campaign_channel: this.props.campaign.channel,
         custom_budget: true,
-        campaign_budget: rawValue,
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
 
       this.setState({

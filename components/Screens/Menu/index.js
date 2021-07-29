@@ -7,6 +7,7 @@ import {
   ScrollView,
   I18nManager,
   Text,
+  Image,
 } from "react-native";
 import { Container, Icon } from "native-base";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -21,7 +22,8 @@ import ReactNativeBiometrics from "react-native-biometrics";
 
 // Icons
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
-import Logo from "../../../assets/SVGs/Optimize";
+// import Logo from "../../../assets/SVGs/Optimize";
+import Logo from "../../../assets/images/Optimize_Icon_White.png";
 import DownArrowIcon from "../../../assets/SVGs/MenuIcons/DownArrowIcon";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 
@@ -42,6 +44,7 @@ import isStringArabic from "../../isStringArabic";
 import {
   heightPercentageToDP as hp,
   heightPercentageToDP,
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 import SafeAreaView from "react-native-safe-area-view";
 
@@ -189,12 +192,24 @@ class Menu extends Component {
         <BackdropIcon style={styles.backDrop} />
         <Container style={[styles.menuModal]}>
           <View style={styles.menuContainer}>
-            <Logo
+            {/* <Logo
               style={{ alignSelf: "center" }}
               width={heightPercentageToDP(10)}
               height={heightPercentageToDP(10)}
+            /> */}
+            <Image
+              source={Logo}
+              resizeMode="contain"
+              style={[
+                {
+                  width: widthPercentageToDP(25),
+                  height: heightPercentageToDP(8),
+                  alignSelf: "center",
+                },
+                styles.logo,
+              ]}
             />
-            <Text style={styles.logoText}>Optimize</Text>
+            {/* <Text style={styles.logoText}>Optimize</Text> */}
             <Text
               style={[
                 styles.businessTitle,
@@ -265,7 +280,7 @@ class Menu extends Component {
                     this.handleNavigation("WebView", false, {
                       url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}&screenName=menu`,
                       title: "Instagram",
-                      source: "open_hamburger",
+                      source: "Menu",
                       source_action: "a_open_my_website",
                     });
                   } else if (
@@ -275,12 +290,12 @@ class Menu extends Component {
                   ) {
                     // TODO: Change this path back to MyWebsiteECommerce after releasing to production for now
                     this.handleNavigation("MyWebsite", false, {
-                      source: "open_hamburger",
+                      source: "Menu",
                       source_action: "a_open_my_website",
                     });
                   } else {
                     this.handleNavigation("TutorialWeb", false, {
-                      source: "open_hamburger",
+                      source: "Menu",
                       source_action: "a_open_website_tutorial",
                     });
                   }
@@ -295,7 +310,7 @@ class Menu extends Component {
                 style={styles.options}
                 onPress={() =>
                   this.handleNavigation("Wallet", true, {
-                    source: "open_hamburger",
+                    source: "Menu",
                     source_action: "a_open_wallet",
                   })
                 }
@@ -309,7 +324,7 @@ class Menu extends Component {
                 style={styles.options}
                 onPress={() =>
                   this.handleNavigation("TransactionList", false, {
-                    source: "open_hamburger",
+                    source: "Menu",
                     source_action: "a_open_transactions_list",
                   })
                 }
@@ -335,7 +350,7 @@ class Menu extends Component {
                   // this.props.navigation.navigate("BusinessInfo")
                   this.handleNavigation("CreateBusinessAccount", false, {
                     editBusinessInfo: true,
-                    source: "open_hamburger",
+                    source: "Menu",
                     source_action: "a_open_business_info",
                   });
                 }}
@@ -355,7 +370,7 @@ class Menu extends Component {
                     // this.props.navigation.navigate("BusinessInfo")
                     this.handleNavigation("PixelScreen", false, {
                       editBusinessInfo: true,
-                      source: "open_hamburger",
+                      source: "Menu",
                       source_action: "a_open_pixel_info",
                     });
                   }}
@@ -372,7 +387,7 @@ class Menu extends Component {
                 style={styles.options}
                 onPress={() =>
                   this.handleNavigation("PersonalInfo", false, {
-                    source: "open_hamburger",
+                    source: "Menu",
                     source_action: "a_open_personal_info",
                   })
                 }
@@ -388,7 +403,7 @@ class Menu extends Component {
                   style={styles.options}
                   onPress={() =>
                     this.handleNavigation("BiometricsAuth", false, {
-                      source: "open_hamburger",
+                      source: "Menu",
                       source_action: "a_open_biometric_auth",
                     })
                   }
@@ -404,7 +419,7 @@ class Menu extends Component {
               <TouchableOpacity
                 onPress={() =>
                   this.handleNavigation("ChangePassword", false, {
-                    source: "open_hamburger",
+                    source: "Menu",
                     source_action: "a_open_change_password",
                   })
                 }
@@ -419,7 +434,7 @@ class Menu extends Component {
               <TouchableOpacity
                 onPress={() =>
                   this.handleNavigation("AddressForm", true, {
-                    source: "open_hamburger",
+                    source: "Menu",
                     source_action: "a_open_personal_info",
                   })
                 }
@@ -435,7 +450,7 @@ class Menu extends Component {
                 style={styles.options}
                 onPress={() =>
                   this.handleNavigation("WebView", false, {
-                    url: "https://www.optimizeapp.com/terms_conditions",
+                    url: "https://www.optimizeapp.com/terms_conditions", // TODO: Remove /rebranding
                     title: "Terms & Conditions",
                     source: "app_TNC",
                     source_action: "a_open_app_TNC",
@@ -459,7 +474,7 @@ class Menu extends Component {
                 style={styles.options}
                 onPress={() =>
                   this.handleNavigation("WebView", false, {
-                    url: "https://www.optimizeapp.com/privacy",
+                    url: "https://www.optimizeapp.com/privacy", // TODO: Chage back to /privacy
                     title: "Privacy Policy",
                     source: "app_privacy_policy",
                     source_action: "a_open_app_privacy_policy",
@@ -478,10 +493,16 @@ class Menu extends Component {
 
               <TouchableOpacity
                 onPress={() => {
-                  analytics.track(`a_logout`, {
-                    source: "open_hamburger",
+                  analytics.track(`Button Pressed`, {
+                    button_type: "Menu button",
+                    button_content: translate("Logout"),
+                    source: "Menu",
+                  });
+                  analytics.track(`Signed Out`, {
+                    source: "Menu",
                     source_action: "a_logout",
-                    businessid: this.props.mainBusiness.businessid,
+                    business_id: this.props.mainBusiness.businessid,
+                    business_name: this.props.mainBusiness.businessname,
                   });
                   this.props.clearPushToken(
                     this.props.navigation,
@@ -497,7 +518,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text selectable style={styles.version}>
                 {translate("Version:")}
-                {Constants.nativeAppVersion}/432/
+                {Constants.nativeAppVersion}/437/
                 {Constants.nativeBuildVersion}
               </Text>
             </ScrollView>

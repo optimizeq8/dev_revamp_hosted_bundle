@@ -78,6 +78,7 @@ import { BlurView } from "@react-native-community/blur";
 import AsyncStorage from "@react-native-community/async-storage";
 import CustomerIOAddDevice from "../../Functions/CustomerIOAddDevice";
 import { Notifications as RNNotifications } from "react-native-notifications";
+import { globalColors } from "../../../GlobalStyles";
 
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
@@ -254,13 +255,10 @@ class Dashboard extends Component {
       RNNotifications.getInitialNotification()
         .then((notification) => {
           if (notification) {
-            analytics.track(
-              "Notification opened by device user from killed state",
-              {
-                notification: JSON.stringify(notification.payload, null, 2),
-                platform: Platform.OS,
-              }
-            );
+            analytics.track("Notification Opened", {
+              state: "From Killed State",
+              notification: JSON.stringify(notification.payload, null, 2),
+            });
 
             if (notification.payload.hasOwnProperty("screenName")) {
               this.props.navigation.navigate(notification.payload.screenName);
@@ -284,33 +282,34 @@ class Dashboard extends Component {
     }
 
     if (prevProps.iosHashIntercom !== this.props.iosHashIntercom) {
-      Intercom.registerIdentifiedUser({
-        userId: this.props.userInfo.userid,
-      }).then((res) => {
-        Intercom.setUserHash(
-          Platform.OS === "ios"
-            ? this.props.iosHashIntercom
-            : this.props.andoidHashIntercom
-        );
-        Intercom.updateUser({
-          email: this.props.userInfo.email,
-          name:
-            this.props.userInfo.firstname + " " + this.props.userInfo.lastname,
-          language_override: this.props.appLanguage,
-          phone: this.props.userInfo.mobile,
-          companies: this.props.mainBusiness
-            ? [
-                {
-                  company_id: this.props.mainBusiness.businessid,
-                  name: this.props.mainBusiness.businessname,
-                },
-              ]
-            : [],
-        });
-        Intercom.getUnreadConversationCount().then((res) => {
-          RNNotifications.ios.setBadgeCount(res);
-          this.props.setCounterForUnreadMessage(res);
-        });
+      // Intercom.registerIdentifiedUser({
+      //   userId: this.props.userInfo.userid,
+      // }).then((res) => {
+      //   Intercom.setUserHash(
+      //     Platform.OS === "ios"
+      //       ? this.props.iosHashIntercom
+      //       : this.props.andoidHashIntercom
+      //   );
+      //   Intercom.updateUser({
+      //     email: this.props.userInfo.email,
+      //     name:
+      //       this.props.userInfo.firstname + " " + this.props.userInfo.lastname,
+      //     language_override: this.props.appLanguage,
+      //     phone: this.props.userInfo.mobile,
+      //     companies: this.props.mainBusiness
+      //       ? [
+      //           {
+      //             company_id: this.props.mainBusiness.businessid,
+      //             name: this.props.mainBusiness.businessname,
+      //           },
+      //         ]
+      //       : [],
+      //   });
+
+      // });
+      Intercom.getUnreadConversationCount().then((res) => {
+        RNNotifications.ios.setBadgeCount(res);
+        this.props.setCounterForUnreadMessage(res);
       });
     }
   }
@@ -360,13 +359,10 @@ class Dashboard extends Component {
   navigationHandler = (adType) => {
     const { translate } = this.props.screenProps;
     const { fb_connected, fb_ad_account_id } = this.props.mainBusiness;
-    analytics.track(`a_campaign_ad_type`, {
-      source: "dashboard",
-      source_action: "a_campaign_ad_type",
-      campaign_channel: adType.mediaType,
-      campaign_ad_type: adType.value,
-      device_id: this.props.screenProps.device_id,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Campaign Ad Type Selected",
+      button_content: adType.value,
+      source: "Dashboard",
     });
     let businessApproved =
       this.props.mainBusiness && this.props.mainBusiness.approved === "1";
@@ -376,7 +372,7 @@ class Dashboard extends Component {
       this.props.userInfo.superadmin;
     if (!businessApproved && !userisSuperAdmin) {
       this.props.navigation.navigate("VerifyBusiness", {
-        source: "dashboard",
+        source: "Dashboard",
         source_action: "a_campaign_ad_type",
       });
     }
@@ -389,7 +385,7 @@ class Dashboard extends Component {
       adType.mediaType === "snapchat"
     ) {
       this.props.navigation.navigate("SnapchatCreateAdAcc", {
-        source: "dashboard",
+        source: "Dashboard",
         source_action: "a_campaign_ad_type",
       });
     } else if (
@@ -397,7 +393,7 @@ class Dashboard extends Component {
       adType.mediaType === "google"
     ) {
       this.props.navigation.navigate("GoogleCreateAdAcc", {
-        source: "dashboard",
+        source: "Dashboard",
         source_action: "a_campaign_ad_type",
       });
     } else {
@@ -406,14 +402,14 @@ class Dashboard extends Component {
         this.props.mainBusiness.google_suspended === "1"
       ) {
         this.props.navigation.navigate("SuspendedWarning", {
-          source: "dashboard",
+          source: "Dashboard",
           source_action: "a_campaign_ad_type",
         });
       } else if (adType.mediaType === "instagram" && fb_connected === "0") {
         this.props.navigation.navigate("WebView", {
           url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
           title: "Instagram",
-          source: "dashboard",
+          source: "Dashboard",
           source_action: "a_campaign_ad_type",
         });
       } else if (
@@ -472,11 +468,12 @@ class Dashboard extends Component {
   };
 
   reloadData = () => {
-    analytics.track(`a_refresh_list`, {
-      source: "dashboard",
-      source_action: "a_refresh_list",
-      refresh_type: "campaigns",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Refresh List`, {
+      list_type: "Campaign List",
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_name:
+        this.props.mainBusiness && this.props.mainBusiness.businessname,
     });
     // this.props.connect_user_to_intercom(this.props.userInfo.userid);
     // this.props.set_as_seen(false);
@@ -533,13 +530,10 @@ class Dashboard extends Component {
       "source",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`a_create_campaign`, {
-      source,
-      source_action: "a_create_campaign",
-      timestamp: new Date().getTime(),
-      userId: this.props.userInfo.userid,
-      device_id,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Create New Campaign",
+      button_content: "Plus Icon",
+      source: "Dashboard",
     });
 
     let businessApproved =
@@ -551,7 +545,7 @@ class Dashboard extends Component {
     this.props.navigation.navigate(
       !businessApproved && !userisSuperAdmin ? "VerifyBusiness" : "AdType",
       {
-        source: "dashboard",
+        source: "Dashboard",
         source_action: "a_create_campaign",
       }
     );
@@ -612,12 +606,10 @@ class Dashboard extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`dashboard`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "Dashboard",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      device_id: this.props.screenProps.device_id,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     if (
       source_action === "a_move_amount_to_wallet" &&
@@ -678,13 +670,13 @@ class Dashboard extends Component {
             end_time,
             false,
             {
-              source: "dashboard",
+              source: "Dashboard",
               source_action: "a_open_campaign_details",
             }
           );
           this.props.navigation.navigate("GoogleCampaignDetails", {
             campaign: campaign_id,
-            source: "dashboard",
+            source: "Dashboard",
             source_action: "a_open_campaign_details",
           });
           break;
@@ -700,15 +692,12 @@ class Dashboard extends Component {
     }
   };
   handleSwitchLanguage = () => {
-    analytics.track(`a_change_language`, {
-      source: "dashboard",
-      source_action: "a_change_language",
-      prev_langauage: this.props.appLanguage,
+    analytics.track(`Language Selected`, {
+      source: "Dashboard",
       selected_language: this.props.appLanguage === "en" ? "ar" : "en",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.navigation.navigate("SwitchLanguageLoading", {
-      source: "dashboard",
+      source: "Dashboard",
       source_action: "a_change_language",
     });
     // this.props.getLanguageListPOEdit(
@@ -736,11 +725,8 @@ class Dashboard extends Component {
   };
   openIntercom = () => {
     this.setState({ showAlertModal: false });
-    analytics.track(`a_help`, {
-      source: "dashboard",
-      source_action: "a_help",
-      support_type: "intercom",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Intercom Opened`, {
+      source: "Dashboard",
     });
     Intercom.displayConversationsList();
   };
@@ -1005,7 +991,7 @@ class Dashboard extends Component {
                                 <Icon
                                   name="plus"
                                   type="MaterialCommunityIcons"
-                                  style={{ color: "#fff" }}
+                                  style={{ color: globalColors.white }}
                                 />
                               </GradientButton>
                               {adButtons}
@@ -1035,13 +1021,17 @@ class Dashboard extends Component {
                                 ? "VerifyBusiness"
                                 : "TutorialWeb",
                               {
-                                source: "dashboard",
+                                source: "Dashboard",
                                 source_action: "a_open_website_tutorial",
                               }
                             );
                           }}
                         >
                           <LinearGradient
+                            // colors={[
+                            //   globalColors.bluegem,
+                            //   globalColors.bluegem,
+                            // ]}
                             colors={["#41C5FF", "#46ABF4"]}
                             locations={[0.3, 0.75]}
                             style={styles.gradient}
@@ -1090,7 +1080,7 @@ class Dashboard extends Component {
                                   ? "VerifyBusiness"
                                   : "TutorialWeb",
                                 {
-                                  source: "dashboard",
+                                  source: "Dashboard",
                                   source_action: "a_open_website_tutorial",
                                 }
                               );
@@ -1109,7 +1099,7 @@ class Dashboard extends Component {
                             }}
                             strokeColor={"#909090"}
                             renderSearchBar={this.renderSearchBar}
-                            source={"dashboard"}
+                            source={"Dashboard"}
                           />
                         </View>
                         <TouchableOpacity

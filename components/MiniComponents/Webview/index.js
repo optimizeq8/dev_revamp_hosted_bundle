@@ -12,6 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";
 import styles from "./styles";
 import Loading from "../LoadingScreen";
+import { globalColors } from "../../../GlobalStyles";
 const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking");
 
 class index extends Component {
@@ -36,11 +37,10 @@ class index extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`web_view`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "Webview",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     AppState.addEventListener("change", this._handleAppStateChange);
@@ -70,14 +70,14 @@ class index extends Component {
     return (
       <SafeAreaView
         // style={styles.mainSafeArea}
-        style={{ flex: 1 }}
+        style={{ flex: 1, backgroundColor: globalColors.bluegem }}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={styles.gradient}
-        />
+        /> */}
 
         <Container style={styles.container}>
           <CustomHeader
@@ -117,8 +117,8 @@ class index extends Component {
             }}
             onError={(error) => {
               console.log("error loading url", error);
-              analytics.track("a_error", {
-                source: "web_view",
+              analytics.track("Webview Error Thrown", {
+                source: this.props.screenProps.prevAppState,
                 source_action: this.props.navigation.getParam(
                   "source_action",
                   this.props.screenProps.prevAppState

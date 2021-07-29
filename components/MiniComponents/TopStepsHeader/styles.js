@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import { RFValue } from "react-native-responsive-fontsize";
+import { globalColors } from "../../../GlobalStyles";
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
@@ -17,7 +18,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   activeBadege: {
-    backgroundColor: "#9300FF",
+    // backgroundColor: "#9300FF",
+    backgroundColor: globalColors.bluegem,
     width: 35,
     height: 35,
     borderRadius: 50,
@@ -66,7 +68,8 @@ const styles = StyleSheet.create({
   activeTitleText: {
     fontFamily: "montserrat-bold",
     fontSize: RFValue(6, 414),
-    color: "#9300FF",
+    // color: "#9300FF",
+    color: globalColors.bluegem,
     textAlign: "center",
     height: "120%",
     width: "110%",
@@ -95,7 +98,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: RFValue(7, 414),
-    color: "#9300FF",
+    // color: "#9300FF",
+    color: globalColors.bluegem,
     textTransform: "uppercase",
     fontFamily: "montserrat-bold",
     letterSpacing: 0,

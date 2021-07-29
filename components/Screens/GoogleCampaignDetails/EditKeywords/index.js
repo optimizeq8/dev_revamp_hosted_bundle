@@ -32,6 +32,7 @@ import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 // Style
 import styles from "./styles";
 import isUndefined from "lodash/isUndefined";
+import { globalColors } from "../../../../GlobalStyles";
 
 class EditKeywords extends Component {
   static navigationOptions = {
@@ -74,11 +75,12 @@ class EditKeywords extends Component {
   };
 
   handleModalToggle = () => {
-    analytics.track(`ad_edit_modal`, {
-      visible: !this.state.modalVisible,
-      source: "ad_keywords",
-      source_action: "a_toggle_modal",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: `${
+        !this.state.modalVisible ? "Open" : "Close"
+      } Google Keywords Modal`,
+      button_content: "",
+      business_id: this.props.mainBusiness.businessid,
     });
     this.setState({ modalVisible: !this.state.modalVisible });
   };
@@ -91,7 +93,7 @@ class EditKeywords extends Component {
         : null;
     if (!keywordsError) {
       const segmentInfo = {
-        campaignId: this.props.selectedCampaign.campaign.id,
+        campaign_id: this.props.selectedCampaign.campaign.id,
         campaign_keywords: this.state.keywords,
         source: "ad_keywords",
         source_action: "a_update_ad_keywords",
@@ -114,12 +116,12 @@ class EditKeywords extends Component {
         segmentInfo
       );
     } else {
-      analytics.track(`a_error_form`, {
-        error_page: "ad_keywords",
+      analytics.track(`Form Error Made`, {
+        source: "EditKeywords",
         error_description: keywordsError,
-        source: "ad_targeting",
+        source: "GoogleCampaignDetails",
         source_action: "a_update_ad_keywords",
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
       showMessage({
         message: translate(keywordsError),
@@ -138,13 +140,12 @@ class EditKeywords extends Component {
       this.props.prevAppState
     );
 
-    analytics.track(`ad_keywords`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "EditKeywords",
       source,
       source_action,
-      campaign_keywords: this.props.selectedCampaign.keywords.map(
-        (k) => k.keyword
-      ),
-      businessid: this.props.mainBusiness.businessid,
+      form_context: this.props.selectedCampaign.keywords.map((k) => k.keyword),
+      business_id: this.props.mainBusiness.businessid,
     });
   };
   render() {
@@ -164,14 +165,15 @@ class EditKeywords extends Component {
                   borderBottomStartRadius: 30,
                   borderBottomEndRadius: 30,
                   overflow: "hidden",
+                  backgroundColor: globalColors.bluegem,
                 },
               ]}
             >
-              <LinearGradient
+              {/* <LinearGradient
                 colors={["#9300FF", "#5600CB"]}
                 locations={[0, 1]}
                 style={styles.gradient}
-              />
+              /> */}
             </View>
             {rejected ? (
               <Header
@@ -181,7 +183,7 @@ class EditKeywords extends Component {
                 title={this.props.selectedCampaign.campaign.name}
                 icon={"google"}
                 segment={{
-                  source: "ad_keywords",
+                  source: "GoogleEditKeywords",
                   source_action: "a_go_back",
                 }}
                 actionButton={() => this.handleModalToggle()}
@@ -203,7 +205,7 @@ class EditKeywords extends Component {
                 title={this.props.selectedCampaign.campaign.name}
                 icon={"google"}
                 segment={{
-                  source: "ad_keywords",
+                  source: "GoogleEditKeywords",
                   source_action: "a_go_back",
                 }}
                 navigation={this.props.navigation}
@@ -228,7 +230,7 @@ class EditKeywords extends Component {
               data={this.props.campaign.fetchedKeywords}
               campaign_id={this.props.selectedCampaign.campaign.id}
               businessid={this.props.mainBusiness.businessid}
-              source={"ad_keywords"}
+              source={"EditKeywords"}
             />
             {this.props.campaign.uploading ? (
               <ForwardLoading

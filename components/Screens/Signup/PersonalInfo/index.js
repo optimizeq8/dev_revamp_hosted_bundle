@@ -114,10 +114,10 @@ class PersonalInfo extends Component {
         ? value.replace(/[^a-z\u0621-\u064A]/gi, "")
         : value;
     if (stateName !== "password")
-      analytics.track(`a_${stateName}`, {
-        source: "registration_detail",
-        source_action: `a_${stateName}`,
-        value:
+      analytics.track(`Form Populated`, {
+        form_type: "Registration Detail Form",
+        form_field: `${stateName}`,
+        form_value:
           stateName === "firstname" || stateName === "lastname"
             ? value.replace(/[^a-z\u0621-\u064A]/gi, "")
             : value,
@@ -157,12 +157,10 @@ class PersonalInfo extends Component {
       mobile: number,
       country_code: countryCode,
     };
-    analytics.track(`a_mobile_number`, {
-      source: "registration_detail",
-      source_action: `a_mobile_number`,
-      value: number,
-      country_code: countryCode,
-      action_status: valid ? "success" : "failure",
+    analytics.track(`Form Populated`, {
+      form_type: "Registration Detail Form",
+      form_field: `mobile`,
+      form_value: number,
     });
     // if (number.toString().length > 3 && valid) {
     this.setState({
@@ -224,8 +222,8 @@ class PersonalInfo extends Component {
       businesscategoryOtherError ||
       insta_handle_for_reviewError
     ) {
-      analytics.track(`a_error_form`, {
-        error_page: "registration_detail",
+      analytics.track(`Form Error Made`, {
+        error_page: "PersonalInfo (Signup)",
         error_description:
           passwordError ||
           emailError ||
@@ -236,7 +234,7 @@ class PersonalInfo extends Component {
           countryError ||
           businesscategoryOtherError ||
           insta_handle_for_reviewError,
-        source_action: "a_sign_up",
+        source_action: "Creating account",
       });
     }
     this.setState({
@@ -341,7 +339,8 @@ class PersonalInfo extends Component {
       this.props.registerGuestUser(
         info,
         this.props.businessInvite,
-        this.props.navigation
+        this.props.navigation,
+        this.state.businessAccount
       );
     }
     // For invited users
@@ -388,10 +387,10 @@ class PersonalInfo extends Component {
         : stateName === "insta_handle_for_review"
         ? value.replace("@", "")
         : value;
-    analytics.track(`a_${stateName}`, {
-      source: "registration_detail",
-      source_action: `a_${stateName}`,
-      value:
+    analytics.track(`Form Populated`, {
+      form_type: "Registration Detail Form",
+      form_field: `${stateName}`,
+      form_value:
         stateName === "businessname"
           ? value.replace(/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi, "")
           : value,
@@ -459,10 +458,10 @@ class PersonalInfo extends Component {
 
   onSelectedBusinessCategoryChange = (value) => {
     if (value && !isEmpty(value)) {
-      analytics.track(`a_business_category`, {
-        source: "registration_detail",
-        source_action: "a_business_category",
-        value: value[0].value,
+      analytics.track(`Form Populated`, {
+        form_type: "Registration Detail Form",
+        form_field: "businesscategory",
+        form_value: value[0].value,
       });
       this.setState(
         {
@@ -503,10 +502,10 @@ class PersonalInfo extends Component {
   };
   onSelectedCountryChange = (value) => {
     if (value && !isEmpty(value)) {
-      analytics.track(`a_business_country`, {
-        source: "registration_detail",
-        source_action: "a_business_country",
-        value: value[0].value,
+      analytics.track(`Form Populated`, {
+        form_type: "Registration Detail Form",
+        form_field: "country",
+        form_value: value[0].value,
       });
       this.setState(
         {
@@ -739,9 +738,14 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(
       actionCreators.verifyEmail(email, userInfo, businessInvite, navigation)
     ),
-  registerGuestUser: (userInfo, businessInvite, navigation) =>
+  registerGuestUser: (userInfo, businessInvite, navigation, businessAccount) =>
     dispatch(
-      actionCreators.registerGuestUser(userInfo, businessInvite, navigation)
+      actionCreators.registerGuestUser(
+        userInfo,
+        businessInvite,
+        navigation,
+        businessAccount
+      )
     ),
   verifyBusinessName: (businessName, _handleBusinessName, submision) =>
     dispatch(

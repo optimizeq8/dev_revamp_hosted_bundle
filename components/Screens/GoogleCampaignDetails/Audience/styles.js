@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
   safeArea: {
     height: "100%",
     flex: 1,
-    backgroundColor: "#0000",
+    // backgroundColor: "#0000",
+    backgroundColor: globalColors.bluegem,
   },
   mainContainer: {
     backgroundColor: "#0000",

@@ -86,7 +86,7 @@ class AdType extends Component {
     }
 
     this.props.navigation.navigate("Dashboard", {
-      source: "ad_type",
+      source: "AdType",
       source_action: "a_back_button",
     });
     return true;
@@ -95,18 +95,11 @@ class AdType extends Component {
   navigationHandler = (adType) => {
     const { translate } = this.props.screenProps;
 
-    const device_id = this.props.screenProps.device_id;
-    analytics.track(`a_campaign_ad_type`, {
-      source: "ad_type",
-      source_action: "a_campaign_ad_type",
-      campaign_channel: adType.mediaType,
-      campaign_ad_type: adType.value,
-      device_id,
-      context: {
-        device_id: device_id,
-        type: Platform.OS,
-      },
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type:
+        "Ad Type Selection for " + adType.mediaType + " " + adType.value,
+      button_content: adType.value + " description",
+      source: "AdType",
     });
     //Check if account is verified or not
     const { fb_connected, fb_ad_account_id } = this.props.mainBusiness;
@@ -115,8 +108,8 @@ class AdType extends Component {
       !this.props.userInfo.verified_account
     ) {
       this.props.navigation.navigate("VerifyAccount", {
-        source: "ad_type",
-        source_action: "a_campaign_ad_type",
+        source: "AdType",
+        source_action: "a_campaign_ad_type_selected",
       });
     } else {
       if (
@@ -134,16 +127,16 @@ class AdType extends Component {
         adType.mediaType === "snapchat"
       ) {
         this.props.navigation.navigate("SnapchatCreateAdAcc", {
-          source: "ad_type",
-          source_action: "a_campaign_ad_type",
+          source: "AdType",
+          source_action: "a_campaign_ad_type_selected",
         });
       } else if (
         !this.props.mainBusiness.google_account_id &&
         adType.mediaType === "google"
       ) {
         this.props.navigation.navigate("GoogleCreateAdAcc", {
-          source: "ad_type",
-          source_action: "a_campaign_ad_type",
+          source: "AdType",
+          source_action: "a_campaign_ad_type_selected",
         });
       } else if (
         this.props.mainBusiness.google_account_id &&
@@ -151,15 +144,15 @@ class AdType extends Component {
         this.props.mainBusiness.google_suspended === "1"
       ) {
         this.props.navigation.navigate("SuspendedWarning", {
-          source: "ad_type",
-          source_action: "a_campaign_ad_type",
+          source: "AdType",
+          source_action: "a_campaign_ad_type_selected",
         });
       } else if (adType.mediaType === "instagram" && fb_connected === "0") {
         this.props.navigation.navigate("WebView", {
           url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
           title: "Instagram",
-          source: "ad_type",
-          source_action: "a_campaign_ad_type",
+          source: "AdType",
+          source_action: "a_campaign_ad_type_selected",
         });
       } else if (
         adType.mediaType === "instagram" &&
@@ -176,8 +169,8 @@ class AdType extends Component {
       } else
         this.props.navigation.navigate(adType.rout, {
           tempAdType: adType.value,
-          source: "ad_type",
-          source_action: "a_campaign_ad_type",
+          source: "AdType",
+          source_action: "a_campaign_ad_type_selected",
         });
     }
   };
@@ -217,28 +210,10 @@ class AdType extends Component {
   };
 
   setActiveCampaignType = (title) => {
-    const source = this.props.navigation.getParam(
-      "source",
-      this.props.screenProps.prevAppState
-    );
-    const device_id = this.props.screenProps.device_id;
-    analytics.track(`a_campaign_channel`, {
-      source,
-      source_action: "a_campaign_channel",
-      timestamp: new Date().getTime(),
-      device_id,
-      userId: this.props.userInfo.userid,
-      campaign_channel: title,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
-    });
-    analytics.track(`ad_type`, {
-      source,
-      source_action: "a_campaign_channel",
-      timestamp: new Date().getTime(),
-      device_id,
-      userId: this.props.userInfo.userid,
-      campaign_channel: title.toLowerCase(),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Campaign Platform Selection",
+      button_content: "Channel icons",
+      source: "AdType",
     });
     this.setState({
       active: title,
@@ -256,11 +231,10 @@ class AdType extends Component {
       this.props.screenProps.prevAppState
     );
 
-    analytics.track(`ad_type`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "AdType",
       source,
       source_action,
-      campaign_channel: this.state.active.toLowerCase(),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     const changeFbConnectStatus = this.props.navigation.getParam(
       "success",
@@ -328,7 +302,7 @@ class AdType extends Component {
           segment={{
             str: "Ad Type Close",
             obj: { businessname: this.props.mainBusiness.businessname },
-            source: "ad_type",
+            source: "AdType",
             source_action: "a_go_back",
           }}
           navigation={
@@ -446,7 +420,7 @@ class AdType extends Component {
                 this.props.navigation.navigate("WebView", {
                   url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
                   title: "Instagram",
-                  source: "ad_type",
+                  source: "AdType",
                   source_action: "a_connect_to_facebook",
                 })
               }

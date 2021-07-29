@@ -54,13 +54,13 @@ export const verifyInstagramHandleWebsite = (insta_handle) => {
       }
     } catch (err) {
       //   console.log("insta error verify account", err.message || err.response);
-      analytics.track("a_error", {
-        error_page: "my_website_detail",
+      analytics.track("Form Error Made", {
+        source: "MyWebsite",
         error_description: err.message || err.response,
         insta_handle: insta_handle,
         source: "my_website_detail",
         source_action: "a_verify_InstagramHandle_Website",
-        businessid: getState().account.mainBusiness.businessid,
+        business_id: getState().account.mainBusiness.businessid,
       });
       return dispatch({
         type: actionTypes.ERROR_GET_INSTAGRAM_POSTS,
@@ -188,12 +188,13 @@ export const loadMoreInstagramPostWebsite = (instaHandleId, instaEndCursor) => {
       let end_cursor =
         responseMedia.data.data.user.edge_owner_to_timeline_media.page_info
           .end_cursor;
-      analytics.track(`a_load_more_posts`, {
-        source: "my_website_products",
-        source_action: "a_load_more_posts",
+      analytics.track(`Buttton Pressed`, {
+        button_type: "Load More PostsFor Products",
+        source: "MyWebsite",
+
         action_status:
           mediaArray && mediaArray.length > 0 ? "success" : "failure",
-        businessid: getState().account.mainBusiness.businessid,
+        business_id: getState().account.mainBusiness.businessid,
       });
       if (mediaArray && mediaArray.length > 0) {
         var imagesList = mediaArray.map((media) => {
@@ -272,17 +273,17 @@ export const saveWebProductsToHide = (
           return response.data;
         })
         .then((data) => {
-          analytics.track(`a_submit_my_website_products`, {
-            source: "open_my_website",
-            source_action: "a_submit_my_website_products",
-            new: false,
+          analytics.track(`Form Submitted`, {
+            form_type: "Website Products Form",
+            form_context: {
+              webproductsToHide,
+              businesslogo,
+              products_to_hide_id,
+              insta_handle,
+            },
             action_status: data.success ? "success" : "failure",
             error_description: !data.success && data.message,
-            webproductsToHide,
-            businesslogo,
-            products_to_hide_id,
-            insta_handle,
-            businessid: getState().account.mainBusiness.businessid,
+            business_id: getState().account.mainBusiness.businessid,
           });
           showMessage({
             type: data.success ? "success" : "warning",
@@ -320,17 +321,17 @@ export const saveWebProductsToHide = (
           return response.data;
         })
         .then((data) => {
-          analytics.track(`a_submit_my_website_products`, {
-            source: "my_website_products",
-            source_action: "a_submit_my_website_products",
-            new: true,
+          analytics.track(`Form Submitted`, {
+            form_type: "Website Products Form",
+            form_context: {
+              webproductsToHide,
+              businesslogo,
+              products_to_hide_id,
+              insta_handle,
+            },
             action_status: data.success ? "success" : "failure",
             error_description: !data.success && data.message,
-            webproductsToHide,
-            businesslogo,
-            insta_handle,
-            weburl: data.weburl,
-            businessid: getState().account.mainBusiness.businessid,
+            business_id: getState().account.mainBusiness.businessid,
           });
 
           if (data.success) {
@@ -442,17 +443,17 @@ export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
       })
       .then((data) => {
         // console.log("data save", data);
-        analytics.track(`a_submit_my_website_products`, {
-          source: "open_select_product",
-          source_action: "a_submit_my_website_products",
+        analytics.track(`Form Submitted`, {
+          form_type: "Website Products Form",
           action_status: data.data ? "success" : "failure",
-          // error_description: !data.success && data.message,
-          webproductsToAdd,
-          businessid: getState().account.mainBusiness.businessid,
+          form_context: {
+            webproductsToAdd,
+          },
+          business_id: getState().account.mainBusiness.businessid,
         });
 
         NavigationService.navigate("MyWebsiteECommerce", {
-          source: "open_select_product",
+          source: "ProductSelect",
           source_action: "a_submit_my_website_products",
         });
 

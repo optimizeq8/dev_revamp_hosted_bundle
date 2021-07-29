@@ -144,7 +144,8 @@ class Website extends Component {
     });
 
     if (urlError) {
-      const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me|api.whatsapp.|twitter.)/g;
+      const regex =
+        /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me|api.whatsapp.|twitter.)/g;
       showMessage({
         message: translate(
           `${
@@ -181,12 +182,12 @@ class Website extends Component {
       ? this.props.storyAdAttachment.destination
       : this.props.objective;
     if (!this.validateUrl()) {
-      analytics.track(`a_error_form`, {
-        error_page: "ad_swipe_up_destination",
+      analytics.track(`Form Error Made`, {
+        source: "AdDesign Website Siwpe Up",
         error_description: this.state.urlError,
         campaign_channel: "snapchat",
         campaign_url: this.state.campaignInfo.attachment,
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
@@ -215,11 +216,10 @@ class Website extends Component {
     // console.log("businescatId", value);
   };
   closeCallToActionModal = () => {
-    analytics.track(`cta_modal`, {
-      source: "ad_swipe_up_destination",
-      source_action: "a_toggle_cta_modal",
-      visible: false,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Close CTA Modal",
+      button_content: "Call to action",
+      source: "WebsiteSwipeUp",
     });
     this.setState({
       inputCallToAction: false,
@@ -228,12 +228,10 @@ class Website extends Component {
 
   onSelectedCallToActionChange = (value) => {
     if (value && !isEmpty(value)) {
-      analytics.track(`a_change_cta`, {
-        source: "ad_swipe_up_destination",
-        source_action: "a_change_cta",
-        campaign_swipe_up_CTA: value,
-        businessid:
-          this.props.mainBusiness && this.props.mainBusiness.businessid,
+      analytics.track(`Form Populated`, {
+        form_type: "Snapchat Compose Ad Form",
+        form_field: "website_cta",
+        form_value: value,
       });
       this.setState(
         {
@@ -259,11 +257,10 @@ class Website extends Component {
     });
   };
   openCallToActionModal = () => {
-    analytics.track(`cta_modal`, {
-      source: "ad_swipe_up_destination",
-      source_action: "a_toggle_cta_modal",
-      visible: true,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Open CTA Modal",
+      button_content: "Call to action",
+      source: "SnapchatWebsiteSwipeUp",
     });
     this.setState({ inputCallToAction: true });
   };

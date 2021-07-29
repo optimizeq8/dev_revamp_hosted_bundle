@@ -58,11 +58,12 @@ class Transactions extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`open_transactions`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "Transaction",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.getTransactions();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
@@ -95,11 +96,15 @@ class Transactions extends Component {
     } else if (this.props.loading || !this.props.filteredTransactions)
       return (
         <>
-          <LinearGradient
+          <SafeAreaView
+            style={styles.safeAreaContainer}
+            forceInset={{ bottom: "never", top: "always" }}
+          />
+          {/* <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
             style={globalStyles.gradient}
-          />
+          /> */}
           <LoadingScreen dash={true} top={0} />
         </>
       );
@@ -128,17 +133,17 @@ class Transactions extends Component {
             style={styles.safeAreaContainer}
             forceInset={{ bottom: "never", top: "always" }}
           >
-            <LinearGradient
+            {/* <LinearGradient
               colors={[colors.background1, colors.background2]}
               locations={[1, 0.3]}
               style={globalStyles.gradient}
-            />
+            /> */}
             <CustomHeader
               screenProps={this.props.screenProps}
               title={"Transactions"}
               navigation={this.props.navigation}
               segment={{
-                source: "open_transactions",
+                source: "Transactions",
                 source_action: "a_go_back",
               }}
             />
@@ -151,7 +156,7 @@ class Transactions extends Component {
                     customInputStyle={{
                       backgroundColor: "#0004",
                     }}
-                    source={"open_transactions"}
+                    source={"Transactions"}
                   />
                 </View>
                 {this.props.filteredTransactions.length !== 0 && (

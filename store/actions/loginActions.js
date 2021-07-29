@@ -244,11 +244,18 @@ export const login = (userData, navigation) => {
                 invitedEmail: navigation.getParam("email", ""),
               })
             );
+            analytics.track(`Signed In`, {
+              first_name: getState().auth.userInfo.firstname,
+              last_name: getState().auth.userInfo.lastname,
+              email: getState().auth.userInfo.email,
+              mobile: getState().auth.userInfo.mobile,
+              verified_account: getState().auth.userInfo.verified_account,
+            });
             navigation.navigate("Dashboard", {
               v: navigation.getParam("v", ""),
               business: navigation.getParam("business", ""),
               email: navigation.getParam("email", ""),
-              source: "sign_in",
+              source: "Signin",
               source_action: "a_sign_in",
             });
           }
@@ -316,8 +323,8 @@ export const forgotPassword = (email, navigation) => {
         email: email,
       })
       .then((response) => {
-        analytics.track(`a_forget_password`, {
-          source: "forget_password",
+        analytics.track(`Forgot Password Request`, {
+          source: "ForgotPassword",
           source_action: "a_forget_password",
           email,
           action_status: response.data.success ? "success" : "failure",
@@ -425,13 +432,11 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
         const temPwd = navigation.getParam("temp_pwd", false);
         // if tempPwd change relogin for setting new auth token
         if (temPwd && response.data.success) {
-          analytics.track(`a_change_password`, {
-            source: "change_password",
-            source_action: "a_change_password",
-            timestamp: new Date().getTime(),
+          analytics.track(`Password Changed`, {
+            source: "ChangePassword",
             action_status: response.data.success ? "success" : "failure",
             error_description: !response.data.success && response.data.message,
-            businessid:
+            business_id:
               getState().account.mainBusiness &&
               getState().account.mainBusiness.businessid,
           });
@@ -469,13 +474,11 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
 
           //   easing: Easing.linear
         }).start(() => {
-          analytics.track(`a_change_password`, {
-            source: "change_password",
-            source_action: "a_change_password",
-            timestamp: new Date().getTime(),
+          analytics.track(`Password Changed`, {
+            source: "ChangePassword",
             action_status: response.data.success ? "success" : "failure",
             error_description: !response.data.success && response.data.message,
-            businessid:
+            business_id:
               getState().account.mainBusiness &&
               getState().account.mainBusiness.businessid,
           });
