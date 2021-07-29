@@ -82,10 +82,12 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 10,
+    backgroundColor: globalColors.bluegem,
   },
   mainSafeArea: {
     height: "100%",
     // backgroundColor: "#0000",
+    backgroundColor: globalColors.bluegem,
   },
   blankView: {
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -188,7 +190,7 @@ const styles = StyleSheet.create({
     display: "flex",
   },
   container: {
-    backgroundColor: "transparent",
+    // backgroundColor: "transparent",
     flex: 1,
   },
   inputText: {

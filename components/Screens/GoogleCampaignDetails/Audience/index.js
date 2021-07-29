@@ -58,7 +58,7 @@ import {
 } from "react-native-responsive-screen";
 import { isRTL } from "expo-localization";
 
-class GoogleAdTargetting extends Component {
+class GoogleAdTargeting extends Component {
   static navigationOptions = {
     header: null,
     gesturesEnabled: false,
@@ -93,10 +93,10 @@ class GoogleAdTargetting extends Component {
   }
 
   handleBackButton = () => {
-    analytics.track(`a_go_back`, {
-      source: "ad_targeting",
-      source_action: "a_go_back",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Go Back Button",
+      source: "Goolge Ad Targeting",
+      business_id: this.props.mainBusiness.businessid,
     });
     this.props.navigation.goBack();
     return true;
@@ -344,12 +344,13 @@ class GoogleAdTargetting extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`ad_targeting`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "GoogleAudience",
       source,
       source_action,
       campaign_channel: "google",
       campaign_ad_type: "GoogleSEAd",
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
   };
   render() {
@@ -449,11 +450,11 @@ class GoogleAdTargetting extends Component {
           forceInset={{ bottom: "never", top: "always" }}
         >
           <NavigationEvents onDidFocus={this.onDidFocus} />
-          <LinearGradient
+          {/* <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
             style={globalStyles.gradient}
-          />
+          /> */}
           <Container style={styles.mainContainer}>
             <Container style={styles.container}>
               <CustomHeader
@@ -463,7 +464,7 @@ class GoogleAdTargetting extends Component {
                   obj: {
                     businessname: this.props.mainBusiness.businessname,
                   },
-                  source: "ad_targeting",
+                  source: "GoogleAdTargeting",
                   source_action: "a_go_back",
                 }}
                 navigation={this.props.navigation}
@@ -696,7 +697,7 @@ class GoogleAdTargetting extends Component {
                         title="Select Regions"
                         screenProps={this.props.screenProps}
                         segment={{
-                          source: "regions_modal",
+                          source: "GoogleAdTargetingRegionsModal",
                           source_action: "a_go_back",
                         }}
                       />
@@ -735,7 +736,7 @@ class GoogleAdTargetting extends Component {
                           this.setModalVisible(false);
                         }}
                         segment={{
-                          source: "country_modal",
+                          source: "GoogleAdTargetingCountryModal",
                           source_action: "a_go_back",
                         }}
                         title="Select Country"
@@ -787,4 +788,4 @@ const mapDispatchToProps = (dispatch) => ({
   get_google_SE_location_list_reach: (country) =>
     dispatch(actionCreators.get_google_SE_location_list_reach(country)),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(GoogleAdTargetting);
+export default connect(mapStateToProps, mapDispatchToProps)(GoogleAdTargeting);

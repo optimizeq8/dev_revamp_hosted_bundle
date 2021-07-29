@@ -4,6 +4,8 @@ import AppUpdateChecker from "../Screens/AppUpdateChecker";
 import SwitchLanguage from "../Screens/SwitchLanguage";
 import SwitchLanguageLoading from "../Screens/SwitchLanguage/Loading";
 import RegistrationSuccess from "../Screens/Signup/RegistrationSuccess";
+import WebView from "../MiniComponents/Webview";
+
 import createNativeStackNavigator from "react-native-screens/createNativeStackNavigator";
 
 import Signin from "../Screens/Signin";
@@ -21,6 +23,7 @@ export default createNativeStackNavigator(
     SwitchLanguage: SwitchLanguage,
     SwitchLanguageLoading: SwitchLanguageLoading,
     RegistrationSuccess: RegistrationSuccess,
+    WebView: WebView,
   },
   {
     initialRouteName: "SwitchLanguage",

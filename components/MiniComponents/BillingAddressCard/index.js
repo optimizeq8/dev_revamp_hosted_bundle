@@ -173,12 +173,10 @@ class BillingAddressCard extends React.Component {
     ) {
       this.props._handleSubmission();
     } else {
-      analytics.track(`a_business_address`, {
-        source: "open_business_address",
-        source_action: "a_business_address",
+      analytics.track(`Form Error Made`, {
+        source: "BillingAddressCard",
         error_desctiption: "Please complete the mandatory fields",
-        action_status: "failure",
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
@@ -289,7 +287,7 @@ class BillingAddressCard extends React.Component {
           title={"Billing Address"}
           navigation={this.props.navigation}
           segment={{
-            source: "open_business_address",
+            source: "BillingAddressCard",
             source_action: "a_go_back",
           }}
         />

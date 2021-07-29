@@ -62,7 +62,7 @@ export default StyleSheet.create({
   },
   logo: {
     alignSelf: "center",
-    bottom: 20,
+    bottom: RFValue(15, 414),
   },
   flex: {
     justifyContent: "center",

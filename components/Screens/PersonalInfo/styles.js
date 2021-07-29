@@ -1,7 +1,12 @@
 import { StyleSheet, PixelRatio, Platform, I18nManager } from "react-native";
+import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
-  safeAreaViewContainer: { flex: 1, backgroundColor: "#0000" },
+  safeAreaViewContainer: {
+    flex: 1,
+    //  backgroundColor: "#0000",
+    backgroundColor: globalColors.bluegem,
+  },
   mainCard: {
     flex: 1,
   },

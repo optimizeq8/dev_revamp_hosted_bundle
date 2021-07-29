@@ -28,13 +28,12 @@ export const previewHandler = (
   let call_to_action = selectedCampaign.call_to_action;
   let destination = selectedCampaign.destination;
 
-  analytics.track(`a_preview_ad`, {
-    source: "campaign_details",
-    source_action: "a_preview_ad",
-    action_status: "success",
-    campaign_channel: "instagram",
+  analytics.track(`Button Pressed`, {
+    button_type: "Preview Instagram Campaign Media",
+    button_content: "Campaign Media File",
+    source: "InstagramCampaignDetail",
     campaign_ad_type: selectedCampaign.campaign_type,
-    businessid: mainBusiness.businessid,
+    business_id: mainBusiness.businessid,
   });
   navigation.navigate(
     selectedCampaign.campaign_type !== "InstagramStoryAd"

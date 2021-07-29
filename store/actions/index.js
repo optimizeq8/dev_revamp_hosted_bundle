@@ -127,6 +127,7 @@ export {
   getWalletTransactionsHistory,
   getPaymentMethods,
   payment_request_payment_method,
+  exportTransactionInvoice,
 } from "./transactionActions";
 
 export {

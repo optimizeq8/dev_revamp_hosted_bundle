@@ -48,13 +48,13 @@ export const previewHandler = (
         ? JSON.parse(selectedCampaign.attachment).icon_media_url
         : "";
   }
-  analytics.track(`a_preview_ad`, {
-    source: "campaign_details",
-    source_action: "a_preview_ad",
-    action_status: "success",
+  analytics.track(`Button Pressed`, {
+    button_type: "Preview Campaign Media",
+    button_content: "Campaign Media File",
     campaign_channel: "snapchat",
     campaign_ad_type: selectedCampaign.campaign_type,
-    businessid: mainBusiness.businessid,
+    campaign_id: selectedCampaign.campaign_id,
+    business_id: mainBusiness.businessid,
   });
 
   navigation.push(

@@ -79,12 +79,10 @@ class AddressForm extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`open_business_address`, {
+    analytics.track(`Screen Viewed`, {
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      ...this.props.address,
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
     this.setState({
       from: this.props.navigation.getParam("from", null),
@@ -151,11 +149,11 @@ class AddressForm extends Component {
         style={styles.safeAreaContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         {/* TODO: When user selects CC display this */}
         {this.state.from === "creditCard" &&
         !isUndefined(this.state.addressId) &&

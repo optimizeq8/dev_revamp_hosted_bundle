@@ -50,16 +50,15 @@ class AppSearchModal extends Component {
         // console.log(err);
 
         this.props.setTheState({ loading: false });
-        analytics.track(`a_error`, {
-          error_page: "app_search_modal",
+        analytics.track(`Form Error Made`, {
+          source: "Instagram/AppSearchModal",
           error_description:
             err.response && err.response.data
               ? err.response.data.error
               : "Something went wrong!",
-          source: "ad_swipe_up_destination",
           source_action: "a_app_search_modal",
           campaign_app_OS: "ANDROID",
-          businessid: this.props.mainBusiness.businessid,
+          business_id: this.props.mainBusiness.businessid,
         });
         this.refs.modalFlash.showMessage({
           message:
@@ -98,16 +97,15 @@ class AppSearchModal extends Component {
         console.log(err);
 
         this.props.setTheState({ loading: false });
-        analytics.track(`a_error`, {
-          error_page: "app_search_modal",
+        analytics.track(`Form Error Made`, {
+          source: "Instagram/AppSearchModal",
           error_description:
             err.response && err.response.data
               ? err.response.data.error
               : "Something went wrong!",
-          source: "ad_swipe_up_destination",
           source_action: "a_app_search_modal",
           campaign_app_OS: "iOS",
-          businessid: this.props.mainBusiness.businessid,
+          business_id: this.props.mainBusiness.businessid,
         });
         this.refs.modalFlash.showMessage({
           message: "Something went wrong!",
@@ -180,7 +178,7 @@ class AppSearchModal extends Component {
                 screenProps={this.props.screenProps}
                 closeButton={true}
                 segment={{
-                  source: "app_search_modal",
+                  source: "InstagramAppSearchModal",
                   source_action: "a_go_back",
                 }}
                 actionButton={() => this.submitApp(true)} //when a user selects and closes the modal,
@@ -254,12 +252,14 @@ class AppSearchModal extends Component {
                     }
                     onBlur={() => {
                       if (appValue !== "") {
-                        analytics.track(`a_app_search`, {
-                          keywords: appValue,
-                          source: "app_search_modal",
-                          source_action: "a_app_search",
-                          campaign_app_OS: appSelection,
-                          businessid: this.props.mainBusiness.businessid,
+                        analytics.track(`Form Populated`, {
+                          form_type: "Instagram App Search",
+                          form_field: "app_search",
+                          form_value: {
+                            name: appValue,
+                            campaign_app_OS: appSelection,
+                          },
+                          business_id: this.props.mainBusiness.businessid,
                         });
                         switch (appSelection) {
                           case "iOS":

@@ -34,15 +34,12 @@ export const create_google_ad_account = (info, navigation) => {
         return res.data;
       })
       .then((data) => {
-        analytics.track(`a_accept_ad_TNC`, {
-          source: "ad_TNC",
-          source_action: "a_accept_ad_TNC",
+        analytics.track(`Google AD Account Created`, {
+          source: "GoogletCreateAdAcc",
           campaign_channel: "google",
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
-          businessid: info.businessid,
-          action_status: data.error ? "failure" : "success",
-          businessid: getState().account.mainBusiness.businessid,
+          form_context: { ...info },
+          action_status: data.success ? "success" : "failure",
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (data.error) {
           showMessage({
@@ -72,18 +69,15 @@ export const create_google_ad_account = (info, navigation) => {
           });
       })
       .catch((err) => {
-        analytics.track(`a_error`, {
-          error_page: "ad_TNC",
-          action_status: "failure",
+        analytics.track(`Form Error Made`, {
+          source: "GoogletCreateAdAcc",
           campaign_channel: "google",
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
           source_action: "a_accept_ad_TNC",
           error_description:
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
@@ -185,16 +179,14 @@ export const create_google_SE_campaign_info = (
         return res.data;
       })
       .then((data) => {
-        analytics.track(`a_submit_ad_objective`, {
-          source: "ad_objective",
-          campaign_channel: "google",
-          action_status: !data.error ? "success" : "failure",
-          source_action: "a_submit_ad_objective",
-          timestamp: new Date().getTime(),
-          campaign_error: data.error,
-          device_id: getUniqueId(),
-          ...segmentInfo,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track(`Form Submitted`, {
+          form_type: "Google Ad Info Form",
+          form_context: {
+            action_status: !data.error ? "success" : "failure",
+            campaign_error: data.error,
+            ...segmentInfo,
+          },
+          busines_id: getState().account.mainBusiness.businessid,
         });
         if (data.error) {
           showMessage({
@@ -270,15 +262,15 @@ export const create_google_SE_campaign_ad_design = (
         return res.data;
       })
       .then((data) => {
-        analytics.track(`a_submit_ad_design`, {
-          source: "ad_design",
-          source_action: "a_submit_ad_design",
-          timestamp: new Date().getTime(),
-          ...segmentInfo,
-          action_status: !data.error ? "success" : "failure",
-          campaign_resumbit: rejected,
-          campaign_error: data.error,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track(`Form Submitted`, {
+          form_type: "Google Ad Design Form",
+          form_context: {
+            ...segmentInfo,
+            action_status: !data.error ? "success" : "failure",
+            campaign_resumbit: rejected,
+            campaign_error: data.error,
+          },
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (!data.error) {
           //do not set the reducer if it is a rejected data
@@ -304,12 +296,12 @@ export const create_google_SE_campaign_ad_design = (
       .then((data) => {
         if (rejected && !data.error)
           NavigationService.navigate("Dashboard", {
-            source: "ad_design",
+            source: "GoogleComposeAd",
             source_action: "a_submit_ad_design",
           });
         else if (!rejected && !data.error) {
-          NavigationService.navigate("GoogleAdTargetting", {
-            source: "ad_design",
+          NavigationService.navigate("GoogleAdTargeting", {
+            source: "GoogleComposeAd",
             source_action: "a_submit_ad_design",
           });
         }
@@ -362,13 +354,13 @@ export const get_google_SE_keywords = (
         } else return res.data;
       })
       .then((data) => {
-        analytics.track(`a_keywords_search`, {
+        analytics.track(`Google Keywords Searched`, {
           ...segmentInfo,
           action_status: !data.error ? "success" : "error",
           keywords: keyword,
           no_of_results: data.keywords && data.keywords.length,
-          error_description: data.error,
-          businessid: getState().account.mainBusiness.businessid,
+          error_description: !!data.error && data.error,
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (!data.error) {
           return dispatch({
@@ -427,11 +419,14 @@ export const create_google_SE_campaign_ad_targeting = (info, segmentInfo) => {
         return res.data;
       })
       .then((data) => {
-        analytics.track(`a_submit_ad_targeting`, {
-          ...segmentInfo,
-          action_status: data.error ? "failure" : "success",
-          campaign_error: data.error,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track(`Form Submitted`, {
+          form_type: "Google Ad Targeting Form",
+          form_context: {
+            ...segmentInfo,
+            action_status: data.error ? "failure" : "success",
+            campaign_error: data.error,
+          },
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (!data.error) {
           dispatch({
@@ -448,12 +443,12 @@ export const create_google_SE_campaign_ad_targeting = (info, segmentInfo) => {
             })
           );
         } else {
-          analytics.track(`a_error`, {
-            error_page: "ad_targeting",
+          analytics.track(`Form Error Made`, {
+            source: "GoogleAdTargeting",
             source_action: "a_submit_ad_targeting",
             error_description:
               data.error || "Something went wrong. Please try again",
-            businessid: getState().account.mainBusiness.businessid,
+            business_id: getState().account.mainBusiness.businessid,
           });
           showMessage({
             message: data.error,
@@ -526,16 +521,17 @@ export const get_google_campiagn_details = (
         return res.data;
       })
       .then((data) => {
-        // added to handle in case of error
-        analytics.track(`a_open_campaign_details`, {
-          ...segmentInfo,
+        analytics.track(`Button Pressed`, {
+          button_type: "Open Campaign Details",
           action_status: !data.error ? "success" : "failure",
           campaign_id: id,
           campaign_type: "google",
           campaign_ad_type: "GoogleSEAd",
-          error_description: data.error,
-          businessid: getState().account.mainBusiness.businessid,
+          error_description: !data.success && data.message,
+          busines_id: getState().account.mainBusiness.businessid,
         });
+
+        // added to handle in case of error
         if (data.error) {
           showMessage({
             message: data.error,
@@ -668,17 +664,20 @@ export const update_google_audience_targeting = (info, segmentInfo) => {
         return data;
       })
       .then((data) => {
-        analytics.track(`a_update_ad_targeting`, {
-          ...segmentInfo,
+        analytics.track(`Form Submitted`, {
+          form_type: "Google Ad Targeting Form",
+          form_context: {
+            ...info,
+          },
           action_status: !data.error ? "success" : "failure",
           error_description:
             data.error &&
             (data.error || "Oops! Something went wrong. Please try again"),
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (!data.error) {
           NavigationService.navigate("Dashboard", {
-            source: "ad_targeting",
+            source: "GoogleAdTargeting",
             source_action: "a_update_ad_targeting",
           });
         } else {
@@ -691,12 +690,11 @@ export const update_google_audience_targeting = (info, segmentInfo) => {
         }
       })
       .catch((err) => {
-        analytics.track(`a_error`, {
-          ...segmentInfo,
-          error_page: segmentInfo.source,
-          action_status: "failure",
+        analytics.track(`Form Error Made`, {
+          form_field: segmentInfo.source_action,
+          source: segmentInfo.source,
           error_description: err.message || err.response,
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
@@ -736,13 +734,15 @@ export const update_google_keywords = (info, segmentInfo) => {
         return data;
       })
       .then((data) => {
-        analytics.track(`a_update_ad_keywords`, {
+        analytics.track(`Form Submitted`, {
+          form_type: "Google Keywords Update Form",
+          form_context: {},
           ...segmentInfo,
           action_status: !data.error ? "success" : "failure",
           error_description:
             data.error &&
             (data.error || "Oops! Something went wrong. Please try again"),
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (!data.error) {
           NavigationService.navigate("Dashboard", {
@@ -750,14 +750,14 @@ export const update_google_keywords = (info, segmentInfo) => {
             source_action: segmentInfo.source_action,
           });
         } else {
-          analytics.track(`a_error`, {
+          analytics.track(`Form Error Made`, {
             ...segmentInfo,
-            error_page: segmentInfo.source,
+            source: segmentInfo.source,
             action_status: !data.error ? "success" : "failure",
             error_description:
               data.error &&
               (data.error || "Oops! Something went wrong. Please try again"),
-            businessid: getState().account.mainBusiness.businessid,
+            business_id: getState().account.mainBusiness.businessid,
           });
           showMessage({
             message: "Oops! Something went wrong. Please try again.",
@@ -768,12 +768,11 @@ export const update_google_keywords = (info, segmentInfo) => {
         }
       })
       .catch((err) => {
-        analytics.track(`a_error`, {
-          ...segmentInfo,
-          error_page: segmentInfo.source,
+        analytics.track(`Form Error Made`, {
+          source: segmentInfo.source,
           action_status: !data.error ? "success" : "failure",
           error_description: err.message || err.response,
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
@@ -809,25 +808,26 @@ export const create_google_keywords = (info, segmentInfo) => {
         return data;
       })
       .then((data) => {
-        analytics.track(`a_ad_keywords`, {
-          timestamp: new Date().getTime(),
-          action_status: data.error ? "failure" : "success",
-          campaign_error: data.error,
-          ...segmentInfo,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track(`Form Submitted`, {
+          form_type: "Google Ad Targeting Form",
+          form_context: {
+            action_status: data.error ? "failure" : "success",
+            campaign_error: data.error,
+            ...segmentInfo,
+          },
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (!data.error) {
           NavigationService.navigate("GoogleAdPaymentReview", {
-            source: "ad_design",
-            source_action: "a_submit_ad_design",
+            source: "GoogeAdTargeting",
+            source_action: "a_submit_ad_tageting",
           });
         } else {
-          analytics.track(`a_error`, {
-            error_page: "ad_targeting",
+          analytics.track(`Form Error Made`, {
             source_action: "a_ad_keywords",
             error_description:
               data.error || "Something went wrong. Please try again",
-            businessid: getState().account.mainBusiness.businessid,
+            business_id: getState().account.mainBusiness.businessid,
           });
           showMessage({
             message: "Oops! Something went wrong. Please try again.",
@@ -883,19 +883,25 @@ export const enable_end_or_pause_google_campaign = (
       )
       .then((res) => res.data)
       .then((data) => {
-        analytics.track(`a_update_campaign_status`, {
-          campaignId: campaign_id,
-          campaign_status: endCampaign
-            ? "END"
-            : pauseOrEnable
-            ? "LIVE"
-            : "PAUSE",
-          action_status: !data.error ? "sucsess" : "failure",
-          source: "campaign_detail",
-          source_action: "a_update_campaign_status",
-          campaign_error: data.error,
-          businessid: getState().account.mainBusiness.businessid,
-        });
+        analytics.track(
+          `Campaign ${
+            endCampaign ? "Ended" : pauseOrEnable ? "Resumed" : "Paused"
+          } `,
+          {
+            campaign_channel: "google",
+            campaign_id: campaign_id,
+            campaign_status: endCampaign
+              ? "END"
+              : pauseOrEnable
+              ? "LIVE"
+              : "PAUSE",
+            action_status: !data.error ? "sucsess" : "failure",
+            source: "GoogleCampaignDetails",
+            source_action: "a_update_campaign_status",
+            error_description: !!data.error && data.error,
+            business_id: getState().account.mainBusiness.businessid,
+          }
+        );
         dispatch({
           type: actionTypes.UPDATE_GOOGLE_CAMPAIGN_STATUS,
           payload: data,
@@ -929,15 +935,14 @@ export const get_budget = (info, segmentInfo, navigation) => {
         return data;
       })
       .then((data) => {
-        analytics.track(`a_get_budget`, {
-          ...segmentInfo,
-          campaign_channel: "google",
-          action_status: !data.error ? "success" : "failure",
-          source: "ad_objective",
-          source_action: "a_get_budget",
-          timestamp: new Date().getTime(),
-          campaign_error: data.error,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track(`Form Submitted`, {
+          form_type: "Google Ad Info Budget",
+          form_context: {
+            ...segmentInfo,
+            action_status: !data.error ? "success" : "failure",
+            campaign_error: data.error,
+          },
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (!data.error) {
           dispatch({
@@ -945,7 +950,7 @@ export const get_budget = (info, segmentInfo, navigation) => {
             payload: data,
           });
           navigation.push("GoogleSEAPreviewScreen", {
-            source: "ad_objective",
+            source: "GoogleAdInfo",
             source_action: "a_submit_ad_objective",
           });
         } else
@@ -981,16 +986,16 @@ export const downloadGoogleCSV = (campaign_id, email, showModalMessage) => {
       )
       .then((res) => res.data)
       .then((data) => {
-        analytics.track(`a_share_csv`, {
+        analytics.track(`CSV Downloaded`, {
           channel: "email",
-          source: "ad_detail",
+          source: "GoogleCampaignDetails",
           source_action: "a_share_csv",
           campaign_channel: "google",
           action_status: data.message ? "success" : "failure",
           campaign_error: data.error,
-          campaignId: campaign_id,
+          campaign_id: campaign_id,
           export_email: email,
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (data.message) showModalMessage(data.message, "success");
       })

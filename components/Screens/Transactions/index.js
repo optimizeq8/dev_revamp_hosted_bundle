@@ -35,6 +35,7 @@ import { widthPercentageToDP } from "react-native-responsive-screen";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";
 import globalStyles from "../../../GlobalStyles";
+import Loading from "../../MiniComponents/LoadingScreen";
 
 class Transactions extends Component {
   state = {
@@ -57,11 +58,12 @@ class Transactions extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`open_transactions`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "Transaction",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.getTransactions();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
@@ -71,11 +73,15 @@ class Transactions extends Component {
     FilterMenu = require("../../MiniComponents/FilterMenu").default;
   };
 
+  showTransactionPdf = (reference_id) => {
+    this.props.exportTransactionInvoice(reference_id);
+  };
   renderTransactionCard = ({ item }) => (
     <TransactionCard
       key={item.payment_id}
       transaction={item}
       screenProps={this.props.screenProps}
+      showTransactionPdf={this.showTransactionPdf}
     />
   );
   render() {
@@ -90,11 +96,15 @@ class Transactions extends Component {
     } else if (this.props.loading || !this.props.filteredTransactions)
       return (
         <>
-          <LinearGradient
+          <SafeAreaView
+            style={styles.safeAreaContainer}
+            forceInset={{ bottom: "never", top: "always" }}
+          />
+          {/* <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
             style={globalStyles.gradient}
-          />
+          /> */}
           <LoadingScreen dash={true} top={0} />
         </>
       );
@@ -107,6 +117,7 @@ class Transactions extends Component {
           open={this.state.sidemenustate}
         />
       ) : null;
+
       return (
         <Sidemenu
           onChange={(isOpen) => {
@@ -122,17 +133,17 @@ class Transactions extends Component {
             style={styles.safeAreaContainer}
             forceInset={{ bottom: "never", top: "always" }}
           >
-            <LinearGradient
+            {/* <LinearGradient
               colors={[colors.background1, colors.background2]}
               locations={[1, 0.3]}
               style={globalStyles.gradient}
-            />
+            /> */}
             <CustomHeader
               screenProps={this.props.screenProps}
               title={"Transactions"}
               navigation={this.props.navigation}
               segment={{
-                source: "open_transactions",
+                source: "Transactions",
                 source_action: "a_go_back",
               }}
             />
@@ -145,7 +156,7 @@ class Transactions extends Component {
                     customInputStyle={{
                       backgroundColor: "#0004",
                     }}
-                    source={"open_transactions"}
+                    source={"Transactions"}
                   />
                 </View>
                 {this.props.filteredTransactions.length !== 0 && (
@@ -168,6 +179,8 @@ class Transactions extends Component {
                   {translate("No transactions available")}
                 </Text>
               )}
+
+              {this.props.loadingTransactionInvoice && <Loading dash={true} />}
               <FlatList
                 renderItem={this.renderTransactionCard}
                 data={this.props.filteredTransactions}
@@ -189,10 +202,13 @@ const mapStateToProps = (state) => ({
   transactionList: state.transA.transactionList,
   filteredTransactions: state.transA.filteredTransactions,
   errorTransactionList: state.transA.errorTransactionList,
+  loadingTransactionInvoice: state.transA.loadingTransactionInvoice,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onSelect: (query) => dispatch(actionCreators.filterCampaignsStatus(query)),
   getTransactions: () => dispatch(actionCreators.getTransactions()),
+  exportTransactionInvoice: (reference_id) =>
+    dispatch(actionCreators.exportTransactionInvoice(reference_id)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Transactions);

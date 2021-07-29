@@ -122,12 +122,11 @@ class ProductSelect extends React.Component {
     if (!checkifALreadyExist) {
       newCartList.push(item.imageId);
 
-      analytics.track(`a_products_to_hide_in_cart`, {
+      analytics.track(`Button Pressed`, {
+        button_type: "Hide Product From Website",
         source: this.props.source,
-        source_action: "a_add_products",
-        timestamp: new Date().getTime(),
         products_to_hide_list: newCartList,
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
       const counterNew = this.state.counter;
       this.setState({
@@ -142,12 +141,11 @@ class ProductSelect extends React.Component {
 
       newCartList.splice(index, 1);
 
-      analytics.track(`a_products_to_hide_in_cart`, {
+      analytics.track(`Button Pressed`, {
+        button_type: "Show Product On Website",
         source: this.props.source,
-        source_action: "a_remove_products",
-        timestamp: new Date().getTime(),
         products_to_hide_list: newCartList,
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
       this.setState({
         cartList: newCartList,

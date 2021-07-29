@@ -27,6 +27,7 @@ const initialState = {
   walletTransactionListLoading: false,
   paymentMethods: [],
   loadingPaymentMethods: false,
+  loadingTransactionInvoice: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -159,15 +160,14 @@ const reducer = (state = initialState, action) => {
             return transaction;
         });
       }
-      analytics.track(`a_filter`, {
-        source: "open_transactions",
-        source_action: "a_filter",
+      analytics.track(`Transaction List Filtered`, {
+        source: "Transactions",
         no_of_results: filtered && filtered.length,
         filter_type: "transaction",
         keywords: action.payload.value,
         start_date: startSearch,
         end_date: endSearch,
-        businessid: action.payload.businessid,
+        business_id: action.payload.businessid,
       });
       return {
         ...state,
@@ -236,6 +236,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         paymentMethods: action.payload.data,
         loadingPaymentMethods: action.payload.loading,
+      };
+    case actionTypes.LOADING_TRANSACTION_INVOICE:
+      return {
+        ...state,
+        loadingTransactionInvoice: action.payload,
       };
     default:
       return state;

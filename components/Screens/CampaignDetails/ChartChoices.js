@@ -38,9 +38,9 @@ export default class ChartChoices extends Component {
         onPressAction={() => {
           this.props.changeChart(choice);
           this.setState({ selectedChoice: choice });
-          analytics.track(`a_${choice}`, {
-            source: "campaign_detail",
-            source_action: `a_${choice}`,
+          analytics.track(`Button Pressed`, {
+            button_type: "Graph Duration Selection",
+            button_content: choice,
           });
         }}
         style={[styles.chartChoiceButtons]}

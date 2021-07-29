@@ -90,16 +90,10 @@ class VerifyAccount extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    const device_id = this.props.screenProps.device_id;
-    analytics.track(`start_verify`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "VerifyAccount",
       source,
       source_action,
-      device_id,
-      userId: this.props.userInfo.userid,
-      timestamp: new Date().getTime(),
-      verification_channel: "Mobile",
-      channel_changed: false,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     // USING APP STATE To see if screen is focused or not
     AppState.addEventListener("change", this.handleDidFocusLink);
@@ -132,23 +126,13 @@ class VerifyAccount extends Component {
         verifyByMobile: !this.state.verifyByMobile,
       },
       () => {
-        analytics.track(
-          `a_verification_by_${this.state.verifyByMobile ? "mobile" : "email"}`,
-          {
-            source: "start_verify",
-            source_action: `a_verification_by_${
-              this.state.verifyByMobile ? "mobile" : "email"
-            }`,
-            timestamp: new Date().getTime(),
-            device_id: this.props.screenProps.device_id,
-            verification_channel: `${
-              this.state.verifyByMobile ? "Mobile" : "Email"
-            }`,
-            channel_changed: true,
-            userId: this.props.userInfo.userid,
-            businessid: this.props.mainBusiness.businessid,
-          }
-        );
+        analytics.track(`Button Pressed`, {
+          button_type: "Change Verification Mode",
+          button_content: this.state.verifyByMobile
+            ? "Verify By E-mail Instead"
+            : "Verify By Mobile Number Instead",
+          source: "Tutorial",
+        });
       }
     );
   };
@@ -160,11 +144,10 @@ class VerifyAccount extends Component {
   };
 
   changePhoneNo = (number, countryCode, type, valid) => {
-    analytics.track(`a_change_mobile_number`, {
-      source: "start_verify",
-      source_action: "a_change_mobile_number",
-      mobile: number,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Verifying Mobile Number",
+      form_field: "mobile",
+      form_value: number,
     });
     this.setState({
       phoneNum: number,
@@ -185,6 +168,11 @@ class VerifyAccount extends Component {
    *  Send Verification Code To Mobile
    *   */
   sendMobileNo = () => {
+    analytics.track("Button Pressed", {
+      button_type: "Send OTP By SMS",
+      button_content: "Verify",
+      source: "VerifyAccount",
+    });
     const { translate } = this.props.screenProps;
     if (!this.state.valid) {
       showMessage({
@@ -205,6 +193,11 @@ class VerifyAccount extends Component {
    *  Send Verification Code To Mobile
    *   */
   sendEmail = () => {
+    analytics.track("Button Pressed", {
+      button_type: "Send OTP By Email",
+      button_content: "Verify",
+      source: "VerifyAccount",
+    });
     // Taking USER's original phone number that was used while registeration
     const mobile = this.props.userInfo.mobile.substring(3);
     this.props.resendVerifyMobileCodeByEmail({
@@ -226,43 +219,28 @@ class VerifyAccount extends Component {
       !prevState.verifyByMobile &&
       this.state.verifyByMobile
     ) {
-      analytics.track(`start_verify`, {
-        source,
-        source_action: `a_verification_by_mobile`,
-        timestamp: new Date().getTime(),
-        device_id: this.props.screenProps.device_id,
-        verification_channel: "Mobile",
-        channel_changed: true,
-        userId: this.props.userInfo.userid,
-        businessid: this.props.mainBusiness.businessid,
+      analytics.track(`Screen Viewed`, {
+        screen_name: "VerifyAccount",
+        source: "VerifyAccount",
+        source_action: "changed_to_mboile_number",
       });
     } else if (
       !this.props.successNo &&
       !verifyByMobile &&
       prevState.verifyByMobile
     ) {
-      analytics.track(`start_verify`, {
-        source,
-        source_action: `a_verification_by_email`,
-        timestamp: new Date().getTime(),
-        device_id: this.props.screenProps.device_id,
-        verification_channel: "Email",
-        channel_changed: true,
-        userId: this.props.userInfo.userid,
-        businessid: this.props.mainBusiness.businessid,
+      analytics.track(`Screen Viewed`, {
+        screen_name: "VerifyAccount",
+        source: "VerifyAccount",
+        source_action: "changed_to_email",
       });
     } else if (!prevProps.successNo && this.props.successNo) {
-      analytics.track(`otp_verify`, {
-        source: this.state.resend_otp ? "otp_verify" : "start_verify",
-        source_action: this.state.resend_otp
-          ? `a_resend_otp`
-          : `a_verification_by_${verifyByMobile ? "mobile" : "email"}`,
-        timestamp: new Date().getTime(),
-        device_id: this.props.screenProps.device_id,
-        verification_channel: verifyByMobile ? "Mobile" : "Email",
-        userId: this.props.userInfo.userid,
-        resend_otp: this.state.resend_otp,
-        businessid: this.props.mainBusiness.businessid,
+      analytics.track(`Button Pressed`, {
+        button_type: this.state.resend_otp
+          ? "Resend OTP"
+          : `Verify OTP by ${verifyByMobile ? "Mobile" : "Email"}`,
+        button_content: "",
+        source: "VerifyAccount",
       });
     }
   }
@@ -271,24 +249,12 @@ class VerifyAccount extends Component {
    * To resend OTP
    */
   resendOTP = () => {
-    analytics.track(`otp_verify`, {
-      source: "otp_verify",
-      source_action: `a_resend_otp`,
-      timestamp: new Date().getTime(),
-      device_id: this.props.screenProps.device_id,
-      verification_channel: this.state.verifyByMobile ? "Mobile" : "Email",
-      userId: this.props.userInfo.userid,
-      resend_otp: true,
-      businessid: this.props.mainBusiness.businessid,
-    });
-    analytics.track(`a_resend_otp`, {
-      source: "otp_verify",
-      source_action: `a_resend_otp`,
-      timestamp: new Date().getTime(),
-      device_id: this.props.screenProps.device_id,
-      verification_channel: this.state.verifyByMobile ? "Mobile" : "Email",
-      userId: this.props.userInfo.userid,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: this.state.resend_otp
+        ? "Resend OTP"
+        : `Verify OTP by ${verifyByMobile ? "Mobile" : "Email"}`,
+      button_content: "Resend Code",
+      source: "VerifyAccount",
     });
     if (this.state.verifyByMobile) {
       this.props.resendVerifyMobileCode({
@@ -312,6 +278,14 @@ class VerifyAccount extends Component {
       this.props.screenProps.prevAppState
     );
     const { approved } = this.props.mainBusiness;
+    analytics.track("Form Submitted", {
+      form_type: "Account Verification",
+      form_context: {
+        mobile: this.state.phoneNum,
+        email: this.props.userInfo.email,
+      },
+      verification_mode: this.state.verifyByMobile ? "Mobile" : "Email",
+    });
     this.props.verifyMobileCode(
       {
         mobile: this.state.phoneNum.substring(4),
@@ -452,7 +426,7 @@ class VerifyAccount extends Component {
           title={"Verify Account"}
           navigation={this.props.navigation}
           segment={{
-            source: "otp_verify",
+            source: "VerifyAccount",
             source_action: "a_go_back",
           }}
         />

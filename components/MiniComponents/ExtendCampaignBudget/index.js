@@ -210,12 +210,12 @@ class RepeatCampaignBudget extends Component {
         budgetOption,
       });
 
-      analytics.track(`a_handle_budget`, {
-        source: "ad_targeting",
-        source_action: "a_handle_budget",
-        custom_budget: false,
-        campaign_budget: rawValue,
-        businessid: this.props.mainBusiness.businessid,
+      analytics.track(`Form Populated`, {
+        form_type: "Snapchat Extend Campaign Form",
+        form_field: "handle_budget",
+        form_value: rawValue,
+        business_id:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
       !this.state.prevCampaignIsInstagram
         ? this._calcSnapReach(this.state.extendedCampaginData, rawValue)
@@ -224,9 +224,10 @@ class RepeatCampaignBudget extends Component {
     } else {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
-          analytics.track(`a_error_form`, {
-            businessid: this.props.mainBusiness.businessid,
-            error_page: "ad_targeting",
+          analytics.track(`Form Error Made`, {
+            business_id:
+              this.props.mainBusiness && this.props.mainBusiness.businessid,
+            source: "ExtendCampaignBudget",
             source_action: "a_change_campaign_custom_budget",
             error_description:
               validateWrapper("Budget", rawValue) + " $" + this.props.campaign
@@ -252,12 +253,13 @@ class RepeatCampaignBudget extends Component {
           position: "top",
         });
       }
-      analytics.track(`a_handle_budget`, {
-        source: "ad_targeting",
-        source_action: "a_handle_budget",
+      analytics.track(`Form Populated`, {
+        form_type: "Snapchat Extend Campaign Form",
+        form_field: "handle_budget",
+        form_value: rawValue,
         custom_budget: true,
-        campaign_budget: rawValue,
-        businessid: this.props.mainBusiness.businessid,
+        business_id:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
 
       this.setState({

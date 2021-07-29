@@ -20,7 +20,6 @@ import createBaseUrl from "./createBaseUrl";
 
 // import { Adjust, AdjustEvent } from "react-native-adjust";
 import analytics from "@segment/analytics-react-native";
-import { MixpanelInstance } from "react-native-mixpanel";
 // const MixpanelSDK = new MixpanelInstance(
 //   "c9ade508d045eb648f95add033dfb017",
 //   false,
@@ -243,16 +242,8 @@ export const verifyMobileCode = (
           position: "top",
         });
         if (!data.success) {
-          analytics.track(`a_otp_verify`, {
-            source: "otp_verify",
-            source_action: "a_otp_verify",
-            device_id: getUniqueId(),
-            timestamp: new Date().getTime(),
-            verification_channel,
-            action_status: "failure",
-            businessid:
-              getState().account.mainBusiness &&
-              getState().account.mainBusiness.businessid,
+          analytics.track(`Account Verified`, {
+            account_verified: false,
           });
           return dispatch({
             type: actionTypes.VERIFY_MOBILE_NUMBER,
@@ -275,17 +266,8 @@ export const verifyMobileCode = (
       })
       .then((decodedUser) => {
         if (decodedUser && decodedUser.user && decodedUser.success) {
-          analytics.track(`a_otp_verify`, {
-            source: "otp_verify",
-            source_action: "a_otp_verify",
-            device_id: getUniqueId(),
-            timestamp: new Date().getTime(),
-            userId: decodedUser.user.userid,
-            verification_channel,
-            action_status: "success",
-            businessid:
-              getState().account.mainBusiness &&
-              getState().account.mainBusiness.businessid,
+          analytics.track(`Account Verified`, {
+            account_verified: true,
           });
           dispatch(setCurrentUser(decodedUser));
         }
@@ -303,19 +285,12 @@ export const verifyMobileCode = (
       })
       .catch((err) => {
         // console.log("verifyMobileCode error", err.message || err.response);
-        analytics.track(`a_error`, {
-          error_page: "otp_verify",
-          action_status: "failure",
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
-          source_action: "a_otp_verify",
+        analytics.track(`Form Error Made`, {
+          source: "VerfiyAccount",
           error_description:
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
-          businessid:
-            getState().account.mainBusiness &&
-            getState().account.mainBusiness.businessid,
         });
         showMessage({
           message:
@@ -438,8 +413,8 @@ export const verifyEmail = (email, userInfo, navigation) => {
       .then((data) => {
         if (data.success) {
           navigation.push("MainForm", {
-            source: "email_registration",
-            source_action: "a_create_account",
+            source: "Signin",
+            source_action: "Create Account",
           });
         }
         if (!data.success) {
@@ -449,13 +424,11 @@ export const verifyEmail = (email, userInfo, navigation) => {
             position: "top",
           });
         }
-        analytics.track(`a_create_account`, {
+        analytics.track(`Sign up Initiated`, {
           mode_of_sign_up: "email",
-          source: "email_registration",
+          source: "Signin",
           action_status: data.success ? "success" : "failure",
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
-          // source_action: "" Not sure
+          email,
         });
       })
       .catch((err) => {
@@ -472,12 +445,8 @@ export const verifyEmail = (email, userInfo, navigation) => {
           type: actionTypes.VERIFY_EMAIL_LOADING,
           payload: false,
         });
-        analytics.track(`a_error`, {
-          error_page: "email_registration",
-          action_status: "failure",
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
-
+        analytics.track(`Form Error Made`, {
+          source: "Signin",
           source_action: "a_create_account",
           error_description:
             err.message ||
@@ -576,7 +545,8 @@ export const requestInvitationCode = (info) => {
 export const registerGuestUser = (
   userInfo,
   businessInvite = "1",
-  navigation
+  navigation,
+  businessAccount
 ) => {
   return async (dispatch, getState) => {
     createBaseUrl()
@@ -585,27 +555,32 @@ export const registerGuestUser = (
         return res.data;
       })
       .then((data) => {
-        analytics.track(`a_sign_up`, {
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
-          source: "registration_detail",
-          source_action: "a_sign_up",
-          action_status: data.success ? "success" : "failure",
-          email: userInfo.email,
-          business_invite: businessInvite === "0",
-        });
+        delete userInfo.password;
 
-        // For users creating new business while registering
-        if (businessInvite === "1") {
-          delete userInfo.password;
-          analytics.track(`a_create_buiness_account`, {
-            source: "open_create_business_account",
-            source_action: `a_create_buiness_account`,
-            action_status: data.success ? "success" : "failure",
-            timestamp: new Date().getTime(),
+        analytics.track(`Form Submitted`, {
+          form_type: "Registration Detail Form",
+          form_context: {
             ...userInfo,
-          });
-        }
+            business_invite: businessInvite === "0",
+          },
+        });
+        //=====Tracked from the backend=====//
+        // For users creating new business while registering
+        // if (businessInvite === "1") {
+        //   analytics.track(`Business Created`, {
+        //     business_name: businessAccount.businessname,
+        //     business_category: businessAccount.businesscategory,
+        //     country: businessAccount.country,
+        //     insta_handle_for_review: businessAccount.insta_handle_for_review,
+        //     other_business_category: businessAccount.otherBusinessCategory,
+        //   });
+        // }
+        // analytics.track("Signed Up", {
+        //   first_name: userInfo.firstname,
+        //   last_name: userInfo.lastname,
+        //   email: userInfo.email,
+        //   mobile: userInfo.mobile,
+        // });
         // let adjustRegiserTracker = new AdjustEvent("eivlhl");
         // adjustRegiserTracker.setCallbackId(userInfo.mobile);
         // Adjust.trackEvent(adjustRegiserTracker);
@@ -664,8 +639,8 @@ export const registerGuestUser = (
             payload: false,
           });
           navigation.navigate("RegistrationSuccess", {
-            source: "registration_detail",
-            source_action: "a_sign_up",
+            source: "RegistrationDetailForm",
+            source_action: "Registration Detail Form Submitted",
           });
           // dispatch(send_push_notification());
           dispatch(getBusinessAccounts());
@@ -674,11 +649,9 @@ export const registerGuestUser = (
         }
       })
       .catch((err) => {
-        // console.log("registerGuestUser ERROR", err.message || err.response);
-        analytics.track(`a_error`, {
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
-          error_page: "registration_detail",
+        // console.log("registerGuestUser ERROR", JSON.stringify(err, null, 2));
+        analytics.track(`Form Error Made`, {
+          source: "RegistrationDetailForm",
           source_action: "a_sign_up",
           error_description:
             err.message ||

@@ -60,11 +60,12 @@ class ChangePassword extends Component {
       "source_action",
       false
     );
-    analytics.track(`change_password`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "ChangePassword",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -125,14 +126,12 @@ class ChangePassword extends Component {
         this.props.user.email
       );
     } else {
-      analytics.track(`a_change_password`, {
-        source: "change_password",
+      analytics.track(`Form Error Made`, {
+        source: "ChangePassword",
         source_action: "a_change_password",
-        timestamp: new Date().getTime(),
-        action_status: "failure",
         error_description:
           this.state.repasswordError || this.state.passwordError,
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
@@ -226,18 +225,18 @@ class ChangePassword extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <CustomHeader
           screenProps={this.props.screenProps}
           title={"Change Password"}
           //   navigation={this.props.navigation}
           actionButton={this.handleBackPress}
           segment={{
-            source: "change_password",
+            source: "ChangePassword",
             source_action: "a_go_back",
           }}
         />

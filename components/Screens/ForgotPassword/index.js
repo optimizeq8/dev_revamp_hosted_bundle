@@ -6,6 +6,7 @@ import {
   Keyboard,
   Text,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { Item, Input } from "native-base";
 import analytics from "@segment/analytics-react-native";
@@ -13,7 +14,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import SafeAreaView from "react-native-safe-area-view";
 import Intercom from "react-native-intercom";
 
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
 import LowerButton from "../../MiniComponents/LowerButton";
 import CustomHeader from "../../MiniComponents/Header";
 
@@ -30,7 +34,8 @@ import { colors } from "../../GradiantColors/colors";
 import globalStyles from "../../../GlobalStyles";
 
 //icons
-import Logo from "../../../assets/SVGs/Optimize";
+import Logo from "../../../assets/images/Optimize_Logo_transparent.png";
+
 import Exclamation from "../../../assets/SVGs/ExclamationMarkTransparent.svg";
 
 class ForgotPassword extends Component {
@@ -47,7 +52,8 @@ class ForgotPassword extends Component {
     this._handleSubmission = this._handleSubmission.bind(this);
   }
   componentDidMount() {
-    analytics.track(`forget_password`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "ForgotPassword",
       source: this.props.navigation.getParam(
         "source",
         this.props.screenProps.prevAppState
@@ -67,29 +73,26 @@ class ForgotPassword extends Component {
     if (!emailError) {
       this.props.forgotPassword(this.state.email, this.props.navigation);
     } else {
-      analytics.track(`a_error_form`, {
+      analytics.track(`Form Error Made`, {
+        source: "ForgotPassword",
         source: "forget_password",
-        error_page: "forget_password",
         source_action: "a_forget_password",
         error_description: emailError,
-        email: this.state.email,
       });
     }
   };
   openSupport = () => {
     Intercom.registerUnidentifiedUser()
       .then(() => {
-        analytics.track(`a_help`, {
-          source: "forgot_password",
-          source_action: "a_help",
-          support_type: "intercom",
-          action_status: "success",
+        analytics.track(`Button Pressed`, {
+          button_type: "Open Intercom For Forgot Password",
+          button_content: this.props.forgotPasswordMessage,
         });
         Intercom.displayMessageComposer();
       })
       .catch((err) => {
-        analytics.track(`a_help`, {
-          source: "forgot_password",
+        analytics.track(`Form Error Made`, {
+          source: "ForgotPassword",
           source_action: "a_help",
           support_type: "intercom",
           action_status: "failure",
@@ -101,29 +104,32 @@ class ForgotPassword extends Component {
     const { forgotPasswordMessage, temp_exist } = this.props;
     return (
       <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={styles.gradient}
-        />
+        /> */}
         <CustomHeader
           screenProps={this.props.screenProps}
           navigation={this.props.navigation}
           closeButton={true}
           segment={{
-            source: "forgot_password",
+            source: "ForgotPassword",
             source_action: "a_go_back",
           }}
         />
         <TouchableWithoutFeedback accessible={false} onPress={Keyboard.dismiss}>
           <View style={styles.mainCard}>
             <View>
-              <Logo
-                style={styles.logo}
-                width={heightPercentageToDP(12)}
-                height={heightPercentageToDP(12)}
+              <Image
+                source={Logo}
+                resizeMode="contain"
+                style={{
+                  width: widthPercentageToDP(55),
+                  height: heightPercentageToDP(12),
+                  alignSelf: "center",
+                }}
               />
-              <Text style={styles.logoText}>Optimize</Text>
             </View>
 
             <Text style={styles.text}>{translate("Password Reset")}</Text>

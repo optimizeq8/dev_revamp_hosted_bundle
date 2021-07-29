@@ -26,11 +26,13 @@ class VerifyBusiness extends React.Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`start_verify`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "VerifyBusiness",
       source,
       source_action,
-      verification_channel: "Business",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      verification_mode: "Business",
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     const { approved, businessid } = this.props.mainBusiness;
     if (approved === "3") {
@@ -121,12 +123,12 @@ class VerifyBusiness extends React.Component {
     return reasons;
   };
   openIntercom = () => {
-    analytics.track(`a_help`, {
-      source: "start_verify",
-      source_action: "a_help",
-      support_type: "intercom",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Intercom Opened`, {
+      source: "verifyBusiness",
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
+
     Intercom.displayConversationsList();
   };
   render() {
@@ -152,7 +154,7 @@ class VerifyBusiness extends React.Component {
           }
           navigation={this.props.navigation}
           segment={{
-            source: "otp_verify",
+            source: "VerifyBusiness",
             source_action: "a_go_back",
           }}
         />

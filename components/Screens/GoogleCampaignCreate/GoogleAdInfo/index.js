@@ -172,12 +172,12 @@ class GoogleAdInfo extends Component {
   };
 
   handleStartDatePicked = (date) => {
-    analytics.track(`a_ad_start_date`, {
-      campaign_start_date: date,
-      source: "ad_objective",
-      source_action: "a_ad_start_date",
-      campaign_start_date: date,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Google Ad Info Form",
+      form_field: "ad_start_date",
+      form_value: date,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       start_time: date,
@@ -188,12 +188,12 @@ class GoogleAdInfo extends Component {
   handleEndDatePicked = (date) => {
     let end_time = new Date(date);
     end_time.setDate(end_time.getDate() + this.state.duration - 1);
-    analytics.track(`a_ad_end_date`, {
-      campaign_end_date: date,
-      source: "ad_objective",
-      source_action: "a_ad_end_date",
-      campaign_end_date: date,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Google Ad Info Form",
+      form_field: "ad_end_date",
+      form_value: date,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     end_time = end_time.toISOString().split("T")[0];
     this.setState({
@@ -208,13 +208,13 @@ class GoogleAdInfo extends Component {
   };
 
   setModalVisible = (visible) => {
-    analytics.track(`country_modal`, {
-      source: "ad_objective",
-      source_action: "a_toggle_country_modal",
-      visible,
+    analytics.track(`Button Pressed`, {
+      button_type: `${visible ? "Open" : "Close"} Country Modal`,
+      button_content: "COUNTRY",
       campaign_channel: "google",
       campaign_ad_type: "GoogleSEAd",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.setState({ modalVisible: visible });
@@ -234,11 +234,12 @@ class GoogleAdInfo extends Component {
   };
 
   _handleLanguageChange = (val) => {
-    analytics.track(`a_ad_languages`, {
-      source_action: `a_ad_languages`,
-      source: "ad_objective",
-      campaign_language: val === "1000" ? "English" : "Arabic",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Google Ad Info Form",
+      form_field: "ad_languages",
+      form_value: val === "1000" ? "English" : "Arabic",
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ language: val });
     this.props.save_google_campaign_data({ language: val });
@@ -246,13 +247,14 @@ class GoogleAdInfo extends Component {
 
   _handleCountryChange = (val) => {
     this.setState({ country: val, location: [val] });
-
-    analytics.track(`a_ad_country`, {
-      source: "ad_objective",
-      source_action: "a_ad_country",
-      campaign_country_name: val,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Google Ad Info Form",
+      form_field: "ad_country",
+      form_value: val,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
+
     this.props.save_google_campaign_data({ country: val, location: [val] });
   };
 
@@ -265,14 +267,14 @@ class GoogleAdInfo extends Component {
 
     if (val === this.state.country) {
       this.setState({ country: val, location: [val] });
-
-      analytics.track(`a_ad_regions`, {
-        source: "ad_objective",
-        source_action: "a_ad_regions",
-        campaign_region_names: val,
-        businessid:
+      analytics.track(`Form Populated`, {
+        form_type: "Google Ad Info Form",
+        form_field: "ad_regions",
+        form_value: val,
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
+
       this.props.save_google_campaign_data({
         country: val,
         location: [val],
@@ -287,11 +289,11 @@ class GoogleAdInfo extends Component {
         res = this.state.location.filter((l) => l !== val);
         res = this.state.location.filter((l) => l !== this.state.country);
         this.setState({ location: [...res, val] }, () => {
-          analytics.track(`a_ad_regions`, {
-            source: "ad_objective",
-            source_action: "a_ad_regions",
-            campaign_region_names: [...res, val],
-            businessid:
+          analytics.track(`Form Populated`, {
+            form_type: "Google Ad Info Form",
+            form_field: "ad_regions",
+            form_value: [...res, val],
+            business_id:
               this.props.mainBusiness && this.props.mainBusiness.businessid,
           });
         });
@@ -310,12 +312,11 @@ class GoogleAdInfo extends Component {
         } else if (res.length - 1 !== 0) {
           res = res.filter((l) => l !== this.state.country);
         }
-
-        analytics.track(`a_ad_regions`, {
-          source: "ad_objective",
-          source_action: "a_ad_regions",
-          campaign_region_names: res,
-          businessid:
+        analytics.track(`Form Populated`, {
+          form_type: "Google Ad Info Form",
+          form_field: "ad_regions",
+          form_value: res,
+          business_id:
             this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
 
@@ -360,8 +361,8 @@ class GoogleAdInfo extends Component {
       dateErrors.start_timeError ||
       dateErrors.end_timeError
     ) {
-      analytics.track(`a_error_form`, {
-        error_page: "ad_objective",
+      analytics.track(`Form Error Made`, {
+        source: "GoogleAdInfo",
         campaign_channel: "google",
         source_action: "a_submit_ad_objective",
         error_description:
@@ -369,7 +370,7 @@ class GoogleAdInfo extends Component {
           countryError ||
           dateErrors.start_timeError ||
           dateErrors.end_timeError,
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
@@ -442,12 +443,14 @@ class GoogleAdInfo extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`ad_objective`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "GoogleAdInfo",
       source,
       source_action,
       campaign_channel: "google",
       campaign_ad_type: "GoogleSEAd",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     if (this.props.campaign.campaignResumed) {
       this.props.save_google_campaign_steps(["Dashboard", "GoogleAdInfo"]);
@@ -461,14 +464,14 @@ class GoogleAdInfo extends Component {
   };
   getValidInfo = (stateError, validObj) => {
     if (validObj) {
-      analytics.track(`a_error_form`, {
-        error_page: "ad_objective",
+      analytics.track(`Form Error Made`, {
+        source: "GoogleAdInfo",
         error_description: `Error in ${stateError}: ${validObj}`,
         source: "ad_objective",
         source_action: "a_ad_name",
         campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
@@ -481,13 +484,12 @@ class GoogleAdInfo extends Component {
   setValue = (stateName, value) => {
     let state = {};
     state[stateName] = value;
-    analytics.track(`a_ad_name`, {
-      source: "ad_objective",
-      source_action: "a_ad_name",
-      campaign_channel: "google",
-      campaign_ad_type: "GoogleSEAd",
-      campaign_name: value,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Google Ad Info Form",
+      form_field: "ad_name",
+      form_value: value,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ ...state });
     this.props.save_google_campaign_data({ name: value });
@@ -522,11 +524,11 @@ class GoogleAdInfo extends Component {
     return (
       <View style={styles.safeAreaView}>
         <StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}
@@ -544,7 +546,7 @@ class GoogleAdInfo extends Component {
                     this.props.mainBusiness &&
                     this.props.mainBusiness.businessname,
                 },
-                source: "ad_objective",
+                source: "GoogleAdObjective",
                 source_action: "a_go_back",
               }}
               icon="google"
@@ -752,7 +754,7 @@ class GoogleAdInfo extends Component {
                       title="Select Regions"
                       screenProps={this.props.screenProps}
                       segment={{
-                        source: "regions_modal",
+                        source: "GoogleAdObjectiveRegionsModal",
                         source_action: "a_go_back",
                       }}
                     />
@@ -793,7 +795,7 @@ class GoogleAdInfo extends Component {
                       title="Select Country"
                       screenProps={this.props.screenProps}
                       segment={{
-                        source: "country_modal",
+                        source: "GoogleAdObjectiveCountryModal",
                         source_action: "a_go_back",
                       }}
                     />
@@ -813,11 +815,11 @@ class GoogleAdInfo extends Component {
                       style={styles.proceedButtonRTL}
                       function={() => {
                         if (this.state.country) {
-                          analytics.track(`a_ad_country`, {
-                            source: "ad_objective",
-                            source_action: "a_ad_country",
-                            campaign_country_name: this.state.country,
-                            businessid:
+                          analytics.track(`Form Populated`, {
+                            form_type: "Google Ad Info Form",
+                            form_field: "ad_country",
+                            form_value: this.state.country,
+                            business_id:
                               this.props.mainBusiness &&
                               this.props.mainBusiness.businessid,
                           });
@@ -830,11 +832,11 @@ class GoogleAdInfo extends Component {
                               selectRegion: true,
                             },
                             () => {
-                              analytics.track(`ad_regions_modal`, {
-                                source: "ad_objective",
-                                source_action: "a_open_region_modal",
-                                visible: true,
-                                businessid:
+                              analytics.track(`Button Pressed`, {
+                                button_type: "Google Ad Info Show Regions",
+                                button_content: "Forward Icon",
+                                source: "GoogleAdInfo",
+                                business_id:
                                   this.props.mainBusiness &&
                                   this.props.mainBusiness.businessid,
                               });

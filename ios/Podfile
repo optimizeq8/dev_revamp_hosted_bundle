@@ -31,7 +31,7 @@ target 'OptimizeApp' do
 
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
-  pod 'RNAnalyticsIntegration-Mixpanel', :path => '../node_modules/@segment/analytics-react-native-mixpanel'
+  # pod 'RNAnalyticsIntegration-Mixpanel', :path => '../node_modules/@segment/analytics-react-native-mixpanel'
 
   pod 'RNVideoEditorSDK', :path => '../node_modules/react-native-videoeditorsdk'
 
@@ -47,11 +47,12 @@ target 'OptimizeApp' do
 
   pod 'RNBootSplash', :path => '../node_modules/react-native-bootsplash'
 
-  pod 'react-native-mixpanel', :path => '../node_modules/react-native-mixpanel'
 
   pod 'react-native-blur', :path => '../node_modules/@react-native-community/blur'
 
   pod 'RNCMaskedView', :path => '../node_modules/@react-native-community/masked-view'
+
+  pod 'react-native-idfa',  path: '../node_modules/react-native-idfa'
 
 
   pod 'RNCCheckbox', :path => '../node_modules/@react-native-community/checkbox'

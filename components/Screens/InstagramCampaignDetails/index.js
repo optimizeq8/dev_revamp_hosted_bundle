@@ -54,6 +54,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import ChartDateChoices from "./ChartDateChoices";
 import CSVModal from "./CSVModal";
 import { showMessage } from "react-native-flash-message";
+import { globalColors } from "../../../GlobalStyles";
 
 class InstagramCampaignDetails extends Component {
   static navigationOptions = {
@@ -114,26 +115,26 @@ class InstagramCampaignDetails extends Component {
   }
 
   handleStartDatePicked = (date) => {
-    analytics.track(`a_ad_start_date`, {
-      campaign_start_date: date,
-      source: "ad_detail",
-      source_action: "a_ad_start_date",
-      campaignId: this.props.selectedCampaign.campaign_id,
-      campaign_start_date: date,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Insagram Campaign Details Form",
+      form_field: "ad_start_date",
+      fomr_value: date,
+      campaign_id: this.props.selectedCampaign.campaign_id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       start_time: date,
     });
   };
   handleEndDatePicked = (date) => {
-    analytics.track(`a_ad_end_date`, {
-      campaign_end_date: date,
-      source: "ad_detail",
-      source_action: "a_ad_end_date",
-      campaignId: this.props.selectedCampaign.campaign_id,
-      campaign_end_date: date,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Campaign Details Form",
+      form_field: "ad_end_date",
+      fomr_value: date,
+      campaign_id: this.props.selectedCampaign.campaign_id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({
       end_time: date,
@@ -170,13 +171,12 @@ class InstagramCampaignDetails extends Component {
   };
 
   showModal = (visible) => {
-    analytics.track(`ad_status_modal`, {
-      campaign_status: "rejected",
-      visible,
-      source: "campaign_detail",
+    analytics.track(`Button Pressed`, {
+      button_type: `${visible ? "Open" : "Close"} Campaign Status Modal`,
+      button_content: this.state.toggleText !== "PAUSED" ? "LIVE" : "PAUSED",
       campaign_channel: "instagram",
-      source_action: "a_update_campaign_status",
-      businessid: this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ modalVisible: visible });
   };
@@ -230,11 +230,13 @@ class InstagramCampaignDetails extends Component {
   };
 
   showCSVModal = (isVisible) => {
-    analytics.track(`csv_modal`, {
-      source: "ad_detail",
-      source_action: "a_toggle_csv_modal",
+    analytics.track(`Button Pressed`, {
+      button_type: `${isVisible ? "Open" : "Close"} Campaign CSV Modal`,
+      button_content: "Download Icon",
       campaign_channel: "instagram",
-      businessid: this.props.mainBusiness.businessid,
+      campaign_id: this.props.selectedCampaign.campaign_id,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.setState({ CSVModalVisible: isVisible });
   };
@@ -277,12 +279,11 @@ class InstagramCampaignDetails extends Component {
       this.props.campaignError ||
       this.props.languagesListError
     ) {
-      analytics.track(`campaign_detail`, {
+      analytics.track(`Screen Viewed`, {
+        screen_name: "InstagramCampaignDetails",
         source,
         source_action,
         campaign_channel: "instagram",
-        timestamp: new Date().getTime(),
-        device_id: this.props.screenProps.device_id,
         campaign_id: "error",
         error_description:
           (!this.props.loading &&
@@ -290,19 +291,18 @@ class InstagramCampaignDetails extends Component {
             !this.props.selectedCampaign) ||
           this.props.campaignError ||
           this.props.languagesListError,
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
     }
 
     if (this.props.selectedCampaign) {
-      analytics.track(`campaign_detail`, {
+      analytics.track(`Screen Viewed`, {
+        screen_name: "InstagramCampaignDetails",
         source,
         source_action,
         campaign_channel: "instagram",
-        timestamp: new Date().getTime(),
-        device_id: this.props.screenProps.device_id,
-        campaignId: this.props.selectedCampaign.campaign_id,
-        businessid: this.props.mainBusiness.businessid,
+        campaign_id: this.props.selectedCampaign.campaign_id,
+        business_id: this.props.mainBusiness.businessid,
       });
     }
   };
@@ -325,6 +325,13 @@ class InstagramCampaignDetails extends Component {
         {
           text: translate("OK"),
           onPress: () => {
+            analytics.track("Cancel Campaign Requested", {
+              source: "SnapchatCampaignDetails",
+              campaign_channel: "instagram",
+              campaign_id: selectedCampaign.campaign_id,
+              campaign_name: selectedCampaign.name,
+              amount: selectedCampaign.lifetime_budget_micro,
+            });
             this.props.getWalletAmountInKwd(
               selectedCampaign.lifetime_budget_micro
             );
@@ -572,14 +579,15 @@ class InstagramCampaignDetails extends Component {
                   borderBottomStartRadius: 30,
                   borderBottomEndRadius: 30,
                   overflow: "hidden",
+                  backgroundColor: globalColors.bluegem,
                 },
               ]}
             >
-              <LinearGradient
+              {/* <LinearGradient
                 colors={["#9300FF", "#5600CB"]}
                 locations={[0, 1]}
                 style={styles.gradient}
-              />
+              /> */}
             </View>
             <Header
               screenProps={this.props.screenProps}
@@ -600,7 +608,7 @@ class InstagramCampaignDetails extends Component {
               topRightButtonFunction={() => this.showCSVModal(true)}
               titleStyle={styles.headerTitleStyle}
               segment={{
-                source: "campaign_detail",
+                source: "InstagramCampaignDetails",
                 source_action: "a_go_back",
               }}
               campaignStatus={loading ? null : selectedCampaign.status}
@@ -768,7 +776,7 @@ class InstagramCampaignDetails extends Component {
                       loading={loading}
                       screenProps={this.props.screenProps}
                       campaignDetails={true}
-                      source={"campaign_detail"}
+                      source={"instagramCampaignDetails"}
                       mainBusiness={this.props.mainBusiness}
                       editMedia={this.editMedia}
                       edit={

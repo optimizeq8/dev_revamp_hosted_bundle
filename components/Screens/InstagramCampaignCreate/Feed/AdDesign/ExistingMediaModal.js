@@ -59,10 +59,8 @@ class ExistingMediaModal extends React.Component {
     );
   };
   render() {
-    const {
-      instagramExistingMediaListLoading,
-      instagramExistingMediaList,
-    } = this.props;
+    const { instagramExistingMediaListLoading, instagramExistingMediaList } =
+      this.props;
 
     return (
       <Modal
@@ -83,7 +81,7 @@ class ExistingMediaModal extends React.Component {
               this.props.setExistingMediaModal(false);
             }}
             segment={{
-              source: "media_library_modal",
+              source: "InstagramFeedExistingMediaModal",
               source_action: "a_go_back",
             }}
             title={"Media Library"}

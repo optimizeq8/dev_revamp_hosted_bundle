@@ -20,7 +20,7 @@ import RNRestart from "react-native-restart";
 
 import Intercom from "react-native-intercom";
 import analytics from "@segment/analytics-react-native";
-// import AdjustIntegration from "@segment/analytics-react-native-adjust";
+import AdjustIntegration from "@segment/analytics-react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
 TextReactNative.defaultProps.allowFontScaling = false;
@@ -67,7 +67,6 @@ import FlashMessage from "react-native-flash-message";
 import { REHYDRATE } from "redux-persist";
 import { PESDK } from "react-native-photoeditorsdk";
 import { VESDK } from "react-native-videoeditorsdk";
-import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import RNBootSplash from "react-native-bootsplash";
 import * as Sentry from "@sentry/react-native";
 if (!__DEV__) {
@@ -75,20 +74,11 @@ if (!__DEV__) {
     dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635",
   });
 }
-import { MixpanelInstance } from "react-native-mixpanel";
 import AsyncStorage from "@react-native-community/async-storage";
 import LottieView from "lottie-react-native";
-
+import Mixpanel from "@segment/analytics-react-native-mixpanel";
 //DEV TOKEN FOR MIXPANEL ====> c9ade508d045eb648f95add033dfb017
 //LIVE TOKEN FOR MIXPANEL ====> ef78d7f5f4160b74fda35568224f6cfa
-const MixpanelSDK = new MixpanelInstance(
-  !__DEV__
-    ? "c9ade508d045eb648f95add033dfb017"
-    : "ef78d7f5f4160b74fda35568224f6cfa",
-  false,
-  false
-);
-MixpanelSDK.initialize().then(() => MixpanelSDK.showInAppMessageIfAvailable());
 // analytics.getAnonymousId().then((id) => MixpanelSDK.identify(id));
 // Sentry.captureException(new Error("Oops!"));
 // crash;
@@ -97,6 +87,12 @@ import MaskedView from "@react-native-community/masked-view";
 import Logo from "./assets/Logo.svg";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Notifications as RNNotifications } from "react-native-notifications";
+import { globalColors } from "./GlobalStyles";
+import { IDFA } from "react-native-idfa";
+import {
+  getTrackingStatus,
+  requestTrackingPermission,
+} from "react-native-tracking-transparency";
 
 const defaultErrorHandler = ErrorUtils.getGlobalHandler();
 
@@ -166,7 +162,7 @@ class App extends React.Component {
         ? "fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh"
         : "ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB",
       {
-        // using: [AdjustIntegration],
+        using: [Mixpanel, AdjustIntegration],
         // Record screen views automatically!
         recordScreenViews: true,
         // Record certain application events automatically!
@@ -184,66 +180,20 @@ class App extends React.Component {
         debug: true,
       }
     );
-    const adjustConfig = new AdjustConfig(
-      "c698tyk65u68",
-      !__DEV__
-        ? AdjustConfig.EnvironmentProduction
-        : AdjustConfig.EnvironmentSandbox
-    );
-    adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
-
-    Adjust.requestTrackingAuthorizationWithCompletionHandler((status) => {
-      switch (status) {
-        case 0:
-          // ATTrackingManagerAuthorizationStatusNotDetermined case
-
-          analytics.track("Authorization status", {
-            status: "ATTrackingManagerAuthorizationStatusNotDetermined",
-          });
-          break;
-        case 1:
-          // ATTrackingManagerAuthorizationStatusRestricted case
-          analytics.track("Authorization status", {
-            status: "ATTrackingManagerAuthorizationStatusRestricted",
-          });
-          break;
-        case 2:
-          // ATTrackingManagerAuthorizationStatusDenied case
-          analytics.track("Authorization status", {
-            status: "ATTrackingManagerAuthorizationStatusDenied",
-          });
-          break;
-        case 3:
-          // ATTrackingManagerAuthorizationStatusAuthorized case
-          analytics.track("Authorization status", {
-            status: "ATTrackingManagerAuthorizationStatusAuthorized",
-          });
-          break;
-      }
+    getTrackingStatus().then((status) => {
+      this.determineTrackingStatus(status);
     });
 
-    adjustConfig.setAttributionCallbackListener((attribution) => {
-      // Printing all attribution properties.
-      analytics.track("install_attribution", {
-        trackerToken: attribution.trackerToken,
-        trackerName: attribution.trackerName,
-        network: attribution.network,
-        campaign: attribution.campaign,
-        adgroup: attribution.adgroup,
-        creative: attribution.creative,
-        clickLabel: attribution.clickLabel,
-        adid: attribution.adid,
-      });
-    });
-
-    Adjust.create(adjustConfig);
     RNNotifications.registerRemoteNotifications();
     RNNotifications.events().registerNotificationReceivedForeground(
       (notification, completion) => {
         if (notification)
-          analytics.track("Notification Received - Foreground", {
+          analytics.track("Notification Received", {
+            state: "Forground",
             notification: notification.payload,
-            platform: Platform.OS,
+            business_id:
+              store.getState().account.mainBusiness &&
+              store.getState().account.mainBusiness.businessid,
           });
 
         // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
@@ -254,9 +204,12 @@ class App extends React.Component {
     RNNotifications.events().registerNotificationOpened(
       (notification, completion, action) => {
         if (notification) {
-          analytics.track("Notification opened by device user", {
+          analytics.track("Notification Opened", {
             notification: notification.payload,
-            platform: Platform.OS,
+            state: "Background",
+            business_id:
+              store.getState().account.mainBusiness &&
+              store.getState().account.mainBusiness.businessid,
           });
           if (notification.payload.hasOwnProperty("screenName")) {
             NavigationService.navigate(notification.payload.screenName);
@@ -287,14 +240,14 @@ class App extends React.Component {
                     end_time,
                     false,
                     {
-                      source: "dashboard",
+                      source: "Dashboard",
                       source_action: "a_open_campaign_details",
                     }
                   )
                 );
                 NavigationService.navigate("GoogleCampaignDetails", {
                   campaign: campaign_id,
-                  source: "dashboard",
+                  source: "Dashboard",
                   source_action: "a_open_campaign_details",
                 });
                 break;
@@ -320,7 +273,59 @@ class App extends React.Component {
     //   }
     // }
   }
+  determineTrackingStatus = (status) => {
+    switch (status) {
+      case "not-determined":
+        analytics.track("Authorization Status Given", {
+          status: "ATTracking Authorization Status Not Determined",
+          business_id:
+            store.getState().account.mainBusiness &&
+            store.getState().account.mainBusiness.businessid,
+        });
+        requestTrackingPermission().then((status) => {
+          determineTrackingStatus(status);
+        });
+        break;
+      case "restricted":
+        analytics.track("Authorization Status Given", {
+          status: "ATTracking Authorization Status Restricted",
+          business_id:
+            store.getState().account.mainBusiness &&
+            store.getState().account.mainBusiness.businessid,
+        });
+        break;
+      case "denied":
+        analytics.track("Authorization Status Given", {
+          status: "ATTracking Authorization Status Denied",
+          business_id:
+            store.getState().account.mainBusiness &&
+            store.getState().account.mainBusiness.businessid,
+        });
+        break;
+      case "unavailable":
+      case "authorized":
+        analytics.track("Authorization Status Given", {
+          status: "ATTracking Authorization Status Authorized",
+          business_id:
+            store.getState().account.mainBusiness &&
+            store.getState().account.mainBusiness.businessid,
+        });
+        IDFA.getIDFA()
+          .then((idfa) => {
+            analytics.setIDFA(idfa);
+          })
+          .catch((e) => {
+            analytics.track("Error Setting IDFA", {
+              error_status: e,
+              business_id:
+                store.getState().account.mainBusiness &&
+                store.getState().account.mainBusiness.businessid,
+            });
+          });
 
+        break;
+    }
+  };
   _loadAsync = async () => {
     try {
       await this._loadResourcesAsync();
@@ -396,35 +401,12 @@ class App extends React.Component {
   }
   handleDeeplink = (url) => {
     Linking.openURL(url.url);
-    console.log("URL", url.url);
   };
   _handleAppStateChange = (nextAppState) => {
     if (
       this.state.appState.match(/inactive|background/) &&
       nextAppState === "active"
     ) {
-      analytics.track("app_open", {
-        userid:
-          (store.getState().auth &&
-            store.getState().auth.userInfo &&
-            store.getState().auth.userInfo.userid) ||
-          this.state.anonymous_userId,
-        anonymous_userId: this.state.anonymous_userId,
-        source: this.state.appState,
-        device_id: getUniqueId(),
-        businessid:
-          (store.getState().account &&
-            store.getState().account.mainBusiness &&
-            store.getState().account.mainBusiness.businessid) ||
-          null,
-        context: {
-          device: {
-            id: getUniqueId(),
-            type: Platform.OS,
-          },
-        },
-        timestamp: new Date().getTime(),
-      });
       //   analytics.identify(null, { logged_out: false }); // To avoid creating user profile
       Platform.OS === "ios" && RNNotifications.ios.setBadgeCount(0);
       // console.log("App has come to the foreground!");
@@ -436,8 +418,6 @@ class App extends React.Component {
   };
 
   _handleNotification = async (handleScreen) => {
-    console.log("handleScreen app", JSON.stringify(handleScreen, null, 2));
-    // console.log(handleScreen.notification.request.content.data.screenName);
     this.setState({ notificationData: handleScreen });
     if (handleScreen.data) {
       store.dispatch(
@@ -517,14 +497,14 @@ class App extends React.Component {
                 end_time,
                 false,
                 {
-                  source: "dashboard",
+                  source: "Dashboard",
                   source_action: "a_open_campaign_details",
                 }
               )
             );
             NavigationService.navigate("GoogleCampaignDetails", {
               campaign: campaign_id,
-              source: "dashboard",
+              source: "Dashboard",
               source_action: "a_open_campaign_details",
             });
             break;
@@ -667,18 +647,14 @@ class App extends React.Component {
               paddingTop: 0,
             }}
           />
-          <LinearGradient
-            colors={["#9300FF", "#5600CB"]}
+          <View style={styles.gradient} />
+          {/* <LinearGradient
+            // colors={["#9300FF", "#5600CB"]}
+            colors={[globalColors.bluegem, globalColors.bluegem]}
             locations={[0, 1]}
             style={styles.gradient}
-          />
-          <View
-            style={{
-              backgroundColor: "transparent",
-              marginTop: 0,
-              paddingTop: 0,
-            }}
-          />
+          /> */}
+
           {!this.state.animDone && (
             <View
               style={{
@@ -702,24 +678,46 @@ class App extends React.Component {
                   opacityNeg,
                 ]}
               >
+                <View //To block the animations edge since its a diiferent shade of color
+                  style={{
+                    backgroundColor: "#5410BF",
+                    top: 0,
+                    width: "100%",
+                    height: "10%",
+                    position: "absolute",
+                    zIndex: 1,
+                  }}
+                />
                 <LottieView
                   ref={(animation) => {
                     this.animation = animation;
                   }}
+                  backgroundColor="#5511bf"
                   resizeMode="contain"
-                  source={require("./assets/animation/LogoAnimation.json")}
+                  source={require("./assets/animation/NewLogoAnimation.json")}
                   onAnimationFinish={() =>
                     Animated.timing(this.state.loadingProgress, {
                       toValue: 100,
-                      duration: 1000,
+                      duration: 500,
                       useNativeDriver: true,
-                      delay: 400,
+                      delay: 200,
                     }).start(() => {
                       this.setState({ animDone: true });
                     })
                   }
+                  duration={4000}
                   autoPlay={false}
                   loop={false}
+                />
+                <View //To block the animations edge sinze its a diiferent shade of color
+                  style={{
+                    backgroundColor: "#5410BF",
+                    bottom: 0,
+                    width: "100%",
+                    height: "10%",
+                    position: "absolute",
+                    zIndex: 1,
+                  }}
                 />
                 {/* <Logo width={1000} /> */}
               </Animated.View>
@@ -870,7 +868,7 @@ class App extends React.Component {
 
   _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
-    this.animation.play(70, 200);
+    this.animation.play(0, 200);
   };
 }
 
@@ -905,5 +903,6 @@ const styles = StyleSheet.create({
 
   gradient: {
     ...StyleSheet.absoluteFillObject,
+    backgroundColor: globalColors.bluegem,
   },
 });

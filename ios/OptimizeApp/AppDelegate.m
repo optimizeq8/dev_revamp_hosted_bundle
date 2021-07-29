@@ -16,7 +16,6 @@
 #import <EXScreenOrientation/EXScreenOrientationViewController.h>
 #import <React/RCTLinkingManager.h>
 #import "RNBootSplash.h"
-#import "Mixpanel/Mixpanel.h"
 #import <GoogleMaps/GoogleMaps.h>
 #import <Intercom/intercom.h>
 #import "RNNotifications.h"
@@ -61,13 +60,10 @@
     [Intercom setApiKey:@"ios_sdk-345d9b5af6cf6662f16b5d47798d2473c0e0b617" forAppId:@"k5yqpre9"];
   #endif
 SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWithWriteKey:SEGMENT_WRITE_KEY];
+config.enableAdvertisingTracking = YES;
 
 
 [SEGAnalytics setupWithConfiguration:config];
-/** LIVE */
-
-/** DEV */
-// [Intercom setApiKey:@"ios_sdk-e2493179152d82a4976b580fd1ec442cf2a1e018" forAppId:@"qf7uj8rc"];
 #ifdef DEBUG
   [self initializeReactNativeApp];
 #else

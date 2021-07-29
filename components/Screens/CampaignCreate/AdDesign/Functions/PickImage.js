@@ -80,6 +80,7 @@ export const _pickImage = async (
 ) => {
   try {
     let result = {};
+    let newSize = "";
     if (!editImage) result = await pick(mediaTypes, screenProps);
     else
       result = {
@@ -127,11 +128,11 @@ export const _pickImage = async (
                     type: "",
                   });
                 onToggleModal(false);
-                analytics.track(`a_error`, {
-                  businessid: mainBusiness && mainBusiness.businessid,
+                analytics.track(`Form Error Made`, {
+                  business_id: mainBusiness && mainBusiness.businessid,
                   campaign_channel: "snapchat",
                   campaign_ad_type: adType,
-                  error_page: "ad_design",
+                  source: "SnapchatComposeAd",
                   error_description:
                     "Image's aspect ratio must be 9:16 with a minimum size of 1080px x 1920px",
                 });
@@ -156,7 +157,7 @@ export const _pickImage = async (
                   compress: 1,
                 }
               );
-              let newSize = await FileSystem.getInfoAsync(manipResult.uri, {
+              newSize = await FileSystem.getInfoAsync(manipResult.uri, {
                 size: true,
               });
 
@@ -182,12 +183,12 @@ export const _pickImage = async (
                   type: "warning",
                 });
 
-                analytics.track(`a_error`, {
+                analytics.track(`Form Error Made`, {
                   campaign_channel: "snapchat",
                   campaign_ad_type: adType,
-                  error_page: "ad_design",
+                  source: "ad_design",
                   error_description: "Image must be less than 5 MBs",
-                  businessid: mainBusiness && mainBusiness.businessid,
+                  business_id: mainBusiness && mainBusiness.businessid,
                 });
                 return Promise.reject("Image must be less than 5 MBs");
               }
@@ -219,18 +220,16 @@ export const _pickImage = async (
                 uneditedImageUri,
                 serialization: result.serialization,
               };
-              analytics.track(`a_media_editor`, {
+              analytics.track(`Ad Media Selected`, {
                 campaign_channel: "snapchat",
                 campaign_ad_type: adType,
-                action_status: "success",
-                tool_used: "PESDK",
+                media_specs: {
+                  width: result.width,
+                  height: result.height,
+                  size: newSize.size,
+                },
                 media_type: result.type.toUpperCase(),
-                ...result.serialization,
-                index: storyAdCards.selectedStoryAd.index,
-                source: "ad_design",
-                source_action: "a_media_editor",
-                image_for: "campaign_story_ad",
-                businessid: mainBusiness && mainBusiness.businessid,
+                media_editor_context: { ...result.serialization },
               });
 
               cards[storyAdCards.selectedStoryAd.index] = card;
@@ -272,17 +271,16 @@ export const _pickImage = async (
                 position: "top",
                 type: "success",
               });
-              analytics.track(`a_media_editor`, {
+              analytics.track(`Ad Media Selected`, {
                 campaign_channel: "snapchat",
                 campaign_ad_type: adType,
-                source: "ad_design",
-                source_action: "a_media_editor",
-                action_status: "success",
-                tool_used: "PESDK",
                 media_type: "IMAGE",
-                ...result.serialization,
-                image_for: "campaign_ad",
-                businessid: mainBusiness && mainBusiness.businessid,
+                media_specs: {
+                  width: result.width,
+                  height: result.height,
+                  size: newSize.size,
+                },
+                media_editor_context: { ...result.serialization },
               });
 
               !rejected &&
@@ -301,17 +299,16 @@ export const _pickImage = async (
 
             onToggleModal(false);
 
-            analytics.track(`a_error`, {
+            analytics.track(`Form Error Made`, {
               campaign_channel: "snapchat",
               campaign_ad_type: adType,
-              error_page: "ad_design",
+              source: "SnapchatComposeAd",
               error_description: error.wrongAspect
                 ? error.message
                 : error.message
                 ? error.message
                 : (typeof error === "string" && error) ||
                   "The dimensions are too large, please choose a different image",
-              businessid: mainBusiness && mainBusiness.businessid,
             });
             showMessage({
               message: error.wrongAspect
@@ -446,10 +443,11 @@ export const _pickImage = async (
                 return Promise.reject("Video processing canceled");
               }
               if (newResult.duration > 30.999) {
-                analytics.track(`a_error`, {
-                  error_page: "ad_design",
+                analytics.track(`Form Error Made`, {
+                  campaign_channel: "snapchat",
+                  campaign_ad_type: adType,
+                  source: "SnapchatComposeAd",
                   error_description: "Maximum video duration  is 30 seconds.",
-                  businessid: mainBusiness && mainBusiness.businessid,
                 });
                 setTheState({
                   mediaError: "Maximum video duration  is 30 seconds.",
@@ -481,12 +479,11 @@ export const _pickImage = async (
                 });
                 return false;
               } else if (newResult.duration < 3.0) {
-                analytics.track(`a_error`, {
+                analytics.track(`Form Error Made`, {
                   campaign_channel: "snapchat",
                   campaign_ad_type: adType,
-                  error_page: "ad_design",
+                  source: "SnapchatComposeAd",
                   error_description: "Minimum video duration  is 3 seconds.",
-                  businessid: mainBusiness && mainBusiness.businessid,
                 });
                 setTheState({
                   mediaError: "Minimum video duration  is 3 seconds.",
@@ -520,13 +517,12 @@ export const _pickImage = async (
                   Math.floor(newResult.height / 16) ||
                 (newResult.width < 1080 && newResult.height < 1920)
               ) {
-                analytics.track(`a_error`, {
+                analytics.track(`Form Error Made`, {
                   campaign_channel: "snapchat",
                   campaign_ad_type: adType,
-                  error_page: "ad_design",
+                  source: "SnapchatComposeAd",
                   error_description:
                     "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
-                  businessid: mainBusiness && mainBusiness.businessid,
                 });
                 setTheState({
                   mediaError:
@@ -556,12 +552,12 @@ export const _pickImage = async (
                 setTheState({ sourceChanging: false });
                 return false;
               } else if (newSize.size > 32000000) {
-                analytics.track(`a_error`, {
+                analytics.track(`Form Error Made`, {
                   campaign_channel: "snapchat",
                   campaign_ad_type: adType,
-                  error_page: "ad_design",
+                  source: "SnapchatComposeAd",
                   error_description: "Allowed video size is up to 32 MBs",
-                  businessid: mainBusiness && mainBusiness.businessid,
+                  business_id: mainBusiness && mainBusiness.businessid,
                 });
                 setTheState({
                   mediaError: "Allowed video size is up to 32 MBs.",
@@ -599,12 +595,11 @@ export const _pickImage = async (
                 result.serialization = manipResult.serialization;
               }
             } else {
-              analytics.track(`a_error`, {
+              analytics.track(`Form Error Made`, {
                 campaign_channel: "snapchat",
                 campaign_ad_type: adType,
-                error_page: "ad_design",
+                source: "SnapchatComposeAd",
                 error_description: "Editing canceled",
-                businessid: mainBusiness && mainBusiness.businessid,
               });
               videoIsExporting(false);
 
@@ -631,14 +626,16 @@ export const _pickImage = async (
               };
 
               cards[storyAdCards.selectedStoryAd.index] = card;
-              analytics.track(`a_media_editor`, {
+              analytics.track(`Ad Media Selected`, {
                 campaign_channel: "snapchat",
                 campaign_ad_type: adType,
-                action_status: "success",
-                tool_used: "VESDK",
                 media_type: result.type.toUpperCase(),
-                ...result.serialization,
-                businessid: mainBusiness && mainBusiness.businessid,
+                media_specs: {
+                  width: result.width,
+                  height: result.height,
+                  size: newSize.size,
+                },
+                media_editor_context: { ...result.serialization },
               });
               setTheState({
                 storyAdCards: {
@@ -674,14 +671,16 @@ export const _pickImage = async (
                   existing_media: 0,
                 });
                 onToggleModal(false);
-                analytics.track(`a_media_editor`, {
+                analytics.track(`Ad Media Selected`, {
                   campaign_channel: "snapchat",
                   campaign_ad_type: adType,
-                  action_status: "success",
-                  tool_used: "VESDK",
                   media_type: result.type.toUpperCase(),
-                  ...result.serialization,
-                  businessid: mainBusiness && mainBusiness.businessid,
+                  media_specs: {
+                    width: result.width,
+                    height: result.height,
+                    size: newSize.size,
+                  },
+                  media_editor_context: { ...result.serialization },
                 });
                 showMessage({
                   message: translate("Video has been selected successfully"),
@@ -699,12 +698,11 @@ export const _pickImage = async (
                   });
                 setTheState({ sourceChanging: false });
               } else {
-                analytics.track(`a_error`, {
-                  error_page: "ad_design",
+                analytics.track(`Form Error Made`, {
+                  source: "SnapchatComposeAd",
                   error_description: "Selected Video Unsuccessfully",
                   campaign_channel: "snapchat",
                   campaign_ad_type: adType,
-                  businessid: mainBusiness && mainBusiness.businessid,
                 });
                 setTheState({
                   media: "//",
@@ -716,8 +714,8 @@ export const _pickImage = async (
           })
           .catch((err) => {
             // console.log("err", err);
-            analytics.track(`a_error`, {
-              error_page: "ad_design",
+            analytics.track(`Form Error Made`, {
+              source: "SnapchatComposeAd",
               error_description: err,
               campaign_channel: "snapchat",
               campaign_ad_type: adType,
@@ -735,10 +733,9 @@ export const _pickImage = async (
         position: "top",
         type: "warning",
       });
-      analytics.track(`a_error_form`, {
-        error_page: "ad_design",
+      analytics.track(`Form Error Made`, {
+        source: "SnapchatComposeAd",
         error_description: "Image Picker closed without selecting a media file",
-        businessid: mainBusiness && mainBusiness.businessid,
       });
 
       setTheState({
@@ -760,12 +757,11 @@ export const _pickImage = async (
   } catch (error) {
     onToggleModal(false);
     // console.log("error image pick", error);
-    analytics.track(`a_error`, {
+    analytics.track(`Form Error Made`, {
       campaign_channel: "snapchat",
       campaign_ad_type: adType,
-      error_page: "ad_design",
+      source: "SnapchatComposeAd",
       error_description: error.response || error.message || error,
-      businessid: mainBusiness && mainBusiness.businessid,
     });
   }
 };

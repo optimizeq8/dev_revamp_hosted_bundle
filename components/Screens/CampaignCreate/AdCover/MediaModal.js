@@ -36,7 +36,7 @@ export default class MediaModal extends Component {
                 }}
                 title={"UPLOAD MEDIA"}
                 segment={{
-                  source: "media_options_type",
+                  source: "MediaModal",
                   source_action: "a_go_back",
                 }}
               />

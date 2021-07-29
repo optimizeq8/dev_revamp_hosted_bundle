@@ -34,7 +34,7 @@ export default class StatusModal extends Component {
               this.props.handleModalToggle();
             }}
             segment={{
-              source: "ad_keywords",
+              source: "GoogleEditKeywordsModal",
               source_action: "a_go_back",
             }}
           />

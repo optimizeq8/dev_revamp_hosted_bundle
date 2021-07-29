@@ -16,13 +16,8 @@ import globalStyles from "../../../GlobalStyles";
  *
  */
 export default AundienceOverView = (props) => {
-  let {
-    data,
-    loading,
-    navigatingRoutePath,
-    selectedCampaign,
-    editCampaign,
-  } = props;
+  let { data, loading, navigatingRoutePath, selectedCampaign, editCampaign } =
+    props;
   const { translate } = props.screenProps;
   return (
     <View style={styles.audienceOverview}>
@@ -45,7 +40,7 @@ export default AundienceOverView = (props) => {
               NavigationService.navigate(navigatingRoutePath, {
                 editCampaign,
                 campaign: selectedCampaign,
-                source: "campaign_details",
+                source: "AudienceOverview",
                 source_action: "a_open_ad_targeting",
               });
           }}

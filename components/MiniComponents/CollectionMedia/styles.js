@@ -8,8 +8,9 @@ import { isRTL } from "expo-localization";
 import { globalColors } from "../../../GlobalStyles";
 const styles = StyleSheet.create({
   safeAreaView: {
-    backgroundColor: "#0000",
+    // backgroundColor: "#0000",
     height: "100%",
+    backgroundColor: globalColors.bluegem,
   },
   container: {
     backgroundColor: "transparent",

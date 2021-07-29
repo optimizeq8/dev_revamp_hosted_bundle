@@ -327,13 +327,13 @@ class AdCover extends Component {
           return manipResult;
         })
         .catch((error) => {
-          analytics.track(`a_error`, {
+          analytics.track(`Form Error Made`, {
             campaign_channel: "snapchat",
             campaign_ad_type: "StoryAd",
-            error_page: "ad_cover",
+            source: "SnapchatAdCover",
             error_description:
               "Wrong aspect ratio for logo, Please crop the image to the correct size",
-            businessid: this.props.mainBusiness.businessid,
+            business_id: this.props.mainBusiness.businessid,
           });
 
           showMessage({
@@ -354,25 +354,25 @@ class AdCover extends Component {
           uneditedLogoUri,
           logoSerialization: serialization,
         });
-        analytics.track(`a_media_editor`, {
+        analytics.track(`Ad Cover Media Selected`, {
           campaign_channel: "snapchat",
           campaign_ad_type: "StoryAd",
-          source: "ad_cover",
-          source_action: "a_media_editor",
-          tool_used: "PESDK",
+          media_specs: {
+            width: editedLogo.width,
+            height: editedLogo.height,
+            media_uri: editedLogo.uri,
+          },
           media_type: "IMAGE",
-          ...serialization,
-          action_status: editedLogo.uri !== "" ? "success" : "failure",
-          image_for: "campaign_cover_logo",
-          businessid: this.props.mainBusiness.businessid,
+          media_editor_context: { ...serialization },
+          business_id: this.props.mainBusiness.businessid,
         });
         editedLogo.uri !== "" &&
-          analytics.track(`a_error`, {
+          analytics.track(`Form Error Made`, {
             campaign_channel: "snapchat",
             campaign_ad_type: "StoryAd",
-            error_page: "ad_cover",
+            source: "SnapchatAdCover",
             error_description: "Logo must be exactly 993px by 284px",
-            businessid: this.props.mainBusiness.businessid,
+            business_id: this.props.mainBusiness.businessid,
           });
         showMessage({
           message:
@@ -481,12 +481,12 @@ class AdCover extends Component {
             .then(() => {
               if (file.size > 2000000) {
                 this.onToggleModal(false);
-                analytics.track(`a_error`, {
+                analytics.track(`Form Error Made`, {
                   campaign_channel: "snapchat",
                   campaign_ad_type: "StoryAd",
-                  error_page: "ad_cover",
+                  source: "SnapchatAdCover",
                   error_description: "Image must be less than 2 MBs",
-                  businessid: this.props.mainBusiness.businessid,
+                  business_id: this.props.mainBusiness.businessid,
                 });
                 showMessage({
                   message: translate(
@@ -509,17 +509,17 @@ class AdCover extends Component {
                 coverSerialization: result.serialization,
               });
               this.onToggleModal(false);
-              analytics.track(`a_media_editor`, {
+              analytics.track(`Ad Cover Media Selected`, {
                 campaign_channel: "snapchat",
-                campaign_ad_type: "StoryAd",
-                action_status: "success",
-                tool_used: "PESDK",
+                campaign_ad_type: adType,
                 media_type: result.type.toUpperCase(),
-                ...result.serialization,
-                source: "ad_cover",
-                source_action: "a_media_editor",
-                image_for: "campaign_cover",
-                businessid: this.props.mainBusiness.businessid,
+                media_specs: {
+                  width: result.width,
+                  height: result.height,
+                  size: file.size,
+                },
+                media_editor_context: { ...result.serialization },
+                business_id: this.props.mainBusiness.businessid,
               });
 
               showMessage({
@@ -541,14 +541,14 @@ class AdCover extends Component {
             })
             .catch((error) => {
               this.onToggleModal(false);
-              analytics.track(`a_error`, {
+              analytics.track(`Form Error Made`, {
                 campaign_channel: "snapchat",
                 campaign_ad_type: "StoryAd",
-                error_page: "ad_cover",
+                source: "SnapchatAdCover",
                 error_description: error.wrongAspect
                   ? "Wrong aspect ratio for logo, Please crop the image to the correct size "
                   : "Please choose an image",
-                businessid: this.props.mainBusiness.businessid,
+                business_id: this.props.mainBusiness.businessid,
               });
 
               showMessage({
@@ -566,21 +566,21 @@ class AdCover extends Component {
             position: "top",
             type: "warning",
           });
-          analytics.track(`a_error`, {
+          analytics.track(`Form Error Made`, {
             campaign_channel: "snapchat",
             campaign_ad_type: "StoryAd",
-            error_page: "ad_cover",
+            source: "SnapchatAdCover",
             error_description: "Please make sure the image is in png format",
-            businessid: this.props.mainBusiness.businessid,
+            business_id: this.props.mainBusiness.businessid,
           });
         }
       } else if (result && !result.cancelled && isNull(this.state.cover)) {
-        analytics.track(`a_error`, {
+        analytics.track(`Form Error Made`, {
           campaign_channel: "snapchat",
           campaign_ad_type: "StoryAd",
-          error_page: "ad_cover",
+          source: "SnapchatAdCover",
           error_description: "Please choose a media file",
-          businessid: this.props.mainBusiness.businessid,
+          business_id: this.props.mainBusiness.businessid,
         });
         showMessage({
           message: translate("Please choose a media file"),
@@ -685,15 +685,14 @@ class AdCover extends Component {
       this.state.logoError ||
       this.state.coverError
     ) {
-      analytics.track(`a_error_form`, {
-        error_page: "ad_cover",
+      analytics.track(`Form Error Made`, {
+        source: "SnapchatAdCover",
         source_action: "a_submit_ad_cover",
-        action_status: "failure",
         error_description:
           this.state.coverHeadlineError ||
           this.state.logoError ||
           this.state.coverError,
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
     }
     if (
@@ -736,7 +735,7 @@ class AdCover extends Component {
         // .push("AdDesign", {
         //   rejected: this.rejected,
         //   selectedCampaign: this.selectedCampaign,
-        //   source: "ad_cover",
+        //   source: "SnapchatAdCover",
         //   source_action: "a_submit_ad_cover",
         // });
       }
@@ -756,13 +755,13 @@ class AdCover extends Component {
   handleSupportPage = () => {
     const { translate } = this.props.screenProps;
     analytics.track(`a_help`, {
-      source: "ad_cover",
+      source: "SnapchatAdCover",
       source_action: "a_help",
       support_type: "optimize_website",
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
     analytics.track(`open_support`, {
-      source: "ad_cover",
+      source: "SnapchatAdCover",
       source_action: "a_help",
       support_type: "optimize_website",
       timestamp: new Date().getTime(),
@@ -773,7 +772,7 @@ class AdCover extends Component {
     this.props.navigation.push("WebView", {
       url: "https://www.optimizeapp.com/ad_requirements",
       title: "Support",
-      source: "ad_cover",
+      source: "SnapchatAdCover",
       source_action: "a_help",
     });
   };
@@ -806,12 +805,13 @@ class AdCover extends Component {
       "source",
       this.props.screenProps.prevAppState
     );
-    analytics.track("ad_cover", {
+    analytics.track("Screen Viewed", {
+      screen_name: "AdCover",
       source,
       source_action,
       campaign_channel: "snapchat",
       campaign_ad_type: "StoryAd",
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
 
     // let adjustAdCoverTracker = new AdjustEvent("s62u9o");
@@ -830,11 +830,11 @@ class AdCover extends Component {
     const { translate } = this.props.screenProps;
     return (
       <View style={styles.mainSafeArea}>
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}
@@ -851,7 +851,7 @@ class AdCover extends Component {
             segment={{
               str: "Ad Design Back Button",
               obj: { businessname: this.props.mainBusiness.businessname },
-              source: "ad_cover",
+              source: "SnapchatAdCover",
               source_action: "a_go_back",
             }}
             icon="snapchat"
@@ -1044,7 +1044,7 @@ class AdCover extends Component {
           description={
             "The cover shows on the Discover page among subscriptions and trending content"
           }
-          source={"ad_cover"}
+          source={"SnapchatAdCover"}
           source_action={"a_help"}
           screenProps={this.props.screenProps}
           media={this.props.ad_tutorial_link}

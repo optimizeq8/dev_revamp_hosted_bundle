@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import * as actionTypes from "../actions/actionTypes";
 import analytics from "@segment/analytics-react-native";
-import { MixpanelInstance } from "react-native-mixpanel";
 import { Notifications as RNNotifications } from "react-native-notifications";
 
 const initialState = {
@@ -29,13 +28,14 @@ const reducer = (state = initialState, action) => {
       AsyncStorage.getItem("appLanguage")
         .then((language) => {
           let userTraits = {
-            ...action.payload.user,
-            $name:
+            first_name: action.payload.user.firstname,
+            lastt_name: action.payload.user.lasttname,
+            name:
               action.payload.user.firstname +
               " " +
               action.payload.user.lastname,
             selected_language: language,
-            $phone: "+" + action.payload.user.mobile,
+            mobile: "+" + action.payload.user.mobile,
             logged_out: false,
           };
           // NOTE: expo-notification not working for iOS
@@ -59,8 +59,8 @@ const reducer = (state = initialState, action) => {
             );
           } catch (err) {
             // console.log(err);
-            analytics.track(`a_error`, {
-              error_page: "a_error_token",
+            analytics.track(`Form Error Made`, {
+              source: "SettingDeviceToken",
               error_description: err.response || err.message,
             });
             analytics.identify(action.payload.user.userid, userTraits);
@@ -68,8 +68,8 @@ const reducer = (state = initialState, action) => {
           // MixpanelSDK.identify(action.payload.user.userid);
         })
         .catch((error) => {
-          analytics.track(`a_error`, {
-            error_page: "a_error_app_language",
+          analytics.track(`Form Error Made`, {
+            source: "GettingAppLanguage",
             error_description: error.response || error.message,
           });
           // Catch never gets called

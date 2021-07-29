@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, I18nManager, Text } from "react-native";
+import { View, I18nManager, Text, TouchableOpacity } from "react-native";
 import { Icon } from "native-base";
 import { RFValue } from "react-native-responsive-fontsize";
 // styles
@@ -25,6 +25,7 @@ class TransactionCard extends Component {
   render() {
     let transaction = this.props.transaction;
     const { translate } = this.props.screenProps;
+
     return (
       <View style={styles.cardStyle}>
         <View style={styles.header}>
@@ -66,6 +67,18 @@ class TransactionCard extends Component {
             <View style={styles.refundedContainer}>
               <Text style={styles.refundedText}>{translate("Refunded")}</Text>
             </View>
+          )}
+          {transaction.refunded === "0" && (
+            <TouchableOpacity
+              style={styles.invoiceButton}
+              onPress={() =>
+                this.props.showTransactionPdf(transaction.reference_id)
+              }
+            >
+              <Text style={[styles.amountTextTitle]}>
+                {translate("View Invoice")}
+              </Text>
+            </TouchableOpacity>
           )}
         </View>
         <View style={styles.mainView}>

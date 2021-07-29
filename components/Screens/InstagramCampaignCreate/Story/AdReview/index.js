@@ -138,7 +138,7 @@ class AdStoryDesignReview extends React.Component {
             navigation={this.props.navigation}
             title={"Preview"}
             segment={{
-              source: "ad_preview",
+              source: "InstagramStoryAdDesignReview",
               source_action: "a_go_back",
             }}
           />

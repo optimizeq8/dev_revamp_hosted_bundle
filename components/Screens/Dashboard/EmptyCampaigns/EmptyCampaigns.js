@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity, ScrollView } from "react-native";
+import { Text, View, TouchableOpacity, ScrollView, Image } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
@@ -19,7 +19,9 @@ import LaunchCampaignIcon from "../../../../assets/SVGs/LaunchCampaignHome";
 import Snapchat from "../../../../assets/SVGs/AdType/Snapchat";
 import Google from "../../../../assets/SVGs/AdType/GoogleIcon";
 import OnlineStoreHome from "../../../../assets/SVGs/OnlineStoreHome";
-import Logo from "../../../../assets/SVGs/Optimize";
+// import Logo from "../../../../assets/SVGs/Optimize";
+import Logo from "../../../../assets/images/Optimize_Icon_White.png";
+
 import Instagram from "../../../../assets/images/AdTypes/InstaWhiteLogo";
 
 export default class EmptyCampaigns extends Component {
@@ -50,38 +52,27 @@ export default class EmptyCampaigns extends Component {
       routePath = "CreateBusinessAccount";
     }
 
-    const device_id = this.props.screenProps.device_id;
-    const { userInfo } = this.props;
-
-    analytics.track(`a_create_campaign`, {
-      source: "dashboard",
-      source_action: "a_create_campaign",
-      timestamp: new Date().getTime(),
-      userId: userInfo.userid,
-      device_id,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Create Campaign",
+      button_content: "LAUNCH YOU FIRST AD",
+      source: "EmptyDashboard",
     });
 
     this.props.navigation.navigate(routePath, {
-      source: "dashboard",
+      source: "Dashboard",
       source_action: "a_create_campaign",
     });
   };
 
   goToVerifyAccount = () => {
-    const device_id = this.props.screenProps.device_id;
-    const { userInfo } = this.props;
-    analytics.track(`a_verify_account`, {
-      source: "dashboard",
-      source_action: "a_verify_account",
-      timestamp: new Date().getTime(),
-      device_id,
-      userId: userInfo.userid,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "To Verify User Account",
+      button_content: "VERFIY ACCOUNT",
+      source: "EmptyDashboard",
     });
     this.props.navigation.navigate("VerifyAccount", {
-      source: "dashboard",
-      source_action: "a_verify_account",
+      source: "Dashboard",
+      source_action: "start_account _verification",
     });
   };
 
@@ -105,7 +96,7 @@ export default class EmptyCampaigns extends Component {
       routePath = "VerifyBusiness";
 
     this.props.navigation.navigate(routePath, {
-      source: "dashboard",
+      source: "Dashboard",
       source_action: "a_open_website_tutorial",
     });
   };
@@ -118,12 +109,23 @@ export default class EmptyCampaigns extends Component {
       <View style={styles.flex1}>
         {userInfo.hasOwnProperty("verified_account") && !verified_account ? (
           <View style={styles.flex}>
-            <Logo
+            {/* <Logo
               style={styles.logo}
               width={heightPercentageToDP(11)}
               height={heightPercentageToDP(11)}
+            /> */}
+            <Image
+              source={Logo}
+              resizeMode="contain"
+              style={[
+                {
+                  width: widthPercentageToDP(25),
+                  height: heightPercentageToDP(8),
+                  alignSelf: "center",
+                },
+                styles.logo,
+              ]}
             />
-
             <Text style={[styles.helloNameStyle]}>
               {translate("Hello")} {userInfo.firstname}!
             </Text>
@@ -138,10 +140,17 @@ export default class EmptyCampaigns extends Component {
           </View>
         ) : (
           <View style={styles.flex}>
-            <Logo
-              style={styles.logo}
-              width={heightPercentageToDP(10)}
-              height={heightPercentageToDP(10)}
+            <Image
+              source={Logo}
+              resizeMode="contain"
+              style={[
+                {
+                  width: widthPercentageToDP(25),
+                  height: heightPercentageToDP(8),
+                  alignSelf: "center",
+                },
+                styles.logo,
+              ]}
             />
 
             <Text

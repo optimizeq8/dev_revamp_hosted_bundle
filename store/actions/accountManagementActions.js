@@ -18,21 +18,20 @@ export const changeBusiness = (business) => {
   return (dispatch, getState) => {
     persistor.purge();
     analytics.identify(getState().auth.userid, {
-      businessname: business.businessname,
-      businessid: business.businessid,
+      business_name: business.businessname,
+      business_id: business.businessid,
       revenue: business.revenue,
       ltv: business.ltv,
       wallet_amount: business.wallet_amount,
     });
 
     analytics.group(business.businessid, {
-      businessid: business.businessid,
-      [`$name`]: business.businessname,
+      business_id: business.businessid,
+      name: business.businessname,
       company: business.businessname,
       revenue: business.revenue,
       ltv: business.ltv,
       wallet_amount: business.wallet_amount,
-      userId: getState().auth.userid,
     });
     dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
@@ -54,14 +53,6 @@ export const createBusinessAccount = (account, navigation) => {
         return res.data;
       })
       .then((data) => {
-        analytics.track(`a_create_buiness_account`, {
-          source: "open_create_business_account",
-          source_action: `a_create_buiness_account`,
-          action_status: data.success ? "success" : "failure",
-          timestamp: new Date().getTime(),
-          ...account,
-          newBusiness: data.success ? data.data : "",
-        });
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -69,9 +60,22 @@ export const createBusinessAccount = (account, navigation) => {
         });
         //incase of an error?? need handling
         if (data.success) {
+          analytics.track(`Form Submitted`, {
+            form_type: "Business Creation Form",
+            form_context: {
+              business_name: account.businessname,
+              business_category: account.businesscategory,
+              other_business_category: account.otherBusinessCategory,
+              country: account.country,
+              insta_handle_for_review: account.insta_handle_for_review,
+              user_role: data.user_role,
+              approved: data.approved,
+              instagram_access: data.instagram_access,
+            },
+          });
           analytics.identify(getState().auth.userid, {
-            businessname: data.data.businessname,
-            businessid: data.data.businessid,
+            business_name: data.data.businessname,
+            business_id: data.data.businessid,
             revenue: 0,
             ltv: 0,
             wallet_amount: 0,
@@ -81,8 +85,8 @@ export const createBusinessAccount = (account, navigation) => {
             payload: { ...data.data },
           });
           navigation.navigate("Dashboard", {
-            source: "open_create_business_account",
-            source_action: `a_create_buiness_account`,
+            source: "CreateBusinessAccount",
+            source_action: `a_create_business_account`,
           });
           return dispatch({
             type: actionTypes.ADD_BUSINESS_ACCOUNT,
@@ -132,17 +136,16 @@ export const addressForm = (address, navigation, addressId, translate) => {
           businessid: getState().account.mainBusiness.businessid,
           ...address,
         });
-        analytics.track(`a_business_address`, {
-          source: "open_business_address",
-          source_action: "a_business_address",
-          timestamp: new Date().getTime(),
-          new: true,
+        analytics.track(`Form Submitted`, {
+          form_type: "Address Form",
+          form_context: {
+            ...address,
+          },
           error_description: !respData.data.success
             ? respData.data.message
             : null,
           action_status: respData.data.success ? "success" : "failed",
-          ...address,
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         Animated.timing(time, {
           toValue: 1,
@@ -156,7 +159,7 @@ export const addressForm = (address, navigation, addressId, translate) => {
           });
           if (respData.data.success)
             navigation.navigate("Dashboard", {
-              source: "open_business_address",
+              source: "AddressForm",
               source_action: "a_business_address",
             });
           return dispatch({
@@ -170,17 +173,16 @@ export const addressForm = (address, navigation, addressId, translate) => {
           duration: 2000,
           useNativeDriver: true,
         }).start(() => {
-          analytics.track(`a_business_address`, {
-            source: "open_business_address",
-            source_action: "a_business_address",
-            timestamp: new Date().getTime(),
-            new: false,
+          analytics.track(`Form Submitted`, {
+            form_type: "Address Form",
+            form_context: {
+              ...address,
+            },
             error_description: !response.data.success
               ? response.data.message
               : null,
-            ...address,
             action_status: response.data.success ? "success" : "failed",
-            businessid: getState().account.mainBusiness.businessid,
+            business_id: getState().account.mainBusiness.businessid,
           });
           showMessage({
             message: translate(response.data.message),
@@ -274,15 +276,12 @@ export const create_snapchat_ad_account = (info, navigation) => {
         return res.data;
       })
       .then((data) => {
-        analytics.track(`a_accept_ad_TNC`, {
-          source: "ad_TNC",
-          source_action: "a_accept_ad_TNC",
+        analytics.track(`Snapchat AD Account Created`, {
+          source: "SnapchatCreateAdAcc",
           campaign_channel: "snapchat",
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
-          ...info,
+          form_context: { ...info },
           action_status: data.success ? "success" : "failure",
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           // let adjustSnapAdAccTracker = new AdjustEvent("vsf6z0");
@@ -308,18 +307,15 @@ export const create_snapchat_ad_account = (info, navigation) => {
         //   "create_snapchat_ad_account_ERROR",
         //   err.message || err.response
         // );
-        analytics.track(`a_error`, {
-          error_page: "ad_TNC",
-          action_status: "failure",
+        analytics.track(`Form Error Made`, {
+          source: "SnapchatCreateAdAcc",
           campaign_channel: "snapchat",
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
           source_action: "a_accept_ad_TNC",
           error_description:
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         errorMessageHandler(err);
 
@@ -345,32 +341,35 @@ export const updateUserInfo = (info, navigation) => {
         return res.data;
       })
       .then((data) => {
-        analytics.track(`a_update_personal_info`, {
-          source: "open_personal_details",
-          source_action: "a_update_personal_info",
+        analytics.track(`Form Submitted`, {
+          form_type: "Personal Info Form",
+          form_context: {
+            ...info,
+          },
           action_status: data.success ? "success" : "failure",
           error_description: !data.success ? data.message : null,
-          ...info,
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           setAuthToken(data.accessToken);
           let decodedUser = jwt_decode(data.accessToken);
+          console.log("decode", decodedUser);
           showMessage({
             message: data.message,
             type: "success",
             position: "top",
           });
           const updateInfo = {
-            ...decodedUser,
-            mobile: info.country_code + info.mobile,
+            first_name: decodedUser.firstname,
+            last_name: decodedUser.lastname,
+            mobile: mobile,
           };
 
           analytics.identify(getState().auth.userid, {
             ...updateInfo,
           });
           navigation.navigate("Dashboard", {
-            source: "open_personal_details",
+            source: "PersonalInfo",
             source_action: "a_update_personal_info",
           });
           return dispatch({
@@ -467,23 +466,21 @@ export const deleteBusinessAccount = (business_id) => {
 
 export const inviteTeamMember = (info, resend) => {
   return (dispatch, getState) => {
-    const source = resend
-      ? "team_management_members_list"
-      : "team_management_members_details";
+    const source = resend ? "TeamManagment" : "AddOrEditTeamMember";
     const source_action = "a_invite_team_member";
 
     createBaseUrl()
       .post("memberaccount", info)
       .then((res) => res.data)
       .then((data) => {
-        analytics.track(`a_invite_team_member`, {
-          source,
-          source_action,
-          timestamp: new Date().getTime(),
-          resend_invite: resend,
+        analytics.track(`Form Submitted`, {
+          form_type: "Team Member Form",
+          form_context: {
+            ...info,
+            resend_invite: resend,
+          },
           action_status: data.success ? "success" : "failure",
-          ...info,
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         showMessage({
           message: data.message,
@@ -500,16 +497,14 @@ export const inviteTeamMember = (info, resend) => {
           })
       )
       .catch((err) => {
-        analytics.track(`a_error`, {
-          error_page: source,
-          action_status: "failure",
-          timestamp: new Date().getTime(),
-          source_action: source_action,
+        analytics.track(`Form Error Made`, {
+          source: source,
+          form_field: source_action,
           error_description:
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         errorMessageHandler(err);
       });
@@ -553,13 +548,17 @@ export const updateBusinessInfo = (userid, info, navigation, translate) => {
           type: data.success ? "success" : "danger",
           position: "top",
         });
-        analytics.track(`a_update_buisness_info`, {
-          source_action: "open_business_info",
-          source_action: "a_update_buisness_info",
-          action_status: data.success ? "success" : "failure",
-          timestamp: new Date().getTime(),
-          ...info,
-          businessid: getState().account.mainBusiness.businessid,
+        analytics.track(`Form Submitted`, {
+          form_type: "Update Business Info Form",
+          form_context: {
+            business_name: info.businessname,
+            business_category: info.businesscategory,
+            country: info.country,
+            business_type: info.businesstype,
+            other_business_category: info.otherBusinessCategory,
+            business_id: getState().account.mainBusiness.businessid,
+          },
+          business_id: getState().account.mainBusiness.businessid,
         });
         if (data.success) {
           dispatch(
@@ -631,7 +630,7 @@ export const getTempUserInfo = (member_id) => {
           showMessage({ message: data.message, type: "warning" });
           //reset navigation
           NavigationService.navigate("SwitchLanguage", {
-            source: "registration_detail",
+            source: "RegistrationDetailForm",
             source_action: "a_set_business_detail",
           });
           dispatch({
@@ -672,10 +671,10 @@ export const handleTeamInvite = (status, segmentInfo) => {
           message: data.message,
           type: data.success ? "success" : "warning",
         });
-        analytics.track("a_handle_team_invite", {
+        analytics.track("Account Added User", {
           ...segmentInfo,
           action_status: data.success ? "success" : "failure",
-          businessid:
+          business_id:
             getState().account.mainBusiness &&
             getState().account.mainBusiness.businessid,
         });
@@ -755,13 +754,11 @@ export const updateTeamMembers = (memberInfo) => {
       .put(`userRole`, { ...memberInfo })
       .then((res) => res.data)
       .then((data) => {
-        analytics.track(`a_update_team_member_role`, {
-          source: "team_management_member_details",
-          source_action: "a_update_team_member_role",
-          timestamp: new Date().getTime(),
+        analytics.track(`Team Member Updated`, {
+          source: "AddOrEditTeamMember",
           action_status: data.success ? "success" : "failure",
           ...memberInfo,
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
 
         showMessage({
@@ -804,20 +801,18 @@ export const updateTeamMembers = (memberInfo) => {
 export const deleteTeamMembers = (memberId, businessid, navigation) => {
   return (dispatch) => {
     dispatch({ type: actionTypes.SET_TEAM_MEMBERS_LOADING, payload: true });
-    const source = "team_management_members_details";
+    const source = "AddOrEditTeamMember";
     const source_action = "a_delete_team_member";
 
     createBaseUrl()
       .delete(`/businessMembers/${memberId}/${businessid}`)
       .then((res) => res.data)
       .then((data) => {
-        analytics.track(`a_delete_team_member`, {
+        analytics.track(`Team Member Deleted`, {
           source,
-          source_action,
-          timestamp: new Date().getTime(),
           action_status: data.success ? "success" : "failure",
           member_id: memberId,
-          businessid: businessid,
+          business_id: businessid,
         });
 
         showMessage({
@@ -840,16 +835,15 @@ export const deleteTeamMembers = (memberId, businessid, navigation) => {
         navigation.goBack();
       })
       .catch((err) => {
-        analytics.track(`a_error`, {
-          error_page: source,
+        analytics.track(`Form Error Made`, {
+          source,
           action_status: "failure",
-          timestamp: new Date().getTime(),
           source_action: source_action,
           error_description:
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
-          businessid: businessid,
+          business_id: businessid,
         });
         errorMessageHandler(err);
 
@@ -947,14 +941,18 @@ export const updateWebInfoForBusiness = (info, submitNextStep = false) => {
           type: data.success ? "success" : "danger",
           position: "top",
         });
-        analytics.track(`a_submit_my_website_detail`, {
-          source: "my_website_detail",
-          source_action: "a_submit_my_website_detail",
-          new: submitNextStep ? true : false,
-          action_status: data.success ? "success" : "failure",
+        analytics.track(`Form Submitted`, {
+          form_type: "Website Info Form",
+          form_context: {
+            business_id: info.businessid,
+            whatsapp_number: info.whatsappnumber,
+            insta_handle: info.insta_handle,
+            snapchat_handle: info.snapchat_handle,
+            google_map_link: info.googlemaplink,
+            call_number: info.callnumber,
+          },
           error_description: !data.success && data.message,
-          ...info,
-          businessid:
+          business_id:
             getState().account.mainBusiness &&
             getState().account.mainBusiness.businessid,
         });
@@ -982,7 +980,7 @@ export const updateWebInfoForBusiness = (info, submitNextStep = false) => {
           submitNextStep(2);
         } else if (data.success && !submitNextStep) {
           NavigationService.navigateBack("MyWebsite", "MyWebsite", {
-            source: "my_website_detail",
+            source: "MyWebsite",
             source_action: "a_submit_my_website_detail",
           });
         }
@@ -1036,13 +1034,11 @@ export const changeBusinessLogo = (
           position: "top",
         });
         onToggleModal(false);
-        analytics.track(`a_upload_business_logo`, {
-          source: "open_my_website",
-          source_action: "a_select_media",
-          ...info,
+        analytics.track(`Business Logo Updated`, {
+          source: "MyWbsite",
           action_status: data.success ? data.success : "failure",
           error_description: !data.success && data.message,
-          businessid:
+          business_id:
             getState().account.mainBusiness &&
             getState().account.mainBusiness.businessid,
         });
@@ -1066,12 +1062,11 @@ export const changeBusinessLogo = (
       .catch((error) => {
         loading(0);
         onToggleModal(false);
-        analytics.track(`a_error`, {
-          source: "open_my_website",
+        analytics.track(`Form Error Made`, {
+          source: "MyWebsite",
           source_action: "a_upload_business_logo",
-          action_status: "failure",
           error_description: error.response || error.message,
-          businessid:
+          business_id:
             getState().account.mainBusiness &&
             getState().account.mainBusiness.businessid,
         });
@@ -1120,10 +1115,9 @@ export const crashAppForSpamUser = () => {
       if (result.data) {
         const data = result.data;
         if (data && data.error) {
-          analytics.track("app_crash", {
-            source: "suspicous_user",
-            source_action: "a_app_crash",
-            businessid:
+          analytics.track("App Crashed For Suspicous User", {
+            source: "CrashAppForSpamUser",
+            business_id:
               getState().account.mainBusiness &&
               getState().account.mainBusiness.businessid,
           });
@@ -1178,11 +1172,10 @@ export const checkBusinessVerified = (businessid, translate) => {
           data.success &&
           data.business_accounts &&
           data.business_accounts.approved === "1";
-        analytics.track(`a_check_status`, {
-          source: "start_verify",
-          source_action: "a_check_status",
-          verification_channel: "Business",
-          businessid: businessid,
+        analytics.track(`Business Verification Checked`, {
+          source: "VerifyBusiness",
+          verification_mode: "Business",
+          business_id: businessid,
           business_approved:
             data.business_accounts && data.business_accounts.approved,
         });

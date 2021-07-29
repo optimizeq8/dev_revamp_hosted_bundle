@@ -348,6 +348,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: RFValue(10, 414),
     // backgroundColor: "#9300FF",
     paddingTop: RFValue(10, 414),
+    backgroundColor: globalColors.bluegem,
   },
   onlineStoreHomeIcon: {
     left: -10,
@@ -456,6 +457,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: RFValue(17.5, 414),
     paddingTop: 25,
     paddingBottom: 15,
+    backgroundColor: globalColors.bluegem,
   },
   profileIcon: {
     width: 62,

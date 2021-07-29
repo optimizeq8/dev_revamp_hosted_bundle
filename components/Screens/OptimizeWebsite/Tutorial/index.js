@@ -49,10 +49,11 @@ class TutorialWeb extends React.Component {
   }
 
   handleBackPress = () => {
-    analytics.track(`a_go_back`, {
-      source: "my_website_tutorial",
-      source_action: "a_go_back",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Go Back",
+      source: "Tutorial",
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.props.navigation.goBack();
     return true;
@@ -66,11 +67,12 @@ class TutorialWeb extends React.Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`my_website_tutorial`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "Tutorial",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }

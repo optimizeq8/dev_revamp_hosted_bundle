@@ -3,7 +3,11 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
 import { RFValue } from "react-native-responsive-fontsize";
 const styles = StyleSheet.create({
-  safeAreaViewContainer: { flex: 1, backgroundColor: "#0000" },
+  safeAreaViewContainer: {
+    flex: 1,
+    // backgroundColor: "#0000"
+    backgroundColor: globalColors.bluegem,
+  },
   contentStyle: { flex: 1, backgroundColor: "#0000" },
   knetContainer: {
     flex: 1,

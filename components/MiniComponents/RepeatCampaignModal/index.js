@@ -49,11 +49,13 @@ class RepeatCampaignModal extends Component {
     this.setState({
       start_time: date,
     });
-    analytics.track(`a_repeat_ad_start_date`, {
-      source: "repeat_campaign_modal",
-      source_action: "a_repeat_ad_start_date",
-      campaign_start_date: date,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: `${
+        campaign.channel === "instagram" ? "Instagram" : "Snapchat"
+      } Repeat Campaign Form`,
+      form_field: "ad_start_date",
+      form_value: date,
+      business_id: this.props.mainBusiness.businessid,
     });
   };
   handleEndDatePicked = (date) => {
@@ -62,11 +64,13 @@ class RepeatCampaignModal extends Component {
     this.setState({
       end_time: end_time.toISOString().split("T")[0],
     });
-    analytics.track(`a_ad_end_date`, {
-      campaign_end_date: date,
-      source: "repeat_campaign_modal",
-      source_action: "a_ad_end_date",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: `${
+        campaign.channel === "instagram" ? "Instagram" : "Snapchat"
+      } Repeat Campaign Form`,
+      form_field: "ad_end_date",
+      form_value: date,
+      business_id: this.props.mainBusiness.businessid,
     });
   };
   handleDuration = (subtract = false, onePress = false, time = 1) => {
@@ -83,12 +87,13 @@ class RepeatCampaignModal extends Component {
       end_time: end_time.toISOString().split("T")[0],
       duration,
     });
-    analytics.track(`a_repeat_duration`, {
-      source: "repeat_campaign_modal",
-      source_action: "a_repeat_duration",
-      campaign_end_date: end_time,
-      campaign_duration: duration,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: `${
+        campaign.channel === "instagram" ? "Instagram" : "Snapchat"
+      } Repeat Campaign Form`,
+      form_field: "ad_repeat_duration",
+      form_value: duration,
+      business_id: this.props.mainBusiness.businessid,
     });
     if (!onePress) {
       this.timer = setTimeout(
@@ -103,12 +108,12 @@ class RepeatCampaignModal extends Component {
 
   handleSwitch = (value) => {
     this.setState({ switchComponent: value });
-    analytics.track("a_toggle_date_modal", {
-      source: "repeat_campaign_modal",
-      source_action: "a_toggle_date_modal",
-      visible: value,
-      campaign_channel: this.props.campaign.channel,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track("Button Pressed", {
+      button_type: `Show ${
+        value ? "Ad Targeting" : "Duration Modal"
+      } for Repeat Campaigns`,
+      button_content: "Forward Arrow or Back Arrow",
+      source: "Dashboard",
     });
     if (!value) {
       this.dateField.showModal();
@@ -186,7 +191,11 @@ class RepeatCampaignModal extends Component {
                     closeButton={false}
                     segment={{
                       str: "Ad Details Back Button",
-                      source: "repeat_campaign_modal",
+                      source: `${
+                        campaign.channel === "instagram"
+                          ? "Instagram"
+                          : "Snapchat"
+                      }RepeatCampaignModal`,
                       source_action: "a_go_back",
                     }}
                     actionButton={() => this.handleSwitch(false)}

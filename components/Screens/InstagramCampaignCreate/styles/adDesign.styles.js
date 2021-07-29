@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
     marginBottom: RFValue(2.5, 414),
   },
   safeAreaView: {
-    backgroundColor: "#0000",
+    backgroundColor: globalColors.bluegem,
+    // backgroundColor: "#0000",
     height: "100%",
   },
   container: {

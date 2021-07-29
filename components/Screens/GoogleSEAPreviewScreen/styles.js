@@ -8,7 +8,8 @@ import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   safeAreaView: {
-    backgroundColor: "#0000",
+    // backgroundColor: "#0000",
+    backgroundColor: globalColors.bluegem,
     height: "100%",
     flex: 1,
   },

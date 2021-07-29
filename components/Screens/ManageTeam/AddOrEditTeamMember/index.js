@@ -99,12 +99,10 @@ class AddOrEditTeamMember extends Component {
    * @param {Int} userRole a number to indicate which user role is selected
    */
   handleMemberType = (userRole) => {
-    analytics.track(`a_change_team_member_role`, {
-      source: "team_management_member_details",
-      source_action: "a_change_team_member_role",
-      timestamp: new Date().getTime(),
-      user_role: userRole === this.state.userRole ? 0 : userRole,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Change Team Member Role",
+      button_content: userRole === this.state.userRole ? 0 : userRole,
+      business_id: this.props.mainBusiness.businessid,
     });
     this.setState({
       //if none of the switches are selected then set the state to 0
@@ -228,13 +226,11 @@ class AddOrEditTeamMember extends Component {
       this.props.screenProps.prevAppState
     );
 
-    analytics.track(`team_management_member_details`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "AddOrEditTeamMember",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      new_team_member: this.props.navigation.getParam("editTeamMember", false),
-      ...teamMeber,
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
   };
 
@@ -257,21 +253,21 @@ class AddOrEditTeamMember extends Component {
 
     return (
       <SafeAreaView
-        style={{ height: "100%" }}
+        style={{ height: "100%", backgroundColor: globalColors.bluegem }}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <Header
           screenProps={this.props.screenProps}
           title={editTeamMember ? "Edit team member" : "Add team member"}
           navigation={this.props.navigation}
           segment={{
-            source: "team_management_member_details",
+            source: "AddOrEditTeamMember",
             source_action: "a_go_back",
           }}
         />

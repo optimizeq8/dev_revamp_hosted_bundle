@@ -118,7 +118,6 @@ export class InstagramAudience extends Component {
     );
     let rep = cloneDeep(this.props.audience);
     rep.targeting = combinedMerge;
-    console.log("rep.targeting", JSON.stringify(rep.targeting, null, 2));
     this.props.setAudienceDetail({
       ...rep,
     });
@@ -171,7 +170,6 @@ export class InstagramAudience extends Component {
       );
       let rep = cloneDeep(this.props.audience);
       rep.targeting = combinedMerge;
-      console.log("rep.targeting", JSON.stringify(rep.targeting, null, 2));
       this.props.setAudienceDetail({
         ...rep,
       });
@@ -210,14 +208,11 @@ export class InstagramAudience extends Component {
     }
     // segment track for error on final submit
     if (countryRegionError || audienceNameError) {
-      analytics.track(`a_error_form`, {
-        error_page: "audience_targeting",
+      analytics.track(`Form Error Made`, {
+        source: "InstagramAudience",
         source_action: "a_save_audience_targeting",
-        timestamp: new Date().getTime(),
-        // campaign_channel: "snapchat",
-        // campaign_ad_type: this.props.adType,
         error_description: countryRegionError || audienceNameError,
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
     }
     if (!audienceNameError && !countryRegionError) {
@@ -273,12 +268,13 @@ export class InstagramAudience extends Component {
     let rep = cloneDeep(this.props.audience);
     rep.targeting.age_min = parseInt(values[0]);
     rep.targeting.age_max = parseInt(values[1]);
-    analytics.track(`a_audience_age`, {
-      source: "audience_detail",
-      source_action: "a_audience_age",
-      audience_max_age: parseInt(values[0]),
-      audience_min_age: parseInt(values[1]),
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Audience Form",
+      form_field: "audience_age",
+      form_value: {
+        audience_max_age: parseInt(values[0]),
+        audience_min_age: parseInt(values[1]),
+      },
     });
     this.props.setAudienceDetail({ ...rep });
   };
@@ -291,12 +287,10 @@ export class InstagramAudience extends Component {
     let replace = cloneDeep(this.props.audience);
     replace.targeting.user_device = selectedItems;
 
-    analytics.track(`a_audience_devices`, {
-      source: "audience_detail",
-      source_action: "a_audience_devices",
-      audience_devices_name:
-        selectedItems.length > 0 ? selectedItems.join(", ") : "",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Audience Form",
+      form_field: "audience_devices",
+      form_value: selectedItems.length > 0 ? selectedItems.join(", ") : "",
     });
 
     this.props.setAudienceDetail({
@@ -324,12 +318,11 @@ export class InstagramAudience extends Component {
       interestNames: selectedItems,
     });
 
-    analytics.track(`a_audience_interests`, {
-      source: "audience_detail",
-      source_action: "a_audience_interests",
-      audience_interests_names:
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Audience Form",
+      form_field: "audience_interests",
+      form_value:
         selectedItems && selectedItems.length > 0 && selectedItems.join(", "),
-      businessid: this.props.mainBusiness.businessid,
     });
     this.props.setAudienceDetail({
       ...replace,
@@ -354,31 +347,29 @@ export class InstagramAudience extends Component {
           (r) => r !== selectedItem
         );
       langs = replace.targeting.demographics[0].languages;
-      analytics.track(`a_audience_languages`, {
-        source: "audience_detail",
-        source_action: "a_audience_languages",
-        audience_languages: langs.join(", "),
-        businessid: this.props.mainBusiness.businessid,
+      analytics.track(`Form Populated`, {
+        form_type: "Instagram Audience Form",
+        form_field: "audience_laanguages",
+        form_value: langs.join(", "),
       });
     } else {
       if (replace.targeting.geos.length > 1) {
         replace.targeting.demographics[0].languages = [selectedItem];
       } else replace.targeting.demographics[0].languages.push(selectedItem);
       langs = replace.targeting.demographics[0].languages;
-      analytics.track(`a_audience_languages`, {
-        source: "audience_detail",
-        source_action: "a_audience_languages",
-        audience_languages: langs.join(", "),
-        businessid: this.props.mainBusiness.businessid,
+      analytics.track(`Form Populated`, {
+        form_type: "Instagram Audience Form",
+        form_field: "audience_laanguages",
+        form_value: langs.join(", "),
       });
     }
 
     if (replace.targeting.demographics[0].languages.length === 0) {
-      analytics.track(`a_error_form`, {
-        error_page: "audience_detail",
+      analytics.track(`Form Error Made`, {
+        source: "InstagramAudience",
         source_action: "a_audience_languages",
         error_description: "Please choose a language",
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
 
       showMessage({
@@ -402,13 +393,14 @@ export class InstagramAudience extends Component {
     replace.targeting.user_device = [];
     replace.targeting.os_version_max = "";
     replace.targeting.os_version_min = "";
-    analytics.track(`a_audience_OS_type`, {
-      source: "audience_detail",
-      source_action: "a_audience_OS_type",
-      audience_os_type: selectedItem === "" ? "ALL" : selectedItem,
-      audience_os_min_ver: "",
-      audience_os_max_ver: "",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Audience Form",
+      form_field: "audience_os",
+      form_value: {
+        audience_os_type: selectedItem === "" ? "ALL" : selectedItem,
+        audience_os_min_ver: "",
+        audience_os_max_ver: "",
+      },
     });
 
     this.props.setAudienceDetail({
@@ -420,12 +412,13 @@ export class InstagramAudience extends Component {
     let replace = cloneDeep(this.props.audience);
     replace.targeting.os_version_min = selectedItem[0];
     replace.targeting.os_version_max = selectedItem[1];
-    analytics.track(`a_audience_OS_version`, {
-      source: "audience_detail",
-      source_action: "a_audience_OS_version",
-      audience_os_min_ver: selectedItem[0],
-      audience_os_max_ver: selectedItem[1],
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Audience Form",
+      form_field: "audience_os_version",
+      form_value: {
+        audience_os_min_ver: selectedItem[0],
+        audience_os_max_ver: selectedItem[1],
+      },
     });
 
     this.props.setAudienceDetail({
@@ -442,11 +435,10 @@ export class InstagramAudience extends Component {
     if (unselect) {
       stateRep.targeting.geo_locations.custom_locations = [];
     } else stateRep.targeting.geo_locations.custom_locations = selectedItems;
-    analytics.track(`a_ad_map_locations`, {
-      source: "ad_targeting",
-      source_action: "a_ad_map_locations",
-      campaign_map_locations: selectedItems,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Audience Form",
+      form_field: "audience_map_locations",
+      form_value: selectedItems,
     });
     this.setState({
       //   campaignInfo: { ...stateRep },
@@ -513,11 +505,10 @@ export class InstagramAudience extends Component {
     // }
     //gender is coming in as 1,2
     replace.targeting.genders = [gender];
-    analytics.track(`a_audience_gender`, {
-      source: "audience_detail",
-      source_action: "a_audience_gender",
-      audience_gender: replace.targeting.genders,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Form Populated`, {
+      form_type: "Instagram Audience Form",
+      form_field: "audience_gender",
+      form_value: replace.targeting.genders,
     });
 
     this.props.setAudienceDetail({
@@ -544,9 +535,10 @@ export class InstagramAudience extends Component {
   };
 
   setAudienceName = (stateName, value) => {
-    analytics.track("a_audience_name", {
-      audience_name: value,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track("Form Populated", {
+      form_type: "Instagram Audience Form",
+      form_field: "audience_name",
+      form_value: value,
     });
     this.props.setAudienceDetail({ name: value });
   };
@@ -672,10 +664,9 @@ export class InstagramAudience extends Component {
   };
   goBack = () => {
     const { translate } = this.props.screenProps;
-    analytics.track("go_back_warning", {
-      source: "audience_detail",
-      source_action: "a_go_back",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track("Button Pressed", {
+      button_type: "Go Back",
+      button_content: "Backward Icon",
     });
     Alert.alert(
       translate("Warning"),
@@ -686,10 +677,9 @@ export class InstagramAudience extends Component {
         {
           text: translate("Cancel"),
           onPress: () => {
-            analytics.track("a_cancel_go_back", {
-              source: "audience_detail",
-              source_action: "a_go_back",
-              businessid: this.props.mainBusiness.businessid,
+            analytics.track("Button Pressed", {
+              button_type: "Go Back Alert Cancel",
+              button_content: "Cancel",
             });
           },
           style: "cancel",
@@ -697,10 +687,9 @@ export class InstagramAudience extends Component {
         {
           text: translate("Yes"),
           onPress: () => {
-            analytics.track("a_go_back", {
-              source: "audience_detail",
-              source_action: "a_go_back",
-              businessid: this.props.mainBusiness.businessid,
+            analytics.track("Button Pressed", {
+              button_type: "Go Back Alert Confirm",
+              button_content: "Yes",
             });
             this.props.deleteCustomLocation("all", true);
             this.props.navigation.goBack();
@@ -719,12 +708,10 @@ export class InstagramAudience extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track("audience_detail", {
+    analytics.track("Screen Viewed", {
+      screen_name: "InstagramAudience",
       source,
       source_action,
-      new: !this.editAudience,
-      audience_channel: "instagram",
-      businessid: this.props.mainBusiness.businessid,
     });
   };
   expandLocation = () => {

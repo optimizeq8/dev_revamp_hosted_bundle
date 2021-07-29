@@ -33,12 +33,12 @@ class InstagramCampaignAudience extends React.Component {
   showAlert = (audience) => {
     const { translate } = this.props.screenProps;
 
-    analytics.track("audience_delete_warning", {
-      source: "audience_list",
-      source_action: "a_delete_audience",
+    analytics.track("Button Pressed", {
+      button_type: "Instagram Auidence Alret Displayed",
+      button_content: "Delete Icon",
       audience_id: audience.id,
       audience_name: audience.name,
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
     Alert.alert(
       translate("Delete"),
@@ -49,10 +49,9 @@ class InstagramCampaignAudience extends React.Component {
         {
           text: translate("Cancel"),
           onPress: () => {
-            analytics.track("a_cancel_delete", {
-              source: "audience_list",
-              source_action: "a_cancel_delete",
-              businessid: this.props.mainBusiness.businessid,
+            analytics.track("Button Pressed", {
+              button_type: "Cancel Deletion of Audience",
+              button_content: "Cancel",
             });
           },
           style: "cancel",

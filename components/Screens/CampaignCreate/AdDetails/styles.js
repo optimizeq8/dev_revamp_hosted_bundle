@@ -308,7 +308,8 @@ const styles = StyleSheet.create({
   createText: {
     fontFamily: "montserrat-regular",
     fontSize: RFValue(6, 414),
-    color: "#9325FF",
+    // color: "#9325FF",
+    color: globalColors.bluegem,
   },
   iconRight: {
     fontSize: RFValue(10, 414),

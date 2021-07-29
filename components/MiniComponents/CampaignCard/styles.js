@@ -15,10 +15,10 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginVertical: 8,
     marginVertical: RFValue(4, 414),
-    shadowOpacity: 0.5,
-    shadowRadius: 3,
-    shadowColor: "#6268FF",
-    shadowOffset: { height: 6, width: 0 },
+    // shadowOpacity: 0.5,
+    // shadowRadius: 3,
+    // shadowColor: "#6268FF",
+    // shadowOffset: { height: 6, width: 0 },
   },
   header: {
     flex: 1,
@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: RFValue(10, 414),
     paddingVertical: RFValue(10, 414),
+    backgroundColor: "#6a12db",
   },
   chart: {
     paddingHorizontal: 5,

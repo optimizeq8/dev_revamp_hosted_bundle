@@ -31,6 +31,7 @@ import SpendIcon from "../../../../assets/SVGs/Performance/Spend";
 import SearchIcon from "../../../../assets/SVGs/Search.svg";
 import isUndefined from "lodash/isUndefined";
 import { RFValue } from "react-native-responsive-fontsize";
+import { globalColors } from "../../../../GlobalStyles";
 
 class GoogleKeywordsStats extends Component {
   static navigationOptions = {
@@ -62,11 +63,11 @@ class GoogleKeywordsStats extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
   handleSelectedKeyword = (keyword) => {
-    analytics.track(`a_open_keyword_performance`, {
-      source: "ad_keywords_performance",
-      source_action: "a_open_keyword_performance",
-      ...keyword,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Google Keyword Stats Selected",
+      button_content: { ...keyword },
+      source: "GoogleKeywordsStats",
+      business_id: this.props.mainBusiness.businessid,
     });
     this.setState(
       {
@@ -87,7 +88,8 @@ class GoogleKeywordsStats extends Component {
     }).start();
   };
   onDidFocus = () => {
-    analytics.track(`ad_keywords_performance`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "GoogleKeywordsPerformance",
       source: this.props.navigation.getParam(
         "source",
         this.props.screenProps.prevAppState
@@ -97,7 +99,7 @@ class GoogleKeywordsStats extends Component {
         this.props.screenProps.prevAppState
       ),
       keywords_performance: this.state.filteredKeywords,
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
   };
   render() {
@@ -128,14 +130,15 @@ class GoogleKeywordsStats extends Component {
                   borderBottomStartRadius: 30,
                   borderBottomEndRadius: 30,
                   overflow: "hidden",
+                  backgroundColor: globalColors.bluegem,
                 },
               ]}
             >
-              <LinearGradient
+              {/* <LinearGradient
                 colors={["#9300FF", "#5600CB"]}
                 locations={[0, 1]}
                 style={styles.gradient}
-              />
+              /> */}
             </View>
             <Header
               screenProps={this.props.screenProps}
@@ -145,7 +148,7 @@ class GoogleKeywordsStats extends Component {
               icon={"google"}
               navigation={this.props.navigation}
               segment={{
-                source: "ad_keywords_performance",
+                source: "GoogleKeywordsPerformance",
                 source_action: "a_go_back",
               }}
               titleStyle={{
@@ -198,10 +201,10 @@ class GoogleKeywordsStats extends Component {
                   style={styles.searchInputText}
                   placeholderTextColor="#fff"
                   onChangeText={(value) => {
-                    let filteredKeywords = this.props.selectedCampaign.keywords.filter(
-                      (c) =>
+                    let filteredKeywords =
+                      this.props.selectedCampaign.keywords.filter((c) =>
                         c.keyword.toLowerCase().includes(value.toLowerCase())
-                    );
+                      );
                     this.setState({ filteredKeywords: filteredKeywords });
                   }}
                 />

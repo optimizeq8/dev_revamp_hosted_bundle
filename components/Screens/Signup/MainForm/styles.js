@@ -4,6 +4,7 @@ import {
   widthPercentageToDP,
 } from "react-native-responsive-screen";
 import { RFValue } from "react-native-responsive-fontsize";
+import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -14,6 +15,7 @@ const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
     // backgroundColor: "#FFF"
+    backgroundColor: globalColors.bluegem,
   },
   subtitle: {
     fontSize: 18,
@@ -39,7 +41,8 @@ const styles = StyleSheet.create({
     marginRight: 0,
   },
   activeBadege: {
-    backgroundColor: "#6C63FF",
+    // backgroundColor: "#6C63FF",
+    backgroundColor: globalColors.bluegem,
     width: 40,
     height: 40,
     borderRadius: 35,
@@ -89,7 +92,8 @@ const styles = StyleSheet.create({
   activeTitleText: {
     fontFamily: "montserrat-bold",
     fontSize: RFValue(6, 414),
-    color: "#6C63FF",
+    // color: "#6C63FF",
+    color: globalColors.bluegem,
     textTransform: "uppercase",
   },
   titleText: {
@@ -148,7 +152,8 @@ const styles = StyleSheet.create({
   },
   registerationText: {
     fontSize: RFValue(7, 414),
-    color: "#6C63FF",
+    // color: "#6C63FF",
+    color: globalColors.bluegem,
     textTransform: "uppercase",
     fontFamily: "montserrat-bold",
     letterSpacing: 0,

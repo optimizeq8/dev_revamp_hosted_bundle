@@ -72,11 +72,12 @@ class PersonalInfo extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`open_personal_details`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "PersonalInfo",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -154,12 +155,11 @@ class PersonalInfo extends Component {
           this.props.navigation
         );
       } else {
-        analytics.track(`a_update_personal_info`, {
-          source: "open_personal_details",
-          source_action: "a_update_personal_info",
-          action_status: "failure",
+        analytics.track(`Form Error Made`, {
+          form_type: "Personal Info Form",
+          form_field: "a_update_personal_info",
           error_description: "No changes to update",
-          businessid:
+          business_id:
             this.props.mainBusiness && this.props.mainBusiness.businessid,
         });
         showMessage({
@@ -169,12 +169,11 @@ class PersonalInfo extends Component {
         });
       }
     } else {
-      analytics.track(`a_update_personal_info`, {
-        source: "open_personal_details",
-        source_action: "a_update_personal_info",
-        action_status: "failure",
+      analytics.track(`Form Error Made`, {
+        form_type: "Personal Info Form",
+        form_field: "a_update_personal_info",
         error_description: "Please complete required fields",
-        businessid:
+        business_id:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       });
     }
@@ -203,17 +202,17 @@ class PersonalInfo extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <CustomHeader
           screenProps={this.props.screenProps}
           title={"Personal Info"}
           navigation={this.props.navigation}
           segment={{
-            source: "open_personal_details",
+            source: "PersonalInfo",
             source_action: "a_go_back",
           }}
         />

@@ -22,7 +22,8 @@ export const colors = {
 const styles = StyleSheet.create({
   safeAreaView: { backgroundColor: "#fff" },
   container: {
-    backgroundColor: "#0000",
+    // backgroundColor: "#0000",
+    backgroundColor: globalColors.bluegem,
     display: "flex",
     justifyContent: "space-between",
     top: RFValue(5, 414),
@@ -151,7 +152,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontFamily: "montserrat-bold-english",
-    color: "#FF9D00",
+    color: globalColors.orange,
     alignItems: "center",
     fontSize: RFValue(7, 414),
   },

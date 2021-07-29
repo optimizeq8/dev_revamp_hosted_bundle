@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   title: { color: "#000", fontSize: 48 },
   container: {
     // marginTop: 30,
-    backgroundColor: "#0000",
+    backgroundColor: globalColors.purple,
     flex: 1,
   },
   logoText: {

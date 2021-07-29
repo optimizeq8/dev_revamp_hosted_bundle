@@ -159,19 +159,11 @@ class CreateBusinessAccount extends Component {
         "source_action",
         false
       );
-      analytics.track(
-        `${
-          editBusinessInfo
-            ? "open_business_info"
-            : "open_create_business_account"
-        }`,
-        {
-          source,
-          source_action,
-          timestamp: new Date().getTime(),
-          ...this.props.mainBusiness,
-        }
-      );
+      analytics.track("Screen Viewed", {
+        screen_name: "CreateBusinessAccount",
+        source,
+        source_action,
+      });
     }
 
     // prefilling the values in case of updating business info
@@ -402,19 +394,11 @@ class CreateBusinessAccount extends Component {
                 this.props.screenProps.translate
               );
             } else {
-              analytics.track(`a_update_buisness_info`, {
-                source_action: "open_business_info",
+              analytics.track(`Form Error Made`, {
                 source_action: "a_update_buisness_info",
-                action_status: "failure",
-                timestamp: new Date().getTime(),
-                ...business,
-                websitelink,
-                otherBusinessCategory:
-                  this.state.businessAccount.businesscategory !== "43"
-                    ? null
-                    : this.state.businessAccount.otherBusinessCategory, // to handle other business category field
                 error_description: "No changes to update",
-                businessid:
+                source: "CreateBusinessAccount",
+                business_id:
                   this.props.mainBusiness && this.props.mainBusiness.businessid,
               });
               showMessage({
@@ -442,24 +426,14 @@ class CreateBusinessAccount extends Component {
           }
         }
       } else {
-        analytics.track(
-          this.state.editBusinessInfo
-            ? `a_update_buisness_info`
-            : `a_create_buiness_account`,
-          {
-            source_action: this.state.editBusinessInfo
-              ? "open_business_info"
-              : "open_create_business_account",
-            source_action: this.state.editBusinessInfo
-              ? `a_update_buisness_info`
-              : `a_create_buiness_account`,
-            action_status: "failure",
-            timestamp: new Date().getTime(),
-            error_description: "Please complete all the required fields",
-            businessid:
-              this.props.mainBusiness && this.props.mainBusiness.businessid,
-          }
-        );
+        analytics.track(`Form Error Made`, {
+          source: "CreateBusinessAccount",
+          error_description: this.state.editBusinessInfo
+            ? `Error updating business info`
+            : `Error creating busines info`,
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
+        });
         showMessage({
           message: translate("Please complete all the required fields"),
           type: "warning",
@@ -747,13 +721,13 @@ class CreateBusinessAccount extends Component {
           top: this.props.registering ? "never" : "always",
         }}
       >
-        {!this.props.registering && (
+        {/* {!this.props.registering && (
           <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
             style={globalStyles.gradient}
           />
-        )}
+        )} */}
         {!this.props.registering && (
           <View>
             <CustomHeader
@@ -764,9 +738,7 @@ class CreateBusinessAccount extends Component {
               }
               closeButton={!this.state.editBusinessInfo}
               segment={{
-                source: this.state.editBusinessInfo
-                  ? "open_business_info"
-                  : "open_create_business_account",
+                source: "createBusinessAccount",
                 source_action: "a_go_back",
               }}
             />
