@@ -174,15 +174,10 @@ class MyWebsite extends Component {
       website = `https://${mainBusiness.weburl}.optimizeapp.com`;
     }
     return (
-      <View>
+      <View style={{ backgroundColor: globalColors.purple }}>
         <SafeAreaView
           style={myWebsiteStyles.safeAreaViewContainer}
           forceInset={{ bottom: "never", top: "always" }}
-        />
-        <LinearGradient
-          colors={["#9300FF", "#5600CB"]}
-          locations={[0, 0.35]}
-          style={styles.gradient}
         />
         <Header
           screenProps={this.props.screenProps}
