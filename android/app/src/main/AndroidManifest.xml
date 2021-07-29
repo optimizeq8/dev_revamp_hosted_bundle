@@ -28,7 +28,7 @@
     <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://optimizeq8.github.io/optimizeapp_staging_hosted_bundle/android-index.json" />
     <meta-data android:name="expo.modules.updates.EXPO_SDK_VERSION" android:value="40.0.0" />
     <meta-data android:name="expo.modules.updates.EXPO_RELEASE_CHANNEL" android:value="copilot" />
-    <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_launcher" />
+    <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_launcher_transparent" />
     <meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/splashscreen_background" />
     <meta-data android:name="com.mixpanel.android.MPConfig.EnableDebugLogging" android:value="true" />
     <uses-library android:name="org.apache.http.legacy" android:required="false"/>
