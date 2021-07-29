@@ -556,8 +556,9 @@ export const registerGuestUser = (
   businessAccount
 ) => {
   return async (dispatch, getState) => {
-    createBaseUrl()
-      .post(`saveUserInfoV2`, userInfo)
+    // createBaseUrl()
+    axios
+      .post(`http://api.devoa.optimizeapp.com/users`, userInfo)
       .then((res) => {
         return res.data;
       })
