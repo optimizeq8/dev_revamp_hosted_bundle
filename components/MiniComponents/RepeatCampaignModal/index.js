@@ -46,6 +46,7 @@ class RepeatCampaignModal extends Component {
     }
   }
   handleStartDatePicked = (date) => {
+    const { campaign } = this.props;
     this.setState({
       start_time: date,
     });
@@ -59,6 +60,7 @@ class RepeatCampaignModal extends Component {
     });
   };
   handleEndDatePicked = (date) => {
+    const { campaign } = this.props;
     let end_time = new Date(date);
     end_time.setDate(end_time.getDate() + this.state.duration - 1);
     this.setState({
@@ -74,6 +76,7 @@ class RepeatCampaignModal extends Component {
     });
   };
   handleDuration = (subtract = false, onePress = false, time = 1) => {
+    const { campaign } = this.props;
     let minimumDuration = 3;
     let duration = subtract
       ? this.state.duration - 1 > minimumDuration
