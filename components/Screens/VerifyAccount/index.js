@@ -249,6 +249,7 @@ class VerifyAccount extends Component {
    * To resend OTP
    */
   resendOTP = () => {
+    const { verifyByMobile } = this.state;
     analytics.track(`Button Pressed`, {
       button_type: this.state.resend_otp
         ? "Resend OTP"
