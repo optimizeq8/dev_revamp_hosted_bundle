@@ -4,27 +4,30 @@ import Axios from "axios";
 var FormData = require("form-data");
 describe("Registration", () => {
   it(`Registration`, () => {
-    // const testData = { id: "1" };
-    // fetchMock.post("*", testData);
-    var formData = new FormData();
-    formData.append("email", "saadiya@optimizeapp.com");
-    formData.append("password", "saadiyaOA@2021");
-    formData.append("password_confirmation", "saadiyaOA@2021");
-    formData.append("first_name", "Saadiya");
-    formData.append("last_name", "Kazi");
-    formData.append("mobile", "+96567613407");
-
     const apiResult = Axios({
       url: "https://api.devoa.optimizeapp.com/api/users",
       method: "POST",
-      data: formData,
+      data: {
+        email: "saadiya@optimizeapp.com",
+        password: "saadiyaOA@2021",
+        password_confirmation: "saadiyaOA@2021",
+        first_name: "Saadiya",
+        last_name: "Kazi",
+        mobile: "+96567613407",
+      },
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
       .then((response) => {
         console.log("response", response.data);
-        expect(response).toEqual({ id: 1 });
+        expect(response.data).toMatchObject({ id: 13 });
       })
       .catch((error) => {
-        console.log("error", error.response || error.message);
+        console.log("error", error.response.data);
+        expect(error.response.data).toMatchObject({
+          message: "The given data was invalid.",
+        });
       });
     // fetchMock.restore();
     return apiResult;
@@ -34,5 +37,27 @@ describe("Registration", () => {
 // OTP Verification
 
 describe("OTP Sms", () => {
-  it("OTP Sms", () => {});
+  it("OTP Sms", () => {
+    const apiResult = Axios({
+      url: "https://api.devoa.optimizeapp.com/api/users/otp",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5kZXZvYS5vcHRpbWl6ZWFwcC5jb20vYXBpL2xvZ2luIiwiaWF0IjoxNjI3ODk1OTEwLCJleHAiOjE2Mjc5MzE5MTAsIm5iZiI6MTYyNzg5NTkxMCwianRpIjoiUTk1Y2VUak1WdmZNNnU3SiIsInN1YiI6MTEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.09N6HRMZUR_oN5L6MrnSy9yww6OV1Tld2dQ31RmUyec",
+      },
+    })
+      .then((response) => {
+        console.log("response", response.data);
+        expect(response.data).toMatchObject({ id: 13 });
+      })
+      .catch((error) => {
+        console.log("error", error.response.data);
+        expect(error.response.data.message).toMatch(
+          "User is Already Verified."
+        );
+      });
+    // fetchMock.restore();
+    return apiResult;
+  });
 });

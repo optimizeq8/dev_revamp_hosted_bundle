@@ -16,7 +16,7 @@ describe("login", () => {
       },
     })
       .then((response) => {
-        // console.log("response", response.data);
+        console.log("response", response.data);
 
         expect(response.data).toMatchObject({
           token_type: "bearer",
