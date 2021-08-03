@@ -385,7 +385,7 @@ class GoogleSEAPreviewScreen extends Component {
                 <GradientButton
                   transparent
                   onPressAction={() => {
-                    this.props.navigation.navigate("GoogleComposeAd", {
+                    this.props.navigation.navigate("GoogleAdDesign", {
                       source: "ad_preview",
                       source_action: "a_edit_ad_design",
                     });

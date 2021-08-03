@@ -448,7 +448,7 @@ class GoogleAdDesign extends Component {
       this.props.save_google_campaign_steps([
         "Dashboard",
         "GoogleAdInfo",
-        "GoogleComposeAd",
+        "GoogleAdDesign",
       ]);
 
     this.setState({ unmounted: false });

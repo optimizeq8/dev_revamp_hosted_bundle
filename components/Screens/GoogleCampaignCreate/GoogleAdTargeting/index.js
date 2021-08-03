@@ -472,7 +472,7 @@ class GoogleAdTargeting extends Component {
     this.props.save_google_campaign_steps([
       "Dashboard",
       "GoogleAdInfo",
-      "GoogleComposeAd",
+      "GoogleAdDesign",
       "GoogleAdTargeting",
     ]);
   };
