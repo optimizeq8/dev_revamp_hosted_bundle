@@ -7,8 +7,8 @@ describe("login", () => {
       url: `${BASE_URL}login`,
       method: "POST",
       data: querystring.stringify({
-        email: "imran@optimizeapp.com",
-        password: "imranoa@2021",
+        email: "saadiya@optimizeapp.com",
+        password: "saadiyaOA@2021",
         is_mobile: 0,
       }),
       headers: {
