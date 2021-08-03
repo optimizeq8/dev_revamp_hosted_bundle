@@ -1,5 +1,4 @@
 import axios from "axios";
-import jwt_decode from "jwt-decode";
 import * as actionTypes from "./actionTypes";
 import analytics from "@segment/analytics-react-native";
 import { showMessage } from "react-native-flash-message";

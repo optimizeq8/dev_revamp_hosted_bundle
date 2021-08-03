@@ -127,8 +127,8 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
       })
       .then(async (user) => {
         if (user.success === true) {
-          const decodedUser = jwt_decode(user.token);
-          let peomise = await setAuthToken(user.token);
+          const decodedUser = jwt_decode(user.access_token);
+          let peomise = await setAuthToken(user.access_token);
           return { user: decodedUser, message: user.message };
           //if something goes wrong with the registeration process or Front-end verification
           //this will throw an error and stop the regiteration process
@@ -255,8 +255,8 @@ export const verifyMobileCode = (
           payload: data,
         });
 
-        await setAuthToken(data.token);
-        const decodedUser = jwt_decode(data.token);
+        await setAuthToken(data.access_token);
+        const decodedUser = jwt_decode(data.access_token);
 
         return {
           user: decodedUser,
@@ -611,8 +611,8 @@ export const registerGuestUser = (
       })
       .then(async (user) => {
         if (user.success === true) {
-          const decodedUser = jwt_decode(user.token);
-          let peomise = await setAuthToken(user.token);
+          const decodedUser = jwt_decode(user.access_token);
+          let peomise = await setAuthToken(user.access_token);
           return { user: decodedUser, message: user.message };
           //if something goes wrong with the registeration process or Front-end verification
           //this will throw an error and stop the regiteration process
