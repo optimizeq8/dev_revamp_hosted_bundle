@@ -1,5 +1,6 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+var querystring = require("querystring");
 import { Animated, AppState, Platform } from "react-native";
 import Intercom from "react-native-intercom";
 import * as actionTypes from "./actionTypes";
@@ -171,6 +172,10 @@ export const checkForExpiredToken = (navigation) => {
 };
 
 export const login = (userData, navigation) => {
+  let userInfo = {
+    ...userData,
+    is_mobile: 0,
+  };
   return (dispatch, getState) => {
     if (
       [
@@ -189,19 +194,22 @@ export const login = (userData, navigation) => {
       payload: true,
     });
     createBaseUrl()
-      .post("userLogin", userData, {
+      .post("login", querystring.stringify(userInfo), {
         timeout: 5000,
         timeoutErrorMessage: "Something went wrong, please try again.",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       })
       .then((res) => {
         return res.data;
       })
       .then(async (user) => {
         let decodedUser = null;
-        if (user.hasOwnProperty("token")) {
-          decodedUser = jwt_decode(user.token);
+        if (user.hasOwnProperty("access_token")) {
+          decodedUser = jwt_decode(user.access_token);
 
-          let promise = await setAuthToken(user.token);
+          let promise = await setAuthToken(user.access_token);
           return { user: decodedUser, message: user.message };
         } else {
           showMessage({
