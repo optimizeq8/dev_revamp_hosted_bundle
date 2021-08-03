@@ -322,26 +322,39 @@ export const logout = (navigation) => {
 
 export const forgotPassword = (email, navigation) => {
   return (dispatch) => {
+    console.log("email", email);
     // dispatch({
     //   type: actionTypes.CHANGE_PASSWORD,
     //   payload: { success: false }
     // });
     createBaseUrl()
-      .post("forgotPassword", {
-        email: email,
-      })
+      .post(
+        "password/email",
+        {
+          email: email,
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      )
       .then((response) => {
-        analytics.track(`a_forget_password`, {
-          source: "forget_password",
-          source_action: "a_forget_password",
-          email,
-          action_status: response.data.success ? "success" : "failure",
-        });
-        showMessage({
-          message: response.data.message,
-          type: response.data.success ? "success" : "warning",
-          position: "top",
-        });
+        console.log(
+          "forgotPassword response.data",
+          JSON.stringify(response.data, null, 2)
+        );
+        // analytics.track(`a_forget_password`, {
+        //   source: "forget_password",
+        //   source_action: "a_forget_password",
+        //   email,
+        //   action_status: response.data.success ? "success" : "failure",
+        // });
+        // showMessage({
+        //   message: response.data.message,
+        //   type: response.data.success ? "success" : "warning",
+        //   position: "top",
+        // });
 
         dispatch({
           type: actionTypes.FORGOT_PASSWORD,
@@ -356,6 +369,7 @@ export const forgotPassword = (email, navigation) => {
         // }
       })
       .catch((err) => {
+        console.log("forgotPassword error", err.message || err.response);
         return dispatch({
           type: actionTypes.FORGOT_PASSWORD,
           payload: {
@@ -363,7 +377,6 @@ export const forgotPassword = (email, navigation) => {
             message: err.response || err.message,
           },
         });
-        // console.log("forgotPassword error", err.message || err.response);
       });
   };
 };

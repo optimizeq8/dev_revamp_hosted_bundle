@@ -30,3 +30,28 @@ describe("login", () => {
     return apiResult;
   });
 });
+
+describe("forgot password", () => {
+  it("forgot password", () => {
+    const apiResult = axios({
+      url: `${BASE_URL}password/email`,
+      method: "POST",
+      data: { email: "saadiya@optimizeapp.com" },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        console.log("forgot password response", response.data);
+
+        expect(response.data).toMatchObject({
+          token_type: "bearer",
+          expires_in: 36000,
+        });
+      })
+      .catch((error) => {
+        console.log("forgot password error", error);
+      });
+    return apiResult;
+  });
+});
