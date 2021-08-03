@@ -89,11 +89,11 @@ class ErrorComponent extends Component {
         style={styles.container}
         forceInset={{ top: "always", bottom: "never" }}
       >
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={styles.gradient}
-        />
+        /> */}
         <Image style={styles.media} source={imageLogo} resizeMode="contain" />
         <View style={styles.view}>
           <ErrorIcon fill="#ea514b" width={80} height={80} />
