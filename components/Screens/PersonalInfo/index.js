@@ -141,14 +141,12 @@ class PersonalInfo extends Component {
         this.state.phoneNum !== "+" + this.props.userInfo.mobile ||
         this.state.email !== this.props.userInfo.email;
       if (changedInfo) {
-        const country_code = this.state.phoneNum.substring(1, 4);
-        const mobile = this.state.phoneNum.substring(4, this.state.phoneNum);
+        const mobile = this.state.phoneNum;
         this.props.updateUserInfo(
           {
             email: this.state.email,
-            firstname: this.state.firstname,
-            lastname: this.state.lastname,
-            country_code,
+            first_name: this.state.firstname,
+            last_name: this.state.lastname,
             mobile,
           },
           this.props.navigation

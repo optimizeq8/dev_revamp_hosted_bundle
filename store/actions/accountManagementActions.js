@@ -545,7 +545,7 @@ export const updateBusinessInfo = (userid, info, navigation, translate) => {
       payload: true,
     });
     createBaseUrl()
-      .put("businessaccountV2", {
+      .put(`business/${getState().account.business.mainBusiness.id}`, {
         // businessAccount OLD API
         userid,
         ...info,

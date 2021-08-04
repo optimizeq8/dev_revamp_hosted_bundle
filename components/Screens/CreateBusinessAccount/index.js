@@ -381,14 +381,10 @@ class CreateBusinessAccount extends Component {
             );
             if (changedInfo) {
               this.props.updateBusinessInfo(
-                this.props.userInfo.userid,
                 {
-                  ...business,
-                  websitelink,
-                  otherBusinessCategory:
-                    this.state.businessAccount.businesscategory !== "43"
-                      ? null
-                      : this.state.businessAccount.otherBusinessCategory, // to handle other business category field
+                  name: business.businessname,
+                  type: business.businesstype,
+                  country_id: business.country,
                 },
                 this.props.navigation,
                 this.props.screenProps.translate
