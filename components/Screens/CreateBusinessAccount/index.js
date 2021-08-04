@@ -77,7 +77,7 @@ class CreateBusinessAccount extends Component {
           icon_media_url: "",
           android_app_url: "",
         },
-        insta_handle_for_review: "",
+        instagram_handle: "",
       },
       inputT: false,
       inputN: false,
@@ -90,7 +90,7 @@ class CreateBusinessAccount extends Component {
       brandNameError: "",
       businesscategoryError: "",
       businesscategoryOtherError: "",
-      insta_handle_for_reviewError: "",
+      instagram_handleError: "",
       countryError: "",
       websitelinkError: null,
       items: businessCategoryList(translate),
@@ -180,10 +180,9 @@ class CreateBusinessAccount extends Component {
           ...this.state.businessAccount,
           ...this.props.mainBusiness,
           websitelink: website ? website : "",
-          insta_handle_for_review:
-            this.props.mainBusiness &&
-            this.props.mainBusiness.insta_handle_for_review
-              ? this.props.mainBusiness.insta_handle_for_review
+          instagram_handle:
+            this.props.mainBusiness && this.props.mainBusiness.instagram_handle
+              ? this.props.mainBusiness.instagram_handle
               : "",
         },
         editBusinessInfo,
@@ -247,9 +246,9 @@ class CreateBusinessAccount extends Component {
       "mandatory",
       this.state.businessAccount.country
     );
-    const insta_handle_for_reviewError = validateWrapper(
+    const instagram_handleError = validateWrapper(
       "mandatory",
-      this.state.businessAccount.insta_handle_for_review
+      this.state.businessAccount.instagram_handle
     );
     const businesscategoryOtherError =
       this.state.businessAccount.businesscategory === "43" &&
@@ -271,7 +270,7 @@ class CreateBusinessAccount extends Component {
       countryError,
       businesscategoryOtherError,
       websitelinkError,
-      insta_handle_for_reviewError,
+      instagram_handleError,
     });
     if (websitelinkError) {
       showMessage({
@@ -285,7 +284,7 @@ class CreateBusinessAccount extends Component {
         !countryError &&
         !businesscategoryOtherError &&
         !websitelinkError &&
-        !insta_handle_for_reviewError
+        !instagram_handleError
       ) {
         if (this.state.businessAccount.brandname === "") {
           await this.setState({
@@ -416,8 +415,7 @@ class CreateBusinessAccount extends Component {
                   ? null
                   : this.state.businessAccount.otherBusinessCategory,
               country: this.state.businessAccount.country,
-              insta_handle_for_review:
-                this.state.businessAccount.insta_handle_for_review,
+              instagram_handle: this.state.businessAccount.instagram_handle,
             };
             this.props.createBusinessAccount(
               businessAccountInfo,
@@ -638,7 +636,7 @@ class CreateBusinessAccount extends Component {
     state[stateName] =
       stateName === "businessname"
         ? value.replace(/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi, "")
-        : stateName === "insta_handle_for_review"
+        : stateName === "instagram_handle"
         ? value.replace("@", "")
         : value;
 
@@ -963,19 +961,19 @@ class CreateBusinessAccount extends Component {
             // customStyles={{ width: "100%", marginLeft: 0 }}
             incomplete={false}
             translate={this.props.screenProps.translate}
-            stateName1="insta_handle_for_review"
+            stateName1="instagram_handle"
             label="instagram"
             placeholder1="@ Instagram UserName"
             value={
               "@" +
               (this.props.registering
-                ? this.props.businessAccount.insta_handle_for_review
-                : this.state.businessAccount.insta_handle_for_review)
+                ? this.props.businessAccount.instagram_handle
+                : this.state.businessAccount.instagram_handle)
             }
             valueError1={
               this.props.registering
-                ? this.props.insta_handle_for_reviewError
-                : this.state.insta_handle_for_reviewError
+                ? this.props.instagram_handleError
+                : this.state.instagram_handleError
             }
             icon={InstagramIcon}
             getValidInfo={
@@ -986,7 +984,7 @@ class CreateBusinessAccount extends Component {
             setValue={
               this.props.registering ? this.props.setValue : this.setValue
             }
-            key={"insta_handle_for_review"}
+            key={"instagram_handle"}
             disabled={
               (this.state.editBusinessInfo &&
                 this.props.editBusinessInfoLoading) ||

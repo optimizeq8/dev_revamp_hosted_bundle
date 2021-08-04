@@ -42,13 +42,14 @@ export const changeBusiness = (business) => {
 };
 
 export const createBusinessAccount = (account, navigation) => {
+  console.log("account", JSON.stringify(account, null, 2));
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
       payload: true,
     });
     createBaseUrl()
-      .post(`businessaccountV2`, account) //businessaccount OLD API
+      .post(`business`, account) //businessaccount OLD API
       .then((res) => {
         return res.data;
       })
@@ -67,7 +68,7 @@ export const createBusinessAccount = (account, navigation) => {
               business_category: account.businesscategory,
               other_business_category: account.otherBusinessCategory,
               country: account.country,
-              insta_handle_for_review: account.insta_handle_for_review,
+              instagram_handle: account.instagram_handle,
               user_role: data.user_role,
               approved: data.approved,
               instagram_access: data.instagram_access,

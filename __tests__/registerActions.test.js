@@ -34,6 +34,28 @@ describe("Registration", () => {
   });
 });
 
+// Validate Email
+
+describe("Validate Email for Sign Up", () => {
+  it("Validate Email for Sign Up", () => {
+    let email = "saadiya@optimizeapp.com";
+    return Axios({
+      url: `https://api.devoa.optimizeapp.com/api/validate/email/${email}`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.data)
+      .then((data) => {
+        console.log("validate email data", JSON.stringify(data, null, 2));
+      })
+      .catch((error) => {
+        console.log("validate email error", error.message || error.response);
+      });
+  });
+});
+
 // OTP Verification
 
 describe("OTP Sms", () => {

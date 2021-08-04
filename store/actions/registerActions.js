@@ -14,6 +14,7 @@ import {
   getAnonymousUserId,
 } from "./genericActions";
 import { setCurrentUser, chanege_base_url } from "./loginActions";
+import { createBusinessAccount } from "./index";
 // import { send_push_notification } from "./loginActions";
 import { connect_user_to_intercom } from "./messengerActions";
 import createBaseUrl from "./createBaseUrl";
@@ -116,11 +117,18 @@ export const verifyBusinessName = (
 export const registerUser = (userInfo, navigation, businessInvite = "1") => {
   return (dispatch, getState) => {
     dispatch({ type: actionTypes.SAVING_REGISTER_ACCOUNT, payload: true });
-
+    console.log("userInfo", JSON.stringify(userInfo, null, 2));
     createBaseUrl()
       .post(
-        `${businessInvite === "0" ? "registerMemberUser" : "registerUserV2"}`,
-        userInfo
+        // `${businessInvite === "0" ? "registerMemberUser" :
+        "users",
+        // }`
+        userInfo,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       )
       .then((res) => {
         return res.data;
@@ -153,6 +161,7 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
       })
       .then(() => {
         if (getState().auth.userInfo) {
+          dispatch(createBusinessAccount(userInfo, navigation));
           //   analytics.alias(getState().auth.userInfo.userid);
           // MixpanelSDK.createAlias(getState().auth.userInfo.userid);
           // MixpanelSDK.identify(getState().auth.userInfo.userid);
@@ -400,25 +409,25 @@ export const verifyEmail = (email, userInfo, navigation) => {
       payload: true,
     });
     createBaseUrl()
-      .post(`verifyEmail`, { email: email }, { timeout: 5000 })
+      .get(`validate/email/${email}`)
       .then((res) => {
         return res.data;
       })
       .then((data) => {
         dispatch({
           type: actionTypes.VERIFY_EMAIL,
-          payload: { success: data.success, userInfo },
+          payload: { success: data.Message === "Success", userInfo },
         });
         return data;
       })
       .then((data) => {
-        if (data.success) {
+        if (data.Message === "Success") {
           navigation.push("MainForm", {
             source: "Signin",
             source_action: "Create Account",
           });
         }
-        if (!data.success) {
+        if (data.Message !== "Success") {
           showMessage({
             message: data.message,
             type: data.success ? "success" : "warning",
@@ -556,9 +565,9 @@ export const registerGuestUser = (
   businessAccount
 ) => {
   return async (dispatch, getState) => {
-    // createBaseUrl()
-    axios
-      .post(`http://api.devoa.optimizeapp.com/users`, userInfo)
+    console.log("userInfo", JSON.stringify(userInfo, null, 2));
+    createBaseUrl()
+      .post(`users`, userInfo)
       .then((res) => {
         return res.data;
       })
@@ -578,7 +587,7 @@ export const registerGuestUser = (
             business_name: businessAccount.businessname,
             business_category: businessAccount.businesscategory,
             country: businessAccount.country,
-            insta_handle_for_review: businessAccount.insta_handle_for_review,
+            instagram_handle: businessAccount.instagram_handle,
             other_business_category: businessAccount.otherBusinessCategory,
           });
         }
@@ -641,6 +650,7 @@ export const registerGuestUser = (
       })
       .then(() => {
         if (getState().auth.userInfo) {
+          dispatch(createBusinessAccount(userInfo, navigation));
           dispatch({
             type: actionTypes.SAVING_REGISTER_ACCOUNT,
             payload: false,

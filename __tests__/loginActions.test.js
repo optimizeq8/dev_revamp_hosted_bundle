@@ -36,7 +36,7 @@ describe("forgot password", () => {
     const apiResult = axios({
       url: `${BASE_URL}password/email`,
       method: "POST",
-      data: { email: "saadiya@optimizeapp.com" },
+      data: { email: "imran@optimizeapp.com" },
       headers: {
         "Content-Type": "application/json",
       },
