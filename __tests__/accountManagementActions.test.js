@@ -1,5 +1,78 @@
 import axios from "axios";
 
+describe("Get Business Countries", () => {
+  it("Get Business Countries", () => {
+    const apiResult = axios({
+      url: "https://api.devoa.optimizeapp.com/api/business/country",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5kZXZvYS5vcHRpbWl6ZWFwcC5jb20vYXBpL2xvZ2luIiwiaWF0IjoxNjI4MDY1Mjk5LCJleHAiOjE2MjgxMDEyOTksIm5iZiI6MTYyODA2NTI5OSwianRpIjoiUUJVNlBYMnRySXFoVk8zQiIsInN1YiI6MTIsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.9peiima05QRClpI625sDpGNf2GihgbchjYK1WnrVnSM",
+      },
+    })
+      .then((res) => res.data)
+      .then((data) => {
+        // console.log("Get Business Countries", JSON.stringify(data, null, 2));
+        expect(data.data).toMatchObject([
+          {
+            id: 1,
+            name: "ALL",
+            iso_alpha_2: "0",
+            created_at: "2021-06-30T10:35:23.000000Z",
+            updated_at: "2021-06-30T10:35:23.000000Z",
+          },
+          {
+            id: 2,
+            name: "Kuwait",
+            iso_alpha_2: "kw",
+            created_at: "2021-06-30T10:35:23.000000Z",
+            updated_at: "2021-06-30T10:35:23.000000Z",
+          },
+          {
+            id: 3,
+            name: "UAE",
+            iso_alpha_2: "ae",
+            created_at: "2021-06-30T10:35:23.000000Z",
+            updated_at: "2021-06-30T10:35:23.000000Z",
+          },
+          {
+            id: 4,
+            name: "KSA",
+            iso_alpha_2: "sa",
+            created_at: "2021-06-30T10:35:23.000000Z",
+            updated_at: "2021-06-30T10:35:23.000000Z",
+          },
+          {
+            id: 5,
+            name: "Bahrain",
+            iso_alpha_2: "bh",
+            created_at: "2021-06-30T10:35:23.000000Z",
+            updated_at: "2021-06-30T10:35:23.000000Z",
+          },
+          {
+            id: 6,
+            name: "Oman",
+            iso_alpha_2: "om",
+            created_at: "2021-06-30T10:35:23.000000Z",
+            updated_at: "2021-06-30T10:35:23.000000Z",
+          },
+          {
+            id: 7,
+            name: "Qatar",
+            iso_alpha_2: "qa",
+            created_at: "2021-06-30T10:35:23.000000Z",
+            updated_at: "2021-06-30T10:35:23.000000Z",
+          },
+        ]);
+      })
+      .catch((error) => {
+        console.log("Get Business Countries  error ", error);
+      });
+    return apiResult;
+  });
+});
+
 describe("Create Business Account", () => {
   it("api test for create business account", () => {
     const apiResult = axios({

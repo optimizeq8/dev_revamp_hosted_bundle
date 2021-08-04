@@ -20,13 +20,14 @@ describe("Registration", () => {
       },
     })
       .then((response) => {
-        console.log("response", response.data);
+        // console.log("Registration response", response.data);
         expect(response.data).toMatchObject({ id: 13 });
       })
       .catch((error) => {
-        console.log("error", error.response.data);
+        // console.log("Registration error", error.response.data);
         expect(error.response.data).toMatchObject({
           message: "The given data was invalid.",
+          errors: { mobile: ["The mobile has already been taken."] },
         });
       });
     // fetchMock.restore();
@@ -48,7 +49,8 @@ describe("Validate Email for Sign Up", () => {
     })
       .then((res) => res.data)
       .then((data) => {
-        console.log("validate email data", JSON.stringify(data, null, 2));
+        // console.log("validate email data", JSON.stringify(data, null, 2));
+        expect(data.Status).toEqual("200");
       })
       .catch((error) => {
         console.log("validate email error", error.message || error.response);
@@ -70,13 +72,13 @@ describe("OTP Sms", () => {
       },
     })
       .then((response) => {
-        console.log("response", response.data);
+        // console.log("OTP Sms response", response.data);
         expect(response.data).toMatchObject({ id: 13 });
       })
       .catch((error) => {
-        console.log("error", error.response.data);
-        expect(error.response.data.message).toMatch(
-          "User is Already Verified."
+        // console.log("OTP Sms error", error.response.data);
+        expect(["Unauthenticated.", "User is Already Verified."]).toContain(
+          error.response.data.message
         );
       });
     // fetchMock.restore();
@@ -96,13 +98,13 @@ describe("OTP Sms Call", () => {
       },
     })
       .then((response) => {
-        console.log("response", response.data);
+        console.log("OTP Sms Call response", response.data);
         expect(response.data).toMatchObject({ id: 13 });
       })
       .catch((error) => {
-        console.log("error", error.response.data);
-        expect(error.response.data.message).toMatch(
-          "User is Already Verified."
+        // console.log("OTP Sms Call error", error.response.data);
+        expect(["Unauthenticated.", "User is Already Verified."]).toContain(
+          error.response.data.message
         );
       });
     // fetchMock.restore();
@@ -122,13 +124,13 @@ describe("OTP Sms verify", () => {
       },
     })
       .then((response) => {
-        console.log("response", response.data);
+        console.log("OTP Sms verify response", response.data);
         expect(response.data).toMatchObject({ id: 13 });
       })
       .catch((error) => {
-        console.log("error", error.response.data);
-        expect(error.response.data.message).toMatch(
-          "User is Already Verified."
+        // console.log("OTP Sms verify error", error.response.data);
+        expect(["Unauthenticated.", "User is Already Verified."]).toContain(
+          error.response.data.message
         );
       });
     // fetchMock.restore();
