@@ -429,15 +429,15 @@ export const verifyEmail = (email, userInfo, navigation) => {
         }
         if (data.Message !== "Success") {
           showMessage({
-            message: data.message,
-            type: data.success ? "success" : "warning",
+            message: data.Message,
+            type: "warning",
             position: "top",
           });
         }
         analytics.track(`a_create_account`, {
           mode_of_sign_up: "email",
           source: "email_registration",
-          action_status: data.success ? "success" : "failure",
+          action_status: data.Message === "Success" ? "success" : "failure",
           timestamp: new Date().getTime(),
           device_id: getUniqueId(),
           // source_action: "" Not sure
