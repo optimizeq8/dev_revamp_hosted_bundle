@@ -414,7 +414,7 @@ export const verifyEmail = (email, userInfo, navigation) => {
         return res.data;
       })
       .then((data) => {
-        console.log("data", JSON.stringify(data, null, 2));
+        // console.log("data", JSON.stringify(data, null, 2));
         dispatch({
           type: actionTypes.VERIFY_EMAIL,
           payload: { success: data.status === 200, userInfo },
