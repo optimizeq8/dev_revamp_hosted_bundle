@@ -177,30 +177,34 @@ export const login = (userData, navigation) => {
     is_mobile: 0,
   };
   return (dispatch, getState) => {
-    if (
-      [
-        "nouf@optimizeapp.com",
-        "sam.omran@hotmail.com",
-        "imran@optimizekw.com",
-        "saadiya@optimizekw.com",
-        "shorook@optimizekw.com",
-        "samy@optimizeapp.com",
-      ].includes(userData.email)
-    ) {
-      dispatch(chanege_base_url(true));
-    }
+    // if (
+    //   [
+    //     "nouf@optimizeapp.com",
+    //     "sam.omran@hotmail.com",
+    //     "imran@optimizekw.com",
+    //     "saadiya@optimizekw.com",
+    //     "shorook@optimizekw.com",
+    //     "samy@optimizeapp.com",
+    //   ].includes(userData.email)
+    // ) {
+    //   dispatch(chanege_base_url(true));
+    // }
     dispatch({
       type: actionTypes.SET_LOADING_USER,
       payload: true,
     });
-    createBaseUrl()
-      .post("login", querystring.stringify(userInfo), {
-        timeout: 5000,
-        timeoutErrorMessage: "Something went wrong, please try again.",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      })
+    axios()
+      .post(
+        "https://api.devoa.optimizeapp.com/api/login",
+        querystring.stringify(userInfo),
+        {
+          timeout: 5000,
+          timeoutErrorMessage: "Something went wrong, please try again.",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      )
       .then((res) => {
         return res.data;
       })
