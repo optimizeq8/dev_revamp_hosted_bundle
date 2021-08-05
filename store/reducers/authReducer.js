@@ -28,6 +28,7 @@ const reducer = (state = initialState, action) => {
       AsyncStorage.getItem("appLanguage")
         .then((language) => {
           let userTraits = {
+            email: action.payload.user.email,
             first_name: action.payload.user.firstname,
             lastt_name: action.payload.user.lasttname,
             name:
