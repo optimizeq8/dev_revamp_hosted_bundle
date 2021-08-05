@@ -61,65 +61,67 @@ export default (props) => {
                 <Text style={styles.rejectedModalReasonText}>{reason}</Text>
               </View>
             ))}
-          {brand_name_rejection === 1 && (
-            <View style={styles.brandRejection}>
-              <Text style={[styles.rejectedModalReasonBrandText]}>
-                {`${translate(`Will Change your Brand Name from`)} ${
-                  selectedCampaign.brand_name
-                } ${translate("to")} ${mainBusiness.businessname}`}
-              </Text>
-              <Text style={[styles.rejectedModalReasonBrandText]}>
-                {translate(`Do you accept to make this change?`)}
-              </Text>
-              <View style={styles.buttonView}>
-                <GradientButton
-                  screenProps={screenProps}
-                  text={translate("Update Ad")}
-                  width={RFValue(50, 414)}
-                  height={RFValue(25, 414)}
-                  uppercase
-                  style={styles.updateAdBrandButton}
-                  onPressAction={() => {
-                    setModalVisible(false);
-                    props.handleSnapchatRejection(props.selectedCampaign);
-                  }}
-                  transparent
-                  disabled={updateBrandNameLoading}
-                />
-                {!updateBrandNameLoading && (
+          {brand_name_rejection === 1 &&
+            campaign_end === "0" &&
+            refund_request === "0" && (
+              <View style={styles.brandRejection}>
+                <Text style={[styles.rejectedModalReasonBrandText]}>
+                  {`${translate(`Will Change your Brand Name from`)} ${
+                    selectedCampaign.brand_name
+                  } ${translate("to")} ${mainBusiness.businessname}`}
+                </Text>
+                <Text style={[styles.rejectedModalReasonBrandText]}>
+                  {translate(`Do you accept to make this change?`)}
+                </Text>
+                <View style={styles.buttonView}>
                   <GradientButton
                     screenProps={screenProps}
-                    text={translate("Accept")}
+                    text={translate("Update Ad")}
                     width={RFValue(50, 414)}
                     height={RFValue(25, 414)}
                     uppercase
-                    style={styles.updateAdButton}
+                    style={styles.updateAdBrandButton}
                     onPressAction={() => {
-                      props.updateCampaignBrandName(
-                        selectedCampaign.campaign_id,
-                        navigation,
-                        setModalVisible
-                      );
+                      setModalVisible(false);
+                      props.handleSnapchatRejection(props.selectedCampaign);
                     }}
+                    transparent
                     disabled={updateBrandNameLoading}
                   />
-                )}
-                {updateBrandNameLoading && (
-                  <ForwardLoading
-                    mainViewStyle={{
-                      width: widthPercentageToDP(5),
-                      height: heightPercentageToDP(5),
-                    }}
-                    bottom={9}
-                    style={{
-                      width: widthPercentageToDP(5),
-                      height: heightPercentageToDP(5),
-                    }}
-                  />
-                )}
+                  {!updateBrandNameLoading && (
+                    <GradientButton
+                      screenProps={screenProps}
+                      text={translate("Accept")}
+                      width={RFValue(50, 414)}
+                      height={RFValue(25, 414)}
+                      uppercase
+                      style={styles.updateAdButton}
+                      onPressAction={() => {
+                        props.updateCampaignBrandName(
+                          selectedCampaign.campaign_id,
+                          navigation,
+                          setModalVisible
+                        );
+                      }}
+                      disabled={updateBrandNameLoading}
+                    />
+                  )}
+                  {updateBrandNameLoading && (
+                    <ForwardLoading
+                      mainViewStyle={{
+                        width: widthPercentageToDP(5),
+                        height: heightPercentageToDP(5),
+                      }}
+                      bottom={9}
+                      style={{
+                        width: widthPercentageToDP(5),
+                        height: heightPercentageToDP(5),
+                      }}
+                    />
+                  )}
+                </View>
               </View>
-            </View>
-          )}
+            )}
         </ScrollView>
         {!brand_name_rejection &&
           campaign_end === "0" &&
