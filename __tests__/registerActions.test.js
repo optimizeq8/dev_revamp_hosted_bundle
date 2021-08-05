@@ -50,10 +50,11 @@ describe("Validate Email for Sign Up", () => {
       .then((res) => res.data)
       .then((data) => {
         // console.log("validate email data", JSON.stringify(data, null, 2));
-        expect(data.Status).toEqual("200");
+        expect(data.status).toEqual(200);
       })
       .catch((error) => {
         console.log("validate email error", error.message || error.response);
+        expect(error.status).not.toEqual(200);
       });
   });
 });

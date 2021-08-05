@@ -414,34 +414,35 @@ export const verifyEmail = (email, userInfo, navigation) => {
         return res.data;
       })
       .then((data) => {
+        console.log("data", JSON.stringify(data, null, 2));
         dispatch({
           type: actionTypes.VERIFY_EMAIL,
-          payload: { success: data.Message === "Success", userInfo },
+          payload: { success: data.status === 200, userInfo },
         });
         return data;
       })
       .then((data) => {
-        if (data.Message === "Success") {
+        if (data.status === 200) {
           navigation.push("MainForm", {
             source: "Signin",
             source_action: "Create Account",
           });
         }
-        if (data.Message !== "Success") {
+        if (data.status !== 200) {
           showMessage({
-            message: data.Message,
+            message: data.message,
             type: "warning",
             position: "top",
           });
         }
-        analytics.track(`a_create_account`, {
-          mode_of_sign_up: "email",
-          source: "email_registration",
-          action_status: data.Message === "Success" ? "success" : "failure",
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
-          // source_action: "" Not sure
-        });
+        // analytics.track(`a_create_account`, {
+        //   mode_of_sign_up: "email",
+        //   source: "email_registration",
+        //   action_status: data.message === "Success" ? "success" : "failure",
+        //   timestamp: new Date().getTime(),
+        //   device_id: getUniqueId(),
+        //   // source_action: "" Not sure
+        // });
       })
       .catch((err) => {
         // console.log("verifyEmail ERROR", err.message || err.response);
@@ -457,18 +458,18 @@ export const verifyEmail = (email, userInfo, navigation) => {
           type: actionTypes.VERIFY_EMAIL_LOADING,
           payload: false,
         });
-        analytics.track(`a_error`, {
-          error_page: "email_registration",
-          action_status: "failure",
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
+        // analytics.track(`a_error`, {
+        //   error_page: "email_registration",
+        //   action_status: "failure",
+        //   timestamp: new Date().getTime(),
+        //   device_id: getUniqueId(),
 
-          source_action: "a_create_account",
-          error_description:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-        });
+        //   source_action: "a_create_account",
+        //   error_description:
+        //     err.message ||
+        //     err.response ||
+        //     "Something went wrong, please try again.",
+        // });
         return dispatch({
           type: actionTypes.ERROR_VERIFY_EMAIL,
           payload: { success: false, userInfo },
