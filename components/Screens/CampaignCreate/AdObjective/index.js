@@ -81,7 +81,9 @@ class AdObjective extends Component {
             ]
           ) + 1
         }`,
-        objective: this.props.snapchatObjectives[this.props.adType][0].value,
+        objective: !!this.props.snapchatObjectives[this.props.adType][0]
+          ? this.props.snapchatObjectives[this.props.adType][0].value
+          : snapchatObjectivesData["SnapAd"][0].value,
         start_time: "",
         end_time: "",
       },
@@ -89,7 +91,9 @@ class AdObjective extends Component {
       minValueBudget: 0,
       maxValueBudget: 0,
       modalVisible: false,
-      objectiveLabel: this.props.snapchatObjectives[this.props.adType][0].label,
+      objectiveLabel: !!this.props.snapchatObjectives[this.props.adType][0]
+        ? this.props.snapchatObjectives[this.props.adType][0].label
+        : snapchatObjectivesData["SnapAd"][0].label,
       inputN: false,
       objectives: this.props.snapchatObjectives[this.props.adType],
       closedContinueModal: false,
