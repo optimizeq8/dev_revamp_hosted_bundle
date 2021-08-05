@@ -323,42 +323,40 @@ export const logout = (navigation) => {
 export const forgotPassword = (email, navigation) => {
   return (dispatch) => {
     console.log("email", email);
-    // dispatch({
-    //   type: actionTypes.CHANGE_PASSWORD,
-    //   payload: { success: false }
-    // });
-    createBaseUrl()
-      .post(
-        "password/email",
-        {
-          email: email,
-        },
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      )
+    dispatch({
+      type: actionTypes.CHANGE_PASSWORD_LOADING,
+      payload: true,
+    });
+    axios({
+      url: `https://api.devoa.optimizeapp.com/api/password/email`,
+      method: "POST",
+      data: { email: email },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => {
-        console.log(
-          "forgotPassword response.data",
-          JSON.stringify(response.data, null, 2)
-        );
         // analytics.track(`a_forget_password`, {
         //   source: "forget_password",
         //   source_action: "a_forget_password",
         //   email,
         //   action_status: response.data.success ? "success" : "failure",
         // });
-        // showMessage({
-        //   message: response.data.message,
-        //   type: response.data.success ? "success" : "warning",
-        //   position: "top",
-        // });
-
+        showMessage({
+          message: response.data.status,
+          type: "success",
+          position: "top",
+        });
         dispatch({
+          type: actionTypes.CHANGE_PASSWORD_LOADING,
+          payload: false,
+        });
+        return dispatch({
           type: actionTypes.FORGOT_PASSWORD,
-          payload: response.data,
+          payload: {
+            succcess: true,
+            message: response.data.status,
+          },
         });
         // if (response.data.success) {
         //   analytics.track(`a_go_back`, {
@@ -369,12 +367,21 @@ export const forgotPassword = (email, navigation) => {
         // }
       })
       .catch((err) => {
-        console.log("forgotPassword error", err.message || err.response);
+        // console.log("forgotPassword error", err);
+        showMessage({
+          message: err.message || err.response,
+          type: "warning",
+          position: "top",
+        });
+        dispatch({
+          type: actionTypes.CHANGE_PASSWORD_LOADING,
+          payload: false,
+        });
         return dispatch({
           type: actionTypes.FORGOT_PASSWORD,
           payload: {
             success: false,
-            message: err.response || err.message,
+            message: err.message || err.response,
           },
         });
       });

@@ -20,9 +20,14 @@ import {
 } from "react-native-responsive-screen";
 import LowerButton from "../../MiniComponents/LowerButton";
 import CustomHeader from "../../MiniComponents/Header";
+import ForwardLoading from "../../MiniComponents/ForwardLoading";
 
 // Redux
 import { connect } from "react-redux";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
 import * as actionCreators from "../../../store/actions";
 
 // Validation
@@ -180,12 +185,20 @@ class ForgotPassword extends Component {
                 </TouchableOpacity>
               </View>
             ) : null}
-            <LowerButton
-              screenProps={this.props.screenProps}
-              style={styles.proceedButtonRTL}
-              function={() => this._handleSubmission()}
-              //   bottom={-heightPercentageToDP(1.8)}
-            />
+            {this.props.forgotPasswordLoading ? (
+              <ForwardLoading
+                mainViewStyle={{ width: wp(8), height: hp(8) }}
+                bottom={-hp(1.5)}
+                style={{ width: wp(8), height: hp(8) }}
+              />
+            ) : (
+              <LowerButton
+                screenProps={this.props.screenProps}
+                style={styles.proceedButtonRTL}
+                function={() => this._handleSubmission()}
+                //   bottom={-heightPercentageToDP(1.8)}
+              />
+            )}
           </View>
         </TouchableWithoutFeedback>
       </SafeAreaView>
@@ -197,6 +210,7 @@ const mapStateToProps = (state) => ({
   forgotPasswordMessage: state.login.forgotPasswordMessage,
   forgotPasswordSuccess: state.login.forgotPasswordSuccess,
   temp_exist: state.login.temp_exist,
+  forgotPasswordLoading: state.login.forgotPasswordLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({

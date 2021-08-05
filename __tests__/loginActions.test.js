@@ -36,7 +36,7 @@ describe("forgot password", () => {
     const apiResult = axios({
       url: `${BASE_URL}password/email`,
       method: "POST",
-      data: { email: "imran@optimizeapp.com" },
+      data: { email: "saadiya@optimizeapp.com" },
       headers: {
         "Content-Type": "application/json",
       },
@@ -47,10 +47,14 @@ describe("forgot password", () => {
         expect(response.data).toMatchObject({
           token_type: "bearer",
           expires_in: 36000,
+          status: "We have e-mailed your password reset link!",
         });
       })
       .catch((error) => {
-        console.log("forgot password error", error);
+        console.log("forgot password error", error.response || error.message);
+        expect(error.response.data).toMatchObject({
+          email: "We can't find a user with that e-mail address.",
+        });
       });
     return apiResult;
   });
