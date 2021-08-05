@@ -142,7 +142,8 @@ class InstagramStoryAdTargetting extends Component {
     // }
     if (
       prevState.campaignInfo.targeting.geo_locations.countries.length !==
-      this.state.campaignInfo.targeting.geo_locations.countries.length
+        this.state.campaignInfo.targeting.geo_locations.countries.length ||
+      prevState.locationsInfo.length !== this.state.locationsInfo.length
     ) {
       this.handleMultipleCountrySelection();
     }
@@ -1169,16 +1170,11 @@ class InstagramStoryAdTargetting extends Component {
     if (!this.editCampaign) {
       let countryLength =
         this.state.campaignInfo.targeting.geo_locations.countries.length;
-      let locationsLength = this.state.campaignInfo.targeting.geo_locations
-        .custom_locations
-        ? this.state.campaignInfo.targeting.geo_locations.custom_locations
-            .length
+      let locationsLength = this.state.locationsInfo
+        ? this.state.locationsInfo.length
         : 0;
-      let recBudget =
-        (countryLength > 0 ? countryLength : locationsLength) * 75;
-
-      let minValueBudget =
-        25 * (countryLength > 0 ? countryLength : locationsLength);
+      let recBudget = (countryLength + locationsLength) * 75;
+      let minValueBudget = 25 * (countryLength + locationsLength);
       let lifetime_budget_micro = this.state.campaignInfo.lifetime_budget_micro;
       let value = this.state.value;
       if (this.state.budgetOption !== 0) {
@@ -1360,7 +1356,8 @@ class InstagramStoryAdTargetting extends Component {
       if (
         stateRep.targeting.geo_locations.countries.length > 0 &&
         areAllLocationSame &&
-        (locationsInfo.length > 0 && locationsInfo[0].country_code) !==
+        (locationsInfo.length > 0 &&
+          locationsInfo[0].country_code.toLowerCase()) !==
           stateRep.targeting.geo_locations.countries[0].toLowerCase()
       ) {
         stateRep.auto_targeting = 0;
