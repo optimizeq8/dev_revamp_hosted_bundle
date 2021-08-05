@@ -86,7 +86,7 @@ export default class InvitationRow extends Component {
                   navigation.getParam("email", false) ||
                   invitedEmail ||
                   userEmail,
-                source: "open_hamburger",
+                source: "Menu",
                 source_action: "a_open_team_invite",
               })
             }

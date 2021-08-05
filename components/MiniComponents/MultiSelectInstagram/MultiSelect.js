@@ -126,7 +126,7 @@ class MultiSelectList extends Component {
     if (customLocations && customLocations.length > 0) {
       if (customLocations.some((loc) => loc && country === loc.country)) {
         customLocations.forEach((loc, index) => {
-          if (loc && country === loc.country) {
+          if (!!loc && country === loc.country) {
             locIndecies.push(index);
             customLocationAndCountryExist = true;
           }
@@ -155,13 +155,13 @@ class MultiSelectList extends Component {
               locIndecies.forEach((i, index) =>
                 this.props.deleteCustomLocation(i - index)
               );
-              this.props.onSelectedCountryRegionChange(country);
               if (this.props.onSelectedMapChange)
                 this.props.onSelectedMapChange(
                   filterdLocations,
                   false,
                   filteredLocationInfos
                 );
+              this.props.onSelectedCountryRegionChange(country);
             },
           },
         ]

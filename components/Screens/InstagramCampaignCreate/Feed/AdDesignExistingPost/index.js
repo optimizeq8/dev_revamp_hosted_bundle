@@ -489,8 +489,8 @@ class InstagramAdDesignExistingPost extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Preview Instagram Feed Ad Design",
       button_content: "PREVIEW",
-      source: "Instagram/ComposeAdExistingPost",
-      campaign_channel: "Instagram",
+      source: "InstagramComposeAdExistingPost",
+      campaign_channel: "instagram",
       campaign_ad_type: "InstagramFeedAd",
     });
     if (noError) {
@@ -646,7 +646,7 @@ class InstagramAdDesignExistingPost extends Component {
         campaign_end_date: this.rejected
           ? this.props.instaRejCampaign.end_time
           : this.props.data.end_time,
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       },
     });
   };
@@ -723,7 +723,7 @@ class InstagramAdDesignExistingPost extends Component {
           segment={{
             str: "Instagram Feed Ad Design Back Button",
             obj: { business_name: this.props.mainBusiness.businessname },
-            source: "Instagram/ComposeAdExistingPost",
+            source: "InstagramComposeAdExistingPost",
             source_action: "a_go_back",
           }}
           icon="instagram"

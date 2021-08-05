@@ -1767,7 +1767,7 @@ class AdDetails extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
-              source: "ad_targeting",
+              source: "SnapchatAdTargeting",
               source_action: "a_go_back",
             }}
             actionButton={
@@ -1790,7 +1790,7 @@ class AdDetails extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
-              source: "ad_targeting",
+              source: "SnapchatAdTargeting",
               source_action: "a_go_back",
             }}
             actionButton={

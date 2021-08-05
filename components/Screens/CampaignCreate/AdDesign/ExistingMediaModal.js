@@ -51,10 +51,8 @@ class ExistingMediaModal extends React.Component {
     );
   };
   render() {
-    const {
-      snapchatExistingMediaListLoading,
-      snapchatExistingMediaList,
-    } = this.props;
+    const { snapchatExistingMediaListLoading, snapchatExistingMediaList } =
+      this.props;
     return (
       <Modal
         animationIn="fadeIn"
@@ -74,7 +72,7 @@ class ExistingMediaModal extends React.Component {
               this.props.setExistingMediaModal(false);
             }}
             segment={{
-              source: "media_library_modal",
+              source: "ExistingMediaModal",
               source_action: "a_go_back",
             }}
             title={"Media Library"}

@@ -27,7 +27,7 @@ class ContinueCampaign extends Component {
     //this is to disable showing the modal everytime if a campaign creation is in progress
     if (this.props.incompleteCampaign && !this.props.campaignProgressStarted) {
       analytics.track("Snapchat Campaign Continued", {
-        campaign_channel: "Snapchat",
+        campaign_channel: "snapchat",
         campaign_ad_type: this.props.adType,
         campaign_id:
           this.props.data &&
@@ -52,7 +52,7 @@ class ContinueCampaign extends Component {
           routeName: route,
         },
         {
-          source: "continue_campaign_modal",
+          source: "SnapchatContinueCampaign",
           source_action: "a_continue_campaign",
         }
       );
@@ -189,7 +189,7 @@ class ContinueCampaign extends Component {
                 screenProps={this.props.screenProps}
                 closeButton={true}
                 segment={{
-                  source: "continue_campaign_modal",
+                  source: "SnapchatContinueCampaign",
                   source_action: "a_go_back",
                 }}
                 actionButton={() => {

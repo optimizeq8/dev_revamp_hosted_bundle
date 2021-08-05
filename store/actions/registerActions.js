@@ -294,9 +294,8 @@ export const verifyMobileCode = (
       })
       .catch((err) => {
         // console.log("verifyMobileCode error", err.message || err.response);
-        analytics.track(`Backend Error Received`, {
-          error_page: "VerfiyAccount",
-          source_action: "OTP Verification",
+        analytics.track(`Form Error Made`, {
+          source: "VerfiyAccount",
           error_description:
             err.message ||
             err.response ||
@@ -435,14 +434,12 @@ export const verifyEmail = (email, userInfo, navigation) => {
             position: "top",
           });
         }
-        // analytics.track(`a_create_account`, {
-        //   mode_of_sign_up: "email",
-        //   source: "email_registration",
-        //   action_status: data.message === "Success" ? "success" : "failure",
-        //   timestamp: new Date().getTime(),
-        //   device_id: getUniqueId(),
-        //   // source_action: "" Not sure
-        // });
+        analytics.track(`Sign up Initiated`, {
+          mode_of_sign_up: "email",
+          source: "Signin",
+          action_status: data.success ? "success" : "failure",
+          email,
+        });
       })
       .catch((err) => {
         // console.log("verifyEmail ERROR", err.message || err.response);
@@ -458,18 +455,14 @@ export const verifyEmail = (email, userInfo, navigation) => {
           type: actionTypes.VERIFY_EMAIL_LOADING,
           payload: false,
         });
-        // analytics.track(`a_error`, {
-        //   error_page: "email_registration",
-        //   action_status: "failure",
-        //   timestamp: new Date().getTime(),
-        //   device_id: getUniqueId(),
-
-        //   source_action: "a_create_account",
-        //   error_description:
-        //     err.message ||
-        //     err.response ||
-        //     "Something went wrong, please try again.",
-        // });
+        analytics.track(`Form Error Made`, {
+          source: "Signin",
+          source_action: "a_create_account",
+          error_description:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+        });
         return dispatch({
           type: actionTypes.ERROR_VERIFY_EMAIL,
           payload: { success: false, userInfo },
@@ -582,22 +575,23 @@ export const registerGuestUser = (
             business_invite: businessInvite === "0",
           },
         });
+        //=====Tracked from the backend=====//
         // For users creating new business while registering
-        if (businessInvite === "1") {
-          analytics.track(`Business Created`, {
-            business_name: businessAccount.businessname,
-            business_category: businessAccount.businesscategory,
-            country: businessAccount.country,
-            instagram_handle: businessAccount.instagram_handle,
-            other_business_category: businessAccount.otherBusinessCategory,
-          });
-        }
-        analytics.track("Signed Up", {
-          first_name: userInfo.firstname,
-          last_name: userInfo.lastname,
-          email: userInfo.email,
-          mobile: userInfo.mobile,
-        });
+        // if (businessInvite === "1") {
+        //   analytics.track(`Business Created`, {
+        //     business_name: businessAccount.businessname,
+        //     business_category: businessAccount.businesscategory,
+        //     country: businessAccount.country,
+        //     insta_handle_for_review: businessAccount.insta_handle_for_review,
+        //     other_business_category: businessAccount.otherBusinessCategory,
+        //   });
+        // }
+        // analytics.track("Signed Up", {
+        //   first_name: userInfo.firstname,
+        //   last_name: userInfo.lastname,
+        //   email: userInfo.email,
+        //   mobile: userInfo.mobile,
+        // });
         // let adjustRegiserTracker = new AdjustEvent("eivlhl");
         // adjustRegiserTracker.setCallbackId(userInfo.mobile);
         // Adjust.trackEvent(adjustRegiserTracker);
@@ -668,10 +662,8 @@ export const registerGuestUser = (
       })
       .catch((err) => {
         // console.log("registerGuestUser ERROR", JSON.stringify(err, null, 2));
-        analytics.track(`a_error`, {
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
-          error_page: "registration_detail",
+        analytics.track(`Form Error Made`, {
+          source: "RegistrationDetailForm",
           source_action: "a_sign_up",
           error_description:
             err.message ||

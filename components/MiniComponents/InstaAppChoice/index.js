@@ -323,11 +323,10 @@ class AppChoice extends Component {
     );
   };
   openCallToActionModal = () => {
-    analytics.track(`cta_modal`, {
-      source: "ad_swipe_up_destination",
-      source_action: "a_toggle_cta_modal",
-      visible: true,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Open CTA Modal",
+      source: "InstagramAppChoice",
+      business_id: this.props.mainBusiness.businessid,
     });
     this.setState({ inputCallToAction: true }, () => {});
   };
@@ -337,12 +336,11 @@ class AppChoice extends Component {
         form_type: "Instagram Deep Link Destination Form",
         form_field: "instagram_website_field",
         form_value: this.state.deep_link_uri,
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
 
       if (error) {
         analytics.track("Form Error Made", {
-          source: "ad_swipe_up_destination",
           source: "Instagram/AdDesign",
           source_action: "a_deep_link_uri",
           error_description: this.state.deep_link_uriError,

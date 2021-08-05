@@ -380,7 +380,7 @@ class InstagramAdPaymentReview extends Component {
                 obj: {
                   business_name: this.props.mainBusiness.businessname,
                 },
-                source: "InstagramFeed/AdPaymentReview",
+                source: "InstagramFeedAdPaymentReview",
                 source_action: "a_go_back",
               }}
               icon="instagram"
@@ -601,11 +601,11 @@ class InstagramAdPaymentReview extends Component {
                     analytics.track(`Button Pressed`, {
                       button_type: "Submit Instagram Feed Ad Review",
                       button_content: "Payment Info",
-                      source: "InstagramFeed/AdPaymentReview",
+                      source: "InstagramFeedAdPaymentReview",
                     });
 
                     this.props.navigation.navigate("PaymentForm", {
-                      source: "InstagramFeed/AdPaymentReview",
+                      source: "InstagramFeedAdPaymentReview",
                       source_action: `a_submit_ad_review`,
                       campaign_channel: "instagram",
                       campaign_ad_type: "InstagramFeedAd",

@@ -112,7 +112,7 @@ class ConnectToFacebook extends React.Component {
           navigation={this.props.navigation}
           //   actionButton={() => closeBiometricsModal()}
           segment={{
-            source: "open_fb_page_list",
+            source: "ConnectToFacebook",
             source_action: "a_go_back",
           }}
           iconColor={globalColors.rum}

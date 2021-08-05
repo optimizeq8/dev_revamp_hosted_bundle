@@ -236,7 +236,7 @@ class ChangePassword extends Component {
           //   navigation={this.props.navigation}
           actionButton={this.handleBackPress}
           segment={{
-            source: "change_password",
+            source: "ChangePassword",
             source_action: "a_go_back",
           }}
         />

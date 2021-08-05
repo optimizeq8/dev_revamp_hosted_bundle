@@ -546,7 +546,7 @@ class GoogleAdInfo extends Component {
                     this.props.mainBusiness &&
                     this.props.mainBusiness.businessname,
                 },
-                source: "ad_objective",
+                source: "GoogleAdObjective",
                 source_action: "a_go_back",
               }}
               icon="google"
@@ -754,7 +754,7 @@ class GoogleAdInfo extends Component {
                       title="Select Regions"
                       screenProps={this.props.screenProps}
                       segment={{
-                        source: "regions_modal",
+                        source: "GoogleAdObjectiveRegionsModal",
                         source_action: "a_go_back",
                       }}
                     />
@@ -795,7 +795,7 @@ class GoogleAdInfo extends Component {
                       title="Select Country"
                       screenProps={this.props.screenProps}
                       segment={{
-                        source: "country_modal",
+                        source: "GoogleAdObjectiveCountryModal",
                         source_action: "a_go_back",
                       }}
                     />

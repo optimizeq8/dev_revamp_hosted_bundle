@@ -155,7 +155,11 @@ class ExtendCampaignModal extends Component {
                   closeButton={!switchComponent}
                   segment={{
                     str: "Ad Details Back Button",
-                    source: "ad_targeting",
+                    source: `${
+                      campaign.channel === "instagram"
+                        ? "Instagram"
+                        : "Snapchat"
+                    }InstagramCampaignModal`,
                     source_action: "a_go_back",
                   }}
                   actionButton={() =>

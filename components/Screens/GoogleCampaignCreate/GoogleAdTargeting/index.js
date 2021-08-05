@@ -549,7 +549,7 @@ class GoogleAdTargeting extends Component {
                 campaign_id={this.props.campaign.id}
                 businessid={this.props.mainBusiness.businessid}
                 screenProps={this.props.screenProps}
-                source={"ad_targeting"}
+                source={"GoogleAdTargeting"}
               />
             }
             icon={""}
@@ -587,7 +587,7 @@ class GoogleAdTargeting extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
-              source: "ad_targeting",
+              source: "GoogleAdTargeting",
               source_action: "a_go_back",
             }}
             icon="google"

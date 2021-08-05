@@ -28,6 +28,7 @@ const reducer = (state = initialState, action) => {
       AsyncStorage.getItem("appLanguage")
         .then((language) => {
           let userTraits = {
+            email: action.payload.user.email,
             first_name: action.payload.user.firstname,
             lastt_name: action.payload.user.lasttname,
             name:
@@ -59,8 +60,8 @@ const reducer = (state = initialState, action) => {
             );
           } catch (err) {
             // console.log(err);
-            analytics.track(`a_error`, {
-              error_page: "a_error_token",
+            analytics.track(`Form Error Made`, {
+              source: "SettingDeviceToken",
               error_description: err.response || err.message,
             });
             analytics.identify(action.payload.user.userid, userTraits);
@@ -68,8 +69,8 @@ const reducer = (state = initialState, action) => {
           // MixpanelSDK.identify(action.payload.user.userid);
         })
         .catch((error) => {
-          analytics.track(`a_error`, {
-            error_page: "a_error_app_language",
+          analytics.track(`Form Error Made`, {
+            source: "GettingAppLanguage",
             error_description: error.response || error.message,
           });
           // Catch never gets called

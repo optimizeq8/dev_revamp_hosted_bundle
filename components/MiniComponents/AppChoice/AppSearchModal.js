@@ -217,7 +217,7 @@ class AppSearchModal extends Component {
                 screenProps={this.props.screenProps}
                 closeButton={true}
                 segment={{
-                  source: "app_search_modal",
+                  source: "AppSearchModal",
                   source_action: "a_go_back",
                 }}
                 actionButton={() => this.submitApp(true)} //when a user selects and closes the modal,

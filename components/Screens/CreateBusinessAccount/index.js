@@ -678,7 +678,7 @@ class CreateBusinessAccount extends Component {
       this.props.mainBusiness.reject_reason &&
       this.props.mainBusiness.reject_reason.length > 0
     ) {
-      reasons = reject_reason.map((reason) => {
+      reasons = this.props.mainBusiness.reject_reason.map((reason) => {
         return { key: Object.keys(reason), value: reason[Object.keys(reason)] };
       });
     }
@@ -732,9 +732,7 @@ class CreateBusinessAccount extends Component {
               }
               closeButton={!this.state.editBusinessInfo}
               segment={{
-                source: this.state.editBusinessInfo
-                  ? "open_business_info"
-                  : "open_create_business_account",
+                source: "createBusinessAccount",
                 source_action: "a_go_back",
               }}
             />

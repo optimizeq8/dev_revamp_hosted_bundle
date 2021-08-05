@@ -95,23 +95,23 @@ class Wallet extends Component {
         }
       );
     } else {
-      analytics.track(`a_top_up_wallet`, {
-        source: `open_wallet`,
-        source_action: "a_top_up_wallet",
-        action_status: "failure",
+      analytics.track(`Form Error Made`, {
+        source: "Wallet",
+        form_field: "a_top_up_wallet",
         error_description: amountError,
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
     }
   };
   handleModalVisibility = () => {
     this.setState({ modalVisible: !this.state.modalVisible }, () => {
       if (this.state.modalVisible) {
-        analytics.track(`add_top_up_wallet`, {
-          source: "open_wallet",
-          source_action: "a_open_wallet_top_up_modal",
-          timestamp: new Date().getTime(),
-          businessid: this.props.mainBusiness.businessid,
+        analytics.track(`Button Pressed`, {
+          button_type: `${
+            this.state.modalVisible ? "Open" : "Close"
+          } Wallet Modal`,
+          source: "Wallet",
+          business_id: this.props.mainBusiness.businessid,
         });
       }
     });
@@ -125,11 +125,11 @@ class Wallet extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`open_wallet`, {
+    analytics.track(`Screen Viwed`, {
+      screen_name: "Wallet",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
   };
   render() {
@@ -165,7 +165,7 @@ class Wallet extends Component {
             title={"Wallet"}
             navigation={this.props.navigation}
             segment={{
-              source: "open_wallet",
+              source: "wallet",
               source_action: "a_go_back",
             }}
           />
@@ -273,7 +273,7 @@ class Wallet extends Component {
                 title={"Top up wallet"}
                 actionButton={this.handleModalVisibility}
                 segment={{
-                  source: "add_top_up_wallet",
+                  source: "TopUpModal",
                   source_action: "a_close_modal",
                 }}
               />

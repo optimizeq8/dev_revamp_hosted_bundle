@@ -276,7 +276,7 @@ class AppChoice extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Close CTA Modal",
       button_content: "Call to action",
-      source: "AppChoiceSwipeUp",
+      source: "AppChoice",
       business_id: this.props.mainBusiness.businessid,
     });
     this.setState({
@@ -287,7 +287,9 @@ class AppChoice extends Component {
   onSelectedCallToActionChange = (value) => {
     if (value && !isEmpty(value)) {
       analytics.track(`Form Populated`, {
-        fomr_type: "Ad Design Form",
+        fomr_type: "Snapchat Compose Ad Form",
+        source: "AppSearchModal",
+
         form_field: "call_to_action_field",
         fomr_value: value,
         business_id: this.props.mainBusiness.businessid,
@@ -351,8 +353,6 @@ class AppChoice extends Component {
 
       if (error) {
         analytics.track("Form Error Made", {
-          source: "AppChoice",
-          source: "ad_swipe_up_destination",
           source_action: "a_deep_link_uri",
           error_description: this.state.deep_link_uriError,
           business_id: this.props.mainBusiness.businessid,

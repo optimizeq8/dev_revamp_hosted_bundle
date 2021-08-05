@@ -160,15 +160,14 @@ const reducer = (state = initialState, action) => {
             return transaction;
         });
       }
-      analytics.track(`a_filter`, {
-        source: "open_transactions",
-        source_action: "a_filter",
+      analytics.track(`Transaction List Filtered`, {
+        source: "Transactions",
         no_of_results: filtered && filtered.length,
         filter_type: "transaction",
         keywords: action.payload.value,
         start_date: startSearch,
         end_date: endSearch,
-        businessid: action.payload.businessid,
+        business_id: action.payload.businessid,
       });
       return {
         ...state,

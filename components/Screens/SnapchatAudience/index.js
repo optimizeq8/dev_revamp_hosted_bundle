@@ -507,7 +507,7 @@ export class SnapchatAudience extends Component {
         source: "SnapchatAudience",
         source_action: "a_audience_languages",
         error_description: "Please choose a language",
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
 
       showMessage({
@@ -858,10 +858,11 @@ export class SnapchatAudience extends Component {
       button_type: "Go Back",
       button_content: "Backward Icon",
     });
-    analytics.track("go_back_warning", {
-      source: "audience_detail",
+    analytics.track("Button Pressed", {
+      button_type: "Back Button",
+      source: "SnapchatAudience",
       source_action: "a_go_back",
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
     Alert.alert(
       translate("Warning"),

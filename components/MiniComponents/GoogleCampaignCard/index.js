@@ -22,7 +22,7 @@ class GoogleCampaignCard extends Component {
     analytics.track(`Button Pressed`, {
       button_type: "Google Campaign Card",
       campaign_id: this.props.campaign.campaign_id,
-      campaign_channel: "Google",
+      campaign_channel: "google",
       business_id: this.props.mainBusiness.businessid,
     });
     this.props.get_google_campiagn_details(
@@ -31,13 +31,13 @@ class GoogleCampaignCard extends Component {
       this.props.campaign.end_time,
       false,
       {
-        source: "dashboard",
+        source: "Dashboard",
         source_action: "a_open_campaign_details",
       }
     );
     this.props.navigation.navigate("GoogleCampaignDetails", {
       campaign: this.props.campaign,
-      source: "dashboard",
+      source: "Dashboard",
       source_action: "a_open_campaign_details",
     });
   };

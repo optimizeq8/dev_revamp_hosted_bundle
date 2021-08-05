@@ -53,24 +53,11 @@ class VerifyEngagmentNumber extends Component {
     );
   };
   resendOTP = () => {
-    analytics.track(`otp_verify`, {
-      source: "otp_verify",
-      source_action: `a_resend_otp`,
-      timestamp: new Date().getTime(),
-      device_id: this.props.screenProps.device_id,
-      verification_channel: "Mobile",
-      userId: this.props.userInfo.userid,
-      resend_otp: true,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
-    });
-    analytics.track(`a_resend_otp`, {
-      source: "otp_verify",
-      source_action: `a_resend_otp`,
-      timestamp: new Date().getTime(),
-      device_id: this.props.screenProps.device_id,
-      verification_channel: this.state.verifyByMobile ? "Mobile" : "Email",
-      userId: this.props.userInfo.userid,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+    analytics.track(`OTP Resent`, {
+      source: "VerifyEngagmentNumber",
+      verification_mode: "Mobile",
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
 
     this.props.resendVerifyMobileCode({

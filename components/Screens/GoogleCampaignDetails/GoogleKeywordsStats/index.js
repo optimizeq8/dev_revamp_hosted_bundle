@@ -88,7 +88,8 @@ class GoogleKeywordsStats extends Component {
     }).start();
   };
   onDidFocus = () => {
-    analytics.track(`ad_keywords_performance`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "GoogleKeywordsPerformance",
       source: this.props.navigation.getParam(
         "source",
         this.props.screenProps.prevAppState
@@ -98,7 +99,7 @@ class GoogleKeywordsStats extends Component {
         this.props.screenProps.prevAppState
       ),
       keywords_performance: this.state.filteredKeywords,
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
   };
   render() {
@@ -147,7 +148,7 @@ class GoogleKeywordsStats extends Component {
               icon={"google"}
               navigation={this.props.navigation}
               segment={{
-                source: "ad_keywords_performance",
+                source: "GoogleKeywordsPerformance",
                 source_action: "a_go_back",
               }}
               titleStyle={{

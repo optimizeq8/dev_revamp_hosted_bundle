@@ -142,7 +142,8 @@ class InstagramFeedAdTargetting extends Component {
     // }
     if (
       prevState.campaignInfo.targeting.geo_locations.countries.length !==
-      this.state.campaignInfo.targeting.geo_locations.countries.length
+        this.state.campaignInfo.targeting.geo_locations.countries.length ||
+      prevState.locationsInfo.length !== this.state.locationsInfo.length
     ) {
       this.handleMultipleCountrySelection();
     }
@@ -666,7 +667,7 @@ class InstagramFeedAdTargetting extends Component {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
           analytics.track(`Form Error Made`, {
-            source: "InstagramFeed/AdTargeting",
+            source: "InstagramFeedAdTargeting",
             source_action: "a_change_campaign_custom_budget",
             error_description:
               validateWrapper("Budget", rawValue) +
@@ -899,7 +900,7 @@ class InstagramFeedAdTargetting extends Component {
       )
     ) {
       analytics.track(`Form Error Made`, {
-        source: "InstagramFeed/AdTargeting",
+        source: "InstagramFeedAdTargeting",
         source_action: "a_submit_ad_targeting",
         campaign_id: this.state.campaignInfo.campaign_id,
         campaign_channel: "instagram",
@@ -998,10 +999,6 @@ class InstagramFeedAdTargetting extends Component {
       } else if (!this.editCampaign) {
         delete rep.targeting.geo_locations.custom_locations;
       }
-      console.log(
-        "rep.targeting.geo_locations",
-        JSON.stringify(rep.targeting.geo_locations, null, 2)
-      );
       rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
         campaign_ad_type: "InstagramFeedAd",
@@ -1174,16 +1171,11 @@ class InstagramFeedAdTargetting extends Component {
     if (!this.editCampaign) {
       let countryLength =
         this.state.campaignInfo.targeting.geo_locations.countries.length;
-      let locationsLength = this.state.campaignInfo.targeting.geo_locations
-        .custom_locations
-        ? this.state.campaignInfo.targeting.geo_locations.custom_locations
-            .length
+      let locationsLength = this.state.locationsInfo
+        ? this.state.locationsInfo.length
         : 0;
-      let recBudget =
-        (countryLength > 0 ? countryLength : locationsLength) * 75;
-
-      let minValueBudget =
-        25 * (countryLength > 0 ? countryLength : locationsLength);
+      let recBudget = (countryLength + locationsLength) * 75;
+      let minValueBudget = 25 * (countryLength + locationsLength);
       let lifetime_budget_micro = this.state.campaignInfo.lifetime_budget_micro;
       let value = this.state.value;
       if (this.state.budgetOption !== 0) {
@@ -1371,7 +1363,8 @@ class InstagramFeedAdTargetting extends Component {
       if (
         stateRep.targeting.geo_locations.countries.length > 0 &&
         areAllLocationSame &&
-        (locationsInfo.length > 0 && locationsInfo[0].country_code) !==
+        (locationsInfo.length > 0 &&
+          locationsInfo[0].country_code.toLowerCase()) !==
           stateRep.targeting.geo_locations.countries[0].toLowerCase()
       ) {
         stateRep.auto_targeting = 0;
@@ -1720,7 +1713,7 @@ class InstagramFeedAdTargetting extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
-              source: "ad_targeting",
+              source: "InstagramFeedAdTargeting",
               source_action: "a_go_back",
             }}
             icon="instagram"
@@ -1737,7 +1730,7 @@ class InstagramFeedAdTargetting extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
-              source: "ad_targeting",
+              source: "InstagramFeedAdTargeting",
               source_action: "a_go_back",
             }}
             actionButton={() => this.handleBackButton()}
@@ -1806,7 +1799,7 @@ class InstagramFeedAdTargetting extends Component {
                       }
                     : {};
                   analytics.track("Screen Viewed", {
-                    screen_name: "InstagramFeed/AdTargeting",
+                    screen_name: "InstagramFeedAdTargeting",
                     source,
                     source_action,
                     from_context: { ...segmentInfo },

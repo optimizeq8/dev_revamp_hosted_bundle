@@ -240,14 +240,14 @@ class App extends React.Component {
                     end_time,
                     false,
                     {
-                      source: "dashboard",
+                      source: "Dashboard",
                       source_action: "a_open_campaign_details",
                     }
                   )
                 );
                 NavigationService.navigate("GoogleCampaignDetails", {
                   campaign: campaign_id,
-                  source: "dashboard",
+                  source: "Dashboard",
                   source_action: "a_open_campaign_details",
                 });
                 break;
@@ -497,14 +497,14 @@ class App extends React.Component {
                 end_time,
                 false,
                 {
-                  source: "dashboard",
+                  source: "Dashboard",
                   source_action: "a_open_campaign_details",
                 }
               )
             );
             NavigationService.navigate("GoogleCampaignDetails", {
               campaign: campaign_id,
-              source: "dashboard",
+              source: "Dashboard",
               source_action: "a_open_campaign_details",
             });
             break;

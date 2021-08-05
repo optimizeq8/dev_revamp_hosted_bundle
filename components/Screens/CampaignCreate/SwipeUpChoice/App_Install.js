@@ -144,7 +144,7 @@ class App_Install extends Component {
     }
     if (!nameError && !callActionError) {
       analytics.track(`Form Populated`, {
-        form_type: "Ad Design Form",
+        form_type: "Snapchat Compose Ad Form",
         form_field: "app_install_swipe_up",
         form_value: appChoice === "iOS" ? iosApp_name : androidApp_name,
       });
@@ -184,7 +184,7 @@ class App_Install extends Component {
 
   handleCallaction = (callaction) => {
     analytics.track(`Form Populated`, {
-      form_type: "Ad Design Form",
+      form_type: "Snapchat Compose Ad Form",
       form_field: "app_install_cta",
       form_value: callaction,
     });

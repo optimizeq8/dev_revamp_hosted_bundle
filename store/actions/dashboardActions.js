@@ -25,7 +25,7 @@ export const getCampaignDetails = (id, navigation) => {
     });
 
     navigation.navigate("CampaignDetails", {
-      source: "dashboard",
+      source: "Dashboard",
       source_action: "a_open_campaign",
     });
 
@@ -74,10 +74,9 @@ export const getCampaignDetails = (id, navigation) => {
       //   }
       // })
       .catch((err) => {
-        analytics.track(`a_error`, {
-          error_page: "dashboard",
+        analytics.track(`Form Error Made`, {
+          source: "Dashboard",
           source_action: "a_open_campaign_details",
-          action_status: "failure",
           campaign_id: id,
           campaign_type: "snapchat",
           campaign_ad_type: null,
@@ -85,7 +84,7 @@ export const getCampaignDetails = (id, navigation) => {
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         // console.log("getCampaignDetails error", err.message || err.response);
         showMessage({
@@ -317,7 +316,7 @@ export const downloadCSV = (campaign_id, email, showModalMessage) => {
           action_status: data.success ? "success" : "failure",
           campaign_id: campaign_id,
           export_email: email,
-          businessid: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.businessid,
         });
         showModalMessage(data.message, data.success ? "success" : "warning");
       })

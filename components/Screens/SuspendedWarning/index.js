@@ -21,10 +21,12 @@ class SuspendedWarning extends Component {
   onDidFocus = () => {
     const source = this.props.navigation.getParam("source", "");
     const source_action = this.props.navigation.getParam("source_action", "");
-    analytics.track("suspended_warning", {
+    analytics.track("Screen Viewed", {
+      screen_name: "SuspendedWarning",
       source,
       source_action,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
   };
   render() {
@@ -66,17 +68,17 @@ class SuspendedWarning extends Component {
             <GradientButton
               style={styles.button}
               onPressAction={() => {
-                analytics.track(`a_help`, {
-                  source: "suspended_warning",
-                  source_action: "a_help",
-                  support_type: "intercom",
+                analytics.track(`Intercom Opened`, {
+                  source: "SuspendedWarning",
+                  business_id:
+                    this.props.mainBusiness &&
+                    this.props.mainBusiness.businessid,
                 });
                 // Intercom.displayMessageComposer();
                 Intercom.displayConversationsList();
                 let source = this.props.navigation.getParam("source", "");
-                let continueRoutes = (source !== "app_crash"
-                  ? ["Dashboard"]
-                  : ["SuspendedWarning"]
+                let continueRoutes = (
+                  source !== "app_crash" ? ["Dashboard"] : ["SuspendedWarning"]
                 ).map((route) =>
                   NavigationActions.navigate({
                     routeName: route,

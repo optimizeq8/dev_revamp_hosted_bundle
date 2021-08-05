@@ -276,7 +276,11 @@ class Menu extends Component {
                 }
                 onPress={() => {
                   //First check if the business is not connected to fb force the user to login
-                  if (this.props.mainBusiness.fb_connected === "0") {
+                  if (
+                    mainBusiness &&
+                    mainBusiness.hasOwnProperty("fb_connected") &&
+                    mainBusiness.fb_connected === "0"
+                  ) {
                     this.handleNavigation("WebView", false, {
                       url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}&screenName=menu`,
                       title: "Instagram",
@@ -518,7 +522,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text selectable style={styles.version}>
                 {translate("Version:")}
-                {Constants.nativeAppVersion}/436/
+                {Constants.nativeAppVersion}/440/
                 {Constants.nativeBuildVersion}
               </Text>
             </ScrollView>

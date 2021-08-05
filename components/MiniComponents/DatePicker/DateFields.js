@@ -368,7 +368,7 @@ class DateFields extends Component {
                 <CustomHeader
                   screenProps={this.props.screenProps}
                   segment={{
-                    source: "date_modal",
+                    source: "DatePicker",
                     source_action: "a_go_back",
                   }}
                   closeButton={true}

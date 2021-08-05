@@ -196,7 +196,7 @@ class AdObjective extends Component {
       form_field: "Objective",
       form_value: choice.value,
       campaign_id: this.props.campaign_id,
-      campaign_channel: "Instagram",
+      campaign_channel: "instagram",
       campaign_ad_type: this.props.adType,
       business_id:
         this.props.mainBusiness && this.props.mainBusiness.businessid,
@@ -223,7 +223,7 @@ class AdObjective extends Component {
       form_field: "start_date",
       form_value: date,
       campaig_id: this.props.campaig_id,
-      campaign_channel: "Instagram",
+      campaign_channel: "instagram",
       campaign_ad_type: this.props.adType,
       business_id:
         this.props.mainBusiness && this.props.mainBusiness.businessid,
@@ -244,7 +244,7 @@ class AdObjective extends Component {
       form_type: "Instagram Feed Ad Objective Form",
       form_field: "end_date",
       campaig_id: this.props.campaig_id,
-      campaign_channel: "Instagram",
+      campaign_channel: "instagram",
       campaign_ad_type: this.props.adType,
       business_id:
         this.props.mainBusiness && this.props.mainBusiness.businessid,
@@ -259,7 +259,7 @@ class AdObjective extends Component {
     analytics.track(`Button Pressed`, {
       button_type: `${visible ? "Open" : "Close"} Ad Objective Modal`,
       button_content: "OBJECTIVE",
-      source: "InstagramStory/AdObjective",
+      source: "InstagramStoryAdObjective",
     });
     this.setState({ modalVisible: visible });
   };
@@ -308,7 +308,7 @@ class AdObjective extends Component {
       dateErrors.end_timeError
     ) {
       analytics.track(`From Error Made`, {
-        source: "InstagramFeed/AdObjective",
+        source: "InstagramStoryAdObjective",
         campaign_channel: "instagram",
         campaign_ad_type: this.props.adType,
         source_action: "a_submit_ad_objective",
@@ -399,7 +399,7 @@ class AdObjective extends Component {
       form_field: "ad_name",
       form_value: value,
       campaig_id: this.props.campaign_id,
-      campaign_channel: "Instagram",
+      campaign_channel: "instagram",
       campaign_ad_type: this.props.adType,
       business_id:
         this.props.mainBusiness && this.props.mainBusiness.businessid,
@@ -420,7 +420,7 @@ class AdObjective extends Component {
         source_action: "a_ad_name",
         campaign_channel: "instagram",
         campaign_ad_type: this.props.adType,
-        businessid: this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness.businessid,
       });
     }
     let state = {};
@@ -439,7 +439,7 @@ class AdObjective extends Component {
       this.props.screenProps.prevAppState
     );
     analytics.track(`Screen Viewed`, {
-      screen_name: "InstagramFeed/AdObjective",
+      screen_name: "InstagramStoryAdObjective",
       source,
       source_action,
       campaign_channel: "instagram",
@@ -507,7 +507,7 @@ class AdObjective extends Component {
               segment={{
                 str: "Instagram story Ad Objective Back Button",
                 obj: { businessname: this.props.mainBusiness.businessname },
-                source: "ad_objective",
+                source: "InstagramStoryAdObjective",
                 source_action: "a_go_back",
               }}
               icon="instagram"
@@ -655,7 +655,7 @@ class AdObjective extends Component {
                 }}
                 title={"Select an objective"}
                 segment={{
-                  source: "ad_objective_modal",
+                  source: "InstagramStoryAdObjective",
                   source_action: "a_go_back",
                 }}
                 titleStyle={{ color: "#000" }}

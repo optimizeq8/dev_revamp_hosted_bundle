@@ -327,7 +327,7 @@ class DownloadMediaFromDifferentDevice extends Component {
               this.props.setDownloadMediaModal(false);
             }}
             segment={{
-              source: "download_media_modal",
+              source: "DownloadMediaFromDifferentDevice",
               source_action: "a_go_back",
             }}
             title={"DOWNLOAD MEDIA"}

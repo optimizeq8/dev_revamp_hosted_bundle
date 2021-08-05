@@ -29,18 +29,19 @@ class WebsiteRegistartionSuccess extends React.Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`my_website_success_registration`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "WebsiteRegistartionSuccess",
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
   }
   goToMyWebsite = () => {
-    analytics.track(`a_open_my_website`, {
-      source: "my_website_success_registration",
-      source_action: "a_open_my_website",
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Finish Website Registeration",
+      button_content: "Take me to my website settings",
+      source: "WebsiteRegistartionSuccess",
+      business_id: this.props.mainBusiness.businessid,
     });
     this.props.navigation.navigate("MyWebsite", {
       source: "my_website_success_registration",
@@ -74,11 +75,11 @@ class WebsiteRegistartionSuccess extends React.Component {
           <TouchableOpacity
             style={styles.businessNameView}
             onPress={() => {
-              analytics.track(`a_copy_my_website_url`, {
-                source: "my_website_success_registration",
-                source_action: "a_copy_my_website_url",
-                weburl: mainBusiness.weburl,
-                businessid: this.props.mainBusiness.businessid,
+              analytics.track(`Button Pressed`, {
+                button_type: "Copy Website URL",
+                button_content: mainBusiness.weburl,
+                source: "WebsiteRegistartionSuccess",
+                business_id: this.props.mainBusiness.businessid,
               });
               Clipboard.setString(mainBusiness.weburl);
             }}

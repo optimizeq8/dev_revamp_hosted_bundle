@@ -158,40 +158,35 @@ class AddProduct extends Component {
   };
 
   goToPreview = () => {
-    analytics.track(`a_preview_product`, {
-      source: "open_add_product",
-      source_action: "a_preview_product",
-      product_id: this.state.product.id,
-      product_name: this.state.product.name,
-      product_price: this.state.product.prices,
-      product_description: this.state.product.description_en,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Preview Product",
+      button_content: this.state.product,
+      source: "WebsiteAddProduct",
+      business_id: this.props.mainBusiness.businessid,
     });
     this.props.navigation.navigate("ReviewProductDetail", {
       product: this.state.product,
-      source: "open_add_product",
+      source: "WebsiteAddProduct",
       source_action: "a_preview_product",
     });
   };
   closePriceModal = () => {
-    analytics.track(`open_currency_modal`, {
-      source: "open_add_product",
-      source_action: "a_toggle_price_modal",
-      product_id: this.state.product.id,
-      open: false,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Close Product Price Modal",
+      button_content: `Product ID: ${this.state.product.id}`,
+      source: "WebsiteAddProduct",
+      business_id: this.props.mainBusiness.businessid,
     });
     this.setState({
       showPriceModal: false,
     });
   };
   openPriceModal = () => {
-    analytics.track(`open_currency_modal`, {
-      source: "open_add_product",
-      source_action: "a_toggle_price_modal",
-      product_id: this.state.product.id,
-      open: true,
-      businessid: this.props.mainBusiness.businessid,
+    analytics.track(`Button Pressed`, {
+      button_type: "Ope Product Price Modal",
+      button_content: `Product ID: ${this.state.product.id}`,
+      source: "WebsiteAddProduct",
+      business_id: this.props.mainBusiness.businessid,
     });
     this.setState({
       showPriceModal: true,

@@ -89,11 +89,13 @@ class TeamInvite extends Component {
       this.props.screenProps.prevAppState
     );
     let { businessInvitee } = this.props;
-    analytics.track(`team_invite`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "TeamInvite",
       source,
       source_action,
       invite_business: businessInvitee,
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id:
+        this.props.mainBusiness && this.props.mainBusiness.businessid,
     });
     this.checkTeamInvite();
   };

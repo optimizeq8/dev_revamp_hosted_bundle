@@ -177,13 +177,13 @@ export const ad_objective = (info, navigation, segmentInfo, objective) => {
             data.data.campaign_already_created === 0)
         ) {
           analytics.track(`Form Submitted`, {
-            form_type: "Ad Objective Form",
+            form_type: "Snapchat Ad Objective Form",
             form_context: { ...segmentInfo },
             campaign_error: !data.success && data.message,
             business_id: getState().account.mainBusiness.businessid,
           });
           navigation.navigate("AdDesign", {
-            source: "AdObjective",
+            source: "SnapchatAdObjective",
             source_action: "a_submit_ad_objective",
           });
         } else
@@ -275,7 +275,7 @@ export const ad_design = (
           });
         } else {
           analytics.track(`Form Submitted`, {
-            form_type: "Ad Design Form",
+            form_type: "Snapchat Compose Ad Form",
             form_context: {
               ...segmentInfo,
               resubmit: rejected,
@@ -320,7 +320,7 @@ export const ad_design = (
             segmentInfo.campaign_savedObjective === "POLITICAL_TRAFFIC"
               ? "AdDetailsPolitical"
               : "AdDetails",
-            { source: "ComposeAd", source_action: "a_submit_ad_design" }
+            { source: "SnapchatComposeAd", source_action: "a_submit_ad_design" }
           );
         else if (
           data.data &&
@@ -2036,7 +2036,7 @@ export const repeatSnapCampaginBudget = (
             payload: false,
           });
           NavigationService.navigate("PaymentForm", {
-            source: "dashboard",
+            source: "Dashboard",
             source_action: `a_submit_repeat_campaign_budget`,
             campaign_channel: "snapchat",
           });
@@ -2135,7 +2135,7 @@ export const extendSnapCampaginBudget = (
           form_type: "Snapchat Extend Campaign Form",
           form_context: {
             action_status: data.success ? "success" : "failure",
-            campaign_channel: "Snapchat",
+            campaign_channel: "snapchat",
             campaign_id: data.campaign_id,
           },
           business_id: getState().account.mainBusiness.businessid,

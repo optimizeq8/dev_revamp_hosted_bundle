@@ -117,6 +117,7 @@ class BiometricsAuth extends Component {
     });
   };
   handleAddingAccount = () => {
+    let { translate } = this.props.screenProps;
     analytics.track("Button Pressed", {
       button_type: `Secure Account With Biometrics`,
       button_content: this.state.showPasswordField

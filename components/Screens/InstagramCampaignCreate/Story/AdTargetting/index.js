@@ -142,7 +142,8 @@ class InstagramStoryAdTargetting extends Component {
     // }
     if (
       prevState.campaignInfo.targeting.geo_locations.countries.length !==
-      this.state.campaignInfo.targeting.geo_locations.countries.length
+        this.state.campaignInfo.targeting.geo_locations.countries.length ||
+      prevState.locationsInfo.length !== this.state.locationsInfo.length
     ) {
       this.handleMultipleCountrySelection();
     }
@@ -681,7 +682,7 @@ class InstagramStoryAdTargetting extends Component {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
           analytics.track(`Form Error Made`, {
-            source: "InstagramStory/AdTargeting",
+            source: "instagramstoryAdTargeting",
             source_action: "a_change_campaign_custom_budget",
             error_description:
               validateWrapper("Budget", rawValue) +
@@ -888,10 +889,10 @@ class InstagramStoryAdTargetting extends Component {
       )
     ) {
       analytics.track(`Form Error Made`, {
-        source: "InstagramStory/AdTargeting",
+        source: "instagramstoryAdTargeting",
         source_action: "a_submit_ad_targeting",
         campaign_id: this.props.data.campaign_id,
-        campaign_channel: "Instagram",
+        campaign_channel: "instagram",
         campaign_ad_type: "InstagramStoryAd",
         error_description:
           countryRegionError ||
@@ -985,7 +986,6 @@ class InstagramStoryAdTargetting extends Component {
       } else if (!this.editCampaign) {
         delete rep.targeting.geo_locations.custom_locations;
       }
-      rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
         campaign_ad_type: "InstagramStoryAd",
         campaign_id: this.props.campaign_id,
@@ -1040,6 +1040,7 @@ class InstagramStoryAdTargetting extends Component {
           rep.coordinates = JSON.parse(rep.coordinates);
           rep.custom_location = JSON.parse(rep.custom_location);
         }
+        rep.targeting = JSON.stringify(rep.targeting);
         this.props.updateInstagramCampaign(
           rep,
           this.props.mainBusiness.businessid,
@@ -1054,6 +1055,7 @@ class InstagramStoryAdTargetting extends Component {
         //   campaign_budget: this.state.campaignInfo.lifetime_budget_micro
         // });
         /** If the audience list is empty for the first time create a new audience */
+        rep.targeting = JSON.stringify(rep.targeting);
 
         if (this.props.audienceList.length === 0) {
           this.props.createAudience(
@@ -1168,16 +1170,11 @@ class InstagramStoryAdTargetting extends Component {
     if (!this.editCampaign) {
       let countryLength =
         this.state.campaignInfo.targeting.geo_locations.countries.length;
-      let locationsLength = this.state.campaignInfo.targeting.geo_locations
-        .custom_locations
-        ? this.state.campaignInfo.targeting.geo_locations.custom_locations
-            .length
+      let locationsLength = this.state.locationsInfo
+        ? this.state.locationsInfo.length
         : 0;
-      let recBudget =
-        (countryLength > 0 ? countryLength : locationsLength) * 75;
-
-      let minValueBudget =
-        25 * (countryLength > 0 ? countryLength : locationsLength);
+      let recBudget = (countryLength + locationsLength) * 75;
+      let minValueBudget = 25 * (countryLength + locationsLength);
       let lifetime_budget_micro = this.state.campaignInfo.lifetime_budget_micro;
       let value = this.state.value;
       if (this.state.budgetOption !== 0) {
@@ -1359,7 +1356,8 @@ class InstagramStoryAdTargetting extends Component {
       if (
         stateRep.targeting.geo_locations.countries.length > 0 &&
         areAllLocationSame &&
-        (locationsInfo.length > 0 && locationsInfo[0].country_code) !==
+        (locationsInfo.length > 0 &&
+          locationsInfo[0].country_code.toLowerCase()) !==
           stateRep.targeting.geo_locations.countries[0].toLowerCase()
       ) {
         stateRep.auto_targeting = 0;
@@ -1435,10 +1433,6 @@ class InstagramStoryAdTargetting extends Component {
   };
   handleCustomAudience = () => {
     let { translate } = this.props.screenProps;
-    console.log(
-      this.state.campaignInfo.targeting.geo_locations.countries,
-      this.state.multipleCountriesSelected
-    );
     if (
       (this.state.campaignInfo.targeting.geo_locations.countries.length > 1 ||
         this.state.multipleCountriesSelected) &&
@@ -1712,7 +1706,7 @@ class InstagramStoryAdTargetting extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
-              source: "ad_targeting",
+              source: "InstagramStoryAdTargeting",
               source_action: "a_go_back",
             }}
             icon="instagram"
@@ -1729,7 +1723,7 @@ class InstagramStoryAdTargetting extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
-              source: "ad_targeting",
+              source: "InstagramStoryAdTargeting",
               source_action: "a_go_back",
             }}
             actionButton={() => this.handleBackButton()}
@@ -1780,7 +1774,7 @@ class InstagramStoryAdTargetting extends Component {
                     ? {
                         source,
                         source_action,
-                        campaign_channel: "Instagram",
+                        campaign_channel: "instagram",
                         campaign_ad_type: "InstagramStoryAd",
                         campaign_name: this.props.data.name,
                         campaign_id: this.props.data.campaign_id,
@@ -1796,7 +1790,7 @@ class InstagramStoryAdTargetting extends Component {
                       }
                     : {};
                   analytics.track("Screen Viewed", {
-                    screen_name: "InstagramFeed/AdTargeting",
+                    screen_name: "instagramfeedAdTargeting",
                     source,
                     source_action,
                     from_context: { ...segmentInfo },

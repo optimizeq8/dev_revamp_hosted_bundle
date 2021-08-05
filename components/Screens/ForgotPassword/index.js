@@ -119,7 +119,7 @@ class ForgotPassword extends Component {
           navigation={this.props.navigation}
           closeButton={true}
           segment={{
-            source: "forgot_password",
+            source: "ForgotPassword",
             source_action: "a_go_back",
           }}
         />

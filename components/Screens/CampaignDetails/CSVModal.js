@@ -79,7 +79,7 @@ export default class CSVModal extends Component {
               screenProps={screenProps}
               title={"Export CSV"}
               segment={{
-                source: "csv_modal",
+                source: "CSVModal",
                 source_action: "a_go_back",
               }}
             />

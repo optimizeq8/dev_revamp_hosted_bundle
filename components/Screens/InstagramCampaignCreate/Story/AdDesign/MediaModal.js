@@ -80,7 +80,7 @@ export default class MediaModal extends Component {
                 }}
                 title={"UPLOAD MEDIA"}
                 segment={{
-                  source: "upload_media",
+                  source: "InstagramStoryMediaModal",
                   source_action: "a_go_back",
                 }}
               />

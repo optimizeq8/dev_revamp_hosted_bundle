@@ -48,12 +48,13 @@ class GoogleCreateAdAcc extends Component {
       this.props.screenProps.prevAppState
     );
 
-    analytics.track(`ad_TNC`, {
+    analytics.track(`Screen Viewed`, {
+      screen_name: "GoogleCreateAdAcc",
       source,
       source_action,
       campaign_channel: "google",
       campaign_ad_type: "GoogleSEAd",
-      businessid: this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness.businessid,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -97,7 +98,7 @@ class GoogleCreateAdAcc extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
-              source: "ad_TNC",
+              source: "GoogleCreateAdAcc",
               source_action: "a_go_back",
             }}
             navigation={this.props.navigation}

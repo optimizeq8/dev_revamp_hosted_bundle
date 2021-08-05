@@ -15,7 +15,7 @@ import Header from "../../MiniComponents/Header";
 import RegisterForm from "./RegisterForm";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";
-import globalStyles from "../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 export default class MyWebsite extends Component {
   constructor(props) {
     super(props);
@@ -50,12 +50,7 @@ export default class MyWebsite extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <View>
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[1, 0.3]}
-          style={globalStyles.gradient}
-        />
+      <View style={{ backgroundColor: globalColors.purple }}>
         <SafeAreaView
           // style={[myWebsiteStyles.safeAreaViewContainer]}
           forceInset={{ bottom: "never", top: "always" }}
@@ -64,7 +59,7 @@ export default class MyWebsite extends Component {
           screenProps={this.props.screenProps}
           closeButton={false}
           segment={{
-            source: "my_website_detail",
+            source: "WebsiteSetting",
             source_action: "a_go_back",
           }}
           navigation={this.props.navigation}
