@@ -1433,10 +1433,6 @@ class InstagramStoryAdTargetting extends Component {
   };
   handleCustomAudience = () => {
     let { translate } = this.props.screenProps;
-    console.log(
-      this.state.campaignInfo.targeting.geo_locations.countries,
-      this.state.multipleCountriesSelected
-    );
     if (
       (this.state.campaignInfo.targeting.geo_locations.countries.length > 1 ||
         this.state.multipleCountriesSelected) &&

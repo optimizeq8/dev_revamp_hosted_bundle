@@ -999,10 +999,6 @@ class InstagramFeedAdTargetting extends Component {
       } else if (!this.editCampaign) {
         delete rep.targeting.geo_locations.custom_locations;
       }
-      console.log(
-        "rep.targeting.geo_locations",
-        JSON.stringify(rep.targeting.geo_locations, null, 2)
-      );
       rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
         campaign_ad_type: "InstagramFeedAd",
