@@ -1,14 +1,15 @@
-import axios from "axios";
-import { login } from "../store/actions";
+// import axios from "axios";
+import { login } from "../index";
 var querystring = require("querystring");
 const BASE_URL = "https://api.devoa.optimizeapp.com/api/";
 describe("login should be success", () => {
   it(`login should be success`, async () => {
-    const apiResult = login({ email: "saadiy@op.com", password: "1234" }).then(
-      (res) => {
-        console.log("res", res);
-      }
-    );
+    const apiResult = login(
+      { email: "saadiy@op.com", password: "1234" },
+      jest.fn()
+    ).then((res) => {
+      console.log("res", res);
+    });
     return apiResult;
   });
 });
