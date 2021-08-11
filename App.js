@@ -647,7 +647,7 @@ class App extends React.Component {
               paddingTop: 0,
             }}
           />
-          <View style={styles.gradient} />
+          <View style={styles.gradient} testID="app" />
           {/* <LinearGradient
             // colors={["#9300FF", "#5600CB"]}
             colors={[globalColors.bluegem, globalColors.bluegem]}
