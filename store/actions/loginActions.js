@@ -340,17 +340,17 @@ export const forgotPassword = (email, navigation) => {
       },
     })
       .then((response) => {
-        analytics.track(`Forgot Password Request`, {
-          source: "ForgotPassword",
-          source_action: "a_forget_password",
-          email,
-          action_status: response.data.success ? "success" : "failure",
-        });
-        showMessage({
-          message: response.data.status,
-          type: "success",
-          position: "top",
-        });
+        // analytics.track(`Forgot Password Request`, {
+        //   source: "ForgotPassword",
+        //   source_action: "a_forget_password",
+        //   email,
+        //   action_status: response.data.success ? "success" : "failure",
+        // });
+        // showMessage({
+        //   message: response.data.status,
+        //   type: "success",
+        //   position: "top",
+        // });
         dispatch({
           type: actionTypes.CHANGE_PASSWORD_LOADING,
           payload: false,
@@ -372,11 +372,11 @@ export const forgotPassword = (email, navigation) => {
       })
       .catch((err) => {
         // console.log("forgotPassword error", err);
-        showMessage({
-          message: err.message || err.response,
-          type: "warning",
-          position: "top",
-        });
+        // showMessage({
+        //   message: err.message || err.response,
+        //   type: "warning",
+        //   position: "top",
+        // });
         dispatch({
           type: actionTypes.CHANGE_PASSWORD_LOADING,
           payload: false,
