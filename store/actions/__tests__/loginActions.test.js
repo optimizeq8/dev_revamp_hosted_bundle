@@ -25,7 +25,10 @@ describe("store/login", () => {
     });
 
     test("should handle forget password action", () => {
-      const state = reducer(undefined, forgotPassword("imran@optimizeapp.com"));
+      const state = loginReducer(
+        undefined,
+        forgotPassword("imran@optimizeapp.com")
+      );
       expect(state).toEqual({
         success: true,
         message: "We have e-mailed your password reset link!",

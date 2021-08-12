@@ -9,3 +9,9 @@
 //   };
 // });
 // module.exports = rn;
+
+jest.mock("@segment/analytics-react-native", () => "analytics");
+jest.mock("react-native-intercom", () => "Intercom");
+jest.mock("react-native-flash-message", () => "showMessage");
+jest.mock("expo-secure-store", () => "SecureStore");
+jest.mock("react-native-notifications", () => "Notification");
