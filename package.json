@@ -50,6 +50,7 @@
     "hermes-engine": "0.5.2-rc1",
     "i18n-js": "^3.3.0",
     "jest-cli": "^27.0.6",
+    "jest-svg-transformer": "^1.0.0",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.15",
     "lottie-react-native": "^4.0.2",
@@ -149,9 +150,6 @@
     ]
   },
   "jest": {
-    "preset": "jest-expo",
-    "moduleNameMapper": {
-      "\\.svg": "<rootDir>/__mocks__/svgMock.js"
-    }
+    "preset": "jest-expo"
   }
 }

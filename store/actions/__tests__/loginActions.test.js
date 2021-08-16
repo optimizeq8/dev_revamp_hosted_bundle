@@ -24,13 +24,32 @@ describe("store/login", () => {
       expect(state).toEqual(initialState);
     });
 
-    test("should handle forget password action", () => {
+    test("should handle forgotPassword action when no email is passed", () => {
+      const state = loginReducer(undefined, forgotPassword(null));
+      expect(state).toEqual({
+        success: false,
+        message: "We have e-mailed your password reset link!",
+      });
+    });
+
+    test("should handle forgotPassword SUCCESS action ", () => {
       const state = loginReducer(
         undefined,
         forgotPassword("imran@optimizeapp.com")
       );
       expect(state).toEqual({
         success: true,
+        message: "We have e-mailed your password reset link!",
+      });
+    });
+
+    test("should handle forgotPassword FAILURE action", () => {
+      const state = loginReducer(
+        undefined,
+        forgotPassword("imran1231@optimizeapp.com")
+      );
+      expect(state).toEqual({
+        success: false,
         message: "We have e-mailed your password reset link!",
       });
     });
