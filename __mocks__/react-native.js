@@ -15,7 +15,46 @@ jest.mock("react-native-intercom", () => "Intercom");
 jest.mock("react-native-flash-message", () => "showMessage");
 jest.mock("expo-secure-store", () => "SecureStore");
 jest.mock("react-native-notifications", () => "Notification");
-jest.mock("SVGs/Objectives/index.js", () => {
-  const mockComponent = require("react-native/jest/mockComponent");
-  return mockComponent("assets/SVGs/Objectives/index.js");
+jest.mock("react-native", () => {
+  const View = require("react-native").View;
+  return {
+    Value: jest.fn(),
+    event: jest.fn(),
+    add: jest.fn(),
+    eq: jest.fn(),
+    set: jest.fn(),
+    cond: jest.fn(),
+    interpolate: jest.fn(),
+    View: View,
+    Extrapolate: { CLAMP: jest.fn() },
+    Transition: {
+      Together: "Together",
+      Out: "Out",
+      In: "In",
+    },
+  };
 });
+// jest.mock("react-native-reanimated", () => {
+//   const View = require("react-native").View;
+
+//   return {
+//     Value: jest.fn(),
+//     event: jest.fn(),
+//     add: jest.fn(),
+//     eq: jest.fn(),
+//     set: jest.fn(),
+//     cond: jest.fn(),
+//     interpolate: jest.fn(),
+//     View: View,
+//     Extrapolate: { CLAMP: jest.fn() },
+//     Transition: {
+//       Together: "Together",
+//       Out: "Out",
+//       In: "In",
+//     },
+//   };
+// });
+// jest.mock("SVGs/Objectives/index.js", () => {
+//   const mockComponent = require("react-native/jest/mockComponent");
+//   return mockComponent("assets/SVGs/Objectives/index.js");
+// });

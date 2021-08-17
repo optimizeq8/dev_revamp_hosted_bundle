@@ -21,7 +21,7 @@
 // // Or async function
 module.exports = async () => {
   return {
-    moduleDirectories: ["node_modules", "assets"],
+    // moduleDirectories: ["node_modules", "assets"],
     // testEnvironment: "node",
     // type: "module",
     // target: "esnext",
@@ -30,7 +30,9 @@ module.exports = async () => {
     // transformIgnorePatterns: [`/node_modules/(?!${esModules})`],
     // preset: "ts-jest",
     transform: {
-      "^.+\\.svg$": "jest-svg-transformer",
+      // "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js",
+      "^.+\\.svg$": "<rootDir>/__mocks__/svgMock.js",
+      // "^.+\\.svg$": "jest-svg-transformer",
       //   "^.+\\.(ts|tsx)?$": "ts-jest",
       //   "^.+\\.(js|jsx)$": "babel-jest",
     },

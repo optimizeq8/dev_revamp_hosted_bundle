@@ -1,3 +1,7 @@
-// __mocks__/svgMock.js
-module.exports = "SvgMock";
-module.exports.ReactComponent = "SvgMock";
+const path = require("path");
+
+module.exports = {
+  process(src, filename) {
+    return `module.exports = ${JSON.stringify(path.basename(filename))};`;
+  },
+};
