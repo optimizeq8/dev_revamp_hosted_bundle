@@ -15,25 +15,11 @@ jest.mock("react-native-intercom", () => "Intercom");
 jest.mock("react-native-flash-message", () => "showMessage");
 jest.mock("expo-secure-store", () => "SecureStore");
 jest.mock("react-native-notifications", () => "Notification");
-jest.mock("react-native", () => {
-  const View = require("react-native").View;
-  return {
-    Value: jest.fn(),
-    event: jest.fn(),
-    add: jest.fn(),
-    eq: jest.fn(),
-    set: jest.fn(),
-    cond: jest.fn(),
-    interpolate: jest.fn(),
-    View: View,
-    Extrapolate: { CLAMP: jest.fn() },
-    Transition: {
-      Together: "Together",
-      Out: "Out",
-      In: "In",
-    },
-  };
-});
+jest.mock("react-navigation", () => "NavigationActions");
+jest.mock("react-native-device-info", () => "getUniqueId");
+jest.mock("expo-permissions", () => "Permissions");
+jest.mock("expo-secure-store", () => "SecureStore");
+jest.mock("react-native-biometrics", () => "ReactNativeBiometrics");
 // jest.mock("react-native-reanimated", () => {
 //   const View = require("react-native").View;
 

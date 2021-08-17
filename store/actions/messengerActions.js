@@ -9,7 +9,7 @@ import { showMessage } from "react-native-flash-message";
 // import { send_push_notification } from "./loginActions";
 import { update_app_status_chat_notification } from "./genericActions";
 
-NodeBackendURL = () =>
+const NodeBackendURL = () =>
   axios.create({
     baseURL: "https://www.optimizeapp.io/",
   });

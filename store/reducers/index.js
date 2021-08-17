@@ -16,21 +16,21 @@ import audience from "./audienceReducer";
 import instagramAudience from "./instagramAudienceReducer";
 
 const appReducer = combineReducers({
-  auth: authReducer,
-  campaignC: campaignReducer,
-  transA: transactionReducer,
+  // auth: authReducer,
+  // campaignC: campaignReducer,
+  // transA: transactionReducer,
   login: loginReducer,
-  register: registerReducer,
-  dashboard: dashboardReducer,
-  account: accountManagementReducer,
-  generic: genericReducer,
-  messenger: messengerReducer,
-  language: languageReducer,
-  googleAds: googleAdsReducer,
-  website: websiteReducer,
-  instagramAds: instagramAds,
-  audience: audience,
-  instagramAudience: instagramAudience,
+  // register: registerReducer,
+  // dashboard: dashboardReducer,
+  // account: accountManagementReducer,
+  // generic: genericReducer,
+  // messenger: messengerReducer,
+  // language: languageReducer,
+  // googleAds: googleAdsReducer,
+  // website: websiteReducer,
+  // instagramAds: instagramAds,
+  // audience: audience,
+  // instagramAudience: instagramAudience,
 });
 
 const rootReducer = (state, action) => {

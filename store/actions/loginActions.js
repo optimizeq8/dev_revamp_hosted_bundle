@@ -351,6 +351,7 @@ export const forgotPassword = (email, navigation) => {
         //   type: "success",
         //   position: "top",
         // });
+        console.log("response", response);
         dispatch({
           type: actionTypes.CHANGE_PASSWORD_LOADING,
           payload: false,
