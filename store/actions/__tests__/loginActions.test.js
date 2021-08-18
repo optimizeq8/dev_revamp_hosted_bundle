@@ -1,10 +1,14 @@
 // import axios from "axios";
 // import { login } from "../index";
+import Axios from "axios";
+import configureMockStore from "redux-mock-store";
+import thunk from "redux-thunk";
 import loginReducer from "../../reducers/loginReducer";
 import * as actionTypes from "../actionTypes";
 import { forgotPassword } from "../loginActions";
 // var querystring = require("querystring");
 // const BASE_URL = "https://api.devoa.optimizeapp.com/api/";
+beforeAll(() => (Axios.defaults.adapter = require("axios/lib/adapters/http")));
 describe("store/login", () => {
   const initialState = {
     exponentPushToken: null,
@@ -18,24 +22,34 @@ describe("store/login", () => {
     checkingPassword: false,
     forgotPasswordLoading: false,
   };
+  const middlewares = [thunk];
+  const mockStore = configureMockStore(middlewares);
+
   describe(`reducer`, () => {
     test("should return initial state", () => {
       const state = loginReducer(undefined, actionTypes.FORGOT_PASSWORD);
       expect(state).toEqual(initialState);
     });
-
     test("should handle forgotPassword action when no email is passed", () => {
-      const state = loginReducer(
-        {
-          success: false,
-          message: "We have e-mailed your password reset link!",
-        },
-        forgotPassword(null)
+      const store = mockStore(loginReducer(undefined, {}));
+      const dispatchedStore = store.dispatch(
+        forgotPassword("email@optimizeapp.com")
       );
-      console.log("state", state);
-      expect(state).toEqual({
-        success: false,
-        message: "We have e-mailed your password reset link!",
+
+      return dispatchedStore.then(() => {
+        console.log("state", store.getState());
+
+        expect(store.getActions()).toEqual([
+          { payload: true, type: "CHANGE_PASSWORD_LOADING" },
+          { payload: false, type: "CHANGE_PASSWORD_LOADING" },
+          {
+            type: "FORGOT_PASSWORD",
+            payload: {
+              success: false,
+              message: "Request failed with status code 422",
+            },
+          },
+        ]);
       });
     });
 

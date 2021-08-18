@@ -331,7 +331,7 @@ export const forgotPassword = (email, navigation) => {
       type: actionTypes.CHANGE_PASSWORD_LOADING,
       payload: true,
     });
-    axios({
+    return axios({
       url: `https://api.devoa.optimizeapp.com/api/password/email`,
       method: "POST",
       data: { email: email },

@@ -115,6 +115,7 @@
     "react-navigation-stack": "^1.9.4",
     "react-redux": "^7.1.1",
     "redux": "^4.0.4",
+    "redux-mock-store": "^1.5.4",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "rn-sliding-up-panel": "^2.3.3",
@@ -150,6 +151,6 @@
     ]
   },
   "jest": {
-    "preset": "jest-expo"
+"preset": "react-native"
   }
 }
