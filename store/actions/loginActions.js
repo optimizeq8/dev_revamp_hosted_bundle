@@ -351,7 +351,7 @@ export const forgotPassword = (email, navigation) => {
         //   type: "success",
         //   position: "top",
         // });
-        console.log("response", response);
+        console.log("response", JSON.stringify(response.data, null, 2));
         dispatch({
           type: actionTypes.CHANGE_PASSWORD_LOADING,
           payload: false,
@@ -372,7 +372,10 @@ export const forgotPassword = (email, navigation) => {
         // }
       })
       .catch((err) => {
-        // console.log("forgotPassword error", err);
+        console.log(
+          "forgotPassword error",
+          JSON.stringify(err.response.data, null, 2)
+        );
         // showMessage({
         //   message: err.message || err.response,
         //   type: "warning",

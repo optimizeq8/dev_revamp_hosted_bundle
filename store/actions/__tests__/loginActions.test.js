@@ -38,37 +38,26 @@ describe("LoginAction", () => {
       const state = loginReducer(undefined, actionTypes.FORGOT_PASSWORD);
       expect(state).toEqual(initialState);
     });
-    test("should handle forgotPassword action when no email is passed", () => {
-      /* ----Saadiya's code-----
-      const successAction = {
+    test("should handle forgotPassword FAILURE action", () => {
+      const failureAction = {
         type: actionTypes.FORGOT_PASSWORD,
         payload: {
-          success: true,
-          message: "We have e-mailed your password reset link!",
-          temp_exist: undefined,
+          success: false,
+          message: "Request failed with status code 422",
         },
       };
-      const state = loginReducer(undefined, successAction);
-      const expectedresponse = {
-        ...state,
-        forgotPasswordSuccess: true,
-        forgotPasswordMessage: "We have e-mailed your password reset link!",
-        temp_exist: undefined,
-      };
-      */
-      const store = mockStore(loginReducer(undefined, {}));
+
+      const store = mockStore(loginReducer(undefined, failureAction));
       const dispatchedStore = store.dispatch(
         forgotPassword("email@optimizeapp.com")
       );
 
       return dispatchedStore.then(() => {
-        console.log("state", store.getState());
-
         expect(store.getActions()).toEqual([
-          { payload: true, type: "CHANGE_PASSWORD_LOADING" },
-          { payload: false, type: "CHANGE_PASSWORD_LOADING" },
+          { payload: true, type: actionTypes.CHANGE_PASSWORD_LOADING },
+          { payload: false, type: actionTypes.CHANGE_PASSWORD_LOADING },
           {
-            type: "FORGOT_PASSWORD",
+            type: actionTypes.FORGOT_PASSWORD,
             payload: {
               success: false,
               message: "Request failed with status code 422",
@@ -78,27 +67,59 @@ describe("LoginAction", () => {
       });
     });
 
-    // test("should handle forgotPassword SUCCESS action ", () => {
-    //   const state = loginReducer(
-    //     undefined,
-    //     forgotPassword("imran@optimizeapp.com")
-    //   );
-    //   expect(state).toEqual({
-    //     success: true,
-    //     message: "We have e-mailed your password reset link!",
-    //   });
-    // });
+    test("should handle forgotPassword SUCCESS action ", () => {
+      const successAction = {
+        type: actionTypes.FORGOT_PASSWORD,
+        payload: {
+          success: true,
+          message: "We have e-mailed your password reset link!",
+        },
+      };
+      const store = mockStore(loginReducer(undefined, successAction));
+      const dispatchedStore = store.dispatch(
+        forgotPassword("imran@optimizeapp.com")
+      );
 
-    // test("should handle forgotPassword FAILURE action", () => {
-    //   const state = loginReducer(
-    //     undefined,
-    //     forgotPassword("imran1231@optimizeapp.com")
-    //   );
-    //   expect(state).toEqual({
-    //     success: false,
-    //     message: "We have e-mailed your password reset link!",
-    //   });
-    // });
+      return dispatchedStore.then(() => {
+        expect(store.getActions()).toEqual([
+          { payload: true, type: actionTypes.CHANGE_PASSWORD_LOADING },
+          { payload: false, type: actionTypes.CHANGE_PASSWORD_LOADING },
+          {
+            type: actionTypes.FORGOT_PASSWORD,
+            payload: {
+              success: true,
+              message: "We have e-mailed your password reset link!",
+            },
+          },
+        ]);
+      });
+    });
+
+    test("should handle forgotPassword when no email is passed action", () => {
+      const failureAction = {
+        type: actionTypes.FORGOT_PASSWORD,
+        payload: {
+          success: false,
+          message: "Request failed with status code 422",
+        },
+      };
+      const store = mockStore(loginReducer(undefined, failureAction));
+      const dispatchedStore = store.dispatch(forgotPassword(null));
+
+      return dispatchedStore.then(() => {
+        expect(store.getActions()).toEqual([
+          { payload: true, type: actionTypes.CHANGE_PASSWORD_LOADING },
+          { payload: false, type: actionTypes.CHANGE_PASSWORD_LOADING },
+          {
+            type: actionTypes.FORGOT_PASSWORD,
+            payload: {
+              success: false,
+              message: "Request failed with status code 422",
+            },
+          },
+        ]);
+      });
+    });
   });
 });
 
