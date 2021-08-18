@@ -3,13 +3,21 @@
 import Axios from "axios";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
+// allows us to easily return reponses and/or success/fail for a thunk that calls a service
+const mockServiceCreator =
+  (body, succeeds = true) =>
+  () =>
+    new Promise((resolve, reject) => {
+      setTimeout(() => (succeeds ? resolve(body) : reject(body)), 10);
+    });
+
 import loginReducer from "../../reducers/loginReducer";
 import * as actionTypes from "../actionTypes";
 import { forgotPassword } from "../loginActions";
 // var querystring = require("querystring");
 // const BASE_URL = "https://api.devoa.optimizeapp.com/api/";
 beforeAll(() => (Axios.defaults.adapter = require("axios/lib/adapters/http")));
-describe("store/login", () => {
+describe("LoginAction", () => {
   const initialState = {
     exponentPushToken: null,
     admin: false,
@@ -31,6 +39,23 @@ describe("store/login", () => {
       expect(state).toEqual(initialState);
     });
     test("should handle forgotPassword action when no email is passed", () => {
+      /* ----Saadiya's code-----
+      const successAction = {
+        type: actionTypes.FORGOT_PASSWORD,
+        payload: {
+          success: true,
+          message: "We have e-mailed your password reset link!",
+          temp_exist: undefined,
+        },
+      };
+      const state = loginReducer(undefined, successAction);
+      const expectedresponse = {
+        ...state,
+        forgotPasswordSuccess: true,
+        forgotPasswordMessage: "We have e-mailed your password reset link!",
+        temp_exist: undefined,
+      };
+      */
       const store = mockStore(loginReducer(undefined, {}));
       const dispatchedStore = store.dispatch(
         forgotPassword("email@optimizeapp.com")
@@ -77,6 +102,22 @@ describe("store/login", () => {
   });
 });
 
+// describe("when a user logs in", () => {
+//   let store;
+//   beforeEach(() => {
+//     store = mockStore({ phoneNumbers: [] });
+//   });
+//   it("fires a forgot passwordd request action", () =>
+//     store
+//       .dispatch(
+//         forgotPassword({ email: "imran@optimizeapp.com" }, mockServiceCreator())
+//       )
+//       .then(() =>
+//         expect(store.getActions()).toContainEqual({
+//           type: actionTypes.FORGOT_PASSWORD,
+//         })
+//       ));
+// });
 // describe("forgot password", () => {
 //   it("forgot password", () => {
 //     const apiResult = axios({

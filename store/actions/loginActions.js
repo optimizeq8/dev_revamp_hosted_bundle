@@ -359,7 +359,7 @@ export const forgotPassword = (email, navigation) => {
         return dispatch({
           type: actionTypes.FORGOT_PASSWORD,
           payload: {
-            succcess: true,
+            success: true,
             message: response.data.status,
           },
         });
