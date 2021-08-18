@@ -372,10 +372,20 @@ export const forgotPassword = (email, navigation) => {
         // }
       })
       .catch((err) => {
-        console.log(
-          "forgotPassword error",
-          JSON.stringify(err.response.data, null, 2)
-        );
+        // console.log(
+        //   "forgotPassword error",
+        //   JSON.stringify(err.response.data, null, 2)
+        // );
+        let errorMessage = null;
+
+        errorMessage = err.response.data
+          ? err.response.data.email
+            ? err.response.data.email
+            : err.response.data.message
+            ? err.response.data.message
+            : err.message || err.response
+          : err.message || err.response;
+
         // showMessage({
         //   message: err.message || err.response,
         //   type: "warning",
@@ -389,7 +399,7 @@ export const forgotPassword = (email, navigation) => {
           type: actionTypes.FORGOT_PASSWORD,
           payload: {
             success: false,
-            message: err.message || err.response,
+            message: errorMessage,
           },
         });
       });

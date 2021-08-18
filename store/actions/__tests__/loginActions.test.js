@@ -43,7 +43,7 @@ describe("LoginAction", () => {
         type: actionTypes.FORGOT_PASSWORD,
         payload: {
           success: false,
-          message: "Request failed with status code 422",
+          message: "We can't find a user with that e-mail address.",
         },
       };
 
@@ -60,7 +60,7 @@ describe("LoginAction", () => {
             type: actionTypes.FORGOT_PASSWORD,
             payload: {
               success: false,
-              message: "Request failed with status code 422",
+              message: "We can't find a user with that e-mail address.",
             },
           },
         ]);
@@ -100,7 +100,7 @@ describe("LoginAction", () => {
         type: actionTypes.FORGOT_PASSWORD,
         payload: {
           success: false,
-          message: "Request failed with status code 422",
+          message: "The given data was invalid.",
         },
       };
       const store = mockStore(loginReducer(undefined, failureAction));
@@ -114,7 +114,7 @@ describe("LoginAction", () => {
             type: actionTypes.FORGOT_PASSWORD,
             payload: {
               success: false,
-              message: "Request failed with status code 422",
+              message: "The given data was invalid.",
             },
           },
         ]);
