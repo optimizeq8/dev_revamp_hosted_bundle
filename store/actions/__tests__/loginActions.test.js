@@ -3,13 +3,6 @@
 import Axios from "axios";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
-// allows us to easily return reponses and/or success/fail for a thunk that calls a service
-const mockServiceCreator =
-  (body, succeeds = true) =>
-  () =>
-    new Promise((resolve, reject) => {
-      setTimeout(() => (succeeds ? resolve(body) : reject(body)), 10);
-    });
 
 import loginReducer from "../../reducers/loginReducer";
 import * as actionTypes from "../actionTypes";
@@ -33,7 +26,7 @@ describe("LoginAction", () => {
   const middlewares = [thunk];
   const mockStore = configureMockStore(middlewares);
 
-  describe(`reducer`, () => {
+  describe(`forgotPassword Action / Reducer`, () => {
     test("should return initial state", () => {
       const state = loginReducer(undefined, actionTypes.FORGOT_PASSWORD);
       expect(state).toEqual(initialState);

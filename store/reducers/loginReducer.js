@@ -50,11 +50,6 @@ const reducer = (state = initialState, action) => {
         checkingForToken: false,
       };
     case actionTypes.FORGOT_PASSWORD:
-      console.log("loginreducer", {
-        forgotPasswordSuccess: action.payload.success,
-        forgotPasswordMessage: action.payload.message,
-        temp_exist: action.payload.temp_exist,
-      });
       return {
         ...state,
         forgotPasswordSuccess: action.payload.success,

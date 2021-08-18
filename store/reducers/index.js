@@ -16,7 +16,7 @@ import audience from "./audienceReducer";
 import instagramAudience from "./instagramAudienceReducer";
 
 const appReducer = combineReducers({
-  // auth: authReducer,
+  auth: authReducer,
   // campaignC: campaignReducer,
   // transA: transactionReducer,
   login: loginReducer,
