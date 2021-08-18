@@ -8,6 +8,11 @@
 //     getInitialURL: jest.fn(),
 //   };
 // });
+// jest.mock("Animated", () => {
+//   return {
+//     Value: jest.fn(),
+//   };
+// });
 // module.exports = rn;
 
 jest.mock("@segment/analytics-react-native", () => "analytics");

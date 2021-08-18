@@ -1,11 +1,28 @@
 // import axios from "axios";
 // import { login } from "../index";
+
+import configureMockStore from "redux-mock-store";
+import thunk from "redux-thunk";
+
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
+
+// allows us to easily return reponses and/or success/fail for a thunk that calls a service
+const mockServiceCreator =
+  (body, succeeds = true) =>
+  () =>
+    new Promise((resolve, reject) => {
+      setTimeout(() => (succeeds ? resolve(body) : reject(body)), 10);
+    });
+
+import { expect } from "@jest/globals";
+import nock from "nock";
 import loginReducer from "../../reducers/loginReducer";
 import * as actionTypes from "../actionTypes";
 import { forgotPassword } from "../loginActions";
 // var querystring = require("querystring");
 // const BASE_URL = "https://api.devoa.optimizeapp.com/api/";
-describe("store/login", () => {
+describe("LoginAction", () => {
   const initialState = {
     exponentPushToken: null,
     admin: false,
@@ -18,25 +35,38 @@ describe("store/login", () => {
     checkingPassword: false,
     forgotPasswordLoading: false,
   };
-  describe(`reducer`, () => {
+  describe(`Actions`, () => {
     test("should return initial state", () => {
       const state = loginReducer(undefined, actionTypes.FORGOT_PASSWORD);
       expect(state).toEqual(initialState);
     });
 
-    test("should handle forgotPassword action when no email is passed", () => {
-      const state = loginReducer(
-        {
-          success: false,
+    test("should handle forgotPassword SUCCESS action", async () => {
+      const successAction = {
+        type: actionTypes.FORGOT_PASSWORD,
+        payload: {
+          success: true,
           message: "We have e-mailed your password reset link!",
+          temp_exist: undefined,
         },
-        forgotPassword(null)
-      );
-      console.log("state", state);
-      expect(state).toEqual({
-        success: false,
-        message: "We have e-mailed your password reset link!",
-      });
+      };
+      const state = loginReducer(undefined, successAction);
+      const expectedresponse = {
+        ...state,
+        forgotPasswordSuccess: true,
+        forgotPasswordMessage: "We have e-mailed your password reset link!",
+        temp_exist: undefined,
+      };
+
+      // nock("https://api.devoa.optimizeapp.com/api")
+      //   .post("/password/email", { email: "imran@optimizeapp.com" })
+      //   .query(true)
+      //   .reply(200, expectedresponse);
+      // const result = await forgotPassword("imran@optimizeapp.com");
+      // console.log("result", result());
+      // expect(result).toEqual(expectedresponse);
+
+      expect(expectedresponse).toEqual(state);
     });
 
     // test("should handle forgotPassword SUCCESS action ", () => {
@@ -63,6 +93,22 @@ describe("store/login", () => {
   });
 });
 
+describe("when a user logs in", () => {
+  let store;
+  beforeEach(() => {
+    store = mockStore({ phoneNumbers: [] });
+  });
+  it("fires a forgot passwordd request action", () =>
+    store
+      .dispatch(
+        forgotPassword({ email: "imran@optimizeapp.com" }, mockServiceCreator())
+      )
+      .then(() =>
+        expect(store.getActions()).toContainEqual({
+          type: actionTypes.FORGOT_PASSWORD,
+        })
+      ));
+});
 // describe("forgot password", () => {
 //   it("forgot password", () => {
 //     const apiResult = axios({
