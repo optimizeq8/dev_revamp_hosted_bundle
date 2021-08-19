@@ -528,26 +528,26 @@ export const inviteTeamMember = (info, resend) => {
  *
  * @returns for success navigates back to menu screen
  */
-export const updateBusinessInfo = (userid, info, navigation, translate) => {
+export const updateBusinessInfo = (businessid, info, navigation, translate) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.UPDATE_BUSINESS_INFO_LOADING,
       payload: true,
     });
-    return createBaseUrl()
-      .patch(`business/${userid}`, {
-        // businessAccount OLD API
-        ...info,
-      })
-      .then((resp) => {
-        return resp.data;
-      })
-      .then((data) => {
-        showMessage({
-          message: data.message,
-          type: data.success ? "success" : "danger",
-          position: "top",
-        });
+    return axios({
+      url: `https://api.devoa.optimizeapp.com/api/business/#${businessid}`,
+      method: "POST",
+      data: { ...info },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        // showMessage({
+        //   message: data.message,
+        //   type: data.success ? "success" : "danger",
+        //   position: "top",
+        // });
         // analytics.track(`Form Submitted`, {
         //   form_type: "Update Business Info Form",
         //   form_context: {
@@ -560,13 +560,8 @@ export const updateBusinessInfo = (userid, info, navigation, translate) => {
         //   },
         //   business_id: getState().account.mainBusiness.businessid,
         // });
-        if (data.success) {
-          dispatch(
-            checkBusinessVerified(
-              getState().account.mainBusiness.businessid,
-              translate
-            )
-          );
+        if (response.data.data) {
+          dispatch(checkBusinessVerified(businessid, translate));
           //Dashboard
           navigation.navigate("Dashboard", {
             source: "open_business_info",
@@ -578,14 +573,14 @@ export const updateBusinessInfo = (userid, info, navigation, translate) => {
               ...info,
             },
           });
-        }
-        return dispatch({
-          type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
-          payload: {
-            success: data.success,
-            errorMessage: data.message,
-          },
-        });
+        } else
+          return dispatch({
+            type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
+            payload: {
+              success: false,
+              errorMessage: response.data.message,
+            },
+          });
       })
       .catch((error) => {
         // console.log(

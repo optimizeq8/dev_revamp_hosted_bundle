@@ -97,27 +97,27 @@ class CreateBusinessAccount extends Component {
       countries: [
         {
           label: translate("Kuwait"),
-          value: "Kuwait",
+          value: 2,
         },
         {
           label: translate("UAE"),
-          value: "UAE",
+          value: 3,
         },
         {
           label: translate("KSA"),
-          value: "KSA",
+          value: 4,
         },
         {
           label: translate("Bahrain"),
-          value: "Bahrain",
-        },
-        {
-          label: translate("Qatar"),
-          value: "Qatar",
+          value: 5,
         },
         {
           label: translate("Oman"),
-          value: "Oman",
+          value: 6,
+        },
+        {
+          label: translate("Qatar"),
+          value: 7,
         },
       ],
       editBusinessInfo: false,
@@ -380,6 +380,7 @@ class CreateBusinessAccount extends Component {
             );
             if (changedInfo) {
               this.props.updateBusinessInfo(
+                this.props.mainBusiness.business.id,
                 {
                   name: business.businessname,
                   type: business.businesstype,
@@ -1128,9 +1129,9 @@ const mapDispatchToProps = (dispatch) => ({
         submision
       )
     ),
-  updateBusinessInfo: (userid, info, navigation, translate) =>
+  updateBusinessInfo: (businessid, info, navigation, translate) =>
     dispatch(
-      actionCreators.updateBusinessInfo(userid, info, navigation, translate)
+      actionCreators.updateBusinessInfo(businessid, info, navigation, translate)
     ),
 });
 export default connect(
