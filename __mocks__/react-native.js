@@ -16,7 +16,13 @@
 // module.exports = rn;
 
 jest.mock("@segment/analytics-react-native", () => {
-  return { track: jest.fn(), identify: jest.fn(), flush: jest.fn() };
+  return {
+    track: jest.fn(),
+    identify: jest.fn(),
+    flush: jest.fn(),
+    reset: jest.fn(),
+    alias: jest.fn(),
+  };
 });
 jest.mock("react-native-intercom", () => "Intercom");
 jest.mock("react-native-flash-message", () => {
@@ -31,6 +37,13 @@ jest.mock("expo-secure-store", () => {
   return {
     setItemAsync: jest.fn().mockImplementation(() => Promise.resolve()),
     getItemAsync: jest.fn().mockImplementation(() => Promise.resolve()),
+  };
+});
+
+jest.mock("@react-native-community/async-storage", () => {
+  return {
+    setItem: jest.fn().mockImplementation(() => Promise.resolve()),
+    getItem: jest.fn().mockImplementation(() => Promise.resolve()),
   };
 });
 

@@ -194,30 +194,22 @@ export const login = (userData, navigation) => {
       type: actionTypes.SET_LOADING_USER,
       payload: true,
     });
-    return axios
-      .post(
-        "https://api.devoa.optimizeapp.com/api/login",
-        querystring.stringify(userInfo),
-        {
-          timeout: 5000,
-          timeoutErrorMessage: "Something went wrong, please try again.",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      )
+    return createBaseUrl()
+      .post("login", querystring.stringify(userInfo), {
+        timeout: 5000,
+        timeoutErrorMessage: "Something went wrong, please try again.",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      })
       .then((res) => {
-        console.log("res.data", res.data);
         return res.data;
       })
       .then(async (user) => {
-        console.log("user", user);
         let decodedUser = null;
         if (user.hasOwnProperty("access_token")) {
-          decodedUser = jwt_decode(user.access_token);
-
-          let promise = await setAuthToken(user.access_token);
-          return { user: decodedUser, message: user.message };
+          // decodedUser = jwt_decode(user.access_token);
+          await setAuthToken(user.access_token);
         } else {
           showMessage({
             message: user.message,
@@ -233,19 +225,14 @@ export const login = (userData, navigation) => {
         }
         // }
       })
-      .then((decodedUser) => {
-        console.log("decodedUser", decodedUser);
-        if (decodedUser && decodedUser.user) {
-          // analytics.alias(decodedUser.user.userid);
-          // analytics.flush();
-          dispatch(setCurrentUser(decodedUser));
-        }
+      .then(() => {
+        dispatch(getUserProfile());
       })
-      .then(async () => {
+      .then(() => {
         if (getState().auth.userInfo) {
-          // analytics.identify(getState().auth.userInfo.userid, {
-          //   logged_out: false,
-          // });
+          analytics.identify(getState().auth.userInfo.id, {
+            logged_out: false,
+          });
           if (getState().auth.userInfo.tmp_pwd === "1") {
             navigation.navigate("ChangePassword", {
               temp_pwd: true,
@@ -260,13 +247,13 @@ export const login = (userData, navigation) => {
                 invitedEmail: navigation.getParam("email", ""),
               })
             );
-            // analytics.track(`Signed In`, {
-            //   first_name: getState().auth.userInfo.firstname,
-            //   last_name: getState().auth.userInfo.lastname,
-            //   email: getState().auth.userInfo.email,
-            //   mobile: getState().auth.userInfo.mobile,
-            //   verified_account: getState().auth.userInfo.verified_account,
-            // });
+            analytics.track(`Signed In`, {
+              first_name: getState().auth.userInfo.firs_tname,
+              last_name: getState().auth.userInfo.last_name,
+              email: getState().auth.userInfo.email,
+              mobile: getState().auth.userInfo.mobile,
+              verified_account: getState().auth.userInfo.verified,
+            });
             navigation.navigate("Dashboard", {
               v: navigation.getParam("v", ""),
               business: navigation.getParam("business", ""),
@@ -286,14 +273,14 @@ export const login = (userData, navigation) => {
           payload: false,
         });
         console.log("login error", err.message || err.response);
-        // showMessage({
-        //   type: "danger",
-        //   message:
-        //     err.message ||
-        //     err.response ||
-        //     "Something went wrong, please try again.",
-        //   position: "top",
-        // });
+        showMessage({
+          type: "danger",
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          position: "top",
+        });
       });
   };
 };
@@ -684,6 +671,36 @@ export const checkPassword = (
         errorMessageHandler(error);
         return dispatch({
           type: actionTypes.SET_CHECKING_FOR_PASSWORD_LOADING,
+          payload: false,
+        });
+      });
+  };
+};
+
+export const getUserProfile = () => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.USER_PROFILE_LOADING,
+      payload: true,
+    });
+    return createBaseUrl()
+      .get(`users`)
+      .then((response) => response.data)
+      .then((data) => {
+        console.log("getUserProfile Data", data);
+        dispatch({
+          type: actionTypes.USER_PROFILE_LOADING,
+          payload: false,
+        });
+        analytics.alias(data.id);
+        analytics.flush();
+        dispatch(setCurrentUser(data));
+      })
+      .catch((error) => {
+        console.log("getUserProfileError", error);
+
+        dispatch({
+          type: actionTypes.USER_PROFILE_LOADING,
           payload: false,
         });
       });

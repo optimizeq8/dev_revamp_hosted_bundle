@@ -6,7 +6,7 @@ import thunk from "redux-thunk";
 // import NavigationService from "../../../NavigationService";
 
 import loginReducer from "../../reducers/loginReducer";
-import authReducer from "../../reducers/authReducer";
+import reducer from "../../reducers";
 
 import * as actionTypes from "../actionTypes";
 import { forgotPassword, login } from "../loginActions";
@@ -131,9 +131,7 @@ describe("LoginAction", () => {
       //      message: "We have e-mailed your password reset link!",
       //    },
       //  };
-      const store = mockStore(
-        authReducer(undefined, actionTypes.SET_CURRENT_USER)
-      );
+      const store = mockStore(reducer(undefined, actionTypes.SET_CURRENT_USER));
       const dispatchedStore = store.dispatch(
         login(
           { email: "imran@optimizeapp.com", password: "imranoa@2021" },
