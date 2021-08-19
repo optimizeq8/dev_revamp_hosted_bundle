@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import * as actionTypes from "../actions/actionTypes";
-// import analytics from "@segment/analytics-react-native";
-// import { Notifications as RNNotifications } from "react-native-notifications";
+import analytics from "@segment/analytics-react-native";
+import { Notifications as RNNotifications } from "react-native-notifications";
 
 const initialState = {
   userid: null,

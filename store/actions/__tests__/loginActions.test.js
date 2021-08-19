@@ -124,14 +124,18 @@ describe("LoginAction", () => {
 
   describe(`login Action / Reducer`, () => {
     test("should handle login SUCCESS action ", () => {
-      //  const successAction = {
-      //    type: actionTypes.FORGOT_PASSWORD,
-      //    payload: {
-      //      success: true,
-      //      message: "We have e-mailed your password reset link!",
-      //    },
-      //  };
-      const store = mockStore(reducer(undefined, actionTypes.SET_CURRENT_USER));
+      const successAction = {
+        type: actionTypes.SET_CURRENT_USER,
+        payload: {
+          id: 11,
+          first_name: "Imran",
+          last_name: "Sheikh",
+          mobile: "+96522112288",
+          email: "imran@optimizeapp.com",
+          verified: 1,
+        },
+      };
+      const store = mockStore(reducer(undefined, successAction));
       const dispatchedStore = store.dispatch(
         login(
           { email: "imran@optimizeapp.com", password: "imranoa@2021" },
@@ -140,21 +144,31 @@ describe("LoginAction", () => {
       );
 
       return dispatchedStore.then(() => {
-        console.log(
-          "store.getActions()",
-          JSON.stringify(store.getActions(), null, 2)
-        );
-        //  expect(store.getActions()).toEqual([
-        //    { payload: true, type: actionTypes.CHANGE_PASSWORD_LOADING },
-        //    { payload: false, type: actionTypes.CHANGE_PASSWORD_LOADING },
-        //    {
-        //      type: actionTypes.FORGOT_PASSWORD,
-        //      payload: {
-        //        success: true,
-        //        message: "We have e-mailed your password reset link!",
-        //      },
-        //    },
-        //  ]);
+        expect(store.getActions()).toEqual([
+          {
+            type: actionTypes.SET_LOADING_USER,
+            payload: true,
+          },
+          {
+            type: actionTypes.USER_PROFILE_LOADING,
+            payload: true,
+          },
+          {
+            type: actionTypes.USER_PROFILE_LOADING,
+            payload: false,
+          },
+          {
+            type: actionTypes.SET_CURRENT_USER,
+            payload: {
+              id: 11,
+              first_name: "Imran",
+              last_name: "Sheikh",
+              mobile: "+96522112288",
+              email: "imran@optimizeapp.com",
+              verified: 1,
+            },
+          },
+        ]);
       });
     });
   });

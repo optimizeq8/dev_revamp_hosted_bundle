@@ -206,11 +206,12 @@ export const login = (userData, navigation) => {
         return res.data;
       })
       .then(async (user) => {
-        let decodedUser = null;
+        // let decodedUser = null;
         if (user.hasOwnProperty("access_token")) {
           // decodedUser = jwt_decode(user.access_token);
           await setAuthToken(user.access_token);
         } else {
+          /*
           showMessage({
             message: user.message,
             type: "warning",
@@ -221,12 +222,12 @@ export const login = (userData, navigation) => {
             payload: false,
           });
           const obj = { user: decodedUser, message: user.message };
-          return obj;
+          return obj; */
         }
         // }
       })
-      .then(() => {
-        dispatch(getUserProfile());
+      .then(async () => {
+        await dispatch(getUserProfile());
       })
       .then(() => {
         if (getState().auth.userInfo) {
@@ -263,7 +264,7 @@ export const login = (userData, navigation) => {
             });
           }
 
-          dispatch(getBusinessAccounts());
+          // dispatch(getBusinessAccounts()); // Add back later
           // dispatch(send_push_notification());
         }
       })
@@ -694,7 +695,7 @@ export const getUserProfile = () => {
         });
         analytics.alias(data.id);
         analytics.flush();
-        dispatch(setCurrentUser(data));
+        return dispatch(setCurrentUser(data));
       })
       .catch((error) => {
         console.log("getUserProfileError", error);

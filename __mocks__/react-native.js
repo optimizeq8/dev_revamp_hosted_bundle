@@ -28,7 +28,18 @@ jest.mock("react-native-intercom", () => "Intercom");
 jest.mock("react-native-flash-message", () => {
   return { showMessage: jest.fn() };
 });
-jest.mock("react-native-notifications", () => "Notification");
+jest.mock("react-native-notification", () => {
+  return {
+    RNNotifications: {
+      registerRemoteNotifications: jest.fn(),
+      events: {
+        registerRemoteNotificationsRegistered: jest
+          .fn()
+          .mockImplementation(() => Promise.resolve()),
+      },
+    },
+  };
+});
 jest.mock("react-navigation", () => "NavigationActions");
 jest.mock("react-native-device-info", () => "getUniqueId");
 jest.mock("expo-permissions", () => "Permissions");
