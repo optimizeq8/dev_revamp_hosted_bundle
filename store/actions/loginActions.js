@@ -172,6 +172,7 @@ export const checkForExpiredToken = (navigation) => {
 };
 
 export const login = (userData, navigation) => {
+  console.log("userData", userData);
   let userInfo = {
     ...userData,
     is_mobile: 0,
@@ -193,7 +194,7 @@ export const login = (userData, navigation) => {
       type: actionTypes.SET_LOADING_USER,
       payload: true,
     });
-    axios()
+    return axios
       .post(
         "https://api.devoa.optimizeapp.com/api/login",
         querystring.stringify(userInfo),
@@ -206,9 +207,11 @@ export const login = (userData, navigation) => {
         }
       )
       .then((res) => {
+        console.log("res.data", res.data);
         return res.data;
       })
       .then(async (user) => {
+        console.log("user", user);
         let decodedUser = null;
         if (user.hasOwnProperty("access_token")) {
           decodedUser = jwt_decode(user.access_token);
@@ -231,17 +234,18 @@ export const login = (userData, navigation) => {
         // }
       })
       .then((decodedUser) => {
+        console.log("decodedUser", decodedUser);
         if (decodedUser && decodedUser.user) {
-          analytics.alias(decodedUser.user.userid);
-          analytics.flush();
+          // analytics.alias(decodedUser.user.userid);
+          // analytics.flush();
           dispatch(setCurrentUser(decodedUser));
         }
       })
       .then(async () => {
         if (getState().auth.userInfo) {
-          analytics.identify(getState().auth.userInfo.userid, {
-            logged_out: false,
-          });
+          // analytics.identify(getState().auth.userInfo.userid, {
+          //   logged_out: false,
+          // });
           if (getState().auth.userInfo.tmp_pwd === "1") {
             navigation.navigate("ChangePassword", {
               temp_pwd: true,
@@ -256,13 +260,13 @@ export const login = (userData, navigation) => {
                 invitedEmail: navigation.getParam("email", ""),
               })
             );
-            analytics.track(`Signed In`, {
-              first_name: getState().auth.userInfo.firstname,
-              last_name: getState().auth.userInfo.lastname,
-              email: getState().auth.userInfo.email,
-              mobile: getState().auth.userInfo.mobile,
-              verified_account: getState().auth.userInfo.verified_account,
-            });
+            // analytics.track(`Signed In`, {
+            //   first_name: getState().auth.userInfo.firstname,
+            //   last_name: getState().auth.userInfo.lastname,
+            //   email: getState().auth.userInfo.email,
+            //   mobile: getState().auth.userInfo.mobile,
+            //   verified_account: getState().auth.userInfo.verified_account,
+            // });
             navigation.navigate("Dashboard", {
               v: navigation.getParam("v", ""),
               business: navigation.getParam("business", ""),
@@ -281,15 +285,15 @@ export const login = (userData, navigation) => {
           type: actionTypes.SET_LOADING_USER,
           payload: false,
         });
-        // console.log("login error", err.message || err.response);
-        showMessage({
-          type: "danger",
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          position: "top",
-        });
+        console.log("login error", err.message || err.response);
+        // showMessage({
+        //   type: "danger",
+        //   message:
+        //     err.message ||
+        //     err.response ||
+        //     "Something went wrong, please try again.",
+        //   position: "top",
+        // });
       });
   };
 };
@@ -339,17 +343,17 @@ export const forgotPassword = (email, navigation) => {
       },
     })
       .then((response) => {
-        // analytics.track(`Forgot Password Request`, {
-        //   source: "ForgotPassword",
-        //   source_action: "a_forget_password",
-        //   email,
-        //   action_status: response.data.success ? "success" : "failure",
-        // });
-        // showMessage({
-        //   message: response.data.status,
-        //   type: "success",
-        //   position: "top",
-        // });
+        analytics.track(`Forgot Password Request`, {
+          source: "ForgotPassword",
+          source_action: "a_forget_password",
+          email,
+          action_status: response.data.status ? "success" : "failure",
+        });
+        showMessage({
+          message: response.data.status,
+          type: "success",
+          position: "top",
+        });
         // console.log("response", JSON.stringify(response.data, null, 2));
         dispatch({
           type: actionTypes.CHANGE_PASSWORD_LOADING,
@@ -385,11 +389,11 @@ export const forgotPassword = (email, navigation) => {
             : err.message || err.response
           : err.message || err.response;
 
-        // showMessage({
-        //   message: errorMessage,
-        //   type: "warning",
-        //   position: "top",
-        // });
+        showMessage({
+          message: errorMessage,
+          type: "warning",
+          position: "top",
+        });
         dispatch({
           type: actionTypes.CHANGE_PASSWORD_LOADING,
           payload: false,
