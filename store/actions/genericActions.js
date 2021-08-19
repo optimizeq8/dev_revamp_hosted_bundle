@@ -9,7 +9,6 @@ import createBaseUrl from "./createBaseUrl";
 import NavigationService from "../../NavigationService";
 
 export const setAuthToken = (token) => {
-  console.log("token", token);
   if (token) {
     return SecureStore.setItemAsync("token", token)
       .then(
