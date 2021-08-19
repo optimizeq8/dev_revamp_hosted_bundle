@@ -3,30 +3,37 @@
 import Axios from "axios";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
+// import NavigationService from "../../../NavigationService";
 
 import loginReducer from "../../reducers/loginReducer";
+import reducer from "../../reducers";
+
 import * as actionTypes from "../actionTypes";
-import { forgotPassword } from "../loginActions";
+import { forgotPassword, login } from "../loginActions";
+// import * as SecureStore from "expo-secure-store";
+import NavigationService from "../../../NavigationService";
+
 // var querystring = require("querystring");
 // const BASE_URL = "https://api.devoa.optimizeapp.com/api/";
 beforeAll(() => (Axios.defaults.adapter = require("axios/lib/adapters/http")));
+
 describe("LoginAction", () => {
-  const initialState = {
-    exponentPushToken: null,
-    admin: false,
-    clearTokenLoading: false,
-    checkingForToken: false,
-    forgotPasswordSuccess: null,
-    forgotPasswordMessage: "",
-    temp_exist: 0,
-    passwordValid: false,
-    checkingPassword: false,
-    forgotPasswordLoading: false,
-  };
   const middlewares = [thunk];
   const mockStore = configureMockStore(middlewares);
 
   describe(`forgotPassword Action / Reducer`, () => {
+    const initialState = {
+      exponentPushToken: null,
+      admin: false,
+      clearTokenLoading: false,
+      checkingForToken: false,
+      forgotPasswordSuccess: null,
+      forgotPasswordMessage: "",
+      temp_exist: 0,
+      passwordValid: false,
+      checkingPassword: false,
+      forgotPasswordLoading: false,
+    };
     test("should return initial state", () => {
       const state = loginReducer(undefined, actionTypes.FORGOT_PASSWORD);
       expect(state).toEqual(initialState);
@@ -114,47 +121,41 @@ describe("LoginAction", () => {
       });
     });
   });
+
+  describe(`login Action / Reducer`, () => {
+    test("should handle login SUCCESS action ", () => {
+      //  const successAction = {
+      //    type: actionTypes.FORGOT_PASSWORD,
+      //    payload: {
+      //      success: true,
+      //      message: "We have e-mailed your password reset link!",
+      //    },
+      //  };
+      const store = mockStore(reducer(undefined, actionTypes.SET_CURRENT_USER));
+      const dispatchedStore = store.dispatch(
+        login(
+          { email: "imran@optimizeapp.com", password: "imranoa@2021" },
+          NavigationService
+        )
+      );
+
+      return dispatchedStore.then(() => {
+        console.log(
+          "store.getActions()",
+          JSON.stringify(store.getActions(), null, 2)
+        );
+        //  expect(store.getActions()).toEqual([
+        //    { payload: true, type: actionTypes.CHANGE_PASSWORD_LOADING },
+        //    { payload: false, type: actionTypes.CHANGE_PASSWORD_LOADING },
+        //    {
+        //      type: actionTypes.FORGOT_PASSWORD,
+        //      payload: {
+        //        success: true,
+        //        message: "We have e-mailed your password reset link!",
+        //      },
+        //    },
+        //  ]);
+      });
+    });
+  });
 });
-
-// describe("when a user logs in", () => {
-//   let store;
-//   beforeEach(() => {
-//     store = mockStore({ phoneNumbers: [] });
-//   });
-//   it("fires a forgot passwordd request action", () =>
-//     store
-//       .dispatch(
-//         forgotPassword({ email: "imran@optimizeapp.com" }, mockServiceCreator())
-//       )
-//       .then(() =>
-//         expect(store.getActions()).toContainEqual({
-//           type: actionTypes.FORGOT_PASSWORD,
-//         })
-//       ));
-// });
-// describe("forgot password", () => {
-//   it("forgot password", () => {
-//     const apiResult = axios({
-//       url: `${BASE_URL}password/email`,
-//       method: "POST",
-//       data: { email: "saadiya@optimizeapp.com" },
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     })
-//       .then((response) => {
-//         // console.log("forgot password response", response.data);
-
-//         expect(response.data).toMatchObject({
-//           status: "We have e-mailed your password reset link!",
-//         });
-//       })
-//       .catch((error) => {
-//         // console.log("forgot password error", error.response || error.message);
-//         expect(error.response.data).toMatchObject({
-//           email: "We can't find a user with that e-mail address.",
-//         });
-//       });
-//     return apiResult;
-//   });
-// });

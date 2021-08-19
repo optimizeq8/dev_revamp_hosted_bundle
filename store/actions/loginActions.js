@@ -172,6 +172,7 @@ export const checkForExpiredToken = (navigation) => {
 };
 
 export const login = (userData, navigation) => {
+  console.log("userData", userData);
   let userInfo = {
     ...userData,
     is_mobile: 0,
@@ -193,28 +194,22 @@ export const login = (userData, navigation) => {
       type: actionTypes.SET_LOADING_USER,
       payload: true,
     });
-    axios()
-      .post(
-        "https://api.devoa.optimizeapp.com/api/login",
-        querystring.stringify(userInfo),
-        {
-          timeout: 5000,
-          timeoutErrorMessage: "Something went wrong, please try again.",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      )
+    return createBaseUrl()
+      .post("login", querystring.stringify(userInfo), {
+        timeout: 5000,
+        timeoutErrorMessage: "Something went wrong, please try again.",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      })
       .then((res) => {
         return res.data;
       })
       .then(async (user) => {
         let decodedUser = null;
         if (user.hasOwnProperty("access_token")) {
-          decodedUser = jwt_decode(user.access_token);
-
-          let promise = await setAuthToken(user.access_token);
-          return { user: decodedUser, message: user.message };
+          // decodedUser = jwt_decode(user.access_token);
+          await setAuthToken(user.access_token);
         } else {
           showMessage({
             message: user.message,
@@ -230,16 +225,12 @@ export const login = (userData, navigation) => {
         }
         // }
       })
-      .then((decodedUser) => {
-        if (decodedUser && decodedUser.user) {
-          analytics.alias(decodedUser.user.userid);
-          analytics.flush();
-          dispatch(setCurrentUser(decodedUser));
-        }
+      .then(() => {
+        dispatch(getUserProfile());
       })
-      .then(async () => {
+      .then(() => {
         if (getState().auth.userInfo) {
-          analytics.identify(getState().auth.userInfo.userid, {
+          analytics.identify(getState().auth.userInfo.id, {
             logged_out: false,
           });
           if (getState().auth.userInfo.tmp_pwd === "1") {
@@ -257,11 +248,11 @@ export const login = (userData, navigation) => {
               })
             );
             analytics.track(`Signed In`, {
-              first_name: getState().auth.userInfo.firstname,
-              last_name: getState().auth.userInfo.lastname,
+              first_name: getState().auth.userInfo.firs_tname,
+              last_name: getState().auth.userInfo.last_name,
               email: getState().auth.userInfo.email,
               mobile: getState().auth.userInfo.mobile,
-              verified_account: getState().auth.userInfo.verified_account,
+              verified_account: getState().auth.userInfo.verified,
             });
             navigation.navigate("Dashboard", {
               v: navigation.getParam("v", ""),
@@ -281,7 +272,7 @@ export const login = (userData, navigation) => {
           type: actionTypes.SET_LOADING_USER,
           payload: false,
         });
-        // console.log("login error", err.message || err.response);
+        console.log("login error", err.message || err.response);
         showMessage({
           type: "danger",
           message:
@@ -339,17 +330,17 @@ export const forgotPassword = (email, navigation) => {
       },
     })
       .then((response) => {
-        // analytics.track(`Forgot Password Request`, {
-        //   source: "ForgotPassword",
-        //   source_action: "a_forget_password",
-        //   email,
-        //   action_status: response.data.success ? "success" : "failure",
-        // });
-        // showMessage({
-        //   message: response.data.status,
-        //   type: "success",
-        //   position: "top",
-        // });
+        analytics.track(`Forgot Password Request`, {
+          source: "ForgotPassword",
+          source_action: "a_forget_password",
+          email,
+          action_status: response.data.status ? "success" : "failure",
+        });
+        showMessage({
+          message: response.data.status,
+          type: "success",
+          position: "top",
+        });
         // console.log("response", JSON.stringify(response.data, null, 2));
         dispatch({
           type: actionTypes.CHANGE_PASSWORD_LOADING,
@@ -385,11 +376,11 @@ export const forgotPassword = (email, navigation) => {
             : err.message || err.response
           : err.message || err.response;
 
-        // showMessage({
-        //   message: errorMessage,
-        //   type: "warning",
-        //   position: "top",
-        // });
+        showMessage({
+          message: errorMessage,
+          type: "warning",
+          position: "top",
+        });
         dispatch({
           type: actionTypes.CHANGE_PASSWORD_LOADING,
           payload: false,
@@ -680,6 +671,36 @@ export const checkPassword = (
         errorMessageHandler(error);
         return dispatch({
           type: actionTypes.SET_CHECKING_FOR_PASSWORD_LOADING,
+          payload: false,
+        });
+      });
+  };
+};
+
+export const getUserProfile = () => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.USER_PROFILE_LOADING,
+      payload: true,
+    });
+    return createBaseUrl()
+      .get(`users`)
+      .then((response) => response.data)
+      .then((data) => {
+        console.log("getUserProfile Data", data);
+        dispatch({
+          type: actionTypes.USER_PROFILE_LOADING,
+          payload: false,
+        });
+        analytics.alias(data.id);
+        analytics.flush();
+        dispatch(setCurrentUser(data));
+      })
+      .catch((error) => {
+        console.log("getUserProfileError", error);
+
+        dispatch({
+          type: actionTypes.USER_PROFILE_LOADING,
           payload: false,
         });
       });

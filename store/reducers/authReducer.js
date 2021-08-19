@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import * as actionTypes from "../actions/actionTypes";
-import analytics from "@segment/analytics-react-native";
-import { Notifications as RNNotifications } from "react-native-notifications";
+// import analytics from "@segment/analytics-react-native";
+// import { Notifications as RNNotifications } from "react-native-notifications";
 
 const initialState = {
   userid: null,
@@ -28,15 +28,15 @@ const reducer = (state = initialState, action) => {
       AsyncStorage.getItem("appLanguage")
         .then((language) => {
           let userTraits = {
-            email: action.payload.user.email,
-            first_name: action.payload.user.firstname,
-            lastt_name: action.payload.user.lasttname,
+            email: action.payload.email,
+            first_name: action.payload.user.first_name,
+            lastt_name: action.payload.user.last_tname,
             name:
-              action.payload.user.firstname +
+              action.payload.user.first_name +
               " " +
               action.payload.user.lastname,
             selected_language: language,
-            mobile: "+" + action.payload.user.mobile,
+            mobile: action.payload.mobile,
             logged_out: false,
           };
           // NOTE: expo-notification not working for iOS
@@ -55,7 +55,7 @@ const reducer = (state = initialState, action) => {
                     ios_devices: [event.deviceToken],
                   };
                 }
-                analytics.identify(action.payload.user.userid, userTraits);
+                analytics.identify(action.payload.id, userTraits);
               }
             );
           } catch (err) {
@@ -88,8 +88,8 @@ const reducer = (state = initialState, action) => {
 
       return {
         ...state,
-        userid: action.payload.user.userid,
-        userInfo: action.payload.user,
+        userid: action.payload.id,
+        userInfo: action.payload,
         loading: false,
       };
 

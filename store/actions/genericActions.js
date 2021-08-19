@@ -15,7 +15,7 @@ export const setAuthToken = (token) => {
         () => (axios.defaults.headers.common.Authorization = `Bearer ${token}`)
       )
       .catch((err) => {
-        //  console.log("setAuthToken setItem token", err.message || err.response )
+        console.log("setAuthToken setItem token", err.message || err.response);
         showMessage({
           message: "Oops! Something went wrong! Please try again later.",
           type: "warning",
@@ -27,10 +27,10 @@ export const setAuthToken = (token) => {
     return SecureStore.deleteItemAsync("token")
       .then(() => delete axios.defaults.headers.common.Authorization)
       .catch((err) => {
-        // console.log(
-        //   "setAuthToken removeItem token",
-        //   err.message || err.response
-        // )
+        console.log(
+          "setAuthToken removeItem token",
+          err.message || err.response
+        );
         showMessage({
           message: "Oops! Something went wrong! Please try again later.",
           type: "warning",
