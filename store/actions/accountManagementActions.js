@@ -534,10 +534,9 @@ export const updateBusinessInfo = (userid, info, navigation, translate) => {
       type: actionTypes.UPDATE_BUSINESS_INFO_LOADING,
       payload: true,
     });
-    createBaseUrl()
-      .put(`business/${getState().account.business.mainBusiness.id}`, {
+    return createBaseUrl()
+      .patch(`business/${userid}`, {
         // businessAccount OLD API
-        userid,
         ...info,
       })
       .then((resp) => {
@@ -549,18 +548,18 @@ export const updateBusinessInfo = (userid, info, navigation, translate) => {
           type: data.success ? "success" : "danger",
           position: "top",
         });
-        analytics.track(`Form Submitted`, {
-          form_type: "Update Business Info Form",
-          form_context: {
-            business_name: info.businessname,
-            business_category: info.businesscategory,
-            country: info.country,
-            business_type: info.businesstype,
-            other_business_category: info.otherBusinessCategory,
-            business_id: getState().account.mainBusiness.businessid,
-          },
-          business_id: getState().account.mainBusiness.businessid,
-        });
+        // analytics.track(`Form Submitted`, {
+        //   form_type: "Update Business Info Form",
+        //   form_context: {
+        //     business_name: info.businessname,
+        //     business_category: info.businesscategory,
+        //     country: info.country,
+        //     business_type: info.businesstype,
+        //     other_business_category: info.otherBusinessCategory,
+        //     business_id: getState().account.mainBusiness.businessid,
+        //   },
+        //   business_id: getState().account.mainBusiness.businessid,
+        // });
         if (data.success) {
           dispatch(
             checkBusinessVerified(
@@ -597,7 +596,7 @@ export const updateBusinessInfo = (userid, info, navigation, translate) => {
           type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
           payload: {
             success: false,
-            errorMessage: error.response || error.message,
+            errorMessage: error.response.data,
           },
         });
       });

@@ -1,13 +1,12 @@
 import * as actionTypes from "../actions/actionTypes";
 import find from "lodash/find";
-import analytics from "@segment/analytics-react-native";
-import { Notifications as RNNotifications } from "react-native-notifications";
+// import analytics from "@segment/analytics-react-native";
 
 import { Animated } from "react-native";
 
 import AsyncStorage from "@react-native-community/async-storage";
 
-const initialState = {
+export const initialState = {
   loading: false,
   businessAccounts: [],
   mainBusiness: null,
