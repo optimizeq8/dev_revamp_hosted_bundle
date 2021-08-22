@@ -6,7 +6,7 @@ import authReducer from "./authReducer";
 // import accountManagementReducer from "./accountManagementReducer";
 // import genericReducer from "./genericReducer";
 import loginReducer from "./loginReducer";
-// import registerReducer from "./registerReducer";
+import registerReducer from "./registerReducer";
 // import messengerReducer from "./messengerReducer";
 // import languageReducer from "./languageReducer";
 // import googleAdsReducer from "./googleAdsCampaignReducer";
@@ -20,7 +20,7 @@ const appReducer = combineReducers({
   // campaignC: campaignReducer,
   // transA: transactionReducer,
   login: loginReducer,
-  // register: registerReducer,
+  register: registerReducer,
   // dashboard: dashboardReducer,
   // account: accountManagementReducer,
   // generic: genericReducer,

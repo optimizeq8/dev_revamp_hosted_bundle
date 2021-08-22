@@ -9,13 +9,13 @@ import NavigationService from "../../NavigationService";
 import { handleAlreadyCreatedCampaigns } from "./genericActions";
 import { updateBusinessConnectedToFacebook } from "./accountManagementActions";
 
-export default InstagramBackendURL = () =>
+const InstagramBackendURL = () =>
   axios.create({
     baseURL: store.getState().login.admin
       ? "https://optimizekwtestingserver.com/optimize/instagram/"
       : "https://optimizeapp.com/optimize/instagram/",
   });
-
+export default InstagramBackendURL;
 /**
  *
  * @param {*} info {businessid, campaign_id, name (ad name), state_time, end_time, objective}

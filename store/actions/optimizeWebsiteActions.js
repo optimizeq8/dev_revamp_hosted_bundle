@@ -6,12 +6,13 @@ import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
 
-OptimizeWebsiteBackendURL = () =>
+const OptimizeWebsiteBackendURL = () =>
   axios.create({
     baseURL: store.getState().login.admin
       ? "https://optimizekwtestingserver.com/ecommerce/api/"
       : "https://optimizeapp.com/ecommerce/api/",
   });
+export default OptimizeWebsiteBackendURL;
 
 export const verifyInstagramHandleWebsite = (insta_handle) => {
   return async (dispatch, getState) => {

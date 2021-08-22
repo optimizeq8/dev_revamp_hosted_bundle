@@ -40,13 +40,43 @@ jest.mock("react-native-notifications", () => {
     },
   };
 });
+// jest.mock("react-navigation", () => {
+//   return {
+//     NavigationActions: {
+//       navigate: jest.fn(),
+//       navigateBack: jest.fn(),
+//       setTopLevelNavigator: jest.fn(),
+//     },
+//   };
+// });
+
 jest.mock("react-navigation", () => {
   return {
-    navigate: jest.fn(),
-    navigateBack: jest.fn(),
-    setTopLevelNavigator: jest.fn(),
+    createAppContainer: jest
+      .fn()
+      .mockReturnValue(function NavigationContainer(props) {
+        return null;
+      }),
+    createDrawerNavigator: jest.fn(),
+    createMaterialTopTabNavigator: jest.fn(),
+    createStackNavigator: jest.fn(),
+    StackActions: {
+      push: jest
+        .fn()
+        .mockImplementation((x) => ({ ...x, type: "Navigation/PUSH" })),
+      replace: jest
+        .fn()
+        .mockImplementation((x) => ({ ...x, type: "Navigation/REPLACE" })),
+      reset: jest.fn(),
+    },
+    NavigationActions: {
+      navigate: jest.fn().mockImplementation((x) => x),
+      navigateBack: jest.fn(),
+      setTopLevelNavigator: jest.fn(),
+    },
   };
 });
+
 jest.mock("react-native-device-info", () => "getUniqueId");
 jest.mock("expo-permissions", () => "Permissions");
 jest.mock("react-native-biometrics", () => "ReactNativeBiometrics");
