@@ -237,3 +237,17 @@ export const handleAlreadyCreatedCampaigns = (data, channel) => {
     });
   };
 };
+
+export const refreshToken = () => {
+  return (dispatch) => {
+    return createBaseUrl()
+      .post(`refresh`)
+      .then((res) => res.data)
+      .then((data) => {
+        console.log("refreshToken data", data);
+      })
+      .catch((error) => {
+        console.log("refreshToken error", error);
+      });
+  };
+};
