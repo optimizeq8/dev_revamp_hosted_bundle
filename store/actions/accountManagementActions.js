@@ -535,32 +535,33 @@ export const updateBusinessInfo = (businessid, info, navigation, translate) => {
       payload: true,
     });
     return axios({
-      url: `https://api.devoa.optimizeapp.com/api/business/#${businessid}`,
-      method: "POST",
+      url: `https://api.devoa.optimizeapp.com/api/business/${businessid}`,
+      method: "PATCH",
       data: { ...info },
       headers: {
         "Content-Type": "application/json",
       },
     })
-      .then((response) => {
-        // showMessage({
-        //   message: data.message,
-        //   type: data.success ? "success" : "danger",
-        //   position: "top",
-        // });
-        // analytics.track(`Form Submitted`, {
-        //   form_type: "Update Business Info Form",
-        //   form_context: {
-        //     business_name: info.businessname,
-        //     business_category: info.businesscategory,
-        //     country: info.country,
-        //     business_type: info.businesstype,
-        //     other_business_category: info.otherBusinessCategory,
-        //     business_id: getState().account.mainBusiness.businessid,
-        //   },
-        //   business_id: getState().account.mainBusiness.businessid,
-        // });
-        if (response.data.data) {
+      .then((res) => res.data)
+      .then((data) => {
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "danger",
+          position: "top",
+        });
+        analytics.track(`Form Submitted`, {
+          form_type: "Update Business Info Form",
+          form_context: {
+            business_name: info.businessname,
+            business_category: info.businesscategory,
+            country: info.country,
+            business_type: info.businesstype,
+            other_business_category: info.otherBusinessCategory,
+            business_id: businessid,
+          },
+          business_id: businessid,
+        });
+        if (data.data) {
           dispatch(checkBusinessVerified(businessid, translate));
           //Dashboard
           navigation.navigate("Dashboard", {
@@ -578,7 +579,7 @@ export const updateBusinessInfo = (businessid, info, navigation, translate) => {
             type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
             payload: {
               success: false,
-              errorMessage: response.data.message,
+              errorMessage: data.message,
             },
           });
       })
@@ -591,7 +592,7 @@ export const updateBusinessInfo = (businessid, info, navigation, translate) => {
           type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
           payload: {
             success: false,
-            errorMessage: error.response.data,
+            errorMessage: error.response.data.message || error.response.data,
           },
         });
       });
