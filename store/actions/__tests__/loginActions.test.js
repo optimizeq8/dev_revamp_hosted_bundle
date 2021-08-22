@@ -12,7 +12,18 @@ import * as actionTypes from "../actionTypes";
 import { forgotPassword, login } from "../loginActions";
 // import * as SecureStore from "expo-secure-store";
 import NavigationService from "../../../NavigationService";
-
+jest.mock("react-native-notifications", () => {
+  return {
+    RNEventEmitter: {
+      registerRemoteNotifications: jest.fn(),
+      events: {
+        registerRemoteNotificationsRegistered: jest
+          .fn()
+          .mockImplementation(() => Promise.resolve()),
+      },
+    },
+  };
+});
 // var querystring = require("querystring");
 // const BASE_URL = "https://api.devoa.optimizeapp.com/api/";
 beforeAll(() => (Axios.defaults.adapter = require("axios/lib/adapters/http")));
@@ -123,8 +134,60 @@ describe("LoginAction", () => {
   });
 
   describe(`login Action / Reducer`, () => {
-    test("should handle login SUCCESS action ", () => {
-      const successAction = {
+    // test("should handle login SUCCESS action ", () => {
+    //   const successAction = {
+    //     type: actionTypes.SET_CURRENT_USER,
+    //     payload: {
+    //       id: 11,
+    //       first_name: "Imran",
+    //       last_name: "Sheikh",
+    //       mobile: "+96522112288",
+    //       email: "imran@optimizeapp.com",
+    //       verified: 1,
+    //     },
+    //   };
+    //   const store = mockStore(reducer(undefined, successAction));
+    //   const dispatchedStore = store.dispatch(
+    //     login(
+    //       { email: "imran@optimizeapp.com", password: "imranoa@2021" },
+    //       NavigationService
+    //     )
+    //   );
+
+    //   return dispatchedStore.then(() => {
+    //     expect(store.getActions()).toEqual([
+    //       {
+    //         type: actionTypes.SET_LOADING_USER,
+    //         payload: true,
+    //       },
+    //       {
+    //         type: actionTypes.USER_PROFILE_LOADING,
+    //         payload: true,
+    //       },
+    //       {
+    //         type: actionTypes.USER_PROFILE_LOADING,
+    //         payload: false,
+    //       },
+    //       {
+    //         type: actionTypes.SET_CURRENT_USER,
+    //         payload: {
+    //           id: 11,
+    //           first_name: "Imran",
+    //           last_name: "Sheikh",
+    //           mobile: "+96522112288",
+    //           email: "imran@optimizeapp.com",
+    //           verified: 1,
+    //         },
+    //       },
+    //       {
+    //         type: actionTypes.SET_LOADING_USER,
+    //         payload: false,
+    //       },
+    //     ]);
+    //   });
+    // });
+    test("should handle login FAILURE action ", () => {
+      const failureAction = {
         type: actionTypes.SET_CURRENT_USER,
         payload: {
           id: 11,
@@ -135,12 +198,9 @@ describe("LoginAction", () => {
           verified: 1,
         },
       };
-      const store = mockStore(reducer(undefined, successAction));
+      const store = mockStore(reducer(undefined, failureAction));
       const dispatchedStore = store.dispatch(
-        login(
-          { email: "imran@optimizeapp.com", password: "imranoa@2021" },
-          NavigationService
-        )
+        login({ email: null, password: "imrano" }, NavigationService)
       );
 
       return dispatchedStore.then(() => {
@@ -167,6 +227,10 @@ describe("LoginAction", () => {
               email: "imran@optimizeapp.com",
               verified: 1,
             },
+          },
+          {
+            type: actionTypes.SET_LOADING_USER,
+            payload: false,
           },
         ]);
       });

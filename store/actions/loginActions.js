@@ -171,13 +171,12 @@ export const checkForExpiredToken = (navigation) => {
   };
 };
 
-export const login = (userData, navigation) => {
-  console.log("userData", userData);
+export const login = (userData, navigation = NavigationService) => {
   let userInfo = {
     ...userData,
     is_mobile: 0,
   };
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     // if (
     //   [
     //     "nouf@optimizeapp.com",
@@ -209,7 +208,7 @@ export const login = (userData, navigation) => {
         // let decodedUser = null;
         if (user.hasOwnProperty("access_token")) {
           // decodedUser = jwt_decode(user.access_token);
-          await setAuthToken(user.access_token);
+          return await setAuthToken(user.access_token);
         } else {
           /*
           showMessage({
@@ -227,7 +226,7 @@ export const login = (userData, navigation) => {
         // }
       })
       .then(async () => {
-        await dispatch(getUserProfile());
+        return await dispatch(getUserProfile());
       })
       .then(() => {
         if (getState().auth.userInfo) {
@@ -241,29 +240,33 @@ export const login = (userData, navigation) => {
               source_action: "a_sign_in",
             });
           } else {
-            dispatch(
-              saveBusinessInvitee({
-                tempInviteId: navigation.getParam("v", ""),
-                businessInvitee: navigation.getParam("business", ""),
-                invitedEmail: navigation.getParam("email", ""),
-              })
-            );
+            /** Add back later */
+            // dispatch(
+            //   saveBusinessInvitee({
+            //     tempInviteId: navigation.getParam("v", ""),
+            //     businessInvitee: navigation.getParam("business", ""),
+            //     invitedEmail: navigation.getParam("email", ""),
+            //   })
+            // );
             analytics.track(`Signed In`, {
-              first_name: getState().auth.userInfo.firs_tname,
+              first_name: getState().auth.userInfo.first_tname,
               last_name: getState().auth.userInfo.last_name,
               email: getState().auth.userInfo.email,
               mobile: getState().auth.userInfo.mobile,
               verified_account: getState().auth.userInfo.verified,
             });
-            navigation.navigate("Dashboard", {
-              v: navigation.getParam("v", ""),
-              business: navigation.getParam("business", ""),
-              email: navigation.getParam("email", ""),
-              source: "Signin",
-              source_action: "a_sign_in",
-            });
+            // navigation.navigate("Dashboard", {
+            //   // v: navigation.getParam("v", ""),
+            //   // business: navigation.getParam("business", ""),
+            //   // email: navigation.getParam("email", ""),
+            //   source: "Signin",
+            //   source_action: "a_sign_in",
+            // });
           }
-
+          dispatch({
+            type: actionTypes.SET_LOADING_USER,
+            payload: false,
+          });
           // dispatch(getBusinessAccounts()); // Add back later
           // dispatch(send_push_notification());
         }
@@ -273,7 +276,7 @@ export const login = (userData, navigation) => {
           type: actionTypes.SET_LOADING_USER,
           payload: false,
         });
-        console.log("login error", err.message || err.response);
+        console.log("login error", JSON.stringify(err.data, null, 2));
         showMessage({
           type: "danger",
           message:
@@ -679,7 +682,7 @@ export const checkPassword = (
 };
 
 export const getUserProfile = () => {
-  return async (dispatch, getState) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.USER_PROFILE_LOADING,
       payload: true,
@@ -688,17 +691,18 @@ export const getUserProfile = () => {
       .get(`users`)
       .then((response) => response.data)
       .then((data) => {
-        console.log("getUserProfile Data", data);
+        // console.log("getUserProfile Data", data);
         dispatch({
           type: actionTypes.USER_PROFILE_LOADING,
           payload: false,
         });
         analytics.alias(data.id);
         analytics.flush();
-        return dispatch(setCurrentUser(data));
+        dispatch(setCurrentUser(data));
+        return true;
       })
       .catch((error) => {
-        console.log("getUserProfileError", error);
+        // console.log("getUserProfileError", error);
 
         dispatch({
           type: actionTypes.USER_PROFILE_LOADING,
