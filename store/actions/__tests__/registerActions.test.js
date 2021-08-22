@@ -45,8 +45,8 @@ describe("Register actions/ reducer", () => {
     const successAction = {
       type: actionTypes.VERIFY_EMAIL,
       payload: {
-        success: false,
-        message: "We can't find a user with that e-mail address.",
+        success: true,
+        message: "Email allowed for registration",
       },
     };
     const store = mockStore(reducer(undefined, successAction));
@@ -59,11 +59,67 @@ describe("Register actions/ reducer", () => {
     );
 
     return dispatchedStore.then(() => {
-      console.log(
-        "store.getActions()",
-        JSON.stringify(store.getActions(), null, 2)
-      );
+      expect(store.getActions()).toEqual([
+        {
+          type: actionTypes.VERIFY_EMAIL_LOADING,
+          payload: true,
+        },
+        {
+          type: actionTypes.VERIFY_EMAIL,
+          payload: {
+            success: true,
+            userInfo: {
+              email: "email@optimizeapp.com",
+            },
+            message: "Email allowed for registration",
+          },
+        },
+        {
+          type: actionTypes.VERIFY_EMAIL_LOADING,
+          payload: false,
+        },
+      ]);
     });
   });
-  test("Email Verify Failure", () => {});
+  test("Email Verify Failure", () => {
+    const failureAction = {
+      type: actionTypes.ERROR_VERIFY_EMAIL,
+      payload: {
+        success: true,
+        message: "Email allowed for registration",
+      },
+    };
+    const store = mockStore(reducer(undefined, failureAction));
+    const dispatchedStore = store.dispatch(
+      verifyEmail(
+        "imran@optimizeapp.com",
+        { email: "imran@optimizeapp.com" },
+        NavigationService
+      )
+    );
+
+    return dispatchedStore.then(() => {
+      console.log("store.getActions()", store.getActions());
+      expect(store.getActions()).toEqual([
+        {
+          type: actionTypes.VERIFY_EMAIL_LOADING,
+          payload: true,
+        },
+        {
+          type: actionTypes.ERROR_VERIFY_EMAIL,
+          payload: {
+            success: false,
+            userInfo: {
+              email: "imran@optimizeapp.com",
+            },
+            message: "Email is already registered",
+          },
+        },
+        {
+          type: actionTypes.VERIFY_EMAIL_LOADING,
+          payload: false,
+        },
+      ]);
+    });
+  });
 });
