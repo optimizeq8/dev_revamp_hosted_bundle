@@ -7,8 +7,15 @@ import * as actionTypes from "../actionTypes";
 import { updateBusinessInfo } from "../accountManagementActions";
 // var querystring = require("querystring");
 // const BASE_URL = "https://api.devoa.optimizeapp.com/api/";
-beforeAll(() => {
+beforeAll(async () => {
   Axios.defaults.adapter = require("axios/lib/adapters/http");
+  let token = await Axios.post("https://api.devoa.optimizeapp.com/api/login", {
+    email: "imran@optimizeapp.com",
+    password: "imranoa@2021",
+    is_mobile: 0,
+  }).catch((err) => console.log("err", err));
+  Axios.defaults.headers.common.Authorization =
+    "Bearer " + token.data.access_token;
 });
 
 describe("Account Management Actions", () => {
@@ -24,15 +31,7 @@ describe("Account Management Actions", () => {
       expect(state).toEqual(initialState);
     });
 
-    test("should handle business info update Unautorized action", () => {
-      const failureAction = {
-        type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
-        payload: {
-          success: false,
-          message: "We can't find a user with that e-mail address.",
-        },
-      };
-
+    test("should handle business info update FAILURE action", () => {
       const store = mockStore(
         accountManagementReducer(undefined, {
           payload: {},
@@ -59,48 +58,9 @@ describe("Account Management Actions", () => {
           {
             type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
             payload: {
-              errorMessage: {
-                message: "Unauthenticated.",
-              },
-              success: false,
-            },
-          },
-        ]);
-      });
-    });
+              errorMessage:
+                "No query results for model [App\\Business] wrongbusinessid",
 
-    test("should handle business info update FAILURE action", () => {
-      Axios.defaults.headers.common.Authorization = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5kZXZvYS5vcHRpbWl6ZWFwcC5jb20vYXBpL2xvZ2luIiwiaWF0IjoxNjI5MzcyMDI4LCJleHAiOjE2Mjk0MDgwMjgsIm5iZiI6MTYyOTM3MjAyOCwianRpIjoib2pqVU5KenpOb2NSWUpQbyIsInN1YiI6MTEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.84ZTcW4_DzEtqroUoTVtqzfWrfq67P2HjjWvSwe8B2c`;
-
-      const store = mockStore(
-        accountManagementReducer(undefined, {
-          payload: {},
-          type: "",
-        })
-      );
-      const dispatchedStore = store.dispatch(
-        updateBusinessInfo(
-          "1n1",
-          {
-            name: "Updated Business name",
-            type: "SME or Startup",
-            country_id: 2,
-            mobile: "+96566645464",
-          },
-          { navigate: () => {} },
-          () => {}
-        )
-      );
-
-      return dispatchedStore.then(() => {
-        expect(store.getActions()).toEqual([
-          { payload: true, type: actionTypes.UPDATE_BUSINESS_INFO_LOADING },
-          {
-            type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
-            payload: {
-              errorMessage: {
-                name: ["The name has already been taken."],
-              },
               success: false,
             },
           },
@@ -108,20 +68,18 @@ describe("Account Management Actions", () => {
       });
     });
     test("should handle business info update SUCCESSFUL action", () => {
-      Axios.defaults.headers.common.Authorization = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5kZXZvYS5vcHRpbWl6ZWFwcC5jb20vYXBpL2xvZ2luIiwiaWF0IjoxNjI5MzcyMDI4LCJleHAiOjE2Mjk0MDgwMjgsIm5iZiI6MTYyOTM3MjAyOCwianRpIjoib2pqVU5KenpOb2NSWUpQbyIsInN1YiI6MTEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.84ZTcW4_DzEtqroUoTVtqzfWrfq67P2HjjWvSwe8B2c`;
-
       const store = mockStore(
         accountManagementReducer(undefined, {
           payload: {},
           type: "",
         })
       );
-      let rndm = Math.random();
+      let timestamp = new Date().getTime();
       const dispatchedStore = store.dispatch(
         updateBusinessInfo(
-          "1n1",
+          "11",
           {
-            name: "Updated Business name" + rndm,
+            name: "Updated Business name" + timestamp,
             type: "SME or Startup",
             country_id: 2,
             mobile: "+96566645464",
@@ -139,7 +97,7 @@ describe("Account Management Actions", () => {
             payload: {
               country_id: 2,
               mobile: "+96566645464",
-              name: "Updated Business name" + rndm,
+              name: "Updated Business name" + timestamp,
               type: "SME or Startup",
             },
           },
