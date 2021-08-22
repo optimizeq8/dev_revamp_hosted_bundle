@@ -5,6 +5,8 @@ import reducer from "../../reducers";
 import { verifyEmail } from "../registerActions";
 import * as actionTypes from "../actionTypes";
 import NavigationService from "../../../NavigationService";
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
 jest.mock("react-native-notifications", () => {
   return {
     RNEventEmitter: {
@@ -37,9 +39,7 @@ jest.mock("expo-secure-store", () => {
 });
 beforeAll(() => (Axios.defaults.adapter = require("axios/lib/adapters/http")));
 
-describe("Register actions/ reducer", () => {
-  const middlewares = [thunk];
-  const mockStore = configureMockStore(middlewares);
+describe("Register step 1, verify email action/ reducer", () => {
   test("Missing Email", () => {
     const failureAction = {
       type: actionTypes.ERROR_VERIFY_EMAIL,
@@ -134,7 +134,6 @@ describe("Register actions/ reducer", () => {
     );
 
     return dispatchedStore.then(() => {
-      console.log("store.getActions()", store.getActions());
       expect(store.getActions()).toEqual([
         {
           type: actionTypes.VERIFY_EMAIL_LOADING,
