@@ -4,9 +4,9 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
-import { getUniqueId } from "react-native-device-info";
-import { Notifications } from "expo";
-import * as Permissions from "expo-permissions";
+// import { getUniqueId } from "react-native-device-info";
+// import { Notifications } from "expo";
+// import * as Permissions from "expo-permissions";
 import NavigationService from "../../NavigationService";
 import {
   setAuthToken,
@@ -407,22 +407,26 @@ export const verifyEmail = (email, userInfo, navigation) => {
       type: actionTypes.VERIFY_EMAIL_LOADING,
       payload: true,
     });
-    createBaseUrl()
+    return createBaseUrl()
       .get(`validate/email/${email}`)
       .then((res) => {
         return res.data;
       })
       .then((data) => {
-        // console.log("data", JSON.stringify(data, null, 2));
+        console.log("verifyEmail data", JSON.stringify(data, null, 2));
         dispatch({
           type: actionTypes.VERIFY_EMAIL,
-          payload: { success: data.status === 200, userInfo },
+          payload: {
+            success: data.status === 200,
+            userInfo,
+            message: data.message,
+          },
         });
         return data;
       })
       .then((data) => {
         if (data.status === 200) {
-          navigation.push("MainForm", {
+          navigation.navigate("MainForm", {
             source: "Signin",
             source_action: "Create Account",
           });
@@ -437,7 +441,7 @@ export const verifyEmail = (email, userInfo, navigation) => {
         analytics.track(`Sign up Initiated`, {
           mode_of_sign_up: "email",
           source: "Signin",
-          action_status: data.success ? "success" : "failure",
+          action_status: data.status === 200 ? "success" : "failure",
           email,
         });
       })
@@ -465,7 +469,11 @@ export const verifyEmail = (email, userInfo, navigation) => {
         });
         return dispatch({
           type: actionTypes.ERROR_VERIFY_EMAIL,
-          payload: { success: false, userInfo },
+          payload: {
+            success: false,
+            userInfo,
+            message: err.message || err.response,
+          },
         });
       });
   };

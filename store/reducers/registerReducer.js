@@ -17,6 +17,7 @@ const initialState = {
   emailLinkCodeExpired: null,
   checkingBusinessName: false,
   emailLoading: false,
+  verifyEmailMessage: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -93,6 +94,7 @@ const reducer = (state = initialState, action) => {
         successEmail: action.payload.success,
         userInfo: action.payload.userInfo,
         emailLoading: false,
+        verifyEmailMessage: action.payload.message,
       };
     case actionTypes.VERIFY_EMAIL_LOADING:
       return {

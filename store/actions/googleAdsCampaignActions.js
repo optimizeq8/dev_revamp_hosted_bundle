@@ -9,13 +9,13 @@ import { errorMessageHandler } from "./ErrorActions";
 import NavigationService from "../../NavigationService";
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
-GoogleBackendURL = () =>
+const GoogleBackendURL = () =>
   axios.create({
     baseURL: store.getState().login.admin
       ? "http://goog.optimizeapp.com/"
       : "http://googliver.optimizeapp.com/",
   });
-
+export default GoogleBackendURL;
 /**
  * @method
  * @param {Object} info this has the businessid
