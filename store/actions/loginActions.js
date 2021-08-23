@@ -545,7 +545,7 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
         // });
       })
       .catch((err) => {
-        console.log("changePasswordError", err.response);
+        // console.log("changePasswordError", err.response);
         let errorMessage = err.response
           ? err.response.data
             ? err.response.data.error
