@@ -6,7 +6,11 @@ module.exports = function (api) {
       process.env.NODE_ENV === "production" ? ["transform-remove-console"] : [],
     env: {
       test: {
-        plugins: ["@babel/plugin-transform-runtime"],
+        plugins: [
+          "@babel/plugin-transform-runtime",
+          "@babel/plugin-proposal-class-properties",
+          "@babel/plugin-proposal-private-methods",
+        ],
       },
     },
   };
