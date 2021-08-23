@@ -157,3 +157,9 @@ describe("Register step 1, verify email action/ reducer", () => {
     });
   });
 });
+
+// describe("Register Step 2, User Info action/ reducer", () => {
+//   test("User Register Success", () => {});
+
+//   test("User Register Failure", () => {});
+// });
