@@ -5,6 +5,8 @@ import reducer from "../../reducers";
 import { verifyEmail } from "../registerActions";
 import * as actionTypes from "../actionTypes";
 import NavigationService from "../../../NavigationService";
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
 jest.mock("react-native-notifications", () => {
   return {
     RNEventEmitter: {
@@ -37,16 +39,49 @@ jest.mock("expo-secure-store", () => {
 });
 beforeAll(() => (Axios.defaults.adapter = require("axios/lib/adapters/http")));
 
-describe("Register actions/ reducer", () => {
-  const middlewares = [thunk];
-  const mockStore = configureMockStore(middlewares);
+describe("Register step 1, verify email action/ reducer", () => {
+  test("Missing Email", () => {
+    const failureAction = {
+      type: actionTypes.ERROR_VERIFY_EMAIL,
+      payload: {
+        success: false,
+        message: "Request failed with status code 404",
+      },
+    };
+    const store = mockStore(reducer(undefined, failureAction));
+    const dispatchedStore = store.dispatch(
+      verifyEmail("", { email: "" }, NavigationService)
+    );
 
+    return dispatchedStore.then(() => {
+      expect(store.getActions()).toEqual([
+        {
+          type: actionTypes.VERIFY_EMAIL_LOADING,
+          payload: true,
+        },
+        {
+          type: actionTypes.ERROR_VERIFY_EMAIL,
+          payload: {
+            success: false,
+            userInfo: {
+              email: "",
+            },
+            message: "Request failed with status code 404",
+          },
+        },
+        {
+          type: actionTypes.VERIFY_EMAIL_LOADING,
+          payload: false,
+        },
+      ]);
+    });
+  });
   test("Email Verify Success", () => {
     const successAction = {
       type: actionTypes.VERIFY_EMAIL,
       payload: {
-        success: false,
-        message: "We can't find a user with that e-mail address.",
+        success: true,
+        message: "Email allowed for registration",
       },
     };
     const store = mockStore(reducer(undefined, successAction));
@@ -59,11 +94,72 @@ describe("Register actions/ reducer", () => {
     );
 
     return dispatchedStore.then(() => {
-      console.log(
-        "store.getActions()",
-        JSON.stringify(store.getActions(), null, 2)
-      );
+      expect(store.getActions()).toEqual([
+        {
+          type: actionTypes.VERIFY_EMAIL_LOADING,
+          payload: true,
+        },
+        {
+          type: actionTypes.VERIFY_EMAIL,
+          payload: {
+            success: true,
+            userInfo: {
+              email: "email@optimizeapp.com",
+            },
+            message: "Email allowed for registration",
+          },
+        },
+        {
+          type: actionTypes.VERIFY_EMAIL_LOADING,
+          payload: false,
+        },
+      ]);
     });
   });
-  test("Email Verify Failure", () => {});
+  test("Email Verify Failure", () => {
+    const failureAction = {
+      type: actionTypes.ERROR_VERIFY_EMAIL,
+      payload: {
+        success: true,
+        message: "Email allowed for registration",
+      },
+    };
+    const store = mockStore(reducer(undefined, failureAction));
+    const dispatchedStore = store.dispatch(
+      verifyEmail(
+        "imran@optimizeapp.com",
+        { email: "imran@optimizeapp.com" },
+        NavigationService
+      )
+    );
+
+    return dispatchedStore.then(() => {
+      expect(store.getActions()).toEqual([
+        {
+          type: actionTypes.VERIFY_EMAIL_LOADING,
+          payload: true,
+        },
+        {
+          type: actionTypes.ERROR_VERIFY_EMAIL,
+          payload: {
+            success: false,
+            userInfo: {
+              email: "imran@optimizeapp.com",
+            },
+            message: "Email is already registered",
+          },
+        },
+        {
+          type: actionTypes.VERIFY_EMAIL_LOADING,
+          payload: false,
+        },
+      ]);
+    });
+  });
 });
+
+// describe("Register Step 2, User Info action/ reducer", () => {
+//   test("User Register Success", () => {});
+
+//   test("User Register Failure", () => {});
+// });

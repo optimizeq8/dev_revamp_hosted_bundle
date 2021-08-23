@@ -426,10 +426,10 @@ export const verifyEmail = (email, userInfo, navigation) => {
       })
       .then((data) => {
         if (data.status === 200) {
-          navigation.navigate("MainForm", {
-            source: "Signin",
-            source_action: "Create Account",
-          });
+          // navigation.navigate("MainForm", {
+          //   source: "Signin",
+          //   source_action: "Create Account",
+          // });
         }
         if (data.status !== 200) {
           showMessage({
@@ -438,6 +438,10 @@ export const verifyEmail = (email, userInfo, navigation) => {
             position: "top",
           });
         }
+        dispatch({
+          type: actionTypes.VERIFY_EMAIL_LOADING,
+          payload: false,
+        });
         analytics.track(`Sign up Initiated`, {
           mode_of_sign_up: "email",
           source: "Signin",
@@ -446,34 +450,39 @@ export const verifyEmail = (email, userInfo, navigation) => {
         });
       })
       .catch((err) => {
-        // console.log("verifyEmail ERROR", err.message || err.response);
+        // console.log("verifyEmail ERROR", err);
+
+        let errorMessage =
+          err && err.response && err.response.data
+            ? err.response.data.message
+              ? err.response.data.message
+              : err.message && !err.message.includes("timeout") && err.message
+            : err.response
+            ? err.response
+            : "Something went wrong, please try again.";
+        // console.log("errorMessage", errorMessage);
         showMessage({
-          message:
-            (err.message && !err.message.includes("timeout") && err.message) ||
-            err.response ||
-            "Something went wrong, please try again.",
+          message: errorMessage,
           type: "danger",
           position: "top",
         });
-        dispatch({
-          type: actionTypes.VERIFY_EMAIL_LOADING,
-          payload: false,
-        });
+
         analytics.track(`Form Error Made`, {
           source: "Signin",
           source_action: "a_create_account",
-          error_description:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
+          error_description: errorMessage,
         });
-        return dispatch({
+        dispatch({
           type: actionTypes.ERROR_VERIFY_EMAIL,
           payload: {
             success: false,
             userInfo,
-            message: err.message || err.response,
+            message: errorMessage,
           },
+        });
+        return dispatch({
+          type: actionTypes.VERIFY_EMAIL_LOADING,
+          payload: false,
         });
       });
   };
