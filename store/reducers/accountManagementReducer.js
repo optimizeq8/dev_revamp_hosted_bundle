@@ -44,6 +44,7 @@ export const initialState = {
   businessSearchLoading: false,
   searchedBusinessesList: [],
   checkingBusinessStatus: false,
+  passwordChangeMessage: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -131,12 +132,15 @@ const reducer = (state = initialState, action) => {
         passwordChanged: action.payload.success,
         loadingPasswordChanged: action.payload.loading,
         progress: new Animated.Value(0),
+        passwordChangeMessage: action.payload.message,
       };
     case actionTypes.ERROR_CHANGE_PASSWORD:
       return {
         ...state,
         passwordChanged: action.payload.success,
         loadingPasswordChanged: false,
+        passwordChangeMessage: action.payload.message,
+        loadingPasswordChanged: action.payload.loading,
       };
     case actionTypes.ADD_ADDRESS:
       return {

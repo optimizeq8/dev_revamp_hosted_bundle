@@ -255,13 +255,13 @@ export const login = (userData, navigation = NavigationService) => {
               mobile: getState().auth.userInfo.mobile,
               verified_account: getState().auth.userInfo.verified,
             });
-            // navigation.navigate("Dashboard", {
-            //   // v: navigation.getParam("v", ""),
-            //   // business: navigation.getParam("business", ""),
-            //   // email: navigation.getParam("email", ""),
-            //   source: "Signin",
-            //   source_action: "a_sign_in",
-            // });
+            navigation.navigate("Dashboard", {
+              // v: navigation.getParam("v", ""),
+              // business: navigation.getParam("business", ""),
+              // email: navigation.getParam("email", ""),
+              source: "Signin",
+              source_action: "a_sign_in",
+            });
           }
           dispatch({
             type: actionTypes.SET_LOADING_USER,
@@ -458,97 +458,103 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
     ...axios.defaults.headers.common,
     "Content-Type": "application/x-www-form-urlencoded",
   };
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.CHANGE_PASSWORD,
-      payload: { success: false, loading: true },
+      payload: { success: false, message: null, loading: true },
     });
-    createBaseUrl()
-      .put("changePassword", {
-        current_password: currentPass,
-        password: newPass,
+    return createBaseUrl()
+      .patch("users/password/update", {
+        password: currentPass,
+        new_password: newPass,
       })
       .then((response) => {
-        const temPwd = navigation.getParam("temp_pwd", false);
-        // if tempPwd change relogin for setting new auth token
-        if (temPwd && response.data.success) {
-          analytics.track(`Password Changed`, {
-            source: "ChangePassword",
-            action_status: response.data.success ? "success" : "failure",
-            error_description: !response.data.success && response.data.message,
-            business_id:
-              getState().account.mainBusiness &&
-              getState().account.mainBusiness.businessid,
-          });
-          showMessage({
-            message: response.data.message,
-            type: response.data.success ? "success" : "warning",
-            position: "top",
-          });
-          dispatch(
-            login(
-              {
-                email: userEmail,
-                emailError: null,
-                password: newPass,
-                passwordError: "",
-              },
-              navigation
-            )
-          );
-          return dispatch({
-            type: actionTypes.CHANGE_PASSWORD,
-            payload: {
-              success: response.data.success,
-              loading: false,
-            },
-          });
-        }
-        //   let time = new Animated.Value(0);
-        let time = new Animated.Value(0);
+        console.log("response", JSON.stringify(response, null, 2));
+        // const temPwd = navigation.getParam("temp_pwd", false);
+        // // if tempPwd change relogin for setting new auth token
+        // if (temPwd && response.data.success) {
+        //   analytics.track(`Password Changed`, {
+        //     source: "ChangePassword",
+        //     action_status: response.data.success ? "success" : "failure",
+        //     error_description: !response.data.success && response.data.message,
+        //     business_id:
+        //       getState().account.mainBusiness &&
+        //       getState().account.mainBusiness.businessid,
+        //   });
+        //   showMessage({
+        //     message: response.data.message,
+        //     type: response.data.success ? "success" : "warning",
+        //     position: "top",
+        //   });
+        //   dispatch(
+        //     login(
+        //       {
+        //         email: userEmail,
+        //         emailError: null,
+        //         password: newPass,
+        //         passwordError: "",
+        //       },
+        //       navigation
+        //     )
+        //   );
+        //   return dispatch({
+        //     type: actionTypes.CHANGE_PASSWORD,
+        //     payload: {
+        //       success: response.data.success,
+        //       loading: false,
+        //     },
+        //   });
+        // }
+        // let time = new Animated.Value(0);
 
-        Animated.timing(time, {
-          toValue: 1,
-          duration: 2000,
-          useNativeDriver: true,
+        // Animated.timing(time, {
+        //   toValue: 1,
+        //   duration: 2000,
+        //   useNativeDriver: true,
 
-          //   easing: Easing.linear
-        }).start(() => {
-          analytics.track(`Password Changed`, {
-            source: "ChangePassword",
-            action_status: response.data.success ? "success" : "failure",
-            error_description: !response.data.success && response.data.message,
-            business_id:
-              getState().account.mainBusiness &&
-              getState().account.mainBusiness.businessid,
-          });
+        //   //   easing: Easing.linear
+        // }).start(() => {
+        // analytics.track(`Password Changed`, {
+        //   source: "ChangePassword",
+        //   action_status: response.data.success ? "success" : "failure",
+        //   error_description: !response.data.success && response.data.message,
+        //   business_id:
+        //     getState().account.mainBusiness &&
+        //     getState().account.mainBusiness.businessid,
+        // });
 
-          showMessage({
-            message: response.data.message,
-            type: response.data.success ? "success" : "warning",
-            position: "top",
-          });
-          if (response.data.success) {
-            navigation.navigate("Dashboard", {
-              source: "change_password",
-              source_action: "a_change_password",
-            });
-          }
-          return dispatch({
-            type: actionTypes.CHANGE_PASSWORD,
-            payload: {
-              success: response.data.success,
-              loading: false,
-            },
-          });
+        // showMessage({
+        //   message: response.data.message,
+        //   type: response.data.success ? "success" : "warning",
+        //   position: "top",
+        // });
+        // if (response.data.success) {
+        //   navigation.navigate("Dashboard", {
+        //     source: "change_password",
+        //     source_action: "a_change_password",
+        //   });
+        // }
+        return dispatch({
+          type: actionTypes.CHANGE_PASSWORD,
+          payload: {
+            success: response.data.success,
+            loading: false,
+            message: response.data.status,
+          },
         });
+        // });
       })
       .catch((err) => {
-        // console.log("changePasswordError", err.message || err.response);
-
+        console.log("changePasswordError", err.response);
+        let errorMessage = err.response
+          ? err.response.data
+            ? err.response.data.error
+              ? err.response.data.error.message
+              : err.message
+            : err.message
+          : "Oops! Something went wrong. Please try again.";
         showMessage({
-          message: "Oops! Something went wrong. Please try again.",
-          description: err.message || err.response,
+          message: errorMessage,
           type: "danger",
           position: "top",
         });
@@ -557,6 +563,8 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
           type: actionTypes.ERROR_CHANGE_PASSWORD,
           payload: {
             success: false,
+            message: errorMessage,
+            loading: false,
           },
         });
       });
