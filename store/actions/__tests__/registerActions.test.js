@@ -45,7 +45,7 @@ describe("Register step 1, verify email action/ reducer", () => {
       type: actionTypes.ERROR_VERIFY_EMAIL,
       payload: {
         success: false,
-        message: "Request failed with status code 404",
+        message: "Request failed with status code 422",
       },
     };
     const store = mockStore(reducer(undefined, failureAction));
@@ -66,7 +66,7 @@ describe("Register step 1, verify email action/ reducer", () => {
             userInfo: {
               email: "",
             },
-            message: "Request failed with status code 404",
+            message: "Request failed with status code 422",
           },
         },
         {

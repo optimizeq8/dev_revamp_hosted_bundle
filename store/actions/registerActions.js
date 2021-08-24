@@ -450,7 +450,10 @@ export const verifyEmail = (email, userInfo, navigation) => {
         });
       })
       .catch((err) => {
-        // console.log("verifyEmail ERROR", err);
+        console.log(
+          "verifyEmail ERROR",
+          JSON.stringify(err.response.data, null, 2)
+        );
 
         let errorMessage =
           err && err.response && err.response.data
