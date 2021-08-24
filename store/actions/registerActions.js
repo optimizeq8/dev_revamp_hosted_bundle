@@ -580,12 +580,21 @@ export const registerGuestUser = (
 ) => {
   return async (dispatch, getState) => {
     console.log("userInfo", JSON.stringify(userInfo, null, 2));
+    let user_info = {
+      email: userInfo.email,
+      password: userInfo.password,
+      password_confirmation: userInfo.repassword,
+      first_name: userInfo.firstname,
+      last_name: userInfo.lastname,
+      mobile: userInfo.mobile,
+    };
     createBaseUrl()
-      .post(`users`, userInfo)
+      .post(`users`, user_info)
       .then((res) => {
         return res.data;
       })
       .then((data) => {
+        console.log("data", JSON.stringify(data, null, 2));
         delete userInfo.password;
 
         analytics.track(`Form Submitted`, {
@@ -615,13 +624,13 @@ export const registerGuestUser = (
         // let adjustRegiserTracker = new AdjustEvent("eivlhl");
         // adjustRegiserTracker.setCallbackId(userInfo.mobile);
         // Adjust.trackEvent(adjustRegiserTracker);
-        if (!data.success) {
-          showMessage({
-            message: data.message,
-            type: data.success ? "success" : "warning",
-            position: "top",
-          });
-        }
+        // if (!data.success) {
+        //   showMessage({
+        //     message: data.message,
+        //     type: data.success ? "success" : "warning",
+        //     position: "top",
+        //   });
+        // }
         // TODO: NEED A SOLUTION FOR THIS
         // if (businessInvite === "0") {
         //   dispatch(registerUser(userInfo, navigation, businessInvite));
@@ -634,73 +643,78 @@ export const registerGuestUser = (
         return data;
       })
       .then(async (user) => {
-        if (user.success === true) {
-          const decodedUser = jwt_decode(user.access_token);
-          let peomise = await setAuthToken(user.access_token);
-          return { user: decodedUser, message: user.message };
-          //if something goes wrong with the registeration process or Front-end verification
-          //this will throw an error and stop the regiteration process
-        } else return Promise.reject({ message: user.message });
+        // if (user.success === true) {
+        //   const decodedUser = jwt_decode(user.access_token);
+        //   let peomise = await setAuthToken(user.access_token);
+        //   return { user: decodedUser, message: user.message };
+        //   //if something goes wrong with the registeration process or Front-end verification
+        //   //this will throw an error and stop the regiteration process
+        // } else return Promise.reject({ message: user.message });
       })
       .then((decodedUser) => {
-        if (decodedUser && decodedUser.user) {
-          if (
-            [
-              "nouf@optimizeapp.com",
-              "sam.omran@hotmail.com",
-              "imran@optimizekw.com",
-              "saadiya@optimizekw.com",
-              "shorook@optimizekw.com",
-              "samy@optimizeapp.com",
-            ].includes(decodedUser.user.email)
-          ) {
-            dispatch(chanege_base_url(true));
-          }
-          analytics.alias(decodedUser.user.userid);
-          analytics.flush();
-          // MixpanelSDK.identify(decodedUser.user.userid);
-
-          dispatch(setCurrentUser(decodedUser));
-        }
+        // if (decodedUser && decodedUser.user) {
+        //   if (
+        //     [
+        //       "nouf@optimizeapp.com",
+        //       "sam.omran@hotmail.com",
+        //       "imran@optimizekw.com",
+        //       "saadiya@optimizekw.com",
+        //       "shorook@optimizekw.com",
+        //       "samy@optimizeapp.com",
+        //     ].includes(decodedUser.user.email)
+        //   ) {
+        //     dispatch(chanege_base_url(true));
+        //   }
+        //   analytics.alias(decodedUser.user.userid);
+        //   analytics.flush();
+        //   // MixpanelSDK.identify(decodedUser.user.userid);
+        //   dispatch(setCurrentUser(decodedUser));
+        // }
       })
       .then(() => {
-        if (getState().auth.userInfo) {
-          dispatch(createBusinessAccount(userInfo, navigation));
-          dispatch({
-            type: actionTypes.SAVING_REGISTER_ACCOUNT,
-            payload: false,
-          });
-          navigation.navigate("RegistrationSuccess", {
-            source: "RegistrationDetailForm",
-            source_action: "Registration Detail Form Submitted",
-          });
-          // dispatch(send_push_notification());
-          dispatch(getBusinessAccounts());
-          // dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
-          AsyncStorage.setItem("registeredWithInvite", "true");
-        }
+        // if (getState().auth.userInfo) {
+        //   dispatch(createBusinessAccount(userInfo, navigation));
+        //   dispatch({
+        //     type: actionTypes.SAVING_REGISTER_ACCOUNT,
+        //     payload: false,
+        //   });
+        //   navigation.navigate("RegistrationSuccess", {
+        //     source: "RegistrationDetailForm",
+        //     source_action: "Registration Detail Form Submitted",
+        //   });
+        //   // dispatch(send_push_notification());
+        //   dispatch(getBusinessAccounts());
+        //   // dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
+        //   AsyncStorage.setItem("registeredWithInvite", "true");
+        // }
       })
       .catch((err) => {
-        // console.log("registerGuestUser ERROR", JSON.stringify(err, null, 2));
+        // console.log("registerGuestUser ERROR", err.response.data);
+        let errorMsg = null;
+        if (Object.keys(err.response.data.data).length > 0) {
+          for (var key in err.response.data.data) {
+            errorMsg = err.response.data.data[key][0];
+          }
+        } else if (err.message || err.response) {
+          errorMsg =
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.";
+        }
+        console.log("errorMsg", errorMsg);
         analytics.track(`Form Error Made`, {
           source: "RegistrationDetailForm",
           source_action: "a_sign_up",
-          error_description:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
+          error_description: errorMsg,
         });
         showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
+          message: errorMsg,
           type: "danger",
           position: "top",
         });
         return dispatch({
           type: actionTypes.ERROR_REGISTER_GUEST_USER,
-          payload: { success: false, userInfo },
+          payload: { success: false, userInfo, message: errorMsg },
         });
       });
   };

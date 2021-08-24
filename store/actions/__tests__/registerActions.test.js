@@ -2,7 +2,7 @@ import Axios from "axios";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import reducer from "../../reducers";
-import { verifyEmail } from "../registerActions";
+import { verifyEmail, registerGuestUser } from "../registerActions";
 import * as actionTypes from "../actionTypes";
 import NavigationService from "../../../NavigationService";
 const middlewares = [thunk];
@@ -158,8 +158,31 @@ describe("Register step 1, verify email action/ reducer", () => {
   });
 });
 
-// describe("Register Step 2, User Info action/ reducer", () => {
-//   test("User Register Success", () => {});
-
-//   test("User Register Failure", () => {});
-// });
+describe("Register Step 2, User Info action/ reducer", () => {
+  test("User Register Failure", () => {
+    const failureAction = {
+      type: actionTypes.ERROR_REGISTER_GUEST_USER,
+      payload: {
+        success: false,
+        message: "The mobile has already been taken.",
+      },
+    };
+    const store = mockStore(reducer(undefined, failureAction));
+    const dispatchedStore = store.dispatch(
+      registerGuestUser({
+        email: "saadiya@optimizekw.com",
+        password: "Saadiya@2021",
+        repassword: "Saadiya@2021",
+        firstname: "Saadiya",
+        lastname: "Kazi",
+        mobile: "+96567613407",
+      })
+    );
+    return dispatchedStore.then(() => {
+      console.log(
+        "User Register state",
+        JSON.stringify(store.getActions(), null, 2)
+      );
+    });
+  });
+});
