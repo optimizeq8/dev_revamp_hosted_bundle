@@ -325,14 +325,19 @@ export const forgotPassword = (email, navigation) => {
       type: actionTypes.CHANGE_PASSWORD_LOADING,
       payload: true,
     });
-    return axios({
-      url: `https://api.devoa.optimizeapp.com/api/password/email`,
-      method: "POST",
-      data: { email: email },
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+
+    return createBaseUrl()
+      .post(
+        `password/email`,
+        {
+          email: email,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((response) => {
         analytics.track(`Forgot Password Request`, {
           source: "ForgotPassword",
@@ -366,19 +371,25 @@ export const forgotPassword = (email, navigation) => {
         // }
       })
       .catch((err) => {
-        // console.log(
-        //   "forgotPassword error",
-        //   JSON.stringify(err.response.data, null, 2)
-        // );
+        // console.log("forgotPassword error", err.response);
         let errorMessage = null;
-
-        errorMessage = err.response.data
-          ? err.response.data.email
-            ? err.response.data.email
-            : err.response.data.message
-            ? err.response.data.message
-            : err.message || err.response
-          : err.message || err.response;
+        if (err.response && err.response.data) {
+          if (Object.keys(err.response.data.data).length > 0) {
+            // iterate over the error data object
+            for (const key in err.response.data.data) {
+              errorMessage = err.response.data.data[0];
+            }
+          }
+        } else if (err.message || err.response) {
+          errorMessage = err.message || err.response;
+        }
+        // errorMessage = err.response.data
+        //   ? err.response.data.email
+        //     ? err.response.data.email
+        //     : err.response.data.message
+        //     ? err.response.data.message
+        //     : err.message || err.response
+        //   : err.message || err.response;
 
         showMessage({
           message: errorMessage,
