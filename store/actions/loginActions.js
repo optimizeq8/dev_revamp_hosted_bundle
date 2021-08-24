@@ -338,15 +338,16 @@ export const forgotPassword = (email, navigation) => {
           },
         }
       )
-      .then((response) => {
+      .then((res) => res.data)
+      .then((data) => {
         analytics.track(`Forgot Password Request`, {
           source: "ForgotPassword",
           source_action: "a_forget_password",
           email,
-          action_status: response.data.status ? "success" : "failure",
+          action_status: data.success ? "success" : "failure",
         });
         showMessage({
-          message: response.data.status,
+          message: data.data.status,
           type: "success",
           position: "top",
         });
@@ -355,23 +356,24 @@ export const forgotPassword = (email, navigation) => {
           type: actionTypes.CHANGE_PASSWORD_LOADING,
           payload: false,
         });
+
+        if (response.data.success) {
+          analytics.track(`a_go_back`, {
+            source: "forget_password",
+            source_action: "a_go_back",
+          });
+          navigation.goBack();
+        }
         return dispatch({
           type: actionTypes.FORGOT_PASSWORD,
           payload: {
-            success: true,
-            message: response.data.status,
+            success: data.success,
+            message: data.data.status,
           },
         });
-        // if (response.data.success) {
-        //   analytics.track(`a_go_back`, {
-        //     source: "forget_password",
-        //     source_action: "a_go_back",
-        //   });
-        //   navigation.goBack();
-        // }
       })
       .catch((err) => {
-        // console.log("forgotPassword error", err.response);
+        console.log("forgotPassword error", err.response.data);
         let errorMessage = null;
         if (err.response && err.response.data) {
           if (Object.keys(err.response.data.data).length > 0) {
@@ -479,8 +481,12 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
         password: currentPass,
         new_password: newPass,
       })
+      .then((response) => response.data)
       .then((response) => {
-        console.log("response", JSON.stringify(response, null, 2));
+        console.log(
+          "changePassword response",
+          JSON.stringify(response, null, 2)
+        );
         // const temPwd = navigation.getParam("temp_pwd", false);
         // // if tempPwd change relogin for setting new auth token
         // if (temPwd && response.data.success) {
@@ -556,7 +562,7 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
         // });
       })
       .catch((err) => {
-        // console.log("changePasswordError", err.response);
+        console.log("changePasswordError", err.response.data);
         let errorMessage = err.response
           ? err.response.data
             ? err.response.data.error
