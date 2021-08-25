@@ -1,0 +1,25 @@
+export let successResponseData = {
+  api_version: "v1",
+  success: true,
+  message: "Business updated",
+  data: {
+    id: 11,
+    name: "Updated Business name",
+    country: { id: 2, name: "Kuwait" },
+    type: "SME or Startup",
+    approval_status: "Pending",
+  },
+};
+
+export let sameNameResponseData = {
+  api_version: "v1",
+  error: true,
+  message: "Validation failed",
+  data: {
+    name: ["The name has already been taken."],
+  },
+};
+
+export let wrongBusinessIDResponseData = {
+  message: "No query results for model [App\\Business] wrongbusinessid",
+};

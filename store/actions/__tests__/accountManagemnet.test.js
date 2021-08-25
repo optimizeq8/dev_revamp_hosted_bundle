@@ -5,23 +5,34 @@ import { initialState } from "../../reducers/accountManagementReducer";
 import accountManagementReducer from "../../reducers/accountManagementReducer";
 import * as actionTypes from "../actionTypes";
 import { updateBusinessInfo } from "../accountManagementActions";
+import moxios from "moxios";
+import {
+  wrongBusinessIDResponseData,
+  successResponseData,
+  sameNameResponseData,
+} from "./MockedApiResponses/UpdateBusinessAccountMock";
 // var querystring = require("querystring");
 // const BASE_URL = "https://api.devoa.optimizeapp.com/api/";
 beforeAll(async () => {
-  Axios.defaults.adapter = require("axios/lib/adapters/http");
-  let token = await Axios.post("https://api.devoa.optimizeapp.com/api/login", {
-    email: "imran@optimizeapp.com",
-    password: "imranoa@2021",
-    is_mobile: 0,
-  }).catch((err) => console.log("err", err));
-  Axios.defaults.headers.common.Authorization =
-    "Bearer " + token.data.access_token;
+  // Axios.defaults.adapter = require("axios/lib/adapters/http");
+  // let token = await Axios.post("https://api.devoa.optimizeapp.com/api/login", {
+  //   email: "imran@optimizeapp.com",
+  //   password: "imranoa@2021",
+  //   is_mobile: 0,
+  // }).catch((err) => console.log("err", err));
+  // Axios.defaults.headers.common.Authorization =
+  //   "Bearer " + token.data.access_token;
+});
+beforeEach(() => {
+  moxios.install();
+});
+afterEach(() => {
+  moxios.uninstall();
 });
 
 describe("Account Management Actions", () => {
   const middlewares = [thunk];
   const mockStore = configureMockStore(middlewares);
-
   describe(`Business Info Action / Reducer`, () => {
     test("should return initial state", () => {
       const state = accountManagementReducer(undefined, {
@@ -38,6 +49,14 @@ describe("Account Management Actions", () => {
           type: "",
         })
       );
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 401,
+          response: wrongBusinessIDResponseData,
+        });
+      });
+
       const dispatchedStore = store.dispatch(
         updateBusinessInfo(
           "wrongbusinessid",
@@ -74,6 +93,13 @@ describe("Account Management Actions", () => {
           type: "",
         })
       );
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          response: successResponseData,
+        });
+      });
       let timestamp = new Date().getTime();
       const dispatchedStore = store.dispatch(
         updateBusinessInfo(
