@@ -364,6 +364,7 @@ class PersonalInfo extends Component {
 
       const info = {
         ...userInfo,
+        repassword: this.state.repassword,
       };
       this.props.registerGuestUser(
         info,
