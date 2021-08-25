@@ -24,6 +24,15 @@ jest.mock("react-native-notifications", () => {
     },
   };
 });
+jest.mock("@segment/analytics-react-native", () => {
+  return {
+    track: jest.fn(),
+    identify: jest.fn(),
+    flush: jest.fn(),
+    reset: jest.fn(),
+    alias: jest.fn(),
+  };
+});
 // var querystring = require("querystring");
 // const BASE_URL = "https://api.devoa.optimizeapp.com/api/";
 beforeAll(() => (Axios.defaults.adapter = require("axios/lib/adapters/http")));

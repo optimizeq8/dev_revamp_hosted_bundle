@@ -17,13 +17,3 @@ const config = {
 };
 
 module.exports = config;
-
-// // Or async function
-// jest.config.js
-module.exports = {
-  transformIgnorePatterns: [`/node_modules/react-native-svg-transformer`],
-
-  moduleNameMapper: {
-    "\\.svg": "<rootDir>/__mocks__/svgMock.js",
-  },
-};

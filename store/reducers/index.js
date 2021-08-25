@@ -1,36 +1,36 @@
 import { combineReducers } from "redux";
 import authReducer from "./authReducer";
-// import campaignReducer from "./campaignReducer";
-// import transactionReducer from "./transactionReducer";
-// import dashboardReducer from "./dashboardReducer";
-// import accountManagementReducer from "./accountManagementReducer";
-// import genericReducer from "./genericReducer";
+import campaignReducer from "./campaignReducer";
+import transactionReducer from "./transactionReducer";
+import dashboardReducer from "./dashboardReducer";
+import accountManagementReducer from "./accountManagementReducer";
+import genericReducer from "./genericReducer";
 import loginReducer from "./loginReducer";
 import registerReducer from "./registerReducer";
-// import messengerReducer from "./messengerReducer";
-// import languageReducer from "./languageReducer";
-// import googleAdsReducer from "./googleAdsCampaignReducer";
-// import websiteReducer from "./optimizeWebsiteReducer";
-// import instagramAds from "./instagramCampaignReducer";
-// import audience from "./audienceReducer";
-// import instagramAudience from "./instagramAudienceReducer";
+import messengerReducer from "./messengerReducer";
+import languageReducer from "./languageReducer";
+import googleAdsReducer from "./googleAdsCampaignReducer";
+import websiteReducer from "./optimizeWebsiteReducer";
+import instagramAds from "./instagramCampaignReducer";
+import audience from "./audienceReducer";
+import instagramAudience from "./instagramAudienceReducer";
 
 const appReducer = combineReducers({
   auth: authReducer,
-  // campaignC: campaignReducer,
-  // transA: transactionReducer,
+  campaignC: campaignReducer,
+  transA: transactionReducer,
   login: loginReducer,
   register: registerReducer,
-  // dashboard: dashboardReducer,
-  // account: accountManagementReducer,
-  // generic: genericReducer,
-  // messenger: messengerReducer,
-  // language: languageReducer,
-  // googleAds: googleAdsReducer,
-  // website: websiteReducer,
-  // instagramAds: instagramAds,
-  // audience: audience,
-  // instagramAudience: instagramAudience,
+  dashboard: dashboardReducer,
+  account: accountManagementReducer,
+  generic: genericReducer,
+  messenger: messengerReducer,
+  language: languageReducer,
+  googleAds: googleAdsReducer,
+  website: websiteReducer,
+  instagramAds: instagramAds,
+  audience: audience,
+  instagramAudience: instagramAudience,
 });
 
 const rootReducer = (state, action) => {

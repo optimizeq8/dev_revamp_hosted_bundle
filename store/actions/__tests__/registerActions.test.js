@@ -22,6 +22,15 @@ jest.mock("react-native-notifications", () => {
 jest.mock("react-native-flash-message", () => {
   return { showMessage: jest.fn() };
 });
+jest.mock("@segment/analytics-react-native", () => {
+  return {
+    track: jest.fn(),
+    identify: jest.fn(),
+    flush: jest.fn(),
+    reset: jest.fn(),
+    alias: jest.fn(),
+  };
+});
 jest.mock("react-navigation", () => {
   return {
     NavigationActions: {
