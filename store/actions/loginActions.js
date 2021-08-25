@@ -204,29 +204,13 @@ export const login = (userData, navigation = NavigationService) => {
       .then((res) => {
         return res.data;
       })
-      .then(async (user) => {
-        // let decodedUser = null;
-        if (user.hasOwnProperty("access_token")) {
-          // decodedUser = jwt_decode(user.access_token);
-          return await setAuthToken(user.access_token);
-        } else {
-          /*
-          showMessage({
-            message: user.message,
-            type: "warning",
-            position: "top",
-          });
-          dispatch({
-            type: actionTypes.SET_LOADING_USER,
-            payload: false,
-          });
-          const obj = { user: decodedUser, message: user.message };
-          return obj; */
+      .then(async (data) => {
+        if (data.success) {
+          await setAuthToken(data.data.access_token);
         }
-        // }
       })
       .then(async () => {
-        return await dispatch(getUserProfile());
+        await dispatch(getUserProfile());
       })
       .then(() => {
         if (getState().auth.userInfo) {
@@ -272,17 +256,26 @@ export const login = (userData, navigation = NavigationService) => {
         }
       })
       .catch((err) => {
+        let errorMessage = null;
+        if (err.response && err.response.data && err.response.data.data) {
+          if (Object.keys(err.response.data.data).length > 0) {
+            // iterate over the error data object
+            for (const key in err.response.data.data) {
+              errorMessage = err.response.data.data[key][0];
+            }
+          }
+        } else if (err.message || err.response) {
+          errorMessage = err.message || err.response;
+        }
+        console.log("errorMessage", errorMessage);
         dispatch({
           type: actionTypes.SET_LOADING_USER,
           payload: false,
         });
-        console.log("login error", JSON.stringify(err.data, null, 2));
+
         showMessage({
           type: "danger",
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
+          message: errorMessage,
           position: "top",
         });
       });
@@ -340,7 +333,7 @@ export const forgotPassword = (email, navigation) => {
       )
       .then((res) => res.data)
       .then((data) => {
-        console.log("forgot passowrd data", JSON.stringify(data, null, 2));
+        // console.log("forgot passowrd data", JSON.stringify(data, null, 2));
         analytics.track(`Forgot Password Request`, {
           source: "ForgotPassword",
           source_action: "a_forget_password",
@@ -352,20 +345,20 @@ export const forgotPassword = (email, navigation) => {
           type: "success",
           position: "top",
         });
-        // console.log("response", JSON.stringify(response.data, null, 2));
+
         dispatch({
           type: actionTypes.CHANGE_PASSWORD_LOADING,
           payload: false,
         });
 
-        if (response.data.success) {
-          // analytics.track(`a_go_back`, {
-          //   source: "forget_password",
-          //   source_action: "a_go_back",
-          // });
-          // navigation.goBack();
+        if (data.success) {
+          analytics.track(`a_go_back`, {
+            source: "forget_password",
+            source_action: "a_go_back",
+          });
+          navigation.goBack();
         }
-        console.log("reached here");
+
         return dispatch({
           type: actionTypes.FORGOT_PASSWORD,
           payload: {
@@ -376,7 +369,7 @@ export const forgotPassword = (email, navigation) => {
         });
       })
       .catch((err) => {
-        console.log("forgotPassword error", err);
+        // console.log("forgotPassword error", err);
         let errorMessage = null;
         if (err.response && err.response.data && err.response.data.data) {
           if (Object.keys(err.response.data.data).length > 0) {
@@ -389,13 +382,6 @@ export const forgotPassword = (email, navigation) => {
           errorMessage = err.message || err.response;
         }
         // console.log("errorMessage", errorMessage);
-        // errorMessage = err.response.data
-        //   ? err.response.data.email
-        //     ? err.response.data.email
-        //     : err.response.data.message
-        //     ? err.response.data.message
-        //     : err.message || err.response
-        //   : err.message || err.response;
 
         showMessage({
           message: errorMessage,
@@ -725,10 +711,11 @@ export const getUserProfile = () => {
           type: actionTypes.USER_PROFILE_LOADING,
           payload: false,
         });
-        analytics.alias(data.id);
-        analytics.flush();
-        dispatch(setCurrentUser(data));
-        return true;
+        if (data.success) {
+          analytics.alias(data.data.id);
+          analytics.flush();
+          return dispatch(setCurrentUser(data.data));
+        }
       })
       .catch((error) => {
         // console.log("getUserProfileError", error);
