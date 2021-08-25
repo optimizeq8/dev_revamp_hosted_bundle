@@ -94,6 +94,16 @@ jest.mock("@react-native-community/async-storage", () => {
   };
 });
 
+jest.mock("react-native", () => {
+  return {
+    Animated: {
+      Value: jest.fn(),
+      timing: jest.fn().mockImplementation(() => {
+        return { start: jest.fn() };
+      }),
+    },
+  };
+});
 // jest.mock("react-native-reanimated", () => {
 //   const View = require("react-native").View;
 

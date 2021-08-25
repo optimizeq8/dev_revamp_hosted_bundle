@@ -176,7 +176,7 @@ export const login = (userData, navigation = NavigationService) => {
     ...userData,
     is_mobile: 0,
   };
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     // if (
     //   [
     //     "nouf@optimizeapp.com",
@@ -195,7 +195,7 @@ export const login = (userData, navigation = NavigationService) => {
     });
     return createBaseUrl()
       .post("login", querystring.stringify(userInfo), {
-        timeout: 5000,
+        timeout: 30000,
         timeoutErrorMessage: "Something went wrong, please try again.",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -217,7 +217,7 @@ export const login = (userData, navigation = NavigationService) => {
           analytics.identify(getState().auth.userInfo.id, {
             logged_out: false,
           });
-          if (getState().auth.userInfo.tmp_pwd === "1") {
+          if (getState().auth.userInfo.tmp_pwd) {
             navigation.navigate("ChangePassword", {
               temp_pwd: true,
               source: "sign_in",
@@ -267,7 +267,7 @@ export const login = (userData, navigation = NavigationService) => {
         } else if (err.message || err.response) {
           errorMessage = err.message || err.response;
         }
-        console.log("errorMessage", errorMessage);
+        // console.log("login errorMessage", errorMessage);
         dispatch({
           type: actionTypes.SET_LOADING_USER,
           payload: false,
@@ -456,7 +456,13 @@ export const setCurrentUser = (user) => {
   };
 };
 
-export const changePassword = (currentPass, newPass, navigation, userEmail) => {
+export const changePassword = (
+  currentPass,
+  newPass,
+  newPassConfirmation,
+  navigation,
+  userEmail
+) => {
   axios.defaults.headers.common = {
     ...axios.defaults.headers.common,
     "Content-Type": "application/x-www-form-urlencoded",
@@ -470,96 +476,106 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
       .patch("users/password/update", {
         password: currentPass,
         new_password: newPass,
+        new_password_confirmation: newPassConfirmation,
       })
       .then((response) => response.data)
-      .then((response) => {
-        console.log(
-          "changePassword response",
-          JSON.stringify(response, null, 2)
-        );
-        // const temPwd = navigation.getParam("temp_pwd", false);
-        // // if tempPwd change relogin for setting new auth token
-        // if (temPwd && response.data.success) {
-        //   analytics.track(`Password Changed`, {
-        //     source: "ChangePassword",
-        //     action_status: response.data.success ? "success" : "failure",
-        //     error_description: !response.data.success && response.data.message,
-        //     business_id:
-        //       getState().account.mainBusiness &&
-        //       getState().account.mainBusiness.businessid,
-        //   });
-        //   showMessage({
-        //     message: response.data.message,
-        //     type: response.data.success ? "success" : "warning",
-        //     position: "top",
-        //   });
-        //   dispatch(
-        //     login(
-        //       {
-        //         email: userEmail,
-        //         emailError: null,
-        //         password: newPass,
-        //         passwordError: "",
-        //       },
-        //       navigation
-        //     )
-        //   );
-        //   return dispatch({
-        //     type: actionTypes.CHANGE_PASSWORD,
-        //     payload: {
-        //       success: response.data.success,
-        //       loading: false,
-        //     },
-        //   });
-        // }
-        // let time = new Animated.Value(0);
+      .then((data) => {
+        // console.log("changePassword response", JSON.stringify(data, null, 2));
+        const temPwd = navigation.getParam("temp_pwd", false);
+        // if tempPwd change relogin for setting new auth token
+        if (temPwd && data.success) {
+          analytics.track(`Password Changed`, {
+            source: "ChangePassword",
+            action_status: data.success ? "success" : "failure",
+            error_description: !data.success && data.message,
+            business_id:
+              getState().account.mainBusiness &&
+              getState().account.mainBusiness.businessid,
+          });
+          showMessage({
+            message: data.message,
+            type: data.success ? "success" : "warning",
+            position: "top",
+          });
+          dispatch(
+            login(
+              {
+                email: userEmail,
+                emailError: null,
+                password: newPass,
+                passwordError: "",
+              },
+              navigation
+            )
+          );
+          return dispatch({
+            type: actionTypes.CHANGE_PASSWORD,
+            payload: {
+              success: data.success,
+              loading: false,
+            },
+          });
+        }
+        let time = new Animated.Value(0);
 
-        // Animated.timing(time, {
-        //   toValue: 1,
-        //   duration: 2000,
-        //   useNativeDriver: true,
+        Animated.timing(time, {
+          toValue: 1,
+          duration: 2000,
+          useNativeDriver: true,
 
-        //   //   easing: Easing.linear
-        // }).start(() => {
-        // analytics.track(`Password Changed`, {
-        //   source: "ChangePassword",
-        //   action_status: response.data.success ? "success" : "failure",
-        //   error_description: !response.data.success && response.data.message,
-        //   business_id:
-        //     getState().account.mainBusiness &&
-        //     getState().account.mainBusiness.businessid,
-        // });
+          //   easing: Easing.linear
+        }).start(() => {
+          analytics.track(`Password Changed`, {
+            source: "ChangePassword",
+            action_status: data.success ? "success" : "failure",
+            error_description: !data.success && data.message,
+            business_id:
+              getState().account.mainBusiness &&
+              getState().account.mainBusiness.businessid,
+          });
 
-        // showMessage({
-        //   message: response.data.message,
-        //   type: response.data.success ? "success" : "warning",
-        //   position: "top",
-        // });
-        // if (response.data.success) {
-        //   navigation.navigate("Dashboard", {
-        //     source: "change_password",
-        //     source_action: "a_change_password",
-        //   });
-        // }
-        return dispatch({
-          type: actionTypes.CHANGE_PASSWORD,
-          payload: {
-            success: response.data.success,
-            loading: false,
-            message: response.data.status,
-          },
+          showMessage({
+            message: data.message,
+            type: data.success ? "success" : "warning",
+            position: "top",
+          });
+          if (data.success) {
+            navigation.navigate("Dashboard", {
+              source: "change_password",
+              source_action: "a_change_password",
+            });
+          }
+
+          return dispatch({
+            type: actionTypes.CHANGE_PASSWORD,
+            payload: {
+              success: data.success,
+              loading: false,
+              message: data.message,
+            },
+          });
         });
-        // });
       })
       .catch((err) => {
-        // console.log("changePasswordError", err.response.data);
-        let errorMessage = err.response
-          ? err.response.data
-            ? err.response.data.message
-              ? err.response.data.message
-              : err.message
-            : err.message
-          : "Oops! Something went wrong. Please try again.";
+        // console.log("changePasswordError", err);
+        let errorMessage = null;
+        if (err.response && err.response.data && err.response.data.data) {
+          if (Object.keys(err.response.data.data).length > 0) {
+            // iterate over the error data object
+            for (const key in err.response.data.data) {
+              errorMessage = err.response.data.data[key][0];
+            }
+          }
+        } else if (
+          err.response &&
+          err.response.data &&
+          err.response.data.message
+        ) {
+          errorMessage = err.response.data.message;
+        } else if (err.message || err.response) {
+          errorMessage = err.message || err.response;
+        }
+        // console.log("changePassword errorMessage", errorMessage);
         showMessage({
           message: errorMessage,
           type: "danger",

@@ -1,5 +1,6 @@
 // // const esModules = ["expo-localization", "react-native-flash-message"].join("|");
 const config = {
+  testTimeout: 30000,
   //   testEnvironment: "node",
   //   type: "module",
   //   target: "esnext",

@@ -162,6 +162,7 @@ describe("LoginAction", () => {
           mobile: "+96522112288",
           email: "imran@optimizeapp.com",
           verified: 1,
+          tmp_pwd: 0,
         },
       };
       const store = mockStore(reducer(undefined, successAction));
@@ -243,6 +244,8 @@ describe("LoginAction", () => {
         type: actionTypes.ERROR_CHANGE_PASSWORD,
         payload: {
           success: false,
+          message: "Incorrect current password",
+          loading: false,
         },
       };
       const store = mockStore(reducer(undefined, failureAction));
@@ -259,7 +262,7 @@ describe("LoginAction", () => {
         expect(store.getActions()).toEqual([
           {
             type: actionTypes.CHANGE_PASSWORD,
-            payload: { success: false, loading: true },
+            payload: { success: false, message: null, loading: true },
           },
           {
             type: actionTypes.ERROR_CHANGE_PASSWORD,
@@ -267,6 +270,49 @@ describe("LoginAction", () => {
               success: false,
               message: "Incorrect current password",
               loading: false,
+            },
+          },
+        ]);
+      });
+    });
+
+    test("Change Password Success action", () => {
+      const failureAction = {
+        type: actionTypes.CHANGE_PASSWORD,
+        payload: {
+          success: false,
+          message: null,
+          loading: false,
+        },
+      };
+      const store = mockStore(reducer(undefined, failureAction));
+      const dispatchedStore = store.dispatch(
+        changePassword(
+          "imranoa@202121",
+          "imranoa@2021",
+          "imranoa@2021",
+          { navigate: () => {}, getParam: () => {} },
+          "imran@optimizeapp.com"
+        )
+      );
+
+      return dispatchedStore.then(() => {
+        console.log("store.getActions()", store.getActions());
+        expect(store.getActions()).toEqual([
+          {
+            type: actionTypes.CHANGE_PASSWORD,
+            payload: {
+              success: false,
+              message: null,
+              loading: true,
+            },
+          },
+          {
+            type: actionTypes.CHANGE_PASSWORD,
+            payload: {
+              success: true,
+              message: "Password Updated",
+              loading: true,
             },
           },
         ]);

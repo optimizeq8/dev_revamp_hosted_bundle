@@ -122,6 +122,7 @@ class ChangePassword extends Component {
       this.props.changePassword(
         this.state.userInfo.currentPassword,
         this.state.userInfo.password,
+        this.state.repassword,
         this.props.navigation,
         this.props.user.email
       );
@@ -264,9 +265,21 @@ class ChangePassword extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  changePassword: (currentPass, newPass, navigation, userEmail) =>
+  changePassword: (
+    currentPass,
+    newPass,
+    newPassConfirm,
+    navigation,
+    userEmail
+  ) =>
     dispatch(
-      actionCreators.changePassword(currentPass, newPass, navigation, userEmail)
+      actionCreators.changePassword(
+        currentPass,
+        newPass,
+        newPassConfirm,
+        navigation,
+        userEmail
+      )
     ),
   logout: (navigation) => dispatch(actionCreators.logout(navigation)),
 });
