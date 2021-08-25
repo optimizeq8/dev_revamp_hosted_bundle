@@ -24,6 +24,15 @@ jest.mock("react-native-notifications", () => {
     },
   };
 });
+jest.mock("@segment/analytics-react-native", () => {
+  return {
+    track: jest.fn(),
+    identify: jest.fn(),
+    flush: jest.fn(),
+    reset: jest.fn(),
+    alias: jest.fn(),
+  };
+});
 // var querystring = require("querystring");
 // const BASE_URL = "https://api.devoa.optimizeapp.com/api/";
 beforeAll(() => (Axios.defaults.adapter = require("axios/lib/adapters/http")));
@@ -111,7 +120,7 @@ describe("LoginAction", () => {
         type: actionTypes.FORGOT_PASSWORD,
         payload: {
           success: false,
-          message: "The given data was invalid.",
+          message: "The email field is required.",
         },
       };
       const store = mockStore(loginReducer(undefined, failureAction));
@@ -125,7 +134,7 @@ describe("LoginAction", () => {
             type: actionTypes.FORGOT_PASSWORD,
             payload: {
               success: false,
-              message: "The given data was invalid.",
+              message: "The email field is required.",
             },
           },
         ]);
@@ -265,7 +274,8 @@ describe("LoginAction", () => {
             type: actionTypes.ERROR_CHANGE_PASSWORD,
             payload: {
               success: false,
-              message: "Inccorect current password",
+              // message: "Inccorect current password",
+              message: "Unauthenticated.",
               loading: false,
             },
           },

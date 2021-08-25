@@ -340,6 +340,7 @@ export const forgotPassword = (email, navigation) => {
       )
       .then((res) => res.data)
       .then((data) => {
+        console.log("forgot passowrd data", JSON.stringify(data, null, 2));
         analytics.track(`Forgot Password Request`, {
           source: "ForgotPassword",
           source_action: "a_forget_password",
@@ -347,7 +348,7 @@ export const forgotPassword = (email, navigation) => {
           action_status: data.success ? "success" : "failure",
         });
         showMessage({
-          message: data.data.status,
+          message: data.message,
           type: "success",
           position: "top",
         });
@@ -358,33 +359,36 @@ export const forgotPassword = (email, navigation) => {
         });
 
         if (response.data.success) {
-          analytics.track(`a_go_back`, {
-            source: "forget_password",
-            source_action: "a_go_back",
-          });
-          navigation.goBack();
+          // analytics.track(`a_go_back`, {
+          //   source: "forget_password",
+          //   source_action: "a_go_back",
+          // });
+          // navigation.goBack();
         }
+        console.log("reached here");
         return dispatch({
           type: actionTypes.FORGOT_PASSWORD,
           payload: {
             success: data.success,
-            message: data.data.status,
+            message: data.message,
+            temp_exist: data.reset_request_exist,
           },
         });
       })
       .catch((err) => {
-        console.log("forgotPassword error", err.response.data);
+        console.log("forgotPassword error", err);
         let errorMessage = null;
-        if (err.response && err.response.data) {
+        if (err.response && err.response.data && err.response.data.data) {
           if (Object.keys(err.response.data.data).length > 0) {
             // iterate over the error data object
             for (const key in err.response.data.data) {
-              errorMessage = err.response.data.data[0];
+              errorMessage = err.response.data.data[key][0];
             }
           }
         } else if (err.message || err.response) {
           errorMessage = err.message || err.response;
         }
+        // console.log("errorMessage", errorMessage);
         // errorMessage = err.response.data
         //   ? err.response.data.email
         //     ? err.response.data.email
@@ -562,11 +566,11 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
         // });
       })
       .catch((err) => {
-        console.log("changePasswordError", err.response.data);
+        // console.log("changePasswordError", err.response.data);
         let errorMessage = err.response
           ? err.response.data
-            ? err.response.data.error
-              ? err.response.data.error.message
+            ? err.response.data.message
+              ? err.response.data.message
               : err.message
             : err.message
           : "Oops! Something went wrong. Please try again.";
