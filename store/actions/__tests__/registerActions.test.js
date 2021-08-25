@@ -90,7 +90,7 @@ describe("Register step 1, verify email action/ reducer", () => {
       type: actionTypes.VERIFY_EMAIL,
       payload: {
         success: true,
-        message: "Email allowed for registration",
+        message: "Email is allowed for registration",
       },
     };
     const store = mockStore(reducer(undefined, successAction));
@@ -115,7 +115,7 @@ describe("Register step 1, verify email action/ reducer", () => {
             userInfo: {
               email: "email@optimizeapp.com",
             },
-            message: "Email allowed for registration",
+            message: "Email is allowed for registration",
           },
         },
         {
