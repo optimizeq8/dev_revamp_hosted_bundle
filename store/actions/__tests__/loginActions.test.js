@@ -69,7 +69,7 @@ describe("LoginAction", () => {
 
       const store = mockStore(loginReducer(undefined, failureAction));
       const dispatchedStore = store.dispatch(
-        forgotPassword("email@optimizeapp.com")
+        forgotPassword("email@optimizeapp.com", { goBack: () => {} })
       );
 
       return dispatchedStore.then(() => {
@@ -97,7 +97,7 @@ describe("LoginAction", () => {
       };
       const store = mockStore(loginReducer(undefined, successAction));
       const dispatchedStore = store.dispatch(
-        forgotPassword("imran@optimizeapp.com")
+        forgotPassword("imran@optimizeapp.com", { goBack: () => {} })
       );
 
       return dispatchedStore.then(() => {
@@ -111,6 +111,13 @@ describe("LoginAction", () => {
               message: "We have e-mailed your password reset link!",
             },
           },
+          // {
+          //   type: actionTypes.FORGOT_PASSWORD,
+          //   payload: {
+          //     success: false,
+          //     message: "Please wait before retrying.",
+          //   },
+          // },
         ]);
       });
     });
@@ -120,11 +127,13 @@ describe("LoginAction", () => {
         type: actionTypes.FORGOT_PASSWORD,
         payload: {
           success: false,
-          message: "The given data was invalid.",
+          message: "The email field is required.",
         },
       };
       const store = mockStore(loginReducer(undefined, failureAction));
-      const dispatchedStore = store.dispatch(forgotPassword(null));
+      const dispatchedStore = store.dispatch(
+        forgotPassword(null, { goBack: () => {} })
+      );
 
       return dispatchedStore.then(() => {
         expect(store.getActions()).toEqual([
@@ -134,7 +143,7 @@ describe("LoginAction", () => {
             type: actionTypes.FORGOT_PASSWORD,
             payload: {
               success: false,
-              message: "The given data was invalid.",
+              message: "The email field is required.",
             },
           },
         ]);
@@ -158,12 +167,13 @@ describe("LoginAction", () => {
       const store = mockStore(reducer(undefined, successAction));
       const dispatchedStore = store.dispatch(
         login(
-          { email: "imran@optimizeapp.com", password: "imranoa@2021" },
-          NavigationService
+          { email: "imran@optimizeapp.com", password: "imranoa@202121" },
+          { navigate: () => {} }
         )
       );
 
       return dispatchedStore.then(() => {
+        // console.log("store.getActions()", store.getActions());
         expect(store.getActions()).toEqual([
           {
             type: actionTypes.SET_LOADING_USER,
@@ -186,6 +196,7 @@ describe("LoginAction", () => {
               mobile: "+96522112288",
               email: "imran@optimizeapp.com",
               verified: 1,
+              tmp_pwd: 0,
             },
           },
           {
@@ -195,55 +206,35 @@ describe("LoginAction", () => {
         ]);
       });
     });
-    //   test("should handle login FAILURE action ", () => {
-    //     const failureAction = {
-    //       type: actionTypes.SET_CURRENT_USER,
-    //       payload: {
-    //         id: 11,
-    //         first_name: "Imran",
-    //         last_name: "Sheikh",
-    //         mobile: "+96522112288",
-    //         email: "imran@optimizeapp.com",
-    //         verified: 1,
-    //       },
-    //     };
-    //     const store = mockStore(reducer(undefined, failureAction));
-    //     const dispatchedStore = store.dispatch(
-    //       login({ email: null, password: "imrano" }, NavigationService)
-    //     );
+    test("should handle login FAILURE action ", () => {
+      const failureAction = {
+        type: actionTypes.SET_LOADING_USER,
+        payload: {
+          loading: false,
+        },
+      };
+      const store = mockStore(reducer(undefined, failureAction));
+      const dispatchedStore = store.dispatch(
+        login(
+          { email: "imran@optimizeapp.com", password: "imrano" },
+          { navigate: (routeName, params) => {} }
+        )
+      );
 
-    //     return dispatchedStore.then(() => {
-    //       expect(store.getActions()).toEqual([
-    //         {
-    //           type: actionTypes.SET_LOADING_USER,
-    //           payload: true,
-    //         },
-    //         // {
-    //         //   type: actionTypes.USER_PROFILE_LOADING,
-    //         //   payload: true,
-    //         // },
-    //         // {
-    //         //   type: actionTypes.USER_PROFILE_LOADING,
-    //         //   payload: false,
-    //         // },
-    //         // {
-    //         //   type: actionTypes.SET_CURRENT_USER,
-    //         //   payload: {
-    //         //     id: 11,
-    //         //     first_name: "Imran",
-    //         //     last_name: "Sheikh",
-    //         //     mobile: "+96522112288",
-    //         //     email: "imran@optimizeapp.com",
-    //         //     verified: 1,
-    //         //   },
-    //         // },
-    //         {
-    //           type: actionTypes.SET_LOADING_USER,
-    //           payload: false,
-    //         },
-    //       ]);
-    //     });
-    //   });
+      return dispatchedStore.then(() => {
+        expect(store.getActions()).toEqual([
+          {
+            type: actionTypes.SET_LOADING_USER,
+            payload: true,
+          },
+
+          {
+            type: actionTypes.SET_LOADING_USER,
+            payload: false,
+          },
+        ]);
+      });
+    });
   });
 
   describe("Change Password Action/ Reducer", () => {
@@ -274,7 +265,7 @@ describe("LoginAction", () => {
             type: actionTypes.ERROR_CHANGE_PASSWORD,
             payload: {
               success: false,
-              message: "Inccorect current password",
+              message: "Incorrect current password",
               loading: false,
             },
           },
