@@ -408,7 +408,9 @@ export const verifyEmail = (email, userInfo, navigation) => {
       payload: true,
     });
     return createBaseUrl()
-      .get(`validate/email/${email}`)
+      .post(`validate/email`, {
+        email: email,
+      })
       .then((res) => {
         return res.data;
       })
