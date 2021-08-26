@@ -413,7 +413,7 @@ export const verifyEmail = (email, userInfo, navigation) => {
         return res.data;
       })
       .then((data) => {
-        console.log("verifyEmail data", JSON.stringify(data, null, 2));
+        // console.log("verifyEmail data", JSON.stringify(data, null, 2));
         dispatch({
           type: actionTypes.VERIFY_EMAIL,
           payload: {
@@ -450,7 +450,7 @@ export const verifyEmail = (email, userInfo, navigation) => {
         });
       })
       .catch((err) => {
-        console.log("verifyEmail ERROR", err.response);
+        // console.log("verifyEmail ERROR", err.response);
 
         let errorMessage =
           err && err.response && err.response.data

@@ -1,10 +1,17 @@
 import Axios from "axios";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
+import moxios from "moxios";
+
 import reducer from "../../reducers";
+
+import {
+  validateEmailSuccessMockResponse,
+  validateEmailFailureMockResponse,
+  validateEmailMissingeMailFailureMockResponse,
+} from "./MockedApiResponses/ValidateEmailMockResponse";
 import { verifyEmail, registerGuestUser } from "../registerActions";
 import * as actionTypes from "../actionTypes";
-import NavigationService from "../../../NavigationService";
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 jest.mock("react-native-notifications", () => {
@@ -49,6 +56,12 @@ jest.mock("expo-secure-store", () => {
 beforeAll(() => (Axios.defaults.adapter = require("axios/lib/adapters/http")));
 
 describe("Register step 1, verify email action/ reducer", () => {
+  beforeEach(() => {
+    moxios.install();
+  });
+  afterEach(() => {
+    moxios.uninstall();
+  });
   test("Missing Email", () => {
     const failureAction = {
       type: actionTypes.ERROR_VERIFY_EMAIL,
@@ -58,11 +71,14 @@ describe("Register step 1, verify email action/ reducer", () => {
       },
     };
     const store = mockStore(reducer(undefined, failureAction));
-    const dispatchedStore = store.dispatch(
-      verifyEmail("", { email: "" }, NavigationService)
-    );
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 404,
+        response: validateEmailMissingeMailFailureMockResponse,
+      });
+      store.dispatch(verifyEmail("", { email: "" }, { navigate: () => {} }));
 
-    return dispatchedStore.then(() => {
       expect(store.getActions()).toEqual([
         {
           type: actionTypes.VERIFY_EMAIL_LOADING,
@@ -75,7 +91,7 @@ describe("Register step 1, verify email action/ reducer", () => {
             userInfo: {
               email: "",
             },
-            message: "Request failed with status code 422",
+            message: "Request failed with status code 404",
           },
         },
         {
@@ -94,16 +110,22 @@ describe("Register step 1, verify email action/ reducer", () => {
       },
     };
     const store = mockStore(reducer(undefined, successAction));
-    const dispatchedStore = store.dispatch(
-      verifyEmail(
-        "email@optimizeapp.com",
-        { email: "email@optimizeapp.com" },
-        NavigationService
-      )
-    );
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: validateEmailSuccessMockResponse,
+      });
 
-    return dispatchedStore.then(() => {
-      console.log("store.getActions()", store.getActions());
+      store.dispatch(
+        verifyEmail(
+          "email@optimizeapp.com",
+          { email: "email@optimizeapp.com" },
+          { navigate: () => {} }
+        )
+      );
+
+      // console.log("store.getActions() Success", store.getActions());
       expect(store.getActions()).toEqual([
         {
           type: actionTypes.VERIFY_EMAIL_LOADING,
@@ -131,19 +153,25 @@ describe("Register step 1, verify email action/ reducer", () => {
       type: actionTypes.ERROR_VERIFY_EMAIL,
       payload: {
         success: true,
-        message: "Email allowed for registration",
+        message: "Email is already registered",
       },
     };
     const store = mockStore(reducer(undefined, failureAction));
-    const dispatchedStore = store.dispatch(
-      verifyEmail(
-        "imran@optimizeapp.com",
-        { email: "imran@optimizeapp.com" },
-        NavigationService
-      )
-    );
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 422,
+        response: validateEmailFailureMockResponse,
+      });
+      store.dispatch(
+        verifyEmail(
+          "imran@optimizeapp.com",
+          { email: "imran@optimizeapp.com" },
+          { navigate: () => {} }
+        )
+      );
 
-    return dispatchedStore.then(() => {
+      // console.log("store.getActions()", store.getActions());
       expect(store.getActions()).toEqual([
         {
           type: actionTypes.VERIFY_EMAIL_LOADING,
