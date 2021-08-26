@@ -417,7 +417,7 @@ export const verifyEmail = (email, userInfo, navigation) => {
         dispatch({
           type: actionTypes.VERIFY_EMAIL,
           payload: {
-            success: data.status === 200,
+            success: data.success,
             userInfo,
             message: data.message,
           },
@@ -425,13 +425,13 @@ export const verifyEmail = (email, userInfo, navigation) => {
         return data;
       })
       .then((data) => {
-        if (data.status === 200) {
-          // navigation.navigate("MainForm", {
-          //   source: "Signin",
-          //   source_action: "Create Account",
-          // });
+        if (data.success) {
+          navigation.navigate("MainForm", {
+            source: "Signin",
+            source_action: "Create Account",
+          });
         }
-        if (data.status !== 200) {
+        if (!data.success) {
           showMessage({
             message: data.message,
             type: "warning",
@@ -445,15 +445,12 @@ export const verifyEmail = (email, userInfo, navigation) => {
         analytics.track(`Sign up Initiated`, {
           mode_of_sign_up: "email",
           source: "Signin",
-          action_status: data.status === 200 ? "success" : "failure",
+          action_status: data.success ? "success" : "failure",
           email,
         });
       })
       .catch((err) => {
-        console.log(
-          "verifyEmail ERROR",
-          JSON.stringify(err.response.data, null, 2)
-        );
+        console.log("verifyEmail ERROR", err.response);
 
         let errorMessage =
           err && err.response && err.response.data
