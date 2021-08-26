@@ -9,6 +9,11 @@ import {
   changePasswordSuccessResponse,
   changePasswordFailureResponse,
 } from "./MockedApiResponses/ChangePasswordMock";
+import {
+  forgotPasswordSuccessMockResponse,
+  forgotPasswordMissingEmailFailureMockResponse,
+  forgotPasswordFailureMockResponse,
+} from "./MockedApiResponses/ForgotPasswordMock";
 // import NavigationService from "../../../NavigationService";
 
 import loginReducer from "../../reducers/loginReducer";
@@ -46,116 +51,6 @@ beforeAll(() => (Axios.defaults.adapter = require("axios/lib/adapters/http")));
 describe("LoginAction", () => {
   const middlewares = [thunk];
   const mockStore = configureMockStore(middlewares);
-
-  describe(`forgotPassword Action / Reducer`, () => {
-    const initialState = {
-      exponentPushToken: null,
-      admin: false,
-      clearTokenLoading: false,
-      checkingForToken: false,
-      forgotPasswordSuccess: null,
-      forgotPasswordMessage: "",
-      temp_exist: 0,
-      passwordValid: false,
-      checkingPassword: false,
-      forgotPasswordLoading: false,
-    };
-    test("should return initial state", () => {
-      const state = loginReducer(undefined, actionTypes.FORGOT_PASSWORD);
-      expect(state).toEqual(initialState);
-    });
-    test("should handle forgotPassword FAILURE action", () => {
-      const failureAction = {
-        type: actionTypes.FORGOT_PASSWORD,
-        payload: {
-          success: false,
-          message: "We can't find a user with that e-mail address.",
-        },
-      };
-
-      const store = mockStore(loginReducer(undefined, failureAction));
-      const dispatchedStore = store.dispatch(
-        forgotPassword("email@optimizeapp.com", { goBack: () => {} })
-      );
-
-      return dispatchedStore.then(() => {
-        expect(store.getActions()).toEqual([
-          { payload: true, type: actionTypes.CHANGE_PASSWORD_LOADING },
-          { payload: false, type: actionTypes.CHANGE_PASSWORD_LOADING },
-          {
-            type: actionTypes.FORGOT_PASSWORD,
-            payload: {
-              success: false,
-              message: "We can't find a user with that e-mail address.",
-            },
-          },
-        ]);
-      });
-    });
-
-    test("should handle forgotPassword SUCCESS action ", () => {
-      const successAction = {
-        type: actionTypes.FORGOT_PASSWORD,
-        payload: {
-          success: true,
-          message: "We have e-mailed your password reset link!",
-        },
-      };
-      const store = mockStore(loginReducer(undefined, successAction));
-      const dispatchedStore = store.dispatch(
-        forgotPassword("imran@optimizeapp.com", { goBack: () => {} })
-      );
-
-      return dispatchedStore.then(() => {
-        expect(store.getActions()).toEqual([
-          { payload: true, type: actionTypes.CHANGE_PASSWORD_LOADING },
-          { payload: false, type: actionTypes.CHANGE_PASSWORD_LOADING },
-          {
-            type: actionTypes.FORGOT_PASSWORD,
-            payload: {
-              success: true,
-              message: "We have e-mailed your password reset link!",
-            },
-          },
-          // {
-          //   type: actionTypes.FORGOT_PASSWORD,
-          //   payload: {
-          //     success: false,
-          //     message: "Please wait before retrying.",
-          //   },
-          // },
-        ]);
-      });
-    });
-
-    test("should handle forgotPassword when no email is passed action", () => {
-      const failureAction = {
-        type: actionTypes.FORGOT_PASSWORD,
-        payload: {
-          success: false,
-          message: "The email field is required.",
-        },
-      };
-      const store = mockStore(loginReducer(undefined, failureAction));
-      const dispatchedStore = store.dispatch(
-        forgotPassword(null, { goBack: () => {} })
-      );
-
-      return dispatchedStore.then(() => {
-        expect(store.getActions()).toEqual([
-          { payload: true, type: actionTypes.CHANGE_PASSWORD_LOADING },
-          { payload: false, type: actionTypes.CHANGE_PASSWORD_LOADING },
-          {
-            type: actionTypes.FORGOT_PASSWORD,
-            payload: {
-              success: false,
-              message: "The email field is required.",
-            },
-          },
-        ]);
-      });
-    });
-  });
 
   describe(`login Action / Reducer`, () => {
     test("should handle login SUCCESS action ", () => {
@@ -261,14 +156,7 @@ describe("LoginAction", () => {
         },
       };
       const store = mockStore(reducer(undefined, failureAction));
-      moxios.wait(() => {
-        const request = moxios.requests.mostRecent();
-        request.respondWith({
-          status: 422,
-          response: changePasswordFailureResponse,
-        });
-      });
-      const dispatchedStore = store.dispatch(
+      store.dispatch(
         changePassword(
           "12345678",
           "Imranoa@2021",
@@ -276,8 +164,12 @@ describe("LoginAction", () => {
           "imran@optimizeapp.com"
         )
       );
-
-      return dispatchedStore.then(() => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 422,
+          response: changePasswordFailureResponse,
+        });
         expect(store.getActions()).toEqual([
           {
             type: actionTypes.CHANGE_PASSWORD,
@@ -305,14 +197,8 @@ describe("LoginAction", () => {
         },
       };
       const store = mockStore(reducer(undefined, failureAction));
-      moxios.wait(() => {
-        const request = moxios.requests.mostRecent();
-        request.respondWith({
-          status: 200,
-          response: changePasswordSuccessResponse,
-        });
-      });
-      const dispatchedStore = store.dispatch(
+
+      store.dispatch(
         changePassword(
           "imranoa@2021",
           "imranoa@202121",
@@ -321,8 +207,13 @@ describe("LoginAction", () => {
           "imran@optimizeapp.com"
         )
       );
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          response: changePasswordSuccessResponse,
+        });
 
-      return dispatchedStore.then(() => {
         expect(store.getActions()).toEqual([
           {
             type: actionTypes.CHANGE_PASSWORD,
@@ -331,15 +222,144 @@ describe("LoginAction", () => {
               message: null,
               loading: true,
             },
+            // {
+            //     //   type: actionTypes.CHANGE_PASSWORD,
+            //     //   payload: {
+            //     //     success: true,
+            //     //     message: "Password Updated",
+            //     //     loading: true,
+            //     //   },
+            //     // },
+          },
+        ]);
+        done();
+      });
+    });
+  });
+
+  describe(`forgotPassword Action / Reducer`, () => {
+    beforeEach(() => {
+      moxios.install();
+    });
+    afterEach(() => {
+      moxios.uninstall();
+    });
+    const initialState = {
+      exponentPushToken: null,
+      admin: false,
+      clearTokenLoading: false,
+      checkingForToken: false,
+      forgotPasswordSuccess: null,
+      forgotPasswordMessage: "",
+      temp_exist: 0,
+      passwordValid: false,
+      checkingPassword: false,
+      forgotPasswordLoading: false,
+    };
+    test("should return initial state", () => {
+      const state = loginReducer(undefined, actionTypes.FORGOT_PASSWORD);
+      expect(state).toEqual(initialState);
+    });
+    test("should handle forgotPassword FAILURE action", () => {
+      const failureAction = {
+        type: actionTypes.FORGOT_PASSWORD,
+        payload: {
+          success: false,
+          message: "We can't find a user with that e-mail address.",
+        },
+      };
+
+      const store = mockStore(loginReducer(undefined, failureAction));
+      store.dispatch(
+        forgotPassword("email@optimizeapp.com", { goBack: () => {} })
+      );
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 422,
+          response: forgotPasswordFailureMockResponse,
+        });
+
+        expect(store.getActions()).toEqual([
+          { payload: true, type: actionTypes.CHANGE_PASSWORD_LOADING },
+          { payload: false, type: actionTypes.CHANGE_PASSWORD_LOADING },
+          {
+            type: actionTypes.FORGOT_PASSWORD,
+            payload: {
+              success: false,
+              message: "We can't find a user with that e-mail address.",
+            },
+          },
+        ]);
+      });
+    });
+
+    test("should handle forgotPassword SUCCESS action ", () => {
+      const successAction = {
+        type: actionTypes.FORGOT_PASSWORD,
+        payload: {
+          success: true,
+          message: "We have e-mailed your password reset link!",
+        },
+      };
+      const store = mockStore(loginReducer(undefined, successAction));
+      store.dispatch(
+        forgotPassword("imran@optimizeapp.com", { goBack: () => {} })
+      );
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          response: forgotPasswordSuccessMockResponse,
+        });
+
+        expect(store.getActions()).toEqual([
+          { payload: true, type: actionTypes.CHANGE_PASSWORD_LOADING },
+          { payload: false, type: actionTypes.CHANGE_PASSWORD_LOADING },
+          {
+            type: actionTypes.FORGOT_PASSWORD,
+            payload: {
+              success: true,
+              message: "We have e-mailed your password reset link!",
+            },
           },
           // {
-          //   type: actionTypes.CHANGE_PASSWORD,
+          //   type: actionTypes.FORGOT_PASSWORD,
           //   payload: {
-          //     success: true,
-          //     message: "Password Updated",
-          //     loading: true,
+          //     success: false,
+          //     message: "Please wait before retrying.",
           //   },
           // },
+        ]);
+      });
+    });
+
+    test("should handle forgotPassword when no email is passed action", () => {
+      const failureAction = {
+        type: actionTypes.FORGOT_PASSWORD,
+        payload: {
+          success: false,
+          message: "The email field is required.",
+        },
+      };
+      const store = mockStore(loginReducer(undefined, failureAction));
+      store.dispatch(forgotPassword(null, { goBack: () => {} }));
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 422,
+          response: forgotPasswordMissingEmailFailureMockResponse,
+        });
+        expect(store.getActions()).toEqual([
+          { payload: true, type: actionTypes.CHANGE_PASSWORD_LOADING },
+          { payload: false, type: actionTypes.CHANGE_PASSWORD_LOADING },
+          {
+            type: actionTypes.FORGOT_PASSWORD,
+            payload: {
+              success: false,
+              message: "The email field is required.",
+            },
+          },
         ]);
       });
     });

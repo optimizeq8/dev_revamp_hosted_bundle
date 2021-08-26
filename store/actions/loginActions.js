@@ -195,7 +195,7 @@ export const login = (userData, navigation = NavigationService) => {
     });
     return createBaseUrl()
       .post("login", querystring.stringify(userInfo), {
-        timeout: 30000,
+        timeout: 5000,
         timeoutErrorMessage: "Something went wrong, please try again.",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
