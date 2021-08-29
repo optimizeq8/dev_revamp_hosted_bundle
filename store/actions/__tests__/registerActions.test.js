@@ -54,14 +54,13 @@ jest.mock("expo-secure-store", () => {
   };
 });
 beforeAll(() => (Axios.defaults.adapter = require("axios/lib/adapters/http")));
-
+beforeEach(() => {
+  moxios.install();
+});
+afterEach(() => {
+  moxios.uninstall();
+});
 describe("Register step 1, verify email action/ reducer", () => {
-  beforeEach(() => {
-    moxios.install();
-  });
-  afterEach(() => {
-    moxios.uninstall();
-  });
   test("Missing Email", () => {
     const failureAction = {
       type: actionTypes.ERROR_VERIFY_EMAIL,
@@ -196,31 +195,78 @@ describe("Register step 1, verify email action/ reducer", () => {
   });
 });
 
-// describe("Register Step 2, User Info action/ reducer", () => {
-//   test("User Register Failure", () => {
-//     const failureAction = {
-//       type: actionTypes.ERROR_REGISTER_GUEST_USER,
-//       payload: {
-//         success: false,
-//         message: "The mobile has already been taken.",
-//       },
-//     };
-//     const store = mockStore(reducer(undefined, failureAction));
-//     const dispatchedStore = store.dispatch(
-//       registerGuestUser({
-//         email: "saadiya@optimizekw.com",
-//         password: "Saadiya@2021",
-//         repassword: "Saadiya@2021",
-//         firstname: "Saadiya",
-//         lastname: "Kazi",
-//         mobile: "+96567613407",
-//       })
-//     );
-//     return dispatchedStore.then(() => {
-//       console.log(
-//         "User Register state",
-//         JSON.stringify(store.getActions(), null, 2)
-//       );
-//     });
-//   });
-// });
+describe("Register Step 2, User Info action/ reducer", () => {
+  test("User Register Failure", () => {
+    const failureAction = {
+      type: actionTypes.ERROR_REGISTER_GUEST_USER,
+      payload: {
+        success: false,
+        message: "The mobile has already been taken.",
+      },
+    };
+    const store = mockStore(reducer(undefined, failureAction));
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request
+        .respondWith({
+          status: 422,
+          response: validateEmailMissingeMailFailureMockResponse,
+        })
+        .then((res, rej) => {
+          console.log("res", res);
+          console.log("rej", rej);
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+      store.dispatch(
+        registerGuestUser({
+          email: "saadiya@optimizekw.com",
+          password: "Saadiya@2021",
+          repassword: "Saadiya@2021",
+          firstname: "Saadiya",
+          lastname: "Kazi",
+          mobile: "+96567613407",
+        })
+      );
+
+      console.log(
+        "User Register state",
+        JSON.stringify(store.getActions(), null, 2)
+      );
+    });
+  });
+
+  test("User Register Success", () => {
+    const failureAction = {
+      type: actionTypes.ERROR_REGISTER_GUEST_USER,
+      payload: {
+        success: false,
+        message: "The mobile has already been taken.",
+      },
+    };
+    const store = mockStore(reducer(undefined, failureAction));
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 422,
+        response: validateEmailMissingeMailFailureMockResponse,
+      });
+      store.dispatch(
+        registerGuestUser({
+          email: "saadiya@optimizekw.com",
+          password: "Saadiya@2021",
+          repassword: "Saadiya@2021",
+          firstname: "Saadiya",
+          lastname: "Kazi",
+          mobile: "+96567613407",
+        })
+      );
+
+      console.log(
+        "User Register state",
+        JSON.stringify(store.getActions(), null, 2)
+      );
+    });
+  });
+});
