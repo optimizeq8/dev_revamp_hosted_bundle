@@ -129,7 +129,6 @@ export const getBusinessAccounts = (businessSeleced) => {
         //   message: data.message,
         //   type: response.data.success ? "success" : "warning"
         // })
-        console.log("BUsiness", JSON.stringify(data, null, 2));
         AsyncStorage.getItem("indexOfMainBusiness").then((value) => {
           return dispatch({
             type: actionTypes.SET_BUSINESS_ACCOUNTS,

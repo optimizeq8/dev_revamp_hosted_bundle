@@ -147,7 +147,7 @@ describe("Account Management Actions", () => {
 });
 
 describe("Get business accounts", () => {
-  test("should handle getting businesses for user  SUCCESSFUL action", () => {
+  test("should handle getting businesses for user SUCCESSFUL action", () => {
     const store = mockStore(
       reducer(undefined, {
         payload: {
@@ -163,7 +163,6 @@ describe("Get business accounts", () => {
       })
     );
     moxios.wait(() => {
-      console.log("MOXIOS LOGGED");
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 200,
@@ -171,13 +170,12 @@ describe("Get business accounts", () => {
       });
     });
     const dispatchedStore = store.dispatch(getBusinessAccounts("11"));
-    console.log("store.getActions()", JSON.stringify(store.getActions()));
     return dispatchedStore.then(() => {
       expect(store.getActions()).toEqual([
         { payload: true, type: "SET_LOADING_BUSINESS_LIST" },
         {
           payload: {
-            data: [getBusinessesResponseSuccess],
+            data: [...getBusinessesResponseSuccess.data],
             index: 0,
             userid: store.getState().auth.userInfo.id,
             businessSeleced: "11",
@@ -185,7 +183,6 @@ describe("Get business accounts", () => {
           },
           type: "SET_BUSINESS_ACCOUNTS",
         },
-        ,
       ]);
     });
   });
