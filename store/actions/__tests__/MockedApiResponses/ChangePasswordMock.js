@@ -3,12 +3,12 @@ export let changePasswordSuccessResponse = {
   success: true,
   message: "Password Updated",
   data: {
-    id: 11,
-    first_name: "Imran",
-    last_name: "Sheikh",
-    mobile: "+96522112288",
-    email: "imran@optimizeapp.com",
-    verified: 1,
+    id: 14,
+    first_name: "Saadiya",
+    last_name: "Kazi",
+    mobile: "+96522112290",
+    email: "saadiya@optimizeapp.com",
+    verified: 0,
     tmp_pwd: 0,
   },
 };

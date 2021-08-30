@@ -57,19 +57,19 @@ describe("LoginAction", () => {
       const successAction = {
         type: actionTypes.SET_CURRENT_USER,
         payload: {
-          id: 11,
-          first_name: "Imran",
-          last_name: "Sheikh",
-          mobile: "+96522112288",
-          email: "imran@optimizeapp.com",
-          verified: 1,
+          id: 14,
+          first_name: "Saadiya",
+          last_name: "Kazi",
+          mobile: "+96522112290",
+          email: "saadiya@optimizeapp.com",
+          verified: 0,
           tmp_pwd: 0,
         },
       };
       const store = mockStore(reducer(undefined, successAction));
       const dispatchedStore = store.dispatch(
         login(
-          { email: "imran@optimizeapp.com", password: "imranoa@2021" },
+          { email: "saadiya@optimizeapp.com", password: "saadiyaoa@2021" },
           { navigate: () => {} }
         )
       );
@@ -89,18 +89,7 @@ describe("LoginAction", () => {
             type: actionTypes.USER_PROFILE_LOADING,
             payload: false,
           },
-          {
-            type: actionTypes.SET_CURRENT_USER,
-            payload: {
-              id: 11,
-              first_name: "Imran",
-              last_name: "Sheikh",
-              mobile: "+96522112288",
-              email: "imran@optimizeapp.com",
-              verified: 1,
-              tmp_pwd: 0,
-            },
-          },
+          successAction,
           {
             type: actionTypes.SET_LOADING_USER,
             payload: false,
@@ -118,7 +107,7 @@ describe("LoginAction", () => {
       const store = mockStore(reducer(undefined, failureAction));
       const dispatchedStore = store.dispatch(
         login(
-          { email: "imran@optimizeapp.com", password: "imrano" },
+          { email: "saadiya@optimizeapp.com", password: "saadiyao" },
           { navigate: (routeName, params) => {} }
         )
       );
@@ -159,9 +148,9 @@ describe("LoginAction", () => {
       const dispatchedStore = store.dispatch(
         changePassword(
           "12345678",
-          "Imranoa@2021",
+          "saadiyaoa@2021",
           NavigationService,
-          "imran@optimizeapp.com"
+          "saadiya@optimizeapp.com"
         )
       );
       moxios.wait(() => {
@@ -203,11 +192,11 @@ describe("LoginAction", () => {
 
       const dispatchedStore = store.dispatch(
         changePassword(
-          "imranoa@2021",
-          "imranoa@202121",
-          "imranoa@202121",
+          "saadiyaoa@2021",
+          "saadiyaoa@202121",
+          "saadiyaoa@202121",
           { navigate: () => {}, getParam: () => {} },
-          "imran@optimizeapp.com"
+          "saadiya@optimizeapp.com"
         )
       );
       moxios.wait(() => {
@@ -273,7 +262,7 @@ describe("LoginAction", () => {
       };
 
       const store = mockStore(loginReducer(undefined, failureAction));
-      store.dispatch(
+      const dispatchedStore = store.dispatch(
         forgotPassword("email@optimizeapp.com", { goBack: () => {} })
       );
       moxios.wait(() => {
@@ -282,7 +271,8 @@ describe("LoginAction", () => {
           status: 422,
           response: forgotPasswordFailureMockResponse,
         });
-
+      });
+      return dispatchedStore.then(() => {
         expect(store.getActions()).toEqual([
           { payload: true, type: actionTypes.CHANGE_PASSWORD_LOADING },
           { payload: false, type: actionTypes.CHANGE_PASSWORD_LOADING },
@@ -306,8 +296,8 @@ describe("LoginAction", () => {
         },
       };
       const store = mockStore(loginReducer(undefined, successAction));
-      store.dispatch(
-        forgotPassword("imran@optimizeapp.com", { goBack: () => {} })
+      const dispatchedStore = store.dispatch(
+        forgotPassword("saadiya@optimizeapp.com", { goBack: () => {} })
       );
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
@@ -315,7 +305,8 @@ describe("LoginAction", () => {
           status: 200,
           response: forgotPasswordSuccessMockResponse,
         });
-
+      });
+      return dispatchedStore.then(() => {
         expect(store.getActions()).toEqual([
           { payload: true, type: actionTypes.CHANGE_PASSWORD_LOADING },
           { payload: false, type: actionTypes.CHANGE_PASSWORD_LOADING },
@@ -346,13 +337,17 @@ describe("LoginAction", () => {
         },
       };
       const store = mockStore(loginReducer(undefined, failureAction));
-      store.dispatch(forgotPassword(null, { goBack: () => {} }));
+      const dispatchedStore = store.dispatch(
+        forgotPassword(null, { goBack: () => {} })
+      );
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request.respondWith({
           status: 422,
           response: forgotPasswordMissingEmailFailureMockResponse,
         });
+      });
+      return dispatchedStore.then(() => {
         expect(store.getActions()).toEqual([
           { payload: true, type: actionTypes.CHANGE_PASSWORD_LOADING },
           { payload: false, type: actionTypes.CHANGE_PASSWORD_LOADING },
