@@ -60,7 +60,7 @@ beforeEach(() => {
 afterEach(() => {
   moxios.uninstall();
 });
-/*
+
 describe("Register step 1, verify email action/ reducer", () => {
   test("Missing Email", () => {
     const failureAction = {
@@ -71,14 +71,17 @@ describe("Register step 1, verify email action/ reducer", () => {
       },
     };
     const store = mockStore(reducer(undefined, failureAction));
+    const dispatchedStore = store.dispatch(
+      verifyEmail("", { email: "" }, { navigate: () => {} })
+    );
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 404,
         response: validateEmailMissingeMailFailureMockResponse,
       });
-      store.dispatch(verifyEmail("", { email: "" }, { navigate: () => {} }));
-
+    });
+    return dispatchedStore.then(() => {
       expect(store.getActions()).toEqual([
         {
           type: actionTypes.VERIFY_EMAIL_LOADING,
@@ -110,23 +113,25 @@ describe("Register step 1, verify email action/ reducer", () => {
       },
     };
     const store = mockStore(reducer(undefined, successAction));
+    const dispatchedStore = store.dispatch(
+      verifyEmail(
+        "email@optimizeapp.com",
+        { email: "email@optimizeapp.com" },
+        { navigate: () => {} }
+      )
+    );
+
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 200,
         response: validateEmailSuccessMockResponse,
       });
+    });
+    // console.log("store.getActions() Success", store.getActions());
 
-      store.dispatch(
-        verifyEmail(
-          "email@optimizeapp.com",
-          { email: "email@optimizeapp.com" },
-          { navigate: () => {} }
-        )
-      );
-
-      // console.log("store.getActions() Success", store.getActions());
-      return expect(store.getActions()).toEqual([
+    return dispatchedStore.then(() => {
+      expect(store.getActions()).toEqual([
         {
           type: actionTypes.VERIFY_EMAIL_LOADING,
           payload: true,
@@ -157,21 +162,22 @@ describe("Register step 1, verify email action/ reducer", () => {
       },
     };
     const store = mockStore(reducer(undefined, failureAction));
+    const dispatchedStore = store.dispatch(
+      verifyEmail(
+        "imran@optimizeapp.com",
+        { email: "imran@optimizeapp.com" },
+        { navigate: () => {} }
+      )
+    );
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 422,
         response: validateEmailFailureMockResponse,
       });
-      store.dispatch(
-        verifyEmail(
-          "imran@optimizeapp.com",
-          { email: "imran@optimizeapp.com" },
-          { navigate: () => {} }
-        )
-      );
-
-      // console.log("store.getActions()", store.getActions());
+    });
+    // console.log("store.getActions()", store.getActions());
+    return dispatchedStore.then(() => {
       expect(store.getActions()).toEqual([
         {
           type: actionTypes.VERIFY_EMAIL_LOADING,
@@ -195,7 +201,8 @@ describe("Register step 1, verify email action/ reducer", () => {
     });
   });
 });
-*/
+
+/*
 describe("Register Step 2, User Info action/ reducer", () => {
   it("User Register Failure", async (done) => {
     const failureAction = {
@@ -282,3 +289,4 @@ describe("Register Step 2, User Info action/ reducer", () => {
   //   });
   // });
 });
+*/
