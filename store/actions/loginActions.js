@@ -83,84 +83,77 @@ export const checkForExpiredToken = (navigation) => {
         if (token) {
           const currentTime = Date.now() / 1000;
           const user = jwt_decode(token);
-
-          if (user.exp >= currentTime && user.tmp_pwd !== "1") {
-            if (
-              [
-                "nouf@optimizeapp.com",
-                "sam.omran@hotmail.com",
-                "imran@optimizekw.com",
-                "saadiya@optimizekw.com",
-                "shorook@optimizekw.com",
-                "samy@optimizeapp.com",
-              ].includes(user.email)
-            )
-              dispatch(chanege_base_url(true));
-            // check if the local store token is same as in db
-            createBaseUrl()
-              .get("verifyAccessToken", {
+          if (
+            [
+              "nouf@optimizeapp.com",
+              "sam.omran@hotmail.com",
+              "imran@optimizekw.com",
+              "saadiya@optimizekw.com",
+              "shorook@optimizekw.com",
+              "samy@optimizeapp.com",
+            ].includes(user.email)
+          )
+            dispatch(chanege_base_url(true));
+          // check if the local store token is same as in db
+          createBaseUrl()
+            .post(
+              "refresh",
+              {},
+              {
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },
                 timeout: 10000,
                 timeoutErrorMessage:
                   "Something went wrong, please try again later",
-              })
-              .then((responseToken) => {
-                if (responseToken.data.success) {
-                  setAuthToken(token)
-                    .then(() =>
-                      dispatch(
-                        setCurrentUser({
-                          user: user,
-                          message: "Logged-in Successfully",
-                        })
-                      )
-                    )
-                    .then(() => {
-                      // dispatch(send_push_notification());
-                      dispatch(getBusinessAccounts());
-                    })
-                    .then(() => {
-                      analytics.identify(getState().auth.userInfo.userid, {
-                        logged_out: false,
-                      });
-                      navigation &&
-                        NavigationService.navigate("Dashboard", {
-                          source: AppState.currentState,
-                          source_action: "a_check_expired_token",
-                        });
+              }
+            )
+            .then((responseToken) => {
+              console.log(responseToken.data.data);
+              if (responseToken.data.data.access_token) {
+                setAuthToken(responseToken.data.data.access_token)
+                  .then(() => dispatch(getUserProfile()))
+                  .then(() => {
+                    // dispatch(send_push_notification());
+                    dispatch(getBusinessAccounts());
+                  })
+                  .then(() => {
+                    analytics.identify(getState().auth.userInfo.id, {
+                      logged_out: false,
                     });
-                } else {
-                  dispatch(clearPushToken(navigation, user.userid));
-                }
-              })
-              .then(() => {
-                dispatch({
-                  type: actionTypes.CHECKING_FOR_TOKEN,
-                  payload: false,
-                });
-
-                // navigation &&
-                //   NavigationService.navigate("Dashboard", {
-                //     source: AppState.currentState,
-                //     source_action: "a_check_expired_token",
-                //   });
-              })
-              .catch((err) => {
-                // console.log(
-                //   "verifyAccessToken error",
-                //   JSON.stringify(err.response, null, 2)
-                // );
-                errorMessageHandler(err);
-                dispatch({
-                  type: actionTypes.CHECKING_FOR_TOKEN_ERROR,
-                  payload: true,
-                });
+                    navigation &&
+                      NavigationService.navigate("Dashboard", {
+                        source: AppState.currentState,
+                        source_action: "a_check_expired_token",
+                      });
+                  });
+              } else {
+                // dispatch(clearPushToken(navigation, user.userid));
+              }
+            })
+            .then(() => {
+              dispatch({
+                type: actionTypes.CHECKING_FOR_TOKEN,
+                payload: false,
               });
-          } else {
-            dispatch(clearPushToken(navigation, user.userid));
-          }
+
+              // navigation &&
+              //   NavigationService.navigate("Dashboard", {
+              //     source: AppState.currentState,
+              //     source_action: "a_check_expired_token",
+              //   });
+            })
+            .catch((err) => {
+              console.log(
+                "verifyAccessToken error",
+                JSON.stringify(err.response, null, 2)
+              );
+              errorMessageHandler(err);
+              dispatch({
+                type: actionTypes.CHECKING_FOR_TOKEN_ERROR,
+                payload: true,
+              });
+            });
         } else
           dispatch({
             type: actionTypes.CHECKING_FOR_TOKEN,
@@ -597,11 +590,12 @@ export const changePassword = (
 export const checkHashForUser = () => {
   return (dispatch) => {
     createBaseUrl()
-      .get(`intercomhash`)
+      .get(`users/intercomhash`)
       .then((response) => {
         return response.data;
       })
       .then((data) => {
+        console.log("data", data);
         if (data.success) {
           return dispatch({
             type: actionTypes.SET_HASH_INTERCOM_KEYS,
@@ -722,7 +716,7 @@ export const getUserProfile = () => {
       .get(`users`)
       .then((response) => response.data)
       .then((data) => {
-        // console.log("getUserProfile Data", data);
+        console.log("getUserProfile Data", data);
         dispatch({
           type: actionTypes.USER_PROFILE_LOADING,
           payload: false,
