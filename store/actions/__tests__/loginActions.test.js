@@ -156,7 +156,7 @@ describe("LoginAction", () => {
         },
       };
       const store = mockStore(reducer(undefined, failureAction));
-      store.dispatch(
+      const dispatchedStore = store.dispatch(
         changePassword(
           "12345678",
           "Imranoa@2021",
@@ -170,6 +170,9 @@ describe("LoginAction", () => {
           status: 422,
           response: changePasswordFailureResponse,
         });
+      });
+
+      return dispatchedStore.then(() => {
         expect(store.getActions()).toEqual([
           {
             type: actionTypes.CHANGE_PASSWORD,
@@ -198,7 +201,7 @@ describe("LoginAction", () => {
       };
       const store = mockStore(reducer(undefined, failureAction));
 
-      store.dispatch(
+      const dispatchedStore = store.dispatch(
         changePassword(
           "imranoa@2021",
           "imranoa@202121",
@@ -213,7 +216,8 @@ describe("LoginAction", () => {
           status: 200,
           response: changePasswordSuccessResponse,
         });
-
+      });
+      return dispatchedStore.then(() => {
         expect(store.getActions()).toEqual([
           {
             type: actionTypes.CHANGE_PASSWORD,
@@ -232,7 +236,6 @@ describe("LoginAction", () => {
             //     // },
           },
         ]);
-        done();
       });
     });
   });
