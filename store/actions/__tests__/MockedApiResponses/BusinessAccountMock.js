@@ -1,4 +1,4 @@
-export let successResponseData = {
+export let updateBusinessSuccessResponseData = {
   api_version: "v1",
   success: true,
   message: "Business updated",
@@ -7,6 +7,21 @@ export let successResponseData = {
     name: "Updated Business name",
     country: { id: 2, name: "Kuwait" },
     type: "SME or Startup",
+    approval_status: "Pending",
+  },
+};
+export let createBusinessSuccessResponseData = {
+  api_version: "v1",
+  success: true,
+  message: "Business Created",
+  data: {
+    id: 28,
+    name: "New Business",
+    country: {
+      id: 2,
+      name: "Kuwait",
+    },
+    type: "Agency",
     approval_status: "Pending",
   },
 };

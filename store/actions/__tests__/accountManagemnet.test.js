@@ -4,13 +4,17 @@ import thunk from "redux-thunk";
 import { initialState } from "../../reducers/accountManagementReducer";
 import accountManagementReducer from "../../reducers/accountManagementReducer";
 import * as actionTypes from "../actionTypes";
-import { updateBusinessInfo } from "../accountManagementActions";
+import {
+  createBusinessAccount,
+  updateBusinessInfo,
+} from "../accountManagementActions";
 import moxios from "moxios";
 import {
   wrongBusinessIDResponseData,
-  successResponseData,
+  updateBusinessSuccessResponseData,
+  createBusinessSuccessResponseData,
   sameNameResponseData,
-} from "./MockedApiResponses/UpdateBusinessAccountMock";
+} from "./MockedApiResponses/BusinessAccountMock";
 import { getBusinessesResponseSuccess } from "./MockedApiResponses/UserBusinessResponseMock";
 import { getBusinessAccounts } from "../genericActions";
 import reducer from "../../reducers";
@@ -110,7 +114,7 @@ describe("Account Management Actions", () => {
         const request = moxios.requests.mostRecent();
         request.respondWith({
           status: 200,
-          response: successResponseData,
+          response: updateBusinessSuccessResponseData,
         });
       });
       let timestamp = new Date().getTime();
@@ -130,7 +134,7 @@ describe("Account Management Actions", () => {
       return dispatchedStore.then(() => {
         expect(store.getActions()).toEqual([
           { payload: true, type: actionTypes.UPDATE_BUSINESS_INFO_LOADING },
-          { payload: true, type: "CHECK_BUSINESS_STATUS" },
+          { payload: true, type: actionTypes.CHECK_BUSINESS_STATUS },
           {
             type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
             payload: {
@@ -159,7 +163,7 @@ describe("Get business accounts", () => {
           verified: 1,
           tmp_pwd: 0,
         },
-        type: "SET_CURRENT_USER",
+        type: actionTypes.SET_CURRENT_USER,
       })
     );
     moxios.wait(() => {
@@ -172,7 +176,7 @@ describe("Get business accounts", () => {
     const dispatchedStore = store.dispatch(getBusinessAccounts("11"));
     return dispatchedStore.then(() => {
       expect(store.getActions()).toEqual([
-        { payload: true, type: "SET_LOADING_BUSINESS_LIST" },
+        { payload: true, type: actionTypes.SET_LOADING_BUSINESS_LIST },
         {
           payload: {
             data: [...getBusinessesResponseSuccess.data],
@@ -181,7 +185,102 @@ describe("Get business accounts", () => {
             businessSeleced: "11",
             user: store.getState().auth.userInfo,
           },
-          type: "SET_BUSINESS_ACCOUNTS",
+          type: actionTypes.SET_BUSINESS_ACCOUNTS,
+        },
+      ]);
+    });
+  });
+});
+
+describe("Create business account", () => {
+  test("should handle creating a business for user SUCCESSFUL action", () => {
+    const store = mockStore(
+      reducer(undefined, {
+        payload: {
+          id: 11,
+          first_name: "Imran",
+          last_name: "Sheikh",
+          mobile: "+96522112288",
+          email: "imran@optimizeapp.com",
+          verified: 1,
+          tmp_pwd: 0,
+        },
+        type: actionTypes.SET_CURRENT_USER,
+      })
+    );
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: createBusinessSuccessResponseData,
+      });
+    });
+    const dispatchedStore = store.dispatch(
+      createBusinessAccount(
+        {
+          name: "IM IO Business",
+          category: "Construction",
+          country_id: 2,
+          type: "Agency",
+        },
+        { navigate: () => {} }
+      )
+    );
+    return dispatchedStore.then(() => {
+      expect(store.getActions()).toEqual([
+        { payload: true, type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT },
+        {
+          payload: createBusinessSuccessResponseData.data,
+          type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
+        },
+        {
+          payload: createBusinessSuccessResponseData.data,
+          type: actionTypes.ADD_BUSINESS_ACCOUNT,
+        },
+      ]);
+    });
+  });
+  test.only("should handle creating a business for user with same name FAILURE action", () => {
+    const store = mockStore(
+      reducer(undefined, {
+        payload: {
+          id: 11,
+          first_name: "Imran",
+          last_name: "Sheikh",
+          mobile: "+96522112288",
+          email: "imran@optimizeapp.com",
+          verified: 1,
+          tmp_pwd: 0,
+        },
+        type: "SET_CURRENT_USER",
+      })
+    );
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 422,
+        response: sameNameResponseData,
+      });
+    });
+    const dispatchedStore = store.dispatch(
+      createBusinessAccount(
+        {
+          name: "IM IO Business",
+          category: "Construction",
+          country_id: 2,
+          type: "Agency",
+        },
+        { navigate: () => {} }
+      )
+    );
+    return dispatchedStore.then(() => {
+      expect(store.getActions()).toEqual([
+        { payload: true, type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT },
+        {
+          type: actionTypes.ERROR_ADD_BUSINESS_ACCOUNT,
+          payload: {
+            loading: false,
+          },
         },
       ]);
     });

@@ -42,14 +42,13 @@ export const changeBusiness = (business) => {
 };
 
 export const createBusinessAccount = (account, navigation) => {
-  console.log("account", JSON.stringify(account, null, 2));
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
       payload: true,
     });
-    createBaseUrl()
-      .post(`business`, account) //businessaccount OLD API
+    return createBaseUrl()
+      .post(`business`, account)
       .then((res) => {
         return res.data;
       })

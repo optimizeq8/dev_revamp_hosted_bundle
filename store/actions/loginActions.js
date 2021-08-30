@@ -132,11 +132,6 @@ export const checkForExpiredToken = (navigation) => {
               }
             })
             .then(() => {
-              dispatch({
-                type: actionTypes.CHECKING_FOR_TOKEN,
-                payload: false,
-              });
-
               // navigation &&
               //   NavigationService.navigate("Dashboard", {
               //     source: AppState.currentState,
@@ -146,7 +141,7 @@ export const checkForExpiredToken = (navigation) => {
             .catch((err) => {
               console.log(
                 "verifyAccessToken error",
-                JSON.stringify(err.response, null, 2)
+                JSON.stringify(err, null, 2)
               );
               errorMessageHandler(err);
               dispatch({
@@ -167,7 +162,6 @@ export const checkForExpiredToken = (navigation) => {
 export const login = (userData, navigation = NavigationService) => {
   let userInfo = {
     ...userData,
-    is_mobile: 0,
   };
   return (dispatch, getState) => {
     // if (
@@ -188,7 +182,7 @@ export const login = (userData, navigation = NavigationService) => {
     });
     return createBaseUrl()
       .post("login", querystring.stringify(userInfo), {
-        timeout: 5000,
+        timeout: 8000,
         timeoutErrorMessage: "Something went wrong, please try again.",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -260,7 +254,7 @@ export const login = (userData, navigation = NavigationService) => {
         } else if (err.message || err.response) {
           errorMessage = err.message || err.response;
         }
-        // console.log("login errorMessage", errorMessage);
+        // console.log("login errorMessage", JSON.stringify(err, null, 2));
         dispatch({
           type: actionTypes.SET_LOADING_USER,
           payload: false,
@@ -719,6 +713,10 @@ export const getUserProfile = () => {
         console.log("getUserProfile Data", data);
         dispatch({
           type: actionTypes.USER_PROFILE_LOADING,
+          payload: false,
+        });
+        dispatch({
+          type: actionTypes.CHECKING_FOR_TOKEN,
           payload: false,
         });
         if (data.success) {
