@@ -11,6 +11,19 @@ import {
   successResponseData,
   sameNameResponseData,
 } from "./MockedApiResponses/UpdateBusinessAccountMock";
+import { getBusinessesResponseSuccess } from "./MockedApiResponses/UserBusinessResponseMock";
+import { getBusinessAccounts } from "../genericActions";
+import reducer from "../../reducers";
+
+jest.mock("@segment/analytics-react-native", () => {
+  return {
+    track: jest.fn(),
+    identify: jest.fn(),
+    flush: jest.fn(),
+    reset: jest.fn(),
+    alias: jest.fn(),
+  };
+});
 // var querystring = require("querystring");
 // const BASE_URL = "https://api.devoa.optimizeapp.com/api/";
 beforeAll(async () => {
@@ -30,9 +43,9 @@ afterEach(() => {
   moxios.uninstall();
 });
 
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
 describe("Account Management Actions", () => {
-  const middlewares = [thunk];
-  const mockStore = configureMockStore(middlewares);
   describe(`Business Info Action / Reducer`, () => {
     test("should return initial state", () => {
       const state = accountManagementReducer(undefined, {
@@ -129,6 +142,48 @@ describe("Account Management Actions", () => {
           },
         ]);
       });
+    });
+  });
+});
+
+describe("Get business accounts", () => {
+  test("should handle getting businesses for user SUCCESSFUL action", () => {
+    const store = mockStore(
+      reducer(undefined, {
+        payload: {
+          id: 11,
+          first_name: "Imran",
+          last_name: "Sheikh",
+          mobile: "+96522112288",
+          email: "imran@optimizeapp.com",
+          verified: 1,
+          tmp_pwd: 0,
+        },
+        type: "SET_CURRENT_USER",
+      })
+    );
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: getBusinessesResponseSuccess,
+      });
+    });
+    const dispatchedStore = store.dispatch(getBusinessAccounts("11"));
+    return dispatchedStore.then(() => {
+      expect(store.getActions()).toEqual([
+        { payload: true, type: "SET_LOADING_BUSINESS_LIST" },
+        {
+          payload: {
+            data: [...getBusinessesResponseSuccess.data],
+            index: 0,
+            userid: store.getState().auth.userInfo.id,
+            businessSeleced: "11",
+            user: store.getState().auth.userInfo,
+          },
+          type: "SET_BUSINESS_ACCOUNTS",
+        },
+      ]);
     });
   });
 });

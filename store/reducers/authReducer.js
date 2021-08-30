@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import * as actionTypes from "../actions/actionTypes";
-// import analytics from "@segment/analytics-react-native";
+import analytics from "@segment/analytics-react-native";
 import { Notifications as RNNotifications } from "react-native-notifications";
 
 const initialState = {
@@ -29,12 +29,9 @@ const reducer = (state = initialState, action) => {
         .then((language) => {
           let userTraits = {
             email: action.payload.email,
-            first_name: action.payload.user.first_name,
-            lastt_name: action.payload.user.last_tname,
-            name:
-              action.payload.user.first_name +
-              " " +
-              action.payload.user.lastname,
+            first_name: action.payload.first_name,
+            lastt_name: action.payload.last_tname,
+            name: action.payload.first_name + " " + action.payload.lastname,
             selected_language: language,
             mobile: action.payload.mobile,
             logged_out: false,
@@ -55,37 +52,33 @@ const reducer = (state = initialState, action) => {
                     ios_devices: [event.deviceToken],
                   };
                 }
-                // analytics.identify(action.payload.id, userTraits);
+                analytics.identify(action.payload.id, userTraits);
               }
             );
           } catch (err) {
             // console.log(err);
-            // analytics.track(`Form Error Made`, {
-            //   source: "SettingDeviceToken",
-            //   error_description: err.response || err.message,
-            // });
-            // analytics.identify(action.payload.user.userid, userTraits);
+            analytics.track(`Form Error Made`, {
+              source: "SettingDeviceToken",
+              error_description: err.response || err.message,
+            });
+            analytics.identify(action.payload.user.userid, userTraits);
           }
           // MixpanelSDK.identify(action.payload.user.userid);
         })
         .catch((error) => {
-          // analytics.track(`Form Error Made`, {
-          //   source: "GettingAppLanguage",
-          //   error_description: error.response || error.message,
-          // });
+          analytics.track(`Form Error Made`, {
+            source: "GettingAppLanguage",
+            error_description: error.response || error.message,
+          });
           // Catch never gets called
-          // analytics.alias(action.payload.user.userid);
-          // analytics.identify(action.payload.user.userid, {
-          //   ...action.payload.user,
-          //   $name:
-          //     action.payload.user.firstname +
-          //     " " +
-          //     action.payload.user.lastname,
-          //   $phone: "+" + action.payload.user.mobile,
-          //   logged_out: false,
-          // });
+          analytics.alias(action.payload.userid);
+          analytics.identify(action.payload.userid, {
+            ...action.payload.user,
+            $name: action.payload.firstname + " " + action.payload.lastname,
+            $phone: "+" + action.payload.mobile,
+            logged_out: false,
+          });
         });
-
       return {
         ...state,
         userid: action.payload.id,

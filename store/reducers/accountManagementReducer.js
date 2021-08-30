@@ -1,6 +1,6 @@
 import * as actionTypes from "../actions/actionTypes";
 import find from "lodash/find";
-// import analytics from "@segment/analytics-react-native";
+import analytics from "@segment/analytics-react-native";
 
 import { Animated } from "react-native";
 
@@ -9,7 +9,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 export const initialState = {
   loading: false,
   businessAccounts: [],
-  mainBusiness: null,
+  mainBusiness: {},
   passwordChanged: false,
   loadingPasswordChanged: false,
   loadingBillingAddress: false,
@@ -65,7 +65,7 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.SET_BUSINESS_ACCOUNTS:
       let main = state.mainBusiness;
-      let setNewBusinessAccounts = action.payload.data.business_accounts || [];
+      let setNewBusinessAccounts = action.payload.data.data || [];
       if (
         !action.payload.businessSeleced &&
         setNewBusinessAccounts &&
@@ -76,24 +76,27 @@ const reducer = (state = initialState, action) => {
           : setNewBusinessAccounts[0];
 
         analytics.identify(action.payload.userid, {
-          business_id: main.businessid,
-          business_name: main.businessname,
+          business_id: main.id,
+          business_name: main.name,
           revenue: main.revenue,
           ltv: main.ltv,
           wallet_amount: main.wallet_amount,
           first_name: action.payload.user.firstname,
           last_name: action.payload.user.lastname,
         });
-        analytics.group(main.businessid, {
-          business_id: main.businessid,
-          name: main.businessname,
-          company: main.businessname,
+        analytics.group(main.id, {
+          business_id: main.id,
+          name: main.name,
+          company: main.name,
           revenue: main.revenue,
           ltv: main.ltv,
           wallet_amount: main.wallet_amount,
         });
       }
-      AsyncStorage.setItem("selectedBusinessId", main.businessid);
+      AsyncStorage.setItem("selectedBusinessId", JSON.stringify(main.id)).catch(
+        (err) => console.log(err)
+      );
+      console.log(main);
       return {
         ...state,
         mainBusiness: main,

@@ -470,10 +470,8 @@ class Dashboard extends Component {
   reloadData = () => {
     analytics.track(`Refresh List`, {
       list_type: "Campaign List",
-      business_id:
-        this.props.mainBusiness && this.props.mainBusiness.businessid,
-      business_name:
-        this.props.mainBusiness && this.props.mainBusiness.businessname,
+      business_id: this.props.mainBusiness && this.props.mainBusiness.id,
+      business_name: this.props.mainBusiness && this.props.mainBusiness.name,
     });
     // this.props.connect_user_to_intercom(this.props.userInfo.userid);
     // this.props.set_as_seen(false);
@@ -734,6 +732,11 @@ class Dashboard extends Component {
     this.setState({ showAlertModal: false });
   };
   render() {
+    console.log(
+      this.props.loadingAccountMgmt,
+      this.props.mainBusiness,
+      this.props.loading
+    );
     const { translate } = this.props.screenProps;
     const mySlideInUp = {
       from: {
@@ -943,9 +946,7 @@ class Dashboard extends Component {
                           style={[
                             styles.text,
                             this.props.mainBusiness &&
-                            !isStringArabic(
-                              this.props.mainBusiness.businessname
-                            )
+                            !isStringArabic(this.props.mainBusiness.name)
                               ? {
                                   fontFamily: "montserrat-bold-english",
                                 }
@@ -953,7 +954,7 @@ class Dashboard extends Component {
                           ]}
                         >
                           {this.props.mainBusiness
-                            ? this.props.mainBusiness.businessname
+                            ? this.props.mainBusiness.name
                             : ""}
                         </Text>
                         <Text
@@ -1048,9 +1049,7 @@ class Dashboard extends Component {
                               )}
                             </Text>
                           ) : this.props.mainBusiness &&
-                            !this.props.mainBusiness.hasOwnProperty(
-                              "businessid"
-                            ) ? (
+                            !this.props.mainBusiness.hasOwnProperty("id") ? (
                             <Text style={styles.mainText}>
                               {translate("Tap the button below to")}
                             </Text>
@@ -1068,7 +1067,8 @@ class Dashboard extends Component {
                             function={() => {
                               let businessApproved =
                                 this.props.mainBusiness &&
-                                this.props.mainBusiness.approved === "1";
+                                this.props.mainBusiness.approval_status ===
+                                  "Pending";
                               let userisSuperAdmin =
                                 this.props.userInfo &&
                                 this.props.userInfo.hasOwnProperty(
