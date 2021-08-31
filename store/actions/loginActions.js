@@ -118,7 +118,7 @@ export const checkForExpiredToken = (navigation) => {
                     dispatch(getBusinessAccounts());
                   })
                   .then(() => {
-                    analytics.identify(getState().auth.userInfo.id, {
+                    analytics.identify(`${getState().auth.userInfo.id}`, {
                       logged_out: false,
                     });
                     navigation &&
@@ -201,7 +201,7 @@ export const login = (userData, navigation = NavigationService) => {
       })
       .then(() => {
         if (getState().auth.userInfo) {
-          analytics.identify(getState().auth.userInfo.id, {
+          analytics.identify(`${getState().auth.userInfo.id}`, {
             logged_out: false,
           });
           if (getState().auth.userInfo.tmp_pwd) {
@@ -273,7 +273,7 @@ export const logout = (navigation) => {
   return (dispatch, getState) => {
     setAuthToken()
       .then(() => {
-        analytics.identify(getState().auth.userid, { logged_out: true });
+        analytics.identify(`${getState().auth.userid}`, { logged_out: true });
         navigation &&
           navigation.navigate("SwitchLanguage", {
             loggedout: true,
@@ -405,7 +405,7 @@ export const clearPushToken = (navigation, userid) => {
         return res.data;
       })
       .then(async (data) => {
-        analytics.identify(userid, { logged_out: true });
+        analytics.identify(`${userid}`, { logged_out: true });
         dispatch(logout(navigation)); //Call this first so that it navigates first then turns everything to null
         //so that the error componenet doesn't show up in the dashboard
       })
@@ -589,7 +589,6 @@ export const checkHashForUser = () => {
         return response.data;
       })
       .then((data) => {
-        console.log("data", data);
         if (data.success) {
           return dispatch({
             type: actionTypes.SET_HASH_INTERCOM_KEYS,
@@ -720,7 +719,7 @@ export const getUserProfile = () => {
           payload: false,
         });
         if (data.success) {
-          analytics.alias(data.data.id);
+          analytics.alias(`${data.data.id}`);
           analytics.flush();
           return dispatch(setCurrentUser(data.data));
         }

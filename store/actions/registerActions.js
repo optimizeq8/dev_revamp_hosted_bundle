@@ -165,7 +165,7 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
           //   analytics.alias(getState().auth.userInfo.userid);
           // MixpanelSDK.createAlias(getState().auth.userInfo.userid);
           // MixpanelSDK.identify(getState().auth.userInfo.userid);
-          analytics.identify(getState().auth.userInfo.userid, {
+          analytics.identify(`${getState().auth.userInfo.userid}`, {
             logged_out: false,
           });
           dispatch({
