@@ -17,18 +17,18 @@ import { update_user_on_intercom } from "./messengerActions";
 export const changeBusiness = (business) => {
   return (dispatch, getState) => {
     persistor.purge();
-    analytics.identify(getState().auth.userid, {
-      business_name: business.businessname,
-      business_id: business.businessid,
+    analytics.identify(`${getState().auth.userid}`, {
+      business_name: business.name,
+      business_id: business.id,
       revenue: business.revenue,
       ltv: business.ltv,
       wallet_amount: business.wallet_amount,
     });
 
-    analytics.group(business.businessid, {
-      business_id: business.businessid,
-      name: business.businessname,
-      company: business.businessname,
+    analytics.group(`${business.id}`, {
+      business_id: business.id,
+      name: business.name,
+      company: business.name,
       revenue: business.revenue,
       ltv: business.ltv,
       wallet_amount: business.wallet_amount,
@@ -63,7 +63,7 @@ export const createBusinessAccount = (account, navigation) => {
           analytics.track(`Form Submitted`, {
             form_type: "Business Creation Form",
             form_context: {
-              business_name: account.businessname,
+              business_name: account.name,
               business_category: account.businesscategory,
               other_business_category: account.otherBusinessCategory,
               country: account.country,
@@ -73,9 +73,9 @@ export const createBusinessAccount = (account, navigation) => {
               instagram_access: data.instagram_access,
             },
           });
-          analytics.identify(getState().auth.userid, {
-            business_name: data.data.businessname,
-            business_id: data.data.businessid,
+          analytics.identify(`${getState().auth.userid}`, {
+            business_name: data.data.name,
+            business_id: data.data.id,
             revenue: 0,
             ltv: 0,
             wallet_amount: 0,
@@ -126,14 +126,14 @@ export const addressForm = (address, navigation, addressId, translate) => {
         payload: true,
       });
       const response = await createBaseUrl().put("businessaddress", {
-        businessid: getState().account.mainBusiness.businessid,
+        businessid: getState().account.mainBusiness.id,
         id: addressId,
         ...address,
       });
       var time = new Animated.Value(0);
       if (response.data && response.data.message === "Address ID missing") {
         const respData = await createBaseUrl().post("businessaddress", {
-          businessid: getState().account.mainBusiness.businessid,
+          businessid: getState().account.mainBusiness.id,
           ...address,
         });
         analytics.track(`Form Submitted`, {
@@ -145,7 +145,7 @@ export const addressForm = (address, navigation, addressId, translate) => {
             ? respData.data.message
             : null,
           action_status: respData.data.success ? "success" : "failed",
-          business_id: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.id,
         });
         Animated.timing(time, {
           toValue: 1,
@@ -182,7 +182,7 @@ export const addressForm = (address, navigation, addressId, translate) => {
               ? response.data.message
               : null,
             action_status: response.data.success ? "success" : "failed",
-            business_id: getState().account.mainBusiness.businessid,
+            business_id: getState().account.mainBusiness.id,
           });
           showMessage({
             message: translate(response.data.message),
@@ -219,7 +219,7 @@ export const getAddressForm = () => {
       payload: true,
     });
     createBaseUrl()
-      .get(`businessaddresses/${getState().account.mainBusiness.businessid}`)
+      .get(`businessaddresses/${getState().account.mainBusiness.id}`)
       .then((response) => {
         if (response.data && response.data.success)
           if (!response.data.business_accounts) {
@@ -281,7 +281,7 @@ export const create_snapchat_ad_account = (info, navigation) => {
           campaign_channel: "snapchat",
           form_context: { ...info },
           action_status: data.success ? "success" : "failure",
-          business_id: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.id,
         });
         if (data.success) {
           // let adjustSnapAdAccTracker = new AdjustEvent("vsf6z0");
@@ -315,7 +315,7 @@ export const create_snapchat_ad_account = (info, navigation) => {
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
-          business_id: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.id,
         });
         errorMessageHandler(err);
 
@@ -348,7 +348,7 @@ export const updateUserInfo = (info, navigation) => {
           },
           action_status: data.success ? "success" : "failure",
           error_description: !data.success ? data.message : null,
-          business_id: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.id,
         });
         if (data.success) {
           setAuthToken(data.accessToken);
@@ -365,7 +365,7 @@ export const updateUserInfo = (info, navigation) => {
             mobile: mobile,
           };
 
-          analytics.identify(getState().auth.userid, {
+          analytics.identify(`${getState().auth.userid}`, {
             ...updateInfo,
           });
           navigation.navigate("Dashboard", {
@@ -460,7 +460,7 @@ export const deleteBusinessAccount = (business_id) => {
  * @param {String} info.lastname
  * @param {String} info.email
  * @param {String} info.user_role
- * @param {String} info.businessid
+ * @param {String} info.id
  * @returns {Function} the function the calls the axios request 'memberaccount'
  */
 
@@ -480,7 +480,7 @@ export const inviteTeamMember = (info, resend) => {
             resend_invite: resend,
           },
           action_status: data.success ? "success" : "failure",
-          business_id: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.id,
         });
         showMessage({
           message: data.message,
@@ -504,7 +504,7 @@ export const inviteTeamMember = (info, resend) => {
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
-          business_id: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.id,
         });
         errorMessageHandler(err);
       });
@@ -515,8 +515,8 @@ export const inviteTeamMember = (info, resend) => {
  * @method
  * @param {string} userid
  * @param {object} info fields that can be updated except for the businessid
- * @param info.businessid {string}
- * @param info.businessname {string}
+ * @param info.id {string}
+ * @param info.name {string}
  * @param info.brandname {string}
  * @param info.businessemail {string}
  * @param info.businesstype {string}
@@ -551,7 +551,7 @@ export const updateBusinessInfo = (businessid, info, navigation, translate) => {
         analytics.track(`Form Submitted`, {
           form_type: "Update Business Info Form",
           form_context: {
-            business_name: info.businessname,
+            business_name: info.name,
             business_category: info.businesscategory,
             country: info.country,
             business_type: info.businesstype,
@@ -671,7 +671,7 @@ export const handleTeamInvite = (status, segmentInfo) => {
           action_status: data.success ? "success" : "failure",
           business_id:
             getState().account.mainBusiness &&
-            getState().account.mainBusiness.businessid,
+            getState().account.mainBusiness.id,
         });
         if (data.success) {
           dispatch(getBusinessAccounts());
@@ -753,7 +753,7 @@ export const updateTeamMembers = (memberInfo) => {
           source: "AddOrEditTeamMember",
           action_status: data.success ? "success" : "failure",
           ...memberInfo,
-          business_id: getState().account.mainBusiness.businessid,
+          business_id: getState().account.mainBusiness.id,
         });
 
         showMessage({
@@ -939,7 +939,7 @@ export const updateWebInfoForBusiness = (info, submitNextStep = false) => {
         analytics.track(`Form Submitted`, {
           form_type: "Website Info Form",
           form_context: {
-            business_id: info.businessid,
+            business_id: info.id,
             whatsapp_number: info.whatsappnumber,
             insta_handle: info.insta_handle,
             snapchat_handle: info.snapchat_handle,
@@ -949,7 +949,7 @@ export const updateWebInfoForBusiness = (info, submitNextStep = false) => {
           error_description: !data.success && data.message,
           business_id:
             getState().account.mainBusiness &&
-            getState().account.mainBusiness.businessid,
+            getState().account.mainBusiness.id,
         });
         if (data.success) {
           dispatch({
@@ -1035,7 +1035,7 @@ export const changeBusinessLogo = (
           error_description: !data.success && data.message,
           business_id:
             getState().account.mainBusiness &&
-            getState().account.mainBusiness.businessid,
+            getState().account.mainBusiness.id,
         });
         if (data.success) {
           return dispatch({
@@ -1063,7 +1063,7 @@ export const changeBusinessLogo = (
           error_description: error.response || error.message,
           business_id:
             getState().account.mainBusiness &&
-            getState().account.mainBusiness.businessid,
+            getState().account.mainBusiness.id,
         });
         // console.log(
         //   "changeBusinessLogo error",
@@ -1114,7 +1114,7 @@ export const crashAppForSpamUser = () => {
             source: "CrashAppForSpamUser",
             business_id:
               getState().account.mainBusiness &&
-              getState().account.mainBusiness.businessid,
+              getState().account.mainBusiness.id,
           });
           NavigationService.navigate("SuspendedWarning", {
             source: "app_crash",

@@ -71,10 +71,7 @@ class BusinessList extends Component {
   filterBusinesses = async (value) => {
     let filteredBusinesses = this.props.businessAccounts.filter(
       (bus) =>
-        bus.businessname
-          .trim()
-          .toLowerCase()
-          .includes(value.trim().toLowerCase()) ||
+        bus.name.trim().toLowerCase().includes(value.trim().toLowerCase()) ||
         bus.brandname.trim().toLowerCase().includes(value.trim().toLowerCase())
     );
 
@@ -90,9 +87,9 @@ class BusinessList extends Component {
   renderBusinessCards = (item) => {
     let business = item.item;
     const { translate } = this.props.screenProps;
-    if (this.state.activeTab === "INVITATION" && business.businessid === "-1") {
+    if (this.state.activeTab === "INVITATION" && business.id === "-1") {
       return (
-        <Fragment key={business.businessid}>
+        <Fragment key={business.id}>
           {(this.props.businessInvitee &&
             this.props.userInfo.email === this.props.invitedEmail) ||
           this.props.businessInvites ? (
@@ -106,12 +103,9 @@ class BusinessList extends Component {
           ) : null}
         </Fragment>
       );
-    } else if (
-      business.businessid !== "-1" &&
-      this.state.activeTab === "Businesses"
-    )
+    } else if (business.id !== "-1" && this.state.activeTab === "Businesses")
       return (
-        <Fragment key={business.businessid}>
+        <Fragment key={business.id}>
           <BusinessCard
             screenProps={this.props.screenProps}
             business={business}
@@ -143,7 +137,7 @@ class BusinessList extends Component {
       button_type: "Create New Business",
       button_content: "Add a new business",
       source: "Dashboard",
-      businessid: this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness && this.props.mainBusiness.id,
     });
 
     let routePath = "CreateBusinessAccount";
@@ -236,7 +230,7 @@ class BusinessList extends Component {
             ) : (
               <FlatList
                 contentContainerStyle={styles.contentContainer}
-                keyExtractor={(item) => item.businessid}
+                keyExtractor={(item) => item.id}
                 data={this.state.filteredBusinesses}
                 initialNumToRender={10}
                 renderItem={this.renderBusinessCards}

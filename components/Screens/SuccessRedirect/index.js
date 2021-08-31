@@ -55,7 +55,7 @@ class SuccessRedirect extends Component {
         track_id: this.props.navigation.getParam("trackID", ""),
         checkout_type: "Wallet Top Up",
       };
-      analytics.identify(this.props.userInfo.userid, {
+      analytics.identify(this.props.userInfo.id, {
         wallet_amount: this.props.navigation.getParam("amount", "0.00"),
       });
     } else {

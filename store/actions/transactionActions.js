@@ -424,7 +424,7 @@ export const checkoutwithWallet = (campaign_id, navigation, retries = 3) => {
 
         // Update the new wallet amount for that user's profile buiness
         data.success &&
-          analytics.identify(getState().auth.userid, {
+          analytics.identify(`${getState().auth.userid}`, {
             wallet_amount: data.wallet_amount,
           });
         navigation.reset(

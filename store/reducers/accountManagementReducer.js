@@ -74,8 +74,7 @@ const reducer = (state = initialState, action) => {
         main = setNewBusinessAccounts[action.payload.index]
           ? setNewBusinessAccounts[action.payload.index]
           : setNewBusinessAccounts[0];
-
-        analytics.identify(action.payload.userid, {
+        analytics.identify(`${action.payload.userid}`, {
           business_id: main.id,
           business_name: main.name,
           revenue: main.revenue,
@@ -84,7 +83,7 @@ const reducer = (state = initialState, action) => {
           first_name: action.payload.user.firstname,
           last_name: action.payload.user.lastname,
         });
-        analytics.group(main.id, {
+        analytics.group(`${main.id}`, {
           business_id: main.id,
           name: main.name,
           company: main.name,
@@ -116,10 +115,7 @@ const reducer = (state = initialState, action) => {
         "indexOfMainBusiness",
         `${newSetMainBusiness.index}`
       );
-      AsyncStorage.setItem(
-        "selectedBusinessId",
-        `${newSetMainBusiness.businessid}`
-      );
+      AsyncStorage.setItem("selectedBusinessId", `${newSetMainBusiness.id}`);
 
       return {
         ...state,

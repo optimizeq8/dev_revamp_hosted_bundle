@@ -44,9 +44,7 @@ class BusinessCard extends Component {
             {
               text: this.translate("Delete"),
               onPress: () =>
-                this.props.deleteBusinessAccount(
-                  this.props.business.businessid
-                ),
+                this.props.deleteBusinessAccount(this.props.business.id),
               style: "destructive",
             },
           ]
@@ -60,8 +58,7 @@ class BusinessCard extends Component {
   handleSwitchBusiness = () => {
     if (!this.props.manageTeam) {
       analytics.track(`Business Switched`, {
-        business_id:
-          this.props.mainBusiness && this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness && this.props.mainBusiness.id,
       });
 
       RCTNetworking.clearCookies(() => true);
@@ -86,7 +83,7 @@ class BusinessCard extends Component {
     if (
       !this.props.manageTeam &&
       this.props.mainBusiness &&
-      this.props.mainBusiness.businessid === this.props.business.businessid
+      this.props.mainBusiness.id === this.props.business.id
     ) {
       changeState.color = "#FF790A";
       changeState.textColor = "#FF790A";
@@ -125,14 +122,14 @@ class BusinessCard extends Component {
               style={[
                 styles.titletext,
                 { color: changeState.textColor },
-                !isStringArabic(this.props.business.businessname)
+                !isStringArabic(this.props.business.name)
                   ? {
                       fontFamily: "montserrat-bold-english",
                     }
                   : {},
               ]}
             >
-              {this.props.business.businessname}
+              {this.props.business.name}
             </Text>
             <Text style={[styles.subtext, { color: changeState.textColor }]}>
               {this.businessCategory && translate(this.businessCategory.label)}

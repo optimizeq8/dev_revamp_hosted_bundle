@@ -52,7 +52,7 @@ const reducer = (state = initialState, action) => {
                     ios_devices: [event.deviceToken],
                   };
                 }
-                analytics.identify(action.payload.id, userTraits);
+                analytics.identify(`${action.payload.id}`, userTraits);
               }
             );
           } catch (err) {
@@ -61,7 +61,7 @@ const reducer = (state = initialState, action) => {
               source: "SettingDeviceToken",
               error_description: err.response || err.message,
             });
-            analytics.identify(action.payload.user.userid, userTraits);
+            analytics.identify(`${action.payload.user.userid}`, userTraits);
           }
           // MixpanelSDK.identify(action.payload.user.userid);
         })
@@ -71,8 +71,7 @@ const reducer = (state = initialState, action) => {
             error_description: error.response || error.message,
           });
           // Catch never gets called
-          analytics.alias(action.payload.userid);
-          analytics.identify(action.payload.userid, {
+          analytics.identify(`${action.payload.userid}`, {
             ...action.payload.user,
             $name: action.payload.firstname + " " + action.payload.lastname,
             $phone: "+" + action.payload.mobile,
