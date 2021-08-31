@@ -18,5 +18,5 @@ export let userRegisterFailureresponse = {
   api_version: "v1",
   error: true,
   message: "Validation Errors",
-  data: {},
+  data: { mobile: ["The mobile has already been taken."] },
 };

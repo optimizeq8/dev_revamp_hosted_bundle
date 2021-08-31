@@ -578,7 +578,6 @@ export const registerGuestUser = (
   businessAccount
 ) => {
   return async (dispatch, getState) => {
-    console.log("userInfo", JSON.stringify(userInfo, null, 2));
     let user_info = {
       email: userInfo.email,
       password: userInfo.password,
@@ -587,7 +586,9 @@ export const registerGuestUser = (
       last_name: userInfo.lastname,
       mobile: userInfo.mobile,
     };
-    createBaseUrl()
+    // console.log("user_info", JSON.stringify(user_info, null, 2));
+
+    return createBaseUrl()
       .post(`users`, user_info)
       .then((res) => {
         return res.data;
