@@ -240,7 +240,7 @@ describe("Create business account", () => {
       ]);
     });
   });
-  test.only("should handle creating a business for user with same name FAILURE action", () => {
+  test("should handle creating a business for user with same name FAILURE action", () => {
     const store = mockStore(
       reducer(undefined, {
         payload: {
@@ -260,6 +260,52 @@ describe("Create business account", () => {
       request.respondWith({
         status: 422,
         response: sameNameResponseData,
+      });
+    });
+    const dispatchedStore = store.dispatch(
+      createBusinessAccount(
+        {
+          name: "IM IO Business",
+          category: "Construction",
+          country_id: 2,
+          type: "Agency",
+        },
+        { navigate: () => {} }
+      )
+    );
+    return dispatchedStore.then(() => {
+      expect(store.getActions()).toEqual([
+        { payload: true, type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT },
+        {
+          type: actionTypes.ERROR_ADD_BUSINESS_ACCOUNT,
+          payload: {
+            loading: false,
+          },
+        },
+      ]);
+    });
+  });
+
+  test("should handle creating a business for user FAILURE action", () => {
+    const store = mockStore(
+      reducer(undefined, {
+        payload: {
+          id: 11,
+          first_name: "Imran",
+          last_name: "Sheikh",
+          mobile: "+96522112288",
+          email: "imran@optimizeapp.com",
+          verified: 1,
+          tmp_pwd: 0,
+        },
+        type: "SET_CURRENT_USER",
+      })
+    );
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 500,
+        response: { errorMessage: "Something went wrong!" },
       });
     });
     const dispatchedStore = store.dispatch(
