@@ -6,6 +6,7 @@ import accountManagementReducer from "../../reducers/accountManagementReducer";
 import * as actionTypes from "../actionTypes";
 import {
   createBusinessAccount,
+  deleteBusinessAccount,
   updateBusinessInfo,
 } from "../accountManagementActions";
 import moxios from "moxios";
@@ -252,7 +253,7 @@ describe("Create business account", () => {
           verified: 1,
           tmp_pwd: 0,
         },
-        type: "SET_CURRENT_USER",
+        type: actionTypes.SET_CURRENT_USER,
       })
     );
     moxios.wait(() => {
@@ -298,7 +299,7 @@ describe("Create business account", () => {
           verified: 1,
           tmp_pwd: 0,
         },
-        type: "SET_CURRENT_USER",
+        type: actionTypes.SET_CURRENT_USER,
       })
     );
     moxios.wait(() => {
@@ -328,6 +329,73 @@ describe("Create business account", () => {
             loading: false,
           },
         },
+      ]);
+    });
+  });
+});
+
+describe("Delete a business", () => {
+  test("should handle deleting a business", () => {
+    const store = mockStore(
+      reducer(undefined, {
+        payload: {
+          id: 11,
+          first_name: "Imran",
+          last_name: "Sheikh",
+          mobile: "+96522112288",
+          email: "imran@optimizeapp.com",
+          verified: 1,
+          tmp_pwd: 0,
+        },
+        type: actionTypes.SET_CURRENT_USER,
+      })
+    );
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 204,
+        response: null,
+      });
+    });
+    const dispatchedStore = store.dispatch(deleteBusinessAccount(14));
+    return dispatchedStore.then(() => {
+      expect(store.getActions()).toEqual([
+        { type: actionTypes.DELETE_BUSINESS_LOADING, payload: true },
+        {
+          type: actionTypes.DELETE_BUSINESS_ACCOUNT,
+          payload: 14,
+        },
+      ]);
+    });
+  });
+
+  test.only("should handle deleting a business for unauthorized user", () => {
+    const store = mockStore(
+      reducer(undefined, {
+        payload: {
+          id: 11,
+          first_name: "Imran",
+          last_name: "Sheikh",
+          mobile: "+96522112288",
+          email: "imran@optimizeapp.com",
+          verified: 1,
+          tmp_pwd: 0,
+        },
+        type: actionTypes.SET_CURRENT_USER,
+      })
+    );
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 401,
+        response: null,
+      });
+    });
+    const dispatchedStore = store.dispatch(deleteBusinessAccount(14));
+    return dispatchedStore.then(() => {
+      expect(store.getActions()).toEqual([
+        { type: actionTypes.DELETE_BUSINESS_LOADING, payload: true },
+        { type: actionTypes.DELETE_BUSINESS_LOADING, payload: false },
       ]);
     });
   });

@@ -429,17 +429,18 @@ export const updateUserInfo = (info, navigation) => {
 export const deleteBusinessAccount = (business_id) => {
   return (dispatch) => {
     dispatch({ type: actionTypes.DELETE_BUSINESS_LOADING, payload: true });
-    createBaseUrl()
+    return createBaseUrl()
       .delete(`deleteBusiness/${business_id}`)
       .then((res) => res.data)
       .then((data) => {
-        if (data.success) {
-          showMessage({ message: data.message, type: "success" });
-          dispatch({
-            type: actionTypes.DELETE_BUSINESS_ACCOUNT,
-            payload: business_id,
-          });
-        }
+        showMessage({
+          message: "Business deleted successfully",
+          type: "success",
+        });
+        dispatch({
+          type: actionTypes.DELETE_BUSINESS_ACCOUNT,
+          payload: business_id,
+        });
       })
       .catch((err) => {
         dispatch({ type: actionTypes.DELETE_BUSINESS_LOADING, payload: false });
