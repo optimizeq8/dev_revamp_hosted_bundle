@@ -182,8 +182,8 @@ export const login = (userData, navigation = NavigationService) => {
     });
     return createBaseUrl()
       .post("login", querystring.stringify(userInfo), {
-        timeout: 8000,
-        timeoutErrorMessage: "Something went wrong, please try again.",
+        // timeout: 8000,
+        // timeoutErrorMessage: "Something went wrong, please try again.",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
@@ -546,7 +546,12 @@ export const changePassword = (
       .catch((err) => {
         // console.log("changePasswordError", err);
         let errorMessage = null;
-        if (err.response && err.response.data && err.response.data.data) {
+        if (
+          err &&
+          err.response &&
+          err.response.data &&
+          err.response.data.data
+        ) {
           if (Object.keys(err.response.data.data).length > 0) {
             // iterate over the error data object
             for (const key in err.response.data.data) {
@@ -554,12 +559,13 @@ export const changePassword = (
             }
           }
         } else if (
+          err &&
           err.response &&
           err.response.data &&
           err.response.data.message
         ) {
           errorMessage = err.response.data.message;
-        } else if (err.message || err.response) {
+        } else if (err && (err.message || err.response)) {
           errorMessage = err.message || err.response;
         }
         // console.log("changePassword errorMessage", errorMessage);
@@ -583,7 +589,7 @@ export const changePassword = (
 
 export const checkHashForUser = () => {
   return (dispatch) => {
-    createBaseUrl()
+    return createBaseUrl()
       .get(`users/intercomhash`)
       .then((response) => {
         return response.data;
@@ -597,7 +603,7 @@ export const checkHashForUser = () => {
         }
       })
       .catch((error) => {
-        console.log("error hashForUser", error.error || error.message);
+        // console.log("error hashForUser", error);
         return dispatch({
           type: actionTypes.SET_HASH_INTERCOM_KEYS,
           payload: {

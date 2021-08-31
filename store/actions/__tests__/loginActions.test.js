@@ -20,9 +20,18 @@ import loginReducer from "../../reducers/loginReducer";
 import reducer from "../../reducers";
 
 import * as actionTypes from "../actionTypes";
-import { changePassword, forgotPassword, login } from "../loginActions";
+import {
+  changePassword,
+  checkHashForUser,
+  forgotPassword,
+  login,
+} from "../loginActions";
 // import * as SecureStore from "expo-secure-store";
 import NavigationService from "../../../NavigationService";
+import {
+  intercomHashSuccessResponse,
+  intercomHashFailureResponse,
+} from "./MockedApiResponses/IntercomHashTokenMock";
 jest.mock("react-native-notifications", () => {
   return {
     RNEventEmitter: {
@@ -62,7 +71,7 @@ describe("LoginAction", () => {
           last_name: "Kazi",
           mobile: "+96522112290",
           email: "saadiya@optimizeapp.com",
-          verified: 0,
+          verified: 1,
           tmp_pwd: 0,
         },
       };
@@ -359,6 +368,59 @@ describe("LoginAction", () => {
             },
           },
         ]);
+      });
+    });
+  });
+
+  describe("checkIntercomHashForUser Action / Redducer", () => {
+    beforeEach(() => {
+      moxios.install();
+    });
+    afterEach(() => {
+      moxios.uninstall();
+    });
+    test("intercomhash SUCCESS", () => {
+      const successAction = {
+        type: actionTypes.SET_HASH_INTERCOM_KEYS,
+        payload: {
+          android:
+            "971eed707846b6e43d08ad7557f7d2200bb7312d4f3ca2a971d9589340f2d06b",
+          ios: "e902ecf4da6201daee14caf0078549898bbf257ecb046c6049b50a5e70b4c912",
+        },
+      };
+
+      const store = mockStore(reducer(undefined, successAction));
+      const dispatchedStore = store.dispatch(checkHashForUser());
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          response: intercomHashSuccessResponse,
+        });
+      });
+      return dispatchedStore.then(() => {
+        // console.log("store.getActions()", store.getActions());
+        expect(store.getActions()).toEqual([successAction]);
+      });
+    });
+    test("intercomhash FAILURE", () => {
+      const failureAction = {
+        type: actionTypes.SET_HASH_INTERCOM_KEYS,
+        payload: { ios: null, android: null },
+      };
+
+      const store = mockStore(reducer(undefined, failureAction));
+      const dispatchedStore = store.dispatch(checkHashForUser());
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 401,
+          response: intercomHashFailureResponse,
+        });
+      });
+      return dispatchedStore.then(() => {
+        // console.log("store.getActions()", store.getActions());
+        expect(store.getActions()).toEqual([failureAction]);
       });
     });
   });
