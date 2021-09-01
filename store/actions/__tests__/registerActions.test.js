@@ -10,10 +10,17 @@ import {
   validateEmailFailureMockResponse,
   validateEmailMissingeMailFailureMockResponse,
 } from "./MockedApiResponses/ValidateEmailMockResponse";
-import { verifyEmail, registerGuestUser } from "../registerActions";
+import {
+  verifyEmail,
+  registerGuestUser,
+  sendMobileNo,
+} from "../registerActions";
 import * as actionTypes from "../actionTypes";
 import { userRegisterFailureresponse } from "./MockedApiResponses/UserRegisterMock";
-import { sendMobileNo } from "..";
+import {
+  OtpSentFailureResponse,
+  OtpSentSuccessResponse,
+} from "./MockedApiResponses/OTPSentMock";
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 jest.setTimeout(150000);
@@ -64,7 +71,7 @@ beforeEach(() => {
 afterEach(() => {
   moxios.uninstall();
 });
-/*
+
 describe("Register step 1, verify email action/ reducer", () => {
   test("Missing Email", () => {
     const failureAction = {
@@ -205,7 +212,7 @@ describe("Register step 1, verify email action/ reducer", () => {
     });
   });
 });
-*/
+
 describe("Register Step 2, User Info action/ reducer", () => {
   test("User Register Failure", async () => {
     const failureAction = {
@@ -296,20 +303,42 @@ describe("Register Step 2, User Info action/ reducer", () => {
   });
 });
 
-// describe("OTP Action / Reducer", () => {
-//   test("OTP Success", () => {
-//     const successAction = {
-//       type: actionTypes.SEND_MOBILE_NUMBER,
-//     };
-//     const store = mockStore(reducer(undefined, successAction));
-//     moxios.wait(() => {
-//       const request = moxios.requests.mostRecent();
-//       request.respondWith({
-//         status: 422,
-//         response: userRegisterFailureresponse,
-//       });
-//     });
-//     const dispatchStore = store.dispatch(sendMobileNo());
-//     return dispatchStore.then(() => {});
-//   });
-// });
+describe("OTP Action / Reducer", () => {
+  test("OTP Failure", () => {
+    const failureAction = {
+      type: actionTypes.ERROR_SEND_MOBILE_NO,
+      payload: { success: false },
+    };
+    const store = mockStore(reducer(undefined, failureAction));
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 401,
+        response: OtpSentFailureResponse,
+      });
+    });
+    const dispatchStore = store.dispatch(sendMobileNo());
+    return dispatchStore.then(() => {
+      console.log("sendMobileNo failure getACTIONS", store.getActions());
+    });
+  });
+
+  test("OTP Success", () => {
+    const successAction = {
+      type: actionTypes.SEND_MOBILE_NUMBER,
+      payload: { success: false },
+    };
+    const store = mockStore(reducer(undefined, successAction));
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: OtpSentSuccessResponse,
+      });
+    });
+    const dispatchStore = store.dispatch(sendMobileNo());
+    return dispatchStore.then(() => {
+      console.log("sendMobileNo success getACTIONS", store.getActions());
+    });
+  });
+});
