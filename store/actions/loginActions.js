@@ -731,7 +731,7 @@ export const getUserProfile = () => {
         }
       })
       .catch((error) => {
-        // console.log("getUserProfileError", error);
+        console.log("getUserProfileError", error);
 
         dispatch({
           type: actionTypes.USER_PROFILE_LOADING,

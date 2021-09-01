@@ -13,7 +13,11 @@ import {
   getBusinessAccounts,
   getAnonymousUserId,
 } from "./genericActions";
-import { setCurrentUser, chanege_base_url } from "./loginActions";
+import {
+  setCurrentUser,
+  chanege_base_url,
+  getUserProfile,
+} from "./loginActions";
 import { createBusinessAccount } from "./index";
 // import { send_push_notification } from "./loginActions";
 import { connect_user_to_intercom } from "./messengerActions";
@@ -206,11 +210,12 @@ export const resetRegister = () => {
 export const sendMobileNo = (mobileNo) => {
   return (dispatch, getState) => {
     createBaseUrl()
-      .post(`addMobile`, mobileNo)
+      .get(`users/otp`)
       .then((res) => {
         return res.data;
       })
       .then((data) => {
+        console.log("sendMobileNo data", data);
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -222,7 +227,7 @@ export const sendMobileNo = (mobileNo) => {
         });
       })
       .catch((err) => {
-        // console.log("sendMobileNo error", err.message || err.response);
+        console.log("sendMobileNo error", err);
         return dispatch({
           type: actionTypes.ERROR_SEND_MOBILE_NO,
           payload: {
@@ -577,7 +582,7 @@ export const registerGuestUser = (
   navigation,
   businessAccount
 ) => {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     let user_info = {
       email: userInfo.email,
       password: userInfo.password,
@@ -594,7 +599,7 @@ export const registerGuestUser = (
         return res.data;
       })
       .then((data) => {
-        console.log("data", JSON.stringify(data, null, 2));
+        console.log("registerGuestUser data", JSON.stringify(data, null, 2));
         delete userInfo.password;
 
         analytics.track(`Form Submitted`, {
@@ -604,6 +609,10 @@ export const registerGuestUser = (
             business_invite: businessInvite === "0",
           },
         });
+        if (data.success) {
+          console.log("reached here");
+          setAuthToken(data.data.access_token);
+        }
         //=====Tracked from the backend=====//
         // For users creating new business while registering
         // if (businessInvite === "1") {
@@ -642,56 +651,37 @@ export const registerGuestUser = (
         // });
         return data;
       })
-      .then(async (user) => {
-        // if (user.success === true) {
-        //   const decodedUser = jwt_decode(user.access_token);
-        //   let peomise = await setAuthToken(user.access_token);
-        //   return { user: decodedUser, message: user.message };
-        //   //if something goes wrong with the registeration process or Front-end verification
-        //   //this will throw an error and stop the regiteration process
-        // } else return Promise.reject({ message: user.message });
-      })
-      .then((decodedUser) => {
-        // if (decodedUser && decodedUser.user) {
-        //   if (
-        //     [
-        //       "nouf@optimizeapp.com",
-        //       "sam.omran@hotmail.com",
-        //       "imran@optimizekw.com",
-        //       "saadiya@optimizekw.com",
-        //       "shorook@optimizekw.com",
-        //       "samy@optimizeapp.com",
-        //     ].includes(decodedUser.user.email)
-        //   ) {
-        //     dispatch(chanege_base_url(true));
-        //   }
-        //   analytics.alias(decodedUser.user.userid);
-        //   analytics.flush();
-        //   // MixpanelSDK.identify(decodedUser.user.userid);
-        //   dispatch(setCurrentUser(decodedUser));
-        // }
-      })
       .then(() => {
-        // if (getState().auth.userInfo) {
-        //   dispatch(createBusinessAccount(userInfo, navigation));
-        //   dispatch({
-        //     type: actionTypes.SAVING_REGISTER_ACCOUNT,
-        //     payload: false,
-        //   });
-        //   navigation.navigate("RegistrationSuccess", {
-        //     source: "RegistrationDetailForm",
-        //     source_action: "Registration Detail Form Submitted",
-        //   });
-        //   // dispatch(send_push_notification());
-        //   dispatch(getBusinessAccounts());
-        //   // dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
-        //   AsyncStorage.setItem("registeredWithInvite", "true");
-        // }
+        console.log("get user call");
+        return dispatch(getUserProfile());
+      })
+
+      .then(() => {
+        console.log("finalluy");
+        if (getState().auth.userInfo) {
+          // dispatch(createBusinessAccount(userInfo, navigation));
+          dispatch({
+            type: actionTypes.SAVING_REGISTER_ACCOUNT,
+            payload: false,
+          });
+          navigation.navigate("RegistrationSuccess", {
+            source: "RegistrationDetailForm",
+            source_action: "Registration Detail Form Submitted",
+          });
+          // dispatch(send_push_notification());
+          // dispatch(getBusinessAccounts());// add back later
+          // dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
+          AsyncStorage.setItem("registeredWithInvite", "true");
+        }
       })
       .catch((err) => {
-        // console.log("registerGuestUser ERROR", err.response.data);
+        console.log("registerGuestUser ERROR", err);
         let errorMsg = null;
-        if (Object.keys(err.response.data.data).length > 0) {
+        if (
+          err.response &&
+          err.response.data &&
+          Object.keys(err.response.data.data).length > 0
+        ) {
           for (var key in err.response.data.data) {
             errorMsg = err.response.data.data[key][0];
           }

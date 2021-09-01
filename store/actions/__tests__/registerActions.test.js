@@ -4,7 +4,7 @@ import thunk from "redux-thunk";
 import moxios from "moxios";
 
 import reducer from "../../reducers";
-
+import { userRegisterSuccessResponse } from "./MockedApiResponses/UserRegisterMock";
 import {
   validateEmailSuccessMockResponse,
   validateEmailFailureMockResponse,
@@ -13,6 +13,7 @@ import {
 import { verifyEmail, registerGuestUser } from "../registerActions";
 import * as actionTypes from "../actionTypes";
 import { userRegisterFailureresponse } from "./MockedApiResponses/UserRegisterMock";
+import { sendMobileNo } from "..";
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 jest.setTimeout(150000);
@@ -214,15 +215,7 @@ describe("Register Step 2, User Info action/ reducer", () => {
         message: "The mobile has already been taken.",
       },
     };
-    const store = mockStore(
-      reducer(undefined, {
-        type: actionTypes.ERROR_REGISTER_GUEST_USER,
-        payload: {
-          success: false,
-          message: "The mobile has already been taken.",
-        },
-      })
-    );
+    const store = mockStore(reducer(undefined, failureAction));
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -267,44 +260,56 @@ describe("Register Step 2, User Info action/ reducer", () => {
     });
   });
 
-  // test("User Register Success", (done) => {
-  //   const failureAction = {
-  //     type: actionTypes.ERROR_REGISTER_GUEST_USER,
-  //     payload: {
-  //       success: false,
-  //       message: "The mobile has already been taken.",
-  //     },
-  //   };
-  //   console.log("mock start");
-  //   const store = mockStore(reducer(undefined, failureAction));
-  //   console.log("mock start 123");
-  //   return moxios.wait(() => {
-  //     console.log("mock start 1234");
-  //     const request = moxios.requests.mostRecent();
-  //     request
-  //       .respondWith({
-  //         status: 422,
-  //         response: validateEmailMissingeMailFailureMockResponse,
-  //       })
-  //       .then((res) => {
-  //         console.log("res 12345");
-  //         done();
-  //       });
-  //     const dispatchStore = store.dispatch(
-  //       registerGuestUser({
-  //         email: "saadiya@optimizekw.com",
-  //         password: "Saadiya@2021",
-  //         repassword: "Saadiya@2021",
-  //         firstname: "Saadiya",
-  //         lastname: "Kazi",
-  //         mobile: "+96567613407",
-  //       })
-  //     );
-  //     return;
-  //     console.log(
-  //       "User Register state",
-  //       JSON.stringify(store.getActions(), null, 2)
-  //     );
-  //   });
-  // });
+  test("User Register Success", () => {
+    const successAction = {
+      type: actionTypes.SET_CURRENT_USER,
+      payload: {},
+    };
+
+    const store = mockStore(reducer(undefined, successAction));
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 201,
+        response: userRegisterSuccessResponse,
+      });
+    });
+    const dispatchStore = store.dispatch(
+      registerGuestUser(
+        {
+          email: "saadiya@optimizekw.com",
+          password: "Saadiya@2021",
+          repassword: "Saadiya@2021",
+          firstname: "Saadiya",
+          lastname: "Kazi",
+          mobile: "+96597376438",
+        },
+        "0",
+        { navigate: () => {} }
+      )
+    );
+
+    return dispatchStore.then(() => {
+      console.log("store.getActions()", store.getActions());
+    });
+  });
 });
+
+// describe("OTP Action / Reducer", () => {
+//   test("OTP Success", () => {
+//     const successAction = {
+//       type: actionTypes.SEND_MOBILE_NUMBER,
+//     };
+//     const store = mockStore(reducer(undefined, successAction));
+//     moxios.wait(() => {
+//       const request = moxios.requests.mostRecent();
+//       request.respondWith({
+//         status: 422,
+//         response: userRegisterFailureresponse,
+//       });
+//     });
+//     const dispatchStore = store.dispatch(sendMobileNo());
+//     return dispatchStore.then(() => {});
+//   });
+// });

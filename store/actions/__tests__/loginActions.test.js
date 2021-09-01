@@ -98,6 +98,10 @@ describe("LoginAction", () => {
             type: actionTypes.USER_PROFILE_LOADING,
             payload: false,
           },
+          {
+            payload: false,
+            type: actionTypes.CHECKING_FOR_TOKEN,
+          },
           successAction,
           {
             type: actionTypes.SET_LOADING_USER,
