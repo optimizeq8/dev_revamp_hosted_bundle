@@ -1,11 +1,12 @@
-import Axios from "axios";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import { initialState } from "../../reducers/accountManagementReducer";
 import accountManagementReducer from "../../reducers/accountManagementReducer";
 import * as actionTypes from "../actionTypes";
 import {
+  checkBusinessVerified,
   createBusinessAccount,
+  deleteBusinessAccount,
   updateBusinessInfo,
 } from "../accountManagementActions";
 import moxios from "moxios";
@@ -14,10 +15,12 @@ import {
   updateBusinessSuccessResponseData,
   createBusinessSuccessResponseData,
   sameNameResponseData,
+  approvalRequestSuccessResponse,
 } from "./MockedApiResponses/BusinessAccountMock";
 import { getBusinessesResponseSuccess } from "./MockedApiResponses/UserBusinessResponseMock";
 import { getBusinessAccounts } from "../genericActions";
 import reducer from "../../reducers";
+import FlashMessage from "react-native-flash-message";
 
 jest.mock("@segment/analytics-react-native", () => {
   return {
@@ -45,6 +48,7 @@ beforeEach(() => {
 });
 afterEach(() => {
   moxios.uninstall();
+  jest.clearAllMocks();
 });
 
 const middlewares = [thunk];
@@ -252,7 +256,7 @@ describe("Create business account", () => {
           verified: 1,
           tmp_pwd: 0,
         },
-        type: "SET_CURRENT_USER",
+        type: actionTypes.SET_CURRENT_USER,
       })
     );
     moxios.wait(() => {
@@ -298,7 +302,7 @@ describe("Create business account", () => {
           verified: 1,
           tmp_pwd: 0,
         },
-        type: "SET_CURRENT_USER",
+        type: actionTypes.SET_CURRENT_USER,
       })
     );
     moxios.wait(() => {
@@ -328,6 +332,206 @@ describe("Create business account", () => {
             loading: false,
           },
         },
+      ]);
+    });
+  });
+});
+
+describe("Delete a business", () => {
+  test("should handle deleting a business", () => {
+    const store = mockStore(
+      reducer(undefined, {
+        payload: {
+          id: 11,
+          first_name: "Imran",
+          last_name: "Sheikh",
+          mobile: "+96522112288",
+          email: "imran@optimizeapp.com",
+          verified: 1,
+          tmp_pwd: 0,
+        },
+        type: actionTypes.SET_CURRENT_USER,
+      })
+    );
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 204,
+        response: null,
+      });
+    });
+    const dispatchedStore = store.dispatch(deleteBusinessAccount(14));
+    return dispatchedStore.then(() => {
+      expect(store.getActions()).toEqual([
+        { type: actionTypes.DELETE_BUSINESS_LOADING, payload: true },
+        {
+          type: actionTypes.DELETE_BUSINESS_ACCOUNT,
+          payload: 14,
+        },
+      ]);
+    });
+  });
+
+  test("should handle deleting a business for unauthorized user", () => {
+    const store = mockStore(
+      reducer(undefined, {
+        payload: {
+          id: 11,
+          first_name: "Imran",
+          last_name: "Sheikh",
+          mobile: "+96522112288",
+          email: "imran@optimizeapp.com",
+          verified: 1,
+          tmp_pwd: 0,
+        },
+        type: actionTypes.SET_CURRENT_USER,
+      })
+    );
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 401,
+        response: null,
+      });
+    });
+    const dispatchedStore = store.dispatch(deleteBusinessAccount(14));
+    return dispatchedStore.then(() => {
+      expect(store.getActions()).toEqual([
+        { type: actionTypes.DELETE_BUSINESS_LOADING, payload: true },
+        { type: actionTypes.DELETE_BUSINESS_LOADING, payload: false },
+      ]);
+    });
+  });
+});
+
+describe("Business approval request", () => {
+  test("should handle requesting approval for business SUCCESSFUL action", () => {
+    const store = mockStore(
+      reducer(undefined, {
+        payload: {
+          id: 11,
+          first_name: "Imran",
+          last_name: "Sheikh",
+          mobile: "+96522112288",
+          email: "imran@optimizeapp.com",
+          verified: 1,
+          tmp_pwd: 0,
+        },
+        type: actionTypes.SET_CURRENT_USER,
+      })
+    );
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: approvalRequestSuccessResponse("Requested"),
+      });
+    });
+    const dispatchedStore = store.dispatch(
+      checkBusinessVerified(14, (string) => string)
+    );
+    return dispatchedStore.then(() => {
+      jest.spyOn(FlashMessage, "showMessage");
+      expect(FlashMessage.showMessage).toBeCalledWith({
+        type: "info",
+        message: "Request Submitted",
+        description:
+          "We'll be notifying you within 24 hours, so keep your eyes peeled for our app notification and email",
+        duration: 10000,
+      });
+      expect(store.getActions()).toEqual([
+        { type: actionTypes.CHECK_BUSINESS_STATUS, payload: true },
+        {
+          payload: {
+            approved: "User Requested",
+          },
+          type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
+        },
+        { type: actionTypes.CHECK_BUSINESS_STATUS, payload: false },
+      ]);
+    });
+  });
+
+  test("should handle rejecting approval for business SUCCESSFUL action", () => {
+    const store = mockStore(
+      reducer(undefined, {
+        payload: {
+          id: 11,
+          first_name: "Imran",
+          last_name: "Sheikh",
+          mobile: "+96522112288",
+          email: "imran@optimizeapp.com",
+          verified: 1,
+          tmp_pwd: 0,
+        },
+        type: actionTypes.SET_CURRENT_USER,
+      })
+    );
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: approvalRequestSuccessResponse("Rejected"),
+      });
+    });
+    const dispatchedStore = store.dispatch(
+      checkBusinessVerified(14, (string) => string)
+    );
+    return dispatchedStore.then(() => {
+      expect(store.getActions()).toEqual([
+        { type: actionTypes.CHECK_BUSINESS_STATUS, payload: true },
+        {
+          payload: {
+            approved: "User Rejected",
+          },
+          type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
+        },
+        { type: actionTypes.CHECK_BUSINESS_STATUS, payload: false },
+      ]);
+    });
+  });
+  test("should handle approval of business SUCCESSFUL action", () => {
+    const store = mockStore(
+      reducer(undefined, {
+        payload: {
+          id: 11,
+          first_name: "Imran",
+          last_name: "Sheikh",
+          mobile: "+96522112288",
+          email: "imran@optimizeapp.com",
+          verified: 1,
+          tmp_pwd: 0,
+        },
+        type: actionTypes.SET_CURRENT_USER,
+      })
+    );
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: approvalRequestSuccessResponse("Approved"),
+      });
+    });
+    const dispatchedStore = store.dispatch(
+      checkBusinessVerified(14, (string) => string)
+    );
+    return dispatchedStore.then(() => {
+      jest.spyOn(FlashMessage, "showMessage");
+      expect(FlashMessage.showMessage).toBeCalledWith({
+        type: "warning",
+        message: "Your Business Is Now Verified!",
+        description: "Get started and launch your ads now",
+        duration: 10000,
+      });
+      expect(store.getActions()).toEqual([
+        { type: actionTypes.CHECK_BUSINESS_STATUS, payload: true },
+        {
+          payload: {
+            approved: "User Approved",
+          },
+          type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
+        },
+        { type: actionTypes.CHECK_BUSINESS_STATUS, payload: false },
       ]);
     });
   });
