@@ -1153,31 +1153,27 @@ export const searchForBusinessInBackend = (businessName) => {
   };
 };
 
-export const checkBusinessVerified = (businessid, translate) => {
+export const checkBusinessVerified = (business_id, translate) => {
   return (dispatch) => {
     dispatch({
       type: actionTypes.CHECK_BUSINESS_STATUS,
       payload: true,
     });
-    createBaseUrl()
-      .get(`businessApprovalStatus/${businessid}`)
-      .then((res) => res.data)
+    return createBaseUrl()
+      .get(`business/${business_id}/request_approval`)
+      .then((res) => res.data.data)
       .then((data) => {
-        // console.log("data", JSON.stringify(data, null, 2));
         let accountApproved =
-          data.success &&
-          data.business_accounts &&
-          data.business_accounts.approved === "1";
+          data.success && data.approval_status && data.approval_status === "1";
         analytics.track(`Business Verification Checked`, {
           source: "VerifyBusiness",
           verification_mode: "Business",
-          business_id: businessid,
-          business_approved:
-            data.business_accounts && data.business_accounts.approved,
+          business_id: business_id,
+          business_approved: data.approval_status,
         });
         dispatch(
           updateBusinessConnectedToFacebook({
-            approved: data.business_accounts && data.business_accounts.approved,
+            approved: data.approval_status,
           })
         );
 
@@ -1187,8 +1183,7 @@ export const checkBusinessVerified = (businessid, translate) => {
             source_action: "a_check_status",
           });
         }
-        let approvedKey =
-          data.business_accounts && data.business_accounts.approved;
+        let approvedKey = data.approval_status;
         let message = null;
         let title = null;
         switch (approvedKey) {
@@ -1196,29 +1191,29 @@ export const checkBusinessVerified = (businessid, translate) => {
             // message =
             //   "To give you the best service that we can offer, our team needs to verify your business first Please make sure the information you entered during registration is accurate before submitting If you need to make changes, you can do so in the menu under 'Business Info' and 'Personal Info'";
             break;
-          case "1":
+          case "User Approved":
             title = "Your Business Is Now Verified!";
             message = "Get started and launch your ads now";
             showMessage({
-              type: "warning",
+              type: "success",
               message: translate(title),
               description: translate(message),
               duration: 10000,
             });
             break;
-          case "2":
+          case "User Requested":
             title = "Request Submitted";
             message =
               "We'll be notifying you within 24 hours, so keep your eyes peeled for our app notification and email";
 
             showMessage({
-              type: "warning",
+              type: "info",
               message: translate(title),
               description: translate(message),
               duration: 10000,
             });
             break;
-          case "3":
+          case "User Rejected":
             dispatch(
               updateBusinessConnectedToFacebook({
                 reject_reason:

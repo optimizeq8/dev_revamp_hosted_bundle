@@ -38,3 +38,19 @@ export let sameNameResponseData = {
 export let wrongBusinessIDResponseData = {
   message: "No query results for model [App\\Business] wrongbusinessid",
 };
+
+export let approvalRequestSuccessResponse = (status) => ({
+  api_version: "v1",
+  success: true,
+  message: "Approval status updated",
+  data: {
+    id: 28,
+    name: "New Business",
+    country: {
+      id: 2,
+      name: "Kuwait",
+    },
+    type: "Agency",
+    approval_status: "User " + status,
+  },
+});
