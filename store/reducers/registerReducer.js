@@ -38,11 +38,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         successNo: action.payload.success,
-        mobileNo: action.payload.mobile,
-        countryCode: action.payload.country_code,
-        verified: action.payload.verified,
-        verificationCode: action.payload.verificationCode,
-        registered: action.payload.registered,
+        // mobileNo: action.payload.mobile,
+        // countryCode: action.payload.country_code,
+        // verified: action.payload.verified,
+        // verificationCode: action.payload.verificationCode,
+        // registered: action.payload.registered,
       };
     case actionTypes.ERROR_SEND_MOBILE_NUMBER:
       return {

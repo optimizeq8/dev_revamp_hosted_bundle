@@ -209,13 +209,13 @@ export const resetRegister = () => {
 
 export const sendMobileNo = (mobileNo) => {
   return (dispatch, getState) => {
-    createBaseUrl()
+    return createBaseUrl()
       .get(`users/otp`)
       .then((res) => {
         return res.data;
       })
       .then((data) => {
-        console.log("sendMobileNo data", data);
+        // console.log("sendMobileNo data", data);
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -227,9 +227,9 @@ export const sendMobileNo = (mobileNo) => {
         });
       })
       .catch((err) => {
-        console.log("sendMobileNo error", err);
+        // console.log("sendMobileNo error", err);
         return dispatch({
-          type: actionTypes.ERROR_SEND_MOBILE_NO,
+          type: actionTypes.ERROR_SEND_MOBILE_NUMBER,
           payload: {
             success: false,
           },

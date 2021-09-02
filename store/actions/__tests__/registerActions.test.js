@@ -21,6 +21,7 @@ import {
   OtpSentFailureResponse,
   OtpSentSuccessResponse,
 } from "./MockedApiResponses/OTPSentMock";
+import { login } from "../loginActions";
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 jest.setTimeout(150000);
@@ -64,7 +65,13 @@ jest.mock("expo-secure-store", () => {
     getItemAsync: jest.fn().mockImplementation(() => Promise.resolve()),
   };
 });
-beforeAll(() => (Axios.defaults.adapter = require("axios/lib/adapters/http")));
+beforeAll(() => {
+  Axios.defaults.adapter = require("axios/lib/adapters/http");
+  login(
+    { email: "saadiya@optimizeapp.com", password: "saadiyaoa@2021" },
+    { navigate: () => {} }
+  );
+});
 beforeEach(() => {
   moxios.install();
 });
@@ -306,10 +313,12 @@ describe("Register Step 2, User Info action/ reducer", () => {
 describe("OTP Action / Reducer", () => {
   test("OTP Failure", () => {
     const failureAction = {
-      type: actionTypes.ERROR_SEND_MOBILE_NO,
+      type: actionTypes.ERROR_SEND_MOBILE_NUMBER,
       payload: { success: false },
     };
     const store = mockStore(reducer(undefined, failureAction));
+    const dispatchStore = store.dispatch(sendMobileNo());
+
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -317,18 +326,25 @@ describe("OTP Action / Reducer", () => {
         response: OtpSentFailureResponse,
       });
     });
-    const dispatchStore = store.dispatch(sendMobileNo());
+
     return dispatchStore.then(() => {
-      console.log("sendMobileNo failure getACTIONS", store.getActions());
+      expect(store.getActions()).toEqual([failureAction]);
     });
   });
 
   test("OTP Success", () => {
     const successAction = {
       type: actionTypes.SEND_MOBILE_NUMBER,
-      payload: { success: false },
+      payload: {
+        api_version: "v1",
+        success: true,
+        message: "Your OTP is sent",
+        data: null,
+      },
     };
     const store = mockStore(reducer(undefined, successAction));
+    const dispatchStore = store.dispatch(sendMobileNo());
+
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -336,9 +352,9 @@ describe("OTP Action / Reducer", () => {
         response: OtpSentSuccessResponse,
       });
     });
-    const dispatchStore = store.dispatch(sendMobileNo());
+
     return dispatchStore.then(() => {
-      console.log("sendMobileNo success getACTIONS", store.getActions());
+      expect(store.getActions()).toEqual([successAction]);
     });
   });
 });
