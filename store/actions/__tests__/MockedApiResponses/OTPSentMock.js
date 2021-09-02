@@ -43,3 +43,28 @@ export let OTPCodeErrorResponse = {
     error_message: ["OTP is not Valid"],
   },
 };
+
+export let OTPByCallSuccessResponse = {
+  api_version: "v1",
+  success: true,
+  message: "Call Dispatched",
+  data: {
+    call_id: "syoiew89--sfsf",
+  },
+};
+
+export let OTPByCallFailureResponse = {
+  api_version: "v1",
+  error: true,
+  message: "Validation Errors",
+  data: {
+    error_message: [""],
+  },
+};
+
+export let OTPByCallUnauthenticatedErrorResponse = {
+  api_version: "v1",
+  error: true,
+  message: "Unauthenticated.",
+  data: {},
+};
