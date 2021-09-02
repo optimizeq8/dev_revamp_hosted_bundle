@@ -289,10 +289,10 @@ class VerifyAccount extends Component {
     });
     this.props.verifyMobileCode(
       {
-        mobile: this.state.phoneNum.substring(4),
-        country_code: this.state.country_code,
-        verificationCode: this.state.code,
-        userid: this.props.userInfo.userid,
+        // mobile: this.state.phoneNum.substring(4),
+        // country_code: this.state.country_code,
+        otp: this.state.code,
+        // userid: this.props.userInfo.userid,
       },
       this.state.verifyByMobile ? "Mobile" : "Email",
       source === "my_website_tutorial" && approved !== "0"

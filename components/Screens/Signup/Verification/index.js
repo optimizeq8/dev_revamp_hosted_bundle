@@ -75,9 +75,9 @@ class Verification extends Component {
 
   _handleSentCode = (code) => {
     this.props.verifyMobileCode({
-      mobile: this.props.mobileNo,
-      country_code: this.props.countryCode,
-      verificationCode: code,
+      // mobile: this.props.mobileNo,
+      // country_code: this.props.countryCode,
+      otp: code,
     });
   };
 

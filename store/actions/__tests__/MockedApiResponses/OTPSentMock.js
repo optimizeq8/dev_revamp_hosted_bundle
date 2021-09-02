@@ -20,3 +20,26 @@ export let OtpSentFailureResponse1 = {
     error_message: ["User is Already Verified"],
   },
 };
+
+export let OTPCodeSuccessResponse = {
+  api_version: "v1",
+  success: true,
+  message: "Your Number is Verified",
+  data: null,
+};
+
+export let OTPCodeUnauthenticatedErrorResponse = {
+  api_version: "v1",
+  error: true,
+  message: "Unauthenticated.",
+  data: {},
+};
+
+export let OTPCodeErrorResponse = {
+  api_version: "v1",
+  error: true,
+  message: "Validation Errors",
+  data: {
+    error_message: ["OTP is not Valid"],
+  },
+};

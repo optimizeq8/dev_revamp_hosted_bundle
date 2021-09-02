@@ -271,12 +271,13 @@ export const verifyMobileCode = (
   navigationPath = "Dashboard"
 ) => {
   return (dispatch, getState) => {
-    createBaseUrl()
-      .post(`verifyMobileCode`, mobileAuth)
+    return createBaseUrl()
+      .post(`user/otp/verify`, mobileAuth)
       .then((res) => {
         return res.data;
       })
-      .then(async (data) => {
+      .then((data) => {
+        console.log("verifyMobileCode data", data);
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -286,34 +287,23 @@ export const verifyMobileCode = (
           analytics.track(`Account Verified`, {
             account_verified: false,
           });
-          return dispatch({
-            type: actionTypes.VERIFY_MOBILE_NUMBER,
-            payload: data,
-          });
+          // return dispatch({
+          //   type: actionTypes.VERIFY_MOBILE_NUMBER,
+          //   payload: data,
+          // });
         }
-        dispatch({
-          type: actionTypes.VERIFY_MOBILE_NUMBER,
-          payload: data,
-        });
 
-        await setAuthToken(data.access_token);
-        const decodedUser = jwt_decode(data.access_token);
-
-        return {
-          user: decodedUser,
-          message: data.message,
-          success: data.success,
-        };
-      })
-      .then((decodedUser) => {
-        if (decodedUser && decodedUser.user && decodedUser.success) {
-          analytics.track(`Account Verified`, {
-            account_verified: true,
-          });
-          dispatch(setCurrentUser(decodedUser));
+        // dispatch({
+        //   type: actionTypes.VERIFY_MOBILE_NUMBER,
+        //   payload: data,
+        // });
+        if (data.success) {
+          dispatch(getUserProfile());
         }
-        return decodedUser.success;
+
+        return data.success;
       })
+
       .then((success) => {
         if (success) {
           // let adjustVerifyAccountTracker = new AdjustEvent("gmanq8");
@@ -325,19 +315,34 @@ export const verifyMobileCode = (
         }
       })
       .catch((err) => {
-        // console.log("verifyMobileCode error", err.message || err.response);
+        console.log("verifyMobileCode error", err);
+        let errorMsg = null;
+        if (
+          err.response &&
+          err.response.data &&
+          Object.keys(err.response.data.data).length > 0
+        ) {
+          for (var key in err.response.data.data) {
+            errorMsg = err.response.data.data[key][0];
+          }
+        } else if (
+          err.response &&
+          err.response.data &&
+          err.response.data.message
+        ) {
+          errorMsg = err.response.data.message;
+        } else if (err.message || err.response) {
+          errorMsg =
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.";
+        }
         analytics.track(`Form Error Made`, {
           source: "VerfiyAccount",
-          error_description:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
+          error_description: errorMsg,
         });
         showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
+          message: errorMsg,
           type: "danger",
           position: "top",
         });

@@ -21,8 +21,12 @@ import {
   OtpSentFailureResponse,
   OtpSentFailureResponse1,
   OtpSentSuccessResponse,
+  OTPCodeUnauthenticatedErrorResponse,
+  OTPCodeErrorResponse,
+  OTPCodeSuccessResponse,
 } from "./MockedApiResponses/OTPSentMock";
 import { login } from "../loginActions";
+import { verifyMobileCode } from "..";
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 jest.setTimeout(150000);
@@ -311,7 +315,7 @@ describe("Register Step 2, User Info action/ reducer", () => {
   });
 });
 */
-describe("OTP Action / Reducer", () => {
+describe("OTP SENT Action / Reducer", () => {
   test("OTP Failure Unauthenticated", () => {
     const failureAction = {
       type: actionTypes.ERROR_SEND_MOBILE_NUMBER,
@@ -377,5 +381,62 @@ describe("OTP Action / Reducer", () => {
     return dispatchStore.then(() => {
       expect(store.getActions()).toEqual([successAction]);
     });
+  });
+});
+
+describe("OTP Verify Action / Reducer", () => {
+  test("OTP Code Verification User Unauthenticated Failure", () => {
+    const failureAction = {
+      type: actionTypes.ERROR_VERIFY_MOBILE_NUMBER,
+      payload: {
+        success: false,
+      },
+    };
+
+    const store = mockStore(reducer(undefined, failureAction));
+    const dispatchStore = store.dispatch(verifyMobileCode({ otp: "12345" }));
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 401,
+        response: OTPCodeUnauthenticatedErrorResponse,
+      });
+    });
+
+    return dispatchStore.then(() => {
+      expect(store.getActions()).toEqual([failureAction]);
+    });
+  });
+  test("OTP Code Verification Failure", () => {
+    const failureAction = {
+      type: actionTypes.ERROR_VERIFY_MOBILE_NUMBER,
+      payload: {
+        success: false,
+      },
+    };
+
+    const store = mockStore(reducer(undefined, failureAction));
+    const dispatchStore = store.dispatch(verifyMobileCode({ otp: "12345" }));
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 422,
+        response: OTPCodeErrorResponse,
+      });
+    });
+
+    return dispatchStore.then(() => {
+      expect(store.getActions()).toEqual([failureAction]);
+    });
+  });
+  test("OTP Code Verification Success", () => {
+    const successAction = {
+      type: actionTypes.VERIFY_MOBILE_NUMBER,
+      payload: {
+        success: true,
+      },
+    };
   });
 });
