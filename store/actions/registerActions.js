@@ -228,10 +228,37 @@ export const sendMobileNo = (mobileNo) => {
       })
       .catch((err) => {
         // console.log("sendMobileNo error", err);
+        let errorMsg = null;
+        if (
+          err.response &&
+          err.response.data &&
+          Object.keys(err.response.data.data).length > 0
+        ) {
+          for (var key in err.response.data.data) {
+            errorMsg = err.response.data.data[key][0];
+          }
+        } else if (
+          err.response &&
+          err.response.data &&
+          err.response.data.message
+        ) {
+          errorMsg = err.response.data.message;
+        } else if (err.message || err.response) {
+          errorMsg =
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.";
+        }
+        showMessage({
+          message: errorMsg,
+          type: "danger",
+          position: "top",
+        });
         return dispatch({
           type: actionTypes.ERROR_SEND_MOBILE_NUMBER,
           payload: {
             success: false,
+            message: errorMsg,
           },
         });
       });

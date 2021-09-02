@@ -11,3 +11,12 @@ export let OtpSentFailureResponse = {
   message: "Unauthenticated.",
   data: {},
 };
+
+export let c = {
+  api_version: "v1",
+  error: true,
+  message: "Validation Errors",
+  data: {
+    error_message: ["User is Already Verified"],
+  },
+};

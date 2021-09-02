@@ -19,6 +19,7 @@ import * as actionTypes from "../actionTypes";
 import { userRegisterFailureresponse } from "./MockedApiResponses/UserRegisterMock";
 import {
   OtpSentFailureResponse,
+  OtpSentFailureResponse1,
   OtpSentSuccessResponse,
 } from "./MockedApiResponses/OTPSentMock";
 import { login } from "../loginActions";
@@ -219,7 +220,7 @@ describe("Register step 1, verify email action/ reducer", () => {
     });
   });
 });
-
+/*
 describe("Register Step 2, User Info action/ reducer", () => {
   test("User Register Failure", async () => {
     const failureAction = {
@@ -309,12 +310,15 @@ describe("Register Step 2, User Info action/ reducer", () => {
     });
   });
 });
-
+*/
 describe("OTP Action / Reducer", () => {
-  test("OTP Failure", () => {
+  test("OTP Failure Unauthenticated", () => {
     const failureAction = {
       type: actionTypes.ERROR_SEND_MOBILE_NUMBER,
-      payload: { success: false },
+      payload: {
+        success: false,
+        message: "Unauthenticated.",
+      },
     };
     const store = mockStore(reducer(undefined, failureAction));
     const dispatchStore = store.dispatch(sendMobileNo());
@@ -331,16 +335,33 @@ describe("OTP Action / Reducer", () => {
       expect(store.getActions()).toEqual([failureAction]);
     });
   });
+  test("OTP Failure User Verified", () => {
+    const failureAction = {
+      type: actionTypes.ERROR_SEND_MOBILE_NUMBER,
+      payload: {
+        success: false,
+        message: "User is Already Verified",
+      },
+    };
+    const store = mockStore(reducer(undefined, failureAction));
+    const dispatchStore = store.dispatch(sendMobileNo());
 
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 422,
+        response: OtpSentFailureResponse1,
+      });
+    });
+
+    return dispatchStore.then(() => {
+      expect(store.getActions()).toEqual([failureAction]);
+    });
+  });
   test("OTP Success", () => {
     const successAction = {
       type: actionTypes.SEND_MOBILE_NUMBER,
-      payload: {
-        api_version: "v1",
-        success: true,
-        message: "Your OTP is sent",
-        data: null,
-      },
+      payload: OtpSentSuccessResponse,
     };
     const store = mockStore(reducer(undefined, successAction));
     const dispatchStore = store.dispatch(sendMobileNo());

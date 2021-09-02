@@ -18,6 +18,7 @@ const initialState = {
   checkingBusinessName: false,
   emailLoading: false,
   verifyEmailMessage: null,
+  sendOTPMessage: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -48,6 +49,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         successNo: action.payload.success,
+        sendOTPMessage: action.payload.message,
         // mobileNo: action.payload.mobile,
         // countryCode: action.payload.country_code,
         // verified: action.payload.verified,
