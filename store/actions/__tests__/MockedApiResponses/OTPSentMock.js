@@ -12,7 +12,7 @@ export let OtpSentFailureResponse = {
   data: {},
 };
 
-export let c = {
+export let OtpSentFailureResponse1 = {
   api_version: "v1",
   error: true,
   message: "Validation Errors",
