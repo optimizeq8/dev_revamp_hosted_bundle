@@ -433,10 +433,27 @@ describe("OTP Verify Action / Reducer", () => {
   });
   test("OTP Code Verification Success", () => {
     const successAction = {
-      type: actionTypes.VERIFY_MOBILE_NUMBER,
-      payload: {
-        success: true,
-      },
+      type: actionTypes.USER_PROFILE_LOADING,
+      payload: true,
+      // payload: {
+      //   success: true,
+      // },
     };
+    const store = mockStore(reducer(undefined, successAction));
+    const dispatchStore = store.dispatch(
+      verifyMobileCode({ otp: "12345" }, "Mobile", "Dashboard")
+    );
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: OTPCodeSuccessResponse,
+      });
+    });
+
+    return dispatchStore.then(() => {
+      expect(store.getActions()).toEqual([successAction]);
+    });
   });
 });

@@ -315,7 +315,7 @@ export const verifyMobileCode = (
         }
       })
       .catch((err) => {
-        console.log("verifyMobileCode error", err);
+        // console.log("verifyMobileCode error", err);
         let errorMsg = null;
         if (
           err.response &&
