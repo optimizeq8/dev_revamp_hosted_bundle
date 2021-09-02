@@ -277,7 +277,7 @@ export const verifyMobileCode = (
         return res.data;
       })
       .then((data) => {
-        console.log("verifyMobileCode data", data);
+        // console.log("verifyMobileCode data", data);
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
