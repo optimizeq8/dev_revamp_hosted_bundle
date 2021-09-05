@@ -108,7 +108,7 @@ class VerifyAccount extends Component {
       const mobile = this.props.userInfo.mobile.substring(3);
 
       this.setState({
-        phoneNum: "+" + this.props.userInfo.mobile,
+        phoneNum: this.props.userInfo.mobile,
         valid: true,
         country_code: countryCode,
       });
