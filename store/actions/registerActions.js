@@ -215,7 +215,7 @@ export const sendMobileNo = (mobileNo) => {
         return res.data;
       })
       .then((data) => {
-        // console.log("sendMobileNo data", data);
+        console.log("sendMobileNo data", data);
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -227,7 +227,7 @@ export const sendMobileNo = (mobileNo) => {
         });
       })
       .catch((err) => {
-        // console.log("sendMobileNo error", err);
+        console.log("sendMobileNo error", err);
         let errorMsg = null;
         if (
           err.response &&
@@ -270,14 +270,15 @@ export const verifyMobileCode = (
   verification_channel,
   navigationPath = "Dashboard"
 ) => {
+  console.log("mobileAuth", mobileAuth);
   return (dispatch, getState) => {
     return createBaseUrl()
-      .post(`user/otp/verify`, mobileAuth)
+      .post(`users/otp/verify`, mobileAuth)
       .then((res) => {
         return res.data;
       })
       .then((data) => {
-        // console.log("verifyMobileCode data", data);
+        console.log("verifyMobileCode data", data);
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -315,7 +316,7 @@ export const verifyMobileCode = (
         }
       })
       .catch((err) => {
-        // console.log("verifyMobileCode error", err);
+        console.log("verifyMobileCode error", err);
         let errorMsg = null;
         if (
           err.response &&

@@ -121,7 +121,7 @@ class Dashboard extends Component {
   }
   async componentDidMount() {
     this.props.checkHashForUser();
-
+    this.props.navigation.navigate("VerifyAccount");
     // if (this.props.userInfo) {
     //   const MPTweakHelper = NativeModules.MPTweakHelper;
     //   MPTweakHelper.getCustomTweak(

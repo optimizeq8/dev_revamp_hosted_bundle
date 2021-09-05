@@ -46,6 +46,7 @@ class VerifyAccount extends Component {
       valid: false,
       showErrorComponent: false,
       resend_otp: false,
+      isResendOtpDisabled: true,
     };
   }
   handleDidFocusLink = (appState) => {
@@ -118,6 +119,7 @@ class VerifyAccount extends Component {
 
   componentWillUnmount() {
     AppState.removeEventListener("change", this.handleDidFocusLink);
+    clearInterval(this.interval);
   }
 
   toggleVerify = () => {
@@ -235,6 +237,10 @@ class VerifyAccount extends Component {
         source_action: "changed_to_email",
       });
     } else if (!prevProps.successNo && this.props.successNo) {
+      this.interval = setInterval(
+        () => this.setState({ isResendOtpDisabled: false }),
+        5000
+      );
       analytics.track(`Button Pressed`, {
         button_type: this.state.resend_otp
           ? "Resend OTP"
@@ -258,10 +264,11 @@ class VerifyAccount extends Component {
       source: "VerifyAccount",
     });
     if (this.state.verifyByMobile) {
-      this.props.resendVerifyMobileCode({
-        mobile: this.props.mobileNo,
-        country_code: this.props.countryCode,
-      });
+      this.verifyOTP();
+      // this.props.resendVerifyMobileCode({
+      //   mobile: this.props.mobileNo,
+      //   country_code: this.props.countryCode,
+      // });
     } else {
       this.sendEmail();
     }
@@ -291,7 +298,7 @@ class VerifyAccount extends Component {
       {
         // mobile: this.state.phoneNum.substring(4),
         // country_code: this.state.country_code,
-        otp: this.state.code,
+        otp: parseInt(this.state.code),
         // userid: this.props.userInfo.userid,
       },
       this.state.verifyByMobile ? "Mobile" : "Email",
@@ -372,10 +379,10 @@ class VerifyAccount extends Component {
           <View style={{ marginVertical: 10 }}>
             <CodeField
               autoFocus
-              cellCount={5}
+              cellCount={6}
               onChangeText={(code) => {
                 this.setState({ code });
-                if (code.length === 5) {
+                if (code.length === 6) {
                   this._handleSentCode(code);
                 }
               }}
@@ -406,7 +413,11 @@ class VerifyAccount extends Component {
             disabled={this.state.code === ""}
             onPressAction={this.verifyOTP}
           />
-          <TouchableOpacity onPress={this.resendOTP}>
+
+          <TouchableOpacity
+            onPress={this.resendOTP}
+            disabled={this.state.isResendOtpDisabled}
+          >
             <Text style={styles.bottomText}>{translate("Resend Code")}</Text>
           </TouchableOpacity>
         </View>
