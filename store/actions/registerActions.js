@@ -786,3 +786,33 @@ export const verifyEmailCodeLink = (verificationCode, country_code, mobile) => {
       });
   };
 };
+
+export const verifyOTPByCall = () => {
+  return (dispatch) => {
+    return createBaseUrl()
+      .post(`users/otp/call`)
+      .then((res) => res.data)
+      .then((data) => {
+        console.log(`verifyOTPByCall`, data);
+        showMessage({
+          type: data.success ? "success" : "warning",
+          message: data.message,
+        });
+        return dispatch({
+          type: actionTypes.OTP_BY_CALL,
+          payload: {
+            success: data.success,
+          },
+        });
+      })
+      .catch((err) => {
+        console.log("err verifyOTPByCall", err);
+        return dispatch({
+          type: actionTypes.OTP_BY_CALL,
+          payload: {
+            success: false,
+          },
+        });
+      });
+  };
+};

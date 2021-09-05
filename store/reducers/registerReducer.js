@@ -158,6 +158,11 @@ const reducer = (state = initialState, action) => {
         emailLinkCodeExpired: !action.payload.success,
         successNo: action.payload.success,
       };
+    case actionTypes.OTP_BY_CALL:
+      return {
+        ...state,
+        successOTPCall: action.payload.success,
+      };
     default:
       return state;
   }

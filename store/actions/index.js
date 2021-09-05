@@ -157,6 +157,7 @@ export {
   registerGuestUser,
   resetVerificationCode,
   verifyEmailCodeLink,
+  verifyOTPByCall,
 } from "./registerActions";
 
 export {
