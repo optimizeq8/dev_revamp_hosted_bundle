@@ -168,12 +168,12 @@ const reducer = (state = initialState, action) => {
         errorLoadingBillingAddress: true,
       };
     case actionTypes.CREATE_SNAPCHAT_AD_ACCOUNT:
-      let newMainBusiness = find(
-        state.businessAccounts,
-        (bus) => bus.businessid === state.mainBusiness.businessid
+      let newMainBusiness = state.businessAccounts.find(
+        (bus) => bus.id === state.mainBusiness.id
       );
       if (newMainBusiness) {
-        newMainBusiness.snap_ad_account_id = action.payload.data.ad_account_id;
+        newMainBusiness.snap_ad_account_id =
+          action.payload.data.snap_ad_account_id;
       }
       return {
         ...state,

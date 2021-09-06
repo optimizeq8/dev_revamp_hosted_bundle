@@ -122,7 +122,7 @@ class SnapchatCreateAdAcc extends Component {
         });
         this.props.create_snapchat_ad_account(
           {
-            businessid: this.props.mainBusiness.businessid,
+            business_id: this.props.mainBusiness.businessid,
             is_political: 1,
             paying_advertiser_name: this.state.paying_advertiser_name,
           },

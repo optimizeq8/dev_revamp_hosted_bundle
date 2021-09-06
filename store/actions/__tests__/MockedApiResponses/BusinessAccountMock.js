@@ -42,16 +42,31 @@ export let wrongBusinessIDResponseData = {
 export let approvalRequestSuccessResponse = (status) => ({
   api_version: "v1",
   success: true,
-  message: "Approval status updated",
+  message: "Approval Requested",
   data: {
-    id: 28,
-    name: "New Business",
+    id: 8,
+    name: "New Business 1",
     country: {
       id: 2,
       name: "Kuwait",
     },
     type: "Agency",
-    approval_status: "User " + status,
+    category: "Other",
+    approval_status: status,
+    snap_terms: 0,
+    fb_connected: 0,
+    instagram_handle: null,
+    business_website: null,
+    snap_ad_account_id: "TEMP-SNAP-ADACCOUNT-ID",
+    fb_ad_account_id: "TEMP-FB-ADACCOUNT-ID",
+    walletamount: "0.00",
+    reject_reason:
+      status === 3
+        ? {
+            title: "REASON FOR REJECTION",
+            message: "DESCRIPTION FOR REJECTION",
+          }
+        : null,
   },
 });
 
@@ -73,7 +88,7 @@ export let acceptedSnapTermsResponse = {
     fb_connected: 0,
     instagram_handle: null,
     business_website: null,
-    snap_ad_account_id: "TEMP-SNAP-ADACCOUNT-ID",
+    snap_ad_account_id: "NEW-TEMP-SNAP-ADACCOUNT-ID",
     fb_ad_account_id: "TEMP-FB-ADACCOUNT-ID",
     walletamount: "0.00",
   },

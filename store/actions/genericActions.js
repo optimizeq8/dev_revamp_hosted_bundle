@@ -106,6 +106,10 @@ export const update_app_status_chat_notification = (app_state) => {
   };
 };
 
+/**
+ * @param {String} businessSeleced if business id is not passed it means this function is being called when user logs in,
+ *                                 otherwise if it's passed then user is refreshing business list
+ */
 export const getBusinessAccounts = (businessSeleced) => {
   return (dispatch, getState) => {
     dispatch(getBusinessInvites());

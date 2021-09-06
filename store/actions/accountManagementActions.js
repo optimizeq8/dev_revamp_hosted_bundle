@@ -1165,7 +1165,7 @@ export const checkBusinessVerified = (business_id, translate) => {
       .then((res) => res.data.data)
       .then((data) => {
         let accountApproved =
-          data.success && data.approval_status && data.approval_status === "1";
+          data.success && data.approval_status && data.approval_status === 1;
         analytics.track(`Business Verification Checked`, {
           source: "VerifyBusiness",
           verification_mode: "Business",
@@ -1188,11 +1188,11 @@ export const checkBusinessVerified = (business_id, translate) => {
         let message = null;
         let title = null;
         switch (approvedKey) {
-          case "0":
+          case 0:
             // message =
             //   "To give you the best service that we can offer, our team needs to verify your business first Please make sure the information you entered during registration is accurate before submitting If you need to make changes, you can do so in the menu under 'Business Info' and 'Personal Info'";
             break;
-          case "User Approved":
+          case 1:
             title = "Your Business Is Now Verified!";
             message = "Get started and launch your ads now";
             showMessage({
@@ -1202,7 +1202,7 @@ export const checkBusinessVerified = (business_id, translate) => {
               duration: 10000,
             });
             break;
-          case "User Requested":
+          case 2:
             title = "Request Submitted";
             message =
               "We'll be notifying you within 24 hours, so keep your eyes peeled for our app notification and email";
@@ -1214,12 +1214,10 @@ export const checkBusinessVerified = (business_id, translate) => {
               duration: 10000,
             });
             break;
-          case "User Rejected":
+          case 3:
             dispatch(
               updateBusinessConnectedToFacebook({
-                reject_reason:
-                  data.business_accounts &&
-                  data.business_accounts.reject_reason,
+                reject_reason: !!data.reject_reason && data.reject_reason,
               })
             );
             // message = "Your business could not be verified";

@@ -159,7 +159,7 @@ describe("Account Management Actions", () => {
 });
 
 describe("Get business accounts", () => {
-  test.only("should handle getting businesses for user after logging in SUCCESSFUL action", () => {
+  test("should handle getting businesses for user after logging in SUCCESSFUL action", () => {
     const mockedStore = mockStore(
       reducer(undefined, {
         payload: {
@@ -183,17 +183,6 @@ describe("Get business accounts", () => {
     });
     const dispatchedStore = mockedStore.dispatch(getBusinessAccounts());
     return dispatchedStore.then(() => {
-      expect(
-        reducer(undefined, {
-          payload: {
-            data: [...getBusinessesResponseSuccess.data],
-            index: 0,
-            userid: mockedStore.getState().auth.userInfo.id,
-            user: mockedStore.getState().auth.userInfo,
-          },
-          type: actionTypes.SET_BUSINESS_ACCOUNTS,
-        }).account.businessAccounts
-      ).toEqual(getBusinessesResponseSuccess.data);
       expect(mockedStore.getActions()).toEqual([
         { payload: true, type: actionTypes.SET_LOADING_BUSINESS_LIST },
         {
@@ -206,6 +195,28 @@ describe("Get business accounts", () => {
           type: actionTypes.SET_BUSINESS_ACCOUNTS,
         },
       ]);
+      expect(
+        reducer(undefined, {
+          payload: {
+            data: [...getBusinessesResponseSuccess.data],
+            index: 0,
+            userid: mockedStore.getState().auth.userInfo.id,
+            user: mockedStore.getState().auth.userInfo,
+          },
+          type: actionTypes.SET_BUSINESS_ACCOUNTS,
+        }).account.businessAccounts
+      ).toEqual(getBusinessesResponseSuccess.data);
+      expect(
+        reducer(undefined, {
+          payload: {
+            data: [...getBusinessesResponseSuccess.data],
+            index: 0,
+            userid: mockedStore.getState().auth.userInfo.id,
+            user: mockedStore.getState().auth.userInfo,
+          },
+          type: actionTypes.SET_BUSINESS_ACCOUNTS,
+        }).account.mainBusiness
+      ).toEqual(getBusinessesResponseSuccess.data[0]);
     });
   });
 });
@@ -438,7 +449,7 @@ describe("Business approval request", () => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 200,
-        response: approvalRequestSuccessResponse("Requested"),
+        response: approvalRequestSuccessResponse(2),
       });
     });
     const dispatchedStore = mockedStore.dispatch(
@@ -457,7 +468,7 @@ describe("Business approval request", () => {
         { type: actionTypes.CHECK_BUSINESS_STATUS, payload: true },
         {
           payload: {
-            approved: "User Requested",
+            approved: 2,
           },
           type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
         },
@@ -485,7 +496,7 @@ describe("Business approval request", () => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 200,
-        response: approvalRequestSuccessResponse("Rejected"),
+        response: approvalRequestSuccessResponse(3),
       });
     });
     const dispatchedStore = mockedStore.dispatch(
@@ -496,7 +507,16 @@ describe("Business approval request", () => {
         { type: actionTypes.CHECK_BUSINESS_STATUS, payload: true },
         {
           payload: {
-            approved: "User Rejected",
+            approved: 3,
+          },
+          type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
+        },
+        {
+          payload: {
+            reject_reason: {
+              title: "REASON FOR REJECTION",
+              message: "DESCRIPTION FOR REJECTION",
+            },
           },
           type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
         },
@@ -523,7 +543,7 @@ describe("Business approval request", () => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 200,
-        response: approvalRequestSuccessResponse("Approved"),
+        response: approvalRequestSuccessResponse(1),
       });
     });
     const dispatchedStore = mockedStore.dispatch(
@@ -541,7 +561,7 @@ describe("Business approval request", () => {
         { type: actionTypes.CHECK_BUSINESS_STATUS, payload: true },
         {
           payload: {
-            approved: "User Approved",
+            approved: 1,
           },
           type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
         },
@@ -556,7 +576,7 @@ describe("Snapchat terms", () => {
     actualStore = originalStore;
   });
   test("should handle accepting snapchat terms", () => {
-    const mockedStore = mockStore(
+    let mockedStore = mockStore(
       reducer(undefined, {
         payload: {
           id: 11,
@@ -570,6 +590,21 @@ describe("Snapchat terms", () => {
         type: actionTypes.SET_CURRENT_USER,
       })
     );
+
+    mockedStore = mockStore(
+      reducer(
+        { ...mockedStore.getState() },
+        {
+          payload: {
+            data: [...getBusinessesResponseSuccess.data],
+            index: 0,
+            userid: mockedStore.getState().auth.userInfo.id,
+            user: mockedStore.getState().auth.userInfo,
+          },
+          type: actionTypes.SET_BUSINESS_ACCOUNTS,
+        }
+      )
+    );
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -582,7 +617,15 @@ describe("Snapchat terms", () => {
     );
 
     return dispatchedStore.then(() => {
-      expect().toEqual();
+      expect(
+        reducer(
+          { ...mockedStore.getState() },
+          {
+            type: actionTypes.CREATE_SNAPCHAT_AD_ACCOUNT,
+            payload: acceptedSnapTermsResponse,
+          }
+        ).account.mainBusiness
+      ).toEqual(getBusinessesResponseSuccess.data[0]);
       expect(mockedStore.getActions()).toEqual([
         { type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT, payload: true },
         {
