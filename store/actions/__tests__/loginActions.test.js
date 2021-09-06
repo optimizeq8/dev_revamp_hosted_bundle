@@ -66,12 +66,12 @@ describe("LoginAction", () => {
       const successAction = {
         type: actionTypes.SET_CURRENT_USER,
         payload: {
-          id: 14,
+          id: 9,
           first_name: "Saadiya",
           last_name: "Kazi",
-          mobile: "+96522112290",
+          mobile: "+96597376438",
           email: "saadiya@optimizeapp.com",
-          verified: 1,
+          verified: 0,
           tmp_pwd: 0,
         },
       };

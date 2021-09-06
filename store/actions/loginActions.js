@@ -273,6 +273,7 @@ export const logout = (navigation) => {
   return (dispatch, getState) => {
     setAuthToken()
       .then(() => {
+        console.log("here");
         analytics.identify(`${getState().auth.userid}`, { logged_out: true });
         navigation &&
           navigation.navigate("SwitchLanguage", {
@@ -291,11 +292,13 @@ export const logout = (navigation) => {
       //Switched the navigation with this line so that the ErrorComponent doesn't mount when logging out
       .then(() => dispatch(setCurrentUser(null)))
       .then(() => {
+        console.log("here 123");
         analytics.reset();
         Intercom.logout();
         AsyncStorage.setItem("selectedBusinessId", "");
       })
-      .then(() => dispatch(checkHashForUser()));
+      .then(() => dispatch(checkHashForUser()))
+      .catch((err) => console.log("logout err", err));
   };
 };
 
