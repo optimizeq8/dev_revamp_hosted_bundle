@@ -47,6 +47,7 @@ class VerifyAccount extends Component {
       showErrorComponent: false,
       resend_otp: false,
       isResendOtpDisabled: true,
+      timer: 30,
     };
   }
   handleDidFocusLink = (appState) => {
@@ -182,11 +183,11 @@ class VerifyAccount extends Component {
         type: "warning",
       });
     } else {
-      const mobile = this.state.phoneNum.substring(4);
-      this.props.sendMobileNo({
-        country_code: this.state.country_code,
-        mobile,
-      });
+      // const mobile = this.state.phoneNum.substring(4);
+      this.props.sendMobileNo(
+        // country_code: this.state.country_code,
+        this.state.phoneNum
+      );
     }
   };
 
@@ -210,6 +211,10 @@ class VerifyAccount extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.timer !== 0 && this.state.timer === 0) {
+      this.setState({ isResendOtpDisabled: false });
+      clearInterval(this.interval);
+    }
     const { verifyByMobile } = this.state;
     const source = this.props.navigation.getParam(
       "source",
@@ -237,9 +242,13 @@ class VerifyAccount extends Component {
         source_action: "changed_to_email",
       });
     } else if (!prevProps.successNo && this.props.successNo) {
+      // this.interval = setInterval(
+      //   () => this.setState({ isResendOtpDisabled: false }),
+      //   5000
+      // );
       this.interval = setInterval(
-        () => this.setState({ isResendOtpDisabled: false }),
-        5000
+        () => this.setState((prevState) => ({ timer: prevState.timer - 1 })),
+        1000
       );
       analytics.track(`Button Pressed`, {
         button_type: this.state.resend_otp
@@ -413,13 +422,27 @@ class VerifyAccount extends Component {
             disabled={this.state.code === ""}
             onPressAction={this.verifyOTP}
           />
-
-          <TouchableOpacity
-            onPress={this.resendOTP}
-            disabled={this.state.isResendOtpDisabled}
-          >
-            <Text style={styles.bottomText}>{translate("Resend Code")}</Text>
-          </TouchableOpacity>
+          <Text style={styles.timerText}>
+            {translate(`Code Expires in {{timer}} second`, {
+              timer: this.state.timer,
+            })}
+          </Text>
+          <View style={styles.cardBottomView}>
+            <TouchableOpacity
+              onPress={this.resendOTP}
+              disabled={this.state.isResendOtpDisabled}
+            >
+              <Text style={styles.bottomText}>{translate("Resend Code")}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.verifyOTPByCall()}
+              disabled={this.state.isResendOtpDisabled}
+            >
+              <Text style={styles.bottomText}>
+                {translate("Send Code by Call")}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       );
     }
@@ -483,5 +506,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(
       actionCreators.verifyEmailCodeLink(verificationCode, country_code, mobile)
     ),
+  verifyOTPByCall: () => dispatch(actionCreators.verifyOTPByCall()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(VerifyAccount);

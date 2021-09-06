@@ -328,7 +328,7 @@ describe("OTP SENT Action / Reducer", () => {
       },
     };
     const store = mockStore(reducer(undefined, failureAction));
-    const dispatchStore = store.dispatch(sendMobileNo());
+    const dispatchStore = store.dispatch(sendMobileNo("+96567613407"));
 
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
@@ -351,7 +351,7 @@ describe("OTP SENT Action / Reducer", () => {
       },
     };
     const store = mockStore(reducer(undefined, failureAction));
-    const dispatchStore = store.dispatch(sendMobileNo());
+    const dispatchStore = store.dispatch(sendMobileNo("+96567613407"));
 
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
@@ -371,7 +371,7 @@ describe("OTP SENT Action / Reducer", () => {
       payload: OtpSentSuccessResponse,
     };
     const store = mockStore(reducer(undefined, successAction));
-    const dispatchStore = store.dispatch(sendMobileNo());
+    const dispatchStore = store.dispatch(sendMobileNo("+96567613407"));
 
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();

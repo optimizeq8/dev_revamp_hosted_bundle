@@ -207,15 +207,18 @@ export const resetRegister = () => {
   };
 };
 
-export const sendMobileNo = (mobileNo) => {
+export const sendMobileNo = (mobile) => {
+  // console.log("mobile", mobile);
   return (dispatch, getState) => {
     return createBaseUrl()
-      .get(`users/otp`)
+      .post(`users/otp`, {
+        mobile,
+      })
       .then((res) => {
         return res.data;
       })
       .then((data) => {
-        console.log("sendMobileNo data", data);
+        // console.log("sendMobileNo data", data);
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -227,7 +230,7 @@ export const sendMobileNo = (mobileNo) => {
         });
       })
       .catch((err) => {
-        console.log("sendMobileNo error", err);
+        // console.log("sendMobileNo error", err);
         let errorMsg = null;
         if (
           err.response &&
@@ -270,7 +273,6 @@ export const verifyMobileCode = (
   verification_channel,
   navigationPath = "Dashboard"
 ) => {
-  console.log("mobileAuth", mobileAuth);
   return (dispatch, getState) => {
     return createBaseUrl()
       .post(`users/otp/verify`, mobileAuth)
@@ -278,7 +280,7 @@ export const verifyMobileCode = (
         return res.data;
       })
       .then((data) => {
-        console.log("verifyMobileCode data", data);
+        // console.log("verifyMobileCode data", data);
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -316,7 +318,7 @@ export const verifyMobileCode = (
         }
       })
       .catch((err) => {
-        console.log("verifyMobileCode error", err);
+        // console.log("verifyMobileCode error", err);
         let errorMsg = null;
         if (
           err.response &&
@@ -794,7 +796,7 @@ export const verifyOTPByCall = () => {
       .post(`users/otp/call`)
       .then((res) => res.data)
       .then((data) => {
-        console.log(`verifyOTPByCall`, data);
+        // console.log(`verifyOTPByCall`, data);
         showMessage({
           type: data.success ? "success" : "warning",
           message: data.message,
@@ -807,7 +809,7 @@ export const verifyOTPByCall = () => {
         });
       })
       .catch((err) => {
-        console.log("err verifyOTPByCall", err);
+        // console.log("err verifyOTPByCall", err);
         return dispatch({
           type: actionTypes.OTP_BY_CALL,
           payload: {

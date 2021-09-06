@@ -1,4 +1,5 @@
 import { StyleSheet, I18nManager, Dimensions } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
 
 import {
   widthPercentageToDP,
@@ -7,6 +8,21 @@ import {
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
+  cardBottomView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
+  timerText: {
+    textAlign: "center",
+    color: globalColors.rum,
+    fontSize: 14,
+    fontFamily: "montserrat-regular",
+    alignSelf: "center",
+    marginVertical: RFValue(2.5, 414),
+    // marginBottom: 24,
+  },
   headingText: {
     textAlign: "center",
     color: globalColors.white,
