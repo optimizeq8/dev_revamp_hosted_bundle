@@ -270,8 +270,8 @@ export const create_snapchat_ad_account = (info, navigation) => {
       type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
       payload: true,
     });
-    createBaseUrl()
-      .post("snapadaccounts", info)
+    return createBaseUrl()
+      .post(`business/${info.business_id}/snap/terms`)
       .then((res) => {
         return res.data;
       })
@@ -288,7 +288,7 @@ export const create_snapchat_ad_account = (info, navigation) => {
           // Adjust.trackEvent(adjustSnapAdAccTracker);
           return dispatch({
             type: actionTypes.CREATE_SNAPCHAT_AD_ACCOUNT,
-            payload: { data: data },
+            payload: data.data,
           });
         } else {
           showMessage({
@@ -323,6 +323,7 @@ export const create_snapchat_ad_account = (info, navigation) => {
           type: actionTypes.ERROR_CREATE_SNAPCHAT_AD_ACCOUNT,
           payload: {
             loading: false,
+            errorData: err.response.hasOwnProperty("data") && err.response.data,
           },
         });
       });
