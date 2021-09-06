@@ -3,7 +3,7 @@ import store, { persistor } from "..";
 import NavigationService from "../../NavigationService";
 import * as actionTypes from "./actionTypes";
 import { getBusinessAccounts } from "./genericActions";
-export const errorMessageHandler = err => {
+export const errorMessageHandler = (err) => {
   if (err.errorStatus === 401) {
     showMessage({
       message: err.message,
@@ -15,15 +15,16 @@ export const errorMessageHandler = err => {
         store.dispatch(getBusinessAccounts());
         NavigationService.navigate("Dashboard");
       },
-      autoHide: false
+      autoHide: false,
     });
   } else
     showMessage({
-      message:
-        err.message ||
-        err.response ||
-        "Something went wrong, please try again.",
+      message: err.response.hasOwnProperty("data")
+        ? err.response.data.message
+        : err.message ||
+          err.response ||
+          "Something went wrong, please try again.",
       type: "danger",
-      position: "top"
+      position: "top",
     });
 };

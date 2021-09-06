@@ -3,7 +3,7 @@ import * as actionTypes from "../actions/actionTypes";
 import analytics from "@segment/analytics-react-native";
 import { Notifications as RNNotifications } from "react-native-notifications";
 
-const initialState = {
+export const initialState = {
   userid: null,
   userInfo: null,
   loading: false,

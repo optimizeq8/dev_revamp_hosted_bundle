@@ -6,6 +6,7 @@ import * as actionTypes from "../actionTypes";
 import {
   checkBusinessVerified,
   createBusinessAccount,
+  create_snapchat_ad_account,
   deleteBusinessAccount,
   updateBusinessInfo,
 } from "../accountManagementActions";
@@ -16,12 +17,14 @@ import {
   createBusinessSuccessResponseData,
   sameNameResponseData,
   approvalRequestSuccessResponse,
+  acceptedSnapTermsResponse,
 } from "./MockedApiResponses/BusinessAccountMock";
 import { getBusinessesResponseSuccess } from "./MockedApiResponses/UserBusinessResponseMock";
 import { getBusinessAccounts } from "../genericActions";
 import reducer from "../../reducers";
 import FlashMessage from "react-native-flash-message";
-
+import { unauthorizedBusinessResponse } from "./MockedApiResponses/SnapCampaignsMock";
+import store, { originalStore } from "../../index";
 jest.mock("@segment/analytics-react-native", () => {
   return {
     track: jest.fn(),
@@ -64,7 +67,7 @@ describe("Account Management Actions", () => {
     });
 
     test("should handle business info update FAILURE action", () => {
-      const store = mockStore(
+      const mockedStore = mockStore(
         accountManagementReducer(undefined, {
           payload: {},
           type: "",
@@ -78,7 +81,7 @@ describe("Account Management Actions", () => {
         });
       });
 
-      const dispatchedStore = store.dispatch(
+      const dispatchedStore = mockedStore.dispatch(
         updateBusinessInfo(
           "wrongbusinessid",
           {
@@ -93,7 +96,7 @@ describe("Account Management Actions", () => {
       );
 
       return dispatchedStore.then(() => {
-        expect(store.getActions()).toEqual([
+        expect(mockedStore.getActions()).toEqual([
           { payload: true, type: actionTypes.UPDATE_BUSINESS_INFO_LOADING },
           {
             type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
@@ -108,7 +111,7 @@ describe("Account Management Actions", () => {
       });
     });
     test("should handle business info update SUCCESSFUL action", () => {
-      const store = mockStore(
+      const mockedStore = mockStore(
         accountManagementReducer(undefined, {
           payload: {},
           type: "",
@@ -122,7 +125,7 @@ describe("Account Management Actions", () => {
         });
       });
       let timestamp = new Date().getTime();
-      const dispatchedStore = store.dispatch(
+      const dispatchedStore = mockedStore.dispatch(
         updateBusinessInfo(
           "11",
           {
@@ -136,7 +139,7 @@ describe("Account Management Actions", () => {
         )
       );
       return dispatchedStore.then(() => {
-        expect(store.getActions()).toEqual([
+        expect(mockedStore.getActions()).toEqual([
           { payload: true, type: actionTypes.UPDATE_BUSINESS_INFO_LOADING },
           { payload: true, type: actionTypes.CHECK_BUSINESS_STATUS },
           {
@@ -156,7 +159,7 @@ describe("Account Management Actions", () => {
 
 describe("Get business accounts", () => {
   test("should handle getting businesses for user SUCCESSFUL action", () => {
-    const store = mockStore(
+    const mockedStore = mockStore(
       reducer(undefined, {
         payload: {
           id: 11,
@@ -177,17 +180,17 @@ describe("Get business accounts", () => {
         response: getBusinessesResponseSuccess,
       });
     });
-    const dispatchedStore = store.dispatch(getBusinessAccounts("11"));
+    const dispatchedStore = mockedStore.dispatch(getBusinessAccounts("11"));
     return dispatchedStore.then(() => {
-      expect(store.getActions()).toEqual([
+      expect(mockedStore.getActions()).toEqual([
         { payload: true, type: actionTypes.SET_LOADING_BUSINESS_LIST },
         {
           payload: {
             data: [...getBusinessesResponseSuccess.data],
             index: 0,
-            userid: store.getState().auth.userInfo.id,
+            userid: mockedStore.getState().auth.userInfo.id,
             businessSeleced: "11",
-            user: store.getState().auth.userInfo,
+            user: mockedStore.getState().auth.userInfo,
           },
           type: actionTypes.SET_BUSINESS_ACCOUNTS,
         },
@@ -198,7 +201,7 @@ describe("Get business accounts", () => {
 
 describe("Create business account", () => {
   test("should handle creating a business for user SUCCESSFUL action", () => {
-    const store = mockStore(
+    const mockedStore = mockStore(
       reducer(undefined, {
         payload: {
           id: 11,
@@ -219,7 +222,7 @@ describe("Create business account", () => {
         response: createBusinessSuccessResponseData,
       });
     });
-    const dispatchedStore = store.dispatch(
+    const dispatchedStore = mockedStore.dispatch(
       createBusinessAccount(
         {
           name: "IM IO Business",
@@ -231,7 +234,7 @@ describe("Create business account", () => {
       )
     );
     return dispatchedStore.then(() => {
-      expect(store.getActions()).toEqual([
+      expect(mockedStore.getActions()).toEqual([
         { payload: true, type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT },
         {
           payload: createBusinessSuccessResponseData.data,
@@ -245,7 +248,7 @@ describe("Create business account", () => {
     });
   });
   test("should handle creating a business for user with same name FAILURE action", () => {
-    const store = mockStore(
+    const mockedStore = mockStore(
       reducer(undefined, {
         payload: {
           id: 11,
@@ -266,7 +269,7 @@ describe("Create business account", () => {
         response: sameNameResponseData,
       });
     });
-    const dispatchedStore = store.dispatch(
+    const dispatchedStore = mockedStore.dispatch(
       createBusinessAccount(
         {
           name: "IM IO Business",
@@ -278,7 +281,7 @@ describe("Create business account", () => {
       )
     );
     return dispatchedStore.then(() => {
-      expect(store.getActions()).toEqual([
+      expect(mockedStore.getActions()).toEqual([
         { payload: true, type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT },
         {
           type: actionTypes.ERROR_ADD_BUSINESS_ACCOUNT,
@@ -291,7 +294,7 @@ describe("Create business account", () => {
   });
 
   test("should handle creating a business for user FAILURE action", () => {
-    const store = mockStore(
+    const mockedStore = mockStore(
       reducer(undefined, {
         payload: {
           id: 11,
@@ -312,7 +315,7 @@ describe("Create business account", () => {
         response: { errorMessage: "Something went wrong!" },
       });
     });
-    const dispatchedStore = store.dispatch(
+    const dispatchedStore = mockedStore.dispatch(
       createBusinessAccount(
         {
           name: "IM IO Business",
@@ -324,7 +327,7 @@ describe("Create business account", () => {
       )
     );
     return dispatchedStore.then(() => {
-      expect(store.getActions()).toEqual([
+      expect(mockedStore.getActions()).toEqual([
         { payload: true, type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT },
         {
           type: actionTypes.ERROR_ADD_BUSINESS_ACCOUNT,
@@ -339,7 +342,7 @@ describe("Create business account", () => {
 
 describe("Delete a business", () => {
   test("should handle deleting a business", () => {
-    const store = mockStore(
+    const mockedStore = mockStore(
       reducer(undefined, {
         payload: {
           id: 11,
@@ -360,9 +363,9 @@ describe("Delete a business", () => {
         response: null,
       });
     });
-    const dispatchedStore = store.dispatch(deleteBusinessAccount(14));
+    const dispatchedStore = mockedStore.dispatch(deleteBusinessAccount(14));
     return dispatchedStore.then(() => {
-      expect(store.getActions()).toEqual([
+      expect(mockedStore.getActions()).toEqual([
         { type: actionTypes.DELETE_BUSINESS_LOADING, payload: true },
         {
           type: actionTypes.DELETE_BUSINESS_ACCOUNT,
@@ -373,7 +376,7 @@ describe("Delete a business", () => {
   });
 
   test("should handle deleting a business for unauthorized user", () => {
-    const store = mockStore(
+    const mockedStore = mockStore(
       reducer(undefined, {
         payload: {
           id: 11,
@@ -391,12 +394,12 @@ describe("Delete a business", () => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 401,
-        response: null,
+        response: unauthorizedBusinessResponse,
       });
     });
-    const dispatchedStore = store.dispatch(deleteBusinessAccount(14));
+    const dispatchedStore = mockedStore.dispatch(deleteBusinessAccount(14));
     return dispatchedStore.then(() => {
-      expect(store.getActions()).toEqual([
+      expect(mockedStore.getActions()).toEqual([
         { type: actionTypes.DELETE_BUSINESS_LOADING, payload: true },
         { type: actionTypes.DELETE_BUSINESS_LOADING, payload: false },
       ]);
@@ -406,7 +409,7 @@ describe("Delete a business", () => {
 
 describe("Business approval request", () => {
   test("should handle requesting approval for business SUCCESSFUL action", () => {
-    const store = mockStore(
+    const mockedStore = mockStore(
       reducer(undefined, {
         payload: {
           id: 11,
@@ -427,7 +430,7 @@ describe("Business approval request", () => {
         response: approvalRequestSuccessResponse("Requested"),
       });
     });
-    const dispatchedStore = store.dispatch(
+    const dispatchedStore = mockedStore.dispatch(
       checkBusinessVerified(14, (string) => string)
     );
     return dispatchedStore.then(() => {
@@ -439,7 +442,7 @@ describe("Business approval request", () => {
           "We'll be notifying you within 24 hours, so keep your eyes peeled for our app notification and email",
         duration: 10000,
       });
-      expect(store.getActions()).toEqual([
+      expect(mockedStore.getActions()).toEqual([
         { type: actionTypes.CHECK_BUSINESS_STATUS, payload: true },
         {
           payload: {
@@ -453,7 +456,7 @@ describe("Business approval request", () => {
   });
 
   test("should handle rejecting approval for business SUCCESSFUL action", () => {
-    const store = mockStore(
+    const mockedStore = mockStore(
       reducer(undefined, {
         payload: {
           id: 11,
@@ -474,11 +477,11 @@ describe("Business approval request", () => {
         response: approvalRequestSuccessResponse("Rejected"),
       });
     });
-    const dispatchedStore = store.dispatch(
+    const dispatchedStore = mockedStore.dispatch(
       checkBusinessVerified(14, (string) => string)
     );
     return dispatchedStore.then(() => {
-      expect(store.getActions()).toEqual([
+      expect(mockedStore.getActions()).toEqual([
         { type: actionTypes.CHECK_BUSINESS_STATUS, payload: true },
         {
           payload: {
@@ -491,7 +494,7 @@ describe("Business approval request", () => {
     });
   });
   test("should handle approval of business SUCCESSFUL action", () => {
-    const store = mockStore(
+    const mockedStore = mockStore(
       reducer(undefined, {
         payload: {
           id: 11,
@@ -512,18 +515,18 @@ describe("Business approval request", () => {
         response: approvalRequestSuccessResponse("Approved"),
       });
     });
-    const dispatchedStore = store.dispatch(
+    const dispatchedStore = mockedStore.dispatch(
       checkBusinessVerified(14, (string) => string)
     );
     return dispatchedStore.then(() => {
       jest.spyOn(FlashMessage, "showMessage");
       expect(FlashMessage.showMessage).toBeCalledWith({
-        type: "warning",
+        type: "success",
         message: "Your Business Is Now Verified!",
         description: "Get started and launch your ads now",
         duration: 10000,
       });
-      expect(store.getActions()).toEqual([
+      expect(mockedStore.getActions()).toEqual([
         { type: actionTypes.CHECK_BUSINESS_STATUS, payload: true },
         {
           payload: {
@@ -532,6 +535,93 @@ describe("Business approval request", () => {
           type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
         },
         { type: actionTypes.CHECK_BUSINESS_STATUS, payload: false },
+      ]);
+    });
+  });
+});
+
+describe("Snapchat terms", () => {
+  beforeEach(() => {
+    actualStore = originalStore;
+  });
+  test.only("should handle accepting snapchat terms", () => {
+    const mockedStore = mockStore(
+      reducer(undefined, {
+        payload: {
+          id: 11,
+          first_name: "Imran",
+          last_name: "Sheikh",
+          mobile: "+96522112288",
+          email: "imran@optimizeapp.com",
+          verified: 1,
+          tmp_pwd: 0,
+        },
+        type: actionTypes.SET_CURRENT_USER,
+      })
+    );
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: acceptedSnapTermsResponse,
+      });
+    });
+    const dispatchedStore = mockedStore.dispatch(
+      create_snapchat_ad_account({ business_id: 14 }, (string) => string)
+    );
+
+    return dispatchedStore.then(() => {
+      expect().toEqual();
+      expect(mockedStore.getActions()).toEqual([
+        { type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT, payload: true },
+        {
+          type: actionTypes.CREATE_SNAPCHAT_AD_ACCOUNT,
+          payload: acceptedSnapTermsResponse.data,
+        },
+      ]);
+    });
+  });
+  test("should handle snapchat terms for unauthorized user", () => {
+    const mockedStore = mockStore(
+      reducer(undefined, {
+        payload: {
+          id: 11,
+          first_name: "Imran",
+          last_name: "Sheikh",
+          mobile: "+96522112288",
+          email: "imran@optimizeapp.com",
+          verified: 1,
+          tmp_pwd: 0,
+        },
+        type: actionTypes.SET_CURRENT_USER,
+      })
+    );
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 401,
+        response: unauthorizedBusinessResponse,
+      });
+    });
+    const dispatchedStore = mockedStore.dispatch(
+      create_snapchat_ad_account({ business_id: 14 }, (string) => string)
+    );
+    return dispatchedStore.then(() => {
+      jest.spyOn(FlashMessage, "showMessage");
+      expect(FlashMessage.showMessage).toBeCalledWith({
+        type: "danger",
+        position: "top",
+        message: "Unauthenticated.",
+      });
+      expect(mockedStore.getActions()).toEqual([
+        { type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT, payload: true },
+        {
+          type: actionTypes.ERROR_CREATE_SNAPCHAT_AD_ACCOUNT,
+          payload: {
+            loading: false,
+            errorData: unauthorizedBusinessResponse,
+          },
+        },
       ]);
     });
   });
