@@ -24,9 +24,12 @@ import {
   OTPCodeUnauthenticatedErrorResponse,
   OTPCodeErrorResponse,
   OTPCodeSuccessResponse,
+  OTPByCallSuccessResponse,
+  OTPByCallUnauthenticatedErrorResponse,
+  OTPByCallFailureResponse,
 } from "./MockedApiResponses/OTPSentMock";
 import { login } from "../loginActions";
-import { verifyMobileCode } from "..";
+import { verifyMobileCode, verifyOTPByCall } from "..";
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 jest.setTimeout(150000);
@@ -454,6 +457,77 @@ describe("OTP Verify Action / Reducer", () => {
 
     return dispatchStore.then(() => {
       expect(store.getActions()).toEqual([successAction]);
+    });
+  });
+});
+
+describe("OTP By Call Action / Reducer", () => {
+  test("OTP By Call Success", () => {
+    const successAction = {
+      type: actionTypes.OTP_BY_CALL,
+      payload: {
+        success: true,
+      },
+    };
+    const store = mockStore(reducer(undefined, successAction));
+    const dispatchStore = store.dispatch(verifyOTPByCall());
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: OTPByCallSuccessResponse,
+      });
+    });
+
+    return dispatchStore.then(() => {
+      expect(store.getActions()).toEqual([successAction]);
+    });
+  });
+
+  test("OTP By Call Failure", () => {
+    const failureAction = {
+      type: actionTypes.OTP_BY_CALL,
+      payload: {
+        success: false,
+      },
+    };
+    const store = mockStore(reducer(undefined, failureAction));
+    const dispatchStore = store.dispatch(verifyOTPByCall());
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 422,
+        response: OTPByCallFailureResponse,
+      });
+    });
+
+    return dispatchStore.then(() => {
+      expect(store.getActions()).toEqual([failureAction]);
+    });
+  });
+
+  test("OTP By Call Unauthenticated user Failure", () => {
+    const failureAction = {
+      type: actionTypes.OTP_BY_CALL,
+      payload: {
+        success: false,
+      },
+    };
+    const store = mockStore(reducer(undefined, failureAction));
+    const dispatchStore = store.dispatch(verifyOTPByCall());
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 422,
+        response: OTPByCallUnauthenticatedErrorResponse,
+      });
+    });
+
+    return dispatchStore.then(() => {
+      expect(store.getActions()).toEqual([failureAction]);
     });
   });
 });

@@ -215,7 +215,7 @@ export const sendMobileNo = (mobileNo) => {
         return res.data;
       })
       .then((data) => {
-        // console.log("sendMobileNo data", data);
+        console.log("sendMobileNo data", data);
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -227,7 +227,7 @@ export const sendMobileNo = (mobileNo) => {
         });
       })
       .catch((err) => {
-        // console.log("sendMobileNo error", err);
+        console.log("sendMobileNo error", err);
         let errorMsg = null;
         if (
           err.response &&
@@ -270,14 +270,15 @@ export const verifyMobileCode = (
   verification_channel,
   navigationPath = "Dashboard"
 ) => {
+  console.log("mobileAuth", mobileAuth);
   return (dispatch, getState) => {
     return createBaseUrl()
-      .post(`user/otp/verify`, mobileAuth)
+      .post(`users/otp/verify`, mobileAuth)
       .then((res) => {
         return res.data;
       })
       .then((data) => {
-        // console.log("verifyMobileCode data", data);
+        console.log("verifyMobileCode data", data);
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -315,7 +316,7 @@ export const verifyMobileCode = (
         }
       })
       .catch((err) => {
-        // console.log("verifyMobileCode error", err);
+        console.log("verifyMobileCode error", err);
         let errorMsg = null;
         if (
           err.response &&
@@ -779,6 +780,36 @@ export const verifyEmailCodeLink = (verificationCode, country_code, mobile) => {
       .catch((error) => {
         return dispatch({
           type: actionTypes.VERIFY_EMAIL_CODE_LINK,
+          payload: {
+            success: false,
+          },
+        });
+      });
+  };
+};
+
+export const verifyOTPByCall = () => {
+  return (dispatch) => {
+    return createBaseUrl()
+      .post(`users/otp/call`)
+      .then((res) => res.data)
+      .then((data) => {
+        console.log(`verifyOTPByCall`, data);
+        showMessage({
+          type: data.success ? "success" : "warning",
+          message: data.message,
+        });
+        return dispatch({
+          type: actionTypes.OTP_BY_CALL,
+          payload: {
+            success: data.success,
+          },
+        });
+      })
+      .catch((err) => {
+        console.log("err verifyOTPByCall", err);
+        return dispatch({
+          type: actionTypes.OTP_BY_CALL,
           payload: {
             success: false,
           },

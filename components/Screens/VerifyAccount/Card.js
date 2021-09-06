@@ -65,9 +65,9 @@ Card = ({
           text={translate("Verify")}
         />
       </View>
-      <TouchableOpacity onPress={toggleVerify}>
+      {/* <TouchableOpacity onPress={toggleVerify}>
         <Text style={styles.bottomText}>{translate(bottomText)}</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
