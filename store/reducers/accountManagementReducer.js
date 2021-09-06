@@ -65,7 +65,7 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.SET_BUSINESS_ACCOUNTS:
       let main = state.mainBusiness;
-      let setNewBusinessAccounts = action.payload.data.data || [];
+      let setNewBusinessAccounts = action.payload.data || [];
       if (
         !action.payload.businessSeleced &&
         setNewBusinessAccounts &&
@@ -95,7 +95,6 @@ const reducer = (state = initialState, action) => {
       AsyncStorage.setItem("selectedBusinessId", JSON.stringify(main.id)).catch(
         (err) => console.log(err)
       );
-      console.log(main);
       return {
         ...state,
         mainBusiness: main,

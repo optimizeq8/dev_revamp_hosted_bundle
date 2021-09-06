@@ -28,6 +28,7 @@ import store, { originalStore } from "../../index";
 jest.mock("@segment/analytics-react-native", () => {
   return {
     track: jest.fn(),
+    group: jest.fn(),
     identify: jest.fn(),
     flush: jest.fn(),
     reset: jest.fn(),
@@ -158,7 +159,7 @@ describe("Account Management Actions", () => {
 });
 
 describe("Get business accounts", () => {
-  test("should handle getting businesses for user SUCCESSFUL action", () => {
+  test.only("should handle getting businesses for user after logging in SUCCESSFUL action", () => {
     const mockedStore = mockStore(
       reducer(undefined, {
         payload: {
@@ -180,8 +181,19 @@ describe("Get business accounts", () => {
         response: getBusinessesResponseSuccess,
       });
     });
-    const dispatchedStore = mockedStore.dispatch(getBusinessAccounts("11"));
+    const dispatchedStore = mockedStore.dispatch(getBusinessAccounts());
     return dispatchedStore.then(() => {
+      expect(
+        reducer(undefined, {
+          payload: {
+            data: [...getBusinessesResponseSuccess.data],
+            index: 0,
+            userid: mockedStore.getState().auth.userInfo.id,
+            user: mockedStore.getState().auth.userInfo,
+          },
+          type: actionTypes.SET_BUSINESS_ACCOUNTS,
+        }).account.businessAccounts
+      ).toEqual(getBusinessesResponseSuccess.data);
       expect(mockedStore.getActions()).toEqual([
         { payload: true, type: actionTypes.SET_LOADING_BUSINESS_LIST },
         {
@@ -189,7 +201,6 @@ describe("Get business accounts", () => {
             data: [...getBusinessesResponseSuccess.data],
             index: 0,
             userid: mockedStore.getState().auth.userInfo.id,
-            businessSeleced: "11",
             user: mockedStore.getState().auth.userInfo,
           },
           type: actionTypes.SET_BUSINESS_ACCOUNTS,
@@ -544,7 +555,7 @@ describe("Snapchat terms", () => {
   beforeEach(() => {
     actualStore = originalStore;
   });
-  test.only("should handle accepting snapchat terms", () => {
+  test("should handle accepting snapchat terms", () => {
     const mockedStore = mockStore(
       reducer(undefined, {
         payload: {
