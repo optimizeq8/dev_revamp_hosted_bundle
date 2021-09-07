@@ -44,7 +44,7 @@ class PersonalInfo extends Component {
         businessname: "",
         businesscategory: "",
         country: "",
-        instagram_handle: "",
+        insta_handle_for_review: "",
         otherBusinessCategory: null,
         // businesstype: "1",
         // businessemail: "",
@@ -77,7 +77,7 @@ class PersonalInfo extends Component {
       repasswordError: "",
       businesscategoryError: null,
       businessnameError: null,
-      instagram_handleError: null,
+      insta_handle_for_reviewError: null,
     };
     this._handleSubmission = this._handleSubmission.bind(this);
     this._passwordVarification = this._passwordVarification.bind(this);
@@ -207,9 +207,9 @@ class PersonalInfo extends Component {
         "mandatory",
         this.state.businessAccount.otherBusinessCategory
       );
-    const instagram_handleError = validateWrapper(
+    const insta_handle_for_reviewError = validateWrapper(
       "mandatory",
-      this.state.businessAccount.instagram_handle
+      this.state.businessAccount.insta_handle_for_review
     );
     if (
       passwordError ||
@@ -220,7 +220,7 @@ class PersonalInfo extends Component {
       businesscategoryError ||
       countryError ||
       businesscategoryOtherError ||
-      instagram_handleError
+      insta_handle_for_reviewError
     ) {
       analytics.track(`Form Error Made`, {
         error_page: "PersonalInfo (Signup)",
@@ -233,7 +233,7 @@ class PersonalInfo extends Component {
           businesscategoryError ||
           countryError ||
           businesscategoryOtherError ||
-          instagram_handleError,
+          insta_handle_for_reviewError,
         source_action: "Creating account",
       });
     }
@@ -246,7 +246,7 @@ class PersonalInfo extends Component {
       businesscategoryError,
       businesscategoryOtherError,
       countryError,
-      instagram_handleError,
+      insta_handle_for_reviewError,
     });
     if (businessnameError) {
       showMessage({
@@ -296,9 +296,9 @@ class PersonalInfo extends Component {
         type: "warning",
       });
     }
-    if (instagram_handleError) {
+    if (insta_handle_for_reviewError) {
       showMessage({
-        message: translate(instagram_handleError),
+        message: translate(insta_handle_for_reviewError),
         type: "warning",
       });
     }
@@ -320,7 +320,7 @@ class PersonalInfo extends Component {
       !businesscategoryError &&
       !businesscategoryOtherError &&
       !countryError &&
-      !instagram_handleError &&
+      !insta_handle_for_reviewError &&
       this.state.valid // condition for mobile no
     ) {
       const mobile = this.state.userInfo.mobile.substring(
@@ -336,12 +336,13 @@ class PersonalInfo extends Component {
         ...userInfo,
         ...this.state.businessAccount,
       };
-      this.props.registerGuestUser(
-        info,
-        this.props.businessInvite,
-        this.props.navigation,
-        this.state.businessAccount
-      );
+      console.log("businessinvite 1 info", JSON.stringify(info, null, 2));
+      // this.props.registerGuestUser(
+      //   info,
+      //   this.props.businessInvite,
+      //   this.props.navigation,
+      //   this.state.businessAccount
+      // );
     }
     // For invited users
     else if (
@@ -365,7 +366,9 @@ class PersonalInfo extends Component {
       const info = {
         ...userInfo,
         repassword: this.state.repassword,
+        ...this.state.businessAccount,
       };
+      console.log("businessInvite 0 info", JSON.stringify(info, null, 2));
       this.props.registerGuestUser(
         info,
         this.props.businessInvite,
@@ -385,7 +388,7 @@ class PersonalInfo extends Component {
     state[stateName] =
       stateName === "businessname"
         ? value.replace(/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi, "")
-        : stateName === "instagram_handle"
+        : stateName === "insta_handle_for_review"
         ? value.replace("@", "")
         : value;
     analytics.track(`Form Populated`, {
@@ -513,6 +516,7 @@ class PersonalInfo extends Component {
           businessAccount: {
             ...this.state.businessAccount,
             country: value[0].value,
+            country_id: value[0].id,
           },
         },
         () => {

@@ -42,6 +42,7 @@ export const changeBusiness = (business) => {
 };
 
 export const createBusinessAccount = (account, navigation) => {
+  console.log("account", account);
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
@@ -53,6 +54,7 @@ export const createBusinessAccount = (account, navigation) => {
         return res.data;
       })
       .then((data) => {
+        console.log("createbusiness data", JSON.stringify(data, null, 2));
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",

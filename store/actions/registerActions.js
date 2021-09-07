@@ -690,7 +690,17 @@ export const registerGuestUser = (
         console.log("get user call");
         return dispatch(getUserProfile());
       })
-
+      .then(() => {
+        dispatch(
+          createBusinessAccount({
+            name: userInfo.businessname,
+            category: userInfo.businesscategory,
+            country_id: userInfo.country_id,
+            instagram_handle: userInfo.insta_handle_for_review,
+            type: "Agency",
+          })
+        );
+      })
       .then(() => {
         console.log("finalluy");
         if (getState().auth.userInfo) {
