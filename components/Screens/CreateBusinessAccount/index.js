@@ -60,8 +60,9 @@ class CreateBusinessAccount extends Component {
     const { translate } = this.props.screenProps;
     this.state = {
       businessAccount: {
-        businessname: "",
+        name: "",
         businesscategory: "",
+        category: "",
         country: "",
         businesstype: "1",
         businessemail: "",
@@ -77,7 +78,7 @@ class CreateBusinessAccount extends Component {
           icon_media_url: "",
           android_app_url: "",
         },
-        insta_handle_for_review: "",
+        instagram_handle: "",
       },
       inputT: false,
       inputN: false,
@@ -186,10 +187,9 @@ class CreateBusinessAccount extends Component {
           ...this.state.businessAccount,
           ...this.props.mainBusiness,
           websitelink: website ? website : "",
-          insta_handle_for_review:
-            this.props.mainBusiness &&
-            this.props.mainBusiness.insta_handle_for_review
-              ? this.props.mainBusiness.insta_handle_for_review
+          instagram_handle:
+            this.props.mainBusiness && this.props.mainBusiness.instagram_handle
+              ? this.props.mainBusiness.instagram_handle
               : "",
         },
         editBusinessInfo,
@@ -242,23 +242,23 @@ class CreateBusinessAccount extends Component {
     const { translate } = this.props.screenProps;
     const businessnameError = validateWrapper(
       "mandatory",
-      this.state.businessAccount.businessname
+      this.state.businessAccount.name
     );
 
     const businesscategoryError = validateWrapper(
       "mandatory",
-      this.state.businessAccount.businesscategory
+      this.state.businessAccount.category
     );
     const countryError = validateWrapper(
       "mandatory",
-      this.state.businessAccount.country
+      this.state.businessAccount.country_id
     );
     const insta_handle_for_reviewError = validateWrapper(
       "mandatory",
-      this.state.businessAccount.insta_handle_for_review
+      this.state.businessAccount.instagram_handle
     );
     const businesscategoryOtherError =
-      this.state.businessAccount.businesscategory === "43" &&
+      this.state.businessAccount.category === "Other" &&
       validateWrapper(
         "mandatory",
         this.state.businessAccount.otherBusinessCategory
@@ -297,19 +297,18 @@ class CreateBusinessAccount extends Component {
           await this.setState({
             businessAccount: {
               ...this.state.businessAccount,
-              brandname: this.state.businessAccount.businessname,
+              brandname: this.state.businessAccount.name,
             },
           });
         }
         if (
           (
             this.state.editBusinessInfo
-              ? this.state.businessAccount.businessname !==
-                this.props.mainBusiness.businessname
+              ? this.state.businessAccount.name !== this.props.mainBusiness.name
               : true
           )
             ? await this._verifyBusinessName(
-                this.state.businessAccount.businessname,
+                this.state.businessAccount.name,
                 true
               )
             : true
@@ -415,15 +414,16 @@ class CreateBusinessAccount extends Component {
             }
           } else {
             const businessAccountInfo = {
-              businessname: this.state.businessAccount.businessname,
-              businesscategory: this.state.businessAccount.businesscategory,
-              otherBusinessCategory:
-                this.state.businessAccount.businesscategory !== "43"
-                  ? null
-                  : this.state.businessAccount.otherBusinessCategory,
-              country: this.state.businessAccount.country,
-              insta_handle_for_review:
-                this.state.businessAccount.insta_handle_for_review,
+              name: this.state.businessAccount.name,
+              // businesscategory: this.state.businessAccount.businesscategory,
+              category: this.state.businessAccount.category,
+              country_id: this.state.businessAccount.country_id,
+              // otherBusinessCategory:
+              //   this.state.businessAccount.businesscategory !== "43"
+              //     ? null
+              //     : this.state.businessAccount.otherBusinessCategory,
+              // country: this.state.businessAccount.country,
+              instagram_handle: this.state.businessAccount.instagram_handle,
             };
             this.props.createBusinessAccount(
               businessAccountInfo,
@@ -456,7 +456,7 @@ class CreateBusinessAccount extends Component {
     this.setState({
       businesscategoryError: validateWrapper(
         "mandatory",
-        this.state.businessAccount.businesscategory
+        this.state.businessAccount.category
       ),
       inputT: false,
     });
@@ -469,6 +469,7 @@ class CreateBusinessAccount extends Component {
           businessAccount: {
             ...this.state.businessAccount,
             businesscategory: value[0].value,
+            category: value[0].key,
           },
         },
         () => {
@@ -615,16 +616,18 @@ class CreateBusinessAccount extends Component {
     if (
       this.props.registering &&
       this.props.businessAccount &&
-      this.props.businessAccount.businesscategory !== ""
+      this.props.businessAccount.category !== ""
     ) {
-      category = this.state.items.find(
-        (i) => i.value === this.props.businessAccount.businesscategory
-      ).label;
-    } else if (this.state.businessAccount.businesscategory !== "") {
+      category = this.props.businessAccount.category;
+      // this.state.items.find(
+      //   (i) => i.value === this.props.businessAccount.businesscategory
+      // ).label;
+    } else if (this.state.businessAccount.category !== "") {
       // if from create business account or edit screen
-      category = this.state.items.find(
-        (i) => i.value === this.state.businessAccount.businesscategory
-      ).label;
+      category = this.state.businessAccount.category;
+      //  this.state.items.find(
+      //   (i) => i.value === this.state.businessAccount.businesscategory
+      // ).label;
     }
     return category;
   };
@@ -643,9 +646,9 @@ class CreateBusinessAccount extends Component {
   setValue = (stateName, value) => {
     let state = {};
     state[stateName] =
-      stateName === "businessname"
+      stateName === "name"
         ? value.replace(/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi, "")
-        : stateName === "insta_handle_for_review"
+        : stateName === "instagram_handle"
         ? value.replace("@", "")
         : value;
 
@@ -659,7 +662,7 @@ class CreateBusinessAccount extends Component {
   getValidInfo = (stateError, validWrap) => {
     let state = {};
     if (stateError === "businessnameError") {
-      this._verifyBusinessName(this.state.businessAccount.businessname, false);
+      this._verifyBusinessName(this.state.businessAccount.name, false);
     }
 
     state[stateError] = validWrap;
@@ -772,13 +775,13 @@ class CreateBusinessAccount extends Component {
             // disabled={this.props.loadingUpdateInfo}
             incomplete={false}
             translate={this.props.screenProps.translate}
-            stateName1="businessname"
+            stateName1="name"
             label="Business Name"
             placeholder1="Enter your business name"
             value={
               this.props.registering
-                ? this.props.businessAccount.businessname
-                : this.state.businessAccount.businessname
+                ? this.props.businessAccount.name
+                : this.state.businessAccount.name
             }
             valueError1={
               this.props.registering
@@ -794,7 +797,7 @@ class CreateBusinessAccount extends Component {
                 ? this.props.getValidInfo
                 : this.getValidInfo
             }
-            key={"businessname"}
+            key={"name"}
           />
           {/* Business category view starts here */}
           <Picker
@@ -802,7 +805,7 @@ class CreateBusinessAccount extends Component {
             screenProps={this.props.screenProps}
             searchPlaceholderText={translate("Search Business Category")}
             data={this.state.items}
-            uniqueKey={"value"}
+            uniqueKey={"key"}
             displayKey={"label"}
             open={
               this.props.registering ? this.props.inputT : this.state.inputT
@@ -819,8 +822,8 @@ class CreateBusinessAccount extends Component {
             }
             selectedItems={
               this.props.registering
-                ? [this.props.businessAccount.businesscategory]
-                : [this.state.businessAccount.businesscategory]
+                ? [this.props.businessAccount.category]
+                : [this.state.businessAccount.category]
             }
             single={true}
             screenName={
@@ -853,8 +856,8 @@ class CreateBusinessAccount extends Component {
             valueText={businessCategory}
             value={
               this.props.registering
-                ? this.props.businessAccount.businesscategory
-                : this.state.businessAccount.businesscategory
+                ? this.props.businessAccount.category
+                : this.state.businessAccount.category
             }
             incomplete={false}
             translate={this.props.screenProps.translate}
@@ -968,14 +971,14 @@ class CreateBusinessAccount extends Component {
             // customStyles={{ width: "100%", marginLeft: 0 }}
             incomplete={false}
             translate={this.props.screenProps.translate}
-            stateName1="insta_handle_for_review"
+            stateName1="instagram_handle"
             label="instagram"
             placeholder1="@ Instagram UserName"
             value={
               "@" +
               (this.props.registering
-                ? this.props.businessAccount.insta_handle_for_review
-                : this.state.businessAccount.insta_handle_for_review)
+                ? this.props.businessAccount.instagram_handle
+                : this.state.businessAccount.instagram_handle)
             }
             valueError1={
               this.props.registering
@@ -991,7 +994,7 @@ class CreateBusinessAccount extends Component {
             setValue={
               this.props.registering ? this.props.setValue : this.setValue
             }
-            key={"insta_handle_for_review"}
+            key={"instagram_handle"}
             disabled={
               (this.state.editBusinessInfo &&
                 this.props.editBusinessInfoLoading) ||
@@ -1133,13 +1136,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.registerUser(userInfo, navigation)),
   createBusinessAccount: (account, navigation) =>
     dispatch(actionCreators.createBusinessAccount(account, navigation)),
-  verifyBusinessName: (businessName, _handleBusinessName, submision) =>
+  verifyBusinessName: (name, _handleBusinessName, submision) =>
     dispatch(
-      actionCreators.verifyBusinessName(
-        businessName,
-        _handleBusinessName,
-        submision
-      )
+      actionCreators.verifyBusinessName(name, _handleBusinessName, submision)
     ),
   updateBusinessInfo: (userid, info, navigation, translate) =>
     dispatch(
