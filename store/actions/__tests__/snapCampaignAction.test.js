@@ -11,6 +11,7 @@ import {
   acceptSnapTermsResponse,
   snapAdCampaignCreatedResponse,
   unauthorizedBusinessResponse,
+  oldDatesCampaignResponse,
 } from "./MockedApiResponses/SnapCampaignsMock";
 jest.mock("@segment/analytics-react-native", () => {
   return {
@@ -227,6 +228,65 @@ describe("Snapchat Campaign Creation", () => {
           {
             type: actionTypes.ERROR_SET_AD_OBJECTIVE,
             errorData: unauthorizedBusinessResponse,
+          },
+        ]);
+      });
+    });
+
+    test("should handle creating ad objective for business with old dates SUCCESSFUL action", () => {
+      let store = mockStore(
+        reducer(undefined, {
+          payload: {
+            id: 10,
+            name: "OP Business",
+            country: {
+              id: 3,
+              name: "UAE",
+            },
+            type: "SME or Startup",
+            approval_status: "Pending",
+          },
+          type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
+        })
+      );
+      moxios.wait(() => {
+        let request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 422,
+          response: oldDatesCampaignResponse,
+        });
+      });
+
+      let dispatchedStore = store.dispatch(
+        ad_objective(
+          {
+            start_date: "2020-12-12",
+            end_date: "2020-12-13",
+            duration: 2,
+            name: "First Campaign",
+            ad_format: "SNAP_AD",
+            objective: "WEB_VIEW",
+            savedObjective: "WEB_VIEW",
+          },
+          { navigate: () => {} },
+          {}
+        )
+      );
+      return dispatchedStore.then(() => {
+        jest.spyOn(FlashMessage, "showMessage");
+        expect(FlashMessage.showMessage).toBeCalledWith({
+          type: "danger",
+          message: "Validation error",
+          position: "top",
+        });
+        expect(store.getActions()).toEqual([
+          {
+            type: actionTypes.SET_AD_LOADING_OBJ,
+            payload: true,
+          },
+          {
+            type: actionTypes.ERROR_SET_AD_OBJECTIVE,
+            errorData: oldDatesCampaignResponse,
           },
         ]);
       });

@@ -37,3 +37,11 @@ export let unauthorizedBusinessResponse = {
     error: ["Unauthorized"],
   },
 };
+export let oldDatesCampaignResponse = {
+  api_version: "v1",
+  error: true,
+  message: "Validation error",
+  data: {
+    start_date: ["The given data was invalid."],
+  },
+};
