@@ -1,267 +1,335 @@
-export default translate => [
+export default (translate) => [
   {
     label: translate("Accounting"),
-    value: "0"
+    key: "Accounting",
+    value: "0",
   },
   {
     label: translate("Advertising/Public Relations"),
-    value: "1"
+    key: "Advertising/Public Relations",
+
+    value: "1",
   },
   {
     label: translate("Agriculture"),
-    value: "2"
+    key: "Agriculture",
+
+    value: "2",
   },
   {
     label: translate("Architectural Service"),
-    value: "3"
+    key: "Architectural Service",
+    value: "3",
   },
   {
     label: translate("Arts"),
-    value: "4"
+    key: "Arts",
+    value: "4",
   },
   {
     label: translate("Automotive"),
-    value: "5"
+    key: "Automotive",
+    value: "5",
   },
   {
     label: translate("Beauty Products"),
-    value: "6"
+    key: "Beauty Products",
+    value: "6",
   },
   {
     label: translate("Books, Magazines, & Newspapers"),
-    value: "7"
+    key: "Books, Magazines, & Newspapers",
+    value: "7",
   },
   {
     label: translate("Builder/General Contractor"),
-    value: "8"
+    key: "Builder/General Contractor",
+    value: "8",
   },
   {
     label: translate("Business Consulting/Services"),
-    value: "9"
+    key: "Business Consulting/Services",
+    value: "9",
   },
   {
     label: translate("Construction"),
-    value: "10"
+    key: "Construction",
+    value: "10",
   },
   {
     label: translate("Education"),
-    value: "11"
+    key: "Education",
+    value: "11",
   },
   {
     label: translate("Finance/Investments"),
-    value: "12"
+    key: "Finance/Investments",
+    value: "12",
   },
   {
     label: translate("Fitness/Healthy Lifestlyes"),
-    value: "13"
+    key: "Fitness/Healthy Lifestlyes",
+    value: "13",
   },
   {
     label: translate("Food & Beverage: Coffee Shop"),
-    value: "14"
+    key: "Food & Beverage: Coffee Shop",
+    value: "14",
   },
   {
     label: translate("Food & Beverage: Confectionary"),
-    value: "15"
+    key: "Food & Beverage: Confectionary",
+    value: "15",
   },
   {
     label: translate("Food & Beverage: Fast Food"),
-    value: "16"
+    key: "Food & Beverage: Fast Food",
+    value: "16",
   },
   {
     label: translate("Food & Beverage: Fine Dining"),
-    value: "17"
+    key: "Food & Beverage: Fine Dining",
+    value: "17",
   },
   {
     label: translate("Food & Beverage: Other"),
-    value: "18"
+    key: "Food & Beverage: Other",
+    value: "18",
   },
   {
     label: translate("Games: Digital"),
-    value: "19"
+    key: "Games: Digital",
+    value: "19",
   },
   {
     label: translate("Games: Mobile"),
-    value: "20"
+    key: "Games: Mobile",
+    value: "20",
   },
   {
     label: translate("Games: Other"),
-    value: "21"
+    key: "Games: Other",
+    value: "21",
   },
   {
     label: translate("Government"),
-    value: "22"
+    key: "Government",
+    value: "22",
   },
   {
     label: translate("Health Care"),
-    value: "23"
+    key: "Health Care",
+    value: "23",
   },
   {
     label: translate("Health Services/HMOs"),
-    value: "24"
+    key: "Health Services/HMOs",
+    value: "24",
   },
   {
     label: translate("Home Business"),
-    value: "25"
+    key: "Home Business",
+    value: "25",
   },
   {
     label: translate("Hospitality"),
-    value: "26"
+    key: "Hospitality",
+    value: "26",
   },
   {
     label: translate("Insurance"),
-    value: "27"
+    key: "Insurance",
+    value: "27",
   },
   {
     label: translate("IT: Cloud & Storage"),
-    value: "28"
+    key: "IT: Cloud & Storage",
+    value: "28",
   },
   {
     label: translate("IT: Hardware Repair"),
-    value: "29"
+    key: "IT: Hardware Repair",
+    value: "29",
   },
   {
     label: translate("IT: Network & Security"),
-    value: "30"
+    key: "IT: Network & Security",
+    value: "30",
   },
   {
     label: translate("IT: Other"),
-    value: "31"
+    key: "IT: Other",
+    value: "31",
   },
   {
     label: translate("IT: Software Development"),
-    value: "32"
+    key: "IT: Software Development",
+    value: "32",
   },
   {
     label: translate("IT: VoIP Service"),
-    value: "33"
+    key: "IT: VoIP Service",
+    value: "33",
   },
   {
     label: translate("Legal Services"),
-    value: "34"
+    key: "Legal Services",
+    value: "34",
   },
   {
     label: translate("Entertainment: Live/Performing Arts"),
-    value: "35"
+    key: "Entertainment: Live/Performing Arts",
+    value: "35",
   },
   {
     label: translate("Entertainment: Exhibition"),
-    value: "36"
+    key: "Entertainment: Exhibition",
+    value: "36",
   },
   {
     label: translate("Entertainment: Other"),
-    value: "37"
+    key: "Entertainment: Other",
+    value: "37",
   },
   {
     label: translate("Manufacturing"),
-    value: "38"
+    key: "Manufacturing",
+    value: "38",
   },
   {
     label: translate("Medical Products"),
-    value: "39"
+    key: "Medical Products",
+    value: "39",
   },
   {
     label: translate("Music Production"),
-    value: "40"
+    key: "Music Production",
+    value: "40",
   },
   {
     label: translate("Nonprofit"),
-    value: "41"
+    key: "Nonprofit",
+    value: "41",
   },
   {
     label: translate("Oil & Gas"),
-    value: "42"
+    key: "Oil & Gas",
+    value: "42",
   },
   {
     label: translate("Pharmaceutical"),
-    value: "44"
+    key: "Pharmaceutical",
+    value: "44",
   },
   {
     label: translate("Radio"),
-    value: "45"
+    key: "Radio",
+    value: "45",
   },
   {
     label: translate("Real Estate"),
-    value: "46"
+    key: "Real Estate",
+    value: "46",
   },
   {
     label: translate("Real Estate/Housing"),
-    value: "47"
+    key: "Real Estate/Housing",
+    value: "47",
   },
   {
     label: translate("Rental & Leasing Services"),
-    value: "48"
+    key: "Rental & Leasing Services",
+    value: "48",
   },
   {
     label: translate("Retail: Clothing"),
-    value: "49"
+    key: "Retail: Clothing",
+    value: "49",
   },
   {
     label: translate("Retail: Electronics"),
-    value: "50"
+    key: "Retail: Electronic",
+    value: "50",
   },
   {
     label: translate("Retail: Food Stuff & Consumables"),
-    value: "51"
+    key: "Retail: Food Stuff & Consumables",
+    value: "51",
   },
   {
     label: translate("Retail: Furniture"),
-    value: "52"
+    key: "Retail: Furniture",
+    value: "52",
   },
   {
     label: translate("Retail: Other"),
-    value: "53"
+    key: "Retail: Other",
+    value: "53",
   },
   {
     label: translate("Retail: Sports Equipment"),
-    value: "54"
+    key: "Retail: Sports Equipment",
+    value: "54",
   },
   {
     label: translate("Retail: Wholesale"),
-    value: "55"
+    key: "Retail: Wholesal",
+    value: "55",
   },
   {
     label: translate("Sports: Esports"),
-    value: "56"
+    key: "Sports: Esports",
+    value: "56",
   },
   {
     label: translate("Sports: Motorsports"),
-    value: "57"
+    key: "Sports: Motorsports",
+    value: "57",
   },
   {
     label: translate("Sports: Other"),
-    value: "58"
+    key: "Sports: Other",
+    value: "58",
   },
   {
     label: translate("Sports: Team Sports"),
-    value: "59"
+    key: "Sports: Team Sports",
+    value: "59",
   },
   {
     label: translate("Tech Business"),
-    value: "60"
+    key: "Tech Business",
+    value: "60",
   },
   {
     label: translate("Telecommunications"),
-    value: "61"
+    key: "Telecommunications",
+    value: "61",
   },
   {
-    label: translate("Travel & Tourism: Airlines"),
-    value: "62"
+    label: translate("Travel & Tourism: Ride Hailing"),
+    key: "Travel & Tourism: Ride Hailing",
+    value: "62",
   },
 
   {
     label: translate("Travel & Tourism: Ride Hailing"),
-    value: "63"
+    key: "Travel & Tourism: Ride Hailing",
+    value: "63",
   },
   {
     label: translate("Travel & Tourism: Travel Agency"),
-    value: "64"
+    key: "Travel & Tourism: Travel Agencys",
+    value: "64",
   },
   {
     label: translate("TV Production"),
-    value: "65"
+    key: "TV Production",
+    value: "65",
   },
   {
     label: translate("Other"),
-    value: "43"
-  }
+    key: "Other",
+    value: "43",
+  },
 ];

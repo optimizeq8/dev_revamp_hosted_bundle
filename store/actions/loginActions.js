@@ -82,20 +82,20 @@ export const checkForExpiredToken = (navigation) => {
       .then((token) => {
         if (token) {
           const currentTime = Date.now() / 1000;
-          const user = jwt_decode(token);
-          if (
-            [
-              "nouf@optimizeapp.com",
-              "sam.omran@hotmail.com",
-              "imran@optimizekw.com",
-              "saadiya@optimizekw.com",
-              "shorook@optimizekw.com",
-              "samy@optimizeapp.com",
-            ].includes(user.email)
-          )
-            dispatch(chanege_base_url(true));
+          // const user = jwt_decode(token);
+          // if (
+          //   [
+          //     "nouf@optimizeapp.com",
+          //     "sam.omran@hotmail.com",
+          //     "imran@optimizekw.com",
+          //     "saadiya@optimizekw.com",
+          //     "shorook@optimizekw.com",
+          //     "samy@optimizeapp.com",
+          //   ].includes(user.email)
+          // )
+          //   dispatch(chanege_base_url(true));
           // check if the local store token is same as in db
-          createBaseUrl()
+          return createBaseUrl()
             .post(
               "refresh",
               {},
@@ -109,7 +109,7 @@ export const checkForExpiredToken = (navigation) => {
               }
             )
             .then((responseToken) => {
-              console.log(responseToken.data.data);
+              console.log("responseToken", responseToken.data.data);
               if (responseToken.data.data.access_token) {
                 setAuthToken(responseToken.data.data.access_token)
                   .then(() => dispatch(getUserProfile()))
@@ -198,6 +198,8 @@ export const login = (userData, navigation = NavigationService) => {
       })
       .then(async () => {
         await dispatch(getUserProfile());
+        // dispatch for createBusinessAccount
+        // await dispatch(getBusinessAccounts());
       })
       .then(() => {
         if (getState().auth.userInfo) {

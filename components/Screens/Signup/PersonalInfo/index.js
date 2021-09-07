@@ -41,8 +41,10 @@ class PersonalInfo extends Component {
         v: this.props.tempId,
       },
       businessAccount: {
-        businessname: "",
+        name: "",
         businesscategory: "",
+        category: "",
+        country_id: "",
         country: "",
         instagram_handle: "",
         otherBusinessCategory: null,
@@ -77,7 +79,7 @@ class PersonalInfo extends Component {
       repasswordError: "",
       businesscategoryError: null,
       businessnameError: null,
-      instagram_handleError: null,
+      insta_handle_for_reviewError: null,
     };
     this._handleSubmission = this._handleSubmission.bind(this);
     this._passwordVarification = this._passwordVarification.bind(this);
@@ -189,12 +191,12 @@ class PersonalInfo extends Component {
     );
     const businessnameError = validateWrapper(
       "mandatory",
-      this.state.businessAccount.businessname
+      this.state.businessAccount.name
     );
 
     const businesscategoryError = validateWrapper(
       "mandatory",
-      this.state.businessAccount.businesscategory
+      this.state.businessAccount.category
     );
     const countryError = validateWrapper(
       "mandatory",
@@ -202,12 +204,12 @@ class PersonalInfo extends Component {
     );
 
     const businesscategoryOtherError =
-      this.state.businessAccount.businesscategory === "43" &&
+      this.state.businessAccount.category === "Other" &&
       validateWrapper(
         "mandatory",
         this.state.businessAccount.otherBusinessCategory
       );
-    const instagram_handleError = validateWrapper(
+    const insta_handle_for_reviewError = validateWrapper(
       "mandatory",
       this.state.businessAccount.instagram_handle
     );
@@ -220,7 +222,7 @@ class PersonalInfo extends Component {
       businesscategoryError ||
       countryError ||
       businesscategoryOtherError ||
-      instagram_handleError
+      insta_handle_for_reviewError
     ) {
       analytics.track(`Form Error Made`, {
         error_page: "PersonalInfo (Signup)",
@@ -233,7 +235,7 @@ class PersonalInfo extends Component {
           businesscategoryError ||
           countryError ||
           businesscategoryOtherError ||
-          instagram_handleError,
+          insta_handle_for_reviewError,
         source_action: "Creating account",
       });
     }
@@ -246,7 +248,7 @@ class PersonalInfo extends Component {
       businesscategoryError,
       businesscategoryOtherError,
       countryError,
-      instagram_handleError,
+      insta_handle_for_reviewError,
     });
     if (businessnameError) {
       showMessage({
@@ -296,9 +298,9 @@ class PersonalInfo extends Component {
         type: "warning",
       });
     }
-    if (instagram_handleError) {
+    if (insta_handle_for_reviewError) {
       showMessage({
-        message: translate(instagram_handleError),
+        message: translate(insta_handle_for_reviewError),
         type: "warning",
       });
     }
@@ -320,7 +322,7 @@ class PersonalInfo extends Component {
       !businesscategoryError &&
       !businesscategoryOtherError &&
       !countryError &&
-      !instagram_handleError &&
+      !insta_handle_for_reviewError &&
       this.state.valid // condition for mobile no
     ) {
       const mobile = this.state.userInfo.mobile.substring(
@@ -336,12 +338,13 @@ class PersonalInfo extends Component {
         ...userInfo,
         ...this.state.businessAccount,
       };
-      this.props.registerGuestUser(
-        info,
-        this.props.businessInvite,
-        this.props.navigation,
-        this.state.businessAccount
-      );
+      console.log("businessinvite 1 info", JSON.stringify(info, null, 2));
+      // this.props.registerGuestUser(
+      //   info,
+      //   this.props.businessInvite,
+      //   this.props.navigation,
+      //   this.state.businessAccount
+      // );
     }
     // For invited users
     else if (
@@ -365,7 +368,9 @@ class PersonalInfo extends Component {
       const info = {
         ...userInfo,
         repassword: this.state.repassword,
+        ...this.state.businessAccount,
       };
+      console.log("businessInvite 0 info", JSON.stringify(info, null, 2));
       this.props.registerGuestUser(
         info,
         this.props.businessInvite,
@@ -383,7 +388,7 @@ class PersonalInfo extends Component {
   setValueBusiness = (stateName, value) => {
     let state = {};
     state[stateName] =
-      stateName === "businessname"
+      stateName === "name"
         ? value.replace(/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi, "")
         : stateName === "instagram_handle"
         ? value.replace("@", "")
@@ -392,7 +397,7 @@ class PersonalInfo extends Component {
       form_type: "Registration Detail Form",
       form_field: `${stateName}`,
       form_value:
-        stateName === "businessname"
+        stateName === "name"
           ? value.replace(/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi, "")
           : value,
     });
@@ -406,7 +411,7 @@ class PersonalInfo extends Component {
   getValidInfoBusiness = (stateError, validWrap) => {
     let state = {};
     if (stateError === "businessnameError") {
-      this._verifyBusinessName(this.state.businessAccount.businessname, false);
+      this._verifyBusinessName(this.state.businessAccount.name, false);
     }
 
     state[stateError] = validWrap;
@@ -451,7 +456,7 @@ class PersonalInfo extends Component {
     this.setState({
       businesscategoryError: validateWrapper(
         "mandatory",
-        this.state.businessAccount.businesscategory
+        this.state.businessAccount.category
       ),
       inputT: false,
     });
@@ -469,6 +474,7 @@ class PersonalInfo extends Component {
           businessAccount: {
             ...this.state.businessAccount,
             businesscategory: value[0].value,
+            category: value[0].key,
           },
         },
         () => {
@@ -513,6 +519,7 @@ class PersonalInfo extends Component {
           businessAccount: {
             ...this.state.businessAccount,
             country: value[0].value,
+            country_id: value[0].id,
           },
         },
         () => {
@@ -748,13 +755,9 @@ const mapDispatchToProps = (dispatch) => ({
         businessAccount
       )
     ),
-  verifyBusinessName: (businessName, _handleBusinessName, submision) =>
+  verifyBusinessName: (name, _handleBusinessName, submision) =>
     dispatch(
-      actionCreators.verifyBusinessName(
-        businessName,
-        _handleBusinessName,
-        submision
-      )
+      actionCreators.verifyBusinessName(name, _handleBusinessName, submision)
     ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PersonalInfo);
