@@ -349,7 +349,7 @@ export const getSnapchatObjectiveList = () => {
       payload: true,
     });
     createBaseUrl()
-      .get(`getObjectives/${getState().account.mainBusiness.businessid}`)
+      .get(`snap/objectives/${getState().account.mainBusiness.businessid}/list`)
       .then((res) => res.data)
       .then((data) => {
         dispatch({
