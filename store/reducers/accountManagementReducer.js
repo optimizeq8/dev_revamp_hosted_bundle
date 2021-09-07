@@ -65,7 +65,7 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.SET_BUSINESS_ACCOUNTS:
       let main = state.mainBusiness;
-      let setNewBusinessAccounts = action.payload.data.data || [];
+      let setNewBusinessAccounts = action.payload.data || [];
       if (
         !action.payload.businessSeleced &&
         setNewBusinessAccounts &&
@@ -95,7 +95,6 @@ const reducer = (state = initialState, action) => {
       AsyncStorage.setItem("selectedBusinessId", JSON.stringify(main.id)).catch(
         (err) => console.log(err)
       );
-      console.log(main);
       return {
         ...state,
         mainBusiness: main,
@@ -169,12 +168,12 @@ const reducer = (state = initialState, action) => {
         errorLoadingBillingAddress: true,
       };
     case actionTypes.CREATE_SNAPCHAT_AD_ACCOUNT:
-      let newMainBusiness = find(
-        state.businessAccounts,
-        (bus) => bus.businessid === state.mainBusiness.businessid
+      let newMainBusiness = state.businessAccounts.find(
+        (bus) => bus.id === state.mainBusiness.id
       );
       if (newMainBusiness) {
-        newMainBusiness.snap_ad_account_id = action.payload.data.ad_account_id;
+        newMainBusiness.snap_ad_account_id =
+          action.payload.data.snap_ad_account_id;
       }
       return {
         ...state,
