@@ -327,8 +327,9 @@ export default (translate) => [
     key: "TV Production",
     value: "65",
   },
-  // {
-  //   label: translate("Other"),
-  //   value: "43"
-  // }
+  {
+    label: translate("Other"),
+    key: "Other",
+    value: "43",
+  },
 ];
