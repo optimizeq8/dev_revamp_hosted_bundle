@@ -338,6 +338,7 @@ export const updateUserInfo = (info, navigation) => {
       type: actionTypes.SET_LOADING_ACCOUNT_UPDATE,
       payload: true,
     });
+    console.log("updateUserInfo info", JSON.stringify(info, null, 2));
     return createBaseUrl()
       .patch("users", { ...info })
       .then((res) => {
@@ -353,16 +354,16 @@ export const updateUserInfo = (info, navigation) => {
           error_description: !data.success ? data.message : null,
           business_id: getState().account.mainBusiness.id,
         });
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "info",
+          position: "top",
+        });
+
         if (data.success) {
-          showMessage({
-            message: data.message,
-            type: "success",
-            position: "top",
-          });
           const updateInfo = {
             ...data.data,
           };
-
           analytics.identify(`${getState().auth.userid}`, {
             ...updateInfo,
           });
@@ -370,22 +371,16 @@ export const updateUserInfo = (info, navigation) => {
             source: "PersonalInfo",
             source_action: "a_update_personal_info",
           });
-          return dispatch({
+
+          dispatch({
             type: actionTypes.UPDATE_USERINFO,
             payload: { ...updateInfo },
           });
-        } else {
-          showMessage({
-            message: data.message,
-            type: "info",
-            position: "top",
-          });
         }
-        dispatch({
+        return dispatch({
           type: actionTypes.SET_LOADING_ACCOUNT_UPDATE,
           payload: false,
         });
-        return data.success;
       })
 
       .catch((err) => {

@@ -9,6 +9,7 @@ import {
   create_snapchat_ad_account,
   deleteBusinessAccount,
   updateBusinessInfo,
+  updateUserInfo,
 } from "../accountManagementActions";
 import moxios from "moxios";
 import {
@@ -20,6 +21,10 @@ import {
   acceptedSnapTermsResponse,
 } from "./MockedApiResponses/BusinessAccountMock";
 import { getBusinessesResponseSuccess } from "./MockedApiResponses/UserBusinessResponseMock";
+import {
+  userUpdateSuccessResponse,
+  userUnauthenticatedResponse,
+} from "./MockedApiResponses/UserRegisterMock";
 import { getBusinessAccounts } from "../genericActions";
 import reducer from "../../reducers";
 import FlashMessage from "react-native-flash-message";
@@ -676,6 +681,77 @@ describe("Snapchat terms", () => {
             errorData: unauthorizedBusinessResponse,
           },
         },
+      ]);
+    });
+  });
+});
+
+describe("Update user profile", () => {
+  test("Update user profile sucessful", () => {
+    const successAction = {};
+    const mockedStore = mockStore(reducer(undefined, successAction));
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: userUpdateSuccessResponse,
+      });
+    });
+    const dispatchedStore = mockedStore.dispatch(
+      updateUserInfo(
+        {
+          email: "saadiya@optimizeapp.com",
+          first_name: "Saadiyaaa",
+          last_name: "Kaazi",
+          mobile: "+96597376433",
+        },
+        { navigate: () => {} }
+      )
+    );
+    return dispatchedStore.then(() => {
+      expect(mockedStore.getActions()).toEqual([
+        { type: actionTypes.SET_LOADING_ACCOUNT_UPDATE, payload: true },
+        {
+          type: actionTypes.UPDATE_USERINFO,
+          payload: {
+            id: 7,
+            first_name: "user firstname",
+            last_name: "user lastname",
+            mobile: "+96554655465",
+            email: "test@test.com",
+            verified: true,
+            tmp_pwd: false,
+          },
+        },
+        { type: actionTypes.SET_LOADING_ACCOUNT_UPDATE, payload: false },
+      ]);
+    });
+  });
+  test("Update user profile failure", () => {
+    const failureAction = {};
+    const mockedStore = mockStore(reducer(undefined, failureAction));
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 401,
+        response: userUnauthenticatedResponse,
+      });
+    });
+    const dispatchedStore = mockedStore.dispatch(
+      updateUserInfo(
+        {
+          email: "saadiya+21@optimizeapp.com",
+          first_name: "Saadiyaaa",
+          last_name: "Kaazi",
+          mobile: "+96597376433",
+        },
+        { navigate: () => {} }
+      )
+    );
+    return dispatchedStore.then(() => {
+      expect(mockedStore.getActions()).toEqual([
+        { type: actionTypes.SET_LOADING_ACCOUNT_UPDATE, payload: true },
+        { type: actionTypes.SET_LOADING_ACCOUNT_UPDATE, payload: false },
       ]);
     });
   });

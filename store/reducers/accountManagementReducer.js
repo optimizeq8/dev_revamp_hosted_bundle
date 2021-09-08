@@ -233,14 +233,14 @@ const reducer = (state = initialState, action) => {
         businessesLoading: action.payload,
       };
     case actionTypes.UPDATE_MAINBUSINESS:
-      let updatedMainBusiness = {
-        insta_handle: action.payload.insta_handle,
-        whatsappnumber: action.payload.whatsappnumber,
-        weburl: action.payload.weburl,
-        callnumber: action.payload.callnumber,
-        source: action.payload.source,
-        googlemaplink: action.payload.googlemaplink,
-      };
+    // let updatedMainBusiness = {
+    //   instagram_handle: action.payload.instagram_handle,
+    //   whatsappnumber: action.payload.whatsappnumber,
+    //   weburl: action.payload.weburl,
+    //   callnumber: action.payload.callnumber,
+    //   source: action.payload.source,
+    //   googlemaplink: action.payload.googlemaplink,
+    // };
     case actionTypes.DELETE_BUSINESS_ACCOUNT:
       let newBusinessAccounts = state.businessAccounts.filter(
         (business) => business.businessid !== action.payload
