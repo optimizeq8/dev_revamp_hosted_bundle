@@ -634,11 +634,6 @@ export const registerGuestUser = (
       instagram_handle: info.instagram_handle,
       other_business_category: info.other_business_category,
     };
-    console.log(
-      "user_info, business_info",
-      JSON.stringify(user_info, null, 2),
-      JSON.stringify(business_info, null, 2)
-    );
 
     return createBaseUrl()
       .post(`users`, user_info)
@@ -704,7 +699,6 @@ export const registerGuestUser = (
         await dispatch(createBusinessAccount(business_info, navigation));
       })
       .then(() => {
-        console.log("finalluy");
         if (getState().auth.info) {
           // dispatch(createBusinessAccount(info, navigation));
           dispatch({
@@ -722,7 +716,7 @@ export const registerGuestUser = (
         }
       })
       .catch((err) => {
-        console.log("registerGuestUser ERROR", err);
+        // console.log("registerGuestUser ERROR", err);
         let errorMsg = null;
         if (
           err.response &&

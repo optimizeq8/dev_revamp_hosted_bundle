@@ -338,7 +338,7 @@ export const updateUserInfo = (info, navigation) => {
       type: actionTypes.SET_LOADING_ACCOUNT_UPDATE,
       payload: true,
     });
-    console.log("updateUserInfo info", JSON.stringify(info, null, 2));
+    // console.log("updateUserInfo info", JSON.stringify(info, null, 2));
     return createBaseUrl()
       .patch("users", { ...info })
       .then((res) => {
@@ -384,7 +384,7 @@ export const updateUserInfo = (info, navigation) => {
       })
 
       .catch((err) => {
-        console.log("updateUserInfo_ERROR", err);
+        // console.log("updateUserInfo_ERROR", err);
         errorMessageHandler(err);
 
         dispatch({
