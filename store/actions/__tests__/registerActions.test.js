@@ -227,7 +227,7 @@ describe("Register step 1, verify email action/ reducer", () => {
     });
   });
 });
-/*
+
 describe("Register Step 2, User Info action/ reducer", () => {
   test("User Register Failure", async () => {
     const failureAction = {
@@ -262,12 +262,16 @@ describe("Register Step 2, User Info action/ reducer", () => {
     );
 
     return dispatchedStore.then(() => {
+      console.log(
+        "User Register Failure store.getActions()",
+        store.getActions()
+      );
       expect(store.getActions()).toEqual([
         {
           type: actionTypes.ERROR_REGISTER_GUEST_USER,
           payload: {
             success: false,
-            userInfo: {
+            info: {
               email: "saadiya@optimizekw.com",
               firstname: "Saadiya",
               lastname: "Kazi",
@@ -306,6 +310,11 @@ describe("Register Step 2, User Info action/ reducer", () => {
           firstname: "Saadiya",
           lastname: "Kazi",
           mobile: "+96597376438",
+          name: "TEST SKK",
+          category: "Arts",
+          country_id: "2",
+          instagram_handle: "saadiya.kazi",
+          other_business_category: null,
         },
         "0",
         { navigate: () => {} }
@@ -313,11 +322,14 @@ describe("Register Step 2, User Info action/ reducer", () => {
     );
 
     return dispatchStore.then(() => {
-      console.log("store.getActions()", store.getActions());
+      console.log(
+        "registerGuestUser success store.getActions()",
+        store.getActions()
+      );
     });
   });
 });
-*/
+
 describe("OTP SENT Action / Reducer", () => {
   test("OTP Failure Unauthenticated", () => {
     const failureAction = {

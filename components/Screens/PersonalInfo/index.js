@@ -39,13 +39,13 @@ class PersonalInfo extends Component {
       valid: false,
       type: "",
       email: this.props.userInfo.email,
-      firstname: this.props.userInfo.firstname,
-      lastname: this.props.userInfo.lastname,
+      first_name: this.props.userInfo.first_name,
+      last_name: this.props.userInfo.last_name,
       inputF: false,
       inputL: false,
       inputE: false,
-      firstnameError: "",
-      lastnameError: "",
+      first_nameError: "",
+      last_nameError: "",
       emailError: "",
     };
   }
@@ -95,22 +95,22 @@ class PersonalInfo extends Component {
   };
 
   validator = () => {
-    const firstnameError = validateWrapper("mandatory", this.state.firstname);
-    const lastnameError = validateWrapper("mandatory", this.state.lastname);
+    const first_nameError = validateWrapper("mandatory", this.state.first_name);
+    const last_nameError = validateWrapper("mandatory", this.state.last_name);
     const emailErrorMandatory = validateWrapper("mandatory", this.state.email);
     const emailError = validateWrapper("email", this.state.email);
 
     this.setState({
-      firstnameError,
-      lastnameError,
+      first_nameError,
+      last_nameError,
       emailError,
       emailErrorMandatory,
     });
     const { translate } = this.props.screenProps;
     // validate all fields and shows error if any
     if (
-      firstnameError ||
-      lastnameError ||
+      first_nameError ||
+      last_nameError ||
       emailError ||
       emailErrorMandatory ||
       !this.state.valid
@@ -121,9 +121,9 @@ class PersonalInfo extends Component {
           !this.state.valid
             ? "Please enter a valid number!"
             : `Please provide a ${
-                firstnameError
+                first_nameError
                   ? "first name"
-                  : lastnameError
+                  : last_nameError
                   ? "last name"
                   : (emailError || emailErrorMandatory) && "email"
               }`
@@ -137,8 +137,8 @@ class PersonalInfo extends Component {
     const { translate } = this.props.screenProps;
     if (this.validator()) {
       const changedInfo =
-        this.state.firstname !== this.props.userInfo.firstname ||
-        this.state.lastname !== this.props.userInfo.lastname ||
+        this.state.first_name !== this.props.userInfo.first_name ||
+        this.state.last_name !== this.props.userInfo.last_name ||
         this.state.phoneNum !== "+" + this.props.userInfo.mobile ||
         this.state.email !== this.props.userInfo.email;
       if (changedInfo) {
@@ -146,8 +146,8 @@ class PersonalInfo extends Component {
         this.props.updateUserInfo(
           {
             email: this.state.email,
-            first_name: this.state.firstname,
-            last_name: this.state.lastname,
+            first_name: this.state.first_name,
+            last_name: this.state.last_name,
             mobile,
           },
           this.props.navigation
@@ -180,7 +180,7 @@ class PersonalInfo extends Component {
   setValue = (stateName, value) => {
     let state = {};
     state[stateName] =
-      stateName === "firstname" || stateName === "lastname"
+      stateName === "first_name" || stateName === "last_name"
         ? value.replace(/[^a-z\u0621-\u064A]/gi, "")
         : value;
     this.setState({ ...state });
@@ -226,15 +226,15 @@ class PersonalInfo extends Component {
               setValue={this.setValue}
               incomplete={false}
               translate={this.props.screenProps.translate}
-              stateName1="firstname"
-              stateName2="lastname"
+              stateName1="first_name"
+              stateName2="last_name"
               label="Full name"
               placeholder1="First Name"
               placeholder2="Last Name"
-              value={this.state.firstname}
-              value2={this.state.lastname}
-              valueError1={this.state.firstnameError}
-              valueError2={this.state.lastnameError}
+              value={this.state.first_name}
+              value2={this.state.last_name}
+              valueError1={this.state.first_nameError}
+              valueError2={this.state.last_nameError}
               icon={PersonTransparentIcon}
               disabled={this.props.loadingUpdateInfo}
               maxLength={30}

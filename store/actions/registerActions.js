@@ -646,7 +646,7 @@ export const registerGuestUser = (
         return res.data;
       })
       .then(async (data) => {
-        console.log("registerGuestUser data", JSON.stringify(data, null, 2));
+        // console.log("registerGuestUser data", JSON.stringify(data, null, 2));
         delete info.password;
 
         analytics.track(`Form Submitted`, {
@@ -657,7 +657,6 @@ export const registerGuestUser = (
           },
         });
         if (data.success) {
-          console.log("reached here");
           await setAuthToken(data.data.access_token);
         }
         //=====Tracked from the backend=====//
@@ -699,7 +698,6 @@ export const registerGuestUser = (
         return data;
       })
       .then(async () => {
-        console.log("get user call");
         await dispatch(getUserProfile());
       })
       .then(async () => {
@@ -753,7 +751,7 @@ export const registerGuestUser = (
         });
         return dispatch({
           type: actionTypes.ERROR_REGISTER_GUEST_USER,
-          payload: { success: false, info, message: errorMsg },
+          payload: { success: false, userInfo: { ...info }, message: errorMsg },
         });
       });
   };

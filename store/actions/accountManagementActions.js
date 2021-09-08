@@ -338,8 +338,8 @@ export const updateUserInfo = (info, navigation) => {
       type: actionTypes.SET_LOADING_ACCOUNT_UPDATE,
       payload: true,
     });
-    createBaseUrl()
-      .put("profile", { ...info })
+    return createBaseUrl()
+      .patch("users", { ...info })
       .then((res) => {
         return res.data;
       })
@@ -354,18 +354,13 @@ export const updateUserInfo = (info, navigation) => {
           business_id: getState().account.mainBusiness.id,
         });
         if (data.success) {
-          setAuthToken(data.accessToken);
-          let decodedUser = jwt_decode(data.accessToken);
-          console.log("decode", decodedUser);
           showMessage({
             message: data.message,
             type: "success",
             position: "top",
           });
           const updateInfo = {
-            first_name: decodedUser.firstname,
-            last_name: decodedUser.lastname,
-            mobile: mobile,
+            ...data.data,
           };
 
           analytics.identify(`${getState().auth.userid}`, {
@@ -392,25 +387,9 @@ export const updateUserInfo = (info, navigation) => {
         });
         return data.success;
       })
-      .then((success) => {
-        if (success) {
-          var user = getState().auth.userInfo;
-          return dispatch(
-            update_user_on_intercom({
-              user_id: user.userid,
-              name: `${user.firstname} ${user.lastname}`,
-              email: user.email,
-              phone: user.mobile,
-            })
-          );
-        }
-      })
 
       .catch((err) => {
-        // console.log(
-        //   "create_snapchat_ad_account_ERROR",
-        //   err.message || err.response
-        // );
+        console.log("updateUserInfo_ERROR", err);
         errorMessageHandler(err);
 
         dispatch({
