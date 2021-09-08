@@ -134,13 +134,13 @@ export const ad_objective = (info, navigation, segmentInfo, objective) => {
       type: actionTypes.SET_AD_LOADING_OBJ,
       payload: true,
     });
-    createBaseUrl()
-      .post(`savecampaign`, info)
+    return createBaseUrl()
+      .post(`snap/campaigns/${getState().account.mainBusiness.id}`, info)
       .then((res) => {
         return res.data;
       })
       .then((data) => {
-        if (data.data && data.data.campaign_already_created) {
+        if (data.data && data.data.published) {
           dispatch(handleAlreadyCreatedCampaigns(data, "snapchat"));
           analytics.track(`Form Submitted`, {
             form_type:
@@ -173,8 +173,7 @@ export const ad_objective = (info, navigation, segmentInfo, objective) => {
         if (
           data.success &&
           data.data &&
-          (!data.data.hasOwnProperty("campaign_already_created") ||
-            data.data.campaign_already_created === 0)
+          (!data.data.hasOwnProperty("published") || data.data.published === 0)
         ) {
           analytics.track(`Form Submitted`, {
             form_type: "Snapchat Ad Objective Form",
@@ -199,6 +198,7 @@ export const ad_objective = (info, navigation, segmentInfo, objective) => {
         errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_AD_OBJECTIVE,
+          errorData: err.response.hasOwnProperty("data") && err.response.data,
         });
       });
   };

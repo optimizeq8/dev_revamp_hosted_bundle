@@ -1,7 +1,7 @@
 import * as actionTypes from "../actions/actionTypes";
 import cloneDeep from "lodash/cloneDeep";
 
-const initialState = {
+export const initialState = {
   message: "",
   data: null,
   campaign_id: "",
