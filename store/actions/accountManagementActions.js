@@ -49,7 +49,7 @@ export const createBusinessAccount = (account, navigation) => {
       payload: true,
     });
     return createBaseUrl()
-      .post(`business`, account)
+      .post(`business`, { ...account, type: "SME or Startup" })
       .then((res) => {
         return res.data;
       })
@@ -107,7 +107,7 @@ export const createBusinessAccount = (account, navigation) => {
         }
       })
       .catch((err) => {
-        // console.log("error creating new bsn", err.message || err.response);
+        console.log("error creating new bsn", err);
         errorMessageHandler(err);
 
         dispatch({

@@ -508,10 +508,11 @@ class Menu extends Component {
                     business_id: this.props.mainBusiness.businessid,
                     business_name: this.props.mainBusiness.businessname,
                   });
-                  this.props.clearPushToken(
-                    this.props.navigation,
-                    this.props.userInfo.userid
-                  );
+                  this.props.logout(this.props.navigation);
+                  // this.props.clearPushToken(
+                  //   this.props.navigation,
+                  //   this.props.userInfo.userid
+                  // );
                 }}
                 style={styles.options}
               >
@@ -572,6 +573,7 @@ const mapStateToProps = (state) => ({
   notificationData: state.generic.notificationData,
 });
 const mapDispatchToProps = (dispatch) => ({
+  logout: (navigation) => dispatch(actionCreators.logout(navigation)),
   clearPushToken: (navigation, userid) =>
     dispatch(actionCreators.clearPushToken(navigation, userid)),
   createBusinessAccount: (account) =>

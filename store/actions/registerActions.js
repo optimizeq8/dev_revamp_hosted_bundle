@@ -612,41 +612,53 @@ export const requestInvitationCode = (info) => {
  * @param {*} navigation
  */
 export const registerGuestUser = (
-  userInfo,
+  info,
   businessInvite = "1",
   navigation,
   businessAccount
 ) => {
   return (dispatch, getState) => {
     let user_info = {
-      email: userInfo.email,
-      password: userInfo.password,
-      password_confirmation: userInfo.repassword,
-      first_name: userInfo.firstname,
-      last_name: userInfo.lastname,
-      mobile: userInfo.mobile,
+      email: info.email,
+      password: info.password,
+      password_confirmation: info.repassword,
+      first_name: info.firstname,
+      last_name: info.lastname,
+      mobile: info.mobile,
     };
-    // console.log("user_info", JSON.stringify(user_info, null, 2));
+
+    let business_info = {
+      name: info.name,
+      category: info.category,
+      country_id: info.country_id,
+      instagram_handle: info.instagram_handle,
+      other_business_category: info.other_business_category,
+    };
+    console.log(
+      "user_info, business_info",
+      JSON.stringify(user_info, null, 2),
+      JSON.stringify(business_info, null, 2)
+    );
 
     return createBaseUrl()
       .post(`users`, user_info)
       .then((res) => {
         return res.data;
       })
-      .then((data) => {
+      .then(async (data) => {
         console.log("registerGuestUser data", JSON.stringify(data, null, 2));
-        delete userInfo.password;
+        delete info.password;
 
         analytics.track(`Form Submitted`, {
           form_type: "Registration Detail Form",
           form_context: {
-            ...userInfo,
+            ...info,
             business_invite: businessInvite === "0",
           },
         });
         if (data.success) {
           console.log("reached here");
-          setAuthToken(data.data.access_token);
+          await setAuthToken(data.data.access_token);
         }
         //=====Tracked from the backend=====//
         // For users creating new business while registering
@@ -660,13 +672,13 @@ export const registerGuestUser = (
         //   });
         // }
         // analytics.track("Signed Up", {
-        //   first_name: userInfo.firstname,
-        //   last_name: userInfo.lastname,
-        //   email: userInfo.email,
-        //   mobile: userInfo.mobile,
+        //   first_name: info.firstname,
+        //   last_name: info.lastname,
+        //   email: info.email,
+        //   mobile: info.mobile,
         // });
         // let adjustRegiserTracker = new AdjustEvent("eivlhl");
-        // adjustRegiserTracker.setCallbackId(userInfo.mobile);
+        // adjustRegiserTracker.setCallbackId(info.mobile);
         // Adjust.trackEvent(adjustRegiserTracker);
         // if (!data.success) {
         //   showMessage({
@@ -677,34 +689,26 @@ export const registerGuestUser = (
         // }
         // TODO: NEED A SOLUTION FOR THIS
         // if (businessInvite === "0") {
-        //   dispatch(registerUser(userInfo, navigation, businessInvite));
+        //   dispatch(registerUser(info, navigation, businessInvite));
         // }
 
         // dispatch({
         //   type: actionTypes.REGISTER_GUEST_USER,
-        //   payload: { success: data.success, userInfo }
+        //   payload: { success: data.success, info }
         // });
         return data;
       })
-      .then(() => {
+      .then(async () => {
         console.log("get user call");
-        return dispatch(getUserProfile());
+        await dispatch(getUserProfile());
       })
-      .then(() => {
-        dispatch(
-          createBusinessAccount({
-            name: userInfo.businessname,
-            category: userInfo.businesscategory,
-            country_id: userInfo.country_id,
-            instagram_handle: userInfo.insta_handle_for_review,
-            type: "Agency",
-          })
-        );
+      .then(async () => {
+        await dispatch(createBusinessAccount(business_info, navigation));
       })
       .then(() => {
         console.log("finalluy");
-        if (getState().auth.userInfo) {
-          // dispatch(createBusinessAccount(userInfo, navigation));
+        if (getState().auth.info) {
+          // dispatch(createBusinessAccount(info, navigation));
           dispatch({
             type: actionTypes.SAVING_REGISTER_ACCOUNT,
             payload: false,
@@ -715,7 +719,7 @@ export const registerGuestUser = (
           });
           // dispatch(send_push_notification());
           // dispatch(getBusinessAccounts());// add back later
-          // dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
+          // dispatch(connect_user_to_intercom(getState().auth.info.userid));
           AsyncStorage.setItem("registeredWithInvite", "true");
         }
       })
@@ -749,7 +753,7 @@ export const registerGuestUser = (
         });
         return dispatch({
           type: actionTypes.ERROR_REGISTER_GUEST_USER,
-          payload: { success: false, userInfo, message: errorMsg },
+          payload: { success: false, info, message: errorMsg },
         });
       });
   };

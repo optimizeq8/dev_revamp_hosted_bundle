@@ -7,13 +7,11 @@ export default (translate) => [
   {
     label: translate("Advertising/Public Relations"),
     key: "Advertising/Public Relations",
-
     value: "1",
   },
   {
     label: translate("Agriculture"),
     key: "Agriculture",
-
     value: "2",
   },
   {
@@ -307,8 +305,8 @@ export default (translate) => [
     value: "61",
   },
   {
-    label: translate("Travel & Tourism: Ride Hailing"),
-    key: "Travel & Tourism: Ride Hailing",
+    label: translate("Travel & Tourism: Airlines"),
+    key: "Travel & Tourism: Airlines",
     value: "62",
   },
 

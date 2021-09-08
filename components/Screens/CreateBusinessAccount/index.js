@@ -64,6 +64,7 @@ class CreateBusinessAccount extends Component {
         businesscategory: "",
         category: "",
         country: "",
+        country_id: "",
         businesstype: "1",
         businessemail: "",
         brandname: "",
@@ -261,7 +262,7 @@ class CreateBusinessAccount extends Component {
       this.state.businessAccount.category === "Other" &&
       validateWrapper(
         "mandatory",
-        this.state.businessAccount.otherBusinessCategory
+        this.state.businessAccount.other_business_category
       );
     const websitelinkError =
       this.state.businessAccount.websitelink !== "" &&
@@ -377,10 +378,10 @@ class CreateBusinessAccount extends Component {
               {
                 ...businessAccount,
                 websitelink,
-                otherBusinessCategory:
+                other_business_category:
                   this.state.businessAccount.businesscategory !== "43"
                     ? null
-                    : this.state.businessAccount.otherBusinessCategory, // to handle other business category field
+                    : this.state.businessAccount.other_business_category, // to handle other business category field
               },
               this.props.mainBusiness
             );
@@ -390,10 +391,10 @@ class CreateBusinessAccount extends Component {
                 {
                   ...business,
                   websitelink,
-                  otherBusinessCategory:
+                  other_business_category:
                     this.state.businessAccount.businesscategory !== "43"
                       ? null
-                      : this.state.businessAccount.otherBusinessCategory, // to handle other business category field
+                      : this.state.businessAccount.other_business_category, // to handle other business category field
                 },
                 this.props.navigation,
                 this.props.screenProps.translate
@@ -418,10 +419,10 @@ class CreateBusinessAccount extends Component {
               // businesscategory: this.state.businessAccount.businesscategory,
               category: this.state.businessAccount.category,
               country_id: this.state.businessAccount.country_id,
-              // otherBusinessCategory:
-              //   this.state.businessAccount.businesscategory !== "43"
-              //     ? null
-              //     : this.state.businessAccount.otherBusinessCategory,
+              other_business_category:
+                this.state.businessAccount.businesscategory !== "43"
+                  ? null
+                  : this.state.businessAccount.other_business_category,
               // country: this.state.businessAccount.country,
               instagram_handle: this.state.businessAccount.instagram_handle,
             };
@@ -612,6 +613,7 @@ class CreateBusinessAccount extends Component {
   getBusinessCategory = () => {
     const { translate } = this.props.screenProps;
     let category = translate("Select Business Type");
+    console.log("this.props.businessAccount", this.props.businessAccount);
     // if from registration  screen
     if (
       this.props.registering &&
@@ -629,6 +631,8 @@ class CreateBusinessAccount extends Component {
       //   (i) => i.value === this.state.businessAccount.businesscategory
       // ).label;
     }
+    console.log("category", category);
+
     return category;
   };
   getCountryName = () => {
@@ -879,13 +883,13 @@ class CreateBusinessAccount extends Component {
               // disabled={this.props.loadingUpdateInfo}
               incomplete={false}
               translate={this.props.screenProps.translate}
-              stateName1="otherBusinessCategory"
+              stateName1="other_business_category"
               label="Other Business Category"
               // placeholder1="Other Business Category"
               value={
                 this.props.registering
-                  ? this.props.businessAccount.otherBusinessCategory
-                  : this.state.businessAccount.otherBusinessCategory
+                  ? this.props.businessAccount.other_business_category
+                  : this.state.businessAccount.other_business_category
               }
               valueError1={
                 this.props.registering
@@ -901,7 +905,7 @@ class CreateBusinessAccount extends Component {
                   ? this.props.getValidInfo
                   : this.getValidInfo
               }
-              key={"otherBusinessCategory"}
+              key={"other_business_category"}
             />
           )}
 

@@ -273,6 +273,7 @@ export const login = (userData, navigation = NavigationService) => {
 
 export const logout = (navigation) => {
   return (dispatch, getState) => {
+    console.log("logout here");
     setAuthToken()
       .then(() => {
         console.log("here");
@@ -294,7 +295,7 @@ export const logout = (navigation) => {
       //Switched the navigation with this line so that the ErrorComponent doesn't mount when logging out
       .then(() => dispatch(setCurrentUser(null)))
       .then(() => {
-        console.log("here 123");
+        console.log("logout here 123");
         analytics.reset();
         Intercom.logout();
         AsyncStorage.setItem("selectedBusinessId", "");
@@ -395,6 +396,7 @@ export const forgotPassword = (email, navigation) => {
   };
 };
 
+// N more needed from revamp
 export const clearPushToken = (navigation, userid) => {
   return (dispatch, getState) => {
     dispatch({

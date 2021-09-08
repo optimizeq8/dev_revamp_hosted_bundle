@@ -44,10 +44,10 @@ class PersonalInfo extends Component {
         name: "",
         businesscategory: "",
         category: "",
-        country_id: "",
         country: "",
+        country_id: "",
         instagram_handle: "",
-        otherBusinessCategory: null,
+        other_business_category: null,
         // businesstype: "1",
         // businessemail: "",
         // brandname: "",
@@ -79,7 +79,7 @@ class PersonalInfo extends Component {
       repasswordError: "",
       businesscategoryError: null,
       businessnameError: null,
-      insta_handle_for_reviewError: null,
+      instagram_handleError: null,
     };
     this._handleSubmission = this._handleSubmission.bind(this);
     this._passwordVarification = this._passwordVarification.bind(this);
@@ -154,6 +154,7 @@ class PersonalInfo extends Component {
     }
   };
   changePersonalNo = (number, countryCode, type, valid) => {
+    console.log("number", number);
     let userInfo = {
       ...this.state.userInfo,
       mobile: number,
@@ -196,7 +197,7 @@ class PersonalInfo extends Component {
 
     const businesscategoryError = validateWrapper(
       "mandatory",
-      this.state.businessAccount.category
+      this.state.businessAccount.businesscategory
     );
     const countryError = validateWrapper(
       "mandatory",
@@ -204,12 +205,12 @@ class PersonalInfo extends Component {
     );
 
     const businesscategoryOtherError =
-      this.state.businessAccount.category === "Other" &&
+      this.state.businessAccount.businesscategory === "43" &&
       validateWrapper(
         "mandatory",
-        this.state.businessAccount.otherBusinessCategory
+        this.state.businessAccount.other_business_category
       );
-    const insta_handle_for_reviewError = validateWrapper(
+    const instagram_handleError = validateWrapper(
       "mandatory",
       this.state.businessAccount.instagram_handle
     );
@@ -222,7 +223,7 @@ class PersonalInfo extends Component {
       businesscategoryError ||
       countryError ||
       businesscategoryOtherError ||
-      insta_handle_for_reviewError
+      instagram_handleError
     ) {
       analytics.track(`Form Error Made`, {
         error_page: "PersonalInfo (Signup)",
@@ -235,7 +236,7 @@ class PersonalInfo extends Component {
           businesscategoryError ||
           countryError ||
           businesscategoryOtherError ||
-          insta_handle_for_reviewError,
+          instagram_handleError,
         source_action: "Creating account",
       });
     }
@@ -248,7 +249,7 @@ class PersonalInfo extends Component {
       businesscategoryError,
       businesscategoryOtherError,
       countryError,
-      insta_handle_for_reviewError,
+      instagram_handleError,
     });
     if (businessnameError) {
       showMessage({
@@ -298,9 +299,9 @@ class PersonalInfo extends Component {
         type: "warning",
       });
     }
-    if (insta_handle_for_reviewError) {
+    if (instagram_handleError) {
       showMessage({
-        message: translate(insta_handle_for_reviewError),
+        message: translate(instagram_handleError),
         type: "warning",
       });
     }
@@ -322,29 +323,30 @@ class PersonalInfo extends Component {
       !businesscategoryError &&
       !businesscategoryOtherError &&
       !countryError &&
-      !insta_handle_for_reviewError &&
+      !instagram_handleError &&
       this.state.valid // condition for mobile no
     ) {
-      const mobile = this.state.userInfo.mobile.substring(
-        4,
-        this.state.userInfo.mobile
-      );
-      let userInfo = {
-        ...this.state.userInfo,
-        mobile,
-      };
+      // const mobile = this.state.userInfo.mobile.substring(
+      //   4,
+      //   this.state.userInfo.mobile
+      // );
+      // let userInfo = {
+      //   ...this.state.userInfo,
+      //   mobile,
+      // };
 
       const info = {
-        ...userInfo,
+        ...this.state.userInfo,
+        repassword: this.state.repassword,
         ...this.state.businessAccount,
       };
-      console.log("businessinvite 1 info", JSON.stringify(info, null, 2));
-      // this.props.registerGuestUser(
-      //   info,
-      //   this.props.businessInvite,
-      //   this.props.navigation,
-      //   this.state.businessAccount
-      // );
+      console.log("info", JSON.stringify(info, null, 2));
+      this.props.registerGuestUser(
+        info,
+        this.props.businessInvite,
+        this.props.navigation,
+        this.state.businessAccount
+      );
     }
     // For invited users
     else if (
@@ -356,21 +358,24 @@ class PersonalInfo extends Component {
       !passwordError &&
       this.state.valid // condition for mobile no
     ) {
-      const mobile = this.state.userInfo.mobile.substring(
-        4,
-        this.state.userInfo.mobile
-      );
-      let userInfo = {
-        ...this.state.userInfo,
-        mobile,
-      };
+      // const mobile = this.state.userInfo.mobile.substring(
+      //   4,
+      //   this.state.userInfo.mobile
+      // );
+      // let userInfo = {
+      //   ...this.state.userInfo,
+      //   mobile,
+      // };
 
       const info = {
-        ...userInfo,
+        ...this.state.userInfo,
         repassword: this.state.repassword,
         ...this.state.businessAccount,
       };
-      console.log("businessInvite 0 info", JSON.stringify(info, null, 2));
+      console.log(
+        "this.props.businessInvite === 0 info,",
+        JSON.stringify(info, null, 2)
+      );
       this.props.registerGuestUser(
         info,
         this.props.businessInvite,
@@ -463,6 +468,7 @@ class PersonalInfo extends Component {
   };
 
   onSelectedBusinessCategoryChange = (value) => {
+    console.log("value", value);
     if (value && !isEmpty(value)) {
       analytics.track(`Form Populated`, {
         form_type: "Registration Detail Form",
@@ -508,6 +514,7 @@ class PersonalInfo extends Component {
     this.setState({ inputC: true });
   };
   onSelectedCountryChange = (value) => {
+    console.log("value", value);
     if (value && !isEmpty(value)) {
       analytics.track(`Form Populated`, {
         form_type: "Registration Detail Form",
