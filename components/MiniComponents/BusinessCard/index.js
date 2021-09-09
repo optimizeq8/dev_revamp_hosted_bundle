@@ -21,7 +21,7 @@ const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking");
 class BusinessCard extends Component {
   translate = this.props.screenProps.translate;
   businessCategory = businessList.find(
-    (cat) => cat.value === this.props.business.businesscategory
+    (cat) => cat.label === this.props.business.category
   );
   swipeoutBtns = [
     {

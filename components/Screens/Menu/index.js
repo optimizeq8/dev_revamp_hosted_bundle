@@ -132,7 +132,7 @@ class Menu extends Component {
     if (checkForBusinessId) {
       if (
         this.props.mainBusiness &&
-        this.props.mainBusiness.hasOwnProperty("businessid")
+        this.props.mainBusiness.hasOwnProperty("id")
       ) {
         this.props.navigation.navigate(routePath, params);
       } else {
@@ -170,12 +170,12 @@ class Menu extends Component {
     let businesscategoryName = "";
     if (mainBusiness && mainBusiness.businesscategory) {
       // check if category === "43" ie other then show the otherCategory name
-      if (mainBusiness.businesscategory === "43") {
-        businesscategoryName = mainBusiness.otherBusinessCategory;
-      } else
-        businesscategoryName = this.state.items.find(
-          (category) => category.value === mainBusiness.businesscategory
-        ).label;
+      if (mainBusiness.category === "Other") {
+        businesscategoryName = mainBusiness.other_business_category;
+      } else businesscategoryName = mainBusiness.category;
+      //  this.state.items.find(
+      //   (category) => category.value === mainBusiness.businesscategory
+      // ).label;
     }
     return businesscategoryName;
   };
@@ -214,24 +214,22 @@ class Menu extends Component {
               style={[
                 styles.businessTitle,
                 this.props.mainBusiness &&
-                this.props.mainBusiness.businessname &&
-                !isStringArabic(this.props.mainBusiness.businessname)
+                this.props.mainBusiness.name &&
+                !isStringArabic(this.props.mainBusiness.name)
                   ? {
                       fontFamily: "montserrat-regular-english",
                     }
                   : {},
               ]}
             >
-              {!this.props.mainBusiness
-                ? ""
-                : this.props.mainBusiness.businessname}
+              {!this.props.mainBusiness ? "" : this.props.mainBusiness.name}
             </Text>
             <Text
               onLayout={this.handlePanelOffset}
               style={[
-                styles.businessname,
+                styles.name,
                 this.props.mainBusiness &&
-                this.props.mainBusiness.businesscategory &&
+                this.props.mainBusiness.category &&
                 !isStringArabic(businesscategoryName)
                   ? {
                       fontFamily: "montserrat-regular-english",
@@ -282,7 +280,7 @@ class Menu extends Component {
                     mainBusiness.fb_connected === "0"
                   ) {
                     this.handleNavigation("WebView", false, {
-                      url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}&screenName=menu`,
+                      url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.id}&screenName=menu`,
                       title: "Instagram",
                       source: "Menu",
                       source_action: "a_open_my_website",
@@ -505,8 +503,8 @@ class Menu extends Component {
                   analytics.track(`Signed Out`, {
                     source: "Menu",
                     source_action: "a_logout",
-                    business_id: this.props.mainBusiness.businessid,
-                    business_name: this.props.mainBusiness.businessname,
+                    business_id: this.props.mainBusiness.id,
+                    business_name: this.props.mainBusiness.name,
                   });
                   this.props.logout(this.props.navigation);
                   // this.props.clearPushToken(

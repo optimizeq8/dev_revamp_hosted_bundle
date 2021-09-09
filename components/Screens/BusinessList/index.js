@@ -41,10 +41,11 @@ class BusinessList extends Component {
     super(props);
     this.state = {
       value: "",
-      filteredBusinesses: [{ businessid: "-1" }].concat(
+      filteredBusinesses:
+        // [{ businessid: "-1" }].concat(
         //adding that dummy data so that i can show the invitation cards in the flatlist
-        this.props.businessAccounts
-      ),
+        this.props.businessAccounts,
+      // )
       activeTab: "Businesses",
     };
   }
