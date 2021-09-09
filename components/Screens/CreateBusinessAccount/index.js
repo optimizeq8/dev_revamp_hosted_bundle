@@ -68,7 +68,7 @@ class CreateBusinessAccount extends Component {
         businesstype: "1",
         businessemail: "",
         brandname: "",
-        websitelink: "",
+        business_website: "",
         appstorelink: {
           app_name: "",
           ios_app_id: "",
@@ -94,7 +94,7 @@ class CreateBusinessAccount extends Component {
       businesscategoryOtherError: "",
       insta_handle_for_reviewError: "",
       countryError: "",
-      websitelinkError: null,
+      business_websiteError: null,
       items: businessCategoryList(translate),
       countries: [
         {
@@ -176,18 +176,22 @@ class CreateBusinessAccount extends Component {
 
     // prefilling the values in case of updating business info
     if (this.props.mainBusiness && editBusinessInfo) {
-      const website = this.props.mainBusiness.websitelink;
+      const website = this.props.mainBusiness.business_website;
       // &&
-      // this.props.mainBusiness.websitelink.split("//");
+      // this.props.mainBusiness.business_website.split("//");
       // if (website) {
       //   // var networkString = website[0] + "//";
-      //   // var websitelink = website[1];
+      //   // var business_website = website[1];
       // }
       this.setState({
         businessAccount: {
           ...this.state.businessAccount,
           ...this.props.mainBusiness,
-          websitelink: website ? website : "",
+          country_id:
+            this.props.mainBusiness &&
+            this.props.mainBusiness.country &&
+            this.props.mainBusiness.country.id,
+          business_website: website ? website : "",
           instagram_handle:
             this.props.mainBusiness && this.props.mainBusiness.instagram_handle
               ? this.props.mainBusiness.instagram_handle
@@ -264,12 +268,12 @@ class CreateBusinessAccount extends Component {
         "mandatory",
         this.state.businessAccount.other_business_category
       );
-    const websitelinkError =
-      this.state.businessAccount.websitelink !== "" &&
+    const business_websiteError =
+      this.state.businessAccount.business_website !== "" &&
       validateWrapper(
         "website",
         // this.state.networkString +
-        this.state.businessAccount.websitelink
+        this.state.businessAccount.business_website
       );
 
     this.setState({
@@ -277,10 +281,10 @@ class CreateBusinessAccount extends Component {
       businesscategoryError,
       countryError,
       businesscategoryOtherError,
-      websitelinkError,
+      business_websiteError,
       insta_handle_for_reviewError,
     });
-    if (websitelinkError) {
+    if (business_websiteError) {
       showMessage({
         message: translate("Please enter a valid URL"),
         type: "warning",
@@ -291,7 +295,7 @@ class CreateBusinessAccount extends Component {
         !businesscategoryError &&
         !countryError &&
         !businesscategoryOtherError &&
-        !websitelinkError &&
+        !business_websiteError &&
         !insta_handle_for_reviewError
       ) {
         if (this.state.businessAccount.brandname === "") {
@@ -334,16 +338,16 @@ class CreateBusinessAccount extends Component {
             }
             let { businessemail, ...business } = businessAccount;
 
-            let websitelink = this.state.businessAccount.websitelink;
-            if (websitelink !== "") {
-              websitelink =
+            let business_website = this.state.businessAccount.business_website;
+            if (business_website !== "") {
+              business_website =
                 // this.state.networkString +
-                this.state.businessAccount.websitelink;
+                this.state.businessAccount.business_website;
             }
             let userInfo = {
               ...this.props.userInfoR,
               ...business,
-              websitelink,
+              business_website,
             };
             this.props.registerUser(userInfo, this.props.navigation);
           }
@@ -367,34 +371,54 @@ class CreateBusinessAccount extends Component {
               businessAccount = { ...businessAccount, playstorelink };
             }
             let { ...business } = businessAccount;
-            let websitelink = this.state.businessAccount.websitelink;
-            if (websitelink !== "") {
-              websitelink =
+            let business_website = this.state.businessAccount.business_website;
+            if (business_website !== "") {
+              business_website =
                 // this.state.networkString +
-                this.state.businessAccount.websitelink;
+                this.state.businessAccount.business_website;
             }
             // check if info changed then call api else showMessage for no change
             const changedInfo = !isEqual(
               {
                 ...businessAccount,
-                websitelink,
+                business_website,
                 other_business_category:
                   this.state.businessAccount.businesscategory !== "43"
                     ? null
-                    : this.state.businessAccount.other_business_category, // to handle other business category field
+                    : this.state.businessAccount.other_business_category, // to handle Other business category field
               },
               this.props.mainBusiness
             );
             if (changedInfo) {
+              let business_info = {
+                name: businessAccount.name,
+                country_id: businessAccount.country_id,
+                type: businessAccount.type,
+                approval_status: businessAccount.approval_status,
+                snap_terms: businessAccount.snap_terms,
+                fb_connected: businessAccount.fb_connected,
+                instagram_handle: businessAccount.instagram_handle,
+                business_website: businessAccount.business_website,
+                snap_ad_account_id: businessAccount.snap_ad_account_id,
+                fb_ad_account_id: businessAccount.fb_ad_account_id,
+                category: businessAccount.category,
+                //     ...business,
+                //     business_website,
+                other_business_category:
+                  this.state.businessAccount.category !== "Other"
+                    ? null
+                    : this.state.businessAccount.other_business_category, // to handle Other business category field
+              };
+              console.log("business_info", business_info);
               this.props.updateBusinessInfo(
-                this.props.userInfo.userid,
+                businessAccount.id,
                 {
                   ...business,
-                  websitelink,
+                  business_website,
                   other_business_category:
-                    this.state.businessAccount.businesscategory !== "43"
+                    this.state.businessAccount.category !== "Other"
                       ? null
-                      : this.state.businessAccount.other_business_category, // to handle other business category field
+                      : this.state.businessAccount.other_business_category, // to handle Other business category field
                 },
                 this.props.navigation,
                 this.props.screenProps.translate
@@ -500,7 +524,10 @@ class CreateBusinessAccount extends Component {
         {
           businessAccount: {
             ...this.state.businessAccount,
-            country: value[0].value,
+            country: {
+              name: value[0].label,
+              id: value[0].id,
+            },
             country_id: value[0].id,
           },
         },
@@ -518,7 +545,7 @@ class CreateBusinessAccount extends Component {
   setWebsiteValue = (value) => {
     const businessAccount = {
       ...this.state.businessAccount,
-      websitelink: value,
+      business_website: value,
     };
     this.setState({
       businessAccount,
@@ -613,7 +640,6 @@ class CreateBusinessAccount extends Component {
   getBusinessCategory = () => {
     const { translate } = this.props.screenProps;
     let category = translate("Select Business Type");
-    console.log("this.props.businessAccount", this.props.businessAccount);
     // if from registration  screen
     if (
       this.props.registering &&
@@ -631,7 +657,6 @@ class CreateBusinessAccount extends Component {
       //   (i) => i.value === this.state.businessAccount.businesscategory
       // ).label;
     }
-    console.log("category", category);
 
     return category;
   };
@@ -640,9 +665,9 @@ class CreateBusinessAccount extends Component {
     if (this.props.registering && this.props.businessAccount.country !== "") {
       // From registration screen and country selcted
       country = this.props.businessAccount.country;
-    } else if (this.state.businessAccount.country !== "") {
+    } else if (!isEmpty(this.state.businessAccount.country)) {
       // if from create business account or edit business info screen
-      country = this.state.businessAccount.country;
+      country = this.state.businessAccount.country.name;
     }
     return country;
   };
@@ -877,8 +902,8 @@ class CreateBusinessAccount extends Component {
           {/* Business category view ends here */}
 
           {((this.props.businessAccount &&
-            this.props.businessAccount.businesscategory === "43") ||
-            this.state.businessAccount.businesscategory === "43") && (
+            this.props.businessAccount.category === "Other") ||
+            this.state.businessAccount.category === "Other") && (
             <InputFeild
               // disabled={this.props.loadingUpdateInfo}
               incomplete={false}
@@ -948,7 +973,7 @@ class CreateBusinessAccount extends Component {
               register={true}
               ref={(ref) => (this.websiteInput = ref)}
               inputs={this.inputs}
-              stateName={"websitelink"}
+              stateName={"business_website"}
               screenProps={this.props.screenProps}
               customStyle={{
                 // width: widthPercentageToDP(85),
@@ -957,10 +982,10 @@ class CreateBusinessAccount extends Component {
               iconFill={"#FFF"}
               labelColor={"#FFF"}
               optional={true}
-              website={this.state.businessAccount.websitelink}
+              website={this.state.businessAccount.business_website}
               setWebsiteValue={this.setWebsiteValue}
               // networkString={this.state.networkString}
-              stateNameError={this.state.websitelinkError}
+              stateNameError={this.state.business_websiteError}
               // setNetworkString={this.setNetworkString}
               getValidInfo={this.getValidInfo}
               disabled={
@@ -1096,7 +1121,7 @@ class CreateBusinessAccount extends Component {
           selectedItems={
             this.props.registering
               ? [this.props.businessAccount.country]
-              : [this.state.businessAccount.country]
+              : [this.state.businessAccount.country.name]
           }
           single={true}
           screenName={"Create Business Account"}
@@ -1144,9 +1169,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(
       actionCreators.verifyBusinessName(name, _handleBusinessName, submision)
     ),
-  updateBusinessInfo: (userid, info, navigation, translate) =>
+  updateBusinessInfo: (businessid, info, navigation, translate) =>
     dispatch(
-      actionCreators.updateBusinessInfo(userid, info, navigation, translate)
+      actionCreators.updateBusinessInfo(businessid, info, navigation, translate)
     ),
 });
 export default connect(

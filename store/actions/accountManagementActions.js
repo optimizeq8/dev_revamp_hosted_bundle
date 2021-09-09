@@ -511,14 +511,11 @@ export const updateBusinessInfo = (businessid, info, navigation, translate) => {
       type: actionTypes.UPDATE_BUSINESS_INFO_LOADING,
       payload: true,
     });
-    return axios({
-      url: `https://api.devoa.optimizeapp.com/api/business/${businessid}`,
-      method: "PATCH",
-      data: { ...info },
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+
+    return createBaseUrl()
+      .patch(`business/${businessid}`, {
+        ...info,
+      })
       .then((res) => res.data)
       .then((data) => {
         showMessage({
@@ -530,14 +527,15 @@ export const updateBusinessInfo = (businessid, info, navigation, translate) => {
           form_type: "Update Business Info Form",
           form_context: {
             business_name: info.name,
-            business_category: info.businesscategory,
-            country: info.country,
-            business_type: info.businesstype,
-            other_business_category: info.otherBusinessCategory,
+            business_category: info.category,
+            country_id: info.country_id,
+            business_type: info.type,
+            other_business_category: info.other_business_category,
             business_id: businessid,
           },
           business_id: businessid,
         });
+
         if (data.data) {
           dispatch(checkBusinessVerified(businessid, translate));
           //Dashboard
@@ -561,15 +559,41 @@ export const updateBusinessInfo = (businessid, info, navigation, translate) => {
           });
       })
       .catch((error) => {
-        // console.log(
-        //   "updateBusinessInfo error",
-        //   error.response || error.message
-        // );
+        let errorMessage = null;
+        if (
+          error &&
+          error.response &&
+          error.response.data &&
+          error.response.data.data
+        ) {
+          if (Object.keys(error.response.data.data).length > 0) {
+            // iterate over the erroror data object
+            for (const key in error.response.data.data) {
+              errorMessage = error.response.data.data[key][0];
+            }
+          }
+        } else if (
+          error &&
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
+          errorMessage = error.response.data.message;
+        } else if (error && (error.message || error.response)) {
+          errorMessage = error.message || error.response;
+        }
+        // console.log("updateBusinessInfo errorMessage", errorMessage);
+        showMessage({
+          message: errorMessage,
+          type: "danger",
+          position: "top",
+        });
+
         return dispatch({
           type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
           payload: {
             success: false,
-            errorMessage: error.response.data.message || error.response.data,
+            errorMessage: errorMessage,
           },
         });
       });
