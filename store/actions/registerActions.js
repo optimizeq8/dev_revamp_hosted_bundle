@@ -710,7 +710,7 @@ export const registerGuestUser = (
             source_action: "Registration Detail Form Submitted",
           });
           // dispatch(send_push_notification());
-          // dispatch(getBusinessAccounts());// add back later
+          dispatch(getBusinessAccounts());
           // dispatch(connect_user_to_intercom(getState().auth.info.userid));
           AsyncStorage.setItem("registeredWithInvite", "true");
         }

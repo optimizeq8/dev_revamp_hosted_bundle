@@ -92,9 +92,12 @@ const reducer = (state = initialState, action) => {
           wallet_amount: main.wallet_amount,
         });
       }
-      AsyncStorage.setItem("selectedBusinessId", JSON.stringify(main.id)).catch(
-        (err) => console.log(err)
-      );
+      main &&
+        main.id &&
+        AsyncStorage.setItem(
+          "selectedBusinessId",
+          JSON.stringify(main.id)
+        ).catch((err) => console.log(err));
       return {
         ...state,
         mainBusiness: main,

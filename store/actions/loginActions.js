@@ -240,7 +240,7 @@ export const login = (userData, navigation = NavigationService) => {
             type: actionTypes.SET_LOADING_USER,
             payload: false,
           });
-          // dispatch(getBusinessAccounts()); // Add back later
+          dispatch(getBusinessAccounts());
           // dispatch(send_push_notification());
         }
       })
@@ -273,10 +273,8 @@ export const login = (userData, navigation = NavigationService) => {
 
 export const logout = (navigation) => {
   return (dispatch, getState) => {
-    console.log("logout here");
     setAuthToken()
       .then(() => {
-        console.log("here");
         analytics.identify(`${getState().auth.userid}`, { logged_out: true });
         navigation &&
           navigation.navigate("SwitchLanguage", {
@@ -295,7 +293,6 @@ export const logout = (navigation) => {
       //Switched the navigation with this line so that the ErrorComponent doesn't mount when logging out
       .then(() => dispatch(setCurrentUser(null)))
       .then(() => {
-        console.log("logout here 123");
         analytics.reset();
         Intercom.logout();
         AsyncStorage.setItem("selectedBusinessId", "");

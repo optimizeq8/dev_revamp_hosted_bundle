@@ -112,28 +112,29 @@ export const update_app_status_chat_notification = (app_state) => {
  */
 export const getBusinessAccounts = (businessSeleced) => {
   return (dispatch, getState) => {
-    dispatch(getBusinessInvites());
+    // dispatch(getBusinessInvites());
     dispatch({
       type: actionTypes.SET_LOADING_BUSINESS_LIST,
       payload: true,
     });
     // let selectedBusinessId = await AsyncStorage.getItem("selectedBusinessId");
-    return axios({
-      url: `https://api.devoa.optimizeapp.com/api/users/business/show`,
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    return createBaseUrl()
+      .get(`users/business/show`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then((res) => {
         return res.data;
       })
       .then((data) => {
+        console.log("getBusinessAccounts data", data);
         // showMessage({
         //   message: data.message,
         //   type: response.data.success ? "success" : "warning"
         // })
         AsyncStorage.getItem("indexOfMainBusiness").then((value) => {
+          console.log("getBusinessAccounts value", value);
           return dispatch({
             type: actionTypes.SET_BUSINESS_ACCOUNTS,
             payload: {
@@ -149,7 +150,7 @@ export const getBusinessAccounts = (businessSeleced) => {
       })
 
       .catch((err) => {
-        console.log("getBusinessAccountsError", err.message || err.response);
+        console.log("getBusinessAccountsError", err);
         // errorMessageHandler(err);
         showMessage({
           message:
