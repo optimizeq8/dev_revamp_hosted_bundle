@@ -28,8 +28,8 @@ export default class EmptyCampaigns extends Component {
   redirectToCampaignAdTypeOrCreateBsn = () => {
     let userNotVerified =
       this.props.userInfo &&
-      this.props.userInfo.hasOwnProperty("verified_account") &&
-      !this.props.userInfo.verified_account;
+      this.props.userInfo.hasOwnProperty("verified") &&
+      !this.props.userInfo.verified;
     let businessApproved =
       this.props.mainBusiness &&
       this.props.mainBusiness.hasOwnProperty("approved") &&
@@ -79,8 +79,8 @@ export default class EmptyCampaigns extends Component {
   goToMyWebsiteTutorial = () => {
     let userNotVerified =
       this.props.userInfo &&
-      this.props.userInfo.hasOwnProperty("verified_account") &&
-      !this.props.userInfo.verified_account;
+      this.props.userInfo.hasOwnProperty("verified") &&
+      !this.props.userInfo.verified;
     let businessApproved =
       this.props.mainBusiness &&
       this.props.mainBusiness.hasOwnProperty("approved") &&
@@ -102,12 +102,12 @@ export default class EmptyCampaigns extends Component {
   };
   render() {
     let { mainBusiness, translate, userInfo } = this.props;
-    const { verified_account } = userInfo;
+    const { verified } = userInfo;
     const { user_role } = mainBusiness;
 
     return (
       <View style={styles.flex1}>
-        {userInfo.hasOwnProperty("verified_account") && !verified_account ? (
+        {userInfo.hasOwnProperty("verified") && !verified ? (
           <View style={styles.flex}>
             {/* <Logo
               style={styles.logo}

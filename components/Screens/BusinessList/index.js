@@ -160,8 +160,8 @@ class BusinessList extends Component {
     );
     let userIsVerified =
       this.props.userInfo &&
-      this.props.userInfo.hasOwnProperty("verified_account") &&
-      this.props.userInfo.verified_account;
+      this.props.userInfo.hasOwnProperty("verified") &&
+      this.props.userInfo.verified;
     // userisVerified and activeTab is businessess and  all business approved or userIsSuperAdmin
     let show =
       this.state.activeTab === "Businesses" &&

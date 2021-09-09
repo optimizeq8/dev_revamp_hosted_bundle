@@ -167,8 +167,8 @@ class TutorialWeb extends React.Component {
     // First check if the acccount is verfied or not
     if (
       this.props.userInfo &&
-      this.props.userInfo.hasOwnProperty("verified_account") &&
-      !this.props.userInfo.verified_account
+      this.props.userInfo.hasOwnProperty("verified") &&
+      !this.props.userInfo.verified
     ) {
       this.props.navigation.navigate("VerifyAccount", {
         source: "my_website_tutorial",

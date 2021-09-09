@@ -108,8 +108,8 @@ class Menu extends Component {
 
     let userNotVerified =
       this.props.userInfo &&
-      this.props.userInfo.hasOwnProperty("verified_account") &&
-      !this.props.userInfo.verified_account;
+      this.props.userInfo.hasOwnProperty("verified") &&
+      !this.props.userInfo.verified;
     let businessApproved =
       this.props.mainBusiness &&
       this.props.mainBusiness.hasOwnProperty("approved") &&

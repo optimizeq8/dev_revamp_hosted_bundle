@@ -104,8 +104,8 @@ class AdType extends Component {
     //Check if account is verified or not
     const { fb_connected, fb_ad_account_id } = this.props.mainBusiness;
     if (
-      this.props.userInfo.hasOwnProperty("verified_account") &&
-      !this.props.userInfo.verified_account
+      this.props.userInfo.hasOwnProperty("verified") &&
+      !this.props.userInfo.verified
     ) {
       this.props.navigation.navigate("VerifyAccount", {
         source: "AdType",

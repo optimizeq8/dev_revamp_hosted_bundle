@@ -154,7 +154,6 @@ class PersonalInfo extends Component {
     }
   };
   changePersonalNo = (number, countryCode, type, valid) => {
-    console.log("number", number);
     let userInfo = {
       ...this.state.userInfo,
       mobile: number,

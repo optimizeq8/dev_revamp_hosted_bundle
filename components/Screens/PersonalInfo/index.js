@@ -58,9 +58,10 @@ class PersonalInfo extends Component {
     return true;
   };
   componentDidMount() {
-    const countryCode = this.props.userInfo.mobile.substring(0, 3);
+    const countryCode = this.props.userInfo.mobile.substring(1, 4);
+
     this.setState({
-      phoneNum: "+" + this.props.userInfo.mobile,
+      phoneNum: this.props.userInfo.mobile,
       valid: true,
       countryCode: countryCode,
     });
@@ -76,8 +77,7 @@ class PersonalInfo extends Component {
       screen_name: "PersonalInfo",
       source,
       source_action,
-      business_id:
-        this.props.mainBusiness && this.props.mainBusiness.businessid,
+      business_id: this.props.mainBusiness && this.props.mainBusiness.id,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -157,8 +157,7 @@ class PersonalInfo extends Component {
           form_type: "Personal Info Form",
           form_field: "a_update_personal_info",
           error_description: "No changes to update",
-          business_id:
-            this.props.mainBusiness && this.props.mainBusiness.businessid,
+          business_id: this.props.mainBusiness && this.props.mainBusiness.id,
         });
         showMessage({
           type: "warning",
@@ -171,8 +170,7 @@ class PersonalInfo extends Component {
         form_type: "Personal Info Form",
         form_field: "a_update_personal_info",
         error_description: "Please complete required fields",
-        business_id:
-          this.props.mainBusiness && this.props.mainBusiness.businessid,
+        business_id: this.props.mainBusiness && this.props.mainBusiness.id,
       });
     }
   };

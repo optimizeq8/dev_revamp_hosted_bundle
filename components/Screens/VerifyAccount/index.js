@@ -52,8 +52,8 @@ class VerifyAccount extends Component {
   }
   handleDidFocusLink = (appState) => {
     if (appState === "active") {
-      const countryCode = this.props.userInfo.mobile.substring(0, 3);
-      const mobile = this.props.userInfo.mobile.substring(3);
+      const countryCode = this.props.userInfo.mobile.substring(1, 4);
+      const mobile = this.props.userInfo.mobile.substring(4);
 
       //FROM EMAIL LINK
       // check if email in the link is same as logged in user
@@ -106,8 +106,8 @@ class VerifyAccount extends Component {
         userInfo: { ...this.props.userInfo },
       });
 
-      const countryCode = this.props.userInfo.mobile.substring(0, 3);
-      const mobile = this.props.userInfo.mobile.substring(3);
+      const countryCode = this.props.userInfo.mobile.substring(1, 4);
+      const mobile = this.props.userInfo.mobile.substring(4);
 
       this.setState({
         phoneNum: this.props.userInfo.mobile,
@@ -202,7 +202,7 @@ class VerifyAccount extends Component {
       source: "VerifyAccount",
     });
     // Taking USER's original phone number that was used while registeration
-    const mobile = this.props.userInfo.mobile.substring(3);
+    const mobile = this.props.userInfo.mobile.substring(4);
     this.props.resendVerifyMobileCodeByEmail({
       country_code: this.state.country_code,
       mobile,
@@ -448,14 +448,17 @@ class VerifyAccount extends Component {
     }
     return (
       <SafeAreaView
-        style={{ height: "100%" }}
-        forceInset={{ top: "always", bottom: "never" }}
+        style={{ height: "100%", backgroundColor: globalColors.bluegem }}
+        forceInset={{
+          top: "always",
+          bottom: "never",
+        }}
       >
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={globalStyles.gradient}
-        />
+        /> */}
         <Header
           screenProps={this.props.screenProps}
           title={"Verify Account"}

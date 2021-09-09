@@ -732,11 +732,6 @@ class Dashboard extends Component {
     this.setState({ showAlertModal: false });
   };
   render() {
-    console.log(
-      this.props.loadingAccountMgmt,
-      this.props.mainBusiness,
-      this.props.loading
-    );
     const { translate } = this.props.screenProps;
     const mySlideInUp = {
       from: {
@@ -914,8 +909,8 @@ class Dashboard extends Component {
                 !this.props.loadingAccountMgmt &&
                 this.props.campaignList &&
                 this.props.campaignList.length === 0) ||
-              (this.props.userInfo.hasOwnProperty("verified_account") &&
-                !this.props.userInfo.verified_account) ? (
+              (this.props.userInfo.hasOwnProperty("verified") &&
+                !this.props.userInfo.verified) ? (
                 <EmptyCampaigns
                   translate={translate}
                   screenProps={this.props.screenProps}
