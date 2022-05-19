@@ -1,0 +1,31 @@
+{
+  "api_token": "8lJqEzJOA2aSkG_F8U-YUw",
+  "app_identifiers": ["com.optimizeapp.optimizeapp"],
+  "available_actions": [],
+  "domains": ["https://api.photoeditorsdk.com"],
+  "enterprise_license": false,
+  "expires_at": null,
+  "features": [
+    "camera",
+    "library",
+    "export",
+    "whitelabel",
+    "customassets",
+    "audio",
+    "frame",
+    "sticker",
+    "text",
+    "textdesign",
+    "transform",
+    "trim",
+    "composition",
+    "videolibrary"
+  ],
+  "issued_at": 1637575112,
+  "minimum_sdk_version": "1.0",
+  "owner": "Optimize Advertising and Marketing Company WLL",
+  "platform": "iOS",
+  "products": ["vesdk"],
+  "version": "2.4",
+  "signature": "fNXJH9maQjvzFZLYGCLfnCnv42uJL2n3rH+yQIS+9YNDNdj2E1d686dCx7iDWm1b/E2b1L0jI2PTTnprQTAYWj7C+RXxCXwz2gd1+NuGpvXGBo+skPS9TVfYEkD2AnKCiDgsW//z+uLGWJ62k6G6fnP8GgtgFN/Nn3hV64/gIepdFuIWhpoI5/t7ih8ahfYLF+os01KPH2+Wfdc3ssW8jET3gEsSMmeW+HpYwBxR06M1K9VwDi8hwU3jpwQVVn+8npe2LmvfLvfqe/pP7XlDTA2STzVr4FJ4/7ZI8/tGOlzdKx+PYcZK/3yuyPrVeShn62h04vGaBZtkP8Giny41cSlax4mwbuXjt1iQCy+EZpkPmtrHLLooQiuhQFf/K+QAUkhLs+YQmYorlqNeIWTmzrfGSwE4GyoS/5z3o7r6WHeAHohRamro4JdXfxl6JIGGFsuup0J9i/o73n5cKY1psroytECO7doB4v3308mMPjWNWeJoHm2bFcRsbplXOD2to54S3LuIUmFC2iuP9/OTl+DgB3uMhRGrQACpv6PiDftxKQGnMis8+qhgOTbI1wH2lRHatgslKJ8WKEkSOh5oKFDtu3JnlYeSo9WgopbBHUV7DAFvlDgnnaex7rx6L+RGZybuq+CBTm0/tmcOFl9dCx8vXHSAA5A4F+KVnLajR4c="
+}
